@@ -1,0 +1,104 @@
+<html>
+	<head>
+		<title>Textarea Characters, Words Counter and Characters Limitation</title>
+		<style>
+			body {
+				font-size: 12px;
+				font-family: Arial, Helvetica, sans-serif;
+				line-height: 20px;
+				color: #333333;
+			}
+			
+			a {
+				color: #333333;
+				text-decoration: none;
+			}
+			
+			.overview {
+				background: #FFEC9D;
+				padding: 10px;
+				width: 90%;
+				border: 1px solid #CCCCCC;
+			}
+			
+			.originalTextareaInfo {
+				font-size: 12px;
+				color: #000000;
+				font-family: Tahoma, sans-serif;
+				text-align: right
+			}
+			
+			.warningTextareaInfo {
+				font-size: 12px;
+				color: #FF0000;
+				font-family: Tahoma, sans-serif;
+				text-align: right
+			}
+			
+			#showData {
+				height: 70px;
+				width: 200px;
+				border: 1px solid #CCCCCC;
+				padding: 10px;
+				margin: 10px;
+			}
+		</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+		<script src="./jquery.textareaCounter.plugin.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var info;
+			$(document).ready(function(){
+				var options = {
+					'maxCharacterSize': -2,
+					'originalStyle': 'originalTextareaInfo',
+					'warningStyle' : 'warningTextareaInfo',
+					'warningNumber': 40
+				};
+				$('#testTextarea').textareaCount(options);
+
+				var options2 = {
+						'maxCharacterSize': 200,
+						'originalStyle': 'originalTextareaInfo',
+						'warningStyle' : 'warningTextareaInfo',
+						'warningNumber': 40,
+						'displayFormat' : '#input/#max | #words words'
+				};
+				$('#testTextarea2').textareaCount(options2);
+
+				var options3 = {
+						'maxCharacterSize': 200,
+						'originalStyle': 'originalTextareaInfo',
+						'warningStyle' : 'warningTextareaInfo',
+						'warningNumber': 40,
+						'displayFormat' : '#left Characters Left / #max'
+				};
+				$('#testTextarea3').textareaCount(options3, function(data){
+					$('#showData').html(data.input + " characters input. <br />" + data.left + " characters left. <br />" + data.max + " max characters. <br />" + data.words + " words input.");
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="overview">
+			 * jQuery Textarea Characters Counter Plugin 2.0<br />
+			 * Examples and documentation at: http://roy-jin.appspot.com/jsp/textareaCounter.jsp<br />
+			 * Copyright (c) 2010 Roy Jin<br />
+			 * Version: 2.0 (11-JUN-2010)<br />
+			 * Dual licensed under the MIT and GPL licenses:<br />
+			 * http://www.opensource.org/licenses/mit-license.php<br />
+			 * http://www.gnu.org/licenses/gpl.html<br />
+			 * Requires: jQuery v1.4.2 or later<br />
+			 <hr />
+			 <b>Demo: <a href="http://roy-jin.appspot.com/jsp/textareaCounter.jsp" target="_blank">http://roy-jin.appspot.com/jsp/textareaCounter.jsp</a></b><br />
+			 <b>Contact/Feedback/Bug Report: <a href="http://royjin.wufoo.com/forms/z7x4a9/" target="_blank">http://royjin.wufoo.com/forms/z7x4a9/</a></b>
+		</div>
+		<h2>Only Count characters and words</h2>
+		<textarea id="testTextarea" cols="70" rows="10"></textarea>
+		<h2>Count and limit characters, format the defined format display information</h2>
+		<textarea id="testTextarea2" cols="70" rows="10"></textarea>
+		<h2>Count and limit characters and use the callback function</h2>
+		<div id="showData"></div>
+		<textarea id="testTextarea3" cols="70" rows="10"></textarea>
+		
+	</body>
+</html>
