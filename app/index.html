@@ -31,48 +31,51 @@
                 <div class="col-xs-6 col-sm-2">
                     <a href="#dashboard" class="logo_main" title="LMIS"><img src="images/logo_main.png" alt=""></a>
                 </div>
-                <div class="col-xs-6 col-sm-2">
-                    <span ng-show="online" class="icon-exclamation-sign"></span>
-                    <span ng-hide="online" class="icon-warning-sign"></span>
-                </div>
-                <div class="notification_dropdown dropdown">
-                    <a href="#" class="notification_icon dropdown-toggle" data-toggle="dropdown">
-                        <span class="label label-danger">12</span>
-                        <i class="icon-envelope-alt icon-2x"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-wide">
-                        <li>
-                            <div class="dropdown_heading">Messages</div>
-                            <div class="dropdown_content">
-                                <ul class="dropdown_items">
-                                    <li>
-                                        <h3><a href="#">Lorem ipsum dolor sit amet</a></h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                                        <p class="large_info">Sean Walter, 24.05.2014</p>
-                                        <i class="icon-exclamation-sign indicator"></i>
-                                    </li>
-                                    <li>
-                                        <h3><a href="#">Lorem ipsum dolor&hellip;</a></h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aliquam assumenda&hellip;</p>
-                                        <p class="large_info">Sean Walter, 24.05.2014</p>
-                                    </li>
-                                    <li>
-                                        <h3><a href="#">Lorem ipsum dolor&hellip;</a></h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur&hellip;</p>
-                                        <p class="large_info">Sean Walter, 24.05.2014</p>
-                                        <i class="icon-exclamation-sign indicator"></i>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="dropdown_footer">
-                                <a href="#" class="btn btn-sm btn-default">Show all</a>
-                                <div class="pull-right dropdown_actions">
-                                    <a href="#"><i class="icon-refresh"></i></a>
-                                    <a href="#"><i class="icon-cog"></i></a>
+                <div class="col-sm-push-4 col-sm-3 text-right">
+                    <div class="notification_dropdown dropdown">
+                        <a href="#" class="notification_icon dropdown-toggle" data-toggle="dropdown">
+                            <span class="label label-danger">12</span>
+                            <i class="icon-envelope-alt icon-2x"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-wide">
+                            <li>
+                                <div class="dropdown_heading">Messages</div>
+                                <div class="dropdown_content">
+                                    <ul class="dropdown_items">
+                                        <li>
+                                            <h3><a href="#">Lorem ipsum dolor sit amet</a></h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+                                            <p class="large_info">Sean Walter, 24.05.2014</p>
+                                            <i class="icon-exclamation-sign indicator"></i>
+                                        </li>
+                                        <li>
+                                            <h3><a href="#">Lorem ipsum dolor&hellip;</a></h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aliquam assumenda&hellip;</p>
+                                            <p class="large_info">Sean Walter, 24.05.2014</p>
+                                        </li>
+                                        <li>
+                                            <h3><a href="#">Lorem ipsum dolor&hellip;</a></h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur&hellip;</p>
+                                            <p class="large_info">Sean Walter, 24.05.2014</p>
+                                            <i class="icon-exclamation-sign indicator"></i>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </div>
-                        </li>
-                    </ul>
+                                <div class="dropdown_footer">
+                                    <a href="#" class="btn btn-sm btn-default">Show all</a>
+                                    <div class="pull-right dropdown_actions">
+                                        <a href="#"><i class="icon-refresh"></i></a>
+                                        <a href="#"><i class="icon-cog"></i></a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="notification_separator"></div>
+                    <div class="notification_dropdown">
+                        <span class="label label-success" ng-show="online">online</span>
+                        <span class="label label-danger" ng-hide="online">offline</span>
+                    </div>
                 </div>
             </div>
         </div>
