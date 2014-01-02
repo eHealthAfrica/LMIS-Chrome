@@ -13,13 +13,13 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link href="Ebro/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="Ebro/css/style.css">
     <link rel="stylesheet" href="Ebro/css/theme/color_1.css" id="theme">
+    <link rel="stylesheet" href="Ebro/css/font-awesome/css/font-awesome.min.css">
     <!-- endbuild -->
     <link href='http://fonts.googleapis.com/css?family=Roboto:300,700&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 </head>
@@ -29,7 +29,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-6 col-sm-2">
-                    <a href="#dashboard" class="logo_main" title="Ebro Admin Template:"><img src="images/logo_main.png" alt=""></a>
+                    <a href="#dashboard" class="logo_main" title="LMIS"><img src="images/logo_main.png" alt=""></a>
+                </div>
+                <div class="col-xs-6 col-sm-2">
+                    <span ng-show="online" class="icon-exclamation-sign"></span>
+                    <span ng-hide="online" class="icon-warning-sign"></span>
                 </div>
                 <div class="notification_dropdown dropdown">
                     <a href="#" class="notification_icon dropdown-toggle" data-toggle="dropdown">

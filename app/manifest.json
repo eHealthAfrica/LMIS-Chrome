@@ -4,7 +4,19 @@
   	"version": "1",
   	"manifest_version": 2,
   	"default_locale": "en",
-  	"permissions": [],
+  	"permissions": [
+  		{
+  			"fileSystem": [
+  				"write",
+  				"retainEntries",
+  				"directory"
+  			]
+  		},
+  		"fullscreen",
+  		"geolocation",
+  		"storage",
+  		"unlimitedStorage"
+  	],
   	"icons": {
   		"16": "images/icon-16.png",
   		"128": "images/icon-128.png"
