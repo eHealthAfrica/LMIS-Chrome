@@ -26,11 +26,15 @@ angular.module('lmisChromeApp', [
             });
     });
 
+angular.module('lmisChromeApp')
+    .config(['$compileProvider', function($compileProvider) {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
+    }]);
+
 /* Central Variable for Watching Online/Offline Events */
 angular.module('lmisChromeApp')
     .run(function($window, $rootScope) {
         $rootScope.online = navigator.onLine;
-        console.log("online" + $rootScope.online);
         $window.addEventListener("offline", function () {
             $rootScope.$apply(function() {
                 $rootScope.online = false;
