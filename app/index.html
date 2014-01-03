@@ -29,7 +29,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-6 col-sm-2">
-                    <a href="#dashboard" class="logo_main" title="LMIS"><img src="images/logo_main.png" alt=""></a>
+                    <a ng-href="#/home" class="logo_main" title="LMIS"><img src="images/logo_main.png" alt=""></a>
                 </div>
                 <div class="col-sm-push-4 col-sm-3 text-right">
                     <div class="notification_dropdown dropdown">
@@ -80,11 +80,11 @@
             </div>
         </div>
     </header>
-    <nav id="top_navigation">
+    <nav id="top_navigation" nav>
         <div class="container">
             <ul id="icon_nav_h" class="top_ico_nav clearfix">
-                <li>
-                    <a href="#">
+                <li data-match-route="/(:?home)">
+                    <a ng-href="#/home">
                         <i class="icon-home icon-2x"></i>
                         <span class="menu_label">Home</span>
                     </a>
@@ -114,7 +114,7 @@
                         <span class="menu_label">Plugins</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="#">
                         <i class="icon-book icon-2x"></i>
                         <span class="menu_label">Help</span>
@@ -127,8 +127,8 @@
                         <span class="menu_label">E-Commerce</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#">
+                <li data-match-route="/settings">
+                    <a ng-href="#/settings">
                         <i class="icon-wrench icon-2x"></i>
                         <span class="menu_label">Settings</span>
                     </a>
@@ -136,8 +136,6 @@
             </ul>
         </div>
     </nav>
-    <!-- mobile navigation -->
-    <nav id="mobile_navigation"></nav>
 
     <section id="breadcrumbs">
         <div class="container">
@@ -197,8 +195,9 @@
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/settings.js"></script>
     <script src="Ebro/js/ebro_common.js"></script>
-
+    <script src="scripts/directives/nav.js"></script>
     <!-- endbuild -->
 </body>
 </html>
