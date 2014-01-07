@@ -1,3 +1,4 @@
+<form novalidate="novalidate" ng-submit="save()">
 <div class="row">
     <div class="col-sm-12">
         <div class="panel panel-default">
@@ -6,31 +7,29 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <form novalidate="novalidate" ng-submit="save()">
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label for="settings_facility_name">Facility Name</label>
                             <input type="text" name="settings_facility_name" id="settings_facility_name" class="form-control" ng-model="facility.name" />
                         </div>
                         <div class="form-group">
-                            <label for="settings_facility_address">Address/Location</label>
-                            <textarea name="settings_facility_address" id="settings_facility_address" cols="10" rows="3" class="form-control" ng-model="facility.address"></textarea>
+                            <label for="settings_facility_address">Description/Notes</label>
+                            <textarea name="settings_facility_address" id="settings_facility_address" cols="10" rows="3" class="form-control" ng-model="facility.description"></textarea>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label for="settings_facility_type">Type</label>
-                            <select id="settings_facility_type" class="form-control" ng-model="facility.type">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
+                            <label for="settings_facility_type">Facility Type</label>
+                            <select id="settings_facility_type" class="form-control" ng-model="facility.facility_type">
+                                <option>Health Facility</option>
+                                <option>Zonal Store</option>
+                                <option>State Store</option>
+                                <option>Regional Store</option>
+                                <option>National Store</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="reg_select_multiple">Select (multiple)</label>
+                            <label for="reg_select_multiple"></label>
                             <select multiple="multiple" id="reg_select_multiple" class="form-control" ng-model="facility.type2">
                                 <option>1</option>
                                 <option>2</option>
@@ -70,10 +69,29 @@
                         </div>
                     </div>
                     <input type="submit" class="btn btn-default" value="Save" />
-                    </form>
                 </div>
-                <pre>form = {{ facility | json }}</pre>
             </div>
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Staff & User Configuration</h4>
+            </div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <pre>form = {{ facility | json }}</pre>
+    </div>
+    <div class="col-sm-6">
+        <pre>chrome storage = {{ chromestorage | json }}</pre>
+    </div>
+</div>
+</form>

@@ -4,11 +4,22 @@ angular.module('lmisChromeApp')
     .controller('SettingsCtrl', function ($scope) {
 
         // var facility = $scope.facility = {};
+        // var chromestorage = $scope.chromestorage = {}
 
         /* TODO: come up with chrome.storage.local provider ie: http://gregpike.net/demos/angular-local-storage/demo/demo.html */
         chrome.storage.local.get('facility', function(value){
             $scope.$apply(function() {
                 $scope.load(value);
+            });
+        });
+
+        chrome.storage.local.get(null, function(storage) {
+            $scope.$apply(function() {
+                if (storage) {
+                    $scope.chromestorage = storage;
+                } else {
+                    $scope.chromestorage = {};
+                }
             });
         });
 
@@ -22,7 +33,7 @@ angular.module('lmisChromeApp')
         };
 
         $scope.save = function() {
-             chrome.storage.local.set({'facility': $scope.facility});
+            chrome.storage.local.set({'facility': $scope.facility});
         };
 
         /* LMIS App Settings
@@ -30,7 +41,6 @@ angular.module('lmisChromeApp')
         *                 based on site UUID and SecretKey]
         * Facility Type: [drop down or web service]
         * GlobalID: [uuid for chrome app installation, generated 1st run only. used to retreive data from server]
-        * SecretKey: [random generated key for use in matching GlobalID, generated at server or app?]
         * Facility Users/Staff: [name, position/title, contact details for facility staff]
         *
         *
