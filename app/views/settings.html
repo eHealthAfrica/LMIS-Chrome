@@ -1,1 +1,79 @@
-<p>This is the settings view.</p>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Facility Configuration</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form novalidate="novalidate" ng-submit="save()">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="settings_facility_name">Facility Name</label>
+                            <input type="text" name="settings_facility_name" id="settings_facility_name" class="form-control" ng-model="facility.name" />
+                        </div>
+                        <div class="form-group">
+                            <label for="settings_facility_address">Address/Location</label>
+                            <textarea name="settings_facility_address" id="settings_facility_address" cols="10" rows="3" class="form-control" ng-model="facility.address"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="settings_facility_type">Type</label>
+                            <select id="settings_facility_type" class="form-control" ng-model="facility.type">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg_select_multiple">Select (multiple)</label>
+                            <select multiple="multiple" id="reg_select_multiple" class="form-control" ng-model="facility.type2">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Checkbox (stacked)</label>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Option 1
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Option 2
+                            </label>
+                        </div>
+                        <label>Radio (stacked)</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                Option 1
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                Option 2
+                            </label>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-default" value="Save" />
+                    </form>
+                </div>
+                <pre>form = {{ facility | json }}</pre>
+            </div>
+        </div>
+    </div>
+</div>
