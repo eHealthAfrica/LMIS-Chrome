@@ -1,1 +1,43 @@
-<p>This is the Orders view.</p>
+<div>
+    <form novalidate="novalidate" ng-submit="save()">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="orders_item_name">Item</label>
+                        <input type="text" name="orders_item_name" id="orders_item_name" class="form-control" ng-model="orders.item_name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="orders_supplier">Suppliers</label>
+                        <select name="orders_supplier" id="orders_supplier" class="form-control" ng-model="orders.suppliers">
+                            <option value="supplier 1">supplier 1</option>
+                            <option value="supplier 2">supplier 2</option>
+                            <option value="supplier 3">supplier 3</option>
+                            <option value="supplier 4">supplier 4</option>
+                            <option value="supplier 5">supplier 5</option>
+                            <option value="supplier 6">supplier 6</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="orders_expected_date">Expected date</label>
+                        <input type="date" name="orders_expected_date" id="orders_expected_date" class="form-control" ng-model="orders.expected_date" />
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-default" value="Save" />
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <pre> {{ messy }} </pre>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <pre>form = {{ orders | json }}</pre>
+            </div>
+            <div class="col-sm-6">
+                <pre>chrome storage = {{ stored_data | json }}</pre>
+            </div>
+        </div>
+    </form>
+</div>
