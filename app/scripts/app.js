@@ -21,6 +21,10 @@ angular.module('lmisChromeApp', [
                 templateUrl: 'views/settings.html',
                 controller: 'SettingsCtrl'
             })
+            .when('/orders', {
+                templateUrl: 'views/orders.html',
+                controller: 'OrdersctrlCtrl'
+            })
             .otherwise({
                 redirectTo: '/'
             });
