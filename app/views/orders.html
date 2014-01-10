@@ -8,6 +8,10 @@
                         <input type="text" name="orders_item_name" id="orders_item_name" class="form-control" ng-model="orders.item_name" />
                     </div>
                     <div class="form-group">
+                        <label for="orders_qty">Quantity</label>
+                        <input type="text" name="orders_qty" id="orders_qty" class="form-control" ng-model="orders.qty" />
+                    </div>
+                    <div class="form-group">
                         <label for="orders_supplier">Suppliers</label>
                         <select name="orders_supplier" id="orders_supplier" class="form-control" ng-model="orders.suppliers">
                             <option value="supplier 1">supplier 1</option>
@@ -26,6 +30,43 @@
             </div>
             <input type="submit" class="btn btn-default" value="Save" />
         </div>
+        <div>{{ uuid }}</div>
+        <div class="row" >
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Supplier</th>
+                        <th>Expected Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>Synced ?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="order_row in stored_data">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ order_row.item_name }}</td>
+                        <td>{{ order_row.qty }}</td>
+                        <td>{{ order_row.suppliers }}</td>
+                        <td>{{ order_row.expected_date }}</td>
+                        <td>{{ order_row.order_status }}</td>
+                        <td>
+                            <a href="/order/edit/{{ order_row.uuid }}"><i class="icon-edit"></i></a>
+                            <a href="/order/delete/{{ order_row.uuid }}"><i class="icon-remove-sign"></i></a>
+                        </td>
+                        <td>{{ order_row.synced }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--
+        <div class="row" ng-show="{{ orders_index }}">
+            <a href="/delete/{{ orders_index }}">delete {{ orders_index }}</a>
+        </div>
         <div class="row">
             <div class="col-sm-6">
                 <pre>form = {{ orders | json }}</pre>
@@ -34,5 +75,7 @@
                 <pre>chrome storage = {{ stored_data | json }}</pre>
             </div>
         </div>
+        -->
+        <input type="hidden" ng-model="orders_index">
     </form>
 </div>
