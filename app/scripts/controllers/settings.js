@@ -1,39 +1,45 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .controller('SettingsCtrl', function ($scope) {
+    .controller('SettingsCtrl', ['$scope', 'storageProvider'], function ($scope, storageProvider) {
 
         // var facility = $scope.facility = {};
         // var chromestorage = $scope.chromestorage = {}
 
         /* TODO: come up with chrome.storage.local provider ie: http://gregpike.net/demos/angular-local-storage/demo/demo.html */
-        chrome.storage.local.get('facility', function(value){
-            $scope.$apply(function() {
-                $scope.load(value);
-            });
+//        chrome.storage.local.get('facility', function(value){
+//            $scope.$apply(function() {
+//                $scope.load(value);
+//            });
+//        });
+        $scope.$watch('facility', function(value) {
+            $scope.facility = storageProvider.get('facility', 'facility');
         });
 
-        chrome.storage.local.get(null, function(storage) {
-            $scope.$apply(function() {
-                if (storage) {
-                    $scope.chromestorage = storage;
-                } else {
-                    $scope.chromestorage = {};
-                }
-            });
-        });
 
-        $scope.load = function(value) {
-            if (value && value.facility) {
-                $scope.facility = value.facility;
-            } else {
-                $scope.facility = {};
-                /* TODO: get defaults from Facility Factory */
-            }
-        };
+//        chrome.storage.local.get(null, function(storage) {
+//            $scope.$apply(function() {
+//                if (storage) {
+//                    $scope.chromestorage = storage;
+//                } else {
+//                    $scope.chromestorage = {};
+//                }
+//            });
+//        });
+//
+//        $scope.load = function(value) {
+//            if (value && value.facility) {
+//                $scope.facility = value.facility;
+//            } else {
+//                $scope.facility = {};
+//                /* TODO: get defaults from Facility Factory */
+//            }
+//        };
 
         $scope.save = function() {
-            chrome.storage.local.set({'facility': $scope.facility});
+            $scope.$watch('facility', function(value) {
+               storageProvider.set('facility', $scope.facility, 'facility');
+            });
         };
 
         /* LMIS App Settings

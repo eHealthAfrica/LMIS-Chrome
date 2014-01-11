@@ -1,4 +1,4 @@
-<form novalidate="novalidate" ng-submit="save()">
+<form novalidate ng-submit="save()">
 <div class="row">
     <div class="col-sm-12">
         <div class="panel panel-default">
@@ -10,11 +10,20 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label for="settings_facility_name">Facility Name</label>
-                            <input type="text" name="settings_facility_name" id="settings_facility_name" class="form-control" ng-model="facility.name" />
+                            <input type="text" id="settings_facility_name" class="form-control" ng-model="facility.name" />
                         </div>
                         <div class="form-group">
                             <label for="settings_facility_address">Description/Notes</label>
-                            <textarea name="settings_facility_address" id="settings_facility_address" cols="10" rows="3" class="form-control" ng-model="facility.description"></textarea>
+                            <textarea id="settings_facility_address" cols="10" rows="3" class="form-control" ng-model="facility.description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="settings_facility_operators">Facility Operators</label>
+                            <select multiple="multiple" id="settings_facility_operators" class="form-control" ng-model="facility.facility_operators">
+                                <option>NPHCDA</option>
+                                <option>Kano SPHCMB</option>
+                                <option>Katsina SPHCMB</option>
+                                <option>Private</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -29,42 +38,55 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="reg_select_multiple"></label>
-                            <select multiple="multiple" id="reg_select_multiple" class="form-control" ng-model="facility.type2">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
+                            <label for="settings_facility_pop">Facility Catchment Population</label>
+                            <input type="number" id="settings_facility_pop" class="form-control" ng-model="facility.catchment_population" />
+                        </div>
+                        <div class="form-group">
+                            <label for="settings_facility_products">Facility Products</label>
+                            <select multiple="multiple" id="settings_facility_products" class="form-control" ng-model="facility.products">
+                                <option>OPV</option>
+                                <option>BCG</option>
+                                <option>Anti-Malarial</option>
+                                <option>Syringe</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <label>Checkbox (stacked)</label>
+                        <label>Facility Details</label>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="">
-                                Option 1
+                                <input type="checkbox" value="sdp" ng-model="facility.sdp">
+                                Service Delivery Point
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="">
-                                Option 2
+                                <input type="checkbox" value="supplier" ng-model="facility.supplies_others">
+                                Suppliers Other Facilities
                             </label>
                         </div>
-                        <label>Radio (stacked)</label>
-                        <div class="radio">
+                        <div class="checkbox">
                             <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-                                Option 1
+                                <input type="checkbox" value="active" ng-model="facility.is_active">
+                                Facility Currently Active
                             </label>
                         </div>
-                        <div class="radio">
+                        <div class="checkbox">
                             <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                                Option 2
+                                <input type="checkbox" value="active" ng-model="facility.is_online">
+                                On-Line
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="active" ng-model="facility.has_electricity">
+                                Has Electricity
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="active" ng-model="facility.is_satellite">
+                                Satellite
                             </label>
                         </div>
                     </div>

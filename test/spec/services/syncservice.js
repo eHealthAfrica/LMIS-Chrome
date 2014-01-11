@@ -1,18 +1,18 @@
 'use strict';
 
-describe('Service: SyncService', function () {
+describe('Service: syncService', function () {
 
   // load the service's module
   beforeEach(module('lmisChromeApp'));
 
   // instantiate service
-  var SyncService;
-  beforeEach(inject(function (_SyncService_) {
-    SyncService = _SyncService_;
+  var syncService;
+  beforeEach(inject(function (_syncService_) {
+    syncService = _syncService_;
   }));
 
   it('should do something', function () {
-    expect(!!SyncService).toBe(true);
+    expect(!!syncService).toBe(true);
   });
 
 });

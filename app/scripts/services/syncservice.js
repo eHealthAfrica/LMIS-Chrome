@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .provider('SyncService', function () {
+  .provider('syncService', function () {
 
     // Private variables
     var salutation = 'Hello';
