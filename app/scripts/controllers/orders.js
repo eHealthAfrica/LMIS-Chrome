@@ -2,7 +2,8 @@
 
 angular.module('lmisChromeApp')
   .controller('OrdersctrlCtrl', function ($scope, utility) {
-        chrome.storage.local.set({'order_list':[], 'orders_list':[], 'facility':[] });
+
+        //chrome.storage.local.set({'order_list':[], 'orders_list':{}, 'facility':{} });
         //populate order object with data if available in storage
         chrome.storage.local.get('order_list', function(value){
             $scope.$apply(function(){
@@ -22,7 +23,6 @@ angular.module('lmisChromeApp')
             }
 
         }
-
         $scope.$watch('stored_data', function(){
             chrome.storage.local.get(null, function(storage) {
                 $scope.$apply(function() {
@@ -45,6 +45,9 @@ angular.module('lmisChromeApp')
 
           $scope.orders.synced=0;
           $scope.orders.order_status=0;
+          if($scope.orders.uuid == ''){
+
+          }
           $scope.orders.uuid = utility.getUUID();
           $scope.data_storage.push($scope.orders);
           chrome.storage.local.set({'order_list': $scope.data_storage});
