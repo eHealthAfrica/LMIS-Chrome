@@ -1,46 +1,18 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .controller('SettingsCtrl', ['$scope', 'storageProvider'], function ($scope, storageProvider) {
+  .controller('SettingsCtrl', function ($scope, settingsService) {
 
-        // var facility = $scope.facility = {};
-        // var chromestorage = $scope.chromestorage = {}
+    settingsService.load().then(function(settings) {
+      $scope.settings = settings;
+    });
 
-        /* TODO: come up with chrome.storage.local provider ie: http://gregpike.net/demos/angular-local-storage/demo/demo.html */
-//        chrome.storage.local.get('facility', function(value){
-//            $scope.$apply(function() {
-//                $scope.load(value);
-//            });
-//        });
-        $scope.$watch('facility', function(value) {
-            $scope.facility = storageProvider.get('facility', 'facility');
-        });
+    console.log("settingsctrl");
+    console.log($scope.settings);
 
-
-//        chrome.storage.local.get(null, function(storage) {
-//            $scope.$apply(function() {
-//                if (storage) {
-//                    $scope.chromestorage = storage;
-//                } else {
-//                    $scope.chromestorage = {};
-//                }
-//            });
-//        });
-//
-//        $scope.load = function(value) {
-//            if (value && value.facility) {
-//                $scope.facility = value.facility;
-//            } else {
-//                $scope.facility = {};
-//                /* TODO: get defaults from Facility Factory */
-//            }
-//        };
-
-        $scope.save = function() {
-            $scope.$watch('facility', function(value) {
-               storageProvider.set('facility', $scope.facility, 'facility');
-            });
-        };
+    $scope.save = function() {
+      settingsService.save($scope.settings);
+    };
 
         /* LMIS App Settings
         * Facility Name: [can be a drop down generated from a json file in filesystemstorage or retrieved from web service
@@ -55,5 +27,5 @@ angular.module('lmisChromeApp')
         * Inspect Chrome Storage:
         *                   chrome.storage.local.get(null, console.log.bind(console));  */
 
-    });
+  });
 

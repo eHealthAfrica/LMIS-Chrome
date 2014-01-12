@@ -10,15 +10,15 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label for="settings_facility_name">Facility Name</label>
-                            <input type="text" id="settings_facility_name" class="form-control" ng-model="facility.name" />
+                            <input type="text" id="settings_facility_name" class="form-control" ng-model="settings.facility_name" />
                         </div>
                         <div class="form-group">
                             <label for="settings_facility_address">Description/Notes</label>
-                            <textarea id="settings_facility_address" cols="10" rows="3" class="form-control" ng-model="facility.description"></textarea>
+                            <textarea id="settings_facility_address" cols="10" rows="3" class="form-control" ng-model="settings.facility_description"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="settings_facility_operators">Facility Operators</label>
-                            <select multiple="multiple" id="settings_facility_operators" class="form-control" ng-model="facility.facility_operators">
+                            <select multiple="multiple" id="settings_facility_operators" class="form-control" ng-model="settings.facility_operators">
                                 <option>NPHCDA</option>
                                 <option>Kano SPHCMB</option>
                                 <option>Katsina SPHCMB</option>
@@ -29,7 +29,7 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label for="settings_facility_type">Facility Type</label>
-                            <select id="settings_facility_type" class="form-control" ng-model="facility.facility_type">
+                            <select id="settings_facility_type" class="form-control" ng-model="settings.facility_type">
                                 <option>Health Facility</option>
                                 <option>Zonal Store</option>
                                 <option>State Store</option>
@@ -39,11 +39,11 @@
                         </div>
                         <div class="form-group">
                             <label for="settings_facility_pop">Facility Catchment Population</label>
-                            <input type="number" id="settings_facility_pop" class="form-control" ng-model="facility.catchment_population" />
+                            <input type="number" id="settings_facility_pop" class="form-control" ng-model="settings.facility_catchment_population" />
                         </div>
                         <div class="form-group">
                             <label for="settings_facility_products">Facility Products</label>
-                            <select multiple="multiple" id="settings_facility_products" class="form-control" ng-model="facility.products">
+                            <select multiple="multiple" id="settings_facility_products" class="form-control" ng-model="settings.facility_products">
                                 <option>OPV</option>
                                 <option>BCG</option>
                                 <option>Anti-Malarial</option>
@@ -55,37 +55,37 @@
                         <label>Facility Details</label>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="sdp" ng-model="facility.sdp">
+                                <input type="checkbox" value="sdp" ng-model="settings.facility_sdp">
                                 Service Delivery Point
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="supplier" ng-model="facility.supplies_others">
+                                <input type="checkbox" value="supplier" ng-model="settings.facility_supplies_others">
                                 Suppliers Other Facilities
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="active" ng-model="facility.is_active">
+                                <input type="checkbox" value="active" ng-model="settings.facility_is_active">
                                 Facility Currently Active
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="active" ng-model="facility.is_online">
+                                <input type="checkbox" value="active" ng-model="settings.facility_is_online">
                                 On-Line
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="active" ng-model="facility.has_electricity">
+                                <input type="checkbox" value="active" ng-model="settings.facility_has_electricity">
                                 Has Electricity
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="active" ng-model="facility.is_satellite">
+                                <input type="checkbox" value="active" ng-model="settings.facility_is_satellite">
                                 Satellite
                             </label>
                         </div>
@@ -110,10 +110,7 @@
 </div>
 <div class="row">
     <div class="col-sm-6">
-        <pre>form = {{ facility | json }}</pre>
-    </div>
-    <div class="col-sm-6">
-        <pre>chrome storage = {{ chromestorage | json }}</pre>
+        <pre>form = {{ settings | json }}</pre>
     </div>
 </div>
 </form>
