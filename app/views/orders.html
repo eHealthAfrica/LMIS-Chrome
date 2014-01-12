@@ -30,34 +30,42 @@
             </div>
             <input type="submit" class="btn btn-default" value="Save" />
         </div>
-        <div>{{ uuid }}</div>
+        <input type="hidden" name="uuid" class="form-control" ng-model="orders.uuid" />
         <div class="row" >
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>ID</th>
                         <th>Item</th>
                         <th>Qty</th>
                         <th>Supplier</th>
                         <th>Expected Date</th>
-                        <th>Status</th>
+                        <th>Order Status</th>
                         <th>Action</th>
                         <th>Synced ?</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="order_row in stored_data">
+                    <tr ng-repeat="order_row in chrome_storage track by $index">
                         <td>{{ $index + 1 }}</td>
+                        <td>{{ order_row.uuid }}</td>
                         <td>{{ order_row.item_name }}</td>
                         <td>{{ order_row.qty }}</td>
                         <td>{{ order_row.suppliers }}</td>
                         <td>{{ order_row.expected_date }}</td>
-                        <td>{{ order_row.order_status }}</td>
+                        <td>
+                            <span ng-show="order_row.order_status">Approved</span>
+                            <span ng-hide="order_row.order_status">Pending</span>
+                        </td>
                         <td>
                             <a href="/order/edit/{{ order_row.uuid }}"><i class="icon-edit"></i></a>
                             <a href="/order/delete/{{ order_row.uuid }}"><i class="icon-remove-sign"></i></a>
                         </td>
-                        <td>{{ order_row.synced }}</td>
+                        <td>
+                            <span ng-show="order_row.synced"><i class="icon-ok"></i></span>
+                            <span ng-hide="order_row.synced"><i class="icon-remove"></i></span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
