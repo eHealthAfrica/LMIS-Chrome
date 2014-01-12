@@ -5,8 +5,6 @@ angular.module('lmisChromeApp')
     // Service logic
     // ...
 
-    var meaningOfLife = 42;
-
     // Public API here
     return {
       getUUID:function() {
