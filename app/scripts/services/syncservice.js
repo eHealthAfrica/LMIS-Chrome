@@ -1,12 +1,15 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .provider('SyncService', function ($http, $timeout, $rootScope) {
+  .factory('SyncService', function ($resource, $timeout, $rootScope, storageService) {
+
 
             var sync_service = function(){
 
-            $rootScope.$apply(function(){
-
+                $rootScope.$apply(function(){
+                     storageService.get(null).then(function(data){
+                         $rootScope.syncSettings = data;
+                     });
 
                 chrome.storage.local.get(null, function(storage){
 
@@ -69,18 +72,8 @@ angular.module('lmisChromeApp')
         }
 
     sync_service();
-    // Private variables
-    var salutation = 'Hello';
 
-    // Private constructor
-    function SyncProvider() {
-      this.startSync = function () {
-        return salutation;
-      };
-    }
-
-    // Method for instantiating
-    this.$get = function () {
-      return new Greeter();
-    };
+   return{
+        sync: sync_service
+   }
   });

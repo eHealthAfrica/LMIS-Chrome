@@ -23,7 +23,7 @@ angular.module('lmisChromeApp')
             }
 
         }
-        $scope.$watch('stored_data', function(){
+        //$scope.$watch('stored_data', function(){
             chrome.storage.local.get(null, function(storage) {
                 $scope.$apply(function() {
                     if (storage) {
@@ -34,7 +34,7 @@ angular.module('lmisChromeApp')
                 });
             });
 
-        });
+        //});
         $scope.data_storage = [];
         //save data when save button is clicked
         $scope.save = function() {

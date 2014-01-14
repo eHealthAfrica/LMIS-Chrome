@@ -47,7 +47,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="order_row in chrome_storage track by $index">
+                    <tr ng-repeat="order_row in stored_data track by $index">
                         <td>{{ $index + 1 }}</td>
                         <td>{{ order_row.uuid }}</td>
                         <td>{{ order_row.item_name }}</td>

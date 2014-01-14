@@ -37,7 +37,8 @@ angular.module('lmisChromeApp')
 
 /* Central Variable for Watching Online/Offline Events */
 angular.module('lmisChromeApp')
-    .run(function($window, $rootScope) {
+    .run(function($window, $rootScope, SyncService) {
+
         $rootScope.online = navigator.onLine;
         $window.addEventListener("offline", function () {
             $rootScope.$apply(function() {
