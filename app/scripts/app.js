@@ -20,6 +20,10 @@ angular.module('lmisChromeApp', [
                 templateUrl: 'views/settings.html',
                 controller: 'SettingsCtrl'
             })
+            .when('/orders', {
+                templateUrl: 'views/orders.html',
+                controller: 'OrdersctrlCtrl'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -32,7 +36,8 @@ angular.module('lmisChromeApp')
 
 /* Central Variable for Watching Online/Offline Events */
 angular.module('lmisChromeApp')
-    .run(function($window, $rootScope) {
+    .run(function($window, $rootScope, SyncService) {
+
         $rootScope.online = navigator.onLine;
         $window.addEventListener("offline", function () {
             $rootScope.$apply(function() {
