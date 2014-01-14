@@ -1,77 +1,96 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('SyncService', function ($resource, $timeout, $rootScope, storageService) {
+  .factory('SyncService', function ($q, $http, $resource, $timeout, $rootScope, storageService) {
 
 
             var sync_service = function(){
-
+                var set_for_syncing = [];
+                var not_for_syncing = [];
+                var tables = function(){
+                     var defered = $q.defer();
+                        $http.get('scripts/tables.json').success(function(d){
+                            defered.resolve(d);
+                        });
+                    return defered.promise;
+                }
                 $rootScope.$apply(function(){
-                     storageService.get(null).then(function(data){
-                         $rootScope.syncSettings = data;
-                     });
+                    var promise =tables();
+                    if(promise != undefined){
+                        promise.then(function(lmis_tables){
+                            if(Object.prototype.toString.call(lmis_tables) === '[object Object]'){
+                               var tbl_list = Object.keys(lmis_tables);
+                                //console.log(tbl_list);
+                                if(tbl_list.length > 0){
+                                    for(var k in tbl_list){
 
-                chrome.storage.local.get(null, function(storage){
+                                        //var table_data = {};
+                                         storageService.get(tbl_list[k]).then(function(tbl_data){
+                                            if(tbl_data != undefined){
+                                                 $rootScope.table_data = tbl_data;
+                                            }
+                                           else{
+                                                 $rootScope.table_data = {};
+                                            }
+                                         },
+                                         function(reason){
+                                             console.log("Failed "+reason);
+                                         });
+                                        var table_data = $rootScope.table_data;
 
-                    if (storage) {
-                        $rootScope.chrome_storage = storage;
+                                        if(Object.prototype.toString.call(table_data) === '[object Array]'){
+
+                                            for(var row in table_data){
+                                                if(table_data[row] != null){
+                                                    console.log(table_data[row]);
+                                                    var row_key = Object.keys(table_data[row]);
+                                                    if(row_key.indexOf('synced') != -1){
+
+                                                        if(table_data[row].synced == 0){
+                                                            set_for_syncing.push(table_data[row]);
+                                                        }
+                                                        table_data[row].synced = 1;
+                                                        console.log(table_data.item_name);
+                                                        not_for_syncing.push(table_data);
+                                                    }
+                                                }
+
+
+
+                                            }
+                                            //console.log('trying to send to url');
+                                            var sync_data= set_for_syncing;
+                                            var obj_arranged = {};
+                                            if (not_for_syncing.length > 0){
+                                                obj_arranged[tbl_list[k]]=not_for_syncing;
+                                                //chrome.storage.local.set(obj_arranged);
+                                                //console.log('data to be saved = '+ angular.toJson(obj_arranged));
+                                            }
+
+                                        }
+
+
+                                    }
+
+                                }
+                            }
+
+
+
+                        });
+
                     }
-
+                     $timeout(sync_service, 10000);
                 });
 
 
-
-                var tbl = {};
-                var set_for_syncing = [];
-                var not_for_syncing = [];
-                var chromedata = $rootScope.chrome_storage;
-                if(Object.prototype.toString.call(chromedata) === '[object Object]'){
-                    tbl = Object.keys($rootScope.chrome_storage);
-                }
-                if(tbl.length > 0){
-                    for(var k in tbl){
-                        if(chromedata[tbl[k]].length > 0){
-                            var obj_data = chromedata[tbl[k]];
-                            if(Object.prototype.toString.call(obj_data) === '[object Array]'){
-                                for(var row in obj_data){
-                                    var row_key = Object.keys(obj_data[row]);
-                                    if(row_key.indexOf('synced') != -1){
-
-                                        if(chromedata[tbl[k]][row].synced == 0){
-                                            set_for_syncing.push(obj_data[row]);
-                                        }
-                                        chromedata[tbl[k]][row].synced = 1;
-                                        console.log(chromedata[tbl[k]][row].item_name);
-                                        not_for_syncing.push(chromedata[tbl[k]][row]);
-                                    }
-
-
-                                }
-
-                                //console.log('trying to send to url');
-                                var sync_data= set_for_syncing;
-                                var obj_arranged = {};
-                                if (not_for_syncing.length > 0){
-                                    obj_arranged[tbl[k]]=not_for_syncing;
-                                    chrome.storage.local.set(obj_arranged);
-                                    //console.log('data to be saved = '+ angular.toJson(obj_arranged));
-                                }
-
-                            }
-                            else{
-                                //console.log('we no array here. Data is = '+angular.toJson(chromedata[tbl[k]]) );
-                            }
-
-
-                        }
-                    }
-                }
-
-                $timeout(sync_service, 1000);
-            });
         }
 
     sync_service();
+
+   var tables = function getTables(){
+
+   }
 
    return{
         sync: sync_service

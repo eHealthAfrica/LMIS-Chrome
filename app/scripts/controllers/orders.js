@@ -3,7 +3,7 @@
 angular.module('lmisChromeApp')
   .controller('OrdersctrlCtrl', function ($scope, utility) {
 
-        //chrome.storage.local.set({'order_list':[], 'orders_list':{}, 'facility':{} });
+        chrome.storage.local.set({'order_list':[], 'orders_list':{}, 'facility':{} });
         //populate order object with data if available in storage
         chrome.storage.local.get('order_list', function(value){
             $scope.$apply(function(){
