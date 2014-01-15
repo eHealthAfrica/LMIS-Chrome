@@ -1,0 +1,14 @@
+{
+    "order_list":{"last_synced":"0000-00-00 00:00:00"},
+    "products":{"last_synced":"0000-00-00 00:00:00"},
+    "product_category":{"last_synced":"0000-00-00 00:00:00"},
+    "cce":{"last_synced":"0000-00-00 00:00:00"},
+    "facilities":{
+        "last_synced":"0000-00-00 00:00:00",
+        "related":[
+                    {"locations":["location_id", "id"]},
+                    {"location_types": ["type_id", "location_type"]}
+                  ]
+    },
+    "locations":{}
+}
