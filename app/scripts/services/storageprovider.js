@@ -18,10 +18,6 @@ angular.module('lmisChromeApp')
     /**
     * Add the specified key/value pair to the local web store.
     *
-    * NOTE: The web store API only specifies that implementations should be able to
-    * handle string values, this method will therefore stringify all values into
-    * JSON strings before storing them.
-    *
     * @param {string} key The name to store the value under.
     * @param {mixed} value The value to set (all values are stored as JSON.)
     * @return {Promise} return promise object
@@ -46,9 +42,6 @@ angular.module('lmisChromeApp')
     /**
     * Get the specified value from the local web store.
     *
-    * NOTE: Since all values are stored as JSON strings, this method will parse the fetched
-    * JSON string and return the resulting object/value.
-    *
     * @param {string} key The name of the value.
     * @return {Promise} Promise to be resolved with the settings object
     * @private
@@ -59,6 +52,64 @@ angular.module('lmisChromeApp')
         chrome.storage.local.get(key, function(data) {
           console.log("getFromChrome: " + key);
           defered.resolve(data[key] || {});
+          if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
+        });
+        return defered.promise;
+      }
+      return null;
+    }
+
+    /**
+    * Get All data from from the local web store.
+    *
+    * @return {Promise} Promise to be resolved with the settings object
+    * @private
+    */
+    function getAllFromStore() {
+      var defered = $q.defer();
+      if (hasChromeStorage) {
+        chrome.storage.local.get(null, function(data) {
+          console.log("getAllFromChrome" );
+          defered.resolve(data);
+          if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
+        });
+        return defered.promise;
+      }
+      return null;
+    }
+
+    /**
+    * Remove the specified value from the local web store.
+    *
+    * @param {string} key The name of the value.
+    * @return {Promise} Promise to be resolved with the settings object
+    * @private
+    */
+    function removeFromStore(key) {
+      var defered = $q.defer();
+      if (hasChromeStorage) {
+        chrome.storage.local.get(key, function() {
+          console.log("removeFromChrome: " + key);
+          defered.resolve();
+          if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
+        });
+        return defered.promise;
+      }
+      return null;
+    }
+
+    /**
+    * Clear all data from storage (will not work on API).
+    *
+    * @return {Promise} Promise to be resolved with the settings object
+    * @private
+    */
+    function clearFromStore() {
+      var defered = $q.defer();
+      if (hasChromeStorage) {
+        chrome.storage.local.clear(function() {
+          console.log("clearFromChrome");
+          defered.resolve();
           if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
         });
         return defered.promise;
@@ -101,8 +152,9 @@ angular.module('lmisChromeApp')
       isSupported: hasChromeStorage,
       add: addToStore,
       get: getFromStore,
-      remove: false, // removeFromChrome,
-      clear: false // clearChrome */
+      getAll: getAllFromStore,
+      remove: removeFromStore, // removeFromChrome,
+      clear: clearFromStore // clearChrome */
     };
 
   });
