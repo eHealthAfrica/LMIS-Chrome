@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .controller('OrdersctrlCtrl', function ($scope, utility, storageService) {
+  .controller('OrdersctrlCtrl', function ($scope, utility, ChromeStorageService) {
 
         //chrome.storage.local.clear();
         //populate order object with data if available in storage
 
-        storageService.get('order_list').then(function(value){
+        ChromeStorageService.get('order_list').then(function(value){
            $scope.load(value);
         });
 

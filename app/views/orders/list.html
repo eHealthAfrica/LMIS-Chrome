@@ -1,0 +1,89 @@
+<div>
+    <form novalidate="novalidate" ng-submit="save()">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="orders_item_name">Item</label>
+                        <input type="text" name="orders_item_name" id="orders_item_name" class="form-control" ng-model="orders.item_name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="orders_qty">Quantity</label>
+                        <input type="text" name="orders_qty" id="orders_qty" class="form-control" ng-model="orders.qty" />
+                    </div>
+                    <div class="form-group">
+                        <label for="orders_supplier">Suppliers</label>
+                        <select name="orders_supplier" id="orders_supplier" class="form-control" ng-model="orders.suppliers">
+                            <option value="supplier 1">supplier 1</option>
+                            <option value="supplier 2">supplier 2</option>
+                            <option value="supplier 3">supplier 3</option>
+                            <option value="supplier 4">supplier 4</option>
+                            <option value="supplier 5">supplier 5</option>
+                            <option value="supplier 6">supplier 6</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="orders_expected_date">Expected date</label>
+                        <input type="date" name="orders_expected_date" id="orders_expected_date" class="form-control" ng-model="orders.expected_date" />
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-default" value="Save" />
+        </div>
+        <input type="hidden" name="uuid" class="form-control" ng-model="orders.uuid" />
+        <div class="row" >
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Supplier</th>
+                        <th>Expected Date</th>
+                        <th>Order Status</th>
+                        <th>Action</th>
+                        <th>Synced ?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="order_row in stored_data track by $index">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ order_row.uuid }}</td>
+                        <td>{{ order_row.item_name }}</td>
+                        <td>{{ order_row.qty }}</td>
+                        <td>{{ order_row.suppliers }}</td>
+                        <td>{{ order_row.expected_date }}</td>
+                        <td>
+                            <span ng-show="order_row.order_status">Approved</span>
+                            <span ng-hide="order_row.order_status">Pending</span>
+                        </td>
+                        <td>
+                            <a href="/order/edit/{{ order_row.uuid }}"><i class="icon-edit"></i></a>
+                            <a href="/order/delete/{{ order_row.uuid }}"><i class="icon-remove-sign"></i></a>
+                        </td>
+                        <td>
+                            <span ng-show="order_row.synced"><i class="icon-ok"></i></span>
+                            <span ng-hide="order_row.synced"><i class="icon-remove"></i></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--
+        <div class="row" ng-show="{{ orders_index }}">
+            <a href="/delete/{{ orders_index }}">delete {{ orders_index }}</a>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <pre>form = {{ orders | json }}</pre>
+            </div>
+            <div class="col-sm-6">
+                <pre>chrome storage = {{ stored_data | json }}</pre>
+            </div>
+        </div>
+        -->
+        <input type="hidden" ng-model="orders_index">
+    </form>
+</div>
