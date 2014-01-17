@@ -8,6 +8,7 @@ angular.module('lmisChromeApp', [
   'ngRoute'
 ])
     .config(function ($routeProvider) {
+
         $routeProvider
             .when('/', {
                 templateUrl: 'views/main.html',
@@ -21,9 +22,19 @@ angular.module('lmisChromeApp', [
                 templateUrl: 'views/settings.html',
                 controller: 'SettingsCtrl'
             })
-            .when('/orders', {
-                templateUrl: 'views/orders.html',
+            .when('/orders/:template', { templateUrl: function(elem){
+
+                    return 'views/orders/'+elem.template+'.html';
+                },
                 controller: 'OrdersctrlCtrl'
+
+            })
+            .when('/stockrecords/:template', { templateUrl: function(elem){
+
+                    return 'views/stockrecords/'+elem.template+'.html';
+                },
+                controller: 'StockrecordsCtrl'
+
             })
             .otherwise({
                 redirectTo: '/'
@@ -37,7 +48,7 @@ angular.module('lmisChromeApp')
 
 /* Central Variable for Watching Online/Offline Events */
 angular.module('lmisChromeApp')
-    .run(function($window, $rootScope, SyncService) {
+    .run(function($window, $rootScope, SyncService, $location) {
 
         $rootScope.online = navigator.onLine;
         $window.addEventListener("offline", function () {
