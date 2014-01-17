@@ -30,14 +30,14 @@
                 <div class="col-sm-push-4 col-sm-3 text-right">
                     <div class="notification_dropdown dropdown">
                         <a class="notification_icon dropdown-toggle" data-toggle="dropdown">
-                            <span class="label label-danger">12</span>
+                            <!--span class="label label-danger">12</span-->
                             <i class="icon-envelope-alt icon-2x"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-wide">
                             <li>
                                 <div class="dropdown_heading">Messages</div>
                                 <div class="dropdown_content">
-                                    <ul class="dropdown_items">
+                                    <!--ul class="dropdown_items">
                                         <li>
                                             <h3><a href="#">Lorem ipsum dolor sit amet</a></h3>
                                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
@@ -55,7 +55,7 @@
                                             <p class="large_info">Sean Walter, 24.05.2014</p>
                                             <i class="icon-exclamation-sign indicator"></i>
                                         </li>
-                                    </ul>
+                                    </ul-->
                                 </div>
                                 <div class="dropdown_footer">
                                     <a href="#" class="btn btn-sm btn-default">Show all</a>
@@ -85,47 +85,47 @@
                         <span class="menu_label">Home</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#">
+                <li data-match-route="/orders">
+                    <a href="#/orders/orders">
                         <i class="icon-edit icon-2x"></i>
-                        <span class="menu_label">Content</span>
+                        <span class="menu_label">Orders</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <i class="icon-group icon-2x"></i>
-                        <span class="menu_label">Users</span>
+                        <i class="icon-trello icon-2x"></i>
+                        <span class="menu_label">Inventory</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <span class="label label-danger">12</span>
-                        <i class="icon-tasks icon-2x"></i>
-                        <span class="menu_label">Tasks</span>
+
+                        <span class="icon-truck icon-2x"></span>
+                        <span class="menu_label">Deliveries</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <i class="icon-beaker icon-2x"></i>
-                        <span class="menu_label">Plugins</span>
+                        <i class="icon-list-alt icon-2x"></i>
+                        <span class="menu_label">Reports</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
                         <i class="icon-book icon-2x"></i>
-                        <span class="menu_label">Help</span>
+                        <span class="menu_label">Forecast</span>
                     </a>
                 </li>
-                <li data-match-route="/orders">
-                    <a href="#/orders">
+                <li data-match-route="/facilites">
+                    <a href="#/facilities">
                         <i class="icon-tags icon-2x"></i>
-                        <span class="menu_label">Orders</span>
+                        <span class="menu_label">Facilities</span>
                     </a>
                 </li>
                 <li data-match-route="/settings">
                     <a ng-href="#/settings">
-                        <i class="icon-wrench icon-2x"></i>
-                        <span class="menu_label">Settings</span>
+                        <i class="icon-group icon-2x"></i>
+                        <span class="menu_label">Partners</span>
                     </a>
                 </li>
             </ul>
@@ -135,9 +135,8 @@
     <section id="breadcrumbs">
         <div class="container">
             <ul>
-                <li><a href="#">Ebro Admin</a></li>
-                <li><a href="#">Other Pages</a></li>
-                <li><span>Blank Page</span></li>
+                <li><a href="#/home"><i class="icon-home"></i></a></li>
+
             </ul>
         </div>
     </section>
