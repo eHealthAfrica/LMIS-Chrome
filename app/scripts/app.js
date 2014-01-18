@@ -43,7 +43,6 @@ angular.module('lmisChromeApp', [
 
     RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
     // RestangularProvider.setDefaultRequestParams({ apiKey: '1111111111111111111111111' });
-  });
 
 //angular.module('lmisChromeApp')
 //    .config(['$compileProvider', function($compileProvider) {
