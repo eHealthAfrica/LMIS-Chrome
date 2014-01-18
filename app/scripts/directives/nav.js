@@ -9,6 +9,7 @@ angular.module('lmisChromeApp')
                 scope.$watch(function() {
                     return $location.path();
                 }, function(newValue, oldValue) {
+                    console.log(newValue);
                     $('li[data-match-route]', element).each(function(k, li) {
                         var $li = angular.element(li),
                             pattern = $li.attr('data-match-route'),
