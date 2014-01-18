@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-sm-3">
+        <a href="#/orders/purchase_order_form" class="btn btn-default"><i class="icon-plus-sign"></i> Request Purchase Order</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Quantity Needed</th>
+                    <th>Current Quantity</th>
+                    <th>Requesting Facility</th>
+                    <th>Supplier</th>
+                    <th>Emergency</th>
+                    <th>Order Date</th>
+                    <th>Expected Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="purchase_order in purchase_orders">
+                    <th>{{ $index + 1 }}</th>
+                    <th>{{ purchase_order.product }}</th>
+                    <th>{{ purchase_order.quantity_needed }}</th>
+                    <th>{{ purchase_order.current_quantity }}</th>
+                    <th>{{ purchase_order.purchaser }}</th>
+                    <th>{{ purchase_order.supplier }}</th>
+                    <th>{{ purchase_order.emergency }}</th>
+                    <th>{{ purchase_order.order_date }}</th>
+                    <th>{{ purchase_order.expected_date }}</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>

@@ -2,7 +2,7 @@
 
 angular.module('lmisChromeApp')
   .controller('OrdersctrlCtrl', function ($scope, utility, ChromeStorageService) {
-
+        $scope.codec = "linka";
         //chrome.storage.local.clear();
         //populate order object with data if available in storage
 
