@@ -7,28 +7,39 @@ angular.module('lmisChromeApp', [
     'ngRoute',
     'restangular'
 ])
-  .config(function ($routeProvider, $compileProvider, RestangularProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .when('/home', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .when('/settings', {
-        templateUrl: 'views/settings.html',
-        controller: 'SettingsCtrl'
-      })
-      .when('/orders', {
-        templateUrl: 'views/orders.html',
-        controller: 'OrdersCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
+    .config(function ($routeProvider) {
+
+        $routeProvider
+            .when('/', {
+                templateUrl: 'views/main.html',
+                controller: 'MainCtrl'
+            })
+            .when('/home', {
+                templateUrl: 'views/main.html',
+                controller: 'MainCtrl'
+            })
+            .when('/settings', {
+                templateUrl: 'views/settings.html',
+                controller: 'SettingsCtrl'
+            })
+            .when('/orders/:template', { templateUrl: function(elem){
+
+                    return 'views/orders/'+elem.template+'.html';
+                },
+                controller: 'OrdersctrlCtrl'
+
+            })
+            .when('/stockrecords/:template', { templateUrl: function(elem){
+
+                    return 'views/stockrecords/'+elem.template+'.html';
+                },
+                controller: 'StockrecordsCtrl'
+
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+    });
 
     RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
     // RestangularProvider.setDefaultRequestParams({ apiKey: '1111111111111111111111111' });

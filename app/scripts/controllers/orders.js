@@ -1,21 +1,20 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .controller('OrdersctrlCtrl', function ($scope, utility) {
+  .controller('OrdersctrlCtrl', function ($scope, utility, ChromeStorageService) {
 
-        //chrome.storage.local.set({'order_list':[], 'orders_list':{}, 'facility':{} });
+        //chrome.storage.local.clear();
         //populate order object with data if available in storage
-        chrome.storage.local.get('order_list', function(value){
-            $scope.$apply(function(){
-                $scope.load(value);
-            });
+
+        ChromeStorageService.get('order_list').then(function(value){
+           $scope.load(value);
         });
 
         $scope.load = function(value){
-            if(value && value.order_list.length > 0){
+            if(value != undefined){
 
-                var index = value.order_list.length - 1;
-                $scope.orders = value.order_list[index];
+                var index = value.length - 1;
+                $scope.orders = value[index];
                 $scope.orders_index = index;
             }
             else{
@@ -24,10 +23,10 @@ angular.module('lmisChromeApp')
 
         }
         //$scope.$watch('stored_data', function(){
-            chrome.storage.local.get(null, function(storage) {
+            chrome.storage.local.get('order_list', function(storage) {
                 $scope.$apply(function() {
                     if (storage) {
-                        $scope.stored_data = storage.order_list;
+                        $scope.stored_data = storage;
                     } else {
                         $scope.stored_data = {};
                     }
@@ -39,7 +38,7 @@ angular.module('lmisChromeApp')
         //save data when save button is clicked
         $scope.save = function() {
           //check for if we have data stored in local storage
-          if($scope.stored_data.length>0){
+          if($scope.stored_data != undefined){
               $scope.data_storage = $scope.stored_data;
           }
 
