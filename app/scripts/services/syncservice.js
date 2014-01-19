@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('SyncService', function ($q, $http, $resource, $timeout, $rootScope, ChromeStorageService) {
+  .factory('SyncService', function ($q, $http, $resource, $timeout, $rootScope, storageService) {
 
 
             var sync_service = function(){
@@ -25,7 +25,7 @@ angular.module('lmisChromeApp')
                                     for(var k in tbl_list){
 
                                         //var table_data = {};
-                                         ChromeStorageService.get(tbl_list[k]).then(function(tbl_data){
+                                         storageService.get(tbl_list[k]).then(function(tbl_data){
                                             if(tbl_data != undefined){
                                                  $rootScope.table_data = tbl_data;
                                             }

@@ -50,7 +50,7 @@ angular.module('lmisChromeApp')
       var defered = $q.defer();
       if (hasChromeStorage) {
         chrome.storage.local.get(key, function(data) {
-          console.log("getFromChrome: " + key);
+          //console.log("getFromChrome: " + key);
           defered.resolve(data[key] || {});
           if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
         });
@@ -69,7 +69,7 @@ angular.module('lmisChromeApp')
       var defered = $q.defer();
       if (hasChromeStorage) {
         chrome.storage.local.get(null, function(data) {
-          console.log("getAllFromChrome" );
+          //console.log("getAllFromChrome" );
           defered.resolve(data);
           if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
         });
@@ -148,13 +148,23 @@ angular.module('lmisChromeApp')
         return false;
     }
 
+    function  uuid_generator () {
+        var now = Date.now();
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = (now + Math.random()*16)%16 | 0;
+            now = Math.floor(now/16);
+            return (c=='x' ? r : (r&0x7|0x8)).toString(16);
+        });
+        return uuid;
+      }
     return {
       isSupported: hasChromeStorage,
       add: addToStore,
       get: getFromStore,
       getAll: getAllFromStore,
       remove: removeFromStore, // removeFromChrome,
-      clear: clearFromStore // clearChrome */
+      clear: clearFromStore, // clearChrome */
+      uuid: uuid_generator
     };
 
   });
