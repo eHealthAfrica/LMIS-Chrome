@@ -5,7 +5,8 @@ angular.module('lmisChromeApp', [
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'restangular'
+    'restangular',
+    'ui.bootstrap'
 ])
     .config(function ($routeProvider) {
 
@@ -39,9 +40,12 @@ angular.module('lmisChromeApp', [
             .otherwise({
                 redirectTo: '/'
             });
+    }).config(function(RestangularProvider, $compileProvider){
+        RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
     });
 
-    RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
+//RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
     // RestangularProvider.setDefaultRequestParams({ apiKey: '1111111111111111111111111' });
 
 //angular.module('lmisChromeApp')
