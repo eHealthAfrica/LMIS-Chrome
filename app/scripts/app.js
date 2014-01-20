@@ -30,12 +30,11 @@ angular.module('lmisChromeApp', [
                 controller: 'OrdersctrlCtrl'
 
             })
-            .when('/stockrecords/:template', { templateUrl: function(elem){
+            .when('/inventory/:template', { templateUrl: function(elem){
 
-                    return 'views/stockrecords/'+elem.template+'.html';
+                    return 'views/inventory/'+elem.template+'.html';
                 },
-                controller: 'StockrecordsCtrl'
-
+                controller: 'InventoryCtrl'
             })
             .otherwise({
                 redirectTo: '/'
