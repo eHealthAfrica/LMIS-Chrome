@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-12">
-        <h3 class="center-text">NATIONAL PRIMARY HEALTH CARE DEVELOPMENT AGENCY</h3>
+        <!--h3 class="center-text">NATIONAL PRIMARY HEALTH CARE DEVELOPMENT AGENCY</h3-->
         <strong class="center-text center-block">MONTHLY HEALTH FACILITY VACCINES UTILIZATION REPORTING</strong>
     </div>
 
@@ -35,11 +35,175 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-12">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default"><i class="icon-plus-sign"></i> Add Record</button>
+            <button type="button" class="btn btn-default"><i class="icon-remove-sign"></i> Delete</button>
+        </div>
+    </div>
 </div>
 <div class="row">
-    <div class="btn-group">
-        <button type="button" class="btn btn-default"><i class="icon-plus-sign"></i> Add Record</button>
-        <button type="button" class="btn btn-default">Delete</button>
-        <button type="button" class="btn btn-default">Right</button>
+    <div class="col-sm-12">
+        <table class="table table-bordered" id="vm1-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th colspan="3">BCG doses</th>
+                    <th colspan="3">BCG Diluent</th>
+                    <th colspan="3">Hep.B doses</th>
+                    <th colspan="3">OPV doses</th>
+                    <th colspan="3">PENTA doses</th>
+                    <th colspan="3">PCV doses</th>
+                    <th colspan="3">Measles doses</th>
+                    <th colspan="3">Measles Diluent</th>
+                    <th colspan="3">Yellow Fever doses</th>
+                    <th colspan="3">Yellow Fever Diluent</th>
+                    <th colspan="3">CSM doses</th>
+                    <th colspan="3">CSM Diluent</th>
+                    <th colspan="3">Tetanus Texoid doses</th>
+                    <th colspan="3">BCG Syringes</th>
+                    <th colspan="3">Auto Disable Syringes</th>
+                    <th colspan="3">5mls Syringes</th>
+                    <th colspan="3">Safety Boxes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="max-stock">Max</td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr id="min-stock">
+                    <td>Min</td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr class="top-rows">
+                    <td>Balance brought forward from previous month</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="top-rows">
+                    <td></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                </tr>
+                <!--tr id="min-stock">
+                    <td>Balance brought forward from previous month</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr-->
+            </tbody>
+        </table>
     </div>
 </div>
