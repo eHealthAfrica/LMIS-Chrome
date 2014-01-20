@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .controller('OrdersctrlCtrl', function ($scope, utility, storageService) {
+  .controller('OrdersctrlCtrl', function ($scope, storageService) {
         $scope.today = function() {
             $scope.dt = new Date();
         };
@@ -86,7 +86,7 @@ angular.module('lmisChromeApp')
           if($scope.orders.uuid == ''){
 
           }
-          $scope.orders.uuid = utility.getUUID();
+          $scope.orders.uuid = storageService.uuid;
           $scope.data_storage.push($scope.orders);
           chrome.storage.local.set({'order_list': $scope.data_storage});
         };
