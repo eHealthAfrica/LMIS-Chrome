@@ -2,6 +2,7 @@
 
 angular.module('lmisChromeApp')
   .controller('InventoryCtrl', function ($scope) {
+        $scope.addbreadcrumbs([{name:"Inventory", "link":'/inventory/index'}, {name:"Stock Records", "link":''}]);
          $scope.today = function() {
             $scope.dt = new Date();
         };
