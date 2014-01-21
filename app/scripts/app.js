@@ -9,14 +9,20 @@ angular.module('lmisChromeApp', [
     'ui.bootstrap'
 ])
     .config(function ($routeProvider) {
-
+//TODO: change the router to ui-router https://github.com/angular-ui/ui-router/wiki/Quick-Reference
         $routeProvider
             .when('/', {
-                templateUrl: 'views/main.html',
+                templateUrl: 'views/main/main.html',
                 controller: 'MainCtrl'
             })
             .when('/home', {
-                templateUrl: 'views/main.html',
+                templateUrl: 'views/main/main.html',
+                controller: 'MainCtrl'
+            })
+            .when('/main/:template', {
+                templateUrl: function(elem){
+                    return 'views/main/'+elem.template+'.html';
+                },
                 controller: 'MainCtrl'
             })
             .when('/settings', {
@@ -39,7 +45,9 @@ angular.module('lmisChromeApp', [
             .otherwise({
                 redirectTo: '/'
             });
-    }).config(function(RestangularProvider, $compileProvider){
+    })
+/* Config Block for Restangular Provider */
+    .config(function(RestangularProvider, $compileProvider){
         RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
     });
@@ -52,7 +60,7 @@ angular.module('lmisChromeApp', [
 //        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
 //    }]);
 
-/* Config Block for Restangular Provider */
+
 //  .config(function(RestangularProvider) {
 //
 //});
@@ -60,7 +68,14 @@ angular.module('lmisChromeApp', [
 /* Central Variable for Watching Online/Offline Events */
 angular.module('lmisChromeApp')
     .run(function($window, $rootScope, SyncService) {
-
+     //TODO: chenge breadcrumbs to a service
+        $rootScope.breadcrumbs = [];
+        $rootScope.addbreadcrumbs = function(br_arr){
+            $rootScope.breadcrumbs = br_arr;
+        }
+        $rootScope.$on('$routeChangeSuccess', function(event, current){
+            $rootScope.breadcrumbs = [];
+        });
         $rootScope.online = navigator.onLine;
         $window.addEventListener("offline", function () {
             $rootScope.$apply(function() {

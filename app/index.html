@@ -92,27 +92,26 @@
                         <span class="menu_label">Orders</span>
                     </a>
                 </li>
-                <li>
+                <li data-match-route="/inventory">
                     <a href="#/inventory/index">
                         <i class="icon-trello icon-2x"></i>
                         <span class="menu_label">Inventory</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#">
-
+                <li data-match-route="/deliveries">
+                    <a href="#/deliveries/index">
                         <span class="icon-truck icon-2x"></span>
                         <span class="menu_label">Deliveries</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#">
+                <li data-match-route="/reports">
+                    <a href="#/reports">
                         <i class="icon-list-alt icon-2x"></i>
                         <span class="menu_label">Reports</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#/forecast">
                         <i class="icon-book icon-2x"></i>
                         <span class="menu_label">Forecast</span>
                     </a>
@@ -123,23 +122,39 @@
                         <span class="menu_label">Facilities</span>
                     </a>
                 </li>
-                <li data-match-route="/settings">
-                    <a ng-href="#/settings">
+                <li data-match-route="/partners">
+                    <a ng-href="#/partners">
                         <i class="icon-group icon-2x"></i>
                         <span class="menu_label">Partners</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#/main/help">
+                        <i class="icon-book icon-2x"></i>
+                        <span class="menu_label">Help</span>
+                    </a>
+                </li>
+                <li data-match-route="/settings">
+                    <a href="#/settings">
+                        <i class="icon-wrench icon-2x"></i>
+                        <span class="menu_label">Settings</span>
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <section id="breadcrumbs">
+    <section id="breadcrumbs" ng-if="breadcrumbs">
         <div class="container">
             <ul>
                 <li><a href="#/home"><i class="icon-home"></i></a></li>
-
+                <li ng-repeat="breadcrumb in breadcrumbs">
+                    <a ng-if="breadcrumb.link != ''" href="{{ breadcrumb.link }}"> {{ breadcrumb.name }}</a>
+                    <span ng-if="breadcrumb.link == ''" > {{ breadcrumb.name }}</span>
+                </li>
             </ul>
         </div>
+
     </section>
     <section class="container clearfix main_section">
         <div id="main_content_outer" class="clearfix">
