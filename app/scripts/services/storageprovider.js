@@ -126,10 +126,10 @@ angular.module('lmisChromeApp')
     function testChromeStorage() {
       try {
         chrome.storage.local.set({'angular.chromeStorage.test': true}, function() {
-          console.log('set: success');
+          //console.log('set: success');
         });
         chrome.storage.local.remove('angular.chromeStorage.test', function() {
-          console.log('remove: success');
+          //console.log('remove: success');
         });
         return true;
       } catch (e) {

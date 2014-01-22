@@ -67,8 +67,10 @@ angular.module('lmisChromeApp', [
 
 /* Central Variable for Watching Online/Offline Events */
 angular.module('lmisChromeApp')
-    .run(function($window, $rootScope, SyncService) {
-     //TODO: chenge breadcrumbs to a service
+    .run(function($window, $rootScope, utility) {
+
+        utility.loadFixture();
+     //TODO: change breadcrumbs to a service
         $rootScope.breadcrumbs = [];
         $rootScope.addbreadcrumbs = function(br_arr){
             $rootScope.breadcrumbs = br_arr;
