@@ -1,8 +1,28 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .controller('InventoryCtrl', function ($scope) {
-        $scope.addbreadcrumbs([{name:"Inventory", "link":'/inventory/index'}, {name:"Stock Records", "link":''}]);
+  .controller('InventoryCtrl', function ($scope, $location) {
+
+
+        var url_arr = $location.path().replace(/\/$/,'').replace(/^\//,'').split('/');
+        var bc = [];
+        if(url_arr.indexOf('stock_records') != -1){
+            bc = [{name:"Inventory", "link":'#/inventory/index'}, {name:"Stock Records", "link":''}];
+        }
+        else if(url_arr.indexOf('stock_records_form') != -1){
+            bc =
+            [
+                {name:"Inventory", "link":'#/inventory/index'},
+                {name:"Stock Records", "link":'#/inventory/stock_records'},
+                {name:"Form", "link":''}
+            ];
+        }
+        else{
+            bc = [{name:"Inventory", "link":''}];
+        }
+        $scope.addbreadcrumbs(bc);
+
+
          $scope.today = function() {
             $scope.dt = new Date();
         };
