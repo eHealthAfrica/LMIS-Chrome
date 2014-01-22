@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col-sm-12">
+        <form novalidate="novalidate" ng-submit="save_record()">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <!-- TODO: this should be based on logged in user -->
+                        <label for="facility">Facility</label>
+                        <select name="facility" id="facility"  class="form-control" ng-model="stock_records.facility" ng-options="facility_data in record_facilities">
+                            <option value="{{ facility_data }}">{{ facility_data.name }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
