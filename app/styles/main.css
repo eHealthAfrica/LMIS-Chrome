@@ -4,6 +4,16 @@
 #vm1-table thead tr th{
     font-size: 10px;
 }
+#sm-header-text{
+    font-size: 10px;
+}
 #max-stock, #min-stock, top-rows{
     font-size: 8px;
+}
+.scrollable_x{
+    /*width: 200px;*/
+    overflow-x: scroll;
+}
+.scrollable_x{
+
 }
