@@ -28,7 +28,7 @@ chromeApp.controller('MainCtrl', function ($scope, storageService, $location ) {
     });
 
 /** ProductListCtrl controller handles display of products pulled from storage. */
-chromeApp.controller('ProductListCtrl', function ($scope, storageService, $location ) {
+chromeApp.controller('ProductListCtrl', function ($scope, storageService) {
 
     storageService.get('products').then(function(product_list){
            $scope.products = product_list;
