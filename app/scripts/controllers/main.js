@@ -27,10 +27,23 @@ chromeApp.controller('MainCtrl', function ($scope, storageService, $location ) {
         /*$scope.$watch('online', function(newStatus) {})*/
     });
 
-/** ProductListCtrl controller handles display of products pulled from storage. */
+/**
+    ProductListCtrl controller handles display of products pulled from storage.
+*/
 chromeApp.controller('ProductListCtrl', function ($scope, storageService) {
 
     storageService.get('products').then(function(product_list){
            $scope.products = product_list;
     });
 });
+
+
+/**
+    AddProductCtrl - handles the addition of product to storage.
+*/
+chromeApp.controller('AddProductCtrl', function($scope, storageService){
+    storageService.get('product_categories');
+});
+
+
+
