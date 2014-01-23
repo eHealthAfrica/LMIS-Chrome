@@ -5,6 +5,7 @@ angular.module('lmisChromeApp')
     // Service logic
     // ...
     function loadFixture(){
+        //database=['products', 'address', 'uom', 'uom_category' ]
         var products = null;
         var address = null;
         var uom = null;
@@ -12,26 +13,26 @@ angular.module('lmisChromeApp')
         var facility = null;
         var programs = null;
         var facility_type = null;
-        storageService.get('products').then(function(d){
-            products = d;
+        storageService.get('products').then(function(data){
+            products = data;
         });
-        storageService.get('address').then(function(d){
-            address = d;
+        storageService.get('address').then(function(data){
+            address = data;
         });
-        storageService.get('uom').then(function(d){
-            uom = d;
+        storageService.get('uom').then(function(data){
+            uom = data;
         });
-        storageService.get('uom_category').then(function(d){
-            uom_category = d;
+        storageService.get('uom_category').then(function(data){
+            uom_category = data;
         });
-        storageService.get('facility').then(function(d){
-            facility = d;
+        storageService.get('facility').then(function(data){
+            facility = data;
         });
-        storageService.get('programs').then(function(d){
-            programs = d;
+        storageService.get('programs').then(function(data){
+            programs = data;
         });
-        storageService.get('facility_type').then(function(d){
-            facility_type = d;
+        storageService.get('facility_type').then(function(data){
+            facility_type = data;
         });
         if(!products){
             $http.get('scripts/fixtures/products.json').success(function(data){
