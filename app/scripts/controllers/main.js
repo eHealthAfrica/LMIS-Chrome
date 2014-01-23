@@ -42,7 +42,9 @@ chromeApp.controller('ProductListCtrl', function ($scope, storageService) {
     AddProductCtrl - handles the addition of product to storage.
 */
 chromeApp.controller('AddProductCtrl', function($scope, storageService){
-    storageService.get('product_categories');
+    storageService.get('product_category').then(function(product_categories){
+           $scope.categories = product_categories;
+    });
 });
 
 

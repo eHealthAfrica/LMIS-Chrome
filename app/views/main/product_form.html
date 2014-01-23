@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-controller="AddProductCtrl">
     <div class="col-sm-12">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -11,19 +11,23 @@
                             <div class="form-group">
                                 <label for="productName">Product Name</label>
                                 <input class="form-control" type="text" name="name" id="productName"
-                                       ng-model="productName">
+                                       ng-model="product.name">
                             </div>
 
                             <div class="form-group">
                                 <label for="productCode">Product Code</label>
                                 <input class="form-control" type="text" name="code" id="productCode"
-                                       ng-model="productCode">
+                                       ng-model="product.code">
                             </div>
 
                             <div class="form-group">
                                 <label for="productCategory">Product Category</label>
-                                <select id="productCategory" class="form-control" ng-model="productCategory"
-                                        ng-options="category.name for category in categories"></select>
+                                <select id="productCategory" class="form-control" ng-model="product_category">
+                                    <option value="">-- select product category --</option>
+                                    <option ng-repeat="category in categories" value="{{category.uuid}}">
+                                        {{category.name}}
+                                    </option>
+                                </select>
                             </div>
 
                         </div>

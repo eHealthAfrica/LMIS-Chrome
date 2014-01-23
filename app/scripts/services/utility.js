@@ -13,6 +13,7 @@ angular.module('lmisChromeApp')
         var facility = null;
         var programs = null;
         var facility_type = null;
+        var product_category = null;
         storageService.get('products').then(function(data){
             products = data;
         });
@@ -34,10 +35,21 @@ angular.module('lmisChromeApp')
         storageService.get('facility_type').then(function(data){
             facility_type = data;
         });
+        storageService.get('product_category').then(function(data){
+            product_category = data;
+        });
+
         if(!products){
             $http.get('scripts/fixtures/products.json').success(function(data){
                 storageService.add('products', data);
 
+            }).error(function(err){
+                console.log(err);
+            });
+        }
+        if(!product_category){
+            $http.get('scripts/fixtures/product-category.json').success(function(data){
+                storageService.add('product_category', data);
             }).error(function(err){
                 console.log(err);
             });
