@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-controller="ProductListCtrl">
     <div class="col-sm-12">
         <div class="btn-group">
             <a href="#/main/product_form" class="btn btn-default"><i class="icon-plus-sign"></i> Add Product</a>
@@ -20,7 +20,7 @@
                             <th>Code</th>
                             <th>Category</th>
                             <th>Description</th>
-                            <!--th>Created By</th-->
+                            <th>Last Modified</th>
                             <th>Active</th>
                         </tr>
                     </thead>
@@ -30,8 +30,7 @@
                             <td>{{ product.code }}</td>
                             <td>{{ product.category }}</td>
                             <td>{{ product.description }}</td>
-
-                            <!--td>{{ product.created_by.id }}</td-->
+                            <td>{{ product.modified }}</td>
                             <td>{{ product.active }}</td>
                         </tr>
                     </tbody>

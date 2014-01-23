@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('lmisChromeApp')
-    .controller('MainCtrl', function ($scope, storageService, $location ) {
+var chromeApp = angular.module('lmisChromeApp');
+
+chromeApp.controller('MainCtrl', function ($scope, storageService, $location ) {
         var url_arr = $location.path().replace(/\/$/,'').replace(/^\//,'').split('/');
         var bc = [];
         if(url_arr.indexOf('products') != -1){
@@ -25,3 +26,11 @@ angular.module('lmisChromeApp')
         //console.log($scope.products);
         /*$scope.$watch('online', function(newStatus) {})*/
     });
+
+/** ProductListCtrl controller handles display of products pulled from storage. */
+chromeApp.controller('ProductListCtrl', function ($scope, storageService, $location ) {
+
+    storageService.get('products').then(function(product_list){
+           $scope.products = product_list;
+    });
+});
