@@ -1,13 +1,17 @@
 <div class="row" ng-controller="ProductListCtrl">
     <div class="col-sm-12">
         <div class="btn-group">
-            <a href="#/main/product_form" class="btn btn-default"><i class="icon-plus-sign"></i> Add Product</a>
-
+            <a href="#/main/product_form" class="btn btn-default"><i class="icon-plus-sign"></i>Add Product</a>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
+        <div>
+            <label>Search</label>
+            <input  ng-model="query"/>
+        </div>
+         <br/>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">Products</h4>
@@ -25,12 +29,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="product in products">
+                        <tr ng-repeat="product in products | filter:query">
                             <td>{{ product.name }}</td>
                             <td>{{ product.code }}</td>
                             <td>{{ product.category }}</td>
                             <td>{{ product.description }}</td>
-                            <td>{{ product.modified }}</td>
+                            <td>{{ product.modified | date:'shortTime'}}</td>
                             <td>{{ product.active }}</td>
                         </tr>
                     </tbody>
