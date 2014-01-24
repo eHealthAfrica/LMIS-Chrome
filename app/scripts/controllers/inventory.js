@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .controller('InventoryCtrl', function ($scope, $location) {
+  .controller('InventoryCtrl', function ($scope, $location, storageService) {
 
 
         var url_arr = $location.path().replace(/\/$/,'').replace(/^\//,'').split('/');
@@ -10,6 +10,12 @@ angular.module('lmisChromeApp')
             bc = [{name:"Inventory", "link":'#/inventory/index'}, {name:"Stock Records", "link":''}];
         }
         else if(url_arr.indexOf('stock_records_form') != -1){
+            storageService.get('facility').then(function(data){
+                 $scope.facilities = data;
+            });
+            storageService.get('programs').then(function(data){
+                 $scope.programs = data;
+            });
             bc =
             [
                 {name:"Inventory", "link":'#/inventory/index'},
