@@ -75,8 +75,8 @@ angular.module('lmisChromeApp', [
 /* Central Variable for Watching Online/Offline Events */
 angular.module('lmisChromeApp')
     .run(function($window, $rootScope, utility) {
-
-        utility.loadFixture();
+        //chrome.storage.local.clear();
+        utility.loadFixtures();
      //TODO: change breadcrumbs to a service
         $rootScope.breadcrumbs = [];
         $rootScope.addbreadcrumbs = function(br_arr){
