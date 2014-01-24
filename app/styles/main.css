@@ -7,7 +7,7 @@
 #sm-header-text{
     font-size: 10px;
 }
-#max-stock, #min-stock, top-rows{
+#max-stock, #min-stock, .top-rows{
     font-size: 8px;
 }
 .scrollable_x{
