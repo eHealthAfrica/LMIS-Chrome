@@ -36,6 +36,13 @@ angular.module('lmisChromeApp', [
                 controller: 'OrdersctrlCtrl'
 
             })
+            .when('/facilities/:template', { templateUrl: function(elem){
+
+                    return 'views/facilities/'+elem.template+'.html';
+            },
+                controller: 'FacilitiesCtrl'
+
+            })
             .when('/inventory/:template', { templateUrl: function(elem){
 
                     return 'views/inventory/'+elem.template+'.html';
