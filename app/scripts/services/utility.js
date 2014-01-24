@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('utility', function ($http, storageService) {
+  .factory('utility', function ($http, storageService, $q) {
     // Service logic
     // ...
-    function loadFixture(){
+    function loadFixtures(){
         var database=[
             'products',
             'address',
@@ -36,7 +36,8 @@ angular.module('lmisChromeApp')
                    var file_url = 'scripts/fixtures/'+db_name+'.json';
                     $http.get(file_url).success(function(data){
                         storageService.add(db_name, data);
-                        console.log(data);
+                        //console.log(data);
+                        //loadRealatedObject(db_name);
 
                     }).error(function(err){
                         console.log(err);
@@ -44,6 +45,7 @@ angular.module('lmisChromeApp')
                 }
                 else{
                     console.log(db_name+" is loaded with "+test_data.length);
+                    //loadRealatedObject(db_name);
                 }
 
              },
@@ -55,35 +57,38 @@ angular.module('lmisChromeApp')
     }
 
     function loadRealatedObject(db_name){
-
-
+        var deferred = $q.defer();
+         //TODO: add key validation and identifier type (uuid | id)
+        //create a new table name by prefixing the original with 're'
         var related_name = 're_'+db_name;
-        storageService.get(related_name).then(function(related_data){
+        //when called get data from storage and create an object using uuid as key
+        storageService.get(db_name).then(function(data){
+            if(data.length != 0 && data.length != undefined){
+                //load table data into object
+                var related_object = {};
+                for(var k in data){
+                    if(Object.prototype.toString.call(data[k]) === '[object Object]'){
+                        //var keys = Object.keys(data[k]);
+                        if(data[k].uuid != undefined){
 
-            if(related_data){
-                return related_data;
-            }
-            else{
-                storageService.get(db_name).then(function(data){
-                    if(data.length != 0 && data.length != undefined){
-                        var related_object = {};
-                        for(var k in data){
-                            //TODO: add key validation
                             related_object[data[k].uuid]=data[k];
                         }
-                        storageService.add(related_name, related_object);
+                        else if(data[k].id != undefined){
+
+                            related_object[data[k].id]=data[k];
+                        }
                     }
-                });
+                }
+                //store new object in local storage
+                storageService.add(related_name, related_object);
+                deferred.resolve(related_object);
             }
-
-
-
         });
-
+        return deferred.promise;
     }
     // Public API here
     return {
-        loadFixture:loadFixture,
+        loadFixtures:loadFixtures,
         loadTableObject: loadRealatedObject
     };
   });
