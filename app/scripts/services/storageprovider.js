@@ -24,6 +24,7 @@ angular.module('lmisChromeApp')
     * @private
     */
     function addToStore(key, value) {
+
       var newStorage = {};
       var defered = $q.defer();
       newStorage[key]= value;
@@ -138,6 +139,34 @@ angular.module('lmisChromeApp')
       }
     }
 
+     /**
+     * get list of tables from local storage.
+     *
+     * @return {array} array list of tables in local storage.
+     * @private
+     */
+    function getTables(){
+        var deferred = $q.defer();
+        getAllFromStore().then(function(data){
+            var tbl = Object.keys(data);
+            deferred.resolve(tbl);
+        });
+        return deferred.promise;
+     }
+
+     function insert(table, obj){
+       getTables().then(function(tables){
+           if(tables.indexOf(table)){
+                getFromStore(table).then(function(data){
+                    if(Object.prototype.toString.call(data) == '[object Array]'){
+                        data.push(obj);
+                        addToStore(table, data);
+                    }
+                });
+           }
+       })
+    }
+
     /**
      * Test the client's support for storing values in the local store.
      *
@@ -164,7 +193,8 @@ angular.module('lmisChromeApp')
       getAll: getAllFromStore,
       remove: removeFromStore, // removeFromChrome,
       clear: clearFromStore, // clearChrome */
-      uuid: uuid_generator
+      uuid: uuid_generator,
+      insert: insert
     };
 
   });
