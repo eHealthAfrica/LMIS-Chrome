@@ -5,110 +5,85 @@ angular.module('lmisChromeApp')
     // Service logic
     // ...
     function loadFixture(){
-        //database=['products', 'address', 'uom', 'uom_category' ]
-        var products = null;
-        var address = null;
-        var uom = null;
-        var uom_category = null;
-        var facility = null;
-        var programs = null;
-        var facility_type = null;
-        var product_category = null;
-        storageService.get('products').then(function(data){
-            products = data;
-        });
-        storageService.get('address').then(function(data){
-            address = data;
-        });
-        storageService.get('uom').then(function(data){
-            uom = data;
-        });
-        storageService.get('uom_category').then(function(data){
-            uom_category = data;
-        });
-        storageService.get('facility').then(function(data){
-            facility = data;
-        });
-        storageService.get('programs').then(function(data){
-            programs = data;
-        });
-        storageService.get('facility_type').then(function(data){
-            facility_type = data;
-        });
-        storageService.get('product_category').then(function(data){
-            product_category = data;
-        });
-
-        if(!products){
-            $http.get('scripts/fixtures/products.json').success(function(data){
-                storageService.add('products', data);
-
-            }).error(function(err){
-                console.log(err);
-            });
+        var database=[
+            'products',
+            'address',
+            'uom',
+            'uom_category',
+            'facility',
+            'programs',
+            'facility_type',
+            'employee_category',
+            'company',
+            'company_category',
+            'currency',
+            'employee',
+            'rate',
+            'storage_location_type',
+            'storage_locations',
+            'user'
+        ]
+        for(var i in database){
+            loadData(database[i]);
         }
-        if(!product_category){
-            $http.get('scripts/fixtures/product-category.json').success(function(data){
-                storageService.add('product_category', data);
-            }).error(function(err){
-                console.log(err);
-            });
+        function loadData(db_name){
+            var test_data = [];
+
+             storageService.get(db_name).then(function(data){
+                test_data = data;
+                if(test_data.length == 0 || test_data.length == undefined){
+
+                   var file_url = 'scripts/fixtures/'+db_name+'.json';
+                    $http.get(file_url).success(function(data){
+                        storageService.add(db_name, data);
+                        console.log(data);
+
+                    }).error(function(err){
+                        console.log(err);
+                    });
+                }
+                else{
+                    console.log(db_name+" is loaded with "+test_data.length);
+                }
+
+             },
+                function(reason){
+                   //console.log(reason);
+                }
+            );
         }
-        if(!address){
-            $http.get('scripts/fixtures/address.json').success(function(data){
-                storageService.add('address', data);
+    }
 
-            }).error(function(err){
-                console.log(err);
-            });
-        }
+    function loadRealatedObject(db_name){
 
-        if(!facility){
-            $http.get('scripts/fixtures/facility.json').success(function(data){
-                storageService.add('facility', data);
 
-            }).error(function(err){
-                console.log(err);
-            });
-        }
+        var related_name = 're_'+db_name;
+        storageService.get(related_name).then(function(related_data){
 
-        if(!uom){
-            $http.get('scripts/fixtures/uom.json').success(function(data){
-                storageService.add('uom', data);
+            if(related_data){
+                return related_data;
+            }
+            else{
+                storageService.get(db_name).then(function(data){
+                    if(data.length != 0 && data.length != undefined){
+                        var related_object = {};
+                        for(var k in data){
+                            //TODO: add key validation
+                            related_object[data[k].uuid]=data[k];
+                        }
+                        storageService.add(related_name, related_object);
+                    }
+                });
+            }
 
-            }).error(function(err){
-                console.log(err);
-            });
-        }
 
-        if(!uom_category){
-            $http.get('scripts/fixtures/uom-category.json').success(function(data){
-                storageService.add('uom_category', data);
 
-            }).error(function(err){
-                console.log(err);
-            });
-        }
+        });
 
-        if(!facility_type){
-            $http.get('scripts/fixtures/facility-type.json').success(function(data){
-                storageService.add('facility_type', data);
-
-            }).error(function(err){
-                console.log(err);
-            });
-        }
-         if(!programs){
-            $http.get('scripts/fixtures/programs.json').success(function(data){
-                storageService.add('programs', data);
-
-            }).error(function(err){
-                console.log(err);
-            });
-        }
     }
     // Public API here
     return {
-        loadFixture:loadFixture
+        loadFixture:loadFixture,
+        loadTableObject: loadRealatedObject
     };
   });

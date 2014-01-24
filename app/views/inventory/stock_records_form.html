@@ -6,8 +6,9 @@
                     <div class="form-group">
                         <!-- TODO: this should be based on logged in user -->
                         <label for="facility">Facility</label>
-                        <select name="facility" id="facility"  class="form-control" ng-model="stock_records.facility" ng-options="facility_data in record_facilities">
-                            <option value="{{ facility_data }}">{{ facility_data.name }}</option>
+                        <select name="facility" id="facility"  class="form-control" ng-model="stock_records.facility" >
+                            <option value="">-- choose facility --</option>
+                            <option ng-repeat="facility in facilities" value="{{ facility.uuid }}">{{ facility.name }}</option>
                         </select>
                     </div>
                 </div>
@@ -15,3 +16,7 @@
         </form>
     </div>
 </div>
+
+<pre>
+    {{ programs | json }}
+</pre>
