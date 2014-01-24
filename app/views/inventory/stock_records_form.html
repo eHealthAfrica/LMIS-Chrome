@@ -11,12 +11,19 @@
                             <option ng-repeat="facility in facilities" value="{{ facility.uuid }}">{{ facility.name }}</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="programs"></label>
+                        <select name="program" id="programs" ng-model="programs">
+                            <option value=""></option>
+                        </select>
+
+                    </div>
                 </div>
             </div>
         </form>
     </div>
 </div>
 
-<pre>
+<!--pre>
     {{ programs | json }}
-</pre>
+</pre-->
