@@ -1,14 +1,14 @@
-<div class="row" ng-controller="ProductListCtrl">
+<div class="row">
     <div class="col-sm-12">
         <div class="btn-group">
             <a href="#/main/product_form" class="btn btn-default"><i class="icon-plus-sign"></i>Add Product</a>
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-controller="ProductListCtrl">
     <div class="col-sm-12">
         <div>
-            <label for="query">Search</label>
+            <label for="query" ng-model="sup">Search</label>
             <input  ng-model="query" id="query" class="form_control"/>
         </div>
          <br/>
@@ -33,8 +33,8 @@
                         <tr ng-repeat="product in products | filter:query">
                             <td>{{ product.name }}</td>
                             <td>{{ product.code }}</td>
-                            <td>{{ product.category }}</td>
-                            <td>{{ product.base_uom }}</td>
+                            <td>{{ product_categories[product.category].name  }}</td>
+                            <td>{{ uomList[product.base_uom].name }}</td>
                             <td>{{ product.description }}</td>
                             <td>{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
                             <td>{{ product.active }}</td>

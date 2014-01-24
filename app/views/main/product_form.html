@@ -2,33 +2,71 @@
     <div class="col-sm-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">Product Entry Form</h4>
+                <h4 class="panel-title">Add Product</h4>
             </div>
+
             <div class="panel-body">
-                <form>
+
+                <!-- used to show form submission error or success message -->
+                <div id="messages" ng-show="message">{{ message }}</div>
+                <br/>
+
+                <form ng-submit="saveProduct()">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="productName">Product Name</label>
                                 <input class="form-control" type="text" name="name" id="productName"
-                                       ng-model="product.name">
+                                       ng-model="product.name" placeholder="Bacille Calmette-Guerin">
+                                <span ng-show="errorName">{{ errorName }}</span>
                             </div>
 
                             <div class="form-group">
                                 <label for="productCode">Product Code</label>
                                 <input class="form-control" type="text" name="code" id="productCode"
-                                       ng-model="product.code">
+                                       ng-model="product.code" placeholder="BCG">
                             </div>
 
                             <div class="form-group">
                                 <label for="productCategory">Product Category</label>
-                                <select id="productCategory" class="form-control" ng-model="product_category">
+                                <select id="productCategory" class="form-control" ng-model="product.category">
                                     <option value="">-- select product category --</option>
-                                    <option ng-repeat="category in categories" value="{{category.uuid}}">
-                                        {{category.name}}
+                                    <option ng-repeat="category in categories" value="{{ category.uuid }}">
+                                        {{ category.name }}
                                     </option>
                                 </select>
                             </div>
+
+                            <div class="form-group">
+                                <label for="baseUOM">Product Unit Of Measurement</label>
+                                <select id="baseUOM" class="form-control" ng-model="product.base_uom">
+                                    <option value="">-- select product unit of measurement --</option>
+                                    <option ng-repeat="uom in uomList" value="{{uom.uuid}}">
+                                        {{uom.name}}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productDesc">Product Descrption</label>
+                                <input class="form-control" type="text" name="code" id="productDesc"
+                                       ng-model="product.description"
+                                       placeholder="A vaccine against tuberculosis, prepared from a strain of the attenuated live Mycobacterium bovis">
+                            </div>
+
+
+                             <div class="form-group">
+                                <label for="active">Is Active:
+                                    <input type="checkbox" ng-model="product.active" id="active">
+                                </label>
+
+                             </div>
+
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
+
+                            <pre>
+		                        {{ product }}
+	                        </pre>
 
                         </div>
                     </div>

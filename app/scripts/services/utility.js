@@ -21,7 +21,8 @@ angular.module('lmisChromeApp')
             'rate',
             'storage_location_type',
             'storage_locations',
-            'user'
+            'user',
+            'product_category'
         ]
         for(var i in database){
             loadData(database[i]);
