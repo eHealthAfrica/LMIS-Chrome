@@ -67,14 +67,22 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
 
     $scope.saveProduct = function(){
         //TODO: implement save of product here
-        storageService.insert('products', $scope.product).then(function(bool){
-            if(bool){
-                $location.path('#/main/products');
-            }
-            else{
+        if(Object.keys($scope.product).length>0){
+            storageService.insert('products', $scope.product).then(function(bool){
+                if(bool){
+                    $scope.setMessage({message:"testing this stuff", type:"success"});
+                    $location.path('/main/products');
+                }
+                else{
 
-            }
-        });
+                }
+            });
+        }
+        else{
+            $scope.setMessage({message:"testing this stuff", type:"success"});
+            $location.path('/main/products');
+        }
+
     }
 });
 
