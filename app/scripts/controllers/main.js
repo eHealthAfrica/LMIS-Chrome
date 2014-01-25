@@ -70,7 +70,7 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
         if(Object.keys($scope.product).length>0){
             storageService.insert('products', $scope.product).then(function(bool){
                 if(bool){
-                    $scope.setMessage({message:"testing this stuff", type:"success"});
+                    $scope.setMessage({message:"Data saved ", type:"success"});
                     $location.path('/main/products');
                 }
                 else{
@@ -79,8 +79,7 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
             });
         }
         else{
-            $scope.setMessage({message:"testing this stuff", type:"success"});
-            $location.path('/main/products');
+            $scope.setMessage({message:"can't save empty form", type:"danger"});
         }
 
     }
