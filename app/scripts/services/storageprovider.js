@@ -179,6 +179,7 @@ angular.module('lmisChromeApp')
      }
 
      function insert(table, obj){
+       //TODO: check for uuid. uuid exists? do an update : new entry
        var deferred = $q.defer();
        getTables().then(function(tables){
            if(tables.indexOf(table)){
@@ -188,12 +189,15 @@ angular.module('lmisChromeApp')
                         obj['uuid'] = uuid_generator();
                         obj['created'] = getDateTime();
                         addToStore(table, data);
+                        deferred.resolve(true);
+                        //console.log("update entry");
                     }
                 });
            }
            else{
                addToStore(table, [data]);
                deferred.resolve(true);
+               //console.log("new entry");
            }
        });
        return deferred.promise;
