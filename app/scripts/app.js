@@ -59,22 +59,21 @@ angular.module('lmisChromeApp', [
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
     });
 
-//RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
-    // RestangularProvider.setDefaultRequestParams({ apiKey: '1111111111111111111111111' });
-
-//angular.module('lmisChromeApp')
-//    .config(['$compileProvider', function($compileProvider) {
-//        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
-//    }]);
-
-
-//  .config(function(RestangularProvider) {
-//
-//});
 
 /* Central Variable for Watching Online/Offline Events */
 angular.module('lmisChromeApp')
     .run(function($window, $rootScope, utility) {
+        //global message placeholder
+        $rootScope.messages = [];
+
+        $rootScope.setMessage = function(message){
+           if(Object.prototype.toString.call(message) == '[object Object]'){
+                $rootScope.messages.push(message);
+           }
+        }
+        $rootScope.closeAlert = function(index) {
+            $rootScope.messages.splice(index, 1);
+        };
         //chrome.storage.local.clear();
         utility.loadFixtures();
      //TODO: change breadcrumbs to a service
@@ -84,6 +83,7 @@ angular.module('lmisChromeApp')
         }
         $rootScope.$on('$routeChangeSuccess', function(event, current){
             $rootScope.breadcrumbs = [];
+
         });
         $rootScope.online = navigator.onLine;
         $window.addEventListener("offline", function () {
