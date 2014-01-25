@@ -38,15 +38,15 @@ chromeApp.controller('MainCtrl', function ($scope, storageService, $location ) {
 */
 chromeApp.controller('ProductListCtrl', function ($scope, storageService, utility) {
 
-    storageService.get('products').then(function(product_list){
-           $scope.products = product_list;
+    storageService.get(storageService.PRODUCT).then(function(productList){
+           $scope.products = productList;
     });
 
-    utility.loadTableObject('product_category').then(function(data){
+    utility.loadTableObject(storageService.PRODUCT_CATEGORY).then(function(data){
         $scope.product_categories = data;
     });
 
-    utility.loadTableObject('uom').then(function(data){
+    utility.loadTableObject(storageService.UOM).then(function(data){
         $scope.uomList = data;
     });
 
@@ -60,11 +60,11 @@ chromeApp.controller('ProductListCtrl', function ($scope, storageService, utilit
 */
 chromeApp.controller('AddProductCtrl', function($scope, storageService, $location){
 
-    storageService.get('product_category').then(function(product_categories){
+    storageService.get(storageService.PRODUCT_CATEGORY).then(function(product_categories){
            $scope.categories = product_categories;
     });
 
-    storageService.get('uom').then(function(uomList){
+    storageService.get(storageService.UOM).then(function(uomList){
         $scope.uomList = uomList;
     });
 
@@ -73,7 +73,7 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
 
     $scope.saveProduct = function(){
         //TODO: implement save of product here
-        storageService.insert('products', $scope.product).then(function(bool){
+        storageService.insert(storageService.PRODUCT, $scope.product).then(function(bool){
             if(bool){
                 $location.path('#/main/products');
             }

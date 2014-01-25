@@ -16,5 +16,6 @@
 }
 .product_items_container{
     width: 100%;
-    overflow-x: scroll;
+    height: 600px;
+    overflow: scroll;
 }

@@ -6,23 +6,23 @@ angular.module('lmisChromeApp')
     // ...
     function loadFixtures(){
         var database=[
-            'products',
-            'address',
-            'uom',
-            'uom_category',
-            'facility',
-            'programs',
-            'facility_type',
-            'employee_category',
-            'company',
-            'company_category',
-            'currency',
-            'employee',
-            'rate',
-            'storage_location_type',
-            'storage_locations',
-            'user',
-            'product_category'
+            storageService.PRODUCT,
+            storageService.ADDRESS,
+            storageService.UOM,
+            storageService.UOM_CATEGORY,
+            storageService.FACILITY,
+            storageService.PROGRAM,
+            storageService.FACILITY_TYPE,
+            storageService.EMPLOYEE_CATEGORY,
+            storageService.COMPANY,
+            storageService.COMPANY_CATEGORY,
+            storageService.CURRENCY,
+            storageService.EMPLOYEE,
+            storageService.RATE,
+            storageService.STORAGE_LOCATION_TYPE,
+            storageService.STORAGE_LOCATION,
+            storageService.USER,
+            storageService.PRODUCT_CATEGORY
         ]
         for(var i in database){
             loadData(database[i]);
