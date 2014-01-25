@@ -8,6 +8,12 @@ chromeApp.controller('MainCtrl', function ($scope, storageService, $location ) {
         if(url_arr.indexOf('products') != -1){
             bc = [{name:"Products", "link":''}];
         }
+        else if(url_arr.indexOf('product_items') != -1){
+            bc = [
+                    {name:"Product", "link":'#/main/products'},
+                    {name:"Product Item", "link":''}
+                 ];
+        }
         else if(url_arr.indexOf('product_form') != -1){
             bc =
             [
@@ -30,7 +36,7 @@ chromeApp.controller('MainCtrl', function ($scope, storageService, $location ) {
 /**
     ProductListCtrl controller handles display of products pulled from storage.
 */
-chromeApp.controller('ProductListCtrl', function ($scope, storageService,  utility) {
+chromeApp.controller('ProductListCtrl', function ($scope, storageService, utility) {
 
     storageService.get('products').then(function(product_list){
            $scope.products = product_list;
@@ -78,5 +84,16 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
     }
 });
 
+
+/**
+    ProductItemListCtrl - This handles the display of Product-Items pulled from storage.
+*/
+chromeApp.controller('ProductItemListCtrl', function($scope, storageService){
+     storageService.get('product_items').then(function(productItems){
+           $scope.productItemList = productItems;
+    });
+
+
+});
 
 
