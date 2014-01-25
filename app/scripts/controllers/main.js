@@ -52,7 +52,7 @@ chromeApp.controller('ProductListCtrl', function ($scope, storageService,  utili
     it uses storage service to load product category and unit of measurement list used to populate product form
     respective drop downs.
 */
-chromeApp.controller('AddProductCtrl', function($scope, storageService){
+chromeApp.controller('AddProductCtrl', function($scope, storageService, $location){
 
     storageService.get('product_category').then(function(product_categories){
            $scope.categories = product_categories;
@@ -67,6 +67,14 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService){
 
     $scope.saveProduct = function(){
         //TODO: implement save of product here
+        storageService.insert('products', $scope.product).then(function(bool){
+            if(bool){
+                $location.path('#/main/products');
+            }
+            else{
+
+            }
+        });
     }
 });
 
