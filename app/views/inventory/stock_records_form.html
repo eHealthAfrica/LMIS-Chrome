@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <!-- TODO: this should be based on logged in user -->
+                        <!-- TODO: this should be tied to logged in user -->
                         <label for="facility">Facility</label>
                         <select name="facility" id="facility"  class="form-control" ng-model="stock_records.facility" >
                             <option value="">-- choose facility --</option>
@@ -12,11 +12,12 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="programs"></label>
-                        <select name="program" id="programs" ng-model="programs">
-                            <option value=""></option>
+                        <!-- TODO: this should be tied to logged in user and selected facility -->
+                        <label for="program"></label>
+                        <select ng-change="loadProducts" name="program" id="program" ng-model="stock_records.program" class="form-control">
+                            <option value="">-- choose program --</option>
+                            <option ng-repeat="program in programs" value="{{ program.uuid }}">{{ program.name }}</option>
                         </select>
-
                     </div>
                 </div>
             </div>
@@ -24,6 +25,3 @@
     </div>
 </div>
 
-<!--pre>
-    {{ programs | json }}
-</pre-->
