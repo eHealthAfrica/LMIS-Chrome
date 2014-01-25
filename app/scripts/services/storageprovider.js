@@ -139,6 +139,30 @@ angular.module('lmisChromeApp')
       }
     }
 
+    /**
+     * get list of tables from local storage.
+     *
+     * @return {string} yyyy-MMMM-dd H:m:s  of current date and time.
+     * @private
+     */
+
+    function getDateTime(){
+        var now = new Date();
+        var day = now.getDate();
+        day = day<10?'0'+day:day;
+        var month = now.getMonth()+1;
+        month = month<10?'0'+month:month;
+        var year = now.getFullYear();
+        var hour = now.getHours();
+        hour = hour<10?'0'+hour:hour;
+        var minutes = now.getMinutes();
+        minutes = minutes<10?'0'+minutes:minutes;
+        var seconds = now.getSeconds();
+        seconds = seconds<10?'0'+seconds:seconds;
+        var datetime = year+'-'+month+'-'+day+' '+hour+':'+minutes+':'+seconds;
+        return datetime;
+    }
+
      /**
      * get list of tables from local storage.
      *
@@ -155,16 +179,24 @@ angular.module('lmisChromeApp')
      }
 
      function insert(table, obj){
+       var deferred = $q.defer();
        getTables().then(function(tables){
            if(tables.indexOf(table)){
                 getFromStore(table).then(function(data){
                     if(Object.prototype.toString.call(data) == '[object Array]'){
                         data.push(obj);
+                        obj['uuid'] = uuid_generator();
+                        obj['created'] = getDateTime();
                         addToStore(table, data);
                     }
                 });
            }
-       })
+           else{
+               addToStore(table, [data]);
+               deferred.resolve(true);
+           }
+       });
+       return deferred.promise;
     }
 
     /**
