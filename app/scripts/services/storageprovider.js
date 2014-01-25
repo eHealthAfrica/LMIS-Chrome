@@ -9,6 +9,7 @@ angular.module('lmisChromeApp')
      *
      *  table names are matched to the corresponding json file at fixtures
      *  folder that holds data used to pre-fill local storage if it is empty.
+     *
      */
      var product = 'products';
      var productCategory = 'product_category';
@@ -28,6 +29,8 @@ angular.module('lmisChromeApp')
      var storageLocation = 'storage_locations';
      var user = 'user';
      var productPresentation = 'product_presentation';
+     var productFormulation = 'product_formulation';
+     var modeOfAdministration = 'mode_of_administration';
 
     /**
      * Boolean flag indicating client support for Chrome Storage
@@ -270,7 +273,9 @@ angular.module('lmisChromeApp')
       STORAGE_LOCATION_TYPE: storageLocationType,
       STORAGE_LOCATION: storageLocation,
       USER: user,
-      PRODUCT_PRESENTATION: productPresentation
+      PRODUCT_PRESENTATION: productPresentation,
+      PRODUCT_FORMULATION: productFormulation,
+      MODE_OF_ADMINISTRATION: modeOfAdministration
     };
 
   });

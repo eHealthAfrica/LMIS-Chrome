@@ -7,86 +7,9 @@
 
             <div class="panel-body">
 
-                <!-- used to show form submission error or success message -->
-                <div id="messages" ng-show="message">{{ message }}</div>
-                <br/>
+                <!-- enter product item form here -->
 
-                <form ng-submit="saveProductItem()">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="productBatchNo">Product Batch No.</label>
-                                <input class="form-control" type="text" name="name" id="productBatchNo"
-                                       ng-model="productItem.batch_no" placeholder="X-234-XXX, 1223-AAA-23">
-                                <span ng-show="errorName">{{ errorName }}</span>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-6">
-                                    <p class="input-group">
-                                        <input type="text" class="form-control" datepicker-popup="{{format}}"
-                                               ng-model="product.expiration_date" is-open="opened" min="minDate"
-                                               max="'2015-06-22'" datepicker-options="dateOptions"
-                                               date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" ng-click="open($event)">
-                                                <i class="glyphicon glyphicon-calendar"></i></button>
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="productCode">Product</label>
-                                <input class="form-control" type="text" name="code" id="productCode"
-                                       ng-model="product.code" placeholder="BCG">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="productCategory">Product Category</label>
-                                <select id="productCategory" class="form-control" ng-model="product.category">
-                                    <option value="">-- select product category --</option>
-                                    <option ng-repeat="category in categories" value="{{ category.uuid }}">
-                                        {{ category.name }}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="baseUOM">Product Unit Of Measurement</label>
-                                <select id="baseUOM" class="form-control" ng-model="product.base_uom">
-                                    <option value="">-- select product unit of measurement --</option>
-                                    <option ng-repeat="uom in uomList" value="{{uom.uuid}}">
-                                        {{uom.name}}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="productDesc">Product Descrption</label>
-                                <input class="form-control" type="text" name="code" id="productDesc"
-                                       ng-model="product.description"
-                                       placeholder="A vaccine against tuberculosis, prepared from a strain of the attenuated live Mycobacterium bovis">
-                            </div>
-
-
-                             <div class="form-group">
-                                <label for="active">Is Active:
-                                    <input type="checkbox" ng-model="product.active" id="active">
-                                </label>
-
-                             </div>
-
-                            <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
-
-                            <pre>
-		                        {{ product }}
-	                        </pre>
-
-                        </div>
-                    </div>
-                </form>
-            </div>
+             </div>
         </div>
     </div>
 
