@@ -89,7 +89,7 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
     ProductItemListCtrl - This handles the display of Product-Items pulled from storage.
 */
 chromeApp.controller('ProductItemListCtrl', function($scope, storageService){
-     storageService.get('product_items').then(function(productItems){
+     storageService.get(storageService.PRODUCT_ITEM).then(function(productItems){
            $scope.productItemList = productItems;
     });
 

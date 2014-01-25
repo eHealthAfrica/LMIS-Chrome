@@ -38,13 +38,19 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="productItem in productItemList | filter:query">
-                            <td>{{ product.batch_no }}</td>
-                            <td>{{ product.name }}</td>
-                            <td>{{ product_categories[product.category].name  }}</td>
-                            <td>{{ uomList[product.base_uom].name }}</td>
-                            <td>{{ product.description }}</td>
-                            <td>{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
-                            <td>{{ product.active }}</td>
+                            <td>{{ productItem.batch_no }}</td>
+                            <td>{{ productItem.product }}</td>
+                            <td>{{ productItem.expiration_date | date:'dd-MM-yyyy' }}</td>
+                            <td>{{ productItem.manufacturer }}</td>
+                            <td>{{ productItem.presentation }}</td>
+                            <td>{{ productItem.formulation }}</td>
+                            <td>{{ productItem.mode_of_use }}</td>
+                            <td>{{ productItem.packed_volume }} {{ productItem.volume_uom }}</td>
+                            <td>{{ productItem.diluent_per_volume }} {{ productItem.volume_uom }}</td>
+                            <td>{{ productItem.price_per_unit }} {{ productItem.currency }} </td>
+                            <td>{{ productItem.description }}</td>
+                            <td>{{ productItem.fund_sources}}</td>
+                            <td>{{ productItem.active }}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -25,7 +25,8 @@ angular.module('lmisChromeApp')
             storageService.PRODUCT_CATEGORY,
             storageService.PRODUCT_PRESENTATION,
             storageService.PRODUCT_FORMULATION,
-            storageService.MODE_OF_ADMINISTRATION
+            storageService.MODE_OF_ADMINISTRATION,
+            storageService.PRODUCT_ITEM
         ]
         for(var i in database){
             loadData(database[i]);
