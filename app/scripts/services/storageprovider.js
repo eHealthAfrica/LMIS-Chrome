@@ -27,6 +27,7 @@ angular.module('lmisChromeApp')
      var storageLocationType = 'storage_location_type';
      var storageLocation = 'storage_locations';
      var user = 'user';
+     var productPresentation = 'product_presentation';
 
     /**
      * Boolean flag indicating client support for Chrome Storage
@@ -268,7 +269,8 @@ angular.module('lmisChromeApp')
       RATE: rate,
       STORAGE_LOCATION_TYPE: storageLocationType,
       STORAGE_LOCATION: storageLocation,
-      USER: user
+      USER: user,
+      PRODUCT_PRESENTATION: productPresentation
     };
 
   });
