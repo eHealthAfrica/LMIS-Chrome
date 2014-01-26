@@ -49,6 +49,12 @@ angular.module('lmisChromeApp', [
                 },
                 controller: 'InventoryCtrl'
             })
+            .when('/cce/:template', { templateUrl: function(elem){
+
+                    return 'views/cce/'+elem.template+'.html';
+                },
+                controller: 'cceCtrl'
+            })
             .otherwise({
                 redirectTo: '/'
             });

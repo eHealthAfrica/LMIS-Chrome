@@ -109,6 +109,18 @@ chromeApp.controller('ProductItemListCtrl', function($scope, storageService){
            $scope.productItemList = productItems;
     });
 
+    $scope.highlightExpiredProductItem = function(productItem){
+        //TODO: checking for expired date to utility service or a service cause it will be used at different places
+
+        var currentDate = new Date();
+        var expirationDate = new Date(productItem.expiration_date);
+       console.log(currentDate.getTime());
+       console.log();
+        if(currentDate.getTime() < expirationDate.getTime()){
+            return "expired_product_item";
+        }
+    };
+
 });
 
 
