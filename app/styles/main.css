@@ -25,6 +25,9 @@
    width: 2000px
 }
 
-.expired_product_item{
+.expired-product-item{
     background-color: #FF9494;
+}
+.about-to-expire{
+    background-color: #FFD300;
 }

@@ -104,12 +104,14 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
 /**
     ProductItemListCtrl - This handles the display of Product-Items pulled from storage.
 */
-chromeApp.controller('ProductItemListCtrl', function($scope, storageService){
+chromeApp.controller('ProductItemListCtrl', function($scope, storageService, visualMarkerService){
      storageService.get(storageService.PRODUCT_ITEM).then(function(productItems){
            $scope.productItemList = productItems;
     });
 
-    $scope.highlightExpiredProductItem = function(productItem){
+    $scope.highlightExpiredProductItem = visualMarkerService.getExpiredCSS
+
+    /*function(productItem){
         //TODO: checking for expired date to utility service or a service cause it will be used at different places
 
         var currentDate = new Date();
@@ -117,9 +119,15 @@ chromeApp.controller('ProductItemListCtrl', function($scope, storageService){
        console.log(currentDate.getTime());
        console.log();
         if(currentDate.getTime() < expirationDate.getTime()){
-            return "expired_product_item";
+            return "expired-product-item";
         }
     };
+    */
+
+    $scope.highlightAboutToExpired = function(){
+         //TODO: checking for expired date to utility service or a service cause it will be used at different places
+        return "about-to-expire";
+    }
 
 });
 
