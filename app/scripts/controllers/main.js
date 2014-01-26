@@ -8,6 +8,12 @@ chromeApp.controller('MainCtrl', function ($scope, storageService, $location ) {
         if(url_arr.indexOf('products') != -1){
             bc = [{name:"Products", "link":''}];
         }
+        else if(url_arr.indexOf('product_items') != -1){
+            bc = [
+                    {name:"Product", "link":'#/main/products'},
+                    {name:"Product Item", "link":''}
+                 ];
+        }
         else if(url_arr.indexOf('product_form') != -1){
             bc =
             [
@@ -30,17 +36,17 @@ chromeApp.controller('MainCtrl', function ($scope, storageService, $location ) {
 /**
     ProductListCtrl controller handles display of products pulled from storage.
 */
-chromeApp.controller('ProductListCtrl', function ($scope, storageService,  utility) {
+chromeApp.controller('ProductListCtrl', function ($scope, storageService, utility) {
 
-    storageService.get('products').then(function(product_list){
-           $scope.products = product_list;
+    storageService.get(storageService.PRODUCT).then(function(productList){
+           $scope.products = productList;
     });
 
-    utility.loadTableObject('product_category').then(function(data){
+    utility.loadTableObject(storageService.PRODUCT_CATEGORY).then(function(data){
         $scope.product_categories = data;
     });
 
-    utility.loadTableObject('uom').then(function(data){
+    utility.loadTableObject(storageService.UOM).then(function(data){
         $scope.uomList = data;
     });
 
@@ -54,11 +60,11 @@ chromeApp.controller('ProductListCtrl', function ($scope, storageService,  utili
 */
 chromeApp.controller('AddProductCtrl', function($scope, storageService, $location){
 
-    storageService.get('product_category').then(function(product_categories){
+    storageService.get(storageService.PRODUCT_CATEGORY).then(function(product_categories){
            $scope.categories = product_categories;
     });
 
-    storageService.get('uom').then(function(uomList){
+    storageService.get(storageService.UOM).then(function(uomList){
         $scope.uomList = uomList;
     });
 
@@ -68,7 +74,7 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
     $scope.saveProduct = function(){
         //TODO: implement save of product here
         if(Object.keys($scope.product).length>0){
-            storageService.insert('products', $scope.product).then(function(bool){
+            storageService.insert(storageService.PRODUCT, $scope.product).then(function(bool){
                 if(bool){
                     $scope.setMessage({message:"Data saved ", type:"success"});
                     $location.path('/main/products');
@@ -85,5 +91,16 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
     }
 });
 
+
+/**
+    ProductItemListCtrl - This handles the display of Product-Items pulled from storage.
+*/
+chromeApp.controller('ProductItemListCtrl', function($scope, storageService){
+     storageService.get(storageService.PRODUCT_ITEM).then(function(productItems){
+           $scope.productItemList = productItems;
+    });
+
+
+});
 
 

@@ -6,23 +6,27 @@ angular.module('lmisChromeApp')
     // ...
     function loadFixtures(){
         var database=[
-            'products',
-            'address',
-            'uom',
-            'uom_category',
-            'facility',
-            'programs',
-            'facility_type',
-            'employee_category',
-            'company',
-            'company_category',
-            'currency',
-            'employee',
-            'rate',
-            'storage_location_type',
-            'storage_locations',
-            'user',
-            'product_category'
+            storageService.PRODUCT,
+            storageService.ADDRESS,
+            storageService.UOM,
+            storageService.UOM_CATEGORY,
+            storageService.FACILITY,
+            storageService.PROGRAM,
+            storageService.FACILITY_TYPE,
+            storageService.EMPLOYEE_CATEGORY,
+            storageService.COMPANY,
+            storageService.COMPANY_CATEGORY,
+            storageService.CURRENCY,
+            storageService.EMPLOYEE,
+            storageService.RATE,
+            storageService.STORAGE_LOCATION_TYPE,
+            storageService.STORAGE_LOCATION,
+            storageService.USER,
+            storageService.PRODUCT_CATEGORY,
+            storageService.PRODUCT_PRESENTATION,
+            storageService.PRODUCT_FORMULATION,
+            storageService.MODE_OF_ADMINISTRATION,
+            storageService.PRODUCT_ITEM
         ]
         for(var i in database){
             loadData(database[i]);
@@ -38,7 +42,7 @@ angular.module('lmisChromeApp')
                     $http.get(file_url).success(function(data){
                         storageService.add(db_name, data);
                         //console.log(data);
-                        //loadRealatedObject(db_name);
+                        //loadRelatedObject(db_name);
 
                     }).error(function(err){
                         console.log(err);
@@ -46,7 +50,7 @@ angular.module('lmisChromeApp')
                 }
                 else{
                     console.log(db_name+" is loaded with "+test_data.length);
-                    //loadRealatedObject(db_name);
+                    //loadRelatedObject(db_name);
                 }
 
              },
@@ -57,7 +61,7 @@ angular.module('lmisChromeApp')
         }
     }
 
-    function loadRealatedObject(db_name){
+    function loadRelatedObject(db_name){
         var deferred = $q.defer();
          //TODO: add key validation and identifier type (uuid | id)
         //create a new table name by prefixing the original with 're'
@@ -90,6 +94,6 @@ angular.module('lmisChromeApp')
     // Public API here
     return {
         loadFixtures:loadFixtures,
-        loadTableObject: loadRealatedObject
+        loadTableObject: loadRelatedObject
     };
   });

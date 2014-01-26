@@ -3,7 +3,7 @@
 angular.module('lmisChromeApp')
   .controller('FacilitiesCtrl', function ($scope, storageService, utility) {
 
-    storageService.get('facility').then(function(data){
+    storageService.get(storageService.FACILITY).then(function(data){
 
          $scope.facilities = data;
     });
@@ -12,7 +12,7 @@ angular.module('lmisChromeApp')
        return created_by.username;
    }
 
-  utility.loadTableObject('facility_type').then(function(data){
+  utility.loadTableObject(storageService.FACILITY_TYPE).then(function(data){
       $scope.facility_types = data;
   });
 

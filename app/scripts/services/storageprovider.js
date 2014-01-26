@@ -3,6 +3,36 @@
 angular.module('lmisChromeApp')
   .factory('storageService', function ($q, $rootScope) {
 
+    /*
+     *  Global variables used to define table names, with this there will be one
+     *  point in the code to add and/or update local storage table names.
+     *
+     *  table names are matched to the corresponding json file at fixtures
+     *  folder that holds data used to pre-fill local storage if it is empty.
+     *
+     */
+     var product = 'products';
+     var productCategory = 'product_category';
+     var address = 'address';
+     var uom = 'uom';
+     var uomCategory = 'uom_category';
+     var facility = 'facility';
+     var program = 'programs';
+     var facilityType = 'facility_type';
+     var employeeCategory = 'employee_category';
+     var company = 'company';
+     var companyCategory = 'company_category';
+     var currency = 'currency';
+     var employee = 'employee';
+     var rate = 'rate';
+     var storageLocationType = 'storage_location_type';
+     var storageLocation = 'storage_locations';
+     var user = 'user';
+     var productPresentation = 'product_presentation';
+     var productFormulation = 'product_formulation';
+     var modeOfAdministration = 'mode_of_administration';
+     var productItem = 'product_item';
+
     /**
      * Boolean flag indicating client support for Chrome Storage
      * @private
@@ -230,7 +260,28 @@ angular.module('lmisChromeApp')
       remove: removeFromStore, // removeFromChrome,
       clear: clearFromStore, // clearChrome */
       uuid: uuid_generator,
-      insert: insert
+      insert: insert,
+      PRODUCT: product,
+      PRODUCT_CATEGORY: productCategory,
+      ADDRESS: address,
+      UOM: uom,
+      UOM_CATEGORY: uomCategory,
+      FACILITY: facility,
+      PROGRAM: program,
+      FACILITY_TYPE: facilityType,
+      EMPLOYEE_CATEGORY: employeeCategory,
+      COMPANY: company,
+      COMPANY_CATEGORY: companyCategory,
+      CURRENCY: currency,
+      EMPLOYEE: employee,
+      RATE: rate,
+      STORAGE_LOCATION_TYPE: storageLocationType,
+      STORAGE_LOCATION: storageLocation,
+      USER: user,
+      PRODUCT_PRESENTATION: productPresentation,
+      PRODUCT_FORMULATION: productFormulation,
+      MODE_OF_ADMINISTRATION: modeOfAdministration,
+      PRODUCT_ITEM: productItem
     };
 
   });
