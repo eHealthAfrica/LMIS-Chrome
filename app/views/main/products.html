@@ -31,7 +31,8 @@
 <div class="row" ng-controller="ProductListCtrl">
     <div class="col-sm-12">
         <div>
-            <label for="query" ng-model="sup">Search: <input  ng-model="query" id="query" class="form_control"/></label>
+            <input  ng-model="query" id="query" class="form_control"/>
+            <span class="glyphicon glyphicon-search"></span>
         </div>
          <br/>
         <div class="panel panel-default">
@@ -60,7 +61,7 @@
                             <td>{{ product_categories[product.category].name  }}</td>
                             <td>{{ uomList[product.base_uom].name }}</td>
                             <td>{{ product.description }}</td>
-                            <td>{{ product.modified | date:'dd-MM-yyyy h:mma'}}</td>
+                            <td>{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
                             <td>{{ product.active }}</td>
                         </tr>
                     </tbody>

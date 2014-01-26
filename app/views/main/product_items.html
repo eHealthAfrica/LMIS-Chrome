@@ -8,7 +8,8 @@
 <div class="row" ng-controller="ProductItemListCtrl">
     <div class="col-sm-12">
         <div>
-            <label for="query" ng-model="sup">Search: <input  ng-model="query" id="query" class="form_control"/></label>
+            <input  ng-model="query" id="query" class="form_control"/>
+            <span class="glyphicon glyphicon-search"></span>
         </div>
          <br/>
         <div class="panel panel-default">
@@ -47,7 +48,7 @@
                             <td>{{ productItem.formulation }}</td>
                             <td>{{ productItem.mode_of_use }}</td>
                             <td>{{ productItem.packed_volume }} {{ productItem.volume_uom }}</td>
-                            <td>{{ productItem.diluent_per_volume }} {{ productItem.volume_uom }}</td>
+                            <td>{{ productItem.diluent_per_volume }}</td>
                             <td>{{ productItem.price_per_unit }} {{ productItem.currency }} </td>
                             <td>{{ productItem.description }}</td>
                             <td>{{ productItem.fund_sources}}</td>

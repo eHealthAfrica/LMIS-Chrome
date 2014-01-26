@@ -100,7 +100,23 @@ chromeApp.controller('ProductItemListCtrl', function($scope, storageService){
            $scope.productItemList = productItems;
     });
 
-
 });
 
+
+/**
+ *  AddProductItemCtrl - This handles the addition of product items
+ *
+ *
+ */
+ chromeApp.controller('AddProductItemCtrl', function($scope, storageService){
+
+    storageService.get(storageService.PRODUCT).then(function(productList){
+           $scope.products = productList;
+    });
+
+    storageService.get(storageService.PRODUCT_PRESENTATION).then(function(presentationList){
+           $scope.presentations = presentationList;
+    });
+
+ });
 

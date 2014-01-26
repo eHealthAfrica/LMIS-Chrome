@@ -7,9 +7,75 @@
 
             <div class="panel-body">
 
-                <!-- enter product item form here -->
+                <!-- used to show form submission error or success message -->
+                <div id="messages" ng-show="message">{{ message }}</div>
+                <br/>
 
-             </div>
+                <form ng-submit="saveProductItem()">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="batchNo">Batch No</label>
+                                <input class="form-control" type="text" name="batchNo" id="batchNo"
+                                       ng-model="productItem.batch_no" placeholder="e.g XD456-YU, 1234567">
+                                <span ng-show="errorName">{{ errorName }}</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="product">Product</label>
+                                <select id="product" class="form-control" ng-model="productItem.product">
+                                    <option value="">-- select product --</option>
+                                    <option ng-repeat="product in products" value="{{ product.uuid }}">
+                                        {{ product.name }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="presentation">Presentation</label>
+                                <select id="presentation" class="form-control" ng-model="productItem.presentation">
+                                    <option value="">-- select product item presentation --</option>
+                                    <option ng-repeat="presentation in presentations" value="{{ presentation.uuid }}">
+                                        {{ presentation.name }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="baseUOM">Product Unit Of Measurement</label>
+                                <select id="baseUOM" class="form-control" ng-model="product.base_uom">
+                                    <option value="">-- select product unit of measurement --</option>
+                                    <option ng-repeat="uom in uomList" value="{{uom.uuid}}">
+                                        {{uom.name}}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productDesc">Product Descrption</label>
+                                <input class="form-control" type="text" name="code" id="productDesc"
+                                       ng-model="product.description"
+                                       placeholder="A vaccine against tuberculosis, prepared from a strain of the attenuated live Mycobacterium bovis">
+                            </div>
+
+
+                             <div class="form-group">
+                                <label for="active">Is Active:
+                                    <input type="checkbox" ng-model="product.active" id="active">
+                                </label>
+
+                             </div>
+
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
+
+                            <pre>
+		                        {{ product }}
+	                        </pre>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
