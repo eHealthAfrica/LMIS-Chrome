@@ -39,7 +39,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="productItem in productItemList | filter:query"
-                            class="{{ highlightExpiredProductItem(productItem) }}">
+                            class="{{ highlightExpiredProductItem(productItem.expiration_date) }}">
                             <td>{{ $index + 1 }}</td>
                             <td>{{ productItem.batch_no }} </td>
                             <td>{{ productItem.product }}</td>
