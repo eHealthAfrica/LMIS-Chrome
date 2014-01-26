@@ -12,6 +12,7 @@
                 <br/>
 
                 <form ng-submit="saveProductItem()">
+
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -73,7 +74,8 @@
                                            datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
                                            ng-required="true" close-text="Close" />
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        <button class="btn btn-default" ng-click="open($event)">
+                                            <i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
                                 </p>
                             </div>
@@ -88,22 +90,63 @@
                                 </select>
                             </div>
 
-
-
                             <div class="form-group">
-                                <label for="productDesc">Product Descrption</label>
-                                <input class="form-control" type="text" name="code" id="productDesc"
-                                       ng-model="product.description"
-                                       placeholder="A vaccine against tuberculosis, prepared from a strain of the attenuated live Mycobacterium bovis">
+                                <label for="formulation">Formulation</label>
+                                <select id="formulation" class="form-control" ng-model="productItem.formulation">
+                                    <option value="">-- select product item formulation --</option>
+                                    <option ng-repeat="formulation in formulations" value="{{ formulation.uuid }}">
+                                        {{ formulation.name }}
+                                    </option>
+                                </select>
                             </div>
 
+                            <div class="form-group">
+                                <label for="productItemDesc">Descrption</label>
+                                <input class="form-control" type="text" name="code" id="productItemDesc"
+                                       ng-model="productItem.description"
+                                       placeholder="liquid form of OPV received from WHO">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="packedVolume">Packed Volume</label>
+                                <input class="form-control" type="text" name="code" id="packedVolume"
+                                       ng-model="productItem.packed_volume"
+                                       placeholder="e.g 0.12, 2.1">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="diluentPackedPerVolume">Diluent Packed Per Volume</label>
+                                <input class="form-control" type="text" name="code" id="diluentPackedPerVolume"
+                                       ng-model="productItem.diluent_per_volume"
+                                       placeholder="e.g 0.12, 2.1">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="volumeUOM">Volume Unit of Measurement</label>
+                                <select id="volumeUOM" class="form-control" ng-model="productItem.volume_uom">
+                                    <option value="">-- select volume uom --</option>
+                                    <option ng-repeat="uom in uomList" value="{{ uom.uuid }}">
+                                        {{ uom.name }}
+                                    </option>
+                                </select>
+                            </div>
 
                              <div class="form-group">
                                 <label for="active">Is Active:
-                                    <input type="checkbox" ng-model="product.active" id="active">
+                                    <input type="checkbox" ng-model="productItem.active" id="active" selected="true"/>
                                 </label>
 
                              </div>
+
+                             <div class="form-group">
+                                <label for="fundSource">Fund Source</label>
+                                <select id="fundSource" class="form-control" ng-model="productItem.fund_sources">
+                                    <option value="">-- select funding source --</option>
+                                    <option ng-repeat="partner in companies" value="{{partner.uuid }}">
+                                        {{ partner.name }}
+                                    </option>
+                                </select>
+                            </div>
 
                             <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
 

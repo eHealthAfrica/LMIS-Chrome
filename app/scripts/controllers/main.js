@@ -141,6 +141,14 @@ chromeApp.controller('ProductItemListCtrl', function($scope, storageService){
            $scope.modes = modeOfAdministrationList;
     });
 
+    storageService.get(storageService.PRODUCT_FORMULATION).then(function(formulationList){
+            //TODO: update formulations fixture
+           $scope.formulations = formulationList;
+    });
+
+    storageService.get(storageService.UOM).then(function(uomList){
+        $scope.uomList = uomList;
+    });
 
 
 

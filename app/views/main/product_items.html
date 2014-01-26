@@ -47,9 +47,9 @@
                             <td>{{ productItem.presentation }}</td>
                             <td>{{ productItem.formulation }}</td>
                             <td>{{ productItem.mode_of_use }}</td>
-                            <td>{{ productItem.packed_volume }} {{ productItem.volume_uom }}</td>
-                            <td>{{ productItem.diluent_per_volume }}</td>
-                            <td>{{ productItem.price_per_unit }} {{ productItem.currency }} </td>
+                            <td>{{ productItem.packed_volume +' '+ productItem.volume_uom }}</td>
+                            <td>{{ productItem.diluent_per_volume +' '+ productItem.volume_uom}}</td>
+                            <td>{{ productItem.price_currency +' '+ productItem.price_per_unit }} </td>
                             <td>{{ productItem.description }}</td>
                             <td>{{ productItem.fund_sources}}</td>
                             <td>{{ productItem.active }}</td>
