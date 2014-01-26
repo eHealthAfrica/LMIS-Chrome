@@ -67,6 +67,9 @@ chromeApp.controller('ProductListCtrl', function ($scope, storageService, utilit
 */
 chromeApp.controller('AddProductCtrl', function($scope, storageService, $location){
 
+    //create a blank object tha will be used to hold product form info
+    $scope.product = {};
+
     storageService.get(storageService.PRODUCT_CATEGORY).then(function(product_categories){
            $scope.categories = product_categories;
     });
@@ -74,9 +77,6 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
     storageService.get(storageService.UOM).then(function(uomList){
         $scope.uomList = uomList;
     });
-
-    //create a blank object tha will be used to hold product form info
-    $scope.product = {};
 
     $scope.saveProduct = function(){
         //TODO: implement save of product here
@@ -96,6 +96,8 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
         }
 
     }
+
+
 });
 
 
@@ -116,6 +118,8 @@ chromeApp.controller('ProductItemListCtrl', function($scope, storageService){
  *
  */
  chromeApp.controller('AddProductItemCtrl', function($scope, storageService){
+    $scope.productItem = {};
+    $scope.productItem.active = true;//default is true
 
     storageService.get(storageService.PRODUCT).then(function(productList){
            $scope.products = productList;
@@ -149,6 +153,14 @@ chromeApp.controller('ProductItemListCtrl', function($scope, storageService){
     storageService.get(storageService.UOM).then(function(uomList){
         $scope.uomList = uomList;
     });
+
+    /**
+     *  This function , "save", when triggered saves the product item form data to local storage.
+     */
+
+     $scope.save = function(){
+        console.log($scope.productItem)
+     };
 
 
 
@@ -193,9 +205,6 @@ chromeApp.controller('ProductItemListCtrl', function($scope, storageService){
     };
 
     $scope.format = 'yyyy-MM-dd';
-
-
-
 
  });
 

@@ -1,5 +1,5 @@
-<form novalidate ng-submit="save()" ng-controller="AddProductItemCtrl">
-    <div class="row">
+<div class="row">
+    <form ng-submit="save()" ng-controller="AddProductItemCtrl">
         <div class="col-sm-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -13,7 +13,7 @@
                             <div class="form-group">
                                 <label for="batchNo">Batch No</label>
                                 <input class="form-control" type="text" name="batchNo" id="batchNo"
-                                           ng-model="productItem.batch_no" placeholder="e.g XD456-YU, 1234567">
+                                           ng-model="productItem.batch_no" placeholder="e.g XD456-YU, 1234567" required>
                                 <span ng-show="errorName">{{ errorName }}</span>
                             </div>
 
@@ -29,14 +29,15 @@
 
                             <div class="form-group">
                                     <label for="packedVolume">Packed Volume</label>
-                                    <input class="form-control" type="text" name="code" id="packedVolume"
+                                    <input class="form-control" type="number" name="code" id="packedVolume"
                                            ng-model="productItem.packed_volume"
-                                           placeholder="e.g 0.12, 2.1">
+                                           placeholder="e.g 0.12, 2.1"/>
                             </div>
 
                             <div class="form-group">
                                     <label for="manufacturer">Manufacturer</label>
-                                    <select id="manufacturer" class="form-control" ng-model="productItem.manufacturer">
+                                    <select id="manufacturer" class="form-control" ng-model="productItem.manufacturer"
+                                            required>
                                         <option value="">-- select manufacturer --</option>
                                         <option ng-repeat="company in companies" value="{{company.uuid}}">
                                             {{company.name}}
@@ -60,7 +61,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="product">Product</label>
-                                <select id="product" class="form-control" ng-model="productItem.product">
+                                <select id="product" class="form-control" ng-model="productItem.product" required>
                                     <option value="">-- select product --</option>
                                     <option ng-repeat="product in products" value="{{ product.uuid }}">
                                         {{ product.name }}
@@ -80,14 +81,14 @@
 
                             <div class="form-group">
                                 <label for="diluentPackedPerVolume">Diluent Packed Per Volume</label>
-                                <input class="form-control" type="text" name="code" id="diluentPackedPerVolume"
+                                <input class="form-control" type="number" name="code" id="diluentPackedPerVolume"
                                            ng-model="productItem.diluent_per_volume"
                                            placeholder="e.g 0.12, 2.1">
                             </div>
 
                              <div class="form-group">
                                     <label for="pricePerUnit">Price Per Unit</label>
-                                    <input class="form-control" type="text" name="code" id="pricePerUnit"
+                                    <input class="form-control" type="number" name="code" id="pricePerUnit"
                                            ng-model="productItem.price_per_unit">
                              </div>
                             <div class="form-group">
@@ -95,7 +96,6 @@
                                         <input type="checkbox" ng-model="productItem.active" id="active"
                                                ng-checked="true"/>
                                     </label>
-
                             </div>
                         </div>
                         <!-- end second column-->
@@ -103,18 +103,10 @@
                         <!--  start third column-->
                         <div class="col-sm-4">
                             <div class="form-group">
-                                    <label for="expirationDate">Expiration Date</label>
-                                    <p class="input-group">
-                                        <input id="expirationDate" type="text" class="form-control"
-                                               datepicker-popup="{{format}}" ng-model="productItem.expiration_date"
-                                               is-open="opened" min="minDate" max="{{ maxDate }}"
-                                               datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
-                                               ng-required="true" close-text="Close" />
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" ng-click="open($event)">
-                                                <i class="glyphicon glyphicon-calendar"></i></button>
-                                        </span>
-                                    </p>
+                                    <label for="expirationDate">Expiration Date
+                                        <i class="glyphicon glyphicon-calendar"></i></label>
+                                    <input id="expirationDate" type="date" class="form-control" ng-required="true"
+                                                ng-model="productItem.expiration_date"/>
                             </div>
 
                             <div class="form-group">
@@ -150,12 +142,13 @@
                         <!--  end third column-->
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                             <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
                     </div>
 
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
+
