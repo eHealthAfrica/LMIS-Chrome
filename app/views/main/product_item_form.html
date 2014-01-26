@@ -42,14 +42,53 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="baseUOM">Product Unit Of Measurement</label>
-                                <select id="baseUOM" class="form-control" ng-model="product.base_uom">
-                                    <option value="">-- select product unit of measurement --</option>
-                                    <option ng-repeat="uom in uomList" value="{{uom.uuid}}">
-                                        {{uom.name}}
+                                <label for="manufacturer">Manufacturer</label>
+                                <select id="manufacturer" class="form-control" ng-model="productItem.manufacturer">
+                                    <option value="">-- select manufacturer --</option>
+                                    <option ng-repeat="company in companies" value="{{company.uuid}}">
+                                        {{company.name}}
                                     </option>
                                 </select>
                             </div>
+
+                            <div class="form-group">
+                                <label for="pricePerUnit">Price Per Unit</label>
+                                <input class="form-control" type="text" name="code" id="pricePerUnit"
+                                       ng-model="productItem.price_per_unit">
+
+                                <select id="currency" class="form-control" ng-model="productItem.currency">
+                                    <option value="">-- select price currency --</option>
+                                    <option ng-repeat="currency in currencies" value="{{currency.uuid}}">
+                                        {{currency.name}}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="expirationDate">Expiration Date</label>
+                                <p class="input-group">
+                                    <input id="expirationDate" type="text" class="form-control"
+                                           datepicker-popup="{{format}}" ng-model="productItem.expiration_date"
+                                           is-open="opened" min="minDate" max="{{ maxDate }}"
+                                           datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                           ng-required="true" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="modeOfAdministration">Mode of Administration</label>
+                                <select id="modeOfAdministration" class="form-control" ng-model="productItem.mode_of_use ">
+                                    <option value="">-- select mode of administration --</option>
+                                    <option ng-repeat="mode in modes" value="{{ mode.uuid }}">
+                                        {{ mode.name }}
+                                    </option>
+                                </select>
+                            </div>
+
+
 
                             <div class="form-group">
                                 <label for="productDesc">Product Descrption</label>
@@ -69,7 +108,7 @@
                             <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
 
                             <pre>
-		                        {{ product }}
+		                        {{ productItem }}
 	                        </pre>
 
                         </div>
