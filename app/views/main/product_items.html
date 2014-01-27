@@ -13,20 +13,24 @@
         </div>
     </div>
 </div>
+
 <div class="row" ng-controller="ProductItemListCtrl">
-    <div class="col-sm-12">
-        <div>
-            <input  ng-model="query" id="query" class="form_control" size="55"/>
+    <div>
+            <input  ng-model="query" id="query" size="55"/>
             <span class="glyphicon glyphicon-search"></span>
         </div>
-         <br/>
+    <br/>
+    <div class="col-sm-18">
         <div class="panel panel-default">
+
             <div class="panel-heading">
-                <h3 class="panel-title"><i class="glyphicon glyphicon-list"></i> Product Items</h3>
+                <h3 class="panel-title">
+                    <i class="glyphicon glyphicon-list"></i> Product Items
+                </h3>
             </div>
 
             <div class="scrollable-container">
-                <table  class="table table-condensed table-bordered table-hover oversize-table">
+                <table  class="table table-condensed table-hover table-bordered oversize-table">
                     <thead>
                         <tr>
                             <th>#</th>

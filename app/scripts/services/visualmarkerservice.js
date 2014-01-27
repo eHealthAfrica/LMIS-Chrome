@@ -19,7 +19,7 @@ angular.module('lmisChromeApp')
         var currentDate = new Date();
         var expirationDate = new Date(expirationDate);
         if(currentDate.getTime() > expirationDate.getTime()){
-            return "expired-product-item";
+            return "danger_alert";
         }
         return '';
     };
