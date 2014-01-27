@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('storageService', function ($q, $rootScope) {
+  .factory('storageService', function ($q, $rootScope, $http) {
 
     /*
      *  Global variables used to define table names, with this there will be one
@@ -18,7 +18,7 @@ angular.module('lmisChromeApp')
      var uomCategory = 'uom_category';
      var facility = 'facility';
      var program = 'programs';
-     var programItems = 'program_items';
+     var programProducts = 'program_products';
      var facilityType = 'facility_type';
      var employeeCategory = 'employee_category';
      var company = 'company';
@@ -211,7 +211,7 @@ angular.module('lmisChromeApp')
      * add new or update database table row.
      *
      * @return {promise} promise to access data from local storage.
-     * @public
+     * @private
      */
      function insert(table, obj){
        //TODO: check for uuid. uuid exists? do an update : new entry
@@ -249,7 +249,104 @@ angular.module('lmisChromeApp')
        return deferred.promise;
     }
 
+/**
+* loads fixtures on app startup
+* @param void
+* @returns {void}
+*/
+    function loadFixtures(){
+        var database=[
+            product,
+            address,
+            uom,
+            uomCategory,
+            facility,
+            program,
+            programProducts,
+            facilityType,
+            employeeCategory,
+            company,
+            companyCategory,
+            currency,
+            employee,
+            rate,
+            storageLocationType,
+            storageLocation,
+            user,
+            productCategory,
+            productPresentation,
+            productFormulation,
+            modeOfAdministration,
+            productItem
+        ]
+        for(var i in database){
+            loadData(database[i]);
+        }
+        function loadData(db_name){
+            var test_data = [];
 
+             getFromStore(db_name).then(function(data){
+                test_data = data;
+                if(test_data.length == 0 || test_data.length == undefined){
+
+                   var file_url = 'scripts/fixtures/'+db_name+'.json';
+                    $http.get(file_url).success(function(data){
+                        addToStore(db_name, data);
+                        //console.log(data);
+                        //loadRelatedObject(db_name);
+
+                    }).error(function(err){
+                        console.log(err);
+                    });
+                }
+                else{
+                    console.log(db_name+" is loaded with "+test_data.length);
+                    //loadRelatedObject(db_name);
+                }
+
+             },
+                function(reason){
+                   //console.log(reason);
+                }
+            );
+        }
+    }
+
+/**
+ * coveverts table array to object using uuid as key for data row,
+ * also appends array index (array_index) to each row
+ * @param db_name
+ * @returns {promise}
+ */
+    function loadRelatedObject(db_name){
+        var deferred = $q.defer();
+        //create a new table name by prefixing the original with 're'
+        var related_name = 're_'+db_name;
+        //when called get data from storage and create an object using uuid as key
+        getFromStore(db_name).then(function(data){
+            if(data.length != 0 && data.length != undefined){
+                //load table data into object
+                var related_object = {};
+                for(var k in data){
+                    if(Object.prototype.toString.call(data[k]) === '[object Object]'){
+                        //var keys = Object.keys(data[k]);
+                        if(data[k].uuid != undefined){
+                            data[k]["array_index"] = k;
+                            related_object[data[k].uuid]=data[k];
+                        }
+                        else if(data[k].id != undefined){
+
+                            related_object[data[k].id]=data[k];
+                        }
+                    }
+                }
+                //store new object in local storage
+                addToStore(related_name, related_object);
+                deferred.resolve(related_object);
+            }
+        });
+        return deferred.promise;
+    }
     /**
      * Test the client's support for storing values in the local store.
      *
@@ -277,6 +374,8 @@ angular.module('lmisChromeApp')
       remove: removeFromStore, // removeFromChrome,
       clear: clearFromStore, // clearChrome */
       uuid: uuid_generator,
+      loadFixtures:loadFixtures,
+      loadTableObject: loadRelatedObject,
       insert: insert,
       PRODUCT: product,
       PRODUCT_CATEGORY: productCategory,
@@ -285,7 +384,7 @@ angular.module('lmisChromeApp')
       UOM_CATEGORY: uomCategory,
       FACILITY: facility,
       PROGRAM: program,
-      PROGRAM_ITEMS: programItems,
+      PROGRAM_PRODUCTS: programProducts,
       FACILITY_TYPE: facilityType,
       EMPLOYEE_CATEGORY: employeeCategory,
       COMPANY: company,
