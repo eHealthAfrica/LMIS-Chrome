@@ -11,7 +11,7 @@
     font-size: 8px;
 }
 .scrollable_x{
-    /*width: 200px;*/
+    width: 2000px;
     overflow-x: scroll;
 }
 .product_items_container{
