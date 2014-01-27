@@ -12,6 +12,7 @@ angular.module('lmisChromeApp')
             storageService.UOM_CATEGORY,
             storageService.FACILITY,
             storageService.PROGRAM,
+            storageService.PROGRAM_ITEMS,
             storageService.FACILITY_TYPE,
             storageService.EMPLOYEE_CATEGORY,
             storageService.COMPANY,
@@ -75,7 +76,7 @@ angular.module('lmisChromeApp')
                     if(Object.prototype.toString.call(data[k]) === '[object Object]'){
                         //var keys = Object.keys(data[k]);
                         if(data[k].uuid != undefined){
-
+                            data[k]["array_index"] = k;
                             related_object[data[k].uuid]=data[k];
                         }
                         else if(data[k].id != undefined){

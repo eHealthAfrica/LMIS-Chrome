@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="btn-group">
+            <a href="#/main/program_form" class="btn btn-default"><i class="icon-plus-sign"></i>Add Program</a>
+        </div>
+    </div>
+</div>
+<div class="row" ng-controller="ProgramsCtrl" >
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">Programs</div>
+            </div>
+            <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Parent Program</th>
+                        <th>Active</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in programList">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.code }}</td>
+                        <td>{{ row.parent }}</td>
+                        <td class="text-center">
+                            <span ng-show="row.active"><i class="icon-ok-sign"></i></span>
+                            <span ng-hide="row.active"><i class="icon-remove-sign"></i></span>
+                        </td>
+                        <td class="text-center">
+                            <a href="#/main/program_form?uuid={{ row.uuid }}"> <i class="icon-edit"></i> </a>
+                            <a ng-click="removeProgram( row.uuid )" href="#/main/programs"> <i class="icon-remove-sign"></i> </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

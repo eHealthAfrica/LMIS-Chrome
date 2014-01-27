@@ -130,6 +130,76 @@ chromeApp.controller('ProductItemListCtrl', function($scope, storageService, vis
     }
 
 });
+/**
+ Program
+*/
+chromeApp.controller('ProgramsCtrl', function($scope, storageService, $location){
+     var url_arr = $location.path().replace(/\/$/,'').replace(/^\//,'').split('/');
+     var bc = [];
+     if(url_arr.indexOf('programs') != -1){
+            bc =
+            [
+                {name:"Programs", "link":''},
+
+            ];
+      }
+    $scope.addbreadcrumbs(bc);
+     storageService.get(storageService.PROGRAM).then(function(programs){
+           $scope.programList = programs;
+    });
+
+
+});
+
+chromeApp.controller('programFormCtrl', function($scope, storageService, $location, utility){
+     var url_arr = $location.path().replace(/\/$/,'').replace(/^\//,'').split('/');
+     var bc = [];
+     if(url_arr.indexOf('program_form') != -1){
+            bc =
+            [
+                {name:"Programs", link:"#/main/programs"},
+                {name:"Form", "link":''},
+
+            ];
+      }
+
+    $scope.addbreadcrumbs(bc);
+    $scope.program = {};
+    $scope.uuid = ($location.search()).uuid;
+
+    if($scope.uuid){
+        utility.loadTableObject(storageService.PROGRAM).then(function(programs){
+            $scope.program = programs[$scope.uuid];
+        });
+
+    }
+
+    $scope.saveProgram = function(){
+        if(Object.keys($scope.program).length>0){
+            storageService.insert(storageService.PROGRAM, $scope.program).then(function(bool){
+                var msg = ($scope.uuid)? {type:"success", message:"Program update was successful"}:{type:"success", message:"Program entry was successful"}
+                $scope.setMessage(msg);
+                $location.path("/main/programs");
+            });
+        }
+        else{
+            $scope.setMessage({type:"danger", message:"Can't save a blank form"})
+        }
+    }
+    storageService.get(storageService.PROGRAM).then(function(programs){
+           $scope.programList = programs;
+    });
+    $scope.removeProgram = function(uuid){
+        console.log(uuid);
+        utility.loadTableObject(storageService.PROGRAM).then(function(programs){
+            $scope.program = programs[uuid];
+            var index = $scope.program.array_index;
+            $scope.programList.splice(index,1);
+            storageService.add(storageService.PROGRAM, $scope.programList);
+        });
+
+    }
+});
 
 
 /**
