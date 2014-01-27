@@ -11,7 +11,7 @@
     font-size: 8px;
 }
 .scrollable_x{
-    width: 2000px;
+    /*width: 200px;*/
     overflow-x: scroll;
 }
 
@@ -26,8 +26,20 @@
 }
 
 .expired-product-item{
-    background-color: #FF9494;
+    /* background-color: #FF9494; */
+    color: #B94A48;
+    background-color: #F2DEDE;
+    border-color: #EED3D7;
+    font-weight: bold;
 }
 .about-to-expire{
     background-color: #FFD300;
+}
+.green-glyphicon{
+    background-color: #FFFFFF;
+    color: green;
+}
+.red-glyphicon{
+    background-color: #FFFFFF;
+    color: red;
 }

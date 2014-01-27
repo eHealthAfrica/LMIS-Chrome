@@ -1,20 +1,28 @@
 <div class="row">
+   <ul class="breadcrumb">
+        <li><a href="#/main/"><i class="icon-home"> Home</i></a></li>
+        <li><a href="#/main/products">Product</a></li>
+        <li class="active">Product Item</li>
+   </ul>
+</div>
+
+<div class="row">
     <div class="col-sm-12">
         <div class="btn-group">
-            <a href="#/main/product_item_form" class="btn btn-default"><i class="icon-plus-sign"></i>Add Product Item</a>
+            <a href="#/main/product_item_form" class="btn btn-default"><i class="icon-plus-sign"></i> Add Product Item</a>
         </div>
     </div>
 </div>
 <div class="row" ng-controller="ProductItemListCtrl">
     <div class="col-sm-12">
         <div>
-            <input  ng-model="query" id="query" class="form_control"/>
+            <input  ng-model="query" id="query" class="form_control" size="55"/>
             <span class="glyphicon glyphicon-search"></span>
         </div>
          <br/>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Product Items</h3>
+                <h3 class="panel-title"><i class="glyphicon glyphicon-list"></i> Product Items</h3>
             </div>
 
             <div class="scrollable-container">
