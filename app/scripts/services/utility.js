@@ -12,7 +12,7 @@ angular.module('lmisChromeApp')
             storageService.UOM_CATEGORY,
             storageService.FACILITY,
             storageService.PROGRAM,
-            storageService.PROGRAM_ITEMS,
+            storageService.PROGRAM_PRODUCTS,
             storageService.FACILITY_TYPE,
             storageService.EMPLOYEE_CATEGORY,
             storageService.COMPANY,
