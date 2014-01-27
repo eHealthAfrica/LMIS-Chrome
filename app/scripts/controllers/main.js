@@ -13,11 +13,18 @@ chromeApp.controller('MainCtrl', function ($scope, storageService, $location ) {
                     {name:"Product", "link":'#/main/products'},
                     {name:"Product Item", "link":''}
                  ];
+        }else if(url_arr.indexOf('product_item_form') != -1){
+            bc =
+            [
+                {name:"Product", "link":'#/main/products'},
+                {name:"Product Item", "link":'#main/product_items'},
+                {name:"Add Product Item", "link":''}
+            ];
         }
         else if(url_arr.indexOf('product_form') != -1){
             bc =
             [
-                {name:"Products", "link":'#/main/products'},
+                {name:"Product", "link":'#/main/products'},
                 {name:"Add Product", "link":''}
             ];
         }
@@ -60,6 +67,9 @@ chromeApp.controller('ProductListCtrl', function ($scope, storageService, utilit
 */
 chromeApp.controller('AddProductCtrl', function($scope, storageService, $location){
 
+    //create a blank object tha will be used to hold product form info
+    $scope.product = {};
+
     storageService.get(storageService.PRODUCT_CATEGORY).then(function(product_categories){
            $scope.categories = product_categories;
     });
@@ -67,9 +77,6 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
     storageService.get(storageService.UOM).then(function(uomList){
         $scope.uomList = uomList;
     });
-
-    //create a blank object tha will be used to hold product form info
-    $scope.product = {};
 
     $scope.saveProduct = function(){
         //TODO: implement save of product here
@@ -89,17 +96,38 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
         }
 
     }
+
+
 });
 
 
 /**
     ProductItemListCtrl - This handles the display of Product-Items pulled from storage.
 */
-chromeApp.controller('ProductItemListCtrl', function($scope, storageService){
+chromeApp.controller('ProductItemListCtrl', function($scope, storageService, visualMarkerService){
      storageService.get(storageService.PRODUCT_ITEM).then(function(productItems){
            $scope.productItemList = productItems;
     });
 
+    $scope.highlightExpiredProductItem = visualMarkerService.getExpiredCSS
+
+    /*function(productItem){
+        //TODO: checking for expired date to utility service or a service cause it will be used at different places
+
+        var currentDate = new Date();
+        var expirationDate = new Date(productItem.expiration_date);
+       console.log(currentDate.getTime());
+       console.log();
+        if(currentDate.getTime() < expirationDate.getTime()){
+            return "expired-product-item";
+        }
+    };
+    */
+
+    $scope.highlightAboutToExpired = function(){
+         //TODO: checking for expired date to utility service or a service cause it will be used at different places
+        return "about-to-expire";
+    }
 
 });
 /**
@@ -173,4 +201,100 @@ chromeApp.controller('programFormCtrl', function($scope, storageService, $locati
     }
 });
 
+
+/**
+ *  AddProductItemCtrl - This handles the addition of product items
+ *
+ *
+ */
+ chromeApp.controller('AddProductItemCtrl', function($scope, storageService){
+    $scope.productItem = {};
+    $scope.productItem.active = true;//default is true
+
+    storageService.get(storageService.PRODUCT).then(function(productList){
+           $scope.products = productList;
+    });
+
+    storageService.get(storageService.PRODUCT_PRESENTATION).then(function(presentationList){
+           $scope.presentations = presentationList;
+    });
+
+    storageService.get(storageService.COMPANY).then(function(companyList){
+           $scope.companies = companyList;
+    });
+
+    storageService.get(storageService.CURRENCY).then(function(currencyList){
+           $scope.currencies = currencyList;
+    });
+
+    storageService.get(storageService.CURRENCY).then(function(currencyList){
+           $scope.currencies = currencyList;
+    });
+
+    storageService.get(storageService.MODE_OF_ADMINISTRATION).then(function(modeOfAdministrationList){
+           $scope.modes = modeOfAdministrationList;
+    });
+
+    storageService.get(storageService.PRODUCT_FORMULATION).then(function(formulationList){
+            //TODO: update formulations fixture
+           $scope.formulations = formulationList;
+    });
+
+    storageService.get(storageService.UOM).then(function(uomList){
+        $scope.uomList = uomList;
+    });
+
+    /**
+     *  This function , "save", when triggered saves the product item form data to local storage.
+     */
+
+     $scope.save = function(){
+        console.log($scope.productItem)
+     };
+
+
+
+    //expiration date picker UI parameters
+    $scope.maxDate = "'2050-12-31'";
+
+    $scope.today = function() {
+        $scope.dt = new Date();
+    };
+    $scope.today();
+
+    $scope.showWeeks = true;
+
+    $scope.toggleWeeks = function () {
+        $scope.showWeeks = ! $scope.showWeeks;
+    };
+
+    $scope.clear = function () {
+        $scope.dt = null;
+    };
+
+    // Disable weekend selection
+    $scope.disabled = function(date, mode) {
+        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+    };
+
+    $scope.toggleMin = function() {
+        $scope.minDate = ( $scope.minDate ) ? null : new Date();
+    };
+    $scope.toggleMin();
+
+    $scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened = true;
+    };
+
+    $scope.dateOptions = {
+        'year-format': "'yyyy'",
+        'starting-day': 1
+    };
+
+    $scope.format = 'yyyy-MM-dd';
+
+ });
 

@@ -1,16 +1,154 @@
-<div class="row" ng-controller="AddProductItemCtrl">
-    <div class="col-sm-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">Add Product Item</h4>
+<div class="row">
+    <form name="addProductItemForm" ng-submit="save()" ng-controller="AddProductItemCtrl">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Add Product Item</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+
+                        <!-- start first column-->
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="batchNo">Batch No</label>
+                                <input class="form-control" type="text" name="batchNo" id="batchNo"
+                                           ng-model="productItem.batch_no" placeholder="e.g XD456-YU, 1234567" required>
+                                <span ng-show="errorName">{{ errorName }}</span>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="formulation">Formulation</label>
+                                    <select id="formulation" class="form-control" ng-model="productItem.formulation">
+                                        <option value="">-- select product item formulation --</option>
+                                        <option ng-repeat="formulation in formulations" value="{{ formulation.uuid }}">
+                                            {{ formulation.name }}
+                                        </option>
+                                    </select>
+                             </div>
+
+                            <div class="form-group">
+                                    <label for="packedVolume">Packed Volume</label>
+                                    <input class="form-control" type="number" name="code" id="packedVolume"
+                                           ng-model="productItem.packed_volume"
+                                           placeholder="e.g 0.12, 2.1"/>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="manufacturer">Manufacturer</label>
+                                    <select id="manufacturer" class="form-control" ng-model="productItem.manufacturer"
+                                            required>
+                                        <option value="">-- select manufacturer --</option>
+                                        <option ng-repeat="company in companies" value="{{company.uuid}}">
+                                            {{company.name}}
+                                        </option>
+                                    </select>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="fundSource">Fund Source</label>
+                                    <select id="fundSource" class="form-control" ng-model="productItem.fund_sources">
+                                        <option value="">-- select funding source --</option>
+                                        <option ng-repeat="partner in companies" value="{{partner.uuid }}">
+                                            {{ partner.name }}
+                                        </option>
+                                    </select>
+                            </div>
+                        </div>
+                        <!-- end first column-->
+
+                        <!-- Start second column-->
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="product">Product</label>
+                                <select id="product" class="form-control" ng-model="productItem.product" required>
+                                    <option value="">-- select product --</option>
+                                    <option ng-repeat="product in products" value="{{ product.uuid }}">
+                                        {{ product.name }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="presentation">Presentation</label>
+                                <select id="presentation" class="form-control" ng-model="productItem.presentation">
+                                    <option value="">-- select product item presentation --</option>
+                                    <option ng-repeat="presentation in presentations" value="{{ presentation.uuid }}">
+                                        {{ presentation.name }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="diluentPackedPerVolume">Diluent Packed Per Volume</label>
+                                <input class="form-control" type="number" name="code" id="diluentPackedPerVolume"
+                                           ng-model="productItem.diluent_per_volume"
+                                           placeholder="e.g 0.12, 2.1">
+                            </div>
+
+                             <div class="form-group">
+                                    <label for="pricePerUnit">Price Per Unit</label>
+                                    <input class="form-control" type="number" name="code" id="pricePerUnit"
+                                           ng-model="productItem.price_per_unit">
+                             </div>
+                            <div class="form-group">
+                                    <label for="active">Is Active:
+                                        <input type="checkbox" ng-model="productItem.active" id="active"
+                                               ng-checked="true"/>
+                                    </label>
+                            </div>
+                        </div>
+                        <!-- end second column-->
+
+                        <!--  start third column-->
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                    <label for="expirationDate">Expiration Date
+                                        <i class="glyphicon glyphicon-calendar"></i></label>
+                                    <input id="expirationDate" type="date" class="form-control" ng-required="true"
+                                                ng-model="productItem.expiration_date"/>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="modeOfAdministration">Mode of Administration</label>
+                                    <select id="modeOfAdministration" class="form-control" ng-model="productItem.mode_of_use ">
+                                        <option value="">-- select mode of administration --</option>
+                                        <option ng-repeat="mode in modes" value="{{ mode.uuid }}">
+                                            {{ mode.name }}
+                                        </option>
+                                    </select>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="volumeUOM">Volume Unit of Measurement</label>
+                                    <select id="volumeUOM" class="form-control" ng-model="productItem.volume_uom">
+                                        <option value="">-- select volume uom --</option>
+                                        <option ng-repeat="uom in uomList" value="{{ uom.uuid }}">
+                                            {{ uom.name }}
+                                        </option>
+                                    </select>
+                            </div>
+
+                             <div class="form-group">
+                                    <label for="currencyField">Price Currency</label>
+                                    <select id="currencyField" class="form-control" ng-model="productItem.price_currency">
+                                        <option value="">-- select price currency --</option>
+                                        <option ng-repeat="currency in currencies" value="{{ currency.code }}">
+                                            {{ currency.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                        </div>
+                        <!--  end third column-->
+                    </div>
+
+                    <div class="col-sm-3">
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
+                    </div>
+
+                </div>
             </div>
-
-            <div class="panel-body">
-
-                <!-- enter product item form here -->
-
-             </div>
         </div>
-    </div>
-
+    </form>
 </div>
+

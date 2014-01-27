@@ -14,8 +14,20 @@
     width: 2000px;
     overflow-x: scroll;
 }
-.product_items_container{
+
+.scrollable-container{
     width: 100%;
     height: fit-content;
     overflow-x: scroll;
+}
+
+.oversize-table{
+   width: 2000px
+}
+
+.expired-product-item{
+    background-color: #FF9494;
+}
+.about-to-expire{
+    background-color: #FFD300;
 }
