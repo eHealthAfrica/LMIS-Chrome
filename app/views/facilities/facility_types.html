@@ -1,0 +1,35 @@
+<div class="row">
+    <ul class="breadcrumb">
+        <li><a href="#/main/"><i class="icon-home"> Home</i></a></li>
+        <li><a href="#/facilities/index">Facility</a></li>
+        <li class="active">Facility Types</li>
+    </ul>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Facility Types</h4>
+            </div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="facility in facility_types">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ facility.code }}</td>
+                        <td>{{ facility.name }}</td>
+                        <td>{{ facility.description }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
