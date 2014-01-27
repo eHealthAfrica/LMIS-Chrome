@@ -7,7 +7,7 @@
     </ul>
 </div>
 
-<div class="row">
+<div class="row" ng-controller="StockRecordsCtrlForm">
     <div class="col-sm-12">
         <form novalidate="novalidate" ng-submit="save_record()">
             <div class="row">
@@ -22,23 +22,22 @@
                     </div>
                     <div class="form-group">
                         <!-- TODO: this should be tied to logged in user and selected facility -->
-                        <label for="program"></label>
-                        <select ng-change="loadProducts()" name="program" id="program" ng-model="stock_records.program" class="form-control">
+                        <label for="program">Program</label>
+                        <select name="program" id="program" ng-model="stock_records.program" class="form-control">
                             <option value="">-- choose program --</option>
                             <option ng-repeat="program in programs" value="{{ program.uuid }}">{{ program.name }}</option>
                         </select>
                     </div>
-                    <div class="form-group" ng-repeat="item in program_products">
-                        <div class="col-sm-2">{{ item.name }}</div>
-                        <div class="col-sm-2">
-                            <input name="products_item[]" ng-model="products_item[]" class="form-control">
-                        </div>
 
+                    <div ng-show="stock_records.program" class="form-group" ng-repeat="item in program_products | filter:{program: stock_records.program}">
+                        <div class="col-sm-12">{{ item.program }}</div>
                     </div>
                 </div>
             </div>
         </form>
     </div>
+
+<pre>
+        {{ stock_records.program }}
+    </pre>
 </div>
-{{ stock_records.program }}
-{{ stock_records.products }}
