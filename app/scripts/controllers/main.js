@@ -136,7 +136,6 @@ chromeApp.controller('ProductItemListCtrl', function($scope, storageService, vis
  Program
 */
 chromeApp.controller('ProgramsCtrl', function($scope, storageService, $location){
-    $scope.addbreadcrumbs(bc);
      storageService.get(storageService.PROGRAM).then(function(programs){
            $scope.programList = programs;
     });
