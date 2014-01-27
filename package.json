@@ -47,5 +47,25 @@
   },
   "scripts": {
     "test": "grunt test"
-  }
+  },
+  "description": "LMIS Chrome packaged app",
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eHealthAfrica/LMIS-Chrome.git"
+  },
+  "keywords": [
+    "lmis",
+    "chrome",
+    "ehealth"
+  ],
+  "author": "eHealth Africa <http://ehealthafrica.org>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eHealthAfrica/LMIS-Chrome/issues"
+  },
+  "homepage": "https://github.com/eHealthAfrica/LMIS-Chrome"
 }
