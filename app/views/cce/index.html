@@ -1,0 +1,79 @@
+<div class="row">
+        <div class="col-lg-3 col-md-6">
+            <a href="#/cce/temp_log">
+                <div class="box_stat box_ico">
+                    <span class="stat_ico stat_ico_1"><i class="li_vallet"></i></span>
+                    <h4>Temperature Log</h4>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <a href="#/cce/problem_log">
+                <div class="box_stat box_ico">
+                    <span class="stat_ico stat_ico_2"><i class="li_user"></i></span>
+                    <h4>Problem Log</h4>
+                </div>
+            </a>
+        </div>
+</div>
+
+
+
+<div class="row">
+
+    <div class="col-sm-12">
+        <div class="btn-group">
+            <a href="#/cce/cce_form" class="btn btn-default"><i class="icon-plus-sign"></i> Add CCE</a>
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <br/>
+        <div>
+            <input  ng-model="query" id="query" class="form_control"/>
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+         <br/>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Cold Chain Equipments</h4>
+            </div>
+            <div class="scrollable-container">
+                <table  class="table table-striped table-condensed table-bordered oversize-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Code</th>
+                            <th>Gross Capacity</th>
+                            <th>Net Capacity</th>
+                            <th>Type</th>
+                            <th>Min Temp.</th>
+                            <th>Max. Temp.</th>
+                            <th>Is Cold Store</th>
+                            <th>Status</th>
+                            <th>Facility</th>
+                            <th>Parent CCE</th>
+                            <th>Problem Log</th>
+                            <th>Temp. Log</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cce in cceList | filter:query">
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ cce.name }}</td>
+                            <td>{{ cce.code }}</td>
+                            <td>{{ cce.gross_capacity  }}</td>
+                            <td>{{ uomList[product.base_uom].name }}</td>
+                            <td>{{ product.description }}</td>
+                            <td>{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
+                            <td>{{ product.active }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

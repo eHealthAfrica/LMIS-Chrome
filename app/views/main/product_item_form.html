@@ -1,4 +1,13 @@
 <div class="row">
+    <ul class="breadcrumb">
+        <li><a href="#/main/"><i class="icon-home"> Home</i></a></li>
+        <li><a href="#/main/products">Product</a></li>
+        <li><a href="#/main/product_items">Product Item</a></li>
+        <li class="active">Add Product Item</li>
+    </ul>
+</div>
+
+<div class="row">
     <form name="addProductItemForm" ng-submit="save()" ng-controller="AddProductItemCtrl">
         <div class="col-sm-12">
             <div class="panel panel-default">
@@ -133,7 +142,7 @@
                                     <label for="currencyField">Price Currency</label>
                                     <select id="currencyField" class="form-control" ng-model="productItem.price_currency">
                                         <option value="">-- select price currency --</option>
-                                        <option ng-repeat="currency in currencies" value="{{ currency.code }}">
+                                        <option ng-repeat="currency in currencies" value="{{ currency.uuid }}">
                                             {{ currency.name }}
                                         </option>
                                     </select>

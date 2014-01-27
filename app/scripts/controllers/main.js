@@ -3,36 +3,6 @@
 var chromeApp = angular.module('lmisChromeApp');
 
 chromeApp.controller('MainCtrl', function ($scope, storageService, $location ) {
-        var url_arr = $location.path().replace(/\/$/,'').replace(/^\//,'').split('/');
-        var bc = [];
-        if(url_arr.indexOf('products') != -1){
-            bc = [{name:"Products", "link":''}];
-        }
-        else if(url_arr.indexOf('product_items') != -1){
-            bc = [
-                    {name:"Product", "link":'#/main/products'},
-                    {name:"Product Item", "link":''}
-                 ];
-        }else if(url_arr.indexOf('product_item_form') != -1){
-            bc =
-            [
-                {name:"Product", "link":'#/main/products'},
-                {name:"Product Item", "link":'#main/product_items'},
-                {name:"Add Product Item", "link":''}
-            ];
-        }
-        else if(url_arr.indexOf('product_form') != -1){
-            bc =
-            [
-                {name:"Product", "link":'#/main/products'},
-                {name:"Add Product", "link":''}
-            ];
-        }
-        else{
-            bc = [];
-        }
-        $scope.addbreadcrumbs(bc);
-
         storageService.get('products').then(function(d){
            $scope.products = d;
         });
@@ -111,18 +81,10 @@ chromeApp.controller('ProductItemListCtrl', function($scope, storageService, vis
 
     $scope.highlightExpiredProductItem = visualMarkerService.getExpiredCSS
 
-    /*function(productItem){
-        //TODO: checking for expired date to utility service or a service cause it will be used at different places
+    $scope.getAboutToExpireCSS = visualMarkerService.getAboutToExpireCSS
 
-        var currentDate = new Date();
-        var expirationDate = new Date(productItem.expiration_date);
-       console.log(currentDate.getTime());
-       console.log();
-        if(currentDate.getTime() < expirationDate.getTime()){
-            return "expired-product-item";
-        }
-    };
-    */
+    console.log($scope.getAboutToExpireCSS(new Date('2013-03-01'), 6));
+
 
     $scope.highlightAboutToExpired = function(){
          //TODO: checking for expired date to utility service or a service cause it will be used at different places
@@ -251,50 +213,6 @@ chromeApp.controller('programFormCtrl', function($scope, storageService, $locati
      $scope.save = function(){
         console.log($scope.productItem)
      };
-
-
-
-    //expiration date picker UI parameters
-    $scope.maxDate = "'2050-12-31'";
-
-    $scope.today = function() {
-        $scope.dt = new Date();
-    };
-    $scope.today();
-
-    $scope.showWeeks = true;
-
-    $scope.toggleWeeks = function () {
-        $scope.showWeeks = ! $scope.showWeeks;
-    };
-
-    $scope.clear = function () {
-        $scope.dt = null;
-    };
-
-    // Disable weekend selection
-    $scope.disabled = function(date, mode) {
-        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-    };
-
-    $scope.toggleMin = function() {
-        $scope.minDate = ( $scope.minDate ) ? null : new Date();
-    };
-    $scope.toggleMin();
-
-    $scope.open = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-
-        $scope.opened = true;
-    };
-
-    $scope.dateOptions = {
-        'year-format': "'yyyy'",
-        'starting-day': 1
-    };
-
-    $scope.format = 'yyyy-MM-dd';
 
  });
 
