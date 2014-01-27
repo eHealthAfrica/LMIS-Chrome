@@ -1,0 +1,145 @@
+<div class="row">
+    <div class="col-sm-12">
+        <ol class="breadcrumb">
+            <li><a href="#/main/"><i class="icon-home"> Home</i></a></li>
+            <li><a href="#/cce/index/"> CCE</a></li>
+            <li class="active">Add CCE</li>
+        </ol>
+    </div>
+</div>
+
+<div class="row" ng-controller="addCCECtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Add CCE</h4>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+
+                    <!-- start first column-->
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="cceCode">Code</label>
+                            <input class="form-control" type="text" name="cceCode" id="cceCode"
+                                   ng-model="cce.code" placeholder="e.g LW-CR" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cceType">CCE Type</label>
+                            <select id="cceType" class="form-control" ng-model="cce.type" required>
+                                <option value="">-- select cce type --</option>
+                                <option ng-repeat="cceType in cceTypes" value="{{ cceType.uuid }}">
+                                    {{ cceType.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="netCapacity">Net Capacity</label>
+                            <input class="form-control" type="number" name="netCapacity" id="netCapacity"
+                                   ng-model="cce.net_capacity" placeholder="e.g 2500" step="any"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="minTemp">Min. Temperature</label>
+                            <input class="form-control" type="number" name="minTemp" id="minTemp"
+                                   ng-model="cce.min_temp" placeholder="e.g 2" step="any"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="active">Is Cold Store:
+                                <input type="checkbox" ng-model="cce.is_cold_store" id="active"
+                                       ng-checked="true"/>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- end first column-->
+
+                    <!-- Start second column-->
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="cceName">Name</label>
+                            <input class="form-control" type="text" name="code" id="cceName"
+                                   ng-model="cce.name" placeholder="e.g Left Wing Cold Room"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="parentCCE">Parent CCE</label>
+                            <select id="parentCCE" class="form-control" ng-model="cce.parent">
+                                <option value="">-- select parent cce --</option>
+                                <option ng-repeat="parentCCE in cceList" value="{{ parentCCE.uuid }}">
+                                    {{ parentCCE.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cceGrossCapacity">Gross Capacity</label>
+                            <input class="form-control" type="number" name="cceGrossCapacity" id="cceGrossCapacity"
+                                   ng-model="cce.gross_capacity" placeholder="e.g 23450" step="any">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="maxTemp">Max. Temperature</label>
+                            <input class="form-control" type="number" name="maxTemp" id="maxTemp"
+                                   ng-model="productItem.price_per_unit" placeholder="e.g 8" step="any">
+                        </div>
+                    </div>
+                    <!-- end second column-->
+
+                    <!--  start third column-->
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="facility">Facility</label>
+                            <select id="facility" class="form-control" ng-model="cce.facility">
+                                <option value="">-- select facility --</option>
+                                <option ng-repeat="facility in facilities" value="{{ facility.uuid }}">
+                                    {{ facility.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cceStatus">Status</label>
+                            <select id="cceStatus" class="form-control" ng-model="cce.status" required>
+                                <option value="">-- select cce status --</option>
+                                <option value="0">Working</option>
+                                <option value="1">Not Working</option>
+                                <option value="2">In Repair</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="capacityUOM">Capacity Unit of Measurement</label>
+                            <select id="capacityUOM" class="form-control" ng-model="cce.capacity_uom">
+                                <option value="">-- select capacity uom --</option>
+                                <option ng-repeat="uom in uomList" value="{{ uom.uuid }}">
+                                    {{ uom.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tempUOM">Temperature Unit of Measurement</label>
+                            <select id="tempUOM" class="form-control" ng-model="cce.temp_uom">
+                                <option value="">-- select temperature uom --</option>
+                                <option ng-repeat="uom in uomList" value="{{ uom.uuid }}">
+                                    {{ uom.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--  end third column-->
+                </div>
+
+                <div class="col-sm-3">
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

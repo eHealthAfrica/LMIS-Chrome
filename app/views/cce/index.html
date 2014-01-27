@@ -1,7 +1,7 @@
 <div class="row">
     <ul class="breadcrumb">
         <li><a href="#/main/"><i class="icon-home"> Home</i></a></li>
-        <li class="active">Cold Chain Equipment</li>
+        <li class="active">CCE</li>
     </ul>
 </div>
 
@@ -27,7 +27,7 @@
 
 
 
-<div class="row">
+<div class="row" ng-controller="cceCtrl">
 
     <div class="col-sm-12">
         <div class="btn-group">
@@ -38,8 +38,8 @@
     <div class="col-sm-12">
         <br/>
         <div>
-            <input  ng-model="query" id="query" class="form_control"/>
-            <span class="glyphicon glyphicon-search"></span>
+            <input  ng-model="query" id="query" class="form_control" size="55" placeholder="search"/>
+            <i class="glyphicon glyphicon-search"></i>
         </div>
          <br/>
         <div class="panel panel-default">
@@ -71,11 +71,17 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ cce.name }}</td>
                             <td>{{ cce.code }}</td>
-                            <td>{{ cce.gross_capacity  }}</td>
-                            <td>{{ uomList[product.base_uom].name }}</td>
-                            <td>{{ product.description }}</td>
-                            <td>{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
-                            <td>{{ product.active }}</td>
+                            <td>{{ cce.gross_capacity+' '+uomList[cce.capacity_uom].name }}</td>
+                            <td>{{ cce.net_capacity+' '+uomList[cce.capacity_uom].name }}</td>
+                            <td>{{ cce.type }}</td>
+                            <td>{{ }}</td>
+                            <td>{{  }}</td>
+                            <td>{{  }}</td>
+                            <td>{{  }}</td>
+                            <td>{{ facilities[cce.facility].name }}</td>
+                            <td>{{  }}</td>
+                            <td>{{  }}</td>
+                            <td>{{  }}</td>
                         </tr>
                     </tbody>
                 </table>
