@@ -75,9 +75,16 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
     ProductItemListCtrl - This handles the display of Product-Items pulled from storage.
 */
 chromeApp.controller('ProductItemListCtrl', function($scope, storageService, visualMarkerService){
+
      storageService.get(storageService.PRODUCT_ITEM).then(function(productItems){
            $scope.productItemList = productItems;
     });
+
+    $scope.getStatusIcon = function(status){
+        if(status.toLowerCase(status) = 'true'){
+
+        }
+    };
 
     $scope.highlightExpiredProductItem = visualMarkerService.getExpiredCSS
 
