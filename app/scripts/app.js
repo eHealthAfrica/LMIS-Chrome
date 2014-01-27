@@ -6,7 +6,8 @@ angular.module('lmisChromeApp', [
     'ngSanitize',
     'ngRoute',
     'restangular',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ngTable'
 ])
     .config(function ($routeProvider) {
 //TODO: change the router to ui-router https://github.com/angular-ui/ui-router/wiki/Quick-Reference
