@@ -30,7 +30,7 @@ angular.module('lmisChromeApp')
      var storageLocation = 'storage_locations';
      var user = 'user';
      var productPresentation = 'product_presentation';
-     var productFormulation = 'product_formulation';
+     var productFormulation = 'product_formulations';
      var modeOfAdministration = 'mode_of_administration';
      var productItem = 'product_item';
 
