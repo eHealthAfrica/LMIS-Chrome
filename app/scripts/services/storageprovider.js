@@ -220,12 +220,14 @@ angular.module('lmisChromeApp')
            if(tables.indexOf(table)){
                 getFromStore(table).then(function(data){
                     if(Object.prototype.toString.call(data) == '[object Array]'){
-                        if(obj['uuid']){
+                        console.log(obj);
+                        var object_keys =Object.keys(obj);
+                        var object_uuid = object_keys.indexOf('uuid')!=-1?obj['uuid']:"";
+                        object_uuid =(object_uuid == "")?false:true;
+                        if(object_uuid){
                             obj['modified'] = getDateTime();
                             data[parseInt(obj["array_index"])]=obj;
                             addToStore(table, data);
-                            console.log(parseInt(obj["array_index"]));
-                            console.log(obj);
                         }
                         else{
                             obj['uuid'] = uuid_generator();
