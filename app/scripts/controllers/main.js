@@ -74,20 +74,45 @@ chromeApp.controller('AddProductCtrl', function($scope, storageService, $locatio
 /**
     ProductItemListCtrl - This handles the display of Product-Items pulled from storage.
 */
-chromeApp.controller('ProductItemListCtrl', function($scope, storageService, visualMarkerService){
+chromeApp.controller('ProductItemListCtrl', function($scope, storageService, visualMarkerService, utility){
 
-     storageService.get(storageService.PRODUCT_ITEM).then(function(productItems){
+    storageService.get(storageService.PRODUCT_ITEM).then(function(productItems){
            $scope.productItemList = productItems;
     });
 
-    $scope.getStatusIcon = function(status){
+    utility.loadTableObject(storageService.PRODUCT).then(function(productList){
+            $scope.products = productList;
+    });
+
+    utility.loadTableObject(storageService.COMPANY).then(function(companyList){
+            $scope.companies = companyList;
+    });
+
+    utility.loadTableObject(storageService.PRODUCT_PRESENTATION).then(function(productPresentation){
+            $scope.presentations = productPresentation;
+    });
+
+    utility.loadTableObject(storageService.PRODUCT_FORMULATION).then(function(productFormulation){
+            $scope.productFormulation = productFormulation;
+    });
+
+    utility.loadTableObject(storageService.MODE_OF_ADMINISTRATION).then(function(modesOfAdmin){
+            $scope.modesOfAdmin = modesOfAdmin;
+    });
+
+    utility.loadTableObject(storageService.UOM).then(function(uomList){
+            $scope.uomList = uomList;
+    });
+
+    $scope.highlightExpiredProductItem = visualMarkerService.getExpiredCSS
+
+
+
+    /*$scope.getStatusIcon = function(status){
         if(status.toLowerCase(status) = 'true'){
 
         }
     };
-
-    $scope.highlightExpiredProductItem = visualMarkerService.getExpiredCSS
-
     $scope.getAboutToExpireCSS = visualMarkerService.getAboutToExpireCSS
 
     console.log($scope.getAboutToExpireCSS(new Date('2013-03-01'), 6));
@@ -97,21 +122,14 @@ chromeApp.controller('ProductItemListCtrl', function($scope, storageService, vis
          //TODO: checking for expired date to utility service or a service cause it will be used at different places
         return "about-to-expire";
     }
+    */
 
 });
+
 /**
  Program
 */
 chromeApp.controller('ProgramsCtrl', function($scope, storageService, $location){
-     var url_arr = $location.path().replace(/\/$/,'').replace(/^\//,'').split('/');
-     var bc = [];
-     if(url_arr.indexOf('programs') != -1){
-            bc =
-            [
-                {name:"Programs", "link":''},
-
-            ];
-      }
     $scope.addbreadcrumbs(bc);
      storageService.get(storageService.PROGRAM).then(function(programs){
            $scope.programList = programs;
@@ -121,18 +139,6 @@ chromeApp.controller('ProgramsCtrl', function($scope, storageService, $location)
 });
 
 chromeApp.controller('programFormCtrl', function($scope, storageService, $location, utility){
-     var url_arr = $location.path().replace(/\/$/,'').replace(/^\//,'').split('/');
-     var bc = [];
-     if(url_arr.indexOf('program_form') != -1){
-            bc =
-            [
-                {name:"Programs", link:"#/main/programs"},
-                {name:"Form", "link":''},
-
-            ];
-      }
-
-    $scope.addbreadcrumbs(bc);
     $scope.program = {};
     $scope.uuid = ($location.search()).uuid;
 

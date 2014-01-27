@@ -50,14 +50,14 @@
                             class="{{ highlightExpiredProductItem(productItem.expiration_date) }}">
                             <td>{{ $index + 1 }}</td>
                             <td>{{ productItem.batch_no }} </td>
-                            <td>{{ productItem.product }}</td>
+                            <td>{{ products[productItem.product].name }}</td>
                             <td>{{ productItem.expiration_date | date:'dd-MM-yyyy' }}</td>
-                            <td>{{ productItem.manufacturer }}</td>
-                            <td>{{ productItem.presentation }}</td>
-                            <td>{{ productItem.formulation }}</td>
-                            <td>{{ productItem.mode_of_use }}</td>
-                            <td>{{ productItem.packed_volume +' '+ productItem.volume_uom }}</td>
-                            <td>{{ productItem.diluent_per_volume +' '+ productItem.volume_uom}}</td>
+                            <td>{{ companies[productItem.manufacturer].name }}</td>
+                            <td>{{ presentations[productItem.presentation].name }}</td>
+                            <td>{{ productFormulation[productItem.formulation].name }}</td>
+                            <td>{{ modesOfAdmin[productItem.mode_of_use].name }}</td>
+                            <td>{{ productItem.packed_volume +' '+ uomList[productItem.volume_uom].symbol }}</td>
+                            <td>{{ productItem.diluent_per_volume +' '+ uomList[productItem.volume_uom].symbol }}</td>
                             <td>{{ productItem.price_currency +' '+ productItem.price_per_unit }} </td>
                             <td>{{ productItem.description }}</td>
                             <td>{{ productItem.fund_sources}}</td>
