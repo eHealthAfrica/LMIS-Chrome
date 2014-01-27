@@ -66,8 +66,11 @@
                             <td>{{ product_categories[product.category].name  }}</td>
                             <td>{{ uomList[product.base_uom].name }}</td>
                             <td>{{ product.description }}</td>
-                            <td><i ng-class="'glyphicon glyphicon-ban-circle red-glyphicon'"></i>{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
-                            <td><i ng-class="'glyphicon glyphicon-thumbs-up green-glyphicon'"></i>{{ product.active }}</td>
+                            <td>{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
+                            <td class="text-center">
+                                <span ng-show="product.active"><i class="icon-ok-sign green-glyphicon"></i></span>
+                                <span ng-hide="product.active"><i class="icon-remove-sign red-glyphicon"></i></span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

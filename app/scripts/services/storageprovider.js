@@ -23,14 +23,14 @@ angular.module('lmisChromeApp')
      var employeeCategory = 'employee_category';
      var company = 'company';
      var companyCategory = 'company_category';
-     var currency = 'currency';
+     var currency = 'currencies';
      var employee = 'employee';
      var rate = 'rate';
      var storageLocationType = 'storage_location_type';
      var storageLocation = 'storage_locations';
      var user = 'user';
      var productPresentation = 'product_presentation';
-     var productFormulation = 'product_formulation';
+     var productFormulation = 'product_formulations';
      var modeOfAdministration = 'mode_of_administration';
      var productItem = 'product_item';
 
