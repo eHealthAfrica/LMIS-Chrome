@@ -10,12 +10,19 @@ angular.module('lmisChromeApp')
             bc = [{name:"Inventory", "link":'#/inventory/index'}, {name:"Stock Records", "link":''}];
         }
         else if(url_arr.indexOf('stock_records_form') != -1){
+            $scope.stock_records = {};
             storageService.get('facility').then(function(data){
                  $scope.facilities = data;
             });
             storageService.get('programs').then(function(data){
                  $scope.programs = data;
             });
+
+            $scope.loadProducts = function(){
+                $scope.stock_records.products = $scope.stock_records.program;
+            }
+
+            //
             bc =
             [
                 {name:"Inventory", "link":'#/inventory/index'},
