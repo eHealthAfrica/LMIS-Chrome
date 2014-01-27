@@ -23,7 +23,7 @@ angular.module('lmisChromeApp')
      var employeeCategory = 'employee_category';
      var company = 'company';
      var companyCategory = 'company_category';
-     var currency = 'currency';
+     var currency = 'currencies';
      var employee = 'employee';
      var rate = 'rate';
      var storageLocationType = 'storage_location_type';

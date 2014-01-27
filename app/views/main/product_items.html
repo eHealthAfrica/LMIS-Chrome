@@ -58,10 +58,13 @@
                             <td>{{ modesOfAdmin[productItem.mode_of_use].name }}</td>
                             <td>{{ productItem.packed_volume +' '+ uomList[productItem.volume_uom].symbol }}</td>
                             <td>{{ productItem.diluent_per_volume +' '+ uomList[productItem.volume_uom].symbol }}</td>
-                            <td>{{ productItem.price_currency +' '+ productItem.price_per_unit }} </td>
+                            <td>{{ currencies[productItem.price_currency].symbol +' '+ productItem.price_per_unit }} </td>
                             <td>{{ productItem.description }}</td>
-                            <td>{{ productItem.fund_sources}}</td>
-                            <td>{{ productItem.active }}</td>
+                            <td>{{ companies[productItem.fund_sources].name }}</td>
+                            <td class="text-center">
+                                <span ng-show="productItem.active"><i class="icon-ok-sign green-glyphicon"></i></span>
+                                <span ng-hide="productItem.active"><i class="icon-remove-sign red-glyphicon"></i></span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

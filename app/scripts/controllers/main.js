@@ -104,6 +104,12 @@ chromeApp.controller('ProductItemListCtrl', function($scope, storageService, vis
             $scope.uomList = uomList;
     });
 
+    utility.loadTableObject(storageService.CURRENCY).then(function(currencyList){
+            $scope.currencies = currencyList;
+            console.log(currencyList);
+    });
+
+
     $scope.highlightExpiredProductItem = visualMarkerService.getExpiredCSS
 
 
