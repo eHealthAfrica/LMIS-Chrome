@@ -35,8 +35,8 @@
 
 <div class="row" ng-controller="ProductListCtrl">
     <div class="col-sm-12">
-        <div class="cols-sm-6">
-            <input  ng-model="query" id="query" size="55"/>
+        <div>
+            <input ng-model="query" id="query" size="55" class="input-medium search-query" placeholder="search"/>
             <span class="glyphicon glyphicon-search"></span>
         </div>
          <br/>
@@ -44,35 +44,21 @@
             <div class="panel-heading">
                 <h4 class="panel-title"><i class="glyphicon glyphicon-list"></i>  Products</h4>
             </div>
-            <div class="">
-                <table  class="table table-condensed table-bordered">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Code</th>
-                            <th>Category</th>
-                            <th>Base UOM</th>
-                            <th>Description</th>
-                            <th>Last Modified</th>
-                            <th>Active</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="product in products | filter:query">
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ product.name }}</td>
-                            <td>{{ product.code }}</td>
-                            <td>{{ product_categories[product.category].name  }}</td>
-                            <td>{{ uomList[product.base_uom].name }}</td>
-                            <td>{{ product.description }}</td>
-                            <td>{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
-                            <td class="text-center">
-                                <span ng-show="product.active"><i class="icon-ok-sign green-glyphicon"></i></span>
-                                <span ng-hide="product.active"><i class="icon-remove-sign red-glyphicon"></i></span>
-                            </td>
-                        </tr>
-                    </tbody>
+            <div>
+              <table ng-table="productList" class="table table-condensed table-bordered">
+                    <tr ng-repeat="product in $data | filter:query">
+                        <td data-title="'#'">{{ $index + 1 }}</td>
+                        <td data-title="'Name'">{{ product.name }}</td>
+                        <td data-title="'Code'">{{ product.code }}</td>
+                        <td data-title="'Category'">{{ productCategories[product.category].name }}</td>
+                        <td data-title="'Base UOM'">{{ uomList[product.base_uom].name }}</td>
+                        <td data-title="'Description'">{{ product.description }}</td>
+                        <td data-title="'Last Modified'">{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
+                        <td data-title="'Active'" class="text-center">
+                            <span ng-if="product.active"><i class="icon-ok-sign green-glyphicon"></i></span>
+                            <span ng-if="!product.active"><i class="icon-remove-sign red-glyphicon"></i></span>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>
