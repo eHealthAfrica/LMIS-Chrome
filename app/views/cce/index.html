@@ -27,7 +27,7 @@
 
 
 
-<div class="row">
+<div class="row" ng-controller="cceCtrl">
 
     <div class="col-sm-12">
         <div class="btn-group">
@@ -71,11 +71,17 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ cce.name }}</td>
                             <td>{{ cce.code }}</td>
-                            <td>{{ cce.gross_capacity  }}</td>
-                            <td>{{ uomList[product.base_uom].name }}</td>
-                            <td>{{ product.description }}</td>
-                            <td>{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
-                            <td>{{ product.active }}</td>
+                            <td>{{ cce.gross_capacity+' '+uomList[cce.capacity_uom].name }}</td>
+                            <td>{{ cce.net_capacity+' '+uomList[cce.capacity_uom].name }}</td>
+                            <td>{{ cce.type }}</td>
+                            <td>{{ }}</td>
+                            <td>{{  }}</td>
+                            <td>{{  }}</td>
+                            <td>{{  }}</td>
+                            <td>{{ facilities[cce.facility].name }}</td>
+                            <td>{{  }}</td>
+                            <td>{{  }}</td>
+                            <td>{{  }}</td>
                         </tr>
                     </tbody>
                 </table>

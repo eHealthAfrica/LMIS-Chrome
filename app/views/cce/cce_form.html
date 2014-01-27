@@ -69,7 +69,7 @@
                             <label for="parentCCE">Parent CCE</label>
                             <select id="parentCCE" class="form-control" ng-model="cce.parent">
                                 <option value="">-- select parent cce --</option>
-                                <option ng-repeat="parentCCE in parentCCEList" value="{{ parentCCE.uuid }}">
+                                <option ng-repeat="parentCCE in cceList" value="{{ parentCCE.uuid }}">
                                     {{ parentCCE.name }}
                                 </option>
                             </select>
