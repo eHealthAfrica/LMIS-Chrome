@@ -182,6 +182,88 @@ chromeApp.controller('programFormCtrl', function($scope, storageService, $locati
 });
 
 
+chromeApp.controller('ProgramsProductsCtrl', function($scope, storageService, $location){
+     storageService.get(storageService.PROGRAM_PRODUCTS).then(function(programProducts){
+           $scope.programProductList = programProducts;
+    });
+    storageService.loadTableObject(storageService.PROGRAM).then(function(programs){
+        $scope.programs_object = programs;
+    });
+    storageService.loadTableObject(storageService.PRODUCT).then(function(products){
+        $scope.products_object = products;
+    });
+    storageService.loadTableObject(storageService.CURRENCY).then(function(currency){
+        $scope.currency_object = currency;
+    });
+    storageService.loadTableObject(storageService.COMPANY).then(function(company){
+        $scope.company_object = company;
+    });
+});
+
+
+/**
+ *  programProductFormCtrl - This handles the addition of program products
+ *
+ *
+ */
+
+chromeApp.controller('programProductFormCtrl', function($scope, storageService, $location){
+
+    storageService.get(storageService.PROGRAM).then(function(programs){
+           $scope.programList = programs;
+    });
+
+    storageService.get(storageService.PRODUCT).then(function(products){
+           $scope.productList = products;
+    });
+
+    storageService.get(storageService.CURRENCY).then(function(currency){
+           $scope.priceCurrencyList = currency;
+    });
+    storageService.get(storageService.COMPANY).then(function(company){
+           $scope.companyList = company;
+    });
+
+    $scope.program_product = {};
+    $scope.uuid = ($location.search()).uuid;
+
+    if($scope.uuid){
+        storageService.loadTableObject(storageService.PROGRAM_PRODUCTS).then(function(programProducts){
+            $scope.program_product = programProducts[$scope.uuid];
+        });
+
+    }
+
+    $scope.saveProgramProduct = function(){
+        if(Object.keys($scope.program_product).length>0){
+            $scope.setMessage({type:"success", message:"about to save "+storageService.PROGRAM_PRODUCTS})
+            storageService.insert(storageService.PROGRAM_PRODUCTS, $scope.program_product).then(function(bool){
+                var msg = ($scope.uuid)? {type:"success", message:"Program update was successful"}:{type:"success", message:"Program entry was successful"}
+                $scope.setMessage(msg);
+                $location.path("/main/program_products");
+            });
+
+        }
+        else{
+            $scope.setMessage({type:"danger", message:"Can't save a blank form"})
+        }
+    }
+    storageService.get(storageService.PROGRAM_PRODUCTS).then(function(programProducts){
+           $scope.programProductList = programProducts;
+    });
+    $scope.removeProgramProduct = function(uuid){
+        console.log(uuid);
+        storageService.loadTableObject(storageService.PROGRAM_PRODUCTS).then(function(programProducts){
+            $scope.program_product = programProducts[uuid];
+            var index = $scope.program_product.array_index;
+            $scope.programProductList.splice(index,1);
+            storageService.add(storageService.PROGRAM_PRODUCTS, $scope.programProductList);
+        });
+
+    }
+});
+
+
 /**
  *  AddProductItemCtrl - This handles the addition of product items
  *
