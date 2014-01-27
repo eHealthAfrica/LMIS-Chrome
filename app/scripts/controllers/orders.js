@@ -2,24 +2,6 @@
 
 angular.module('lmisChromeApp')
   .controller('OrdersctrlCtrl', function ($scope, storageService, $location ) {
-        var url_arr = $location.path().replace(/\/$/,'').replace(/^\//,'').split('/');
-        var bc = [];
-        if(url_arr.indexOf('purchase_order') != -1){
-            bc = [{name:"Orders", "link":'#/orders/index'}, {name:"Purchase Order", "link":''}];
-        }
-        else if(url_arr.indexOf('purchase_order_form') != -1){
-            bc =
-            [
-                {name:"Orders", "link":'#/orders/index'},
-                {name:"Purchase Order", "link":'#/orders/purchase_order'},
-                {name:"Form", "link":''}
-            ];
-        }
-        else{
-            bc = [{name:"Orders", "link":''}];
-        }
-        $scope.addbreadcrumbs(bc);
-
         $scope.today = function() {
             $scope.dt = new Date();
         };
