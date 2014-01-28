@@ -21,7 +21,6 @@
     "angular-scenario": "1.2.6"
   },
   "resolutions": {
-    "angular": "=1.2.6",
-    "font-awesome": "4.0.4-wip"
+    "angular": "=1.2.6"
   }
 }
