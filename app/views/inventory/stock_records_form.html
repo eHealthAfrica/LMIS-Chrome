@@ -12,45 +12,41 @@
         <form novalidate="novalidate" ng-submit="save_record()">
             <div class="row">
 
-
                 <!-- start first column-->
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="facility">Facility</label>
-                        <select name="facility" id="facility" class="form-control" ng-model="stock_records.facility">
-                            <option value="">-- choose facility --</option>
-                            <option ng-repeat="facility in facilities" value="{{ facility.uuid }}">{{ facility.name }}
-                            </option>
+                        <select name="facility" id="facility"  class="form-control" ng-model="stock_records.facility" >
+                            <option value="">-- select facility --</option>
+                            <option ng-repeat="facility in facilities" value="{{ facility.uuid }}">{{ facility.name }}</option>
                         </select>
                     </div>
                 </div>
-                <!-- end first column-->
 
-                <!-- Start second column-->
-                <div class="col-sm-4">
+                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="program">Program</label>
-                        <select ng-change="loadProducts()" name="program" id="program" ng-model="stock_records.program"
-                                class="form-control">
-                            <option value="">-- choose program --</option>
-                            <option ng-repeat="program in programs" value="{{ program.uuid }}">{{ program.name }}
-                            </option>
+                        <label for="facility">Program</label>
+                        <select name="program" id="program"  class="form-control" ng-model="stock_records.program" >
+                            <option value="">-- select program --</option>
+                            <option ng-repeat="program in programs" value="{{ program.uuid }}">{{ program.name }}</option>
                         </select>
                     </div>
-                </div>
-                <!-- end second column-->
+                 </div>
 
-                <!--  start third column-->
-                <div class="col-sm-4">
+                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="stockRecordDate">Date
-                            <i class="glyphicon glyphicon-calendar"></i></label>
+                        <label for="stockRecordDate">Stock Record Date
+                        <i class="glyphicon glyphicon-calendar"></i></label>
                         <input id="stockRecordDate" type="date" class="form-control" ng-required="true"
-                               ng-model="stockRecord.date"/>
+                                                ng-model="stock_records.stock_record_date"/>
                     </div>
                 </div>
 
-                <!-- <div class="col-sm-4">
+
+            </div>
+
+
+            <!-- <div class="col-sm-4">
                     <div class="form-group">
                         <!-- TODO: this should be tied to logged in user
                         <label for="facility">Facility</label>
@@ -75,19 +71,8 @@
 
                     </div>
                 </div>
-            -->
-            </div>
-            <div class="row">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">Add {{ selectedProgram.name }} Stock Record</h4>
-                    </div>
+                -->
 
-                    <div class="panel-body">
-
-                    </div>
-                </div>
-            </div>
         </form>
     </div>
 </div>

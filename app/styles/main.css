@@ -10,10 +10,6 @@
 #max-stock, #min-stock, .top-rows{
     font-size: 8px;
 }
-.scrollable_x{
-    /*width: 200px;*/
-    overflow-x: scroll;
-}
 
 .scrollable-container{
     width: 100%;
@@ -52,6 +48,7 @@
 }
 .red-glyphicon{
     background-color: #FFFFFF;
+    color: #C00;
     color: red;
 }
 .marker-indicator-bar{

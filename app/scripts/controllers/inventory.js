@@ -1,7 +1,7 @@
 'use strict';
+var chromeApp = angular.module('lmisChromeApp');
 
-angular.module('lmisChromeApp')
-  .controller('InventoryCtrl', function ($scope, $location, storageService) {
+chromeApp.controller('InventoryCtrl', function ($scope, $location, storageService) {
 
         $scope.today = function() {
             $scope.dt = new Date();
@@ -39,3 +39,35 @@ angular.module('lmisChromeApp')
         $scope.format = 'MMMM yyyy';
 
   });
+
+chromeApp.controller("StockRecordsCtrl",function($scope, $location, storageService){
+    $scope.stock_records = {};
+            storageService.get('facility').then(function(data){
+                 $scope.facilities = data;
+            });
+            storageService.get('programs').then(function(data){
+                 $scope.programs = data;
+            });
+
+            $scope.loadProducts = function(){
+                $scope.stock_records.products = $scope.stock_records.program;
+            }
+});
+
+chromeApp.controller("StockRecordsCtrlForm",function($scope, $location, storageService){
+    $scope.stock_records = {};
+            storageService.get('facility').then(function(data){
+                 $scope.facilities = data;
+            });
+            storageService.get('programs').then(function(data){
+                 $scope.programs = data;
+            });
+             storageService.get(storageService.PROGRAM_PRODUCTS).then(function(data){
+                 $scope.program_products = data;
+             });
+
+
+
+});
+
+
