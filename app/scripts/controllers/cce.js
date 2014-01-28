@@ -18,6 +18,13 @@ chromeApp.controller('cceCtrl', function ($scope, storageService, utility) {
     utility.loadTableObject(storageService.UOM).then(function(uomList) {
       $scope.uomList = uomList;
     });
+
+    utility.loadTableObject(storageService.parentCCEList).then(function(cceList) {
+      $scope.parentCCEList = cceList;
+    });
+
+    $scope.selectedTempCCE  = '';
+    console.log($scope.selectedTempCCE);
 });
 
 
