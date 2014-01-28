@@ -1,6 +1,6 @@
 <div class="row">
    <ol class="breadcrumb">
-        <li><a href="#/main/"><i class="icon-home"> Home</i></a></li>
+        <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
         <li class="active">Program</li>
     </ol>
 </div>
@@ -8,8 +8,8 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="btn-group">
-            <a href="#/main/program_form" class="btn btn-default"><i class="icon-plus-sign"></i> Add Program</a>
-            <a href="#/main/program_products" class="btn btn-default"><i class="icon-plus-sign"></i> Program Products</a>
+            <a href="#/main/program_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Program</a>
+            <a href="#/main/program_products" class="btn btn-default"><i class="fa fa-plus-circle"></i> Program Products</a>
         </div>
     </div>
 </div>
@@ -37,12 +37,12 @@
                         <td>{{ row.code }}</td>
                         <td>{{ row.parent }}</td>
                         <td class="text-center">
-                            <span ng-show="row.active"><i class="icon-ok-sign green-glyphicon"></i></span>
-                            <span ng-hide="row.active"><i class="icon-remove-sign red-glyphicon"></i></span>
+                            <span ng-show="row.active"><i class="fa fa-check-circle green-icon"></i></span>
+                            <span ng-hide="row.active"><i class="fa fa-times-circle red-icon"></i></span>
                         </td>
                         <td class="text-center">
-                            <a href="#/main/program_form?uuid={{ row.uuid }}"> <i class="icon-edit"></i> </a>
-                            <a ng-click="removeProgram( row.uuid )" href="#/main/programs"> <i class="icon-remove-sign"></i> </a>
+                            <a href="#/main/program_form?uuid={{ row.uuid }}"> <i class="fa fa-pencil-square-o"></i> </a>
+                            <a ng-click="removeProgram( row.uuid )" href="#/main/programs"> <i class="fa fa-times-circle"></i> </a>
                         </td>
                     </tr>
                 </tbody>

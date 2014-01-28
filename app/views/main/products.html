@@ -1,6 +1,6 @@
 <div class="row">
    <ol class="breadcrumb">
-        <li><a href="#/main/"><i class="icon-home"> Home</i></a></li>
+        <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
         <li class="active">Product</li>
     </ol>
 </div>
@@ -9,7 +9,7 @@
     <div class="col-lg-3 col-md-6">
         <a href="#/main/product_items">
             <div class="box_stat box_ico">
-                <span class="stat_ico stat_ico_1"><i class="glyphicon glyphicon-list"></i></span>
+                <span class="stat_ico stat_ico_1"><i class="fa fa-list"></i></span>
                 <h4>Product Item</h4>
             </div>
         </a>
@@ -28,7 +28,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="btn-group">
-            <a href="#/main/product_form" class="btn btn-default"><i class="icon-plus-sign"></i> Add Product</a>
+            <a href="#/main/product_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Product</a>
         </div>
     </div>
 </div>
@@ -37,12 +37,12 @@
     <div class="col-sm-12">
         <div>
             <input ng-model="query" id="query" size="55" class="input-medium search-query" placeholder="search"/>
-            <span class="glyphicon glyphicon-search"></span>
+            <span class="fa fa-search"></span>
         </div>
          <br/>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title"><i class="glyphicon glyphicon-list"></i>  Products</h4>
+                <h4 class="panel-title"><i class="fa fa-list"></i>  Products</h4>
             </div>
             <div>
               <table ng-table="productList" class="table table-condensed table-bordered">
@@ -55,8 +55,8 @@
                         <td data-title="'Description'">{{ product.description }}</td>
                         <td data-title="'Last Modified'">{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
                         <td data-title="'Active'" class="text-center">
-                            <span ng-if="product.active"><i class="icon-ok-sign green-glyphicon"></i></span>
-                            <span ng-if="!product.active"><i class="icon-remove-sign red-glyphicon"></i></span>
+                            <span ng-if="product.active"><i class="fa fa-check-circle green-icon"></i></span>
+                            <span ng-if="!product.active"><i class="fa fa-times-circle red-icon"></i></span>
                         </td>
                     </tr>
                 </table>

@@ -1,6 +1,6 @@
 <div class="row">
     <ul class="breadcrumb">
-        <li><a href="#/main/"><i class="icon-home"> Home</i></a></li>
+        <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
         <li><a href="#/inventory/index/">Inventory</a></li>
         <li class="active">Stock Records</li>
     </ul>
@@ -37,7 +37,7 @@
                 <p class="input-group">
                     <input disabled id="expected_date" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="stock_record_date" is-open="opened" min="minDate" max="'2023-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                     <span class="input-group-btn">
-                        <button class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        <button class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
                     </span>
                 </p>
             </div>
@@ -45,7 +45,7 @@
     </div>
     <div class="col-sm-12">
         <div class="btn-group">
-            <a href="#/inventory/stock_records_form" class="btn btn-default"><i class="icon-plus-sign"></i> Add Record</a>
+            <a href="#/inventory/stock_records_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Record</a>
 
         </div>
     </div>
