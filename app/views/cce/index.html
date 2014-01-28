@@ -47,8 +47,8 @@
                 <h4 class="panel-title">Cold Chain Equipments</h4>
             </div>
             <div class="scrollable-container">
-                <table ng-table="cceList" class="table table-condensed table-bordered oversize-table">
-                    <tr ng-repeat="cce in $data | filter:query">
+                <table ng-table="cceList" class="table table-condensed table-bordered table-striped oversize-table">
+                    <tr ng-repeat="cce in $data | filter:query" ng-class="'center-text'">
                         <td data-title="'#'">{{ $index + 1 }}</td>
                         <td data-title="'Code'">{{ cce.name }}</td>
                         <td data-title="'Status'">
