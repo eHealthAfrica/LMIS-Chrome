@@ -252,7 +252,7 @@ angular.module('lmisChromeApp')
   })
 
 .controller('ProgramsProductsCtrl', function($scope, storageService, $location){
-     storageService.get(storageService.PROGRAM_PRODUCTS).then(function(programProducts){
+    storageService.get(storageService.PROGRAM_PRODUCTS).then(function(programProducts){
            $scope.programProductList = programProducts;
     });
     storageService.loadTableObject(storageService.PROGRAM).then(function(programs){
