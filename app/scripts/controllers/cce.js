@@ -2,9 +2,32 @@
 
 var chromeApp = angular.module('lmisChromeApp');
 
-chromeApp.controller('cceCtrl', function ($scope, storageService, utility) {
-    storageService.get(storageService.STORAGE_LOCATION).then(function(cceList) {
-      $scope.cceList = cceList;
+chromeApp.controller('cceCtrl', function ($scope, storageService, utility, ngTableParams) {
+
+    //constants used to track CCE status
+    $scope.CCE_WORKING = 0;
+    $scope.NOT_WORKING = 1;
+    $scope.CCE_IN_REPAIR = 2;
+
+    storageService.get(storageService.STORAGE_LOCATION).then(function(data) {
+      // Table defaults
+      var params = {
+        page: 1,
+        count: 10
+      };
+
+      // Pagination
+      var resolver = {
+        total: data.length,
+        getData: function($defer, params) {
+          $defer.resolve(data.slice(
+            (params.page() - 1) * params.count(),
+            params.page() * params.count()
+          ));
+        }
+      }
+
+      $scope.cceList = new ngTableParams(params, resolver);
     });
 
     utility.loadTableObject(storageService.FACILITY).then(function(facilities) {
@@ -18,6 +41,13 @@ chromeApp.controller('cceCtrl', function ($scope, storageService, utility) {
     utility.loadTableObject(storageService.UOM).then(function(uomList) {
       $scope.uomList = uomList;
     });
+
+    utility.loadTableObject(storageService.STORAGE_LOCATION).then(function(cceList) {
+      $scope.parentCCEList = cceList;
+    });
+
+    $scope.selectedTempCCE  = '';
+    console.log($scope.selectedTempCCE);
 });
 
 

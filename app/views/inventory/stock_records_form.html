@@ -1,6 +1,6 @@
 <div class="row">
     <ul class="breadcrumb">
-        <li><a href="#/main/"><i class="icon-home"> Home</i></a></li>
+        <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
         <li><a href="#/inventory/index/">Inventory</a></li>
         <li><a href="#/inventory/stock_records/">Stock Record</a></li>
         <li class="active">Add Stock Record</li>
@@ -36,7 +36,7 @@
                  <div class="col-sm-4">
                     <div class="form-group">
                         <label for="stockRecordDate">Stock Record Date
-                        <i class="glyphicon glyphicon-calendar"></i></label>
+                        <i class="fa fa-calendar"></i></label>
                         <input id="stockRecordDate" type="date" class="form-control" ng-required="true"
                                                 ng-model="stock_records.stock_record_date"/>
                     </div>
@@ -112,10 +112,5 @@
                 -->
 
         </form>
-        <div>
-            <pre>
-                {{ stock_records }}
-            </pre>
-        </div>
     </div>
 </div>
