@@ -32,7 +32,7 @@ angular.module('lmisChromeApp')
      var productPresentation = 'product_presentation';
      var productFormulation = 'product_formulations';
      var modeOfAdministration = 'mode_of_administration';
-     var productItem = 'product_item';
+     var productItem = 'product_items';
 
     /**
      * Boolean flag indicating client support for Chrome Storage

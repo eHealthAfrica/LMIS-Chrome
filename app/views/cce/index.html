@@ -47,57 +47,42 @@
                 <h4 class="panel-title">Cold Chain Equipments</h4>
             </div>
             <div class="scrollable-container">
-                <table  class="table table-striped table-condensed table-bordered oversize-table">
-                    <thead>
-                        <tr>
-                            <th ng-class="'center-text'">#</th>
-                            <th ng-class="'center-text'">Code</th>
-                            <th ng-class="'center-text'">Status</th>
-                            <th ng-class="'center-text'">Problem Log</th>
-                            <th ng-class="'center-text'">Temp. Log</th>
-                            <th ng-class="'center-text'">Name</th>
-                            <th ng-class="'center-text'">Facility</th>
-                            <th ng-class="'center-text'">Gross Capacity</th>
-                            <th ng-class="'center-text'">Net Capacity</th>
-                            <th ng-class="'center-text'">Parent CCE</th>
-                            <th ng-class="'center-text'">Type</th>
-                            <th ng-class="'center-text'">Min Temp.</th>
-                            <th ng-class="'center-text'">Max. Temp.</th>
-                            <th ng-class="'center-text'">Is Cold Store</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="cce in cceList | filter:query" ng-class="'center-text'">
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ cce.code }}</td>
-                            <td>
-                                <span ng-if="cce.status == 0"><i class="icon-ok-sign green-glyphicon"></i></span>
-                                <span ng-if="cce.status == 1"><i class="icon-remove-sign red-glyphicon"></i></span>
-                                <span ng-if="cce.status == 2"><i class="icon-ok-sign warning-alert"></i></span>
-                            </td>
-                            <td ng-model="selectedCCE">
-                                <a href ng-href="#/cce/problem_log/{{cce}}">Problem Log</a>
-                            </td>
-                            <td>
-                                <a href ng-href="#/cce/temperature_log/{{cce}}">Temperature Log</a>
-                            </td>
-                            <td>{{ cce.name }}</td>
-                            <td>{{ facilities[cce.facility].name  }}</td>
-                            <td>{{ cce.gross_capacity+' '+uomList[cce.capacity_uom].name }}</td>
-                            <td>{{ cce.net_capacity+' '+uomList[cce.capacity_uom].name }}</td>
-                            <td>
-                                <span ng-if="cce.parent">{{ parentCCEList[cce.parent].name }}</span>
-                                <span ng-if="!cce.parent">N/A</span>
-                            </td>
-                            <td>{{ cceTypes[cce.type].name }}</td>
-                            <td>{{ cce.minimum_temperature+' '+uomList[cce.temperature_uom].symbol}}</td>
-                            <td>{{ cce.maximum_temperature+' '+uomList[cce.temperature_uom].symbol }}</td>
-                            <td>
-                                <span ng-if="cce.is_cold_store"><i class="icon-ok-sign green-glyphicon"></i></span>
-                                <span ng-if="!cce.is_cold_store"><i class="icon-remove-sign red-glyphicon"></i></span>
-                            </td>
-                        </tr>
-                    </tbody>
+                <table ng-table="cceList" class="table table-condensed table-bordered oversize-table">
+                    <tr ng-repeat="cce in $data | filter:query">
+                        <td data-title="'#'">{{ $index + 1 }}</td>
+                        <td data-title="'Code'">{{ cce.name }}</td>
+                        <td data-title="'Status'">
+                            <span ng-if="cce.status == CCE_WORKING"><i class="icon-ok-sign green-glyphicon"></i></span>
+                            <span ng-if="cce.status == NOT_WORKING"><i class="icon-remove-sign red-glyphicon"></i></span>
+                            <span ng-if="cce.status == CCE_IN_REPAIR"><i class="icon-remove-sign warning-alert"></i></span>
+                        </td>
+                        <td data-title="'Problem Log'">
+                            <a href ng-href="#/cce/problem_log/">Problem Log</a>
+                        </td>
+                        <td data-title="'Temperature Log'">
+                            <a href ng-href="#/cce/temperature_log/{{cce}}">Temperature Log</a>
+                        </td>
+                        <td data-title="'Net Capacity'">
+                            {{ (cce.net_capacity  | number) +' '+(uomList[cce.capacity_uom].symbol) }}
+                        </td>
+                        <td data-title="'Gross Capacity'">
+                            {{ (cce.gross_capacity | number) +' '+(uomList[cce.capacity_uom].symbol) }}
+                        </td>
+                        <td data-title="'Facility'">{{ facilities[cce.facility].name  }}</td>
+                        <td data-title="'Name'">{{ cce.name }}</td>
+                        <td data-title="'Parent CCE'">
+                            <span ng-if="cce.parent">{{ parentCCEList[cce.parent].name }}</span>
+                            <span ng-if="!cce.parent">N/A</span>
+                        </td>
+                        <td data-title="'Type'">{{ cceTypes[cce.type].name }}</td>
+                        <td data-title="'Temperature Range'">
+                            {{ cce.minimum_temperature +' <==> '+cce.maximum_temperature+' '+(uomList[cce.temperature_uom].symbol) }}
+                        </td>
+                        <td data-title="'Is Cold Store'" class="text-center">
+                            <span ng-if="cce.is_cold_store"><i class="icon-ok-sign green-glyphicon"></i></span>
+                            <span ng-if="!cce.is_cold_store"><i class="icon-remove-sign red-glyphicon"></i></span>
+                        </td>
+                    </tr>
                 </table>
             </div>
 
