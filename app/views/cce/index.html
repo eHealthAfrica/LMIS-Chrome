@@ -50,16 +50,11 @@
                 <table ng-table="cceList" class="table table-condensed table-bordered table-striped oversize-table">
                     <tr ng-repeat="cce in $data | filter:query" ng-class="'center-text'">
                         <td data-title="'#'">{{ $index + 1 }}</td>
-                        <td data-title="'Code'">{{ cce.name }}</td>
-                        <td data-title="'Status'">
+                        <td data-title="'Code'" sortable="'code'">{{ cce.code }}</td>
+                        <td data-title="'Status'" sortable="'status'">
                             <span ng-if="cce.status == CCE_WORKING"><i class="fa fa-check-circle green-icon"></i></span>
                             <span ng-if="cce.status == NOT_WORKING"><i class="fa fa-times-circle red-icon"></i></span>
                             <span ng-if="cce.status == CCE_IN_REPAIR"><i class="fa fa-times-circle warning-alert"></i></span>
-                        <td data-title="'Code'" sortable="'code'">{{ cce.name }}</td>
-                        <td data-title="'Status'" sortable="'status'">
-                            <span ng-if="cce.status == CCE_WORKING"><i class="icon-ok-sign green-glyphicon"></i></span>
-                            <span ng-if="cce.status == NOT_WORKING"><i class="icon-remove-sign red-glyphicon"></i></span>
-                            <span ng-if="cce.status == CCE_IN_REPAIR"><i class="icon-remove-sign warning-alert"></i></span>
                         </td>
                         <td data-title="'Problem Log'">
                             <a href ng-href="#/cce/problem_log/">Problem Log</a>
@@ -68,10 +63,10 @@
                             <a href ng-href="#/cce/temperature_log/{{cce}}">Temperature Log</a>
                         </td>
                         <td data-title="'Net Capacity'" sortable="'net_capacity'">
-                            {{ (cce.net_capacity  | number) +' '+(uomList[cce.capacity_uom].symbol) }}
+                            {{ (cce.net_capacity  | number:2) +' '+(uomList[cce.capacity_uom].symbol) }}
                         </td>
                         <td data-title="'Gross Capacity'" sortable="'gross_capacity'">
-                            {{ (cce.gross_capacity | number) +' '+(uomList[cce.capacity_uom].symbol) }}
+                            {{ (cce.gross_capacity | number:2) +' '+(uomList[cce.capacity_uom].symbol) }}
                         </td>
                         <td data-title="'Facility'" sortable="'facility'">{{ facilities[cce.facility].name  }}</td>
                         <td data-title="'Name'" sortable="'name'">{{ cce.name }}</td>
@@ -83,12 +78,9 @@
                         <td data-title="'Temperature Range'">
                             {{ cce.minimum_temperature +' <==> '+cce.maximum_temperature+' '+(uomList[cce.temperature_uom].symbol) }}
                         </td>
-                        <td data-title="'Is Cold Store'" class="text-center">
+                        <td data-title="'Is Cold Store'" sortable="'is_cold_store'">
                             <span ng-if="cce.is_cold_store"><i class="fa fa-check-circle green-icon"></i></span>
                             <span ng-if="!cce.is_cold_store"><i class="fa fa-times-circle red-icon"></i></span>
-                        <td data-title="'Is Cold Store'" sortable="'is_cold_store'">
-                            <span ng-if="cce.is_cold_store"><i class="icon-ok-sign green-glyphicon"></i></span>
-                            <span ng-if="!cce.is_cold_store"><i class="icon-remove-sign red-glyphicon"></i></span>
                         </td>
                     </tr>
                 </table>

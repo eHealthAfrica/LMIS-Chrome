@@ -1,0 +1,58 @@
+[
+    {
+        "created_by": null,
+        "modified_by": null,
+        "uuid": "b0c6f4a1-5c75-441f-b186-a13e7c7165e3",
+        "created": "2014-01-28T15:25:08.208Z",
+        "modified": "2014-01-28T15:25:08.226Z",
+        "is_deleted": false,
+        "storage_location": "5667da52-f710-4663-b3fc-ca85676555f7",
+        "description": "cold store compressor breakdown",
+        "start_date_time": "2014-01-17T09:19:14Z",
+        "fixed_date_time": "2014-01-18T10:19:14Z",
+        "cost": "150.00",
+        "cost_currency": "a98c81e5-fac9-4bb4-847c-8de33110615a"
+    },
+    {
+        "created_by": null,
+        "modified_by": null,
+        "uuid": "d487c322-5484-4295-9e3e-c39c2b689851",
+        "created": "2014-01-28T15:24:09.359Z",
+        "modified": "2014-01-28T15:25:34.043Z",
+        "is_deleted": false,
+        "storage_location": "5667da52-f710-4663-b3fc-ca85676555f7",
+        "description": "Freezer indicator lights out",
+        "start_date_time": "2014-01-11T08:19:14Z",
+        "fixed_date_time": "2014-01-11T09:19:14Z",
+        "cost": "25.00",
+        "cost_currency": "a98c81e5-fac9-4bb4-847c-8de33110615a"
+    },
+    {
+        "created_by": null,
+        "modified_by": null,
+        "uuid": "b111d797-5b7b-44dd-845a-6b1c2422eeb7",
+        "created": "2014-01-28T15:26:57.545Z",
+        "modified": "2014-01-28T15:26:57.560Z",
+        "is_deleted": false,
+        "storage_location": "d19d74b7-34f8-493b-bc3c-f93e8ab40085",
+        "description": "leaking roof",
+        "start_date_time": "2013-12-11T08:19:14Z",
+        "fixed_date_time": "2014-12-16T08:19:14Z",
+        "cost": "50.00",
+        "cost_currency": "a98c81e5-fac9-4bb4-847c-8de33110615a"
+    },
+    {
+        "created_by": null,
+        "modified_by": null,
+        "uuid": "a4a62980-a1a0-4caa-b8d2-ad6398522f68",
+        "created": "2014-01-28T15:27:55.357Z",
+        "modified": "2014-01-28T15:27:55.374Z",
+        "is_deleted": false,
+        "storage_location": "d6b364e9-2bcd-4db9-b01f-c13d5c353d8a",
+        "description": "defective defrost timer",
+        "start_date_time": "2013-12-11T08:19:14Z",
+        "fixed_date_time": "2014-12-16T08:19:14Z",
+        "cost": "50.00",
+        "cost_currency": "a98c81e5-fac9-4bb4-847c-8de33110615a"
+    }
+]
