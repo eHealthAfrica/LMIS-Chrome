@@ -1,6 +1,6 @@
 <div class="row">
     <ul class="breadcrumb">
-        <li><a href="#/main/"><i class="icon-home"> Home</i></a></li>
+        <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
         <li class="active">CCE</li>
     </ul>
 </div>
@@ -31,7 +31,7 @@
 
     <div class="col-sm-12">
         <div class="btn-group">
-            <a href="#/cce/cce_form" class="btn btn-default"><i class="icon-plus-sign"></i> Add CCE</a>
+            <a href="#/cce/cce_form" class="btn btn-default"><i class="fa fa-plus-sign"></i> Add CCE</a>
         </div>
     </div>
 
@@ -52,9 +52,9 @@
                         <td data-title="'#'">{{ $index + 1 }}</td>
                         <td data-title="'Code'">{{ cce.name }}</td>
                         <td data-title="'Status'">
-                            <span ng-if="cce.status == CCE_WORKING"><i class="icon-ok-sign green-glyphicon"></i></span>
-                            <span ng-if="cce.status == NOT_WORKING"><i class="icon-remove-sign red-glyphicon"></i></span>
-                            <span ng-if="cce.status == CCE_IN_REPAIR"><i class="icon-remove-sign warning-alert"></i></span>
+                            <span ng-if="cce.status == CCE_WORKING"><i class="fa fa-ok-sign green-glyphicon"></i></span>
+                            <span ng-if="cce.status == NOT_WORKING"><i class="fa fa-remove-sign red-glyphicon"></i></span>
+                            <span ng-if="cce.status == CCE_IN_REPAIR"><i class="fa fa-remove-sign warning-alert"></i></span>
                         </td>
                         <td data-title="'Problem Log'">
                             <a href ng-href="#/cce/problem_log/">Problem Log</a>
@@ -79,8 +79,8 @@
                             {{ cce.minimum_temperature +' <==> '+cce.maximum_temperature+' '+(uomList[cce.temperature_uom].symbol) }}
                         </td>
                         <td data-title="'Is Cold Store'" class="text-center">
-                            <span ng-if="cce.is_cold_store"><i class="icon-ok-sign green-glyphicon"></i></span>
-                            <span ng-if="!cce.is_cold_store"><i class="icon-remove-sign red-glyphicon"></i></span>
+                            <span ng-if="cce.is_cold_store"><i class="fa fa-ok-sign green-glyphicon"></i></span>
+                            <span ng-if="!cce.is_cold_store"><i class="fa fa-remove-sign red-glyphicon"></i></span>
                         </td>
                     </tr>
                 </table>

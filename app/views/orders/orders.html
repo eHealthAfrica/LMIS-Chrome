@@ -59,12 +59,12 @@
                             <span ng-hide="order_row.order_status">Pending</span>
                         </td>
                         <td>
-                            <a href="/order/edit/{{ order_row.uuid }}"><i class="icon-edit"></i></a>
-                            <a href="/order/delete/{{ order_row.uuid }}"><i class="icon-remove-sign"></i></a>
+                            <a href="/order/edit/{{ order_row.uuid }}"><i class="fa fa-edit"></i></a>
+                            <a href="/order/delete/{{ order_row.uuid }}"><i class="fa fa-remove-sign"></i></a>
                         </td>
                         <td>
-                            <span ng-show="order_row.synced"><i class="icon-ok"></i></span>
-                            <span ng-hide="order_row.synced"><i class="icon-remove"></i></span>
+                            <span ng-show="order_row.synced"><i class="fa fa-ok"></i></span>
+                            <span ng-hide="order_row.synced"><i class="fa fa-remove"></i></span>
                         </td>
                     </tr>
                 </tbody>
