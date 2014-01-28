@@ -11,6 +11,10 @@ chromeApp.controller('cceCtrl', function ($scope, storageService, utility) {
       $scope.facilities = facilities;
     });
 
+    utility.loadTableObject(storageService.STORAGE_LOCATION_TYPE).then(function(cceTypes) {
+      $scope.cceTypes = cceTypes;
+    });
+
     utility.loadTableObject(storageService.UOM).then(function(uomList) {
       $scope.uomList = uomList;
     });

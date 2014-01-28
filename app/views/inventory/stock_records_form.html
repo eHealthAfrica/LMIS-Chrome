@@ -11,9 +11,48 @@
     <div class="col-sm-12">
         <form novalidate="novalidate" ng-submit="save_record()">
             <div class="row">
+
+
+                <!-- start first column-->
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <!-- TODO: this should be tied to logged in user -->
+                        <label for="facility">Facility</label>
+                        <select name="facility" id="facility" class="form-control" ng-model="stock_records.facility">
+                            <option value="">-- choose facility --</option>
+                            <option ng-repeat="facility in facilities" value="{{ facility.uuid }}">{{ facility.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <!-- end first column-->
+
+                <!-- Start second column-->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="program">Program</label>
+                        <select ng-change="loadProducts()" name="program" id="program" ng-model="stock_records.program"
+                                class="form-control">
+                            <option value="">-- choose program --</option>
+                            <option ng-repeat="program in programs" value="{{ program.uuid }}">{{ program.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <!-- end second column-->
+
+                <!--  start third column-->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="stockRecordDate">Date
+                            <i class="glyphicon glyphicon-calendar"></i></label>
+                        <input id="stockRecordDate" type="date" class="form-control" ng-required="true"
+                               ng-model="stockRecord.date"/>
+                    </div>
+                </div>
+
+                <!-- <div class="col-sm-4">
+                    <div class="form-group">
+                        <!-- TODO: this should be tied to logged in user
                         <label for="facility">Facility</label>
                         <select name="facility" id="facility"  class="form-control" ng-model="stock_records.facility" >
                             <option value="">-- choose facility --</option>
@@ -21,7 +60,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <!-- TODO: this should be tied to logged in user and selected facility -->
+                        <!-- TODO: this should be tied to logged in user and selected facility
                         <label for="program"></label>
                         <select ng-change="loadProducts()" name="program" id="program" ng-model="stock_records.program" class="form-control">
                             <option value="">-- choose program --</option>
@@ -33,6 +72,18 @@
                         <div class="col-sm-2">
                             <input name="products_item[]" ng-model="products_item[]" class="form-control">
                         </div>
+
+                    </div>
+                </div>
+            -->
+            </div>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Add {{ selectedProgram.name }} Stock Record</h4>
+                    </div>
+
+                    <div class="panel-body">
 
                     </div>
                 </div>

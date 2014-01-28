@@ -73,9 +73,9 @@
                             <td>{{ cce.code }}</td>
                             <td>{{ cce.gross_capacity+' '+uomList[cce.capacity_uom].name }}</td>
                             <td>{{ cce.net_capacity+' '+uomList[cce.capacity_uom].name }}</td>
-                            <td>{{ cce.type }}</td>
-                            <td>{{ }}</td>
-                            <td>{{  }}</td>
+                            <td>{{ cceTypes[cce.type].name }}</td>
+                            <td>{{ cce.minimum_temperature+' '+uomList[cce.temperature_uom].symbol}}</td>
+                            <td>{{ cce.maximum_temperature+' '+uomList[cce.temperature_uom].symbol }}</td>
                             <td>{{  }}</td>
                             <td>{{  }}</td>
                             <td>{{ facilities[cce.facility].name }}</td>
