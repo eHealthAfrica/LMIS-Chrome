@@ -72,8 +72,8 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ cce.code }}</td>
                             <td>
-                                <span ng-if="cce.status == CCE_WORKING"><i class="fa fa-ok-sign green-glyphicon"></i></span>
-                                <span ng-if="cce.status == NOT_WORKING"><i class="fa fa-remove-sign red-glyphicon"></i></span>
+                                <span ng-if="cce.status == CCE_WORKING"><i class="fa fa-ok-sign green-icon"></i></span>
+                                <span ng-if="cce.status == NOT_WORKING"><i class="fa fa-remove-sign red-icon"></i></span>
                                 <span ng-if="cce.status == CCE_IN_REPAIR"><i class="fa fa-remove-sign warning-alert"></i></span>
                             </td>
                             <td ng-model="selectedCCE">
@@ -94,8 +94,8 @@
                             <td>{{ cce.minimum_temperature+' '+uomList[cce.temperature_uom].symbol}}</td>
                             <td>{{ cce.maximum_temperature+' '+uomList[cce.temperature_uom].symbol }}</td>
                             <td>
-                                <span ng-if="cce.is_cold_store"><i class="fa fa-ok-sign green-glyphicon"></i></span>
-                                <span ng-if="!cce.is_cold_store"><i class="fa fa-remove-sign red-glyphicon"></i></span>
+                                <span ng-if="cce.is_cold_store"><i class="fa fa-ok-sign green-icon"></i></span>
+                                <span ng-if="!cce.is_cold_store"><i class="fa fa-remove-sign red-icon"></i></span>
                             </td>
                         </tr>
                     </tbody>
