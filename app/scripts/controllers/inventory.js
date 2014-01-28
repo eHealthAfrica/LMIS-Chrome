@@ -56,15 +56,34 @@ chromeApp.controller("StockRecordsCtrl",function($scope, $location, storageServi
 
 chromeApp.controller("StockRecordsCtrlForm",function($scope, $location, storageService){
     $scope.stock_records = {};
-            storageService.get('facility').then(function(data){
-                 $scope.facilities = data;
-            });
-            storageService.get('programs').then(function(data){
-                 $scope.programs = data;
-            });
-             storageService.get(storageService.PROGRAM_PRODUCTS).then(function(data){
-                 $scope.program_products = data;
-             });
+    $scope.stock_records.received = {};
+    $scope.stock_records.used = {};
+    $scope.stock_records.balance = {};
+    $scope.stock_records.expiry = {};
+    $scope.stock_records.vvm = {};
+    $scope.stock_records.breakage = {};
+    $scope.stock_records.frozen = {};
+    $scope.stock_records.label_removed = {};
+    $scope.stock_records.others = {};
+
+    storageService.get(storageService.PROGRAM_PRODUCTS).then(function(programProducts){
+           $scope.programProductList = programProducts;
+    });
+    storageService.loadTableObject(storageService.PROGRAM).then(function(programs){
+        $scope.programs_object = programs;
+    });
+    storageService.loadTableObject(storageService.PRODUCT).then(function(products){
+        $scope.products_object = products;
+    });
+    storageService.get('facility').then(function(data){
+         $scope.facilities = data;
+    });
+    storageService.get('programs').then(function(data){
+         $scope.programs = data;
+    });
+     storageService.get(storageService.PROGRAM_PRODUCTS).then(function(data){
+         $scope.program_products = data;
+     });
 
 
 
