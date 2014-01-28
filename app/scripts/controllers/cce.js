@@ -81,10 +81,29 @@ chromeApp.controller('addCCECtrl', function ($scope, storageService) {
 /**
  *  This controller will pull logged in user facility CCE problem logs
  */
-chromeApp.controller('cceProblemLogMainCtrl', function ($scope, storageService, utility) {
+chromeApp.controller('cceProblemLogMainCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
 
   storageService.get(storageService.STORAGE_LOCATION_PROBLEM).then(function (data) {
-    $scope.cceProblems = data;
+    // Table defaults
+    var params = {
+      page: 1,
+      count: 10,
+    };
+
+    // Pagination
+    var resolver = {
+      total: data.length,
+      getData: function ($defer, params) {
+        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+        $defer.resolve(orderedData.slice(
+            (params.page() - 1) * params.count(),
+            params.page() * params.count()
+        ));
+      }
+    }
+
+    $scope.cceProblems = new ngTableParams(params, resolver);
+
   });
 
   utility.loadTableObject(storageService.STORAGE_LOCATION).then(function (data) {
