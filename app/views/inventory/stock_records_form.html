@@ -7,7 +7,7 @@
     </ul>
 </div>
 
-<div class="row">
+<div class="row" ng-controller="StockRecordsCtrlForm">
     <div class="col-sm-12">
         <form novalidate="novalidate" ng-submit="save_record()">
             <div class="row">
@@ -41,8 +41,46 @@
                                                 ng-model="stock_records.stock_record_date"/>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div ng-show="stock_records.program" class="form-group" ng-repeat="item in programProductList | filter:{program: stock_records.program}">
+                        <div class="col-sm-12">{{ products_object[item.product].name }}</div>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                Receved :<input class="form-control" ng-model="stock_records.received[item.product]">
+                            </div>
+                            <div class="col-sm-1">
+                                Used :<input class="form-control" ng-model="stock_records.used[item.product]">
+                            </div>
+                            <div class="col-sm-1">
+                                Balance :<input class="form-control" ng-model="stock_records.balance[item.product]">
+                            </div>
+                             <div class="col-sm-1">
+                                Discarded
+                            </div>
+                            <div class="col-sm-1">
+                                Expiry :<input class="form-control" ng-model="stock_records.expiry[item.product]">
+                            </div>
+                            <div class="col-sm-2">
+                                VVM Change :<input class="form-control" ng-model="stock_records.vvm[item.product]">
+                            </div>
+                            <div class="col-sm-1">
+                                Breakage :<input class="form-control" ng-model="stock_records.breakage[item.product]">
+                            </div>
+                            <div class="col-sm-1">
+                                Frozen :<input class="form-control" ng-model="stock_records.frozen[item.product]">
+                            </div>
+                            <div class="col-sm-2">
+                                Label Removed :<input class="form-control" ng-model="stock_records.label_removed[item.product]">
+                            </div>
+                            <div class="col-sm-1">
+                                Others :<input class="form-control" ng-model="stock_records.others[item.product]">
+                            </div>
 
-
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
@@ -74,7 +112,10 @@
                 -->
 
         </form>
+        <div>
+            <pre>
+                {{ stock_records }}
+            </pre>
+        </div>
     </div>
 </div>
-{{ stock_records.program }}
-{{ stock_records.products }}
