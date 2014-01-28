@@ -38,11 +38,11 @@
                         <td>{{ row.parent }}</td>
                         <td class="text-center">
                             <span ng-show="row.active"><i class="fa fa-check-circle green-icon"></i></span>
-                            <span ng-hide="row.active"><i class="fa fa-remove-sign red-icon"></i></span>
+                            <span ng-hide="row.active"><i class="fa fa-times-circle red-icon"></i></span>
                         </td>
                         <td class="text-center">
                             <a href="#/main/program_form?uuid={{ row.uuid }}"> <i class="fa fa-edit"></i> </a>
-                            <a ng-click="removeProgram( row.uuid )" href="#/main/programs"> <i class="fa fa-remove-sign"></i> </a>
+                            <a ng-click="removeProgram( row.uuid )" href="#/main/programs"> <i class="fa fa-times-circle"></i> </a>
                         </td>
                     </tr>
                 </tbody>

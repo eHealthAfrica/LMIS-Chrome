@@ -53,8 +53,8 @@
                         <td data-title="'Code'">{{ cce.name }}</td>
                         <td data-title="'Status'">
                             <span ng-if="cce.status == CCE_WORKING"><i class="fa fa-check-circle green-icon"></i></span>
-                            <span ng-if="cce.status == NOT_WORKING"><i class="fa fa-remove-sign red-icon"></i></span>
-                            <span ng-if="cce.status == CCE_IN_REPAIR"><i class="fa fa-remove-sign warning-alert"></i></span>
+                            <span ng-if="cce.status == NOT_WORKING"><i class="fa fa-times-circle red-icon"></i></span>
+                            <span ng-if="cce.status == CCE_IN_REPAIR"><i class="fa fa-times-circle warning-alert"></i></span>
                         </td>
                         <td data-title="'Problem Log'">
                             <a href ng-href="#/cce/problem_log/">Problem Log</a>
@@ -80,7 +80,7 @@
                         </td>
                         <td data-title="'Is Cold Store'" class="text-center">
                             <span ng-if="cce.is_cold_store"><i class="fa fa-check-circle green-icon"></i></span>
-                            <span ng-if="!cce.is_cold_store"><i class="fa fa-remove-sign red-icon"></i></span>
+                            <span ng-if="!cce.is_cold_store"><i class="fa fa-times-circle red-icon"></i></span>
                         </td>
                     </tr>
                 </table>
