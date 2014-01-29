@@ -28,14 +28,22 @@ angular.module('lmisChromeApp')
         var resolver = {
           total: data.length,
           getData: function ($defer, params) {
-            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-            $defer.resolve(orderedData.slice(
+            var filtered, sorted = data;
+            if(params.filter()) {
+              filtered = $filter('filter')(data, params.filter());
+            }
+            if(params.sorting()) {
+              sorted = $filter('orderBy')(filtered, params.orderBy());
+            }
+            params.total(sorted.length);
+            $defer.resolve(sorted.slice(
                 (params.page() - 1) * params.count(),
                 params.page() * params.count()
             ));
           }
         }
 
+        // jshint newcap: false
         $scope.productList = new ngTableParams(params, resolver);
       });
 
