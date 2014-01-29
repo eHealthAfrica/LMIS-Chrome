@@ -87,7 +87,7 @@ chromeApp.controller('cceProblemLogMainCtrl', function ($scope, storageService, 
     // Table defaults
     var params = {
       page: 1,
-      count: 10,
+      count: 10
     };
 
     // Pagination
@@ -129,4 +129,26 @@ chromeApp.controller('cceProblemLogMainCtrl', function ($scope, storageService, 
     return '';
   };
 
+});
+
+/**
+ * AddProblemLogCtrl is used for adding problems logs to a selected Cold Chain Equipment.
+ */
+chromeApp.controller('AddProblemLogCtrl', function($scope, storageService){
+
+  //default problem log used to hold problem log form data
+  $scope.problemLog = {};
+
+  //this function will be used to save Add CCE problem log form content to local storage
+  $scope.save = function(){
+    console.log($scope.problemLog);
+  };
+
+  storageService.get(storageService.STORAGE_LOCATION).then(function (cceList) {
+    $scope.cceList = cceList;
+  });
+
+  storageService.get(storageService.CURRENCY).then(function (currency) {
+    $scope.currencies = currency;
+  });
 });
