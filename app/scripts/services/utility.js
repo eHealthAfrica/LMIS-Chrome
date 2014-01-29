@@ -28,7 +28,9 @@ angular.module('lmisChromeApp')
             storageService.PRODUCT_FORMULATION,
             storageService.MODE_OF_ADMINISTRATION,
             storageService.PRODUCT_ITEM,
-            storageService.STORAGE_LOCATION_PROBLEM
+            storageService.STORAGE_LOCATION_PROBLEM,
+            storageService.STORAGE_LOCATION_TEMPERATURE
+
         ]
         for(var i in database){
             loadData(database[i]);
