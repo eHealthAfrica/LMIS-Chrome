@@ -21,6 +21,14 @@
   </div>
 </div>
 
+        <div class="row">
+  <div class="col-sm-12">
+    <span class="marker-indicator-space">Product Expiration Status</span>
+    <i class="fa fa-check-circle red-icon marker-indicator-space"> Expired Product</i>
+    <i class="fa fa-times-circle warning-alert marker-indicator-space"> Expires Soon</i>
+  </div>
+</div>
+
 <div class="row" ng-controller="ProductItemListCtrl">
     <div class="col-sm-18">
         <div class="panel panel-default">
@@ -32,26 +40,34 @@
             </div>
 
             <div class="scrollable-container">
-                <table  class="table table-condensed table-hover table-bordered oversize-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Batch No</th>
-                            <th>Product Name</th>
-                            <th>Expiration Date</th>
-                            <th>Manufacturer</th>
-                            <th>Presentation</th>
-                            <th>Formulation</th>
-                            <th>Mode of Use</th>
-                            <th>Packed Volume</th>
-                            <th>Diluent Packed per Vol.</th>
-                            <th>Price per Unit</th>
-                            <th>Description</th>
-                            <th>Fund Source</th>
-                            <th>Active</th>
+                <table  ng-table="productItemList" class="table table-condensed table-hover table-bordered oversize-table">
+                        <tr  ng-repeat="productItem in $data | filter:query"
+                            class="{{ highlightExpiredProductItem(productItem.expiration_date) }} center-text">
+                            <td data-title="'#'">{{ $index + 1 }}</td>
+                            <td data-title="'Batch No'">{{ productItem.batch_no }}</td>
+                            <td data-title="'Product Name'">{{ products[productItem.product].name }}</td>
+                            <td data-title="'Expiration Date'">{{ productItem.expiration_date | date:'dd-MM-yyyy' }}</td>
+                            <td data-title="'Manufacturer'">{{ companies[productItem.manufacturer].name }}</td>
+                            <td data-title="'Presentation'">{{ presentations[productItem.presentation].name }}</td>
+                            <td data-title="'Formulation'">{{ productFormulation[productItem.formulation].name }}</td>
+                            <td data-title="'Mode Of Administration'">{{ modesOfAdmin[productItem.mode_of_use].name }}</td>
+                            <td data-title="'Packed Volume'">
+                              {{ productItem.packed_volume +' '+ uomList[productItem.volume_uom].symbol }}
+                            </td>
+                            <td data-title="'Diluent Packed per Volume'">
+                              {{ productItem.packed_volume +' '+ uomList[productItem.volume_uom].symbol }}
+                            </td>
+                            <td data-title="'Price per Unit'">
+                              {{ currencies[productItem.price_currency].symbol +' '+ productItem.price_per_unit }}
+                            </td>
+                            <td data-title="'Description'">{{ productItem.description }}</td>
+                            <td data-title="'Fund Source'">{{ companies[productItem.fund_sources].name }}</td>
+                            <td data-title="'Active'">
+                              <span ng-show="productItem.active"><i class="fa fa-check-circle green-icon"></i></span>
+                              <span ng-hide="productItem.active"><i class="fa fa-times-circle red-icon"></i></span>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
+                   <!-- <tbody>
                         <tr ng-repeat="productItem in productItemList | filter:query"
                             class="{{ highlightExpiredProductItem(productItem.expiration_date) }}">
                             <td>{{ $index + 1 }}</td>
@@ -72,7 +88,7 @@
                                 <span ng-hide="productItem.active"><i class="fa fa-times-circle red-icon"></i></span>
                             </td>
                         </tr>
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>
 

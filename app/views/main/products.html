@@ -57,11 +57,11 @@
             <td data-title="'Category'">{{ productCategories[product.category].name }}</td>
             <td data-title="'Base UOM'">{{ uomList[product.base_uom].name }}</td>
             <td data-title="'Description'">{{ product.description }}</td>
-            <td data-title="'Last Modified'" sortable="'modified'">{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
             <td data-title="'Active'" class="text-center" sortable="'active'">
               <span ng-if="product.active"><i class="fa fa-check-circle green-icon"></i></span>
               <span ng-if="!product.active"><i class="fa fa-times-circle red-icon"></i></span>
             </td>
+            <td data-title="'Last Modified'" sortable="'modified'">{{ product.modified | date:'yyyy-MM-dd h:mma'}}</td>
           </tr>
         </table>
       </div>
