@@ -44,51 +44,31 @@
                         <tr  ng-repeat="productItem in $data | filter:query"
                             class="{{ highlightExpiredProductItem(productItem.expiration_date) }} center-text">
                             <td data-title="'#'">{{ $index + 1 }}</td>
-                            <td data-title="'Batch No'">{{ productItem.batch_no }}</td>
+                            <td data-title="'Batch No'" sortable="'batch_no'">{{ productItem.batch_no }}</td>
                             <td data-title="'Product Name'">{{ products[productItem.product].name }}</td>
-                            <td data-title="'Expiration Date'">{{ productItem.expiration_date | date:'dd-MM-yyyy' }}</td>
+                            <td data-title="'Expiration Date'" sortable="'expiration_date'">
+                              {{ productItem.expiration_date | date:'dd-MM-yyyy' }}
+                            </td>
                             <td data-title="'Manufacturer'">{{ companies[productItem.manufacturer].name }}</td>
                             <td data-title="'Presentation'">{{ presentations[productItem.presentation].name }}</td>
                             <td data-title="'Formulation'">{{ productFormulation[productItem.formulation].name }}</td>
                             <td data-title="'Mode Of Administration'">{{ modesOfAdmin[productItem.mode_of_use].name }}</td>
-                            <td data-title="'Packed Volume'">
+                            <td data-title="'Packed Volume'" sortable="'packed_volume'">
                               {{ productItem.packed_volume +' '+ uomList[productItem.volume_uom].symbol }}
                             </td>
-                            <td data-title="'Diluent Packed per Volume'">
-                              {{ productItem.packed_volume +' '+ uomList[productItem.volume_uom].symbol }}
+                            <td data-title="'Diluent Packed per Volume'" sortable="'diluent_per_volume'">
+                              {{ productItem.diluent_per_volume +' '+ uomList[productItem.volume_uom].symbol }}
                             </td>
-                            <td data-title="'Price per Unit'">
+                            <td data-title="'Price per Unit'" sortable="'price_per_unit'">
                               {{ currencies[productItem.price_currency].symbol +' '+ productItem.price_per_unit }}
                             </td>
                             <td data-title="'Description'">{{ productItem.description }}</td>
                             <td data-title="'Fund Source'">{{ companies[productItem.fund_sources].name }}</td>
-                            <td data-title="'Active'">
+                            <td data-title="'Active'" sortable="'active'">
                               <span ng-show="productItem.active"><i class="fa fa-check-circle green-icon"></i></span>
                               <span ng-hide="productItem.active"><i class="fa fa-times-circle red-icon"></i></span>
                             </td>
                         </tr>
-                   <!-- <tbody>
-                        <tr ng-repeat="productItem in productItemList | filter:query"
-                            class="{{ highlightExpiredProductItem(productItem.expiration_date) }}">
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ productItem.batch_no }} </td>
-                            <td>{{ products[productItem.product].name }}</td>
-                            <td>{{ productItem.expiration_date | date:'dd-MM-yyyy' }}</td>
-                            <td>{{ companies[productItem.manufacturer].name }}</td>
-                            <td>{{ presentations[productItem.presentation].name }}</td>
-                            <td>{{ productFormulation[productItem.formulation].name }}</td>
-                            <td>{{ modesOfAdmin[productItem.mode_of_use].name }}</td>
-                            <td>{{ productItem.packed_volume +' '+ uomList[productItem.volume_uom].symbol }}</td>
-                            <td>{{ productItem.diluent_per_volume +' '+ uomList[productItem.volume_uom].symbol }}</td>
-                            <td>{{ currencies[productItem.price_currency].symbol +' '+ productItem.price_per_unit }} </td>
-                            <td>{{ productItem.description }}</td>
-                            <td>{{ companies[productItem.fund_sources].name }}</td>
-                            <td class="text-center">
-                                <span ng-show="productItem.active"><i class="fa fa-check-circle green-icon"></i></span>
-                                <span ng-hide="productItem.active"><i class="fa fa-times-circle red-icon"></i></span>
-                            </td>
-                        </tr>
-                    </tbody> -->
                 </table>
             </div>
 
