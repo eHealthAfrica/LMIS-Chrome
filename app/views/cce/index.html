@@ -1,93 +1,101 @@
 <div class="row">
-    <ul class="breadcrumb">
-        <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
-        <li class="active">CCE</li>
-    </ul>
+  <ul class="breadcrumb">
+    <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
+    <li class="active">CCE</li>
+  </ul>
 </div>
 
 <div class="row">
-        <div class="col-lg-3 col-md-6">
-            <a href="#/cce/temp_log">
-                <div class="box_stat box_ico">
-                    <span class="stat_ico stat_ico_1"><i class="li_vallet"></i></span>
-                    <h4>Temperature Log</h4>
-                </div>
-            </a>
-        </div>
+  <div class="col-lg-3 col-md-6">
+    <a href="#/cce/temp_log">
+      <div class="box_stat box_ico">
+        <span class="stat_ico stat_ico_1"><i class="li_vallet"></i></span>
+        <h4>Temperature Log</h4>
+      </div>
+    </a>
+  </div>
 
-        <div class="col-lg-3 col-md-6">
-            <a href="#/cce/problem_log">
-                <div class="box_stat box_ico">
-                    <span class="stat_ico stat_ico_2"><i class="li_user"></i></span>
-                    <h4>Problem Log</h4>
-                </div>
-            </a>
-        </div>
+  <div class="col-lg-3 col-md-6">
+    <a href="#/cce/problem_log">
+      <div class="box_stat box_ico">
+        <span class="stat_ico stat_ico_2"><i class="li_user"></i></span>
+        <h4>Problem Log</h4>
+      </div>
+    </a>
+  </div>
 </div>
 
 
+<div class="row">
+  <div class="col-sm-12">
 
-        
+    <div class="btn-group col-sm-2">
+      <a href="#/cce/cce_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add CCE</a>
+    </div>
+
+    <div class="form-group col-sm-5">
+      <input ng-model="query" id="query" size="55" placeholder="search"/>
+      <i class="fa fa-search"></i>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <span class="marker-indicator-space">CCE Status Indicators:</span>
+    <i class="fa fa-check-circle green-icon marker-indicator-space"> Working</i>
+    <i class="fa fa-times-circle red-icon marker-indicator-space"> In Repair</i>
+    <i class="fa fa-times-circle warning-alert marker-indicator-space"> Not Working</i>
+  </div>
+</div>
 
 <div class="row" ng-controller="cceCtrl">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">Cold Chain Equipments</h4>
+      </div>
+      <div class="scrollable-container">
+        <table ng-table="cceList" class="table table-condensed table-bordered table-striped oversize-table">
+          <tr ng-repeat="cce in $data | filter:query" ng-class="'center-text'">
+            <td data-title="'#'">{{ $index + 1 }}</td>
+            <td data-title="'Code'" sortable="'code'">{{ cce.code }}</td>
+            <td data-title="'Status'" sortable="'status'">
+              <span ng-if="cce.status == CCE_WORKING"><i class="fa fa-check-circle green-icon"></i></span>
+              <span ng-if="cce.status == NOT_WORKING"><i class="fa fa-times-circle red-icon"></i></span>
+              <span ng-if="cce.status == CCE_IN_REPAIR"><i class="fa fa-times-circle warning-alert"></i></span>
+            </td>
+            <td data-title="'Problem Log'">
+              <a href ng-href="#/cce/problem_log/">Problem Log</a>
+            </td>
+            <td data-title="'Temperature Log'">
+              <a href ng-href="#/cce/temperature_log/{{cce}}">Temperature Log</a>
+            </td>
+            <td data-title="'Net Capacity'" sortable="'net_capacity'">
+              {{ (cce.net_capacity | number:2) +' '+(uomList[cce.capacity_uom].symbol) }}
+            </td>
+            <td data-title="'Gross Capacity'" sortable="'gross_capacity'">
+              {{ (cce.gross_capacity | number:2) +' '+(uomList[cce.capacity_uom].symbol) }}
+            </td>
+            <td data-title="'Facility'" sortable="'facility'">{{ facilities[cce.facility].name }}</td>
+            <td data-title="'Name'" sortable="'name'">{{ cce.name }}</td>
+            <td data-title="'Parent CCE'" sortable="'parent'">
+              <span ng-if="cce.parent">{{ parentCCEList[cce.parent].name }}</span>
+              <span ng-if="!cce.parent">N/A</span>
+            </td>
+            <td data-title="'Type'" sortable="'type'">{{ cceTypes[cce.type].name }}</td>
+            <td data-title="'Temperature Range'">
+              {{ cce.minimum_temperature +' <==> '+cce.maximum_temperature+' '+(uomList[cce.temperature_uom].symbol) }}
+            </td>
+            <td data-title="'Is Cold Store'" sortable="'is_cold_store'">
+              <span ng-if="cce.is_cold_store"><i class="fa fa-check-circle green-icon"></i></span>
+              <span ng-if="!cce.is_cold_store"><i class="fa fa-times-circle red-icon"></i></span>
+            </td>
+          </tr>
+        </table>
+      </div>
 
-    <div class="col-sm-12">
-        <div class="btn-group">
-            <a href="#/cce/cce_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add CCE</a>
-        </div>
     </div>
-
-    <div class="col-sm-12">
-        <br/>
-        <div>
-            <input  ng-model="query" id="query" class="form_control" size="55" placeholder="search"/>
-            <i class="fa fa-search"></i>
-        </div>
-         <br/>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">Cold Chain Equipments</h4>
-            </div>
-            <div class="scrollable-container">
-                <table ng-table="cceList" class="table table-condensed table-bordered table-striped oversize-table">
-                    <tr ng-repeat="cce in $data | filter:query" ng-class="'center-text'">
-                        <td data-title="'#'">{{ $index + 1 }}</td>
-                        <td data-title="'Code'" sortable="'code'">{{ cce.code }}</td>
-                        <td data-title="'Status'" sortable="'status'">
-                            <span ng-if="cce.status == CCE_WORKING"><i class="fa fa-check-circle green-icon"></i></span>
-                            <span ng-if="cce.status == NOT_WORKING"><i class="fa fa-times-circle red-icon"></i></span>
-                            <span ng-if="cce.status == CCE_IN_REPAIR"><i class="fa fa-times-circle warning-alert"></i></span>
-                        </td>
-                        <td data-title="'Problem Log'">
-                            <a href ng-href="#/cce/problem_log/">Problem Log</a>
-                        </td>
-                        <td data-title="'Temperature Log'">
-                            <a href ng-href="#/cce/temperature_log/{{cce}}">Temperature Log</a>
-                        </td>
-                        <td data-title="'Net Capacity'" sortable="'net_capacity'">
-                            {{ (cce.net_capacity  | number:2) +' '+(uomList[cce.capacity_uom].symbol) }}
-                        </td>
-                        <td data-title="'Gross Capacity'" sortable="'gross_capacity'">
-                            {{ (cce.gross_capacity | number:2) +' '+(uomList[cce.capacity_uom].symbol) }}
-                        </td>
-                        <td data-title="'Facility'" sortable="'facility'">{{ facilities[cce.facility].name  }}</td>
-                        <td data-title="'Name'" sortable="'name'">{{ cce.name }}</td>
-                        <td data-title="'Parent CCE'" sortable="'parent'">
-                            <span ng-if="cce.parent">{{ parentCCEList[cce.parent].name }}</span>
-                            <span ng-if="!cce.parent">N/A</span>
-                        </td>
-                        <td data-title="'Type'" sortable="'type'">{{ cceTypes[cce.type].name }}</td>
-                        <td data-title="'Temperature Range'">
-                            {{ cce.minimum_temperature +' <==> '+cce.maximum_temperature+' '+(uomList[cce.temperature_uom].symbol) }}
-                        </td>
-                        <td data-title="'Is Cold Store'" sortable="'is_cold_store'">
-                            <span ng-if="cce.is_cold_store"><i class="fa fa-check-circle green-icon"></i></span>
-                            <span ng-if="!cce.is_cold_store"><i class="fa fa-times-circle red-icon"></i></span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-        </div>
-    </div>
+  </div>
 </div>
