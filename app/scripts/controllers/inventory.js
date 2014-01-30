@@ -120,9 +120,6 @@ chromeApp.controller("StockRecordsCtrlForm",function($scope, $location, storageS
      storageService.get(storageService.PROGRAM_PRODUCTS).then(function(data){
          $scope.program_products = data;
      });
-
-
-
 });
 
 
