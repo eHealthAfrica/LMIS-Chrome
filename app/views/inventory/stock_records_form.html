@@ -12,11 +12,14 @@
         <div class="col-sm-12">
             <form novalidate="novalidate" ng-submit="save_record()">
                 <div class="row">
-
-                <div class="row">
                     <div class="col-sm-12">
                         <div ng-show="stock_records.program" class="form-group" ng-repeat="item in programProductList | filter:{program: stock_records.program}">
-                            <div class="col-sm-12">{{ products_object[item.product].code }}</div>
+                            <div class="row">
+                                <div class="col-sm-12">{{ products_object[item.product].code }}</div>
+                            </div>
+                            <div>
+                                <div></div>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-1">
                                     Receved :<input class="form-control" ng-model="stock_records.received[item.product]">
@@ -61,43 +64,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-sm-4">
-                        <div class="form-group">
-                            <!-- TODO: this should be tied to logged in user
-                            <label for="facility">Facility</label>
-                            <select name="facility" id="facility"  class="form-control" ng-model="stock_records.facility" >
-                                <option value="">-- choose facility --</option>
-                                <option ng-repeat="facility in facilities" value="{{ facility.uuid }}">{{ facility.name }}</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <!-- TODO: this should be tied to logged in user and selected facility
-                            <label for="program"></label>
-                            <select ng-change="loadProducts()" name="program" id="program" ng-model="stock_records.program" class="form-control">
-                                <option value="">-- choose program --</option>
-                                <option ng-repeat="program in programs" value="{{ program.uuid }}">{{ program.name }}</option>
-                            </select>
-                        </div>
-                        <div class="form-group" ng-repeat="item in program_products">
-                            <div class="col-sm-2">{{ item.name }}</div>
-                            <div class="col-sm-2">
-                                <input name="products_item[]" ng-model="products_item[]" class="form-control">
-                            </div>
-
-                        </div>
-                    </div>
-                    -->
-
             </form>
         </div>
-        <div>
-            <pre>
-                {{ facility_uuid }}
-                {{ report_month }}
-                {{ report_year }}
-                {{ months[report_month-1] }}
-            </pre>
-        </div>
+
 
     </div>
 </div>
