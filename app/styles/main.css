@@ -1,14 +1,17 @@
 .center-text{
     text-align: center;
 }
+.inline-label{
+    display: inline;
+}
 #vm1-table thead tr th{
-    font-size: 10px;
+    font-size: 11px;
 }
 #sm-header-text{
-    font-size: 10px;
+    font-size: 11px;
 }
 #max-stock, #min-stock, .top-rows{
-    font-size: 8px;
+    font-size: 11px;
 }
 
 .scrollable-container{
