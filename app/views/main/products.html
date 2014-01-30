@@ -44,7 +44,7 @@
       <div class="panel-heading">
         <h4 class="panel-title"><i class="fa fa-list"></i> Products</h4>
       </div>
-      <div>
+      <div class="row">
         <table ng-table="productList" show-filter="true" class="table table-condensed table-striped table-bordered table-hover">
           <tr ng-repeat="product in $data | filter:search">
             <td data-title="'#'">{{ $index + 1 }}</td>

@@ -1,0 +1,105 @@
+<div class="row">
+  <ol class="breadcrumb">
+    <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
+    <li><a href="#/inventory/index"> Inventory</a></li>
+    <li class="active">Add New Inventory</li>
+  </ol>
+</div>
+
+<div class="row" ng-controller="addInventoryCtrl">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">Add New Inventory</h4>
+      </div>
+
+      <div class="panel-body">
+        <form name="addInventoryLineForm" ng-submit="save()">
+          <div class="row">
+            <div class="col-sm-18">
+
+              <div class="col-sm-4">
+
+                <div class="form-group">
+                  <label for="productItem">Product Item</label>
+                  <select id="productItem" class="form-control" ng-model="inventory.product_item" required>
+                    <option value="">-- select product item--</option>
+                    <option ng-repeat="productItem in productItems" value="{{ productItem.uuid }}">
+                      {{ productItem.batch_no }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="receiptDate">Date Received</label>
+                  <input class="form-control" type="date" name="receiptDate" id="receiptDate"/>
+                </div>
+
+                <div class="form-group">
+                  <label for="entryType">Entry Type</label>
+                  <select id="entryType" class="form-control" ng-model="inventory.entry_type" required>
+                    <option value="">-- select inventory entry type--</option>
+                    <option ng-repeat="productItem in productItems" value="{{ productItem.uuid }}">
+                      {{ productItem.name }}
+                    </option>
+                  </select>
+                </div>
+
+              </div>
+
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="product">Product</label>
+                  <input class="form-control" type="text" name="product" id="product" ng-disable="true" readonly/>
+                </div>
+
+                <div class="form-group">
+                  <label for="inventoryPickedFrom">Inventory Picked From</label>
+                  <select id="inventoryPickedFrom" class="form-control" ng-model="inventory.parent" >
+                    <option value="">-- select inventory entry Type--</option>
+                    <option ng-repeat="productItem in productItems" value="{{ productItem.uuid }}">
+                      {{ productItem.name }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="product">Reason For Returned Entry Type</label>
+                  <input class="form-control" type="text" name="product" id="reason"/>
+                </div>
+
+              </div>
+
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="quantity">Quantity</label>
+                  <input class="form-control" type="number" name="code" id="quantity"
+                         ng-model="inventory.quantity[]" step="any" placeholder="e.g 30, 400, 350" required/>
+                </div>
+
+                <label for="cceLocation">CCE Location</label>
+                <select id="cceLocation" class="form-control" ng-model="inventory.storage_location" required>
+                  <option value="">-- select CCE --</option>
+                  <option ng-repeat="productItem in productItems" value="{{ productItem.uuid }}">
+                    {{ productItem.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="row">
+            <div class="col-sm-3">
+              <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+

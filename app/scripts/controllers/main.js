@@ -208,11 +208,11 @@ angular.module('lmisChromeApp')
 
       utility.loadTableObject(storageService.CURRENCY).then(function (currencyList) {
         $scope.currencies = currencyList;
-        console.log(currencyList);
       });
 
+      $scope.highlight = visualMarkerService.markByExpirationStatus;
 
-      $scope.highlightExpiredProductItem = visualMarkerService.getExpiredCSS;
+      console.log($scope.highlight('2014-02-01', 6));
 
     })
 

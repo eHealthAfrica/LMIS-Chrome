@@ -194,4 +194,26 @@ chromeApp.controller("StockRecordsFormCtrl",function($scope, $location, storageS
             });
 
     }
+});/**
+ * Controller for showing inventory
+ */
+chromeApp.controller('inventoryMainCtrl', function($scope){
+
 });
+
+chromeApp.controller('addInventoryCtrl', function($scope, storageService){
+
+  $scope.inventoryLine = {}
+
+  storageService.get(storageService.PRODUCT_ITEM).then(function(data){
+    $scope.productItems = data;
+    console.log(data);
+  });
+
+  $scope.save = function(){
+    console.log($scope.inventoryLine);
+  };
+
+});
+
+

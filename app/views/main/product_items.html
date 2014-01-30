@@ -39,7 +39,7 @@
             <div class="scrollable-container">
                 <table  ng-table="productItemList" class="table table-condensed table-hover table-bordered oversize-table">
                         <tr  ng-repeat="productItem in $data | filter:search"
-                            class="{{ highlightExpiredProductItem(productItem.expiration_date) }} center-text">
+                            class="{{ highlight(productItem.expiration_date, 6) }} center-text">
                             <td data-title="'#'">{{ $index + 1 }}</td>
                             <td data-title="'Batch No'" sortable="'batch_no'">{{ productItem.batch_no }}</td>
                             <td data-title="'Product Name'">{{ products[productItem.product].name }}</td>

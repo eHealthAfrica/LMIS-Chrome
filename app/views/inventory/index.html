@@ -1,54 +1,83 @@
 <div class="row">
-    <ul class="breadcrumb">
-        <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
-        <li class="active">Inventory</li>
-    </ul>
+  <ul class="breadcrumb">
+    <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
+    <li class="active">Inventory</li>
+  </ul>
+</div>
+<div class="row">
+  <div class="col-lg-3 col-md-6">
+    <a href="#/inventory/stock_records">
+      <div class="box_stat box_ico">
+        <span class="stat_ico stat_ico_1"><i class="li_vallet"></i></span>
+        <h4>Stock Records</h4>
+
+      </div>
+    </a>
+  </div>
+  <div class="col-lg-3 col-md-6">
+    <a href="#/inventory/physical_inventory">
+      <div class="box_stat box_ico">
+        <span class="stat_ico stat_ico_1"><i class="li_vallet"></i></span>
+        <h4>Physical Inventory</h4>
+      </div>
+    </a>
+  </div>
 </div>
 
-<div class="row">
+<div class="row" ng-controller="inventoryMainCtrl">
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="btn-group col-sm-2">
+        <a href="#/inventory/add_inventory" class="btn btn-default">
+          <i class="fa fa-plus-circle"></i> Add New Inventory</a>
+      </div>
+      <div class="btn-group col-sm-2">
+        <a href="#/inventory/add_purchase_order_to_inventory" class="btn btn-default">
+          <i class="fa fa-plus-circle"></i> Convert Order To Inventory</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div ng-include="'views/partials/search.html'"></div>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-sm-12">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">Stock Inventory</h4>
-            </div>
-            <div class="panel-body">
-
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <a href="#/inventory/stock_records">
-                            <div class="box_stat box_ico">
-                                <span class="stat_ico stat_ico_1"><i class="li_vallet"></i></span>
-                                <h4>Stock Records</h4>
-
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <a href="#/inventory/physical_inventory">
-                            <div class="box_stat box_ico">
-                                <span class="stat_ico stat_ico_1"><i class="li_vallet"></i></span>
-                                <h4>Physical Inventory</h4>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!--div class="col-lg-3 col-md-6">
-                        <div class="box_stat box_ico">
-                            <span class="stat_ico stat_ico_3"><i class="li_banknote"></i></span>
-                            <h4></h4>
-                            <small>Sale (June)</small>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="box_stat box_ico">
-                            <span class="stat_ico stat_ico_4"><i class="li_truck"></i></span>
-                            <h4>135</h4>
-                            <small>Orders (24h)</small>
-                        </div>
-                    </div-->
-                </div>
-            </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title"><i class="fa fa-list"></i> Product Item Inventory</h4>
         </div>
+        <div class="panel-body">
+
+          <div class="row scrollable-container">
+            <table ng-table="inventory" show-filter="true"
+                   class="table table-condensed table-striped table-bordered table-hover">
+              <tr ng-repeat="inventoryLine in $data | filter:search">
+                <td data-title="'#'">{{ $index + 1 }}</td>
+                <td data-title="'Batch No'" sortable="''">{{ }}</td>
+                <td data-title="'Quantity'">{{ }}</td>
+                <td data-title="'Expiration Date'" sortable="'code'">{{ }}</td>
+                <td data-title="'Location'">{{ }}</td>
+                <td data-title="'VVM Stage'">{{ }}</td>
+                <td data-title="'Date Received'">{{ }}</td>
+                <td data-title="'Storage Volume'">{{ uomList[product.base_uom].name }}</td>
+                <td data-title="'Weight'">{{ productCategories[product.category].name }}</td>
+                <td data-title="'Product'">{{ product.description }}</td>
+                <td data-title="'Presentation'" class="text-center" sortable="'active'"></td>
+                <td data-title="'Product'">{{ product.description }}</td>
+                <td data-title="'Last Modified'" sortable="'modified'">{{ product.modified | date:'yyyy-MM-dd h:mma'}}
+                </td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
+      </div>
     </div>
+  </div>
 </div>

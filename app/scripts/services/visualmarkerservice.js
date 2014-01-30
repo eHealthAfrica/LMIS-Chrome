@@ -11,52 +11,28 @@ angular.module('lmisChromeApp')
     /**
     * returns CSS class for expired expiration date, if the expiration date is in the past. uses system current time.
     *
-    * @param {expirationDate}
-    * @return {String} return promise object
+    * @param {String} expirationDate
+    * @param {Int} monthsBeforeExpiration
+    * @return {String} css class
     * @private
     */
-    function  markExpired(expirationDate) {
-        var currentDate = new Date();
-        var expirationDate = new Date(expirationDate);
-        if(currentDate.getTime() > expirationDate.getTime()){
-            return "danger-alert";
-        }
-        return '';
-    };
-
-    /*function monthDiff(dateOne, dateTwo) {
-        var monthsInAYear = 12;
-        return (dateTwo.getFullYear() - dateOne.getFullYear()) * monthsInAYear +
-                    (dateTwo.getMonth() - dateOne.getMonth());
-    };
-    */
-
-    /**
-    * returns CSS class for expired expiration date, if the expiration date is in the past. uses system current time.
-    *
-    * @param {expirationDate}
-    * @return {String} return promise object
-    * @private
-    */
-    function  markAboutToExpire(expirationDate, monthsBeforeExpiration) {
+    function  getCCEByExpirationDate(expirationDate, monthsBeforeExpiration) {
         var currentDate = new Date();
         var expirationDateObj = new Date(expirationDate);
         var monthsInAYear = 12;
         var monthsDiff = Math.abs((currentDate.getFullYear() - expirationDateObj.getFullYear()) * monthsInAYear +
                             (currentDate.getMonth() - expirationDateObj.getMonth()));
-        console.log("months diff: "+monthsDiff);
 
-        if(currentDate.getTime() > expirationDate.getTime()){
-            return "expired-product-item";
+        if(currentDate.getTime() > expirationDateObj.getTime()){
+            return "danger-alert";
         }else if(monthsDiff >= monthsBeforeExpiration){
-            return "about-to-expire";
+            return "warning-alert";
         }
-        return 'yet to expire';
+        return '';
     };
 
     return {
-      getExpiredCSS: markExpired,
-      getAboutToExpireCSS: markAboutToExpire,
+      markByExpirationStatus: getCCEByExpirationDate
     };
 
   });
