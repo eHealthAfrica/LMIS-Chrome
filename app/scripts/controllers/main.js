@@ -29,10 +29,10 @@ angular.module('lmisChromeApp')
           total: data.length,
           getData: function ($defer, params) {
             var filtered, sorted = data;
-            if(params.filter()) {
+            if (params.filter()) {
               filtered = $filter('filter')(data, params.filter());
             }
-            if(params.sorting()) {
+            if (params.sorting()) {
               sorted = $filter('orderBy')(filtered, params.orderBy());
             }
             params.total(sorted.length);
@@ -161,7 +161,7 @@ angular.module('lmisChromeApp')
         // Table defaults
         var params = {
           page: 1,
-          count: 2,
+          count: 10,
           sorting: {
             name: 'asc'
           }
@@ -352,6 +352,53 @@ angular.module('lmisChromeApp')
         });
 
       }
+    })
+
+/**
+ *  ProductProfileListCtrl
+ */
+    .controller('ProductProfileListCtrl', function ($scope, storageService, $filter, ngTableParams) {
+      storageService.get(storageService.PRODUCT_PROFILE).then(function (data) {
+        // Table defaults
+        var params = {
+          page: 1,
+          count: 10,
+          sorting: {
+            name: 'asc'
+          }
+        };
+
+        // Pagination
+        var resolver = {
+          total: data.length,
+          getData: function ($defer, params) {
+            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+            $defer.resolve(orderedData.slice(
+                (params.page() - 1) * params.count(),
+                params.page() * params.count()
+            ));
+          }
+        }
+
+        $scope.productProfiles = new ngTableParams(params, resolver);
+
+      });
+
+      storageService.loadTableObject(storageService.PRODUCT_PRESENTATION).then(function (data) {
+        $scope.presentations = data;
+      });
+
+      storageService.loadTableObject(storageService.UOM).then(function (data) {
+        $scope.uomList = data;
+      });
+
+      storageService.loadTableObject(storageService.PRODUCT_FORMULATION).then(function (data) {
+        $scope.formulations = data;
+      });
+
+       storageService.loadTableObject(storageService.MODE_OF_ADMINISTRATION).then(function (data) {
+        $scope.modes = data;
+      });
     });
 
 
