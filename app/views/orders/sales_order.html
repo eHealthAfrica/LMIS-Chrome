@@ -1,0 +1,54 @@
+<div class="row">
+  <ul class="breadcrumb">
+    <li><a href="#/main/"><i class="fa fa-home"></i> Home</a></li>
+    <li><a href="#/orders/index">Order</a></li>
+    <li class="active">Sales Order</li>
+  </ul>
+</div>
+
+<div class="row">
+  <div class="col-sm-2">
+    <a href="#/orders/sales_order_form" class="btn btn-default">
+      <i class="fa fa-plus-circle"></i> New Sales Order
+    </a>
+  </div>
+  <div class="col-sm-2">
+    <a href="#/orders/sales_order_line" class="btn btn-default">
+      <i class="fa fa-plus-circle"></i> New Sales Order Line
+    </a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="form-group col-sm-5">
+      <input ng-model="query" id="query" size="55" placeholder="Search"/>
+      <i class="glyphicon glyphicon-search"></i>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <i class="fa fa-list"></i> Sales Orders
+        </h4>
+      </div>
+      <div>
+        <table ng-table="salesList" show-filter="true" class="table table-condensed table-striped table-bordered table-hover">
+          <tr ng-repeat="sale in $data | filter:query">
+            <td data-title="'#'">{{ $index + 1 }}</td>
+            <td data-title="'Recipient'" sortable="'recipient'" filter="{'recipient': 'text'}">{{ sale.recipient }}</td>
+            <td data-title="'Supplier'" sortable="'supplier'" filter="{'supplier': 'text'}">{{ sale.supplier }}</td>
+            <td data-title="'Approver'">{{ sale.name }}</td>
+            <td data-title="'Status'">{{ sale.status }}</td>
+            <td data-title="'Planned Date'" sortable="'planned'">{{ sale.planned | date:'yyyy-MM-dd h:mma'}}</td>
+            <td data-title="'Completed Date'" sortable="'completed'">{{ sale.completed | date:'yyyy-MM-dd h:mma'}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

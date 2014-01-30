@@ -1,0 +1,109 @@
+<div class="row">
+  <ul class="breadcrumb">
+    <li><a href="#/main/"><i class="fa fa-home"></i> Home</a></li>
+    <li><a href="#/orders/index">Order</a></li>
+    <li><a href="#/orders/sales_order">Sales Order</a></li>
+    <li class="active">Sales Order Line</li>
+  </ul>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+
+      <div class="panel-heading">
+        <h4 class="panel-title">New Sales Order Line</h4>
+      </div>
+
+      <div class="panel-body">
+        <form name="newSalesOrderLineForm" ng-submit="save()" ng-controller="NewSalesOrderLineCtrl">
+          <div class="row">
+            <div class="col-md-4">
+
+              <div class="form-group">
+                <label class="control-label" for="program">Program</label>
+                <select id="program" name="program" class="form-control">
+                  <option value="1">Option one</option>
+                  <option value="2">Option two</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="product">Product Item</label>
+                <select id="product" name="product" class="form-control">
+                  <option value="1">Option one</option>
+                  <option value="2">Option two</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="quantity">Quantity</label>
+                <input id="quantity" name="quantity" type="number" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="total">Total Quantity</label>
+                <input id="total" name="total" type="number" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="quantityUOM">Quantity Unit of Measurement</label>
+                <input id="quantityUOM" name="quantityUOM" type="text" placeholder="Unit of Measurement UUID" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="price">Total Price</label>
+                <input id="price" name="price" type="number" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="currency">Price Currency</label>
+                <input id="currency" name="currency" type="text" placeholder="Currency" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="weight">Total Weight</label>
+                <input id="weight" name="weight" type="number" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="weightUOM">Weight Unit of Measurement</label>
+                <select id="weightUOM" name="weightUOM" class="form-control">
+                  <option value="1">Option one</option>
+                  <option value="2">Option two</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="volume">Total Volume</label>
+                <input id="volume" name="volume" type="number" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="vvmStage">VVM Stage</label>
+                <select id="vvmStage" name="vvmStage" class="form-control">
+                  <option value="1">Option one</option>
+                  <option value="2">Option two</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="volumeUOM">Volume Unit of Measurement</label>
+                <input id="volumeUOM" name="volumeUOM" type="text" placeholder="Unit of Measurement UUID" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="description">Description</label>
+                <textarea id="description" class="form-control" rows="3"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-success">Submit</button>
+
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
