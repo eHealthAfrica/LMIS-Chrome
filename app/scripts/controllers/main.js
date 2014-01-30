@@ -327,7 +327,6 @@ angular.module('lmisChromeApp')
 
       $scope.saveProgramProduct = function () {
         if (Object.keys($scope.program_product).length > 0) {
-          $scope.setMessage({type: "success", message: "about to save " + storageService.PROGRAM_PRODUCTS})
           storageService.insert(storageService.PROGRAM_PRODUCTS, $scope.program_product).then(function (bool) {
             var msg = ($scope.uuid) ? {type: "success", message: "Program update was successful"} : {type: "success", message: "Program entry was successful"}
             $scope.setMessage(msg);
