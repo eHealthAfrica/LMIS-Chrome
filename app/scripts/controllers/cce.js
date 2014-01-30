@@ -50,8 +50,6 @@ chromeApp.controller('cceCtrl', function ($scope, storageService, utility, $filt
     $scope.parentCCEList = cceList;
   });
 
-  $scope.selectedTempCCE = '';
-  console.log($scope.selectedTempCCE);
 });
 
 
@@ -196,6 +194,34 @@ chromeApp.controller('cceTemperatureLogMainCtrl', function ($scope, storageServi
       $scope.uomList = uomList;
     });
 
+  });
+});
+
+/**
+ * This Controller is used by AddTemperatureLog Form.
+ */
+chromeApp.controller('AddTemperatureLogCtrl', function ($scope, storageService, utility) {
+
+  //default temperatureLog object used to hold temp log form data
+  $scope.temperatureLog = {}
+
+  storageService.get(storageService.STORAGE_LOCATION).then(function (cceList) {
+    $scope.cceList = cceList;
+  });
+
+  storageService.get(storageService.UOM).then(function (data) {
+    $scope.uomList = data;
+  });
+
+  $scope.save = function () {
+    console.log($scope.temperatureLog)
+  }
+});
+
+
+chromeApp.controller('cceTemperatureChartCtrl', function ($scope, storageService) {
+  storageService.get(storageService.STORAGE_LOCATION).then(function (cceList) {
+    $scope.cceList = cceList;
   });
 
 });
