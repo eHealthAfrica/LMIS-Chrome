@@ -7,21 +7,18 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
-
-    <div class="btn-group col-sm-2">
-      <a href="#/main/product_item_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Product Item</a>
-    </div>
-
-    <div class="form-group col-sm-5">
-        <input ng-model="query" id="query" size="55" placeholder="Search"/>
-        <i class="fa fa-search"></i>
-    </div>
-
+  <div class="btn-group col-sm-2">
+    <a href="#/main/product_item_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Product Item</a>
   </div>
 </div>
 
-        <div class="row">
+<div class="row">
+  <div class="col-sm-12">
+    <div ng-include="'views/partials/search.html'"></div>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-sm-12">
     <span class="marker-indicator-space">Product Expiration Status</span>
     <i class="fa fa-check-circle red-icon marker-indicator-space"> Expired Product</i>
@@ -41,7 +38,7 @@
 
             <div class="scrollable-container">
                 <table  ng-table="productItemList" class="table table-condensed table-hover table-bordered oversize-table">
-                        <tr  ng-repeat="productItem in $data | filter:query"
+                        <tr  ng-repeat="productItem in $data | filter:search"
                             class="{{ highlightExpiredProductItem(productItem.expiration_date) }} center-text">
                             <td data-title="'#'">{{ $index + 1 }}</td>
                             <td data-title="'Batch No'" sortable="'batch_no'">{{ productItem.batch_no }}</td>
