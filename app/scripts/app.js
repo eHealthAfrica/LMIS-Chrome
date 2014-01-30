@@ -14,11 +14,11 @@ angular.module('lmisChromeApp', [
     // https://github.com/angular-ui/ui-router/wiki/Quick-Reference
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main/main.html',
+        templateUrl: 'views/main/dashboard.html',
         controller: 'MainCtrl'
       })
       .when('/home', {
-        templateUrl: 'views/main/main.html',
+        templateUrl: 'views/main/dashboard.html',
         controller: 'MainCtrl'
       })
       .when('/main/:template', {
