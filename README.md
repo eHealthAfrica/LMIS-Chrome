@@ -17,6 +17,11 @@
 [Git]: http://git-scm.com
 [chrome://extensions]: chrome://extensions
 
+## Testing
+
+1. `cd test; bower install; cd ..`
+2. `npm test`
+
 ## Author
 
 © 2014 [eHealth Systems Africa](http://ehealthafrica.org)
