@@ -13,6 +13,21 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , '<alert> is not recognized!'
   \ , 'discarding unexpected <alert>'
   \ , 'discarding unexpected </alert>'
+  \ , '<tabset> is not recognized!'
+  \ , 'discarding unexpected <tabset>'
+  \ , 'discarding unexpected </tabset>'
+  \ , '<tab> is not recognized!'
+  \ , 'discarding unexpected <tab>'
+  \ , 'discarding unexpected </tab>'
+  \ , '<accordion> is not recognized!'
+  \ , 'discarding unexpected <accordion>'
+  \ , 'discarding unexpected </accordion>'
+  \ , '<accordion-group> is not recognized!'
+  \ , 'discarding unexpected <accordion-group>'
+  \ , 'discarding unexpected </accordion-group>'
+  \ , '<accordion-heading> is not recognized!'
+  \ , 'discarding unexpected <accordion-heading>'
+  \ , 'discarding unexpected </accordion-heading>'
   \ ]
 
 " javascript-libraries-syntax.vim
