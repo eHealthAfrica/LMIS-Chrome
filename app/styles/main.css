@@ -21,7 +21,7 @@
 }
 
 .oversize-table{
-   width: 2000px
+   width: 2000px;
 }
 
 .danger-alert{
@@ -54,7 +54,6 @@
     color: #C00;
     color: red;
 }
-.marker-indicator-bar{
-    width: 2em;
-    height: 1.5em;
+.marker-indicator-space{
+  margin-right: 2em;
 }

@@ -33,6 +33,7 @@ angular.module('lmisChromeApp')
      var productFormulation = 'product_formulations';
      var modeOfAdministration = 'mode_of_administration';
      var productItem = 'product_items';
+     var storageLocationProblem = 'cce_problems';
 
     /**
      * Boolean flag indicating client support for Chrome Storage
@@ -400,7 +401,8 @@ angular.module('lmisChromeApp')
       PRODUCT_PRESENTATION: productPresentation,
       PRODUCT_FORMULATION: productFormulation,
       MODE_OF_ADMINISTRATION: modeOfAdministration,
-      PRODUCT_ITEM: productItem
+      PRODUCT_ITEM: productItem,
+      STORAGE_LOCATION_PROBLEM: storageLocationProblem
     };
 
   });

@@ -8,18 +8,28 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="btn-group">
-            <a href="#/main/product_item_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Product Item</a>
-        </div>
+
+    <div class="btn-group col-sm-2">
+      <a href="#/main/product_item_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Product Item</a>
     </div>
+
+    <div class="form-group col-sm-5">
+        <input ng-model="query" id="query" size="55" placeholder="Search"/>
+        <i class="glyphicon glyphicon-search"></i>
+    </div>
+
+  </div>
+</div>
+
+        <div class="row">
+  <div class="col-sm-12">
+    <span class="marker-indicator-space">Product Expiration Status</span>
+    <i class="fa fa-check-circle red-icon marker-indicator-space"> Expired Product</i>
+    <i class="fa fa-times-circle warning-alert marker-indicator-space"> Expires Soon</i>
+  </div>
 </div>
 
 <div class="row" ng-controller="ProductItemListCtrl">
-    <div>
-            <input  ng-model="query" id="query" size="55" placeholder="search"/>
-            <i class="fa fa-search"></i>
-        </div>
-    <br/>
     <div class="col-sm-18">
         <div class="panel panel-default">
 
@@ -30,47 +40,35 @@
             </div>
 
             <div class="scrollable-container">
-                <table  class="table table-condensed table-hover table-bordered oversize-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Batch No</th>
-                            <th>Product Name</th>
-                            <th>Expiration Date</th>
-                            <th>Manufacturer</th>
-                            <th>Presentation</th>
-                            <th>Formulation</th>
-                            <th>Mode of Use</th>
-                            <th>Packed Volume</th>
-                            <th>Diluent Packed per Vol.</th>
-                            <th>Price per Unit</th>
-                            <th>Description</th>
-                            <th>Fund Source</th>
-                            <th>Active</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="productItem in productItemList | filter:query"
-                            class="{{ highlightExpiredProductItem(productItem.expiration_date) }}">
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ productItem.batch_no }} </td>
-                            <td>{{ products[productItem.product].name }}</td>
-                            <td>{{ productItem.expiration_date | date:'dd-MM-yyyy' }}</td>
-                            <td>{{ companies[productItem.manufacturer].name }}</td>
-                            <td>{{ presentations[productItem.presentation].name }}</td>
-                            <td>{{ productFormulation[productItem.formulation].name }}</td>
-                            <td>{{ modesOfAdmin[productItem.mode_of_use].name }}</td>
-                            <td>{{ productItem.packed_volume +' '+ uomList[productItem.volume_uom].symbol }}</td>
-                            <td>{{ productItem.diluent_per_volume +' '+ uomList[productItem.volume_uom].symbol }}</td>
-                            <td>{{ currencies[productItem.price_currency].symbol +' '+ productItem.price_per_unit }} </td>
-                            <td>{{ productItem.description }}</td>
-                            <td>{{ companies[productItem.fund_sources].name }}</td>
-                            <td class="text-center">
-                                <span ng-show="productItem.active"><i class="fa fa-check-circle green-icon"></i></span>
-                                <span ng-hide="productItem.active"><i class="fa fa-times-circle red-icon"></i></span>
+                <table  ng-table="productItemList" class="table table-condensed table-hover table-bordered oversize-table">
+                        <tr  ng-repeat="productItem in $data | filter:query"
+                            class="{{ highlightExpiredProductItem(productItem.expiration_date) }} center-text">
+                            <td data-title="'#'">{{ $index + 1 }}</td>
+                            <td data-title="'Batch No'" sortable="'batch_no'">{{ productItem.batch_no }}</td>
+                            <td data-title="'Product Name'">{{ products[productItem.product].name }}</td>
+                            <td data-title="'Expiration Date'" sortable="'expiration_date'">
+                              {{ productItem.expiration_date | date:'dd-MM-yyyy' }}
+                            </td>
+                            <td data-title="'Manufacturer'">{{ companies[productItem.manufacturer].name }}</td>
+                            <td data-title="'Presentation'">{{ presentations[productItem.presentation].name }}</td>
+                            <td data-title="'Formulation'">{{ productFormulation[productItem.formulation].name }}</td>
+                            <td data-title="'Mode Of Administration'">{{ modesOfAdmin[productItem.mode_of_use].name }}</td>
+                            <td data-title="'Packed Volume'" sortable="'packed_volume'">
+                              {{ productItem.packed_volume +' '+ uomList[productItem.volume_uom].symbol }}
+                            </td>
+                            <td data-title="'Diluent Packed per Volume'" sortable="'diluent_per_volume'">
+                              {{ productItem.diluent_per_volume +' '+ uomList[productItem.volume_uom].symbol }}
+                            </td>
+                            <td data-title="'Price per Unit'" sortable="'price_per_unit'">
+                              {{ currencies[productItem.price_currency].symbol +' '+ productItem.price_per_unit }}
+                            </td>
+                            <td data-title="'Description'">{{ productItem.description }}</td>
+                            <td data-title="'Fund Source'">{{ companies[productItem.fund_sources].name }}</td>
+                            <td data-title="'Active'" sortable="'active'">
+                              <span ng-show="productItem.active"><i class="fa fa-check-circle green-icon"></i></span>
+                              <span ng-hide="productItem.active"><i class="fa fa-times-circle red-icon"></i></span>
                             </td>
                         </tr>
-                    </tbody>
                 </table>
             </div>
 
