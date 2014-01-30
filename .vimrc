@@ -9,6 +9,7 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , '<table> proprietary attribute "show-filter"'
   \ , '<td> proprietary attribute "sortable"'
   \ , '<td> proprietary attribute "filter"'
+  \ , '<form> lacks "action" attribute'
   \ , '<alert> is not recognized!'
   \ , 'discarding unexpected <alert>'
   \ , 'discarding unexpected </alert>'
