@@ -1,0 +1,78 @@
+    [
+  {
+    "address": null,
+    "catchment_population": 44296509,
+    "category": "e276a4b5-694a-4f03-94e0-c28ca4894410",
+    "code": "NWZSCS",
+    "contact": null,
+    "created": "2014-01-20T10:37:21.143Z",
+
+    "description": "for North West Zone",
+    "facility_operators": [
+      "87191ec7-3be6-4b7b-ac0f-be9ce0e80e51"
+    ],
+    "facility_type": "209011bf-27c8-4e9e-a08e-a3a7dd9f56df",
+    "footer": "",
+    "global_location_no": "",
+    "go_down_date": null,
+    "go_live_date": "2014-01-13",
+    "has_electricity": true,
+    "has_electronic_scc": true,
+    "header": "",
+    "is_active": true,
+    "is_deleted": false,
+    "is_online": true,
+    "is_satellite": false,
+    "is_sdp": false,
+    "level": 1,
+    "lft": 2,
+    "location": "F87ED3E0-17CF-4F8D-B268-36FD910E4CC8",
+    "modified": "2014-01-20T15:07:09.860Z",
+
+    "name": "North West Zonal Store",
+    "parent": "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
+    "products": [],
+    "rght": 5,
+    "supplies_others": true,
+    "tree_id": 2,
+    "uuid": "902aef31-051d-4a83-9017-6ac9710b5bb5",
+    "virtual_facility": false
+  },
+  {
+    "address": null,
+    "catchment_population": 11778108,
+    "category": "e276a4b5-694a-4f03-94e0-c28ca4894410",
+    "code": "KNSCS",
+    "contact": null,
+    "created": "2014-01-20T15:08:35.584Z",
+    "description": "",
+    "facility_operators": [
+      "87191ec7-3be6-4b7b-ac0f-be9ce0e80e51"
+    ],
+    "facility_type": "780bdc3e-39b3-4947-bff7-e241da5ed4a3",
+    "footer": "",
+    "global_location_no": "",
+    "go_down_date": null,
+    "go_live_date": "2014-01-13",
+    "has_electricity": true,
+    "has_electronic_scc": true,
+    "header": "",
+    "is_active": true,
+    "is_deleted": false,
+    "is_online": true,
+    "is_satellite": false,
+    "is_sdp": true,
+    "level": 2,
+    "lft": 3,
+    "location": "a3806d0e-2278-4f34-9728-74d12c912cfe",
+    "name": "Kano Store",
+    "parent": "902aef31-051d-4a83-9017-6ac9710b5bb5",
+    "products": [],
+    "rght": 4,
+    "supplies_others": true,
+    "tree_id": 2,
+    "uuid": "d48a39fb-6d37-4472-9983-bc0720403719",
+    "virtual_facility": false
+  }
+]
+
