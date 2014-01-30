@@ -16,10 +16,10 @@
   </div>
 
   <div class="col-lg-3 col-md-6">
-    <a href="#/main/programs">
+    <a href="#/main/product_profile">
       <div class="box_stat box_ico">
         <span class="stat_ico stat_ico_2"><i class="li_user"></i></span>
-        <h4>Unit Of Measurements</h4>
+        <h4>Product Profile</h4>
       </div>
     </a>
   </div>
@@ -27,20 +27,16 @@
 
 
 <div class="row">
-  <div class="col-sm-12">
-
-    <div class="btn-group col-sm-2">
-      <a href="#/main/product_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Product</a>
-    </div>
-
-    <div class="form-group col-sm-5">
-      <input ng-model="query" id="query" size="55" placeholder="Search"/>
-      <i class="glyphicon glyphicon-search"></i>
-    </div>
-
+  <div class="btn-group col-sm-2">
+    <a href="#/main/product_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Product</a>
   </div>
 </div>
 
+<div class="row">
+  <div class="col-sm-12">
+    <div ng-include="'views/partials/search.html'"></div>
+  </div>
+</div>
 
 <div class="row" ng-controller="ProductListCtrl">
   <div class="col-sm-12">
@@ -50,7 +46,7 @@
       </div>
       <div>
         <table ng-table="productList" show-filter="true" class="table table-condensed table-striped table-bordered table-hover">
-          <tr ng-repeat="product in $data | filter:query">
+          <tr ng-repeat="product in $data | filter:search">
             <td data-title="'#'">{{ $index + 1 }}</td>
             <td data-title="'Name'" sortable="'name'" filter="{'name': 'text'}">{{ product.name }}</td>
             <td data-title="'Code'" sortable="'code'" filter="{'code': 'text'}">{{ product.code }}</td>

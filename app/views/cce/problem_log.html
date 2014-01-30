@@ -7,17 +7,14 @@
 </div>
 
 <div class="row">
+  <div class="btn-group col-sm-2">
+    <a href="#/cce/problem_log_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Problem Log</a>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-sm-12">
-
-    <div class="btn-group col-sm-2">
-      <a href="#/cce/problem_log_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Problem Log</a>
-    </div>
-
-    <div class="form-group col-sm-5">
-      <input ng-model="query" id="query" size="55" placeholder="Search"/>
-        <i class="glyphicon glyphicon-search"></i>
-    </div>
-
+    <div ng-include="'views/partials/search.html'"></div>
   </div>
 </div>
 
@@ -29,7 +26,7 @@
       </div>
       <div class="scrollable-container">
         <table ng-table="cceProblems" class="table table-striped table-condensed table-bordered oversize-table">
-          <tr ng-repeat="cceProblem in $data | filter:query" ng-class="'center-text'">
+          <tr ng-repeat="cceProblem in $data | filter:search" ng-class="'center-text'">
             <td data-title="'#'">{{ $index + 1 }}</td>
             <td data-title="'CCE Name'" sortable="'storage_location'">{{ cceList[cceProblem.storage_location].name }}
             </td>
