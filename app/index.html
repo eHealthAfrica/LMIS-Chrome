@@ -15,6 +15,7 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="Ebro/css/todc-bootstrap.min.css">
     <link rel="stylesheet" href="Ebro/css/style.css">
     <link rel="stylesheet" href="Ebro/css/theme/color_1.css" id="theme">
     <link rel="stylesheet" href="Ebro/css/linecons/style.css">
@@ -123,10 +124,10 @@
                         <span class="menu_label">Facilities</span>
                     </a>
                 </li>
-                <li data-match-route="/partners">
-                    <a ng-href="#/partners" title="Partners">
-                        <i class="fa fa-users fa-2x"></i>
-                        <span class="menu_label">Partners</span>
+                <li data-match-route="/main">
+                    <a ng-href="#/main/products" title="Products">
+                        <i class="fa fa-credit-card fa-2x"></i>
+                        <span class="menu_label">Products</span>
                     </a>
                 </li>
                 <li>
@@ -211,6 +212,7 @@
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="Ebro/js/ebro_common.js"></script>
+    <script src="Ebro/js/lib/bootbox/bootbox.min.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/settings.js"></script>
