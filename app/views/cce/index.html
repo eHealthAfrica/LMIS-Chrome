@@ -25,19 +25,15 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="btn-group col-sm-2">
+   <a href="#/cce/cce_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add CCE</a>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-sm-12">
-
-    <div class="btn-group col-sm-2">
-      <a href="#/cce/cce_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add CCE</a>
-    </div>
-
-    <div class="form-group col-sm-5">
-      <input ng-model="query" id="query" size="55" placeholder="search"/>
-      <i class="fa fa-search"></i>
-    </div>
-
+    <div ng-include="'views/partials/search.html'"></div>
   </div>
 </div>
 

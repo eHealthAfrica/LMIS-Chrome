@@ -198,7 +198,11 @@ chromeApp.controller("StockRecordsFormCtrl", function ($scope, $location, storag
 /**
  * Controller for showing inventory
  */
-chromeApp.controller('inventoryMainCtrl', function ($scope, storageService, $filter, ngTableParams, utility) {
+chromeApp.controller('inventoryMainCtrl', function ($scope, storageService, $filter, ngTableParams, utility,
+                                                    visualMarkerService) {
+
+  $scope.highlight = visualMarkerService.markByExpirationStatus;
+
   storageService.get(storageService.INVENTORY).then(function (data) {
 
     // Table defaults

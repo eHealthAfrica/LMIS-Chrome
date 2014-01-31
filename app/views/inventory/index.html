@@ -55,9 +55,9 @@
         <div class="panel-body">
 
           <div class="row scrollable-container">
-            <table ng-table="inventory" class="table table-condensed table-striped table-bordered table-hover
-            oversize-table text-center">
-              <tr ng-repeat="inventoryLine in $data | filter:search">
+            <table ng-table="inventory" class="table table-condensed table-hover table-bordered oversize-table text-center">
+              <tr ng-repeat="inventoryLine in $data | filter:search"
+                  class="{{ highlight(product_item[inventoryLine.product_item].expiration_date, 6) }}">
                 <td data-title="'#'">{{ $index + 1 }}</td>
                 <td data-title="'Batch No'" sortable="''">{{ product_item[inventoryLine.product_item].batch_no }}</td>
                 <td data-title="'Product'">{{ products[product_item[inventoryLine.product_item].product].name }}</td>
@@ -73,9 +73,9 @@
                   {{ product_item[inventoryLine.product_item].expiration_date | date:'dd-MM-yyyy' }}
                 </td>
                 <td data-title="'Location'">{{ cceList[inventoryLine.storage_location].name }}</td>
-                <td data-title="'VVM Stage'">{{ }}</td>
-                <td data-title="'Stock Entry Type'">{{ }}</td>
-                <td data-title="'Reason For Return'">{{ }}</td>
+                <td data-title="'VVM Stage'">{{ inventoryLine.vvmStage }}</td>
+                <td data-title="'Stock Entry Type'">{{ inventoryLine.entry_type }}</td>
+                <td data-title="'Reason For Return'">{{ inventoryLine.return_reason }}</td>
                 <td data-title="'Date Received'">{{ inventoryLine.date_receipt | date:'dd-MM-yyyy' }}</td>
                 <td data-title="'Storage Volume'">
                   {{ ((product_item[inventoryLine.product_item].packed_volume * inventoryLine.quantity) | number)
