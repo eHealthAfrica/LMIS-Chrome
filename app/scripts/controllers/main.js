@@ -104,7 +104,7 @@ angular.module('lmisChromeApp')
 /**
  * AddProductItemCtrl - This handles the addition of product items
  */
-    .controller('AddProductItemCtrl', function ($scope, storageService) {
+    .controller('AddProductItemCtrl', function ($scope, storageService, $location) {
       $scope.productItem = {};
       $scope.productItem.active = true; //default is true
 
@@ -146,7 +146,9 @@ angular.module('lmisChromeApp')
        * local storage.
        */
       $scope.save = function () {
-        console.log($scope.productItem);
+        storageService.insert(storageService.PRODUCT_ITEM, $scope.productItem).then(function () {
+            $location.path('/main/product_items');
+        });
       };
     })
 
@@ -392,7 +394,7 @@ angular.module('lmisChromeApp')
         $scope.formulations = data;
       });
 
-       storageService.loadTableObject(storageService.MODE_OF_ADMINISTRATION).then(function (data) {
+      storageService.loadTableObject(storageService.MODE_OF_ADMINISTRATION).then(function (data) {
         $scope.modes = data;
       });
     });

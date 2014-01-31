@@ -52,6 +52,17 @@
   </div>
 
   <div class="row">
+    <div class="col-sm-4">
+      <select id="cceLocation" class="form-control" ng-model="storage_location" required>
+        <option value="">-- group by CCE --</option>
+        <option ng-repeat="cce in cceList" value="{{ cce.uuid }}">
+          {{ cce.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-sm-10">
       <div ng-include="'views/partials/expiration_visual_indicator_info.html'"></div>
     </div>
@@ -69,7 +80,7 @@
           <div class="row scrollable-container">
             <table ng-table="inventory"
                    class="table table-condensed table-hover table-bordered oversize-table text-center">
-              <tr ng-repeat="inventoryLine in $data | filter:search"
+              <tr ng-repeat="inventoryLine in $data | filter:search | orderBy:storage_location"
                   class="{{ highlight(product_item[inventoryLine.product_item].expiration_date, orderByMonths) }}">
                 <td data-title="'#'">{{ $index + 1 }}</td>
                 <td data-title="'Batch No'" sortable="''">{{ product_item[inventoryLine.product_item].batch_no }}</td>
