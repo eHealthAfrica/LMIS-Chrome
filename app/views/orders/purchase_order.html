@@ -26,19 +26,20 @@
                     <th>Emergency</th>
                     <th>Order Date</th>
                     <th>Expected Date</th>
+                    <th>Expected Date</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="purchase_order in purchase_orders">
-                    <th>{{ $index + 1 }}</th>
-                    <th>{{ purchase_order.product }}</th>
-                    <th>{{ purchase_order.quantity_needed }}</th>
-                    <th>{{ purchase_order.current_quantity }}</th>
-                    <th>{{ purchase_order.purchaser }}</th>
-                    <th>{{ purchase_order.supplier }}</th>
-                    <th>{{ purchase_order.emergency }}</th>
-                    <th>{{ purchase_order.order_date }}</th>
-                    <th>{{ purchase_order.expected_date }}</th>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ purchase_order.product }}</td>
+                    <td>{{ purchase_order.quantity_needed }}</td>
+                    <td>{{ purchase_order.current_quantity }}</td>
+                    <td>{{ purchase_order.purchaser }}</td>
+                    <td>{{ purchase_order.supplier }}</td>
+                    <td>{{ purchase_order.emergency }}</td>
+                    <td>{{ purchase_order.order_date }}</td>
+                    <td>{{ purchase_order.expected_date }}</td>
                 </tr>
             </tbody>
         </table>
