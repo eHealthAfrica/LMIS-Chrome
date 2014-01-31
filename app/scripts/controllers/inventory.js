@@ -57,20 +57,8 @@ chromeApp.controller("StockRecordsCtrl", function ($scope, $location, storageSer
   $http.get(file_url).success(function (data) {
     $scope.user_related_facilities = data;
 
-    var file_url = 'scripts/fixtures/user_related_facilities.json';
-    $http.get(file_url).success(function(data){
-        $scope.user_related_facilities =data;
+  });
 
-  $scope.add_button = true;
-  $scope.$watchCollection('[report_month, report_year, user_related_facility]', function (newvalues) {
-    console.log(newvalues);
-    $scope.record_key = $scope.user_related_facility + $scope.report_month + $scope.report_year;
-    if (newvalues[0] == '' || newvalues[1] == '' || newvalues[2] == '') {
-      $scope.add_button = true;
-    }
-    else {
-      $scope.add_button = false;
-    }
 
     $scope.add_button = true;
     $scope.$watchCollection('[report_month, report_year, user_related_facility]', function(newvalues){
@@ -92,7 +80,7 @@ chromeApp.controller("StockRecordsCtrl", function ($scope, $location, storageSer
 
 
       });
-    }
+
 
     $scope.$watch('user_related_facility',function(){
         if($scope.user_related_facility != ''){
@@ -108,7 +96,7 @@ chromeApp.controller("StockRecordsCtrl", function ($scope, $location, storageSer
                 }
             });
         }
-  });
+    });
 
 
   $scope.stock_records = {};
@@ -119,11 +107,7 @@ chromeApp.controller("StockRecordsCtrl", function ($scope, $location, storageSer
     $scope.programs = data;
   });
 
-  $scope.loadProducts = function () {
-    $scope.stock_records.products = $scope.stock_records.program;
-  }
 });
-
 chromeApp.controller("StockRecordsFormCtrl", function ($scope, $location, storageService) {
 
   //$scope.facility_uuid = ($location.search()).facility;
@@ -211,8 +195,6 @@ chromeApp.controller("StockRecordsFormCtrl", function ($scope, $location, storag
 
   }
 });
-
-chromeApp.controller("StockRecordsFormCtrl",function($scope, $location, storageService){
 
 /**
  * Controller for showing inventory
@@ -323,7 +305,7 @@ chromeApp.controller('addInventoryCtrl', function ($scope, storageService, $loca
       $location.path('/inventory/index');
     });
     console.log($scope.inventory);
-  };
+  }
 
 });
 
