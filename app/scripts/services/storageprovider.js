@@ -217,11 +217,13 @@ angular.module('lmisChromeApp')
        * @private
        */
       function insert(table, obj) {
-        //TODO: check for uuid. uuid exists? do an update : new entry
+
         var deferred = $q.defer();
         getTables().then(function (tables) {
           if (tables.indexOf(table)) {
+
             getFromStore(table).then(function (data) {
+              console.log(data);
               if (Object.prototype.toString.call(data) == '[object Array]') {
                 console.log(obj);
                 var object_keys = Object.keys(obj);
@@ -233,18 +235,25 @@ angular.module('lmisChromeApp')
                   addToStore(table, data);
                 }
                 else {
-                  obj['uuid'] = uuid_generator();
+
+                  obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1)?obj['uuid']:uuid_generator();
                   obj['created'] = getDateTime();
                   data.push(obj);
                   addToStore(table, data);
-                  console.log("new entry");
                 }
                 deferred.resolve(true);
+              }
+              else{
+                  obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1)?obj['uuid']:uuid_generator();
+                  obj['created'] = getDateTime();
+                  addToStore(table, [obj]);
+                  deferred.resolve(true);
               }
             });
           }
           else {
-            obj['uuid'] = uuid_generator();
+
+            obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1)?obj['uuid']:uuid_generator();
             obj['created'] = getDateTime();
             addToStore(table, [obj]);
             deferred.resolve(true);
