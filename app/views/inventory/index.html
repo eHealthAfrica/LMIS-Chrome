@@ -55,22 +55,38 @@
         <div class="panel-body">
 
           <div class="row scrollable-container">
-            <table ng-table="inventory" show-filter="true"
-                   class="table table-condensed table-striped table-bordered table-hover">
+            <table ng-table="inventory" class="table table-condensed table-striped table-bordered table-hover
+            oversize-table text-center">
               <tr ng-repeat="inventoryLine in $data | filter:search">
                 <td data-title="'#'">{{ $index + 1 }}</td>
-                <td data-title="'Batch No'" sortable="''">{{ }}</td>
-                <td data-title="'Quantity'">{{ }}</td>
-                <td data-title="'Expiration Date'" sortable="'code'">{{ }}</td>
-                <td data-title="'Location'">{{ }}</td>
+                <td data-title="'Batch No'" sortable="''">{{ product_item[inventoryLine.product_item].batch_no }}</td>
+                <td data-title="'Product'">{{ products[product_item[inventoryLine.product_item].product].name }}</td>
+                <td data-title="'Total Quantity'">
+                  {{ ((presentation[product_item[inventoryLine.product_item].presentation].value * inventoryLine.quantity)
+                  | number) +' '+  uomList[products[product_item[inventoryLine.product_item].product].base_uom].symbol }}
+                </td>
+                <td data-title="'Quantity'">
+                  {{ (inventoryLine.quantity | number)+' '+
+                  uomList[inventoryLine.uom].symbol }}
+                </td>
+                <td data-title="'Expiration Date'" sortable="'{{ product_item[inventoryLine.product_item].expiration_date }}'">
+                  {{ product_item[inventoryLine.product_item].expiration_date | date:'dd-MM-yyyy' }}
+                </td>
+                <td data-title="'Location'">{{ cceList[inventoryLine.storage_location].name }}</td>
                 <td data-title="'VVM Stage'">{{ }}</td>
-                <td data-title="'Date Received'">{{ }}</td>
-                <td data-title="'Storage Volume'">{{ uomList[product.base_uom].name }}</td>
-                <td data-title="'Weight'">{{ productCategories[product.category].name }}</td>
-                <td data-title="'Product'">{{ product.description }}</td>
-                <td data-title="'Presentation'" class="text-center" sortable="'active'"></td>
-                <td data-title="'Product'">{{ product.description }}</td>
-                <td data-title="'Last Modified'" sortable="'modified'">{{ product.modified | date:'yyyy-MM-dd h:mma'}}
+                <td data-title="'Stock Entry Type'">{{ }}</td>
+                <td data-title="'Reason For Return'">{{ }}</td>
+                <td data-title="'Date Received'">{{ inventoryLine.date_receipt | date:'dd-MM-yyyy' }}</td>
+                <td data-title="'Storage Volume'">
+                  {{ ((product_item[inventoryLine.product_item].packed_volume * inventoryLine.quantity) | number)
+                  + ' '+uomList[product_item[inventoryLine.product_item].volume_uom].symbol
+                  }}
+                </td>
+                <td data-title="'Presentation'"
+                    sortable="'{presentation[product_item[inventoryLine.product_item].presentation].name }'">
+                  {{ presentation[product_item[inventoryLine.product_item].presentation].name }}
+                </td>
+                <!-- <td data-title="'Last Modified'" sortable="'modified'">{{ product.modified | date:'yyyy-MM-dd h:mma'}} -->
                 </td>
               </tr>
             </table>

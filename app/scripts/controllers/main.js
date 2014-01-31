@@ -212,7 +212,7 @@ angular.module('lmisChromeApp')
 
       $scope.highlight = visualMarkerService.markByExpirationStatus;
 
-      console.log($scope.highlight('2014-02-01', 6));
+      console.log($scope.highlight('2014-02-01', 3));
 
     })
 
