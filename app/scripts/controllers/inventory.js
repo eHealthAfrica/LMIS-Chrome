@@ -2,21 +2,54 @@
 var chromeApp = angular.module('lmisChromeApp');
 
 chromeApp.controller('InventoryCtrl', function ($scope, $location, storageService) {
+    $scope.facility_uuid = ($location.search()).facility;
+    $scope.report_month = ($location.search()).report_month;
+    $scope.report_year = ($location.search()).report_year;
+    $scope.url_params = "?facility="+$scope.facility_uuid+"&report_month="+$scope.report_month+"&report_year="+$scope.report_year;
 
 
+     $scope.stock_products =
+        [
+            'BCG doses',
+            'BCG Diluent',
+            'Hep.B doses',
+            'OPV doses',
+            'PENTA doses',
+            'PCV doses',
+            'Measles doses',
+            'Measles Diluent',
+            'Yellow Fever doses',
+            'Yellow Fever Diluent',
+            'CSM doses',
+            'CSM Diluent',
+            'Tetanus Toxoid doses',
+            'BCG Syringes',
+            'Auto Disable Syringes',
+            '5mls Syringes',
+            'Safety boxes'
+        ]
 
   });
 
 chromeApp.controller("StockRecordsCtrl",function($scope, $location, storageService, $http, $filter){
-    $scope.facility_uuid = ($location.search()).facility;
-    $scope.report_month = ($location.search()).report_month;
-    $scope.report_year = ($location.search()).report_year;
+
+
 
     $scope.user_related_facilities=[];
     $scope.fake_locations = [];
     $scope.user_related_facility= ($scope.facility_uuid != undefined)?$scope.facility_uuid:'';
     $scope.report_month= ($scope.report_month != undefined)?$scope.report_month:'';
     $scope.report_year= ($scope.report_year != undefined)?$scope.report_year:'';
+    $scope.monthly_stock_record_object = {};
+
+
+    storageService.get('monthly_stock_record').then(function(data){
+        $scope.monthly_stock_record = data;
+    });
+    storageService.loadTableObject('monthly_stock_record').then(function(data){
+        $scope.monthly_stock_record_object = data;
+    });
+
 
     var file_url = 'scripts/fixtures/user_related_facilities.json';
     $http.get(file_url).success(function(data){
@@ -27,6 +60,7 @@ chromeApp.controller("StockRecordsCtrl",function($scope, $location, storageServi
     $scope.add_button = true;
     $scope.$watchCollection('[report_month, report_year, user_related_facility]', function(newvalues){
         console.log(newvalues);
+        $scope.record_key = $scope.user_related_facility + $scope.report_month + $scope.report_year;
         if(newvalues[0]=='' || newvalues[1] == '' || newvalues[2] == ''){
             $scope.add_button = true;
         }
@@ -59,6 +93,7 @@ chromeApp.controller("StockRecordsCtrl",function($scope, $location, storageServi
 
     });
 
+
     $scope.stock_records = {};
     storageService.get('facility').then(function(data){
          $scope.facilities = data;
@@ -72,10 +107,32 @@ chromeApp.controller("StockRecordsCtrl",function($scope, $location, storageServi
     }
 });
 
-chromeApp.controller("StockRecordsCtrlForm",function($scope, $location, storageService){
-    $scope.facility_uuid = ($location.search()).facility;
-    $scope.report_month = ($location.search()).report_month;
-    $scope.report_year = ($location.search()).report_year;
+chromeApp.controller("StockRecordsFormCtrl",function($scope, $location, storageService){
+
+    //$scope.facility_uuid = ($location.search()).facility;
+    //$scope.report_month = ($location.search()).report_month;
+    //$scope.report_year = ($location.search()).report_year;
+    $scope.record_key = $scope.facility_uuid + $scope.report_month + $scope.report_year;
+    storageService.get('monthly_stock_record').then(function(data){
+        if(Object.prototype.toString.call(data) == '[object Array]'){
+            if(data.length > 0){
+                storageService.loadTableObject('monthly_stock_record').then(function(data){
+                    $scope.report_available = Object.keys(data).indexOf($scope.record_key) == -1?false:true;
+                });
+            }
+            else{
+                 $scope.report_available = false;
+            }
+        }
+        else if(Object.keys(data).length > 0){
+            $scope.report_available = Object.keys(data).indexOf($scope.record_key) == -1?false:true;
+        }
+        else{
+            //$location.path("/inventory/stock_records_basic_form"+$scope.url_params);
+            $scope.report_available = false;
+        }
+
+    });
 
     $scope.stock_records = {};
     $scope.stock_records.received = {};
@@ -87,6 +144,9 @@ chromeApp.controller("StockRecordsCtrlForm",function($scope, $location, storageS
     $scope.stock_records.frozen = {};
     $scope.stock_records.label_removed = {};
     $scope.stock_records.others = {};
+    $scope.stock_records.maximum_stock = [];
+    $scope.stock_records.minimum_stock = [];
+    $scope.stock_records.balance_brought_forward=[];
 
     $scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     $scope.facility_programs =
@@ -120,6 +180,18 @@ chromeApp.controller("StockRecordsCtrlForm",function($scope, $location, storageS
      storageService.get(storageService.PROGRAM_PRODUCTS).then(function(data){
          $scope.program_products = data;
      });
+    $scope.saveStockReoprt = function(){
+
+        storageService.insert('monthly_stock_record',{
+            uuid:$scope.record_key,
+            max_records:$scope.stock_records.maximum_stock,
+            min_record:$scope.stock_records.minimum_stock,
+            target_population: $scope.stock_records.target_population,
+            balance_brought_forward:$scope.stock_records.balance_brought_forward
+        }).then(function(bool){
+                console.log("saving");
+                $location.path("/inventory/stock_records_form"+$scope.url_params);
+            });
+
+    }
 });
-
-
