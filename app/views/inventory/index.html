@@ -70,7 +70,7 @@
             <table ng-table="inventory"
                    class="table table-condensed table-hover table-bordered oversize-table text-center">
               <tr ng-repeat="inventoryLine in $data | filter:search"
-                  class="{{ highlight(product_item[inventoryLine.product_item].expiration_date, 6) }}">
+                  class="{{ highlight(product_item[inventoryLine.product_item].expiration_date, orderByMonths) }}">
                 <td data-title="'#'">{{ $index + 1 }}</td>
                 <td data-title="'Batch No'" sortable="''">{{ product_item[inventoryLine.product_item].batch_no }}</td>
                 <td data-title="'Product'">{{ products[product_item[inventoryLine.product_item].product].name }}</td>
