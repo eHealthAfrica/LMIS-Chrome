@@ -25,7 +25,7 @@ angular.module('lmisChromeApp')
 
         if(currentDate.getTime() > expirationDateObj.getTime()){
             return "danger-alert";
-        }else if(monthsBeforeExpiration <= monthsDiff){
+        }else if(parseInt(monthsBeforeExpiration) <= monthsDiff){
           console.log(monthsDiff);
             return "warning-alert";
         }
