@@ -6,7 +6,10 @@ chromeApp.controller('InventoryCtrl', function ($scope, $location, storageServic
     $scope.report_month = ($location.search()).report_month;
     $scope.report_year = ($location.search()).report_year;
     $scope.url_params = "?facility="+$scope.facility_uuid+"&report_month="+$scope.report_month+"&report_year="+$scope.report_year;
-
+    var now = new Date();
+    var day = now.getDate();
+    day = day < 10 ? '0' + day : day;
+    $scope.current_day = day;
 
      $scope.stock_products =
         [
@@ -43,12 +46,7 @@ chromeApp.controller("StockRecordsCtrl",function($scope, $location, storageServi
     $scope.monthly_stock_record_object = {};
 
 
-    storageService.get('monthly_stock_record').then(function(data){
-        $scope.monthly_stock_record = data;
-    });
-    storageService.loadTableObject('monthly_stock_record').then(function(data){
-        $scope.monthly_stock_record_object = data;
-    });
+
 
 
     var file_url = 'scripts/fixtures/user_related_facilities.json';
@@ -59,8 +57,15 @@ chromeApp.controller("StockRecordsCtrl",function($scope, $location, storageServi
 
     $scope.add_button = true;
     $scope.$watchCollection('[report_month, report_year, user_related_facility]', function(newvalues){
-        console.log(newvalues);
+        //console.log(newvalues);
         $scope.record_key = $scope.user_related_facility + $scope.report_month + $scope.report_year;
+
+        storageService.get('monthly_stock_record').then(function(data){
+            $scope.monthly_stock_record = data;
+        });
+        storageService.loadTableObject('monthly_stock_record').then(function(data){
+            $scope.monthly_stock_record_object = data;
+        });
         if(newvalues[0]=='' || newvalues[1] == '' || newvalues[2] == ''){
             $scope.add_button = true;
         }
@@ -86,8 +91,6 @@ chromeApp.controller("StockRecordsCtrl",function($scope, $location, storageServi
                         break;
                     }
                 }
-
-
             });
         }
 
@@ -133,17 +136,22 @@ chromeApp.controller("StockRecordsFormCtrl",function($scope, $location, storageS
         }
 
     });
+    var date_day = [];
+    for(var i=1;i<32;i++){
+        date_day.push(i);
+    }
+    $scope.date_var = date_day;
 
     $scope.stock_records = {};
-    $scope.stock_records.received = {};
-    $scope.stock_records.used = {};
-    $scope.stock_records.balance = {};
-    $scope.stock_records.expiry = {};
-    $scope.stock_records.vvm = {};
-    $scope.stock_records.breakage = {};
-    $scope.stock_records.frozen = {};
-    $scope.stock_records.label_removed = {};
-    $scope.stock_records.others = {};
+    $scope.stock_records.received = [];
+    $scope.stock_records.used = [];
+    $scope.stock_records.balance = [];
+    $scope.stock_records.expiry = [];
+    $scope.stock_records.vvm = [];
+    $scope.stock_records.breakage = [];
+    $scope.stock_records.frozen = [];
+    $scope.stock_records.label_removed = [];
+    $scope.stock_records.others = [];
     $scope.stock_records.maximum_stock = [];
     $scope.stock_records.minimum_stock = [];
     $scope.stock_records.balance_brought_forward=[];
@@ -189,8 +197,8 @@ chromeApp.controller("StockRecordsFormCtrl",function($scope, $location, storageS
             target_population: $scope.stock_records.target_population,
             balance_brought_forward:$scope.stock_records.balance_brought_forward
         }).then(function(bool){
-                console.log("saving");
-                $location.path("/inventory/stock_records_form"+$scope.url_params);
+                //console.log("saving");
+                //$location.path("/inventory/stock_records");
             });
 
     }
