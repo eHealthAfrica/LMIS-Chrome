@@ -23,7 +23,7 @@
                             <label class="inline-label" for="facility">Health Facility:</label>
                             <select name="facility" id="facility"  ng-model="user_related_facility" class="form-control" >
                                 <option value="">-- select facility --</option>
-                                <option ng-repeat="facility in user_related_facilities" value="{{ facility.uuid }}">{{ facility.name }}</option>
+                                <option ng-selected="{{ facility.uuid == user_related_facility }}" ng-repeat="facility in user_related_facilities" value="{{ facility.uuid }}">{{ facility.name }}</option>
                             </select>
 
                     </form>
@@ -123,43 +123,97 @@
                         <tbody>
                             <tr>
                                 <td id="max-stock">Max</td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[0] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[1] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[2] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[3] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[4] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[5] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[6] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[7] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[8] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[9] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[10] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[11] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[12] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[13] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[14] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[15] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[16] }}</td>
                             </tr>
                             <tr id="min-stock">
                                 <td>Min</td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
-                                <td colspan="3"></td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[0] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[1] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[2] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[3] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[4] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[5] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[6] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[7] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[8] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[9] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[10] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[11] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[12] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[13] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[14] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[15] }}</td>
+                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[16] }}</td>
+                            </tr>
+                            <tr class="top-rows">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             <tr class="top-rows">
                                 <td>Balance brought forward from previous month</td>
@@ -260,7 +314,7 @@
                     </table>
                 </div>
             </div>
-
+           {{  }}
         </div>
     </div>
 </div>
