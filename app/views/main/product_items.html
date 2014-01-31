@@ -26,12 +26,7 @@
 
 <div class="row">
   <div class="col-sm-4">
-    <select id="uom" class="form-control" ng-model="inventory.uom" required>
-      <option value="">-- select months to check for expiration --</option>
-      <option value="6">6 months</option>
-      <option value="3">3 months</option>
-      <option value="1">1 month</option>
-    </select>
+    <div ng-include="'views/partials/group_about_to_expire_in_months.html'"></div>
   </div>
 </div>
 
@@ -48,7 +43,7 @@
       <div class="scrollable-container">
         <table ng-table="productItemList" class="table table-condensed table-hover table-bordered oversize-table">
           <tr ng-repeat="productItem in $data | filter:search"
-              class="{{ highlight(productItem.expiration_date, 4) }} center-text">
+              class="{{ highlight(productItem.expiration_date, orderByMonths) }} center-text">
             <td data-title="'#'">{{ $index + 1 }}</td>
             <td data-title="'Batch No'" sortable="'batch_no'">{{ productItem.batch_no }}</td>
             <td data-title="'Product Name'">{{ products[productItem.product].name }}</td>
