@@ -1,4 +1,4 @@
-<div ng-controller="StockRecordsCtrlForm">
+<div ng-controller="StockRecordsFormCtrl">
     <div class="row">
         <ul class="breadcrumb">
             <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
@@ -8,9 +8,61 @@
         </ul>
     </div>
 
-    <div class="row" >
+    <div class="wizard clearfix">
+        <div class="steps clearfix">
+            <ul role="tablist">
+                <li role="tab" class="first current" aria-disabled="false" aria-selected="true">
+                    <a aria-controls="steps-uid-1-p-0" href="#steps-uid-1-h-0" id="steps-uid-1-t-0">
+                        <span class="number">1</span> Report Profile
+                    </a>
+                </li>
+                <li role="tab" class="disabled" aria-disabled="true">
+                    <a aria-controls="steps-uid-1-p-1" href="#steps-uid-1-h-1" id="steps-uid-1-t-1">
+                        <span class="number">2</span> Daily Stock record
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row" ng-hide="report_available">
+        <h4 class="center-text">
+            This part of the report is done once in a month
+        </h4>
         <div class="col-sm-12">
-            <form novalidate="novalidate" ng-submit="save_record()">
+            <form ng-submit="saveStockReoprt()">
+                <div class="row">
+                    <div class="col-sm-3">Target Population:</div>
+                    <div class="col-sm-3"><input class="form-control" type="text" ng-init="stock_records.target_population=1000" ng-model="stock_records.target_population"></div>
+                </div>
+                <div class="row" ng-repeat="product in stock_products" >
+                    <div class="col-sm-3">
+                        <label>{{ product }}</label>
+                    </div>
+                    <div class="col-sm-3">
+                        Maximum Stock: <input type="number" ng-init="stock_records.maximum_stock[$index] = 10000"  ng-model="stock_records.maximum_stock[$index]" class="form-control">
+                    </div>
+                    <div class="col-sm-3">
+                        Minimum Stock: <input type="number" ng-init="stock_records.minimum_stock[$index]=500" ng-model="stock_records.minimum_stock[$index]" class="form-control">
+                    </div>
+                    <div class="col-sm-3">
+                        Balance Brought Forward : <input type="number" ng-init="stock_records.balance_brought_forward[$index]=500" ng-model="stock_records.minimum_stock[$index]" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input class="btn btn-default" type="submit" value="Save">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row" ng-show="report_available">
+        <div class="col-sm-12">
+            <form class="wizard clearfix" novalidate="novalidate" ng-submit="save_record()">
+
                 <div class="row">
                     <div class="col-sm-12">
                         <div ng-show="stock_records.program" class="form-group" ng-repeat="item in programProductList | filter:{program: stock_records.program}">
@@ -30,28 +82,6 @@
                                 <div class="col-sm-1">
                                     Balance :<input class="form-control" ng-model="stock_records.balance[item.product]">
                                 </div>
-                                <div class="col-sm-1">
-                                    Discarded
-                                </div>
-                                <div class="col-sm-1">
-                                    Expiry :<input class="form-control" ng-model="stock_records.expiry[item.product]">
-                                </div>
-                                <div class="col-sm-2">
-                                    VVM Change :<input class="form-control" ng-model="stock_records.vvm[item.product]">
-                                </div>
-                                <div class="col-sm-1">
-                                    Breakage:<input class="form-control" ng-model="stock_records.breakage[item.product]">
-                                </div>
-                                <div class="col-sm-1">
-                                    Frozen :<input class="form-control" ng-model="stock_records.frozen[item.product]">
-                                </div>
-                                <div class="col-sm-2">
-                                    Label Removed :<input class="form-control" ng-model="stock_records.label_removed[item.product]">
-                                </div>
-                                <div class="col-sm-1">
-                                    Others :<input class="form-control" ng-model="stock_records.others[item.product]">
-                                </div>
-
                             </div>
                         </div>
                     </div>
@@ -60,7 +90,7 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <button class="btn btn-default">Save</button>
+                            <button class="form-control">Save</button>
                         </div>
                     </div>
                 </div>
