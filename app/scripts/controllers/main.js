@@ -156,6 +156,7 @@ angular.module('lmisChromeApp')
  * storage.
  */
     .controller('ProductItemListCtrl', function ($scope, storageService, visualMarkerService, utility, $filter, ngTableParams) {
+      $scope.highlight = visualMarkerService.markByExpirationStatus;
 
       storageService.get(storageService.PRODUCT_ITEM).then(function (data) {
         // Table defaults
@@ -208,11 +209,7 @@ angular.module('lmisChromeApp')
 
       utility.loadTableObject(storageService.CURRENCY).then(function (currencyList) {
         $scope.currencies = currencyList;
-        console.log(currencyList);
       });
-
-
-      $scope.highlightExpiredProductItem = visualMarkerService.getExpiredCSS;
 
     })
 

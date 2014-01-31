@@ -1,54 +1,99 @@
 <div class="row">
-    <ul class="breadcrumb">
-        <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
-        <li class="active">Inventory</li>
-    </ul>
+  <ul class="breadcrumb">
+    <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
+    <li class="active">Inventory</li>
+  </ul>
+</div>
+<div class="row">
+  <div class="col-lg-3 col-md-6">
+    <a href="#/inventory/stock_records">
+      <div class="box_stat box_ico">
+        <span class="stat_ico stat_ico_1"><i class="li_vallet"></i></span>
+        <h4>Stock Records</h4>
+
+      </div>
+    </a>
+  </div>
+  <div class="col-lg-3 col-md-6">
+    <a href="#/inventory/physical_inventory">
+      <div class="box_stat box_ico">
+        <span class="stat_ico stat_ico_1"><i class="li_vallet"></i></span>
+        <h4>Physical Inventory</h4>
+      </div>
+    </a>
+  </div>
 </div>
 
-<div class="row">
+<div class="row" ng-controller="inventoryMainCtrl">
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="btn-group col-sm-2">
+        <a href="#/inventory/add_inventory" class="btn btn-default">
+          <i class="fa fa-plus-circle"></i> Add New Inventory</a>
+      </div>
+      <div class="btn-group col-sm-2">
+        <a href="#/inventory/add_purchase_order_to_inventory" class="btn btn-default">
+          <i class="fa fa-plus-circle"></i> Convert Order To Inventory</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div ng-include="'views/partials/search.html'"></div>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-sm-12">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">Stock Inventory</h4>
-            </div>
-            <div class="panel-body">
-
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <a href="#/inventory/stock_records">
-                            <div class="box_stat box_ico">
-                                <span class="stat_ico stat_ico_1"><i class="li_vallet"></i></span>
-                                <h4>Stock Records</h4>
-
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <a href="#/inventory/physical_inventory">
-                            <div class="box_stat box_ico">
-                                <span class="stat_ico stat_ico_1"><i class="li_vallet"></i></span>
-                                <h4>Physical Inventory</h4>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!--div class="col-lg-3 col-md-6">
-                        <div class="box_stat box_ico">
-                            <span class="stat_ico stat_ico_3"><i class="li_banknote"></i></span>
-                            <h4></h4>
-                            <small>Sale (June)</small>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="box_stat box_ico">
-                            <span class="stat_ico stat_ico_4"><i class="li_truck"></i></span>
-                            <h4>135</h4>
-                            <small>Orders (24h)</small>
-                        </div>
-                    </div-->
-                </div>
-            </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title"><i class="fa fa-list"></i> Product Item Inventory</h4>
         </div>
+        <div class="panel-body">
+
+          <div class="row scrollable-container">
+            <table ng-table="inventory" class="table table-condensed table-hover table-bordered oversize-table text-center">
+              <tr ng-repeat="inventoryLine in $data | filter:search"
+                  class="{{ highlight(product_item[inventoryLine.product_item].expiration_date, 6) }}">
+                <td data-title="'#'">{{ $index + 1 }}</td>
+                <td data-title="'Batch No'" sortable="''">{{ product_item[inventoryLine.product_item].batch_no }}</td>
+                <td data-title="'Product'">{{ products[product_item[inventoryLine.product_item].product].name }}</td>
+                <td data-title="'Total Quantity'">
+                  {{ ((presentation[product_item[inventoryLine.product_item].presentation].value * inventoryLine.quantity)
+                  | number) +' '+  uomList[products[product_item[inventoryLine.product_item].product].base_uom].symbol }}
+                </td>
+                <td data-title="'Quantity'">
+                  {{ (inventoryLine.quantity | number)+' '+
+                  uomList[inventoryLine.uom].symbol }}
+                </td>
+                <td data-title="'Expiration Date'" sortable="'{{ product_item[inventoryLine.product_item].expiration_date }}'">
+                  {{ product_item[inventoryLine.product_item].expiration_date | date:'dd-MM-yyyy' }}
+                </td>
+                <td data-title="'Location'">{{ cceList[inventoryLine.storage_location].name }}</td>
+                <td data-title="'VVM Stage'">{{ inventoryLine.vvmStage }}</td>
+                <td data-title="'Stock Entry Type'">{{ inventoryLine.entry_type }}</td>
+                <td data-title="'Reason For Return'">{{ inventoryLine.return_reason }}</td>
+                <td data-title="'Date Received'">{{ inventoryLine.date_receipt | date:'dd-MM-yyyy' }}</td>
+                <td data-title="'Storage Volume'">
+                  {{ ((product_item[inventoryLine.product_item].packed_volume * inventoryLine.quantity) | number)
+                  + ' '+uomList[product_item[inventoryLine.product_item].volume_uom].symbol
+                  }}
+                </td>
+                <td data-title="'Presentation'"
+                    sortable="'{presentation[product_item[inventoryLine.product_item].presentation].name }'">
+                  {{ presentation[product_item[inventoryLine.product_item].presentation].name }}
+                </td>
+                <!-- <td data-title="'Last Modified'" sortable="'modified'">{{ product.modified | date:'yyyy-MM-dd h:mma'}} -->
+                </td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
+      </div>
     </div>
+  </div>
 </div>
