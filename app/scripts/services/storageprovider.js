@@ -221,40 +221,60 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         getTables().then(function (tables) {
           if (tables.indexOf(table)) {
-
+            console.log();
             getFromStore(table).then(function (data) {
-              console.log(data);
+
               if (Object.prototype.toString.call(data) == '[object Array]') {
-                console.log(obj);
+                console.log(data);
+
                 var object_keys = Object.keys(obj);
                 var object_uuid = object_keys.indexOf('uuid') != -1 ? obj['uuid'] : "";
                 object_uuid = (object_uuid == "") ? false : true;
-                if (object_uuid) {
+                var uuid_test = false;
+                if(object_uuid){
+                    if(data[parseInt(obj["array_index"])] == undefined){
+                        uuid_test = false;
+                    }
+                    else if(data[parseInt(obj["array_index"])]['uuid'] != obj['uuid']){
+                        uuid_test = false;
+                    }
+                    else{
+                        uuid_test = true;
+                    }
+                }
+                if (object_uuid && uuid_test) {
+
+                  console.log("updated");
                   obj['modified'] = getDateTime();
                   data[parseInt(obj["array_index"])] = obj;
-                  addToStore(table, data);
+                  //console.log( data[parseInt(obj["array_index"])] );
+                  //addToStore(table, data);
                 }
                 else {
-
+                  console.log("new save 1");
                   obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1)?obj['uuid']:uuid_generator();
                   obj['created'] = getDateTime();
+                  obj['array_index'] = data.length == undefined?0:data.length;
                   data.push(obj);
                   addToStore(table, data);
                 }
                 deferred.resolve(true);
               }
               else{
+                  console.log("new save 2 no array");
                   obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1)?obj['uuid']:uuid_generator();
                   obj['created'] = getDateTime();
+                  obj['array_index'] = data.length == undefined?0:data.length;
                   addToStore(table, [obj]);
                   deferred.resolve(true);
               }
             });
           }
           else {
-
+            console.log("new save 2 no table");
             obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1)?obj['uuid']:uuid_generator();
             obj['created'] = getDateTime();
+            obj['array_index'] = data.length == undefined?0:data.length;
             addToStore(table, [obj]);
             deferred.resolve(true);
             //console.log("new entry");
@@ -361,6 +381,7 @@ angular.module('lmisChromeApp')
         });
         return deferred.promise;
       }
+
 
       /**
        * Test the client's support for storing values in the local store.
