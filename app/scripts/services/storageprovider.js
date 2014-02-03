@@ -37,6 +37,7 @@ angular.module('lmisChromeApp')
       var storageLocationTemperature = 'storage_location_temperature_logs';
       var productProfile = 'product_profiles';
       var inventory = 'inventory';
+      var orders = 'orders';
 
       /**
        * Boolean flag indicating client support for Chrome Storage
@@ -312,7 +313,8 @@ angular.module('lmisChromeApp')
           productPresentation,
           productFormulation,
           modeOfAdministration,
-          productItem
+          productItem,
+          orders
         ]
         for (var i in database) {
           loadData(database[i]);
@@ -440,7 +442,8 @@ angular.module('lmisChromeApp')
         STORAGE_LOCATION_PROBLEM: storageLocationProblem,
         STORAGE_LOCATION_TEMPERATURE: storageLocationTemperature,
         PRODUCT_PROFILE: productProfile,
-        INVENTORY: inventory
+        INVENTORY: inventory,
+        ORDERS: orders
       };
 
     });
