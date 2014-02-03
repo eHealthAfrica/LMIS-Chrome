@@ -1,8 +1,8 @@
 'use strict';
 
-var chromeApp = angular.module('lmisChromeApp');
+angular.module('lmisChromeApp')
 
-chromeApp.controller('cceCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
+.controller('cceCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
 
   //constants used to track CCE status
   $scope.CCE_WORKING = 0;
@@ -50,13 +50,13 @@ chromeApp.controller('cceCtrl', function ($scope, storageService, utility, $filt
     $scope.parentCCEList = cceList;
   });
 
-});
+})
 
 
 /**
  *  This controller is used to save CCE record to local storage or remote DB via REST API.
  */
-chromeApp.controller('addCCECtrl', function ($scope, storageService) {
+.controller('addCCECtrl', function ($scope, storageService) {
 
   //default cce to hold form data
   $scope.cce = {}
@@ -74,12 +74,12 @@ chromeApp.controller('addCCECtrl', function ($scope, storageService) {
   });
 
 
-});
+})
 
 /**
  *  This controller will pull logged in user facility CCE problem logs
  */
-chromeApp.controller('cceProblemLogMainCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
+.controller('cceProblemLogMainCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
 
   storageService.get(storageService.STORAGE_LOCATION_PROBLEM).then(function (data) {
     // Table defaults
@@ -127,12 +127,12 @@ chromeApp.controller('cceProblemLogMainCtrl', function ($scope, storageService, 
     return '';
   };
 
-});
+})
 
 /**
  * AddProblemLogCtrl is used for adding problems logs to a selected Cold Chain Equipment.
  */
-chromeApp.controller('AddProblemLogCtrl', function ($scope, storageService) {
+.controller('AddProblemLogCtrl', function ($scope, storageService) {
 
   //default problem log used to hold problem log form data
   $scope.problemLog = {};
@@ -149,13 +149,13 @@ chromeApp.controller('AddProblemLogCtrl', function ($scope, storageService) {
   storageService.get(storageService.CURRENCY).then(function (currency) {
     $scope.currencies = currency;
   });
-});
+})
 
 
 /**
  * This is the controller for the main temperature log view
  */
-chromeApp.controller('cceTemperatureLogMainCtrl', function ($scope, storageService, $filter, ngTableParams, utility) {
+.controller('cceTemperatureLogMainCtrl', function ($scope, storageService, $filter, ngTableParams, utility) {
 
   storageService.get(storageService.STORAGE_LOCATION_TEMPERATURE).then(function (data) {
 
@@ -195,12 +195,12 @@ chromeApp.controller('cceTemperatureLogMainCtrl', function ($scope, storageServi
     });
 
   });
-});
+})
 
 /**
  * This Controller is used by AddTemperatureLog Form.
  */
-chromeApp.controller('AddTemperatureLogCtrl', function ($scope, storageService, utility) {
+.controller('AddTemperatureLogCtrl', function ($scope, storageService, utility) {
 
   //default temperatureLog object used to hold temp log form data
   $scope.temperatureLog = {}
@@ -216,10 +216,10 @@ chromeApp.controller('AddTemperatureLogCtrl', function ($scope, storageService, 
   $scope.save = function () {
     console.log($scope.temperatureLog)
   }
-});
+})
 
 
-chromeApp.controller('cceTemperatureChartCtrl', function ($scope, storageService) {
+.controller('cceTemperatureChartCtrl', function ($scope, storageService) {
   storageService.get(storageService.STORAGE_LOCATION).then(function (cceList) {
     $scope.cceList = cceList;
   });
