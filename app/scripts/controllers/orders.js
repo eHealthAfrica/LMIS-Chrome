@@ -1,5 +1,4 @@
 'use strict';
-/* global chrome */
 
 angular.module('lmisChromeApp')
   .controller('OrdersctrlCtrl', function($scope, storageService) {
