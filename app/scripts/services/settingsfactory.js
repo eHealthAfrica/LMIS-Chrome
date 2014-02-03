@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('settingsService', function ($q, storageService) {
+  .factory('settingsService', function($q, storageService) {
 
     function getSettingsFromStorage() {
       var defered = $q.defer();

@@ -1,17 +1,17 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('FacilityService', function () {
+  .factory('FacilityService', function() {
 
-        var meaningOfLife = 42;
+    var meaningOfLife = 42;
 
-        // Public API here
-        return {
-            someMethod: function () {
-                return meaningOfLife;
-            }
-        };
-    });
+    // Public API here
+    return {
+      someMethod: function() {
+        return meaningOfLife;
+      }
+    };
+  });
 
 
 /* TODO: generate this in FacilityFactory or create a part of initial data creation in either ChromeStorageProvider or chrome.app.runtime.onLaunched
