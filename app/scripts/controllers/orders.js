@@ -97,37 +97,38 @@ angular.module('lmisChromeApp')
 
   })
 
-  .controller('OrdersListCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
-    storageService.get(storageService.ORDERS).then(function (data) {
-      // Table defaults
-      var params = {
-        page: 1,
-        count: 10,
-        sorting: {
-          name: 'asc'
-        }
-      };
+.controller('OrdersListCtrl', function($scope, storageService, utility, $filter,
+  ngTableParams) {
+  storageService.get(storageService.ORDERS).then(function(data) {
+    // Table defaults
+    var params = {
+      page: 1,
+      count: 10,
+      sorting: {
+        name: 'asc'
+      }
+    };
 
-      // Pagination
-      var resolver = {
-        total: data.length,
-        getData: function ($defer, params) {
-          var filtered, sorted = data;
-          if (params.filter()) {
-            filtered = $filter('filter')(data, params.filter());
-          }
-          if (params.sorting()) {
-            sorted = $filter('orderBy')(filtered, params.orderBy());
-          }
-          params.total(sorted.length);
-          $defer.resolve(sorted.slice(
-              (params.page() - 1) * params.count(),
-              params.page() * params.count()
-          ));
+    // Pagination
+    var resolver = {
+      total: data.length,
+      getData: function($defer, params) {
+        var filtered, sorted = data;
+        if (params.filter()) {
+          filtered = $filter('filter')(data, params.filter());
         }
-      };
+        if (params.sorting()) {
+          sorted = $filter('orderBy')(filtered, params.orderBy());
+        }
+        params.total(sorted.length);
+        $defer.resolve(sorted.slice(
+          (params.page() - 1) * params.count(),
+          params.page() * params.count()
+        ));
+      }
+    };
 
-      // jshint newcap: false
-      $scope.salesList = new ngTableParams(params, resolver);
-    });
+    // jshint newcap: false
+    $scope.salesList = new ngTableParams(params, resolver);
   });
+});
