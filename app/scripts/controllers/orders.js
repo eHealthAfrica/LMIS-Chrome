@@ -99,7 +99,6 @@ angular.module('lmisChromeApp')
 
   .controller('OrdersListCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
     storageService.get(storageService.ORDERS).then(function (data) {
-      console.log(data);
       // Table defaults
       var params = {
         page: 1,

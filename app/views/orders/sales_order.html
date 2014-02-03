@@ -36,7 +36,9 @@
       <div ng-controller="OrdersListCtrl">
         <table ng-table="salesList" show-filter="true" class="table table-condensed table-striped table-bordered table-hover">
           <tr ng-repeat="sale in $data | filter:search">
-            <td data-title="'#'">{{ $index + 1 }}</td>
+            <td data-title="'UUID'" sortable="'uuid'" filter="{'uuid': 'text'}">
+              <a href="#/orders/sales_order_line?uuid={{sale.uuid}}">{{ sale.uuid }}</a>
+            </td>
             <td data-title="'Recipient'" sortable="'recipient'" filter="{'recipient': 'text'}">{{ sale.recipient }}</td>
             <td data-title="'Supplier'" sortable="'supplier'" filter="{'supplier': 'text'}">{{ sale.supplier }}</td>
             <td data-title="'Approver'">{{ sale.approver }}</td>
