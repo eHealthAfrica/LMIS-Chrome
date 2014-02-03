@@ -60,16 +60,15 @@ angular.module('lmisChromeApp', [
       });
   })
 
-// Config Block for Restangular Provider
-.config(function(RestangularProvider, $compileProvider) {
-  RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
-  $compileProvider.aHrefSanitizationWhitelist(
-    /^\s*(https?|ftp|mailto|chrome-extension):/
-  );
-});
+  // Config Block for Restangular Provider
+  .config(function(RestangularProvider, $compileProvider) {
+    RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
+    $compileProvider.aHrefSanitizationWhitelist(
+      /^\s*(https?|ftp|mailto|chrome-extension):/
+    );
+  })
 
-// Central Variable for Watching Online/Offline Events
-angular.module('lmisChromeApp')
+  // Central Variable for Watching Online/Offline Events
   .run(function($window, $rootScope, utility) {
     //global message placeholder
     $rootScope.messages = [];
