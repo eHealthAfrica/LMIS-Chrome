@@ -72,8 +72,9 @@
                     </div>
                     <div class="notification_separator"></div>
                     <div class="notification_dropdown">
-                        <span class="label label-success" ng-show="online">online</span>
-                        <span class="label label-danger" ng-hide="online">offline</span>
+                      <span class="label"
+                        ng-class="{'label-success': online, 'label-danger': !online}"
+                        ng-bind="online ? 'online' : 'offline'"></span>
                     </div>
                 </div>
             </div>
