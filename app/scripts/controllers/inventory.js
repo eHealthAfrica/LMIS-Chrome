@@ -1,7 +1,7 @@
 'use strict';
-var chromeApp = angular.module('lmisChromeApp');
+angular.module('lmisChromeApp')
 
-chromeApp.controller('InventoryCtrl', function ($scope, $location, storageService) {
+.controller('InventoryCtrl', function ($scope, $location, storageService) {
     $scope.facility_uuid = ($location.search()).facility;
     $scope.report_month = ($location.search()).report_month;
     $scope.report_year = ($location.search()).report_year;
@@ -32,9 +32,9 @@ chromeApp.controller('InventoryCtrl', function ($scope, $location, storageServic
             'Safety boxes'
         ]
 
-});
+})
 
-chromeApp.controller("StockRecordsCtrl", function ($scope, $location, storageService, $http, $filter) {
+.controller("StockRecordsCtrl", function ($scope, $location, storageService, $http, $filter) {
 
 
   $scope.user_related_facilities = [];
@@ -107,8 +107,9 @@ chromeApp.controller("StockRecordsCtrl", function ($scope, $location, storageSer
     $scope.programs = data;
   });
 
-});
-chromeApp.controller("StockRecordsFormCtrl", function ($scope, $location, storageService) {
+})
+
+.controller("StockRecordsFormCtrl", function ($scope, $location, storageService) {
 
   //$scope.facility_uuid = ($location.search()).facility;
   //$scope.report_month = ($location.search()).report_month;
@@ -194,12 +195,12 @@ chromeApp.controller("StockRecordsFormCtrl", function ($scope, $location, storag
         });
 
   }
-});
+})
 
 /**
  * Controller for showing inventory
  */
-chromeApp.controller('inventoryMainCtrl', function ($scope, storageService, $filter, ngTableParams, utility,
+.controller('inventoryMainCtrl', function ($scope, storageService, $filter, ngTableParams, utility,
                                                     visualMarkerService) {
 
     });
@@ -278,13 +279,13 @@ chromeApp.controller('inventoryMainCtrl', function ($scope, storageService, $fil
                 //console.log("saving");
                 //$location.path("/inventory/stock_records");
             });
-  });
+  })
 
 
 /**
  * Add to inventory controller
  */
-chromeApp.controller('addInventoryCtrl', function ($scope, storageService, $location) {
+.controller('addInventoryCtrl', function ($scope, storageService, $location) {
 
   $scope.inventory = {}
 
@@ -308,5 +309,3 @@ chromeApp.controller('addInventoryCtrl', function ($scope, storageService, $loca
   }
 
 });
-
-
