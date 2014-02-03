@@ -33,13 +33,15 @@
           <i class="fa fa-list"></i> Sales Orders
         </h4>
       </div>
-      <div>
+      <div ng-controller="OrdersListCtrl">
         <table ng-table="salesList" show-filter="true" class="table table-condensed table-striped table-bordered table-hover">
           <tr ng-repeat="sale in $data | filter:search">
-            <td data-title="'#'">{{ $index + 1 }}</td>
+            <td data-title="'UUID'" sortable="'uuid'" filter="{'uuid': 'text'}">
+              <a href="#/orders/sales_order_line?uuid={{sale.uuid}}">{{ sale.uuid }}</a>
+            </td>
             <td data-title="'Recipient'" sortable="'recipient'" filter="{'recipient': 'text'}">{{ sale.recipient }}</td>
             <td data-title="'Supplier'" sortable="'supplier'" filter="{'supplier': 'text'}">{{ sale.supplier }}</td>
-            <td data-title="'Approver'">{{ sale.name }}</td>
+            <td data-title="'Approver'">{{ sale.approver }}</td>
             <td data-title="'Status'">{{ sale.status }}</td>
             <td data-title="'Planned Date'" sortable="'planned'">{{ sale.planned | date:'yyyy-MM-dd h:mma'}}</td>
             <td data-title="'Completed Date'" sortable="'completed'">{{ sale.completed | date:'yyyy-MM-dd h:mma'}}</td>
