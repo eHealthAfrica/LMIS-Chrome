@@ -44,8 +44,9 @@
       <div class="panel-heading">
         <h4 class="panel-title"><i class="fa fa-list"></i> Products</h4>
       </div>
-      <div class="row">
-        <table ng-table="productList" show-filter="true" class="table table-condensed table-striped table-bordered table-hover">
+      <div class="scrollable-container">
+        <table ng-table="productList" show-filter="true"
+               class="table table-condensed table-striped table-bordered table-hover oversize-table">
           <tr ng-repeat="product in $data | filter:search">
             <td data-title="'#'">{{ $index + 1 }}</td>
             <td data-title="'Name'" sortable="'name'" filter="{'name': 'text'}">{{ product.name }}</td>
