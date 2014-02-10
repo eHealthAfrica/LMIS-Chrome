@@ -1,73 +1,77 @@
-<div class="row">
-  <ul class="breadcrumb">
-    <li><a href="#/main/"><i class="fa fa-home"></i> Home</a></li>
-    <li><a href="#/orders/index">Order</a></li>
-    <li><a href="#/orders/sales_order">Sales Order</a></li>
-    <li class="active">New Sales Order</li>
-  </ul>
-</div>
-
-<div class="row">
-  <div class="col-sm-12">
-    <div class="panel panel-default">
-
-      <div class="panel-heading">
-        <h4 class="panel-title">New Sales Order</h4>
-      </div>
-
-      <div class="panel-body">
-        <form name="newSalesOrderForm" ng-submit="save()" ng-controller="NewSalesOrderCtrl">
-          <div class="row">
-            <div class="col-md-4">
-
-              <div class="form-group">
-                <label class="control-label" for="sales_order">Sales Order</label>
-                <select id="sales_order" name="sales_order" class="form-control">
-                  <option value="1">Option one</option>
-                  <option value="2">Option two</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="facility">Facility</label>
-                <input id="facility" name="facility" type="text" placeholder="Facility UUID" class="form-control">
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="supplier">Supplier</label>
-                <input id="supplier" name="supplier" type="text" placeholder="Supplier UUID" class="form-control">
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="approver">Approver</label>
-                <input id="approver" name="approver" type="text" placeholder="Employee UUID" class="form-control">
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="status">Status</label>
-                <select id="status" name="status" class="form-control">
-                  <option value="1">Option one</option>
-                  <option value="2">Option two</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="plannedDate"><i class="fa fa-calendar"></i> Planned Date</label>
-                <input id="plannedDate" type="date" class="form-control" ng-required="true" ng-model="sale.planned_date"/>
-              </div>
-
-              <div class="form-group">
-                <label for="completedDate"><i class="fa fa-calendar"></i> Completed Date</label>
-                <input id="completedDate" type="date" class="form-control" ng-required="true" ng-model="sale.completed_date"/>
-              </div>
-
-              <button type="submit" class="btn btn-success">Submit</button>
-
-            </div>
-          </div>
-        </form>
-      </div>
-
+<div ng-controller="SalesOrderForm">
+    <div class="row">
+      <ul class="breadcrumb">
+        <li><a href="#/main/"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="#/orders/index">Order</a></li>
+        <li><a href="#/orders/sales_order">Sales Order</a></li>
+        <li class="active">New Sales Order</li>
+      </ul>
     </div>
-  </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+
+          <div class="panel-heading">
+            <h4 class="panel-title">New Sales Order</h4>
+          </div>
+
+          <div class="panel-body">
+            <form name="newSalesOrderForm" ng-submit="save()">
+              <div class="row">
+                <div class="col-md-4">
+
+                  <div class="form-group">
+                    <label class="control-label" for="sales_order">Sales Order</label>
+                    <select id="sales_order" name="sales_order" class="form-control">
+                      <option value="1">Option one</option>
+                      <option value="2">Option two</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label" for="purchaser">Facility</label>
+                    <select input id="purchaser" name="sales_order.purchaser" class="form-control">
+                        <option value=""></option>
+                        <option ng-repeat="facility in facilities" value="{{ facility.uuid }}">{{ facility.name }}</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label" for="supplier">Supplier</label>
+                    <input id="supplier" name="supplier" type="text" placeholder="Supplier UUID" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label" for="approver">Approver</label>
+                    <input id="approver" name="approver" type="text" placeholder="Employee UUID" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label" for="status">Status</label>
+                    <select id="status" name="status" class="form-control">
+                      <option value="1">Option one</option>
+                      <option value="2">Option two</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="plannedDate"><i class="fa fa-calendar"></i> Planned Date</label>
+                    <input id="plannedDate" type="date" class="form-control" ng-required="true" ng-model="sale.planned_date"/>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="completedDate"><i class="fa fa-calendar"></i> Completed Date</label>
+                    <input id="completedDate" type="date" class="form-control" ng-required="true" ng-model="sale.completed_date"/>
+                  </div>
+
+                  <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
 </div>

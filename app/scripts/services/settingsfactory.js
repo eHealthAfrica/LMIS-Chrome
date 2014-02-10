@@ -20,5 +20,4 @@ angular.module('lmisChromeApp')
       load: getSettingsFromStorage,
       save: saveSettings
     };
-
-  });
+ });

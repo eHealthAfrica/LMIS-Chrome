@@ -2,7 +2,7 @@
 
 angular.module('lmisChromeApp')
 
-.controller('cceCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
+.controller('cceCtrl', function ($scope, storageService, $filter, ngTableParams) {
 
   //constants used to track CCE status
   $scope.CCE_WORKING = 0;
@@ -34,19 +34,19 @@ angular.module('lmisChromeApp')
     $scope.cceList = new ngTableParams(params, resolver);
   });
 
-  utility.loadTableObject(storageService.FACILITY).then(function (facilities) {
+ storageService.loadTableObject(storageService.FACILITY).then(function (facilities) {
     $scope.facilities = facilities;
   });
 
-  utility.loadTableObject(storageService.STORAGE_LOCATION_TYPE).then(function (cceTypes) {
+ storageService.loadTableObject(storageService.STORAGE_LOCATION_TYPE).then(function (cceTypes) {
     $scope.cceTypes = cceTypes;
   });
 
-  utility.loadTableObject(storageService.UOM).then(function (uomList) {
+ storageService.loadTableObject(storageService.UOM).then(function (uomList) {
     $scope.uomList = uomList;
   });
 
-  utility.loadTableObject(storageService.STORAGE_LOCATION).then(function (cceList) {
+ storageService.loadTableObject(storageService.STORAGE_LOCATION).then(function (cceList) {
     $scope.parentCCEList = cceList;
   });
 
@@ -79,7 +79,7 @@ angular.module('lmisChromeApp')
 /**
  *  This controller will pull logged in user facility CCE problem logs
  */
-.controller('cceProblemLogMainCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
+.controller('cceProblemLogMainCtrl', function ($scope, storageService, $filter, ngTableParams) {
 
   storageService.get(storageService.STORAGE_LOCATION_PROBLEM).then(function (data) {
     // Table defaults
@@ -104,19 +104,19 @@ angular.module('lmisChromeApp')
 
   });
 
-  utility.loadTableObject(storageService.STORAGE_LOCATION).then(function (data) {
+ storageService.loadTableObject(storageService.STORAGE_LOCATION).then(function (data) {
     $scope.cceList = data;
   });
 
-  utility.loadTableObject(storageService.FACILITY).then(function (data) {
+ storageService.loadTableObject(storageService.FACILITY).then(function (data) {
     $scope.facilities = data;
   });
 
-  utility.loadTableObject(storageService.CURRENCY).then(function (data) {
+ storageService.loadTableObject(storageService.CURRENCY).then(function (data) {
     $scope.currency = data;
   });
 
-  utility.loadTableObject(storageService.USER).then(function (data) {
+ storageService.loadTableObject(storageService.USER).then(function (data) {
     $scope.users = data;
   });
 
@@ -155,7 +155,7 @@ angular.module('lmisChromeApp')
 /**
  * This is the controller for the main temperature log view
  */
-.controller('cceTemperatureLogMainCtrl', function ($scope, storageService, $filter, ngTableParams, utility) {
+.controller('cceTemperatureLogMainCtrl', function ($scope, storageService, $filter, ngTableParams) {
 
   storageService.get(storageService.STORAGE_LOCATION_TEMPERATURE).then(function (data) {
 
@@ -186,11 +186,11 @@ angular.module('lmisChromeApp')
       return '';
     };
 
-    utility.loadTableObject(storageService.STORAGE_LOCATION).then(function (data) {
+   storageService.loadTableObject(storageService.STORAGE_LOCATION).then(function (data) {
       $scope.cceList = data;
     });
 
-    utility.loadTableObject(storageService.UOM).then(function (uomList) {
+   storageService.loadTableObject(storageService.UOM).then(function (uomList) {
       $scope.uomList = uomList;
     });
 
@@ -200,7 +200,7 @@ angular.module('lmisChromeApp')
 /**
  * This Controller is used by AddTemperatureLog Form.
  */
-.controller('AddTemperatureLogCtrl', function ($scope, storageService, utility) {
+.controller('AddTemperatureLogCtrl', function ($scope, storageService) {
 
   //default temperatureLog object used to hold temp log form data
   $scope.temperatureLog = {}

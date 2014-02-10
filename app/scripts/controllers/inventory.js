@@ -34,7 +34,7 @@ angular.module('lmisChromeApp')
 
 })
 
-.controller("StockRecordsCtrl", function ($scope, $location, storageService, $http, $filter) {
+.controller("StockRecordsCtrl", function ($scope, $location, storageService, $http) {
 
 
   $scope.user_related_facilities = [];
@@ -111,9 +111,7 @@ angular.module('lmisChromeApp')
 
 .controller("StockRecordsFormCtrl", function ($scope, $location, storageService) {
 
-  //$scope.facility_uuid = ($location.search()).facility;
-  //$scope.report_month = ($location.search()).report_month;
-  //$scope.report_year = ($location.search()).report_year;
+
   $scope.record_key = $scope.facility_uuid + $scope.report_month + $scope.report_year;
   storageService.get('monthly_stock_record').then(function (data) {
     if (Object.prototype.toString.call(data) == '[object Array]') {
@@ -200,8 +198,7 @@ angular.module('lmisChromeApp')
 /**
  * Controller for showing inventory
  */
-.controller('inventoryMainCtrl', function ($scope, storageService, $filter, ngTableParams, utility,
-                                                    visualMarkerService) {
+.controller('inventoryMainCtrl', function ($scope, storageService, $filter, ngTableParams, visualMarkerService) {
 
     });
     var date_day = [];

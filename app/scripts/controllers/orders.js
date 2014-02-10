@@ -97,7 +97,7 @@ angular.module('lmisChromeApp')
 
   })
 
-  .controller('OrdersListCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
+  .controller('OrdersListCtrl', function ($scope, storageService, $filter, ngTableParams) {
     storageService.get(storageService.ORDERS).then(function (data) {
       // Table defaults
       var params = {
@@ -130,4 +130,9 @@ angular.module('lmisChromeApp')
       // jshint newcap: false
       $scope.salesList = new ngTableParams(params, resolver);
     });
-  });
+  }).controller('SalesOrderForm', function($scope, storageService){
+
+     storageService.get(storageService.FACILITY).then(function(data) {
+      $scope.facilities = data;
+    });
+ });

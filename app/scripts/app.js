@@ -70,7 +70,7 @@ angular.module('lmisChromeApp', [
 
 // Central Variable for Watching Online/Offline Events
 angular.module('lmisChromeApp')
-  .run(function($window, $rootScope, utility) {
+  .run(function($window, $rootScope, storageService) {
     //global message placeholder
     $rootScope.messages = [];
 
@@ -85,17 +85,7 @@ angular.module('lmisChromeApp')
     };
 
     //chrome.storage.local.clear();
-    utility.loadFixtures();
-
-    //TODO: change breadcrumbs to a service
-    $rootScope.breadcrumbs = [];
-    $rootScope.addbreadcrumbs = function(crumbs) {
-      $rootScope.breadcrumbs = crumbs;
-    };
-
-    $rootScope.$on('$routeChangeSuccess', function() {
-      $rootScope.breadcrumbs = [];
-    });
+    storageService.loadFixtures();
 
     $rootScope.online = navigator.onLine;
 

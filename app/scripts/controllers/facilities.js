@@ -2,7 +2,7 @@
 // jshint camelcase: false
 
 angular.module('lmisChromeApp')
-  .controller('FacilitiesCtrl', function($scope, storageService, utility) {
+  .controller('FacilitiesCtrl', function($scope, storageService) {
 
     storageService.get(storageService.FACILITY).then(function(data) {
       $scope.facilities = data;
@@ -12,7 +12,7 @@ angular.module('lmisChromeApp')
       return created_by.username;
     };
 
-    utility.loadTableObject(storageService.FACILITY_TYPE).then(function(data) {
+    storageService.loadTableObject(storageService.FACILITY_TYPE).then(function(data) {
       $scope.facility_types = data;
     });
 

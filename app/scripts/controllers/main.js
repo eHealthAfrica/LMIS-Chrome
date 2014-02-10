@@ -12,7 +12,7 @@ angular.module('lmisChromeApp')
 /**
  * ProductListCtrl controller handles display of products pulled from storage.
  */
-    .controller('ProductListCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
+    .controller('ProductListCtrl', function ($scope, storageService, $filter, ngTableParams) {
 
       storageService.get(storageService.PRODUCT).then(function (data) {
         // Table defaults
@@ -47,11 +47,11 @@ angular.module('lmisChromeApp')
         $scope.productList = new ngTableParams(params, resolver);
       });
 
-      utility.loadTableObject(storageService.PRODUCT_CATEGORY).then(function (data) {
+      storageService.loadTableObject(storageService.PRODUCT_CATEGORY).then(function (data) {
         $scope.productCategories = data;
       });
 
-      utility.loadTableObject(storageService.UOM).then(function (data) {
+      storageService.loadTableObject(storageService.UOM).then(function (data) {
         $scope.uomList = data;
       });
 
@@ -157,7 +157,7 @@ angular.module('lmisChromeApp')
  * ProductItemListCtrl - This handles the display of Product-Items pulled from
  * storage.
  */
-    .controller('ProductItemListCtrl', function ($scope, storageService, visualMarkerService, utility, $filter, ngTableParams) {
+    .controller('ProductItemListCtrl', function ($scope, storageService, visualMarkerService, $filter, ngTableParams) {
       $scope.highlight = visualMarkerService.markByExpirationStatus;
 
       storageService.get(storageService.PRODUCT_ITEM).then(function (data) {
@@ -185,31 +185,31 @@ angular.module('lmisChromeApp')
         $scope.productItemList = new ngTableParams(params, resolver);
       });
 
-      utility.loadTableObject(storageService.PRODUCT).then(function (productList) {
+      storageService.loadTableObject(storageService.PRODUCT).then(function (productList) {
         $scope.products = productList;
       });
 
-      utility.loadTableObject(storageService.COMPANY).then(function (companyList) {
+      storageService.loadTableObject(storageService.COMPANY).then(function (companyList) {
         $scope.companies = companyList;
       });
 
-      utility.loadTableObject(storageService.PRODUCT_PRESENTATION).then(function (productPresentation) {
+      storageService.loadTableObject(storageService.PRODUCT_PRESENTATION).then(function (productPresentation) {
         $scope.presentations = productPresentation;
       });
 
-      utility.loadTableObject(storageService.PRODUCT_FORMULATION).then(function (productFormulation) {
+      storageService.loadTableObject(storageService.PRODUCT_FORMULATION).then(function (productFormulation) {
         $scope.productFormulation = productFormulation;
       });
 
-      utility.loadTableObject(storageService.MODE_OF_ADMINISTRATION).then(function (modesOfAdmin) {
+      storageService.loadTableObject(storageService.MODE_OF_ADMINISTRATION).then(function (modesOfAdmin) {
         $scope.modesOfAdmin = modesOfAdmin;
       });
 
-      utility.loadTableObject(storageService.UOM).then(function (uomList) {
+      storageService.loadTableObject(storageService.UOM).then(function (uomList) {
         $scope.uomList = uomList;
       });
 
-      utility.loadTableObject(storageService.CURRENCY).then(function (currencyList) {
+      storageService.loadTableObject(storageService.CURRENCY).then(function (currencyList) {
         $scope.currencies = currencyList;
       });
 
@@ -224,7 +224,7 @@ angular.module('lmisChromeApp')
       });
     })
 
-    .controller('programFormCtrl', function ($scope, storageService, $location, utility) {
+    .controller('programFormCtrl', function ($scope, storageService, $location) {
       $scope.program = {};
       $scope.uuid = ($location.search()).uuid;
 
@@ -262,7 +262,7 @@ angular.module('lmisChromeApp')
 
       $scope.removeProgram = function (uuid) {
         console.log(uuid);
-        utility.loadTableObject(storageService.PROGRAM).then(function (programs) {
+        storageService.loadTableObject(storageService.PROGRAM).then(function (programs) {
           $scope.program = programs[uuid];
           // jshint camelcase: false
           var index = $scope.program.array_index;
