@@ -148,6 +148,15 @@ angular.module('lmisChromeApp')
   $scope.stock_records.minimum_stock = [];
   $scope.stock_records.balance_brought_forward = [];
 
+
+    var date_day = [];
+    for(var i=1;i<32;i++){
+        date_day.push(i);
+    }
+    $scope.date_var = date_day;
+
+
+
   $scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   $scope.facility_programs =
   {
@@ -179,7 +188,7 @@ angular.module('lmisChromeApp')
   storageService.get(storageService.PROGRAM_PRODUCTS).then(function (data) {
     $scope.program_products = data;
   });
-  $scope.saveStockReoprt = function () {
+  $scope.saveStockReport = function () {
 
     storageService.insert('monthly_stock_record', {
       uuid: $scope.record_key,
@@ -200,28 +209,9 @@ angular.module('lmisChromeApp')
  */
 .controller('inventoryMainCtrl', function ($scope, storageService, $filter, ngTableParams, visualMarkerService) {
 
-    });
-    var date_day = [];
-    for(var i=1;i<32;i++){
-        date_day.push(i);
-    }
-    $scope.date_var = date_day;
-  $scope.highlight = visualMarkerService.markByExpirationStatus;
+    $scope.highlight = visualMarkerService.markByExpirationStatus;
 
-    $scope.stock_records = {};
-    $scope.stock_records.received = [];
-    $scope.stock_records.used = [];
-    $scope.stock_records.balance = [];
-    $scope.stock_records.expiry = [];
-    $scope.stock_records.vvm = [];
-    $scope.stock_records.breakage = [];
-    $scope.stock_records.frozen = [];
-    $scope.stock_records.label_removed = [];
-    $scope.stock_records.others = [];
-    $scope.stock_records.maximum_stock = [];
-    $scope.stock_records.minimum_stock = [];
-    $scope.stock_records.balance_brought_forward=[];
-  storageService.get(storageService.INVENTORY).then(function (data) {
+    storageService.get(storageService.INVENTORY).then(function (data) {
 
     // Table defaults
     var params = {
@@ -236,46 +226,17 @@ angular.module('lmisChromeApp')
     var resolver = {
       total: data.length,
       getData: function ($defer, params) {
-        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-        $defer.resolve(orderedData.slice(
-            (params.page() - 1) * params.count(),
-            params.page() * params.count()
-        ));
+          var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+          orderedData = (Object.prototype.toString.call(orderedData)==['object Array'])?orderedData:[];
+          $defer.resolve(orderedData.slice(
+                (params.page() - 1) * params.count(),
+                params.page() * params.count()
+          ));
       }
     }
-
     $scope.inventory = new ngTableParams(params, resolver);
+  });
 
-    storageService.loadTableObject(storageService.PRODUCT_ITEM).then(function (data) {
-      $scope.product_item = data;
-    });
-
-    storageService.loadTableObject(storageService.PRODUCT).then(function (data) {
-      $scope.products = data;
-    });
-
-    storageService.loadTableObject(storageService.PRODUCT_PRESENTATION).then(function (data) {
-      $scope.presentation = data;
-    });
-
-    storageService.loadTableObject(storageService.STORAGE_LOCATION).then(function (data) {
-      $scope.cceList = data;
-    });
-
-    storageService.loadTableObject(storageService.UOM).then(function (data) {
-      $scope.uomList = data;
-    });
-
-        storageService.insert('monthly_stock_record',{
-            uuid:$scope.record_key,
-            max_records:$scope.stock_records.maximum_stock,
-            min_record:$scope.stock_records.minimum_stock,
-            target_population: $scope.stock_records.target_population,
-            balance_brought_forward:$scope.stock_records.balance_brought_forward
-        }).then(function(bool){
-                //console.log("saving");
-                //$location.path("/inventory/stock_records");
-            });
   })
 
 

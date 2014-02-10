@@ -101,6 +101,8 @@
                         <thead>
                             <tr>
                                 <th></th>
+                                <th colspan="3" ng-repeat="row in stock_products">{{ row }}</th>
+                                <!--
                                 <th colspan="3">BCG doses</th>
                                 <th colspan="3">BCG Diluent</th>
                                 <th colspan="3">Hep.B doses</th>
@@ -118,11 +120,14 @@
                                 <th colspan="3">Auto Disable Syringes</th>
                                 <th colspan="3">5mls Syringes</th>
                                 <th colspan="3">Safety Boxes</th>
+                                -->
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td id="max-stock">Max</td>
+                                <td colspan="3" ng-repeat="row in stock_products">{{ monthly_stock_record_object[record_key].max_records[$index] }}</td>
+                                <!--
                                 <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[0] }}</td>
                                 <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[1] }}</td>
                                 <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[2] }}</td>
@@ -140,6 +145,7 @@
                                 <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[14] }}</td>
                                 <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[15] }}</td>
                                 <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[16] }}</td>
+                                -->
                             </tr>
                             <tr id="min-stock">
                                 <td>Min</td>
