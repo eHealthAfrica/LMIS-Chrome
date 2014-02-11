@@ -58,11 +58,27 @@ angular.module('lmisChromeApp')
     $scope.user_related_facilities = data;
 
   });
+    function tables(){
+        var table_html = '<td></td>';
+        for(var i=0; i<$scope.stock_products.length; i++){
+            table_html += "<td>Received</td><td>Used</td><td>Balance</td>";
+        }
+        return table_html;
+    }
 
-
+    $scope.brought_forward_columns = function (monthly_stock_record_object){
+        var table_html = '<td>BBF</td>';
+        for(var i=0; i<$scope.stock_products.length; i++){
+            table_html += '<td>'+ monthly_stock_record_object.balance_brought_forward[i]+'</td>'+
+                          '<td></td>'+
+                          '<td></td>';
+        }
+        return table_html;
+    }
+    $scope.table_column = tables();
     $scope.add_button = true;
     $scope.$watchCollection('[report_month, report_year, user_related_facility]', function(newvalues){
-        //console.log(newvalues);
+
         $scope.record_key = $scope.user_related_facility + $scope.report_month + $scope.report_year;
 
         storageService.get('monthly_stock_record').then(function(data){
@@ -154,6 +170,7 @@ angular.module('lmisChromeApp')
         date_day.push(i);
     }
     $scope.date_var = date_day;
+
 
 
 
