@@ -83,11 +83,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12">
-            <div class="">
-                <a ng-show="add_button" href="#/inventory/stock_records_form" ng-disabled="true"  class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Record</a>
-                <a ng-hide="add_button" href="#/inventory/stock_records_form?facility={{ user_related_facility }}&report_year={{ report_year }}&report_month={{ report_month }}" ng-disabled="false"  class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Record</a>
-            </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <a ng-show="add_button" href="#/inventory/stock_records_form" ng-disabled="true"  class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Record</a>
+            <a ng-hide="add_button" href="#/inventory/stock_records_form?facility={{ user_related_facility }}&report_year={{ report_year }}&report_month={{ report_month }}" ng-disabled="false"  class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Record</a>
+        </div>
+        <div class="col-sm-6">
+            BBF : Balance brought forward from previous month
         </div>
     </div>
     <div class="row" ng-hide="add_button">
@@ -102,178 +105,24 @@
                             <tr>
                                 <th></th>
                                 <th colspan="3" ng-repeat="row in stock_products">{{ row }}</th>
-                                <!--
-                                <th colspan="3">BCG doses</th>
-                                <th colspan="3">BCG Diluent</th>
-                                <th colspan="3">Hep.B doses</th>
-                                <th colspan="3">OPV doses</th>
-                                <th colspan="3">PENTA doses</th>
-                                <th colspan="3">PCV doses</th>
-                                <th colspan="3">Measles doses</th>
-                                <th colspan="3">Measles Diluent</th>
-                                <th colspan="3">Yellow Fever doses</th>
-                                <th colspan="3">Yellow Fever Diluent</th>
-                                <th colspan="3">CSM doses</th>
-                                <th colspan="3">CSM Diluent</th>
-                                <th colspan="3">Tetanus Texoid doses</th>
-                                <th colspan="3">BCG Syringes</th>
-                                <th colspan="3">Auto Disable Syringes</th>
-                                <th colspan="3">5mls Syringes</th>
-                                <th colspan="3">Safety Boxes</th>
-                                -->
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td id="max-stock">Max</td>
                                 <td colspan="3" ng-repeat="row in stock_products">{{ monthly_stock_record_object[record_key].max_records[$index] }}</td>
-                                <!--
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[0] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[1] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[2] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[3] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[4] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[5] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[6] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[7] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[8] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[9] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[10] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[11] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[12] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[13] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[14] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[15] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].max_records[16] }}</td>
-                                -->
+
                             </tr>
                             <tr id="min-stock">
                                 <td>Min</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[0] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[1] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[2] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[3] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[4] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[5] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[6] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[7] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[8] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[9] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[10] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[11] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[12] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[13] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[14] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[15] }}</td>
-                                <td colspan="3">{{ monthly_stock_record_object[record_key].min_record[16] }}</td>
+                                <td colspan="3" ng-repeat="row in stock_products">
+                                    {{ monthly_stock_record_object[record_key].min_record[$index] }}
+                                </td>
                             </tr>
-                            <tr class="top-rows">
-                                <td></td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
-                                <td>Received</td>
-                                <td>Used</td>
-                                <td>Balance</td>
+                            <tr class="top-rows" ng-bind-html="table_column">
                             </tr>
-                            <tr class="top-rows">
-                                <td>Balance brought forward from previous month</td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[0] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[1] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[2] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[3] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[4] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[5] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[6] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[7] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[8] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[9] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[10] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[11] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[12] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[13] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[14] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[15] }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ monthly_stock_record_object[record_key].balance_brought_forward[16] }}</td>
-                                <td></td>
-                                <td></td>
+                            <tr class="top-rows" ng-bind-html="brought_forward_columns(monthly_stock_record_object[record_key])">
+
                             </tr>
 
 
