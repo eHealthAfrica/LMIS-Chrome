@@ -11,7 +11,7 @@ angular.module('lmisChromeApp')
        *  folder that holds data used to pre-fill local storage if it is empty.
        *
        */
-      var product = 'products';
+      var product_types = 'product_types';
       var productCategory = 'product_category';
       var address = 'address';
       var uom = 'uom';
@@ -27,17 +27,17 @@ angular.module('lmisChromeApp')
       var employee = 'employee';
       var rate = 'rate';
       var storageLocationType = 'storage_location_type';
-      var storageLocation = 'storage_locations';
+      var ccu = 'ccu';
       var user = 'user';
       var productPresentation = 'product_presentation';
       var productFormulation = 'product_formulations';
       var modeOfAdministration = 'mode_of_administration';
       var productItem = 'product_items';
-      var storageLocationProblem = 'cce_problems';
-      var storageLocationTemperature = 'storage_location_temperature_logs';
+      var ccuProblem = 'ccu_problems';
+      var ccuTemperatureLog = 'ccu_temp_log';
       var productProfile = 'product_profiles';
       var inventory = 'inventory';
-      var orders = 'orders';
+      var orders = "orders";
 
       /**
        * Boolean flag indicating client support for Chrome Storage
@@ -223,7 +223,7 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         getTables().then(function (tables) {
           if (tables.indexOf(table)) {
-            console.log();
+
             getFromStore(table).then(function (data) {
 
               if (Object.prototype.toString.call(data) == '[object Array]') {
@@ -292,7 +292,7 @@ angular.module('lmisChromeApp')
        */
       function loadFixtures() {
         var database = [
-          product,
+          product_types,
           address,
           uom,
           uomCategory,
@@ -307,7 +307,9 @@ angular.module('lmisChromeApp')
           employee,
           rate,
           storageLocationType,
-          storageLocation,
+          ccu,
+          ccuProblem,
+          ccuTemperatureLog,
           user,
           productCategory,
           productPresentation,
@@ -385,7 +387,6 @@ angular.module('lmisChromeApp')
         return deferred.promise;
       }
 
-
       /**
        * Test the client's support for storing values in the local store.
        *
@@ -406,8 +407,21 @@ angular.module('lmisChromeApp')
         return uuid;
       }
 
+      function getAllFromTable(tableName) {
+        var deferred = $q.defer();
+        getFromStore(tableName).then(function (data) {
+          var rows = [];
+          for (var key in data) {
+            rows.push(data[key]);
+          }
+          deferred.resolve(rows);
+        });
+        return deferred.promise;
+      }
+
       return {
         isSupported: hasChromeStorage,
+        all: getAllFromTable,
         add: addToStore,
         get: getFromStore,
         getAll: getAllFromStore,
@@ -417,7 +431,7 @@ angular.module('lmisChromeApp')
         loadFixtures: loadFixtures,
         loadTableObject: loadRelatedObject,
         insert: insert,
-        PRODUCT: product,
+        PRODUCT_TYPES: product_types,
         PRODUCT_CATEGORY: productCategory,
         ADDRESS: address,
         UOM: uom,
@@ -433,14 +447,14 @@ angular.module('lmisChromeApp')
         EMPLOYEE: employee,
         RATE: rate,
         STORAGE_LOCATION_TYPE: storageLocationType,
-        STORAGE_LOCATION: storageLocation,
+        CCU: ccu,
         USER: user,
         PRODUCT_PRESENTATION: productPresentation,
         PRODUCT_FORMULATION: productFormulation,
         MODE_OF_ADMINISTRATION: modeOfAdministration,
         PRODUCT_ITEM: productItem,
-        STORAGE_LOCATION_PROBLEM: storageLocationProblem,
-        STORAGE_LOCATION_TEMPERATURE: storageLocationTemperature,
+        CCU_PROBLEM: ccuProblem,
+        CCU_TEMPERATURE_LOG: ccuTemperatureLog,
         PRODUCT_PROFILE: productProfile,
         INVENTORY: inventory,
         ORDERS: orders

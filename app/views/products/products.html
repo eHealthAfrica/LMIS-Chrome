@@ -7,10 +7,10 @@
 
 <div class="row">
   <div class="col-lg-3 col-md-6">
-    <a href="#/main/product_items">
+    <a href="#/batches/">
       <div class="box_stat box_ico">
         <span class="stat_ico stat_ico_1"><i class="fa fa-list"></i></span>
-        <h4>Product Item</h4>
+        <h4>Batch</h4>
       </div>
     </a>
   </div>
@@ -28,7 +28,7 @@
 
 <div class="row">
   <div class="btn-group col-sm-2">
-    <a href="#/main/product_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Product</a>
+    <a href="#/products/product_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Product</a>
   </div>
 </div>
 
@@ -38,20 +38,19 @@
   </div>
 </div>
 
-<div class="row" ng-controller="ProductListCtrl">
+<div class="row">
   <div class="col-sm-12">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title"><i class="fa fa-list"></i> Products</h4>
       </div>
       <div class="scrollable-container">
-        <table ng-table="productList" show-filter="true"
+        <table ng-table="productTypes" show-filter="true"
                class="table table-condensed table-striped table-bordered table-hover oversize-table">
           <tr ng-repeat="product in $data | filter:search">
             <td data-title="'#'">{{ $index + 1 }}</td>
             <td data-title="'Name'" sortable="'name'" filter="{'name': 'text'}">{{ product.name }}</td>
             <td data-title="'Code'" sortable="'code'" filter="{'code': 'text'}">{{ product.code }}</td>
-            <td data-title="'Category'">{{ productCategories[product.category].name }}</td>
             <td data-title="'Base UOM'">{{ uomList[product.base_uom].name }}</td>
             <td data-title="'Description'">{{ product.description }}</td>
             <td data-title="'Active'" class="text-center" sortable="'active'">

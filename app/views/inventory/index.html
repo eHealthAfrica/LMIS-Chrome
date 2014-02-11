@@ -33,8 +33,8 @@
           <i class="fa fa-plus-circle"></i> Add New Inventory</a>
       </div>
       <div class="btn-group col-sm-2">
-        <a href="#/inventory/add_purchase_order_to_inventory" class="btn btn-default">
-          <i class="fa fa-plus-circle"></i> Convert Order To Inventory</a>
+        <a href="#/inventory/add_bundle_to_inventory" class="btn btn-default">
+          <i class="fa fa-plus-circle"></i> Add Bundle To Inventory</a>
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h4 class="panel-title"><i class="fa fa-list"></i> Product Item Inventory</h4>
+          <h4 class="panel-title"><i class="fa fa-list"></i> Product Batch Inventory</h4>
         </div>
         <div class="panel-body">
 
@@ -101,7 +101,7 @@
                     sortable="'{presentation[product_item[inventoryLine.product_item].presentation].name }'">
                   {{ presentation[product_item[inventoryLine.product_item].presentation].name }}
                 </td>
-                <!-- <td data-title="'Last Modified'" sortable="'modified'">{{ product.modified | date:'yyyy-MM-dd h:mma'}} -->
+                <!--TODO: <td data-title="'Last Modified'" sortable="'modified'">{{ product.modified | date:'yyyy-MM-dd h:mma'}} -->
                 </td>
               </tr>
             </table>

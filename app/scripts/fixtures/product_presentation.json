@@ -1,35 +1,5 @@
-[
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
+{
+  "c8dac343-4f92-4974-af5c-0737bd8e68e9": {
     "uuid": "c8dac343-4f92-4974-af5c-0737bd8e68e9",
     "created": "2014-01-17T10:57:50.538Z",
     "modified": "2014-01-17T10:57:50.586Z",
@@ -40,37 +10,7 @@
     "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
     "description": "supplies product presentation"
   },
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
+  "f10d21be-6d62-42a8-b5f8-63984b1f4916": {
     "uuid": "f10d21be-6d62-42a8-b5f8-63984b1f4916",
     "created": "2014-01-17T10:40:21.859Z",
     "modified": "2014-01-17T10:40:21.897Z",
@@ -81,37 +21,7 @@
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
     "description": "vaccine product presentation "
   },
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
+  "0b3c2b22-7719-488d-b74e-b75124e3c68f": {
     "uuid": "0b3c2b22-7719-488d-b74e-b75124e3c68f",
     "created": "2014-01-17T11:05:03.613Z",
     "modified": "2014-01-17T11:05:03.641Z",
@@ -122,37 +32,7 @@
     "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
     "description": "supplies product presentation"
   },
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
+  "299939e1-94d7-4e8e-bfb7-c008af1692af": {
     "uuid": "299939e1-94d7-4e8e-bfb7-c008af1692af",
     "created": "2014-01-17T10:40:48.140Z",
     "modified": "2014-01-17T10:40:48.185Z",
@@ -163,37 +43,7 @@
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
     "description": "vaccine product presentation "
   },
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
+  "441e1be5-ce61-465c-8b72-8c0bd8ee9749": {
     "uuid": "441e1be5-ce61-465c-8b72-8c0bd8ee9749",
     "created": "2014-01-17T11:05:18.048Z",
     "modified": "2014-01-17T11:05:18.080Z",
@@ -204,37 +54,7 @@
     "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
     "description": "supplies product presentation"
   },
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
+  "623ad47f-a4da-4723-a350-d39bc6b02171": {
     "uuid": "623ad47f-a4da-4723-a350-d39bc6b02171",
     "created": "2014-01-17T10:41:17.198Z",
     "modified": "2014-01-17T10:41:17.242Z",
@@ -245,37 +65,7 @@
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
     "description": "vaccine product presentation "
   },
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
+  "842aa1d1-9ff5-4aa2-866b-d2c073cc9913": {
     "uuid": "842aa1d1-9ff5-4aa2-866b-d2c073cc9913",
     "created": "2014-01-17T11:05:32.855Z",
     "modified": "2014-01-17T11:05:32.887Z",
@@ -286,37 +76,7 @@
     "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
     "description": "supplies product presentation"
   },
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
+  "8ee9ff30-a9f5-41f9-8054-8257920adf2d": {
     "uuid": "8ee9ff30-a9f5-41f9-8054-8257920adf2d",
     "created": "2014-01-17T10:55:22.686Z",
     "modified": "2014-01-17T10:55:22.713Z",
@@ -327,37 +87,7 @@
     "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
     "description": "supplies product presentation"
   },
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
+  "bb67c3a1-6719-49d0-832a-16a85f6562e2": {
     "uuid": "bb67c3a1-6719-49d0-832a-16a85f6562e2",
     "created": "2014-01-17T10:55:39.544Z",
     "modified": "2014-01-17T10:55:39.583Z",
@@ -368,37 +98,7 @@
     "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
     "description": "supplies product presentation"
   },
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
+  "c0994b0e-c607-445c-b202-4d61b8c6cff0": {
     "uuid": "c0994b0e-c607-445c-b202-4d61b8c6cff0",
     "created": "2014-01-17T10:39:47.674Z",
     "modified": "2014-01-17T10:39:47.971Z",
@@ -409,4 +109,5 @@
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
     "description": "vaccine product presentation "
   }
-]
+}
+

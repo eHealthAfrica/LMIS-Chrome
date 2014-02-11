@@ -172,7 +172,6 @@ angular.module('lmisChromeApp')
 
 
 
-
   $scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   $scope.facility_programs =
   {
@@ -261,27 +260,37 @@ angular.module('lmisChromeApp')
 /**
  * Add to inventory controller
  */
-.controller('addInventoryCtrl', function ($scope, storageService, $location) {
+    .controller('addInventoryCtrl', function ($scope, storageService, $location) {
 
-  $scope.inventory = {}
+      $scope.inventory = {}
 
-  storageService.get(storageService.PRODUCT_ITEM).then(function (data) {
-    $scope.productItems = data;
-  });
+      storageService.get(storageService.PRODUCT_ITEM).then(function (data) {
+        $scope.productItems = data;
+      });
 
-  storageService.get(storageService.STORAGE_LOCATION).then(function (data) {
-    $scope.cceList = data;
-  });
+      storageService.get(storageService.CCU).then(function (data) {
+        $scope.cceList = data;
+      });
 
-  storageService.get(storageService.UOM).then(function (data) {
-    $scope.uomList = data;
-  });
+      storageService.get(storageService.UOM).then(function (data) {
+        $scope.uomList = data;
+      });
 
-  $scope.save = function () {
-    storageService.insert(storageService.INVENTORY, $scope.inventory).then(function () {
-      $location.path('/inventory/index');
+      $scope.save = function () {
+        storageService.insert(storageService.INVENTORY, $scope.inventory).then(function () {
+          $location.path('/inventory/index');
+        });
+        console.log($scope.inventory);
+      };
+
+    })
+/**
+ * This Controller is used to add a bundle upon arrival to receiving facility inventory.
+ */
+    .controller('logIncomingOrderCtrl', function ($scope) {
+      $scope.showBundleNo = '';
+      $scope.bundleReceipt = {}
+
     });
-    console.log($scope.inventory);
-  }
 
-});
+
