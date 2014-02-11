@@ -1,17 +1,24 @@
 'use strict';
 angular.module('lmisChromeApp')
 
-.controller('InventoryCtrl', function ($scope, $location, storageService) {
+.controller('InventoryCtrl', function ($scope, $location, storageService, inventoryFactory) {
+
+    $scope.stock_factory = inventoryFactory.stock_records;
+    /*
+     * get url parameters
+     */
     $scope.facility_uuid = ($location.search()).facility;
     $scope.report_month = ($location.search()).report_month;
     $scope.report_year = ($location.search()).report_year;
     $scope.url_params = "?facility="+$scope.facility_uuid+"&report_month="+$scope.report_month+"&report_year="+$scope.report_year;
+
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
     $scope.current_day = day;
 
-     $scope.stock_products =
+
+    $scope.stock_products =
         [
             'BCG doses',
             'BCG Diluent',
@@ -35,8 +42,9 @@ angular.module('lmisChromeApp')
 })
 
 .controller("StockRecordsCtrl", function ($scope, $location, storageService, $http) {
-
-
+  /*
+  * initialize some variables
+  */
   $scope.user_related_facilities = [];
   $scope.fake_locations = [];
   $scope.user_related_facility = ($scope.facility_uuid != undefined) ? $scope.facility_uuid : '';
@@ -44,39 +52,33 @@ angular.module('lmisChromeApp')
   $scope.report_year = ($scope.report_year != undefined) ? $scope.report_year : '';
   $scope.monthly_stock_record_object = {};
 
-
+  /*
+  * get monthly stock records if any
+   */
   storageService.get('monthly_stock_record').then(function (data) {
     $scope.monthly_stock_record = data;
   });
+  /*
+  * create an object of stock record using uuid as key for easy access
+   */
   storageService.loadTableObject('monthly_stock_record').then(function (data) {
     $scope.monthly_stock_record_object = data;
   });
 
-
+  /*
+  * load some none standard fixtures
+   */
   var file_url = 'scripts/fixtures/user_related_facilities.json';
   $http.get(file_url).success(function (data) {
     $scope.user_related_facilities = data;
 
   });
-    function tables(){
-        var table_html = '<td></td>';
-        for(var i=0; i<$scope.stock_products.length; i++){
-            table_html += "<td>Received</td><td>Used</td><td>Balance</td>";
-        }
-        return table_html;
-    }
 
-    $scope.brought_forward_columns = function (monthly_stock_record_object){
-        var table_html = '<td>BBF</td>';
-        for(var i=0; i<$scope.stock_products.length; i++){
-            table_html += '<td>'+ monthly_stock_record_object.balance_brought_forward[i]+'</td>'+
-                          '<td></td>'+
-                          '<td></td>';
-        }
-        return table_html;
-    }
-    $scope.table_column = tables();
+
+    $scope.brought_forward_columns =  $scope.stock_factory.brought_forward_columns;
+    $scope.table_column = $scope.stock_factory.status_column($scope.stock_products);
     $scope.add_button = true;
+
     $scope.$watchCollection('[report_month, report_year, user_related_facility]', function(newvalues){
 
         $scope.record_key = $scope.user_related_facility + $scope.report_month + $scope.report_year;
@@ -93,9 +95,7 @@ angular.module('lmisChromeApp')
         else{
             $scope.add_button = false;
         }
-
-
-      });
+    });
 
 
     $scope.$watch('user_related_facility',function(){
@@ -125,7 +125,7 @@ angular.module('lmisChromeApp')
 
 })
 
-.controller("StockRecordsFormCtrl", function ($scope, $location, storageService) {
+.controller("StockRecordsFormCtrl", function ($scope, $location, storageService, inventoryFactory) {
 
 
   $scope.record_key = $scope.facility_uuid + $scope.report_month + $scope.report_year;
@@ -144,7 +144,6 @@ angular.module('lmisChromeApp')
       $scope.report_available = Object.keys(data).indexOf($scope.record_key) == -1 ? false : true;
     }
     else {
-      //$location.path("/inventory/stock_records_basic_form"+$scope.url_params);
       $scope.report_available = false;
     }
 
@@ -202,22 +201,24 @@ angular.module('lmisChromeApp')
   storageService.get('programs').then(function (data) {
     $scope.programs = data;
   });
+  //get program products
   storageService.get(storageService.PROGRAM_PRODUCTS).then(function (data) {
     $scope.program_products = data;
   });
+
+  /**
+  *  logic for saving stock record profile (records enterd once a month)
+   *  afer saving, current page reloads.
+  */
   $scope.saveStockReport = function () {
-
-    storageService.insert('monthly_stock_record', {
-      uuid: $scope.record_key,
-      max_records: $scope.stock_records.maximum_stock,
-      min_record: $scope.stock_records.minimum_stock,
-      target_population: $scope.stock_records.target_population,
-      balance_brought_forward: $scope.stock_records.balance_brought_forward
-    }).then(function (bool) {
-          console.log("saving");
-          $location.path("/inventory/stock_records_form" + $scope.url_params);
-        });
-
+      var profile_object = {
+          uuid: $scope.record_key,
+          max_records: $scope.stock_records.maximum_stock,
+          min_record: $scope.stock_records.minimum_stock,
+          target_population: $scope.stock_records.target_population,
+          balance_brought_forward: $scope.stock_records.balance_brought_forward
+      }
+    $scope.stock_factory.save_record_profile(profile_object);
   }
 })
 
