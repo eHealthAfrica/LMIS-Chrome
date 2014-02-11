@@ -121,7 +121,7 @@
                             </tr>
                             <tr class="top-rows" ng-bind-html="table_column">
                             </tr>
-                            <tr class="top-rows" ng-bind-html="brought_forward_columns(monthly_stock_record_object[record_key])">
+                            <tr class="top-rows" ng-bind-html="brought_forward_columns(monthly_stock_record_object[record_key], stock_products)">
 
                             </tr>
 
@@ -132,4 +132,12 @@
             </div>
         </div>
     </div>
+    <div class="row" ng-show="add_button">
+        <div class="col-sm-12 text-center">
+            <h3 class="label label-default">
+                <span >Select Facility and Month to show Stock Report</span>
+            </h3>
+        </div>
+    </div>
+
 </div>
