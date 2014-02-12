@@ -1,1 +1,58 @@
-[{"created_by": null, "modified_by": {"id": 2, "password": "pbkdf2_sha256$12000$Ej6deK7vQpOl$fWU0qmihI3HUYY/wS9LflkTVCB/4yscgi7uJWWHORo8=", "last_login": "2014-01-13T16:04:27.496Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "jideobi.benedine@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T11:06:59.920Z", "groups": [], "user_permissions": []}, "uuid": "217e255d-0dd0-4bcf-aefc-3d7668ba7487", "created": "2014-01-11T11:03:36.629Z", "modified": "2014-01-15T14:11:20.633Z", "is_deleted": false, "name": "Weight", "description": "used to group weight uom", "parent": "cfa527af-105c-46f1-a105-4366a220e9e0", "lft": 2, "rght": 3, "tree_id": 3, "level": 1}, {"created_by": {"id": 2, "password": "pbkdf2_sha256$12000$Ej6deK7vQpOl$fWU0qmihI3HUYY/wS9LflkTVCB/4yscgi7uJWWHORo8=", "last_login": "2014-01-13T16:04:27.496Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "jideobi.benedine@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T11:06:59.920Z", "groups": [], "user_permissions": []}, "modified_by": {"id": 1, "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=", "last_login": "2014-01-16T15:30:34.974Z", "is_superuser": true, "username": "jofomah", "first_name": "", "last_name": "", "email": "jideobi.ofomah@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T10:19:14.431Z", "groups": [], "user_permissions": []}, "uuid": "67855ff4-6897-425b-a3e8-08ff542f2194", "created": "2014-01-15T14:14:08.934Z", "modified": "2014-01-17T08:13:46.545Z", "is_deleted": false, "name": "unit", "description": "used to group amount unit of measurement", "parent": null, "lft": 1, "rght": 2, "tree_id": 2, "level": 0}, {"created_by": null, "modified_by": null, "uuid": "cfa527af-105c-46f1-a105-4366a220e9e0", "created": "2014-01-11T10:53:46.678Z", "modified": "2014-01-11T10:53:46.863Z", "is_deleted": false, "name": "Volume", "description": "used to group volume uom", "parent": null, "lft": 1, "rght": 4, "tree_id": 3, "level": 0}, {"created_by": null, "modified_by": null, "uuid": "cad886e9-42e2-4797-b6dd-98a339168e96", "created": "2014-01-21T13:23:41.837Z", "modified": "2014-01-21T13:23:42.076Z", "is_deleted": false, "name": "Temperature", "description": "used to group temperature units", "parent": null, "lft": 1, "rght": 2, "tree_id": 1, "level": 0}]
+[
+  {
+      "uuid": "217e255d-0dd0-4bcf-aefc-3d7668ba7487",
+      "created": "2014-01-11T11:03:36.629Z",
+      "modified": "2014-01-15T14:11:20.633Z",
+      "is_deleted": false,
+      "name": "Weight",
+      "description": "used to group weight uom",
+      "parent": "cfa527af-105c-46f1-a105-4366a220e9e0",
+      "lft": 2,
+      "rght": 3,
+      "tree_id": 3,
+      "level": 1
+    },
+ {
+      "uuid": "67855ff4-6897-425b-a3e8-08ff542f2194",
+      "created": "2014-01-15T14:14:08.934Z",
+      "modified": "2014-01-17T08:13:46.545Z",
+      "is_deleted": false,
+      "name": "Unit",
+      "description": "used to group amount unit of measurement",
+      "parent": null,
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 2,
+      "level": 0
+    },
+ {
+      "created_by": null,
+      "modified_by": null,
+      "uuid": "cfa527af-105c-46f1-a105-4366a220e9e0",
+      "created": "2014-01-11T10:53:46.678Z",
+      "modified": "2014-01-11T10:53:46.863Z",
+      "is_deleted": false,
+      "name": "Volume",
+      "description": "used to group volume uom",
+      "parent": null,
+      "lft": 1,
+      "rght": 4,
+      "tree_id": 3,
+      "level": 0
+    },
+   {
+      "created_by": null,
+      "modified_by": null,
+      "uuid": "cad886e9-42e2-4797-b6dd-98a339168e96",
+      "created": "2014-01-21T13:23:41.837Z",
+      "modified": "2014-01-21T13:23:42.076Z",
+      "is_deleted": false,
+      "name": "Temperature",
+      "description": "used to group temperature units",
+      "parent": null,
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 1,
+      "level": 0
+    }
+]

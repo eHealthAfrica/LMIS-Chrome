@@ -1,1 +1,77 @@
-[{"created_by": {"id": 1, "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=", "last_login": "2014-01-16T15:30:34.974Z", "is_superuser": true, "username": "jofomah", "first_name": "", "last_name": "", "email": "jideobi.ofomah@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T10:19:14.431Z", "groups": [], "user_permissions": []}, "modified_by": {"id": 1, "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=", "last_login": "2014-01-16T15:30:34.974Z", "is_superuser": true, "username": "jofomah", "first_name": "", "last_name": "", "email": "jideobi.ofomah@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T10:19:14.431Z", "groups": [], "user_permissions": []}, "uuid": "6240f4fb-1416-4d16-b124-f1641d541dcb", "created": "2014-01-16T16:00:32.775Z", "modified": "2014-01-16T16:00:32.804Z", "is_deleted": false, "name": "Pieces", "symbol": "pcs", "uom_category": "67855ff4-6897-425b-a3e8-08ff542f2194", "rate": 0.0, "factor": 0.0, "rounding_precision": 0}, {"created_by": {"id": 2, "password": "pbkdf2_sha256$12000$Ej6deK7vQpOl$fWU0qmihI3HUYY/wS9LflkTVCB/4yscgi7uJWWHORo8=", "last_login": "2014-01-13T16:04:27.496Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "jideobi.benedine@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T11:06:59.920Z", "groups": [], "user_permissions": []}, "modified_by": {"id": 2, "password": "pbkdf2_sha256$12000$Ej6deK7vQpOl$fWU0qmihI3HUYY/wS9LflkTVCB/4yscgi7uJWWHORo8=", "last_login": "2014-01-13T16:04:27.496Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "jideobi.benedine@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T11:06:59.920Z", "groups": [], "user_permissions": []}, "uuid": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac", "created": "2014-01-15T14:22:02.130Z", "modified": "2014-01-15T14:22:02.147Z", "is_deleted": false, "name": "Cubic Centimetres", "symbol": "cm3", "uom_category": "cfa527af-105c-46f1-a105-4366a220e9e0", "rate": 0.0, "factor": 0.0, "rounding_precision": 2}, {"created_by": {"id": 2, "password": "pbkdf2_sha256$12000$Ej6deK7vQpOl$fWU0qmihI3HUYY/wS9LflkTVCB/4yscgi7uJWWHORo8=", "last_login": "2014-01-13T16:04:27.496Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "jideobi.benedine@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T11:06:59.920Z", "groups": [], "user_permissions": []}, "modified_by": {"id": 2, "password": "pbkdf2_sha256$12000$Ej6deK7vQpOl$fWU0qmihI3HUYY/wS9LflkTVCB/4yscgi7uJWWHORo8=", "last_login": "2014-01-13T16:04:27.496Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "jideobi.benedine@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T11:06:59.920Z", "groups": [], "user_permissions": []}, "uuid": "82cc6fac-d0f6-43da-b0c6-07dc58669431", "created": "2014-01-15T14:20:02.098Z", "modified": "2014-01-15T14:23:06.756Z", "is_deleted": false, "name": "Vial", "symbol": "vial", "uom_category": "67855ff4-6897-425b-a3e8-08ff542f2194", "rate": 0.0, "factor": 0.0, "rounding_precision": 2}, {"created_by": {"id": 2, "password": "pbkdf2_sha256$12000$Ej6deK7vQpOl$fWU0qmihI3HUYY/wS9LflkTVCB/4yscgi7uJWWHORo8=", "last_login": "2014-01-13T16:04:27.496Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "jideobi.benedine@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T11:06:59.920Z", "groups": [], "user_permissions": []}, "modified_by": {"id": 2, "password": "pbkdf2_sha256$12000$Ej6deK7vQpOl$fWU0qmihI3HUYY/wS9LflkTVCB/4yscgi7uJWWHORo8=", "last_login": "2014-01-13T16:04:27.496Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "jideobi.benedine@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T11:06:59.920Z", "groups": [], "user_permissions": []}, "uuid": "9264a068-4062-40da-bb3e-fec0d02ad51f", "created": "2014-01-15T14:18:39.125Z", "modified": "2014-01-15T14:18:39.141Z", "is_deleted": false, "name": "Kilogram", "symbol": "kg", "uom_category": "217e255d-0dd0-4bcf-aefc-3d7668ba7487", "rate": 0.0, "factor": 0.0, "rounding_precision": 2}, {"created_by": {"id": 1, "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=", "last_login": "2014-01-16T15:30:34.974Z", "is_superuser": true, "username": "jofomah", "first_name": "", "last_name": "", "email": "jideobi.ofomah@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T10:19:14.431Z", "groups": [], "user_permissions": []}, "modified_by": {"id": 1, "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=", "last_login": "2014-01-16T15:30:34.974Z", "is_superuser": true, "username": "jofomah", "first_name": "", "last_name": "", "email": "jideobi.ofomah@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T10:19:14.431Z", "groups": [], "user_permissions": []}, "uuid": "d1c4dde9-2c27-4309-8f78-9cf2d6646523", "created": "2014-01-18T14:08:00.212Z", "modified": "2014-01-18T14:08:00.227Z", "is_deleted": false, "name": "Cubic Centimetres per Dose", "symbol": "cm3-per-dose", "uom_category": "cfa527af-105c-46f1-a105-4366a220e9e0", "rate": 0.0, "factor": 0.0, "rounding_precision": 2}, {"created_by": {"id": 2, "password": "pbkdf2_sha256$12000$Ej6deK7vQpOl$fWU0qmihI3HUYY/wS9LflkTVCB/4yscgi7uJWWHORo8=", "last_login": "2014-01-13T16:04:27.496Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "jideobi.benedine@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T11:06:59.920Z", "groups": [], "user_permissions": []}, "modified_by": {"id": 1, "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=", "last_login": "2014-01-16T15:30:34.974Z", "is_superuser": true, "username": "jofomah", "first_name": "", "last_name": "", "email": "jideobi.ofomah@ehealthnigeria.org", "is_staff": true, "is_active": true, "date_joined": "2014-01-11T10:19:14.431Z", "groups": [], "user_permissions": []}, "uuid": "e5def927-b173-44b6-9112-3103a473a65c", "created": "2014-01-15T14:14:48.785Z", "modified": "2014-01-17T08:05:24.522Z", "is_deleted": false, "name": "Dose", "symbol": "dose", "uom_category": "67855ff4-6897-425b-a3e8-08ff542f2194", "rate": 0.0, "factor": 0.0, "rounding_precision": 2}, {"created_by": null, "modified_by": null, "uuid": "fc607b72-57c5-471b-8869-8e554fc3eee3", "created": "2014-01-21T12:53:15.056Z", "modified": "2014-01-21T12:53:15.179Z", "is_deleted": false, "name": "Litres", "symbol": "L", "uom_category": "cfa527af-105c-46f1-a105-4366a220e9e0", "rate": 0.0, "factor": 0.0, "rounding_precision": 2}, {"created_by": null, "modified_by": null, "uuid": "8458a573-152a-4787-89bb-b82cc4c58290", "created": "2014-01-21T13:24:17.204Z", "modified": "2014-01-21T13:24:17.215Z", "is_deleted": false, "name": "Celsius", "symbol": "C", "uom_category": "cad886e9-42e2-4797-b6dd-98a339168e96", "rate": 0.0, "factor": 0.0, "rounding_precision": 2}]
+{
+  "6240f4fb-1416-4d16-b124-f1641d541dcb": {
+    "uuid": "6240f4fb-1416-4d16-b124-f1641d541dcb",
+    "created": "2014-01-16T16:00:32.775Z",
+    "modified": "2014-01-16T16:00:32.804Z",
+    "is_deleted": false,
+    "name": "Pieces",
+    "symbol": "pcs",
+    "uom_category": "67855ff4-6897-425b-a3e8-08ff542f2194",
+    "rate": 0.0,
+    "factor": 0.0,
+    "rounding_precision": 0
+  },
+  "6e2a882b-eeeb-4caf-96e2-46167c0c1aac": {
+    "uuid": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "created": "2014-01-15T14:22:02.130Z",
+    "modified": "2014-01-15T14:22:02.147Z",
+    "is_deleted": false,
+    "name": "Cubic Centimetres",
+    "symbol": "cm3",
+    "uom_category": "cfa527af-105c-46f1-a105-4366a220e9e0",
+    "rate": 0.0,
+    "factor": 0.0,
+    "rounding_precision": 2
+  },
+  "82cc6fac-d0f6-43da-b0c6-07dc58669431": {
+    "uuid": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
+    "created": "2014-01-15T14:20:02.098Z",
+    "modified": "2014-01-15T14:23:06.756Z",
+    "is_deleted": false,
+    "name": "Vial",
+    "symbol": "vial",
+    "uom_category": "67855ff4-6897-425b-a3e8-08ff542f2194",
+    "rate": 0.0,
+    "factor": 0.0,
+    "rounding_precision": 2
+  },
+  "9264a068-4062-40da-bb3e-fec0d02ad51f": {
+    "uuid": "9264a068-4062-40da-bb3e-fec0d02ad51f",
+    "created": "2014-01-15T14:18:39.125Z",
+    "modified": "2014-01-15T14:18:39.141Z",
+    "is_deleted": false,
+    "name": "Kilogram",
+    "symbol": "kg",
+    "uom_category": "217e255d-0dd0-4bcf-aefc-3d7668ba7487",
+    "rate": 0.0,
+    "factor": 0.0,
+    "rounding_precision": 2
+  },
+  "e5def927-b173-44b6-9112-3103a473a65c": {
+    "uuid": "e5def927-b173-44b6-9112-3103a473a65c",
+    "created": "2014-01-15T14:14:48.785Z",
+    "modified": "2014-01-17T08:05:24.522Z",
+    "is_deleted": false,
+    "name": "Dose",
+    "symbol": "dose",
+    "uom_category": "67855ff4-6897-425b-a3e8-08ff542f2194",
+    "rate": 0.0,
+    "factor": 0.0,
+    "rounding_precision": 2
+  },
+  "8458a573-152a-4787-89bb-b82cc4c58290": {
+    "created_by": null,
+    "modified_by": null,
+    "uuid": "8458a573-152a-4787-89bb-b82cc4c58290",
+    "created": "2014-01-21T13:24:17.204Z",
+    "modified": "2014-01-21T13:24:17.215Z",
+    "is_deleted": false,
+    "name": "Celsius",
+    "symbol": "C",
+    "uom_category": "cad886e9-42e2-4797-b6dd-98a339168e96",
+    "rate": 0.0,
+    "factor": 0.0,
+    "rounding_precision": 2
+  }
+}
+
