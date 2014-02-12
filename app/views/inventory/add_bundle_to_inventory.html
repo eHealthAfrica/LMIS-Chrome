@@ -1,4 +1,4 @@
-<div ng-controller="logIncomingOrderCtrl">
+<div ng-controller="logIncomingBundleCtrl">
 <div class="row">
   <ol class="breadcrumb">
     <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
@@ -52,7 +52,7 @@
           <div class="col-sm-18">
             <div class="col-sm-6">
               <label for="bundleNumber">Bundle No.</label>
-              <input class="form-control" ng-disabled="true" type="text" name="bundleNumber" id="bundleNumber"/>
+              <input ng-model="bundleNo" class="form-control" ng-disabled="true" type="text" name="bundleNumber" id="bundleNumber"/>
             </div>
 
             <div class="col-sm-6">

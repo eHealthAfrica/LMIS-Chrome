@@ -1,0 +1,13 @@
+{
+  "NSCS-KNSCS-1-0001": {
+    "uuid": "NSCS-KNSCS-1-0001",
+    "receiving_facility": "d48a39fb-6d37-4472-9983-bc0720403719",
+    "parent": "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
+    "order": "12343-abcd-ji",
+    "user": "1",
+    "date": "2014-02-17",
+    "status": "",
+    "bundle_lines": []
+
+  }
+}

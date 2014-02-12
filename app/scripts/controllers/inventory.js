@@ -241,7 +241,7 @@ angular.module('lmisChromeApp')
         $scope.product_types = data;
       });
 
-      storageService.get(storageService.CCU).then(function(data){
+      storageService.get(storageService.CCU).then(function (data) {
         $scope.cceList = data;
       });
 
@@ -276,14 +276,14 @@ angular.module('lmisChromeApp')
           return totalQuantity;
         };
 
-        $scope.getProductTypeUOM = function(inventoryLine){
-            var inventoryLineBatch = $scope.batches[inventoryLine.batch];
-            var product = $scope.product_types[inventoryLineBatch.product];
-            var product_uom = $scope.uomList[product.base_uom];
-            return product_uom;
+        $scope.getProductTypeUOM = function (inventoryLine) {
+          var inventoryLineBatch = $scope.batches[inventoryLine.batch];
+          var product = $scope.product_types[inventoryLineBatch.product];
+          var product_uom = $scope.uomList[product.base_uom];
+          return product_uom;
         };
 
-        $scope.getStorageVolume = function(inventoryLine){
+        $scope.getStorageVolume = function (inventoryLine) {
           var inventoryLineBatch = $scope.batches[inventoryLine.batch];
           var storageVolume = inventoryLineBatch.packed_volume * inventoryLine.quantity;
           return storageVolume;
@@ -305,6 +305,7 @@ angular.module('lmisChromeApp')
       $scope.inventory = {}
 
       storageService.all(storageService.BATCH).then(function (data) {
+        console.log()
         $scope.productItems = data;
       });
 
@@ -327,9 +328,21 @@ angular.module('lmisChromeApp')
 /**
  * This Controller is used to add a bundle upon arrival to receiving facility inventory.
  */
-    .controller('logIncomingOrderCtrl', function ($scope) {
+    .controller('logIncomingBundleCtrl', function ($scope, storageService) {
       $scope.showBundleNo = '';
-      $scope.bundleReceipt = {}
+      $scope.bundleReceipt = {};
+
+
+      $scope.showBundle = function () {
+        $scope.bundle = false;
+        storageService.find(storageService.BUNDLE, $scope.showBundleNo).then(function (data) {
+          if (data !== undefined) {
+             $scope.bundle = data;
+            $scope.bundleNo = data.uuid;
+
+          }
+        });
+      };
 
     });
 

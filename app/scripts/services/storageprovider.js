@@ -3,7 +3,7 @@
 angular.module('lmisChromeApp')
     .factory('storageService', function ($q, $rootScope, $http) {
 
-      /*
+      /**
        *  Global variables used to define table names, with this there will be one
        *  point in the code to add and/or update local storage table names.
        *
@@ -38,6 +38,7 @@ angular.module('lmisChromeApp')
       var productProfile = 'product_profiles';
       var inventory = 'inventory';
       var orders = "orders";
+      var bundles = "bundle";
 
       /**
        * Boolean flag indicating client support for Chrome Storage
@@ -54,12 +55,12 @@ angular.module('lmisChromeApp')
       /**
        * Add the specified key/value pair to the local web store.
        *
-       * @param {string} key The name to store the value under.
-       * @param {mixed} value The value to set (all values are stored as JSON.)
+       * @param {string} key The name of the table, the value under.
+       * @param {mixed} value The value(table rows) to set (all values are stored as JSON.)
        * @return {Promise} return promise object
        * @private
        */
-      function addToStore(key, value) {
+      function addTable(key, value) {
 
         var newStorage = {};
         var defered = $q.defer();
@@ -77,13 +78,13 @@ angular.module('lmisChromeApp')
       }
 
       /**
-       * Get the specified value from the local web store.
+       * Get the rows that belongs to the given table name from the local web store.
        *
        * @param {string} key The name of the value.
        * @return {Promise} Promise to be resolved with the settings object
        * @private
        */
-      function getFromStore(key) {
+      function getTable(key) {
         var defered = $q.defer();
         if (hasChromeStorage) {
           chrome.storage.local.get(key, function (data) {
@@ -118,11 +119,11 @@ angular.module('lmisChromeApp')
       /**
        * Remove the specified value from the local web store.
        *
-       * @param {string} key The name of the value.
+       * @param {string} key The name of table to be removed.
        * @return {Promise} Promise to be resolved with the settings object
        * @private
        */
-      function removeFromStore(key) {
+      function removeTable(key) {
         var defered = $q.defer();
         if (hasChromeStorage) {
           chrome.storage.local.get(key, function () {
@@ -224,7 +225,7 @@ angular.module('lmisChromeApp')
         getTables().then(function (tables) {
           if (tables.indexOf(table)) {
 
-            getFromStore(table).then(function (data) {
+            getTable(table).then(function (data) {
 
               if (Object.prototype.toString.call(data) == '[object Array]') {
                 console.log(data);
@@ -250,7 +251,7 @@ angular.module('lmisChromeApp')
                   obj['modified'] = getDateTime();
                   data[parseInt(obj["array_index"])] = obj;
                   //console.log( data[parseInt(obj["array_index"])] );
-                  //addToStore(table, data);
+                  //addTable(table, data);
                 }
                 else {
                   console.log("new save 1");
@@ -258,7 +259,7 @@ angular.module('lmisChromeApp')
                   obj['created'] = getDateTime();
                   obj['array_index'] = data.length == undefined?0:data.length;
                   data.push(obj);
-                  addToStore(table, data);
+                  addTable(table, data);
                 }
                 deferred.resolve(true);
               }
@@ -267,7 +268,7 @@ angular.module('lmisChromeApp')
                   obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1)?obj['uuid']:uuid_generator();
                   obj['created'] = getDateTime();
                   obj['array_index'] = data.length == undefined?0:data.length;
-                  addToStore(table, [obj]);
+                  addTable(table, [obj]);
                   deferred.resolve(true);
               }
             });
@@ -277,7 +278,7 @@ angular.module('lmisChromeApp')
             obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1)?obj['uuid']:uuid_generator();
             obj['created'] = getDateTime();
             obj['array_index'] = data.length == undefined?0:data.length;
-            addToStore(table, [obj]);
+            addTable(table, [obj]);
             deferred.resolve(true);
             //console.log("new entry");
           }
@@ -317,7 +318,8 @@ angular.module('lmisChromeApp')
           productFormulation,
           modeOfAdministration,
           batches,
-          orders
+          orders,
+          bundles
         ]
         for (var i in database) {
           loadData(database[i]);
@@ -325,13 +327,13 @@ angular.module('lmisChromeApp')
         function loadData(db_name) {
           var test_data = [];
 
-          getFromStore(db_name).then(function (data) {
+          getTable(db_name).then(function (data) {
                 test_data = data;
                 if (test_data.length == 0 || test_data.length == undefined) {
 
                   var file_url = 'scripts/fixtures/' + db_name + '.json';
                   $http.get(file_url).success(function (data) {
-                    addToStore(db_name, data);
+                    addTable(db_name, data);
                     //console.log(data);
                     //loadRelatedObject(db_name);
 
@@ -363,7 +365,7 @@ angular.module('lmisChromeApp')
         //create a new table name by prefixing the original with 're'
         var related_name = 're_' + db_name;
         //when called get data from storage and create an object using uuid as key
-        getFromStore(db_name).then(function (data) {
+        getTable(db_name).then(function (data) {
           if (data.length != 0 && data.length != undefined) {
             //load table data into object
             var related_object = {};
@@ -381,7 +383,7 @@ angular.module('lmisChromeApp')
               }
             }
             //store new object in local storage
-            addToStore(related_name, related_object);
+            addTable(related_name, related_object);
             deferred.resolve(related_object);
           }
         });
@@ -408,9 +410,29 @@ angular.module('lmisChromeApp')
         return uuid;
       }
 
+      function getFromTableByKey(tableName, key){
+         var deferred = $q.defer();
+          var result = null;
+          try{
+            getTable(tableName).then(function (data) {
+              result = data[key];
+              deferred.resolve(result);
+            });
+          }catch(e){
+            console.log(e.message);
+            deferred.resolve(result);
+          }finally{
+             return deferred.promise;
+          }
+      }
+
+      /**
+       * This returns an array or collection of rows in the given table name, this collection can not be
+       * indexed via key, to get table rows that can be accessed via keys use all() or getTable()
+      */
       function getAllFromTable(tableName) {
         var deferred = $q.defer();
-        getFromStore(tableName).then(function (data) {
+        getTable(tableName).then(function (data) {
           var rows = [];
           for (var key in data) {
             rows.push(data[key]);
@@ -423,15 +445,16 @@ angular.module('lmisChromeApp')
       return {
         isSupported: hasChromeStorage,
         all: getAllFromTable,
-        add: addToStore,
-        get: getFromStore,
+        add: addTable,
+        get: getTable,
         getAll: getAllFromStore,
-        remove: removeFromStore, // removeFromChrome,
+        remove: removeTable, // removeFromChrome,
         clear: clearFromStore, // clearChrome */
         uuid: uuid_generator,
         loadFixtures: loadFixtures,
         loadTableObject: loadRelatedObject,
         insert: insert,
+        find: getFromTableByKey,
         PRODUCT_TYPES: product_types,
         PRODUCT_CATEGORY: productCategory,
         ADDRESS: address,
@@ -458,7 +481,8 @@ angular.module('lmisChromeApp')
         CCU_TEMPERATURE_LOG: ccuTemperatureLog,
         PRODUCT_PROFILE: productProfile,
         INVENTORY: inventory,
-        ORDERS: orders
+        ORDERS: orders,
+        BUNDLE: bundles
       };
 
     });
