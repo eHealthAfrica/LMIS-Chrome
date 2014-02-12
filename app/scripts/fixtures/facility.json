@@ -1,5 +1,6 @@
 {
   "fa3fdb8e-24bb-4ba6-b598-050c6285d08e": {
+    "created_by": 2,
     "uuid": "fa3fdb8e-24bb-4ba6-b598-050c6285d08e",
     "created": "2014-01-17T08:18:40.349Z",
     "modified": "2014-01-17T08:18:40.408Z",
@@ -34,6 +35,7 @@
     "facility_operators": []
   },
   "a6ef2104-45bb-438c-80b8-21b4cb7d43bc": {
+    "created_by": 1,
     "uuid": "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
     "created": "2014-01-20T10:02:39.798Z",
     "modified": "2014-01-20T15:06:04.001Z",
@@ -68,6 +70,7 @@
     "facility_operators": ["87191ec7-3be6-4b7b-ac0f-be9ce0e80e51"]
   },
   "902aef31-051d-4a83-9017-6ac9710b5bb5": {
+    "created_by": 2,
     "uuid": "902aef31-051d-4a83-9017-6ac9710b5bb5",
     "created": "2014-01-20T10:37:21.143Z",
     "modified": "2014-01-20T15:07:09.860Z",
@@ -102,6 +105,7 @@
     "facility_operators": ["87191ec7-3be6-4b7b-ac0f-be9ce0e80e51"]
   },
   "d48a39fb-6d37-4472-9983-bc0720403719": {
+    "created_by": 1,
     "uuid": "d48a39fb-6d37-4472-9983-bc0720403719",
     "created": "2014-01-20T15:08:35.584Z",
     "modified": "2014-01-20T15:08:35.750Z",
