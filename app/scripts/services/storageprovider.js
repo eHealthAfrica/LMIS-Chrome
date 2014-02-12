@@ -26,13 +26,13 @@ angular.module('lmisChromeApp')
       var currency = 'currencies';
       var employee = 'employee';
       var rate = 'rate';
-      var storageLocationType = 'storage_location_type';
+      var ccuType = 'ccu_type';
       var ccu = 'ccu';
       var user = 'user';
       var productPresentation = 'product_presentation';
       var productFormulation = 'product_formulations';
       var modeOfAdministration = 'mode_of_administration';
-      var productItem = 'product_items';
+      var batches = 'batches';
       var ccuProblem = 'ccu_problems';
       var ccuTemperatureLog = 'ccu_temp_log';
       var productProfile = 'product_profiles';
@@ -306,8 +306,9 @@ angular.module('lmisChromeApp')
           currency,
           employee,
           rate,
-          storageLocationType,
+          ccuType,
           ccu,
+          inventory,
           ccuProblem,
           ccuTemperatureLog,
           user,
@@ -315,7 +316,7 @@ angular.module('lmisChromeApp')
           productPresentation,
           productFormulation,
           modeOfAdministration,
-          productItem,
+          batches,
           orders
         ]
         for (var i in database) {
@@ -446,13 +447,13 @@ angular.module('lmisChromeApp')
         CURRENCY: currency,
         EMPLOYEE: employee,
         RATE: rate,
-        STORAGE_LOCATION_TYPE: storageLocationType,
+        CCU_TYPE: ccuType,
         CCU: ccu,
         USER: user,
         PRODUCT_PRESENTATION: productPresentation,
         PRODUCT_FORMULATION: productFormulation,
         MODE_OF_ADMINISTRATION: modeOfAdministration,
-        PRODUCT_ITEM: productItem,
+        BATCH: batches,
         CCU_PROBLEM: ccuProblem,
         CCU_TEMPERATURE_LOG: ccuTemperatureLog,
         PRODUCT_PROFILE: productProfile,

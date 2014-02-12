@@ -53,7 +53,7 @@ angular.module('lmisChromeApp')
        * local storage.
        */
       $scope.save = function () {
-        storageService.insert(storageService.PRODUCT_ITEM, $scope.productItem).then(function () {
+        storageService.insert(storageService.BATCH, $scope.productItem).then(function () {
           $location.path('/batches/');
         });
       };
@@ -67,7 +67,7 @@ angular.module('lmisChromeApp')
     .controller('BatchListCtrl', function ($scope, storageService, visualMarkerService, utility, $filter, ngTableParams) {
       $scope.highlight = visualMarkerService.markByExpirationStatus;
 
-      storageService.get(storageService.PRODUCT_ITEM).then(function (data) {
+      storageService.all(storageService.BATCH).then(function (data) {
         // Table defaults
         var params = {
           page: 1,

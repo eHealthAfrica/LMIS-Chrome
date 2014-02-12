@@ -1,1 +1,15 @@
-[]
+{
+  "95d18723-9aef-4f31-9c88-6b1d16f62f6a": {
+    "created": "2014-02-12 09:17:08",
+    "date_receipt": "2014-02-13",
+    "entry_type": "New Arrival",
+    "batch": "0608c8f6-b215-45bf-be70-e4f53e079c93",
+    "quantity": 345,
+    "program": "edc769e2-b26e-40e0-9b58-b59785cf50f7",
+    "return_reason": "Not Applicable",
+    "ccu": "2376e7de-24c3-46c1-82f3-552fb51ebd85",
+    "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
+    "uuid": "95d18723-9aef-4f31-9c88-6b1d16f62f6a",
+    "vvm_stage": "STAGE 1"
+  }
+}

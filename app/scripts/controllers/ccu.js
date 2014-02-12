@@ -35,20 +35,21 @@ angular.module('lmisChromeApp')
     $scope.cceList = new ngTableParams(params, resolver);
   });
 
- storageService.loadTableObject(storageService.FACILITY).then(function (facilities) {
-    $scope.facilities = facilities;
+ storageService.loadTableObject(storageService.FACILITY).then(function (data) {
+    $scope.facilities = data;
   });
 
- storageService.loadTableObject(storageService.STORAGE_LOCATION_TYPE).then(function (cceTypes) {
-    $scope.cceTypes = cceTypes;
+ storageService.get(storageService.CCU_TYPE).then(function (data) {
+   console.log(data);
+    $scope.cceTypes = data;
   });
 
- storageService.get(storageService.UOM).then(function (uomList) {
-    $scope.uomList = uomList;
+ storageService.get(storageService.UOM).then(function (data) {
+    $scope.uomList = data;
   });
 
- storageService.get(storageService.CCU).then(function (cceList) {
-    $scope.parentCCEList = cceList;
+ storageService.get(storageService.CCU).then(function (data) {
+    $scope.parentCCEList = data;
   });
 
 })
@@ -105,7 +106,7 @@ angular.module('lmisChromeApp')
 
   });
 
- storageService.loadTableObject(storageService.CCU).then(function (data) {
+ storageService.get(storageService.CCU).then(function (data) {
     $scope.cceList = data;
   });
 

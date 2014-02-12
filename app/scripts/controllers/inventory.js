@@ -1,25 +1,25 @@
 'use strict';
 angular.module('lmisChromeApp')
 
-.controller('InventoryCtrl', function ($scope, $location, storageService, inventoryFactory) {
+    .controller('InventoryCtrl', function ($scope, $location, storageService, inventoryFactory) {
 
-    $scope.stock_factory = inventoryFactory.stock_records;
-    /*
-     * get url parameters
-     */
-    $scope.facility_uuid = ($location.search()).facility;
-    $scope.report_month = ($location.search()).report_month;
-    $scope.report_year = ($location.search()).report_year;
-    $scope.url_params = "?facility="+$scope.facility_uuid+"&report_month="+$scope.report_month+"&report_year="+$scope.report_year;
+      $scope.stock_factory = inventoryFactory.stock_records;
+      /*
+       * get url parameters
+       */
+      $scope.facility_uuid = ($location.search()).facility;
+      $scope.report_month = ($location.search()).report_month;
+      $scope.report_year = ($location.search()).report_year;
+      $scope.url_params = "?facility=" + $scope.facility_uuid + "&report_month=" + $scope.report_month + "&report_year=" + $scope.report_year;
 
-    var now = new Date();
-    var day = now.getDate();
-    day = day < 10 ? '0' + day : day;
-    $scope.current_day = day;
+      var now = new Date();
+      var day = now.getDate();
+      day = day < 10 ? '0' + day : day;
+      $scope.current_day = day;
 
 
-    $scope.stock_products =
-        [
+      $scope.stock_products =
+          [
             'BCG doses',
             'BCG Diluent',
             'Hep.B doses',
@@ -37,224 +37,252 @@ angular.module('lmisChromeApp')
             'Auto Disable Syringes',
             '5mls Syringes',
             'Safety boxes'
-        ]
+          ]
 
-})
+    })
 
-.controller("StockRecordsCtrl", function ($scope, $location, storageService, $http) {
-  /*
-  * initialize some variables
-  */
-  $scope.user_related_facilities = [];
-  $scope.fake_locations = [];
-  $scope.user_related_facility = ($scope.facility_uuid != undefined) ? $scope.facility_uuid : '';
-  $scope.report_month = ($scope.report_month != undefined) ? $scope.report_month : '';
-  $scope.report_year = ($scope.report_year != undefined) ? $scope.report_year : '';
-  $scope.monthly_stock_record_object = {};
+    .controller("StockRecordsCtrl", function ($scope, $location, storageService, $http) {
+      /*
+       * initialize some variables
+       */
+      $scope.user_related_facilities = [];
+      $scope.fake_locations = [];
+      $scope.user_related_facility = ($scope.facility_uuid != undefined) ? $scope.facility_uuid : '';
+      $scope.report_month = ($scope.report_month != undefined) ? $scope.report_month : '';
+      $scope.report_year = ($scope.report_year != undefined) ? $scope.report_year : '';
+      $scope.monthly_stock_record_object = {};
 
-  /*
-  * get monthly stock records if any
-   */
-  storageService.get('monthly_stock_record').then(function (data) {
-    $scope.monthly_stock_record = data;
-  });
-  /*
-  * create an object of stock record using uuid as key for easy access
-   */
-  storageService.loadTableObject('monthly_stock_record').then(function (data) {
-    $scope.monthly_stock_record_object = data;
-  });
+      /*
+       * get monthly stock records if any
+       */
+      storageService.get('monthly_stock_record').then(function (data) {
+        $scope.monthly_stock_record = data;
+      });
+      /*
+       * create an object of stock record using uuid as key for easy access
+       */
+      storageService.loadTableObject('monthly_stock_record').then(function (data) {
+        $scope.monthly_stock_record_object = data;
+      });
 
-  /*
-  * load some none standard fixtures
-   */
-  var file_url = 'scripts/fixtures/user_related_facilities.json';
-  $http.get(file_url).success(function (data) {
-    $scope.user_related_facilities = data;
+      /*
+       * load some none standard fixtures
+       */
+      var file_url = 'scripts/fixtures/user_related_facilities.json';
+      $http.get(file_url).success(function (data) {
+        $scope.user_related_facilities = data;
 
-  });
+      });
 
 
-    $scope.brought_forward_columns =  $scope.stock_factory.brought_forward_columns;
-    $scope.table_column = $scope.stock_factory.status_column($scope.stock_products);
-    $scope.add_button = true;
+      $scope.brought_forward_columns = $scope.stock_factory.brought_forward_columns;
+      $scope.table_column = $scope.stock_factory.status_column($scope.stock_products);
+      $scope.add_button = true;
 
-    $scope.$watchCollection('[report_month, report_year, user_related_facility]', function(newvalues){
+      $scope.$watchCollection('[report_month, report_year, user_related_facility]', function (newvalues) {
 
         $scope.record_key = $scope.user_related_facility + $scope.report_month + $scope.report_year;
 
-        storageService.get('monthly_stock_record').then(function(data){
-            $scope.monthly_stock_record = data;
+        storageService.get('monthly_stock_record').then(function (data) {
+          $scope.monthly_stock_record = data;
         });
-        storageService.loadTableObject('monthly_stock_record').then(function(data){
-            $scope.monthly_stock_record_object = data;
-        });
-        if(newvalues[0]=='' || newvalues[1] == '' || newvalues[2] == ''){
-            $scope.add_button = true;
-        }
-        else{
-            $scope.add_button = false;
-        }
-    });
-
-
-    $scope.$watch('user_related_facility',function(){
-        if($scope.user_related_facility != ''){
-            var file_url2 = 'scripts/fixtures/locations.json';
-            $http.get(file_url2).success(function(data){
-                for(var k in $scope.user_related_facilities){
-                    if($scope.user_related_facilities[k].uuid == $scope.user_related_facility){
-                        $scope.ward =data[$scope.user_related_facilities[k].location].name;
-                        $scope.lga =data[$scope.user_related_facilities[k].location].lga;
-                        $scope.state =data[$scope.user_related_facilities[k].location].state;
-                        break;
-                    }
-                }
-            });
-        }
-    });
-
-
-  $scope.stock_records = {};
-  storageService.get('facility').then(function (data) {
-    $scope.facilities = data;
-  });
-  storageService.get('programs').then(function (data) {
-    $scope.programs = data;
-  });
-
-})
-
-.controller("StockRecordsFormCtrl", function ($scope, $location, storageService, inventoryFactory) {
-
-
-  $scope.record_key = $scope.facility_uuid + $scope.report_month + $scope.report_year;
-  storageService.get('monthly_stock_record').then(function (data) {
-    if (Object.prototype.toString.call(data) == '[object Array]') {
-      if (data.length > 0) {
         storageService.loadTableObject('monthly_stock_record').then(function (data) {
-          $scope.report_available = Object.keys(data).indexOf($scope.record_key) == -1 ? false : true;
+          $scope.monthly_stock_record_object = data;
         });
-      }
-      else {
-        $scope.report_available = false;
-      }
-    }
-    else if (Object.keys(data).length > 0) {
-      $scope.report_available = Object.keys(data).indexOf($scope.record_key) == -1 ? false : true;
-    }
-    else {
-      $scope.report_available = false;
-    }
-
-  });
-
-  $scope.stock_records = {};
-  $scope.stock_records.received = {};
-  $scope.stock_records.used = {};
-  $scope.stock_records.balance = {};
-  $scope.stock_records.expiry = {};
-  $scope.stock_records.vvm = {};
-  $scope.stock_records.breakage = {};
-  $scope.stock_records.frozen = {};
-  $scope.stock_records.label_removed = {};
-  $scope.stock_records.others = {};
-  $scope.stock_records.maximum_stock = [];
-  $scope.stock_records.minimum_stock = [];
-  $scope.stock_records.balance_brought_forward = [];
+        if (newvalues[0] == '' || newvalues[1] == '' || newvalues[2] == '') {
+          $scope.add_button = true;
+        }
+        else {
+          $scope.add_button = false;
+        }
+      });
 
 
-    var date_day = [];
-    for(var i=1;i<32;i++){
+      $scope.$watch('user_related_facility', function () {
+        if ($scope.user_related_facility != '') {
+          var file_url2 = 'scripts/fixtures/locations.json';
+          $http.get(file_url2).success(function (data) {
+            for (var k in $scope.user_related_facilities) {
+              if ($scope.user_related_facilities[k].uuid == $scope.user_related_facility) {
+                $scope.ward = data[$scope.user_related_facilities[k].location].name;
+                $scope.lga = data[$scope.user_related_facilities[k].location].lga;
+                $scope.state = data[$scope.user_related_facilities[k].location].state;
+                break;
+              }
+            }
+          });
+        }
+      });
+
+
+      $scope.stock_records = {};
+      storageService.get('facility').then(function (data) {
+        $scope.facilities = data;
+      });
+      storageService.get('programs').then(function (data) {
+        $scope.programs = data;
+      });
+
+    })
+
+    .controller("StockRecordsFormCtrl", function ($scope, $location, storageService, inventoryFactory) {
+
+
+      $scope.record_key = $scope.facility_uuid + $scope.report_month + $scope.report_year;
+      storageService.get('monthly_stock_record').then(function (data) {
+        if (Object.prototype.toString.call(data) == '[object Array]') {
+          if (data.length > 0) {
+            storageService.loadTableObject('monthly_stock_record').then(function (data) {
+              $scope.report_available = Object.keys(data).indexOf($scope.record_key) == -1 ? false : true;
+            });
+          }
+          else {
+            $scope.report_available = false;
+          }
+        }
+        else if (Object.keys(data).length > 0) {
+          $scope.report_available = Object.keys(data).indexOf($scope.record_key) == -1 ? false : true;
+        }
+        else {
+          $scope.report_available = false;
+        }
+
+      });
+
+      $scope.stock_records = {};
+      $scope.stock_records.received = {};
+      $scope.stock_records.used = {};
+      $scope.stock_records.balance = {};
+      $scope.stock_records.expiry = {};
+      $scope.stock_records.vvm = {};
+      $scope.stock_records.breakage = {};
+      $scope.stock_records.frozen = {};
+      $scope.stock_records.label_removed = {};
+      $scope.stock_records.others = {};
+      $scope.stock_records.maximum_stock = [];
+      $scope.stock_records.minimum_stock = [];
+      $scope.stock_records.balance_brought_forward = [];
+
+
+      var date_day = [];
+      for (var i = 1; i < 32; i++) {
         date_day.push(i);
-    }
-    $scope.date_var = date_day;
+      }
+      $scope.date_var = date_day;
 
 
+      $scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      $scope.facility_programs =
+      {
+        "902aef31-051d-4a83-9017-6ac9710b5bb5": {
+          program: "39a07d76-9d4b-4c9e-b50b-bba827d08f74"
+        },
+        "d48a39fb-6d37-4472-9983-bc0720403719": {
+          program: "edc769e2-b26e-40e0-9b58-b59785cf50f7"
+        }
+      }
 
-  $scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  $scope.facility_programs =
-  {
-    "902aef31-051d-4a83-9017-6ac9710b5bb5": {
-      program: "39a07d76-9d4b-4c9e-b50b-bba827d08f74"
-    },
-    "d48a39fb-6d37-4472-9983-bc0720403719": {
-      program: "edc769e2-b26e-40e0-9b58-b59785cf50f7"
-    }
-  }
+      $scope.stock_records.program = $scope.facility_programs[$scope.facility_uuid].program;
 
-  $scope.stock_records.program = $scope.facility_programs[$scope.facility_uuid].program;
+      storageService.get(storageService.PROGRAM_PRODUCTS).then(function (programProducts) {
+        $scope.programProductList = programProducts;
+      });
+      storageService.loadTableObject(storageService.PROGRAM).then(function (programs) {
+        $scope.programs_object = programs;
+      });
+      storageService.loadTableObject(storageService.PRODUCT).then(function (products) {
+        $scope.products_object = products;
+      });
+      storageService.get('facility').then(function (data) {
+        $scope.facilities = data;
+      });
+      storageService.get('programs').then(function (data) {
+        $scope.programs = data;
+      });
+      //get program products
+      storageService.get(storageService.PROGRAM_PRODUCTS).then(function (data) {
+        $scope.program_products = data;
+      });
 
-  storageService.get(storageService.PROGRAM_PRODUCTS).then(function (programProducts) {
-    $scope.programProductList = programProducts;
-  });
-  storageService.loadTableObject(storageService.PROGRAM).then(function (programs) {
-    $scope.programs_object = programs;
-  });
-  storageService.loadTableObject(storageService.PRODUCT).then(function (products) {
-    $scope.products_object = products;
-  });
-  storageService.get('facility').then(function (data) {
-    $scope.facilities = data;
-  });
-  storageService.get('programs').then(function (data) {
-    $scope.programs = data;
-  });
-  //get program products
-  storageService.get(storageService.PROGRAM_PRODUCTS).then(function (data) {
-    $scope.program_products = data;
-  });
-
-  /**
-  *  logic for saving stock record profile (records enterd once a month)
-   *  afer saving, current page reloads.
-  */
-  $scope.saveStockReport = function () {
-      var profile_object = {
+      /**
+       *  logic for saving stock record profile (records enterd once a month)
+       *  afer saving, current page reloads.
+       */
+      $scope.saveStockReport = function () {
+        var profile_object = {
           uuid: $scope.record_key,
           max_records: $scope.stock_records.maximum_stock,
           min_record: $scope.stock_records.minimum_stock,
           target_population: $scope.stock_records.target_population,
           balance_brought_forward: $scope.stock_records.balance_brought_forward
+        }
+        $scope.stock_factory.save_record_profile(profile_object);
       }
-    $scope.stock_factory.save_record_profile(profile_object);
-  }
-})
+    })
 
 /**
  * Controller for showing inventory
  */
-.controller('inventoryMainCtrl', function ($scope, storageService, $filter, ngTableParams, visualMarkerService) {
+    .controller('inventoryMainCtrl', function ($scope, storageService, $filter, ngTableParams, visualMarkerService) {
+      storageService.get(storageService.BATCH).then(function (data) {
+        $scope.batches = data;
+      });
 
-    $scope.highlight = visualMarkerService.markByExpirationStatus;
+      storageService.get(storageService.PRODUCT_PRESENTATION).then(function (data) {
+        $scope.presentations = data;
+      });
 
-    storageService.get(storageService.INVENTORY).then(function (data) {
+      storageService.get(storageService.UOM).then(function (data) {
+        $scope.uomList = data;
+      });
 
-    // Table defaults
-    var params = {
-      page: 1,
-      count: 10,
-      sorting: {
-        expiration_date: 'asc'
-      }
-    };
 
-    // Pagination
-    var resolver = {
-      total: data.length,
-      getData: function ($defer, params) {
-          var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-          orderedData = (Object.prototype.toString.call(orderedData)==['object Array'])?orderedData:[];
-          $defer.resolve(orderedData.slice(
+      storageService.get(storageService.PRODUCT_TYPES).then(function (data) {
+        $scope.product_types = data;
+      });
+
+      $scope.highlight = visualMarkerService.markByExpirationStatus;
+
+      storageService.all(storageService.INVENTORY).then(function (data) {
+        console.log(data);
+        // Table defaults
+        var params = {
+          page: 1,
+          count: 10,
+          sorting: {
+            expiration_date: 'asc'
+          }
+        };
+
+        // Pagination
+        var resolver = {
+          total: data.length,
+          getData: function ($defer, params) {
+            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+            $defer.resolve(orderedData.slice(
                 (params.page() - 1) * params.count(),
                 params.page() * params.count()
-          ));
-      }
-    }
-    $scope.inventory = new ngTableParams(params, resolver);
-  });
+            ));
+          }
+        }
 
-  })
+        $scope.getTotalQuantity = function (inventoryLine) {
+          var inventoryLineBatch = $scope.batches[inventoryLine.batch];
+          var presentation = $scope.presentations[inventoryLineBatch.presentation];
+          var totalQuantity = presentation.value * inventoryLine.quantity;
+          return totalQuantity;
+        };
+
+        $scope.getUOM = function(inventoryLine){
+           // $scope.uomList[products[product_item[inventoryLine.product_item].product].base_uom].symbol
+        };
+
+
+        $scope.inventory = new ngTableParams(params, resolver);
+      });
+
+
+    })
 
 
 /**
@@ -264,15 +292,15 @@ angular.module('lmisChromeApp')
 
       $scope.inventory = {}
 
-      storageService.get(storageService.PRODUCT_ITEM).then(function (data) {
+      storageService.all(storageService.BATCH).then(function (data) {
         $scope.productItems = data;
       });
 
-      storageService.get(storageService.CCU).then(function (data) {
+      storageService.all(storageService.CCU).then(function (data) {
         $scope.cceList = data;
       });
 
-      storageService.get(storageService.UOM).then(function (data) {
+      storageService.all(storageService.UOM).then(function (data) {
         $scope.uomList = data;
       });
 

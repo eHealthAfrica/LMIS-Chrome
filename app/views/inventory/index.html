@@ -72,12 +72,10 @@
               <tr ng-repeat="inventoryLine in $data | filter:search | orderBy:storage_location"
                   class="{{ highlight(product_item[inventoryLine.product_item].expiration_date, orderByMonths) }}">
                 <td data-title="'#'">{{ $index + 1 }}</td>
-                <td data-title="'Batch No'" sortable="''">{{ product_item[inventoryLine.product_item].batch_no }}</td>
-                <td data-title="'Product'">{{ products[product_item[inventoryLine.product_item].product].name }}</td>
+                <td data-title="'Batch No'" sortable="''">{{ batches[inventoryLine.batch].batch_no }}</td>
+                <td data-title="'Product'">{{ product_types[batches[inventoryLine.batch].product].name }}</td>
                 <td data-title="'Total Quantity'">
-                  {{ ((presentation[product_item[inventoryLine.product_item].presentation].value *
-                  inventoryLine.quantity)
-                  | number) +' '+ uomList[products[product_item[inventoryLine.product_item].product].base_uom].symbol }}
+                  {{ getTotalQuantity(inventoryLine) | number }}
                 </td>
                 <td data-title="'Quantity'">
                   {{ (inventoryLine.quantity | number)+' '+
