@@ -75,29 +75,26 @@
                 <td data-title="'Batch No'" sortable="''">{{ batches[inventoryLine.batch].batch_no }}</td>
                 <td data-title="'Product'">{{ product_types[batches[inventoryLine.batch].product].name }}</td>
                 <td data-title="'Total Quantity'">
-                  {{ getTotalQuantity(inventoryLine) | number }}
+                  {{ (getTotalQuantity(inventoryLine) | number)+' '+getProductTypeUOM (inventoryLine).symbol  }}
                 </td>
                 <td data-title="'Quantity'">
-                  {{ (inventoryLine.quantity | number)+' '+
-                  uomList[inventoryLine.uom].symbol }}
+                  {{ (inventoryLine.quantity | number)+' '+uomList[inventoryLine.uom].symbol }}
                 </td>
-                <td data-title="'Expiration Date'"
-                    sortable="'{{ product_item[inventoryLine.product_item].expiration_date }}'">
-                  {{ product_item[inventoryLine.product_item].expiration_date | date:'dd-MM-yyyy' }}
+                <td data-title="'Expiration Date'">
+                  {{ batches[inventoryLine.batch].expiration_date | date:'dd-MM-yyyy' }}
                 </td>
-                <td data-title="'Location'">{{ cceList[inventoryLine.storage_location].name }}</td>
-                <td data-title="'VVM Stage'">{{ inventoryLine.vvmStage }}</td>
+                <td data-title="'Location'">{{ cceList[inventoryLine.ccu].name }}</td>
+                <td data-title="'VVM Stage'">{{ inventoryLine.vvm_stage }}</td>
                 <td data-title="'Stock Entry Type'">{{ inventoryLine.entry_type }}</td>
                 <td data-title="'Reason For Return'">{{ inventoryLine.return_reason }}</td>
                 <td data-title="'Date Received'">{{ inventoryLine.date_receipt | date:'dd-MM-yyyy' }}</td>
                 <td data-title="'Storage Volume'">
-                  {{ ((product_item[inventoryLine.product_item].packed_volume * inventoryLine.quantity) | number)
-                  + ' '+uomList[product_item[inventoryLine.product_item].volume_uom].symbol
+                  {{
+                  (getStorageVolume(inventoryLine) | number)+' '+uomList[batches[inventoryLine.batch].volume_uom].symbol
                   }}
                 </td>
-                <td data-title="'Presentation'"
-                    sortable="'{presentation[product_item[inventoryLine.product_item].presentation].name }'">
-                  {{ presentation[product_item[inventoryLine.product_item].presentation].name }}
+                <td data-title="'Presentation'">
+                  {{ presentations[batches[inventoryLine.batch].presentation].name }}
                 </td>
                 <!--TODO: <td data-title="'Last Modified'" sortable="'modified'">{{ product.modified | date:'yyyy-MM-dd h:mma'}} -->
                 </td>

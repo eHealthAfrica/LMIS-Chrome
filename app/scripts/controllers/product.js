@@ -5,7 +5,6 @@ angular.module('lmisChromeApp')
  * ProductListCtrl controller handles display of products pulled from storage.
  */
     .controller('ProductListCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
-      //console.log(storageService.all(storageService.PRODUCT_TYPES));
 
       storageService.all(storageService.PRODUCT_TYPES).then(function (data) {
         // Table defaults

@@ -241,10 +241,13 @@ angular.module('lmisChromeApp')
         $scope.product_types = data;
       });
 
+      storageService.get(storageService.CCU).then(function(data){
+        $scope.cceList = data;
+      });
+
       $scope.highlight = visualMarkerService.markByExpirationStatus;
 
       storageService.all(storageService.INVENTORY).then(function (data) {
-        console.log(data);
         // Table defaults
         var params = {
           page: 1,
@@ -273,9 +276,18 @@ angular.module('lmisChromeApp')
           return totalQuantity;
         };
 
-        $scope.getUOM = function(inventoryLine){
-            $scope.uomList[products[product_item[inventoryLine.product_item].product].base_uom].symbol
+        $scope.getProductTypeUOM = function(inventoryLine){
+            var inventoryLineBatch = $scope.batches[inventoryLine.batch];
+            var product = $scope.product_types[inventoryLineBatch.product];
+            var product_uom = $scope.uomList[product.base_uom];
+            return product_uom;
         };
+
+        $scope.getStorageVolume = function(inventoryLine){
+          var inventoryLineBatch = $scope.batches[inventoryLine.batch];
+          var storageVolume = inventoryLineBatch.packed_volume * inventoryLine.quantity;
+          return storageVolume;
+        }
 
 
         $scope.inventory = new ngTableParams(params, resolver);
