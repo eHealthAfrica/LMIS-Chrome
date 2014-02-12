@@ -222,63 +222,33 @@ angular.module('lmisChromeApp')
       function insert(table, obj) {
 
         var deferred = $q.defer();
+        //get list of existing tables in database. if table exist
         getTables().then(function (tables) {
-          if (tables.indexOf(table)) {
-
-            getTable(table).then(function (data) {
-
-              if (Object.prototype.toString.call(data) == '[object Array]') {
-                console.log(data);
-
-                var object_keys = Object.keys(obj);
-                var object_uuid = object_keys.indexOf('uuid') != -1 ? obj['uuid'] : "";
-                object_uuid = (object_uuid == "") ? false : true;
-                var uuid_test = false;
-                if(object_uuid){
-                    if(data[parseInt(obj["array_index"])] == undefined){
-                        uuid_test = false;
-                    }
-                    else if(data[parseInt(obj["array_index"])]['uuid'] != obj['uuid']){
-                        uuid_test = false;
-                    }
-                    else{
-                        uuid_test = true;
-                    }
+          if (tables.indexOf(table) != -1) {
+            getTable(table).then(function (table_data) {
+                console.log(obj);
+                if(Object.prototype.toString.call(table_data) == '[object Object]'){
+                    var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1? true:false;
+                    obj['created'] = (uuid_test) ? obj['created']:getDateTime();
+                    obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00':getDateTime();
+                    var uuid = (uuid_test)? obj['uuid'] : uuid_generator();
+                    table_data[uuid] = obj;
+                    addTable(table, table_data);
+                    deferred.resolve(true);
                 }
-                if (object_uuid && uuid_test) {
-
-                  console.log("updated");
-                  obj['modified'] = getDateTime();
-                  data[parseInt(obj["array_index"])] = obj;
-                  //console.log( data[parseInt(obj["array_index"])] );
-                  //addTable(table, data);
+                else{
+                    console.log(table_data);
                 }
-                else {
-                  console.log("new save 1");
-                  obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1)?obj['uuid']:uuid_generator();
-                  obj['created'] = getDateTime();
-                  obj['array_index'] = data.length == undefined?0:data.length;
-                  data.push(obj);
-                  addTable(table, data);
-                }
-                deferred.resolve(true);
-              }
-              else{
-                  console.log("new save 2 no array");
-                  obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1)?obj['uuid']:uuid_generator();
-                  obj['created'] = getDateTime();
-                  obj['array_index'] = data.length == undefined?0:data.length;
-                  addTable(table, [obj]);
-                  deferred.resolve(true);
-              }
             });
           }
           else {
-            console.log("new save 2 no table");
+
+            var table_data = {};
             obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1)?obj['uuid']:uuid_generator();
             obj['created'] = getDateTime();
-            obj['array_index'] = data.length == undefined?0:data.length;
-            addTable(table, [obj]);
+              obj['modified'] = '0000-00-00 00:00:00';
+            table_data[obj['uuid']] = obj;
+            addTable(table, table_data);
             deferred.resolve(true);
             //console.log("new entry");
           }
