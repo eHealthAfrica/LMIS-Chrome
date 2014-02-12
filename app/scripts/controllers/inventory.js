@@ -11,6 +11,11 @@ angular.module('lmisChromeApp')
     $scope.report_month = ($location.search()).report_month;
     $scope.report_year = ($location.search()).report_year;
     $scope.url_params = "?facility="+$scope.facility_uuid+"&report_month="+$scope.report_month+"&report_year="+$scope.report_year;
+    $scope.url_params_object = {
+        facility:$scope.facility_uuid,
+        report_month:$scope.report_month,
+        report_year:$scope.report_year
+    }
 
     var now = new Date();
     var day = now.getDate();
@@ -219,6 +224,9 @@ angular.module('lmisChromeApp')
           balance_brought_forward: $scope.stock_records.balance_brought_forward
       }
     $scope.stock_factory.save_record_profile(profile_object);
+  }
+  $scope.save_record = function(){
+       $scope.stock_factory.save_record($scope.stock_records, $scope.url_params_object);
   }
 })
 
