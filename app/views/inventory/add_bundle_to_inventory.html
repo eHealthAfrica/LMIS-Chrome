@@ -28,10 +28,10 @@
   <div class="col-sm-12">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h4 class="panel-title">Add Incoming Bundle To Inventory</h4>
+        <h4 class="panel-title">Add Incoming Bundle</h4>
       </div>
 
-      <div class="panel-body" ng-show="{{ showBundleNo !== '' }}">
+      <div class="panel-body"> <!-- ng-show="{{ showBundleNo !== '' }}" -->
 
         <div class="row">
           <div class="col-sm-18">
@@ -97,6 +97,7 @@
                 <td><input type="number" min="0" step="1"/></td>
                 <td>
                   <select>
+                    <option>Add to CCU</option>
                     <option value="1">Cold Store One</option>
                     <option value="2">Cold Store Two</option>
                   </select>
@@ -111,6 +112,7 @@
                 <td><input type="number" min="0" step="1"/></td>
                 <td>
                   <select>
+                    <option>Add to CCU</option>
                     <option value="1">Cold Store One</option>
                     <option value="2">Cold Store Two</option>
                   </select>
