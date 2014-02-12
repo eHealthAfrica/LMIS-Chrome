@@ -1,6 +1,6 @@
 {
   "name": "lmis-chrome",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "dependencies": {
     "angular": "1.2.6",
     "json3": "~3.2.6",
@@ -23,5 +23,19 @@
   },
   "resolutions": {
     "angular": "=1.2.6"
-  }
+  },
+  "homepage": "https://github.com/eHealthAfrica/LMIS-Chrome",
+  "authors": [
+    "eHealth Africa <http://ehealthafrica.org>"
+  ],
+  "description": "LMIS Chrome packaged app",
+  "main": "app/scripts/main.js",
+  "keywords": [
+    "lmis",
+    "chrome",
+    "ehealth",
+    "africa"
+  ],
+  "license": "ISC",
+  "private": true
 }
