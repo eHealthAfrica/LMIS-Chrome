@@ -38,12 +38,13 @@
             <div class="col-sm-6">
               <label for="receivingFacility">Receiving Facility</label>
               <input class="form-control" ng-disabled="true" type="text" name="receivingFacility"
-                     id="receivingFacility"/>
+                     id="receivingFacility" ng-model="receiving_facility"/>
             </div>
 
             <div class="col-sm-6">
               <label for="parentFacility">Parent Facility</label>
-              <input class="form-control" ng-disabled="true" type="text" name="parentFacility" id="parentFacility"/>
+              <input class="form-control" ng-disabled="true" type="text" name="parentFacility" id="parentFacility"
+                      ng-model="parent"/>
             </div>
           </div>
         </div>
@@ -57,7 +58,7 @@
 
             <div class="col-sm-6">
               <label for="orderNo">Order No.</label>
-              <input class="form-control" ng-disabled="true" type="text" name="orderNo" id="orderNo"/>
+              <input class="form-control" ng-disabled="true" type="text" name="orderNo" id="orderNo" ng-model="order"/>
             </div>
           </div>
         </div>
@@ -66,7 +67,7 @@
           <div class="col-sm-18">
             <div class="col-sm-6">
               <label for="user">User</label>
-              <input class="form-control" ng-disabled="true" type="text" name="user" id="user"/>
+              <input class="form-control" ng-disabled="true" type="text" name="user" id="user" ng-model="user"/>
             </div>
 
             <div class="col-sm-6">

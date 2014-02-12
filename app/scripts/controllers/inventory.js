@@ -332,13 +332,25 @@ angular.module('lmisChromeApp')
       $scope.showBundleNo = '';
       $scope.bundleReceipt = {};
 
+      storageService.get(storageService.FACILITY).then(function(data){
+       $scope.facilities = data;
+      });
+
+      storageService.get(storageService.USER).then(function(data){
+        console.log(data);
+       $scope.users = data;
+      });
 
       $scope.showBundle = function () {
         $scope.bundle = false;
         storageService.find(storageService.BUNDLE, $scope.showBundleNo).then(function (data) {
           if (data !== undefined) {
              $scope.bundle = data;
-            $scope.bundleNo = data.uuid;
+            $scope.bundleNo = $scope.bundle.uuid;
+            $scope.receiving_facility = $scope.facilities[$scope.bundle.receiving_facility].name;
+            $scope.parent = $scope.facilities[$scope.bundle.parent].name;
+            $scope.order = $scope.bundle.order;
+            $scope.user = $scope.users[$scope.bundle.user].username;
 
           }
         });

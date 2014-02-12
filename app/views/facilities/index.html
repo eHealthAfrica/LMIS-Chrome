@@ -36,7 +36,7 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ facility.name }}</td>
                         <td>{{ facility_types[facility.facility_type].name }}</td>
-                        <td>{{ getUser(facility.created_by) }}</td>
+                        <td>{{ users[facility.created_by].username }}</td>
                     </tr>
                 </tbody>
             </table>

@@ -8,9 +8,9 @@ angular.module('lmisChromeApp')
       $scope.facilities = data;
     });
 
-    $scope.getUser = function(created_by) {
-      return created_by.username;
-    };
+       storageService.get(storageService.USER).then(function(data) {
+      $scope.users = data;
+    });
 
     storageService.loadTableObject(storageService.FACILITY_TYPE).then(function(data) {
       $scope.facility_types = data;
