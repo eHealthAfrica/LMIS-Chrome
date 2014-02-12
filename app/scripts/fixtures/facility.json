@@ -1,36 +1,5 @@
-[
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "products": [],
+{
+  "fa3fdb8e-24bb-4ba6-b598-050c6285d08e": {
     "uuid": "fa3fdb8e-24bb-4ba6-b598-050c6285d08e",
     "created": "2014-01-17T08:18:40.349Z",
     "modified": "2014-01-17T08:18:40.408Z",
@@ -64,38 +33,7 @@
     "level": 0,
     "facility_operators": []
   },
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "products": [],
+  "a6ef2104-45bb-438c-80b8-21b4cb7d43bc": {
     "uuid": "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
     "created": "2014-01-20T10:02:39.798Z",
     "modified": "2014-01-20T15:06:04.001Z",
@@ -129,38 +67,7 @@
     "level": 0,
     "facility_operators": ["87191ec7-3be6-4b7b-ac0f-be9ce0e80e51"]
   },
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "products": [],
+  "902aef31-051d-4a83-9017-6ac9710b5bb5": {
     "uuid": "902aef31-051d-4a83-9017-6ac9710b5bb5",
     "created": "2014-01-20T10:37:21.143Z",
     "modified": "2014-01-20T15:07:09.860Z",
@@ -194,38 +101,7 @@
     "level": 1,
     "facility_operators": ["87191ec7-3be6-4b7b-ac0f-be9ce0e80e51"]
   },
-  {
-    "created_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "modified_by": {
-      "id": 1,
-      "password": "pbkdf2_sha256$12000$hud7eCybvrtQ$3e4dpVXnt7TnVMt7i7qso4h7rjAZRgwTP/5CbkTRhpY=",
-      "last_login": "2014-01-16T15:30:34.974Z",
-      "is_superuser": true,
-      "username": "jofomah",
-      "first_name": "",
-      "last_name": "",
-      "email": "jideobi.ofomah@ehealthnigeria.org",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2014-01-11T10:19:14.431Z",
-      "groups": [],
-      "user_permissions": []
-    },
-    "products": [],
+  "d48a39fb-6d37-4472-9983-bc0720403719": {
     "uuid": "d48a39fb-6d37-4472-9983-bc0720403719",
     "created": "2014-01-20T15:08:35.584Z",
     "modified": "2014-01-20T15:08:35.750Z",
@@ -259,4 +135,4 @@
     "level": 2,
     "facility_operators": ["87191ec7-3be6-4b7b-ac0f-be9ce0e80e51"]
   }
-]
+}

@@ -1,5 +1,4 @@
-[
-  {
+{
     "2": {
       "id": 2,
       "password": "pbkdf2_sha256$12000$Ej6deK7vQpOl$fWU0qmihI3HUYY/wS9LflkTVCB/4yscgi7uJWWHORo8=",
@@ -31,4 +30,4 @@
       "user_permissions": []
     }
   }
-]
+
