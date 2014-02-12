@@ -331,6 +331,8 @@ angular.module('lmisChromeApp')
     .controller('logIncomingBundleCtrl', function ($scope, storageService) {
       $scope.showBundleNo = '';
       $scope.bundleReceipt = {};
+       $scope.show = false;
+      console.log("hey");
 
       storageService.get(storageService.FACILITY).then(function(data){
        $scope.facilities = data;
@@ -351,6 +353,7 @@ angular.module('lmisChromeApp')
             $scope.parent = $scope.facilities[$scope.bundle.parent].name;
             $scope.order = $scope.bundle.order;
             $scope.user = $scope.users[$scope.bundle.user].username;
+            $scope.show = true;
 
           }
         });
