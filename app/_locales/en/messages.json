@@ -1,10 +1,14 @@
 {
-    "appName": {
-        "message": "LMIS Chrome",
-        "description": "The name of the application"
-    },
-    "appDescription": {
-        "message": "My Chrome App",
-        "description": "The description of the application"
-    }
+  "appName": {
+    "message": "LMIS Chrome",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "LMIS Chrome packaged app",
+    "description": "The description of the application"
+  },
+  "incoming": {
+    "message": "Incoming",
+    "description": "Dashboard incoming workflows header"
+  }
 }
