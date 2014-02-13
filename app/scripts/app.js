@@ -17,7 +17,7 @@ angular.module('lmisChromeApp', [
   })
 
   // Central Variable for Watching Online/Offline Events
-  .run(function($window, $rootScope, $state, storageService) {
+  .run(function($window, $rootScope, $state, $stateParams, storageService) {
     //global message placeholder
     $rootScope.messages = [];
 
@@ -52,5 +52,5 @@ angular.module('lmisChromeApp', [
     }, false);
 
     // Default state
-    $state.go('dashboard');
+    $state.go('home.index.controlPanel');
   });
