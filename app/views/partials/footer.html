@@ -1,0 +1,23 @@
+<footer id="footer" ng-controller="FooterCtrl">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3">
+        <span ng-cloak>&copy; {{ now | date: 'yyyy' }} {{ i18n('appAuthor') }}</span>
+      </div>
+      <div class="col-sm-8">
+        <ul>
+          <li><a href="#">Dashboard</a></li>
+          <li>&middot;</li>
+          <li><a href="#">Terms of Service</a></li>
+          <li>&middot;</li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li>&middot;</li>
+          <li><a href="#">Contact us</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-1 text-right">
+        <small class="text-muted" ng-cloak>v{{version}}</small>
+      </div>
+    </div>
+  </div>
+</footer>

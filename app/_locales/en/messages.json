@@ -7,6 +7,9 @@
     "message": "LMIS Chrome packaged app",
     "description": "The description of the application"
   },
+  "appAuthor": {
+    "message": "eHealth Systems Africa Foundation"
+  },
   "incoming": {
     "message": "Incoming",
     "description": "Dashboard incoming workflows header"

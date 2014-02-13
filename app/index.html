@@ -1,173 +1,158 @@
 <!doctype html>
 <html ng-app="lmisChromeApp">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Nigeria LMIS</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="bower_components/ng-table/ng-table.css" />
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel="stylesheet" href="Ebro/css/todc-bootstrap.min.css">
-    <link rel="stylesheet" href="Ebro/css/style.css">
-    <link rel="stylesheet" href="Ebro/css/theme/color_1.css" id="theme">
-    <link rel="stylesheet" href="Ebro/css/linecons/style.css">
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Nigeria LMIS</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/ng-table/ng-table.css" />
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css({.tmp,app}) styles/main.css -->
+  <link rel="stylesheet" href="Ebro/css/todc-bootstrap.min.css">
+  <link rel="stylesheet" href="Ebro/css/style.css">
+  <link rel="stylesheet" href="Ebro/css/theme/color_1.css" id="theme">
+  <link rel="stylesheet" href="Ebro/css/linecons/style.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
 </head>
 <body>
-<div id="wrapper_all">
+  <div id="wrapper_all">
     <header id="top_header">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-6 col-sm-2">
-                    <a ng-href="#/home" class="logo_main" title="LMIS"><img src="images/logo_main.png" alt=""></a>
-                </div>
-                <div class="col-sm-push-4 col-sm-3 text-right">
-                    <div class="notification_dropdown dropdown">
-                        <a class="notification_icon dropdown-toggle" data-toggle="dropdown">
-                            <!--span class="label label-danger">12</span-->
-                            <i class="fa fa-envelope-o fa-2x"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-wide">
-                            <li>
-                                <div class="dropdown_heading">Messages</div>
-                                <div class="dropdown_content">
-                                    <!--ul class="dropdown_items">
-                                        <li>
-                                            <h3><a href="#">Lorem ipsum dolor sit amet</a></h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                                            <p class="large_info">Sean Walter, 24.05.2014</p>
-                                            <i class="fa fa-exclamation-circle indicator"></i>
-                                        </li>
-                                        <li>
-                                            <h3><a href="#">Lorem ipsum dolor&hellip;</a></h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aliquam assumenda&hellip;</p>
-                                            <p class="large_info">Sean Walter, 24.05.2014</p>
-                                        </li>
-                                        <li>
-                                            <h3><a href="#">Lorem ipsum dolor&hellip;</a></h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur&hellip;</p>
-                                            <p class="large_info">Sean Walter, 24.05.2014</p>
-                                            <i class="fa fa-exclamation-circle indicator"></i>
-                                        </li>
-                                    </ul-->
-                                </div>
-                                <div class="dropdown_footer">
-                                    <a href="#" class="btn btn-sm btn-default">Show all</a>
-                                    <div class="pull-right dropdown_actions">
-                                        <a href="#"><i class="fa fa-refresh"></i></a>
-                                        <a href="#"><i class="fa fa-cog"></i></a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6 col-sm-2">
+            <a ng-href="#/home" class="logo_main" title="LMIS"><img src="images/logo_main.png" alt=""></a>
+          </div>
+          <div class="col-sm-push-4 col-sm-3 text-right">
+            <div class="notification_dropdown dropdown">
+              <a class="notification_icon dropdown-toggle" data-toggle="dropdown">
+                <!--span class="label label-danger">12</span-->
+                <i class="fa fa-envelope-o fa-2x"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-wide">
+                <li>
+                  <div class="dropdown_heading">Messages</div>
+                  <div class="dropdown_content">
+                    <!--ul class="dropdown_items">
+                      <li>
+                        <h3><a href="#">Lorem ipsum dolor sit amet</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+                        <p class="large_info">Sean Walter, 24.05.2014</p>
+                        <i class="fa fa-exclamation-circle indicator"></i>
+                      </li>
+                      <li>
+                        <h3><a href="#">Lorem ipsum dolor&hellip;</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aliquam assumenda&hellip;</p>
+                        <p class="large_info">Sean Walter, 24.05.2014</p>
+                      </li>
+                      <li>
+                        <h3><a href="#">Lorem ipsum dolor&hellip;</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur&hellip;</p>
+                        <p class="large_info">Sean Walter, 24.05.2014</p>
+                        <i class="fa fa-exclamation-circle indicator"></i>
+                      </li>
+                    </ul-->
+                  </div>
+                  <div class="dropdown_footer">
+                    <a href="#" class="btn btn-sm btn-default">Show all</a>
+                    <div class="pull-right dropdown_actions">
+                      <a href="#"><i class="fa fa-refresh"></i></a>
+                      <a href="#"><i class="fa fa-cog"></i></a>
                     </div>
-                    <div class="notification_separator"></div>
-                    <div class="notification_dropdown">
-                      <span class="label"
-                        ng-class="{'label-success': online, 'label-danger': !online}"
-                        ng-bind="online ? 'online' : 'offline'"></span>
-                    </div>
-                </div>
+                  </div>
+                </li>
+              </ul>
             </div>
+            <div class="notification_separator"></div>
+            <div class="notification_dropdown">
+              <span class="label"
+                ng-class="{'label-success': online, 'label-danger': !online}"
+                ng-bind="online ? 'online' : 'offline'"></span>
+            </div>
+          </div>
         </div>
+      </div>
     </header>
 
-   <!-- <section id="breadcrumbs" ng-if="breadcrumbs">
-        <div class="container">
-            <ul>
-                <li><a href="#/home"><i class="fa fa-home"></i></a></li>
-                <li ng-repeat="breadcrumb in breadcrumbs">
-                    <a ng-if="breadcrumb.link != ''" href="{{ breadcrumb.link }}"> {{ breadcrumb.name }}</a>
-                    <span ng-if="breadcrumb.link == ''" > {{ breadcrumb.name }}</span>
-                </li>
-            </ul>
-        </div>
+    <!-- <section id="breadcrumbs" ng-if="breadcrumbs">
+      <div class="container">
+        <ul>
+          <li><a href="#/home"><i class="fa fa-home"></i></a></li>
+          <li ng-repeat="breadcrumb in breadcrumbs">
+            <a ng-if="breadcrumb.link != ''" href="{{ breadcrumb.link }}"> {{ breadcrumb.name }}</a>
+            <span ng-if="breadcrumb.link == ''" > {{ breadcrumb.name }}</span>
+          </li>
+        </ul>
+      </div>
 
     </section> -->
-    <section class="container clearfix main_section">
-        <div id="main_content_outer" class="clearfix">
-            <alert ng-cloak ng-repeat="alert in messages" type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
-            <div id="main_content" ng-view="">
-                <!-- main content -->
-            </div>
-        </div>
-    </section>
-    <div id="footer_space"></div>
-</div>
-<footer id="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-3">
-                &copy; 2013 eHealth Systems Africa Foundation
-            </div>
-            <div class="col-sm-8">
-                <ul>
-                    <li><a href="#">Dashboard</a></li>
-                    <li>&middot;</li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li>&middot;</li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li>&middot;</li>
-                    <li><a href="#">Contact us</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-1 text-right">
-                <small class="text-muted">v0.1 alpha</small>
-            </div>
-        </div>
-    </div>
-</footer>
-    <!-- build:js scripts/vendor.js -->
-    <!-- Manual reference to prevent CSP error, see #110 -->
-    <script src="bower_components/lodash/dist/lodash.js"></script>
-    <!-- bower:js -->
-    <script src="bower_components/jquery/jquery.js"></script>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/restangular/dist/restangular.min.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/ng-table/ng-table.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
 
-<!-- build:js({.tmp,app}) scripts/scripts.js -->
-<script src="Ebro/js/ebro_common.js"></script>
-<script src="scripts/app.js"></script>
-<script src="scripts/controllers/main.js"></script>
-<script src="scripts/controllers/settings.js"></script>
-<script src="scripts/directives/nav.js"></script>
-<script src="scripts/services/storageprovider.js"></script>
-<script src="scripts/services/settingsfactory.js"></script>
-<script src="scripts/services/syncservice.js"></script>
-<script src="scripts/services/utility.js"></script>
-<script src="scripts/services/visualmarkerservice.js"></script>
-<script src="scripts/controllers/orders.js"></script>
-<script src="scripts/controllers/inventory.js"></script>
-<script src="scripts/controllers/facilities.js"></script>
-<script src="scripts/controllers/product.js"></script>
-<script src="scripts/controllers/ccu.js"></script>
-<script src="scripts/controllers/batches.js"></script>
-<script src="scripts/services/ordersfactory.js"></script>
-<script src="scripts/services/userfactory.js"></script>
-<script src="scripts/services/inventoryfactory.js"></script>
-<script src="scripts/services/productsfactory.js"></script>
-<script src="scripts/services/programsfactory.js"></script>
-<script src="scripts/services/facilityfactory.js"></script>
-<!-- endbuild -->
+    <section class="container clearfix main_section">
+      <div id="main_content_outer" class="clearfix">
+        <alert ng-cloak
+          ng-repeat="alert in messages"
+          type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
+        <div id="main_content" ng-view="">
+          <!-- main content -->
+        </div>
+      </div>
+    </section>
+
+    <div id="footer_space"></div>
+  </div>
+
+  <div ng-include="'views/partials/footer.html'"></div>
+
+  <!-- build:js scripts/vendor.js -->
+  <!-- Manual reference to prevent CSP error, see #110 -->
+  <script src="bower_components/lodash/dist/lodash.js"></script>
+  <!-- bower:js -->
+  <script src="bower_components/jquery/jquery.js"></script>
+  <script src="bower_components/es5-shim/es5-shim.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/json3/lib/json3.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/restangular/dist/restangular.min.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/ng-table/ng-table.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="Ebro/js/ebro_common.js"></script>
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers/main.js"></script>
+  <script src="scripts/controllers/settings.js"></script>
+  <script src="scripts/controllers/footer.js"></script>
+  <script src="scripts/directives/nav.js"></script>
+  <script src="scripts/services/storageprovider.js"></script>
+  <script src="scripts/services/settingsfactory.js"></script>
+  <script src="scripts/services/syncservice.js"></script>
+  <script src="scripts/services/utility.js"></script>
+  <script src="scripts/services/visualmarkerservice.js"></script>
+  <script src="scripts/controllers/orders.js"></script>
+  <script src="scripts/controllers/inventory.js"></script>
+  <script src="scripts/controllers/facilities.js"></script>
+  <script src="scripts/controllers/product.js"></script>
+  <script src="scripts/controllers/ccu.js"></script>
+  <script src="scripts/controllers/batches.js"></script>
+  <script src="scripts/services/ordersfactory.js"></script>
+  <script src="scripts/services/userfactory.js"></script>
+  <script src="scripts/services/inventoryfactory.js"></script>
+  <script src="scripts/services/productsfactory.js"></script>
+  <script src="scripts/services/programsfactory.js"></script>
+  <script src="scripts/services/facilityfactory.js"></script>
+  <!-- endbuild -->
 </body>
 </html>
