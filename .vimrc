@@ -6,6 +6,7 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , 'trimming empty <span>'
   \ , 'unescaped & which should be written as &amp;'
   \ , ' proprietary attribute "ng-'
+  \ , ' proprietary attribute "ui-'
   \ , '<table> proprietary attribute "show-filter"'
   \ , '<td> proprietary attribute "sortable"'
   \ , '<td> proprietary attribute "filter"'
