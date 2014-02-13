@@ -16,7 +16,7 @@
     "ng-table": "0.3.1",
     "font-awesome": "https://github.com/FortAwesome/Font-Awesome.git#4.0.4-wip",
     "angular-indexedDB": "https://github.com/webcss/angular-indexedDB.git",
-    "angular-ui-router": "~0.2.8"
+    "angular-ui-router": "0.2.8-bowratic-tedium"
   },
   "devDependencies": {
     "angular-mocks": "1.2.12",
