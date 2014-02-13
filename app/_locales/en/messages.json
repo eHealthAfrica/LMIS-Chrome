@@ -13,5 +13,23 @@
   "incoming": {
     "message": "Incoming",
     "description": "Dashboard incoming workflows header"
+  },
+  "incomingLog": {
+    "message": "Log an incoming order"
+  },
+  "incomingPlace": {
+    "message": "Place an order"
+  },
+  "incomingModify": {
+    "message": "Modify an order"
+  },
+  "incomingTrackPending": {
+    "message": "Track pending orders"
+  },
+  "incomingTrackIncoming": {
+    "message": "Track incoming orders"
+  },
+  "incomingOrders": {
+    "message": "View received orders"
   }
 }
