@@ -328,36 +328,72 @@ angular.module('lmisChromeApp')
 /**
  * This Controller is used to add a bundle upon arrival to receiving facility inventory.
  */
-    .controller('logIncomingBundleCtrl', function ($scope, storageService) {
+    .controller('logIncomingBundleCtrl', function ($scope, storageService, bundleFactory) {
       $scope.showBundleNo = '';
       $scope.bundleReceipt = {};
-       $scope.show = false;
-      console.log("hey");
+      $scope.show = false;
+      $scope.found = false;
+      $scope.clicked = false;
+      $scope.bundleLines = [];
+
 
       storageService.get(storageService.FACILITY).then(function(data){
        $scope.facilities = data;
       });
 
       storageService.get(storageService.USER).then(function(data){
-        console.log(data);
        $scope.users = data;
       });
 
+
+
+
+      storageService.get(storageService.BATCH).then(function(data){
+        $scope.batches = data;
+      });
+
+      storageService.get(storageService.PRODUCT_TYPES).then(function(data){
+        $scope.productTypes = data;
+      });
+
+      storageService.get(storageService.PROGRAM).then(function(data){
+        $scope.programs = data;
+      });
+
+      storageService.get(storageService.UOM).then(function(data){
+        $scope.uomList = data;
+      });
+
       $scope.showBundle = function () {
+        $scope.clicked = true;
+
         $scope.bundle = false;
         storageService.find(storageService.BUNDLE, $scope.showBundleNo).then(function (data) {
           if (data !== undefined) {
              $scope.bundle = data;
             $scope.bundleNo = $scope.bundle.uuid;
+
+            $scope.bundleLines = bundleFactory.getBundleLines($scope.bundleNo);
+            console.log($scope.bundleLines);
+
             $scope.receiving_facility = $scope.facilities[$scope.bundle.receiving_facility].name;
             $scope.parent = $scope.facilities[$scope.bundle.parent].name;
             $scope.order = $scope.bundle.order;
             $scope.user = $scope.users[$scope.bundle.user].username;
             $scope.show = true;
+            $scope.found = true;
 
+            return;
           }
+          $scope.found = false;
         });
       };
+
+      $scope.hideBundle = function(){
+        $scope.found = false;
+        $scope.clicked = false;
+        $scope.show = false;
+      }
 
     });
 
