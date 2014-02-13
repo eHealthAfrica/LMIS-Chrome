@@ -2,7 +2,10 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-6 col-sm-2">
-        <a ng-href="#/home" class="logo_main" title="LMIS"><img src="images/logo_main.png" alt=""></a>
+        <a ui-sref="home.index.controlPanel"
+          class="logo_main" title="{{i18n('appName')}}">
+          <img src="images/logo_main.png" alt="{{i18n('appName')}}">
+        </a>
       </div>
       <div class="col-sm-push-4 col-sm-3 text-right">
         <div class="notification_dropdown dropdown">
