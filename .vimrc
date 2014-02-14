@@ -6,6 +6,7 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , 'trimming empty <span>'
   \ , 'unescaped & which should be written as &amp;'
   \ , ' proprietary attribute "ng-'
+  \ , ' proprietary attribute "ui-'
   \ , '<table> proprietary attribute "show-filter"'
   \ , '<td> proprietary attribute "sortable"'
   \ , '<td> proprietary attribute "filter"'
@@ -28,6 +29,9 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , '<accordion-heading> is not recognized!'
   \ , 'discarding unexpected <accordion-heading>'
   \ , 'discarding unexpected </accordion-heading>'
+  \ , '<ui-view> is not recognized!'
+  \ , 'discarding unexpected <ui-view>'
+  \ , 'discarding unexpected </ui-view>'
   \ ]
 
 " javascript-libraries-syntax.vim
