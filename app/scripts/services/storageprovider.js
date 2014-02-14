@@ -39,6 +39,7 @@ angular.module('lmisChromeApp')
       var inventory = 'inventory';
       var orders = "orders";
       var bundles = "bundle";
+      var bundleLines = "bundle_lines";
 
       /**
        * Boolean flag indicating client support for Chrome Storage
@@ -289,7 +290,8 @@ angular.module('lmisChromeApp')
           modeOfAdministration,
           batches,
           orders,
-          bundles
+          bundles,
+          bundleLines
         ]
         for (var i in database) {
           loadData(database[i]);
@@ -389,7 +391,6 @@ angular.module('lmisChromeApp')
               deferred.resolve(result);
             });
           }catch(e){
-            console.log(e.message);
             deferred.resolve(result);
           }finally{
              return deferred.promise;
@@ -452,7 +453,8 @@ angular.module('lmisChromeApp')
         PRODUCT_PROFILE: productProfile,
         INVENTORY: inventory,
         ORDERS: orders,
-        BUNDLE: bundles
+        BUNDLE: bundles,
+        BUNDLE_LINES: bundleLines
       };
 
     });
