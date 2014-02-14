@@ -50,9 +50,13 @@ the same)
     git feature my-feature
     ```
 
-3. Commit some code (in quick increments) with a short (50 chars or less)
-   summary and detailed body message (see Tim Pope's [Git commit message
-   model][tpope])
+3. Write and commit some code
+
+    * Group logical steps (Git's interactive rebase can help)
+    * Make sure to maintain the project's coding style
+        * Our supplied [EditorConfig][] and [JSHint][] settings make it easy!
+    * Write an appropriate test case
+    * Write a short (50 chars or less) commit summary and a detailed body
 
 4. When you're topic is finished, make sure it's up-to-date
 
@@ -79,3 +83,5 @@ it looks good and/or discuss with you accordingly.
 [hub]: http://hub.github.com
 [git-extras]: https://github.com/visionmedia/git-extras
 [the team]: https://github.com/orgs/eHealthAfrica/teams/lmis
+[JSHint]: http://www.jshint.com/about/
+[EditorConfig]: http://editorconfig.org
