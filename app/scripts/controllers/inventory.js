@@ -1,5 +1,12 @@
 'use strict';
-angular.module('lmisChromeApp')
+angular.module('lmisChromeApp') .config(function($stateProvider) {
+    $stateProvider
+    .state('stock_count', {
+      templateUrl: 'views/inventory/stock_records.html',
+          controller: "InventoryCtrl"
+
+    });
+  })
 
     .controller('InventoryCtrl', function ($scope, $location, storageService, inventoryFactory) {
 

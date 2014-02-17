@@ -2,7 +2,11 @@
 
 angular.module('lmisChromeApp')
   .factory('inventoryFactory', function ($q, storageService, $location, $route, $rootScope) {
-
+    var common_fn = {
+        isUndefined:function (test_var){
+ 		    return Object.prototype.toString.call(test_var) == "[object Undefined]"?true:false;
+ 	    }
+    }
     var stock_records={
         save_record_profile:function (record_profile_object) {
             storageService.insert('monthly_stock_record', record_profile_object).then(function (bool) {
@@ -37,7 +41,7 @@ angular.module('lmisChromeApp')
             var table_html = '<td>BBF</td>';
 
             for(var i=0; i<stock_products.length; i++){
-                var bbf = angular.isDefined(monthly_stock_record_object.balance_brought_forward)?monthly_stock_record_object.balance_brought_forward[i]:'';
+                var bbf = '';
                 table_html += '<td>'+ bbf+'</td>'+
                               '<td></td>'+
                               '<td></td>';
