@@ -5,6 +5,7 @@ angular.module('lmisChromeApp', [
   'ngResource',
   'ngSanitize',
   'restangular',
+  'ngRoute',
   'ui.bootstrap',
   'ngTable',
   'ui.router'
