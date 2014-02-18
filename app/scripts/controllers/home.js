@@ -4,7 +4,7 @@ angular.module('lmisChromeApp')
   .config(function($stateProvider) {
     $stateProvider.state('home', {
       abstract: true,
-      templateUrl: 'views/home/index.html',
+      templateUrl: 'views/home/index.html'
     })
     .state('home.index', {
       views: {

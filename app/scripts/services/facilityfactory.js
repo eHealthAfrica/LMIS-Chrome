@@ -1,16 +1,17 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('facilityFactory', function () {
-    // Service logic
-    // ...
-
-    var meaningOfLife = 42;
+  .factory('facilityFactory', function (storageService) {
 
     // Public API here
     return {
-      someMethod: function () {
-        return meaningOfLife;
+      getFacilityStorageUnits: function (facilityUUID) {
+        var storageUnits = [];
+        storageService.get(storageService.CCU).then(function(data){
+          for(var ccu in data){
+            console.log(ccu);
+          }
+        });
       }
     };
   });
