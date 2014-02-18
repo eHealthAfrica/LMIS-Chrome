@@ -5,7 +5,7 @@
     "angular": "1.2.12",
     "json3": "3.3.0",
     "es5-shim": "2.3.0",
-    "jquery": "2.1.0",
+    "jquery": "components/jquery#2.1.0",
     "bootstrap": "3.0.3",
     "angular-resource": "1.2.12",
     "angular-cookies": "1.2.12",
