@@ -1,0 +1,130 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="info-box">
+                    <div class="info-box-number one">1</div>
+                    <div class="info-box-text">
+                        Count the number of
+
+                        products in each row.
+
+                        products in each row.
+
+                        Count partially used vials
+
+                        Count partially used vials
+
+                        and bottles separately.
+
+                        and bottles separately.
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+                <div class="info-box">
+                    <div class="info-box-number two">2</div>
+                    <div class="info-box-text">
+Enter the TOTAL quantity
+
+of each product type in
+
+of each product type in
+
+the appropriate row.
+
+the appropriate row.
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="info-box">
+                    <div class="info-box-number three">3</div>
+                    <div class="info-box-text">
+
+Double-check what you
+
+have entered is correct
+
+have entered is correct
+
+and conﬁrm your entry by
+
+and conﬁrm your entry by
+
+checking the box.
+
+checking the box.
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+                <div class="info-box">
+                    <div class="info-box-number four">4</div>
+                    <div class="info-box-text">
+When ﬁnished with each
+
+product, submit your
+
+product, submit your
+
+form by clicking the
+
+form by clicking the
+
+Submit button below!
+
+Submit button below!
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <form action="" method="post" ng-submit="save_stock_count()">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Stock Item</th>
+                                    <th colspan="2">Todays Count</th>
+                                    <th>Confirm</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>Unopened Vials</th>
+                                    <th>Opened Vials</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="product in stock_products">
+                                    <td>{{ product }}</td>
+                                    <td><input class="form-control col-sm-1" ng-model="stock_records.received[$index]"></td>
+                                    <td><input class="form-control col-sm-1" ng-model="stock_records.received[$index]"></td>
+                                    <td><input type="checkbox"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <button class="form-control">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
