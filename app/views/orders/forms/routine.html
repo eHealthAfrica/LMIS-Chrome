@@ -12,15 +12,14 @@
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="childFacilityCode">Child Facility Code</label>
+    <label class="col-md-4 control-label" for="childFacilityCode" ng-bind="i18n('childFacilityCode')"></label>
     <div class="col-md-4">
       <input id="childFacilityCode" name="childFacilityCode" type="text" class="form-control input-md" required>
-      <span class="help-block">The child facility code</span>
     </div>
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="parentFacilityName">Parent Facility Name</label>
+    <label class="col-md-4 control-label" for="parentFacilityName" ng-bind="i18n('parentFacilityName')"></label>
     <div class="col-md-4">
       <select id="parentFacilityName" name="parentFacilityName" class="form-control">
         <option value="1">Option one</option>
@@ -30,31 +29,28 @@
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="parentFacilityCode">Parent Facility Code</label>
+    <label class="col-md-4 control-label" for="parentFacilityCode" ng-bind="i18n('parentFacilityCode')"></label>
     <div class="col-md-4">
       <input id="parentFacilityCode" name="parentFacilityCode" type="text" class="form-control input-md" required>
-      <span class="help-block">The parent facility code</span>
     </div>
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="userCode">User Code</label>
+    <label class="col-md-4 control-label" for="userCode" ng-bind="i18n('userCode')"></label>
     <div class="col-md-4">
       <input id="userCode" name="userCode" type="text" class="form-control input-md" required>
-      <span class="help-block">Your identification code</span>
     </div>
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="orderNumber">Order Number</label>
+    <label class="col-md-4 control-label" for="orderNumber" ng-bind="i18n('orderNumber')"></label>
     <div class="col-md-4">
       <input id="orderNumber" name="orderNumber" type="text" class="form-control input-md" required>
-      <span class="help-block">The order number</span>
     </div>
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="productCategory">Product Category</label>
+    <label class="col-md-4 control-label" for="productCategory" ng-bind="i18n('productCategory')"></label>
     <div class="col-md-4">
       <select id="productCategory" name="productCategory" class="form-control">
         <option value="1">Option one</option>
@@ -64,7 +60,7 @@
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="productProfile">Product Profile</label>
+    <label class="col-md-4 control-label" for="productProfile" ng-bind="i18n('productProfile')"></label>
     <div class="col-md-4">
       <select id="productProfile" name="productProfile" class="form-control">
         <option value="1">Option one</option>
@@ -74,15 +70,15 @@
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="quantity">Quantity</label>
+    <label class="col-md-4 control-label" for="quantity" ng-bind="i18n('quantity')"></label>
     <div class="col-md-4">
       <input id="quantity" name="quantity" type="number" min="1" class="form-control input-md" required>
-      <span class="help-block">Number of doses</span>
+      <span class="help-block" ng-bind="i18n('numberOfDoses')"></span>
     </div>
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="program">Program</label>
+    <label class="col-md-4 control-label" for="program" ng-bind="i18n('program')"></label>
     <div class="col-md-4">
       <select id="program" name="program" class="form-control">
         <option value="RI">RI</option>

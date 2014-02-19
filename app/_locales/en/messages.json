@@ -43,5 +43,35 @@
   },
   "receivingFacilityName": {
     "message": "Receiving Facility Name"
+  },
+  "childFacilityCode": {
+    "message": "Child Facility Code"
+  },
+  "parentFacilityCode": {
+    "message": "Parent Facility Code"
+  },
+  "parentFacilityName": {
+    "message": "Parent Facility Name"
+  },
+  "userCode": {
+    "message": "User Code"
+  },
+  "orderNumber": {
+    "message": "Order Number"
+  },
+  "productCategory": {
+    "message": "Product Category"
+  },
+  "productProfile": {
+    "message": "Product Profile"
+  },
+  "quantity": {
+    "message": "Quantity"
+  },
+  "program": {
+    "message": "Program"
+  },
+  "numberOfDoses": {
+    "message": "Number of doses"
   }
 }
