@@ -133,4 +133,14 @@ angular.module('lmisChromeApp')
     storageService.get(storageService.FACILITY).then(function(data) {
       $scope.facilities = data;
     });
+  })
+
+  .config(function($stateProvider) {
+    $stateProvider.state('orders', {
+      abstract: true,
+      templateUrl: 'views/orders/index.html'
+    })
+    .state('orders.routine', {
+      templateUrl: 'views/orders/forms/routine.html'
+    });
   });

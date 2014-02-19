@@ -31,5 +31,17 @@
   },
   "incomingOrders": {
     "message": "View received orders"
+  },
+  "routine": {
+    "message": "Routine"
+  },
+  "sia": {
+    "message": "SIA"
+  },
+  "submit": {
+    "message": "Submit"
+  },
+  "receivingFacilityName": {
+    "message": "Receiving Facility Name"
   }
 }

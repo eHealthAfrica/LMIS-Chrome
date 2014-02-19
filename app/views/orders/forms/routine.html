@@ -1,0 +1,101 @@
+<form class="form-horizontal">
+<fieldset>
+
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="receivingFacilityName" ng-bind="i18n('receivingFacilityName')"></label>
+    <div class="col-md-4">
+      <select id="receivingFacilityName" name="receivingFacilityName" class="form-control">
+        <option value="1">Option one</option>
+        <option value="2">Option two</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="childFacilityCode">Child Facility Code</label>
+    <div class="col-md-4">
+      <input id="childFacilityCode" name="childFacilityCode" type="text" class="form-control input-md" required>
+      <span class="help-block">The child facility code</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="parentFacilityName">Parent Facility Name</label>
+    <div class="col-md-4">
+      <select id="parentFacilityName" name="parentFacilityName" class="form-control">
+        <option value="1">Option one</option>
+        <option value="2">Option two</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="parentFacilityCode">Parent Facility Code</label>
+    <div class="col-md-4">
+      <input id="parentFacilityCode" name="parentFacilityCode" type="text" class="form-control input-md" required>
+      <span class="help-block">The parent facility code</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="userCode">User Code</label>
+    <div class="col-md-4">
+      <input id="userCode" name="userCode" type="text" class="form-control input-md" required>
+      <span class="help-block">Your identification code</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="orderNumber">Order Number</label>
+    <div class="col-md-4">
+      <input id="orderNumber" name="orderNumber" type="text" class="form-control input-md" required>
+      <span class="help-block">The order number</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="productCategory">Product Category</label>
+    <div class="col-md-4">
+      <select id="productCategory" name="productCategory" class="form-control">
+        <option value="1">Option one</option>
+        <option value="2">Option two</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="productProfile">Product Profile</label>
+    <div class="col-md-4">
+      <select id="productProfile" name="productProfile" class="form-control">
+        <option value="1">Option one</option>
+        <option value="2">Option two</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="quantity">Quantity</label>
+    <div class="col-md-4">
+      <input id="quantity" name="quantity" type="number" min="1" class="form-control input-md" required>
+      <span class="help-block">Number of doses</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="program">Program</label>
+    <div class="col-md-4">
+      <select id="program" name="program" class="form-control">
+        <option value="RI">RI</option>
+        <option value="SIA">SIA</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-4 pull-right">
+      <button id="submit" name="submit" class="btn btn-success" ng-bind="i18n('submit')"></button>
+    </div>
+  </div>
+
+</fieldset>
+</form>

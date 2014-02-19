@@ -35,6 +35,8 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , 'discarding unexpected </ui-view>'
   \ , 'missing </a> before <div>'
   \ , 'discarding unexpected </a>'
+  \ , '<input> proprietary attribute "required"'
+  \ , '<input> proprietary attribute "min"'
   \ ]
 
 " javascript-libraries-syntax.vim

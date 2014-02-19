@@ -5,22 +5,22 @@
 <div class="modal-body">
   <div class="row">
     <div class="col-md-6">
-      <a ui-sref="orders.place.routine">
+      <a ui-sref="orders.routine" ng-click="$close()">
         <div class="box_stat box_ico">
           <span class="stat_ico stat_ico_1">
             <i class="li_calendar"></i>
           </span>
-          <h4>Routine</h4>
+          <h4 ng-bind="i18n('routine')"></h4>
         </div>
       </a>
     </div>
     <div class="col-md-6">
-      <a ui-sref="orders.place.sia">
+      <a ui-sref="orders.sia" ng-click="$close()">
         <div class="box_stat box_ico">
           <span class="stat_ico stat_ico_2">
             <i class="li_tag"></i>
           </span>
-          <h4>SIA</h4>
+          <h4 ng-bind="i18n('sia')"></h4>
         </div>
       </a>
     </div>
