@@ -33,6 +33,8 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , '<ui-view> is not recognized!'
   \ , 'discarding unexpected <ui-view>'
   \ , 'discarding unexpected </ui-view>'
+  \ , 'missing </a> before <div>'
+  \ , 'discarding unexpected </a>'
   \ ]
 
 " javascript-libraries-syntax.vim
