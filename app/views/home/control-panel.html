@@ -7,7 +7,10 @@
     </accordion-heading>
     <ul>
       <li><a href="" ng-bind="i18n('incomingLog')"></a></li>
-      <li><a href="" ng-bind="i18n('incomingPlace')"></a></li>
+      <li>
+        <a ui-sref="home.index.controlPanel.orderType"
+          ng-bind="i18n('incomingPlace')"></a>
+      </li>
       <li><a href="" ng-bind="i18n('incomingModify')"></a></li>
       <li><a href="" ng-bind="i18n('incomingTrackPending')"></a></li>
       <li><a href="" ng-bind="i18n('incomingTrackIncoming')"></a></li>
@@ -73,3 +76,5 @@
   </accordion-group>
 
 </accordion>
+
+<ui-view />

@@ -22,6 +22,16 @@ angular.module('lmisChromeApp')
     .state('home.index.controlPanel', {
       templateUrl: 'views/home/control-panel.html'
     })
+    .state('home.index.controlPanel.orderType', {
+      controller: function($state, $modal) {
+        var modal = $modal.open({
+          templateUrl: 'views/home/partials/order-type.html',
+        });
+        modal.result.catch(function() {
+          $state.go('home.index.controlPanel');
+        });
+      }
+    })
     .state('home.index.dashboard', {
       templateUrl: 'views/home/dashboard.html'
     });
