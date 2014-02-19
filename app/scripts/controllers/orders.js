@@ -40,8 +40,6 @@ angular.module('lmisChromeApp')
 
     $scope.format = 'yyyy-MM-dd';
 
-
-
     //chrome.storage.local.clear();
     //populate order object with data if available in storage
 
@@ -94,11 +92,10 @@ angular.module('lmisChromeApp')
         'order_list': $scope.data_storage
       });
     };
-
   })
 
-  .controller('OrdersListCtrl', function ($scope, storageService, $filter, ngTableParams) {
-    storageService.get(storageService.ORDERS).then(function (data) {
+  .controller('OrdersListCtrl', function($scope, storageService, $filter, ngTableParams) {
+    storageService.get(storageService.ORDERS).then(function(data) {
       // Table defaults
       var params = {
         page: 1,
@@ -111,7 +108,7 @@ angular.module('lmisChromeApp')
       // Pagination
       var resolver = {
         total: data.length,
-        getData: function ($defer, params) {
+        getData: function($defer, params) {
           var filtered, sorted = data;
           if (params.filter()) {
             filtered = $filter('filter')(data, params.filter());
@@ -121,8 +118,8 @@ angular.module('lmisChromeApp')
           }
           params.total(sorted.length);
           $defer.resolve(sorted.slice(
-              (params.page() - 1) * params.count(),
-              params.page() * params.count()
+            (params.page() - 1) * params.count(),
+            params.page() * params.count()
           ));
         }
       };
@@ -130,9 +127,10 @@ angular.module('lmisChromeApp')
       // jshint newcap: false
       $scope.salesList = new ngTableParams(params, resolver);
     });
-  }).controller('SalesOrderForm', function($scope, storageService){
+  })
 
-     storageService.get(storageService.FACILITY).then(function(data) {
+  .controller('SalesOrderForm', function($scope, storageService) {
+    storageService.get(storageService.FACILITY).then(function(data) {
       $scope.facilities = data;
     });
- });
+  });
