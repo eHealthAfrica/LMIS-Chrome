@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('userFactory', function () {
+  .factory('userFactory', function ($q, storageService) {
     // Service logic
     // ...
 
@@ -9,8 +9,19 @@ angular.module('lmisChromeApp')
 
     // Public API here
     return {
-      someMethod: function () {
-        return meaningOfLife;
+      getLoggedInUser: function () {
+        //TODO: replace with logged in user id
+        var loggedInUserId = "1";
+        var deferred = $q.defer();
+        var loggedInUser = {};
+        storageService.find(storageService.USER, loggedInUserId).then(function(data){
+          if(data !== undefined){
+            deferred.resolve(data);
+            return;
+          }
+          deferred.resolve(loggedInUser);
+        });
+        return deferred.promise;
       }
     };
   });

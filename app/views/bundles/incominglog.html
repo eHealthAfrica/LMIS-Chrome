@@ -33,6 +33,10 @@
 
       </div>
     </div>
+    <div class="row">
+      <div id="reader" style="width:300px;height:250px">
+      </div>
+    </div>
   </div>
 
   <div class="row" ng-show="show">
@@ -55,94 +59,106 @@
           </div>
 
           <div class="panel-body">
+            <form name="logIncomingBundle" ng-submit="authorize()">
+              <div class="row">
+                <div class="col-sm-18">
+                  <div class="col-sm-6">
+                    <label for="receivingFacility">Receiving Facility</label>
+                    <input class="form-control" ng-disabled="true" type="text" name="receivingFacility"
+                           id="receivingFacility" ng-model="receiving_facility"/>
+                  </div>
 
-            <div class="row">
-              <div class="col-sm-18">
-                <div class="col-sm-6">
-                  <label for="receivingFacility">Receiving Facility</label>
-                  <input class="form-control" ng-disabled="true" type="text" name="receivingFacility"
-                         id="receivingFacility" ng-model="receiving_facility"/>
-                </div>
-
-                <div class="col-sm-6">
-                  <label for="parentFacility">Parent Facility</label>
-                  <input class="form-control" ng-disabled="true" type="text" name="parentFacility" id="parentFacility"
-                         ng-model="parent"/>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-sm-18">
-                <div class="col-sm-6">
-                  <label for="bundleNumber">Bundle No.</label>
-                  <input ng-model="bundle.uuid" class="form-control" ng-disabled="true" type="text" name="bundleNumber"
-                         id="bundleNumber"/>
-                </div>
-
-                <div class="col-sm-6">
-                  <label for="orderNo">Order No.</label>
-                  <input class="form-control" ng-disabled="true" type="text" name="orderNo" id="orderNo"
-                         ng-model="bundle.order"/>
+                  <div class="col-sm-6">
+                    <label for="parentFacility">Parent Facility</label>
+                    <input class="form-control" ng-disabled="true" type="text" name="parentFacility" id="parentFacility"
+                           ng-model="parent"/>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="row">
-              <div class="col-sm-18">
-                <div class="col-sm-6">
-                  <label for="user">User</label>
-                  <input class="form-control" ng-disabled="true" type="text" name="user" id="user" ng-model="bundle.user"/>
+              <div class="row">
+                <div class="col-sm-18">
+                  <div class="col-sm-6">
+                    <label for="bundleNumber">Bundle No.</label>
+                    <input ng-model="bundle.uuid" class="form-control" ng-disabled="true" type="text"
+                           name="bundleNumber"
+                           id="bundleNumber"/>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label for="orderNo">Order No.</label>
+                    <input class="form-control" ng-disabled="true" type="text" name="orderNo" id="orderNo"
+                           ng-model="bundle.order"/>
+                  </div>
                 </div>
+              </div>
 
-                <div class="col-sm-6">
-                  <label for="date">Date</label>
-                  <input ng-model="bundle.date" class="form-control" type="date" name="date" id="date"/>
+              <div class="row">
+                <div class="col-sm-18">
+                  <div class="col-sm-6">
+                    <label for="user">User</label>
+                    <input class="form-control" ng-disabled="true" type="text" name="user" id="user"
+                           ng-model="loggedInUser.username"/>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label for="date" ng-model="bundle.date">Date</label>
+                    <input class="form-control" type="date" name="date" id="date" value="{{ bundle.date }}"/>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="row col-sm-16">
+              <div class="row col-sm-16">
 
-              <table class="table table-condensed table-hover table-bordered">
-                <tr>
-                  <thead>
-                  <th>Batch No.</th>
-                  <th>Product Type</th>
-                  <th>Program</th>
-                  <th>Quantity</th>
-                  <th>Verify</th>
-                  <th>CCU</th>
-                  </thead>
-                </tr>
-                <tr ng-repeat="bundleLine in bundleLines">
-                  <td>{{ batches[bundleLine.batch].batch_no }}</td>
-                  <td>{{ productTypes[batches[bundleLine.batch].product].name }}</td>
-                  <td>{{ programs[bundleLine.program].name }}</td>
-                  <td>{{ (bundleLine.quantity | number)+' '+uomList[bundleLine.quantity_uom].symbol }}</td>
-                  <td><input type="number" min="0" step="1"/></td>
-                  <td>
-                    <select>
-                      <option>Add to CCU</option>
-                      <option value="1">Cold Store One</option>
-                      <option value="2">Cold Store Two</option>
-                    </select>
-                  </td>
-                </tr>
+                <table class="table table-condensed table-hover table-bordered">
+                  <tr>
+                    <thead>
+                    <th>#</th>
+                    <th>Batch No.</th>
+                    <th>Product Type</th>
+                    <th>Program</th>
+                    <th>Quantity</th>
+                    <th>Verify</th>
+                    <th>Storage Unit</th>
+                    </thead>
+                  </tr>
 
-              </table>
-            </div>
+                  <tr ng-repeat="bundleLine in bundle.bundleLines">
+                    <td>{{ $index }}</td>
+                    <td>{{ getBatch(bundleLine).batch_no }}</td>
+                    <td>{{ getProductType(bundleLine).name }}</td>
+                    <td>{{ getBundleProgram(bundleLine).name }}</td>
+                    <td>{{ (bundleLine.quantity | number)+' '+ getUOM(bundleLine).symbol }}</td>
+                    <td>
+                      <input type="number" min="0" step="1"/>
+                    </td>
+                    <td>
+                      <select>
+                        <option>-- Add to Storage Unit --</option>
+                        <option ng-repeat="storageUnit in receivingFacilityStorageUnits" value="{{ storageUnit.uuid }}">
+                          {{ storageUnit.name }}
+                        </option>
+                      </select>
+                    </td>
+                  </tr>
 
-            <div class="row">
-              <div class="col-sm-3">
-                <input type="button" class="btn btn-success btn-lg btn-block" value="Authorize"/>
+                </table>
               </div>
-              <div class="col-sm-3">
-                <button type="submit" class="btn btn-success btn-lg btn-block">Save and Exit</button>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <input type="submit" class="btn btn-success btn-lg btn-block" value="Authorize"/>
+                </div>
+                <div class="col-sm-3">
+                  <button type="button" class="btn btn-success btn-lg btn-block">Save and Exit</button>
+                </div>
               </div>
-            </div>
+            </form>
+
 
           </div>
+
+
         </div>
       </div>
     </div>

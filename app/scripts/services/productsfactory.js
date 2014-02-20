@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('productsFactory', function () {
+  .factory('productsFactory', function ($q, storageService) {
     // Service logic
     // ...
 
@@ -9,8 +9,14 @@ angular.module('lmisChromeApp')
 
     // Public API here
     return {
-      someMethod: function () {
-        return meaningOfLife;
+      getProductTypeByUUID: function (uuid) {
+        console.log(uuid);
+         var productType = null;
+        storageService.get(storageService.PRODUCT_TYPES).then(function(data){
+          productType =  data[uuid];
+          console.log(productType);
+        });
+        return productType;
       }
     };
   });

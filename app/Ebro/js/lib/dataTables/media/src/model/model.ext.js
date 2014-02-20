@@ -40,7 +40,7 @@ DataTable.models.ext = {
 	 *
 	 *  @example
 	 *    // The following example shows custom filtering being applied to the fourth column (i.e.
-	 *    // the aData[3] index) based on two input values from the end-user, matching the data in 
+	 *    // the aData[3] index) based on two input values from the end-user, matching the data in
 	 *    // a certain range.
 	 *    $.fn.dataTableExt.afnFiltering.push(
 	 *      function( oSettings, aData, iDataIndex ) {
@@ -300,7 +300,7 @@ DataTable.models.ext = {
 
 	/**
 	 * Pagination plug-in methods - The style and controls of the pagination can significantly 
-	 * impact on how the end user interacts with the data in your table, and DataTables allows 
+	 * impact on how the end user interacts with the data in your table, and DataTables allows
 	 * the addition of pagination controls by extending this object, which can then be enabled
 	 * through the <i>sPaginationType</i> initialisation parameter. Each pagination type that
 	 * is added is an object (the property name of which is what <i>sPaginationType</i> refers

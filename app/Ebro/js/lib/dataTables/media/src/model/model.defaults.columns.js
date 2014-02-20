@@ -144,7 +144,7 @@ DataTable.defaults.columns = {
 	/**
 	 * <code>Deprecated</code> When using fnRender() for a column, you may wish 
 	 * to use the original data (before rendering) for sorting and filtering 
-	 * (the default is to used the rendered data that the user can see). This 
+	 * (the default is to used the rendered data that the user can see). This
 	 * may be useful for dates etc.
 	 * 
 	 * Please note that this option has now been deprecated and will be removed

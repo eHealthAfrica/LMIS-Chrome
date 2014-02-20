@@ -96,9 +96,9 @@ DataTable.defaults = {
 
 	/**
 	 * This parameter is basically identical to the aaSorting parameter, but 
-	 * cannot be overridden by user interaction with the table. What this means 
+	 * cannot be overridden by user interaction with the table. What this means
 	 * is that you could have a column (visible or hidden) which the sorting will 
-	 * always be forced on first - any sorting after that (from the user) will 
+	 * always be forced on first - any sorting after that (from the user) will
 	 * then be performed as required. This can be useful for grouping rows 
 	 * together.
 	 *  @type array
@@ -1384,7 +1384,7 @@ DataTable.defaults = {
 		
 		
 			/**
-			 * Text to use for the 'next' pagination button (to take the user to the 
+			 * Text to use for the 'next' pagination button (to take the user to the
 			 * next page).
 			 *  @type string
 			 *  @default Next
@@ -1405,7 +1405,7 @@ DataTable.defaults = {
 		
 		
 			/**
-			 * Text to use for the 'previous' pagination button (to take the user to  
+			 * Text to use for the 'previous' pagination button (to take the user to
 			 * the previous page).
 			 *  @type string
 			 *  @default Previous
@@ -1447,7 +1447,7 @@ DataTable.defaults = {
 	
 	
 		/**
-		 * This string gives information to the end user about the information that 
+		 * This string gives information to the end user about the information that
 		 * is current on display on the page. The _START_, _END_ and _TOTAL_ 
 		 * variables are all dynamically replaced as the table display updates, and 
 		 * can be freely moved or removed as the language requirements change.
@@ -1487,7 +1487,7 @@ DataTable.defaults = {
 	
 	
 		/**
-		 * When a user filters the information in a table, this string is appended 
+		 * When a user filters the information in a table, this string is appended
 		 * to the information (sInfo) to give an idea of how strong the filtering 
 		 * is. The variable _MAX_ is dynamically updated.
 		 *  @type string

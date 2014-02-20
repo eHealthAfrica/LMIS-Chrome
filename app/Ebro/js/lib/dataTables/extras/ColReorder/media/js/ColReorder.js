@@ -788,7 +788,7 @@ ColReorder.prototype = {
 	
 	
 	/**
-	 * Copy the TH element that is being drags so the user has the idea that they are actually 
+	 * Copy the TH element that is being drags so the user has the idea that they are actually
 	 * moving it around the page.
 	 *  @method  _fnCreateDragNode
 	 *  @returns void
