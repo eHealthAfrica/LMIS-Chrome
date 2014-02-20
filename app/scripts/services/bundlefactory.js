@@ -1,13 +1,38 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('bundleFactory', function ($q, storageService, productsFactory) {
+    .factory('bundleFactory', function ($q, storageService) {
 
       var BUNDLE_STATUS = ["Pending", "In Transit", "Done"];//TODO: move this to a table in local storage(JIDEOBI)
 
+      function saveBundleReceiptLines(bundleReceiptLines) {
 
-      function saveBundleReceipt(bundleReceipt){
-        console.log(bundleReceipt);
+      }
+
+      function saveBundleReceipt(bundleReceipt) {
+        //TODO: add proper and necessary checks later like validations when the complete flow and data integrity check
+        //has been finalized etc.
+        //TODO: Also add transaction so that it is either all succeeds or none.
+        storageService.insert(storageService.BUNDLE_RECEIPT, bundleReceipt).then(function (bundleReceiptUUID) {
+          var bundleReceiptLines = bundleReceipt.bundle_receipt_lines;
+
+          /* delete bundleReceipt.bundle_receipt_lines before saving so it is not saved along with bundleReceipt
+           since bundle_receipt_lines are saved on different table.
+           */
+          delete bundleReceipt.bundle_receipt_lines;
+
+          if (bundleReceiptUUID !== undefined) {
+            for (var index in bundleReceiptLines) {
+              var bundleReceiptLine = bundleReceiptLines[index];
+              bundleReceiptLine['bundle_receipt'] = bundleReceiptUUID;
+              storageService.insert(storageService.BUNDLE_RECEIPT_LINES, bundleReceiptLine).then(function (bundleReceiptLineUUID) {
+                console.log(bundleReceiptLineUUID);
+              });
+            }
+            return bundleReceiptUUID;
+          }
+          return bundleReceiptUUID;
+        });
       }
 
       /**
@@ -17,12 +42,12 @@ angular.module('lmisChromeApp')
        * @returns {promise|*}
        */
       function get(bundleUUID) {
-        var defered = $q.defer();
+        var deferred = $q.defer();
         var facilities = {};
         var users = {};
         var bundle = null;
 
-        //TODO: consider refactoring these into their respective factory.
+        //TODO: consider refactoring these into their respective factory(JIDEOBI).
         storageService.get(storageService.FACILITY).then(function (data) {
           facilities = data;
         });
@@ -30,7 +55,6 @@ angular.module('lmisChromeApp')
         storageService.get(storageService.USER).then(function (data) {
           users = data;
         });
-
 
         try {
           storageService.find(storageService.BUNDLE, bundleUUID).then(function (data) {
@@ -41,16 +65,16 @@ angular.module('lmisChromeApp')
                 "receiving_facility": facilities[data.receiving_facility],
                 "parent": facilities[data.parent],
                 "order": "12345-90882", //TODO: replace with order object when complete
-                "bundleLines": getBundleLines(bundleUUID)
+                "bundle_lines": getBundleLines(bundleUUID)
               };
-              defered.resolve(bundle);
+              deferred.resolve(bundle);
             }
           });
 
         } catch (e) {
-          defered.resolve(null);
+          deferred.resolve(null);
         } finally {
-          return defered.promise;
+          return deferred.promise;
         }
       }
 
@@ -60,8 +84,6 @@ angular.module('lmisChromeApp')
        * @returns {Array}
        */
       function getBundleLines(bundleUUID) {
-
-
         var batches = {};
         var programs = {};
         var productTypes = {};
@@ -101,7 +123,7 @@ angular.module('lmisChromeApp')
                     "quantity": data.quantity,
                     "quantity_uom": uomList[data.quantity_uom],
                     "verify": 0,
-                    "storage_unit": ""
+                    "storage_units": ""
                   };
                   bundleLines.push(bundleLine);
                 }
@@ -110,15 +132,15 @@ angular.module('lmisChromeApp')
 
           }
         });
-
         return bundleLines;
       }
 
-      function getBundleReceiptLine(bundleUUID){
+      function getBundleReceiptLine(bundleUUID) {
         var batches = {};
         var programs = {};
         var productTypes = {};
         var uomList = {};
+        var bundleLines = [];
 
         storageService.get(storageService.BATCH).then(function (data) {
           batches = data;
@@ -136,8 +158,6 @@ angular.module('lmisChromeApp')
           uomList = data;
         });
 
-        var bundleLines = [];
-        var bundleLine = {};
         storageService.find(storageService.BUNDLE, bundleUUID).then(function (data) {
           if (data !== undefined) {
             for (var index in data.bundle_lines) {
@@ -147,7 +167,7 @@ angular.module('lmisChromeApp')
                   var batch = batches[data.batch];
                   batch.product = productTypes[batch.product];
                   console.log(data);
-                  bundleLine = {
+                  var bundleLine = {
                     "bundle": data.uuid,
                     "program": programs[data.program].name,
                     "batch": batch,
@@ -161,7 +181,6 @@ angular.module('lmisChromeApp')
             }
           }
         });
-
         return bundleLines;
       }
 

@@ -15,9 +15,7 @@
   		"fullscreen",
   		"geolocation",
   		"storage",
-  		"unlimitedStorage",
-      "audioCapture",
-      "videoCapture"
+  		"unlimitedStorage"
   	],
   	"icons": {
   		"16": "images/icon-16.png",

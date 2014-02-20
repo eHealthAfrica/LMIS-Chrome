@@ -40,7 +40,8 @@ angular.module('lmisChromeApp')
       var orders = "orders";
       var bundles = "bundle";
       var bundleLines = "bundle_lines";
-      var bundleReceipt = "bundle_receipts"
+      var bundleReceipt = "bundle_receipts";
+      var bundleReceiptLines = "bundle_receipt_lines";
 
       /**
        * Boolean flag indicating client support for Chrome Storage
@@ -239,6 +240,7 @@ angular.module('lmisChromeApp')
                     deferred.resolve(uuid);
                 }
                 else{
+                  deferred.resolve(null);
                     console.log(table_data);
                 }
             });
@@ -457,7 +459,8 @@ angular.module('lmisChromeApp')
         ORDERS: orders,
         BUNDLE: bundles,
         BUNDLE_LINES: bundleLines,
-        BUNDLE_RECEIPT: bundleReceipt
+        BUNDLE_RECEIPT: bundleReceipt,
+        BUNDLE_RECEIPT_LINES: bundleReceiptLines
       };
 
     });
