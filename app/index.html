@@ -28,9 +28,9 @@
 
     <section class="container clearfix main_section">
       <div id="main_content_outer" class="clearfix">
-        <alert ng-cloak
-          ng-repeat="alert in messages"
-          type="alert.type" close="closeAlert($index)">{{alert.message}}</alert>
+        <alert ng-repeat="alert in messages"
+          type="alert.type" close="closeAlert($index)"
+          ng-bind="alert.message"></alert>
 
           <div id="main_content" ui-view></div>
       </div>
