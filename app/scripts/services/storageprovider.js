@@ -40,6 +40,7 @@ angular.module('lmisChromeApp')
       var orders = "orders";
       var bundles = "bundle";
       var bundleLines = "bundle_lines";
+      var bundleReceipt = "bundle_receipts"
 
       /**
        * Boolean flag indicating client support for Chrome Storage
@@ -235,7 +236,7 @@ angular.module('lmisChromeApp')
                     var uuid = (uuid_test)? obj['uuid'] : uuid_generator();
                     table_data[uuid] = obj;
                     addTable(table, table_data);
-                    deferred.resolve(true);
+                    deferred.resolve(uuid);
                 }
                 else{
                     console.log(table_data);
@@ -250,7 +251,7 @@ angular.module('lmisChromeApp')
               obj['modified'] = '0000-00-00 00:00:00';
             table_data[obj['uuid']] = obj;
             addTable(table, table_data);
-            deferred.resolve(true);
+            deferred.resolve(obj.uuid);
             //console.log("new entry");
           }
         });
@@ -291,7 +292,8 @@ angular.module('lmisChromeApp')
           batches,
           orders,
           bundles,
-          bundleLines
+          bundleLines,
+          bundleReceipt
         ]
         for (var i in database) {
           loadData(database[i]);
@@ -454,7 +456,8 @@ angular.module('lmisChromeApp')
         INVENTORY: inventory,
         ORDERS: orders,
         BUNDLE: bundles,
-        BUNDLE_LINES: bundleLines
+        BUNDLE_LINES: bundleLines,
+        BUNDLE_RECEIPT: bundleReceipt
       };
 
     });
