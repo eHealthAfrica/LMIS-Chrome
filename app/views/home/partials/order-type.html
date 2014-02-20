@@ -20,7 +20,11 @@
           <span class="stat_ico stat_ico_2">
             <i class="li_tag"></i>
           </span>
-          <h4 ng-bind="i18n('sia')"></h4>
+          <h4>
+            <abbr class="initialism"
+              ng-attr-title="{{i18n('supplementalImmunizationActivity')}}"
+              ng-bind="i18n('sia')"></abbr>
+          </h4>
         </div>
       </a>
     </div>
