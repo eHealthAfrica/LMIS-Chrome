@@ -31,5 +31,11 @@
   },
   "incomingOrders": {
     "message": "View received orders"
+  },
+  "manageInventory":{
+    "message": "Manage inventory"
+  },
+  "viewBatch":{
+    "message": "View batch list"
   }
 }
