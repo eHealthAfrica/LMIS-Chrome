@@ -35,6 +35,9 @@
   "manageInventory":{
     "message": "Manage inventory"
   },
+  "product":{
+    "message": "Product"
+  },
   "viewBatch":{
     "message": "View batch list"
   },
