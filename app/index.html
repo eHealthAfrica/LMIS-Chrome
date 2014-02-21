@@ -32,7 +32,9 @@
           type="alert.type" close="closeAlert($index)"
           ng-bind="alert.message"></alert>
 
-          <div id="main_content" ui-view></div>
+        <div tv-breadcrumbs ng-if="!$state.includes('home')"></div>
+
+        <div id="main_content" ui-view></div>
       </div>
     </section>
     <div id="footer_space"></div>
@@ -56,6 +58,7 @@
   <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
   <script src="bower_components/ng-table/ng-table.js"></script>
   <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="bower_components/tv-breadcrumbs/dist/tv-breadcrumbs.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 

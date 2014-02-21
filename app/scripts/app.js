@@ -7,7 +7,8 @@ angular.module('lmisChromeApp', [
   'restangular',
   'ui.bootstrap',
   'ngTable',
-  'ui.router'
+  'ui.router',
+  'tv.breadcrumbs'
 ])
   .config(function(RestangularProvider, $compileProvider) {
     RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
@@ -50,6 +51,9 @@ angular.module('lmisChromeApp', [
         $rootScope.online = true;
       });
     }, false);
+
+    // Convenience property to get the current state
+    $rootScope.$state = $state;
 
     // Default state
     $state.go('home.index.controlPanel');

@@ -7,6 +7,7 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , 'unescaped & which should be written as &amp;'
   \ , ' proprietary attribute "ng-'
   \ , ' proprietary attribute "ui-'
+  \ , ' proprietary attribute "tv-'
   \ , '<table> proprietary attribute "show-filter"'
   \ , '<td> proprietary attribute "sortable"'
   \ , '<td> proprietary attribute "filter"'
