@@ -40,13 +40,16 @@
     "karma-requirejs": "~0.2.1",
     "karma-phantomjs-launcher": "~0.1.1",
     "karma": "~0.10.8",
-    "karma-ng-html2js-preprocessor": "~0.1.0"
+    "karma-ng-html2js-preprocessor": "~0.1.0",
+    "change-case": "~1.0.6",
+    "cli-prompt": "~0.3.2"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": "0.10.x"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "translate": "node scripts/translate.js"
   },
   "description": "LMIS Chrome packaged app",
   "main": "Gruntfile.js",
