@@ -8,7 +8,7 @@ angular.module('lmisChromeApp', [
   'ui.bootstrap',
   'ngTable',
   'ui.router',
-  'ncy-angular-breadcrumb'
+  'tv.breadcrumbs'
 ])
   .config(function(RestangularProvider, $compileProvider) {
     RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');

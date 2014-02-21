@@ -16,7 +16,7 @@
     "font-awesome": "https://github.com/FortAwesome/Font-Awesome.git#4.0.4-wip",
     "angular-indexedDB": "https://github.com/webcss/angular-indexedDB.git",
     "angular-ui-router": "0.2.8-bowratic-tedium",
-    "angular-breadcrumb": "tlvince/angular-breadcrumb#bower-main"
+    "tv-breadcrumbs": "~0.1.1"
   },
   "devDependencies": {
     "angular-mocks": "1.2.12",
@@ -37,7 +37,6 @@
   "license": "ISC",
   "private": true,
   "resolutions": {
-    "angular": "1.2.12",
-    "angular-breadcrumb": "bower-main"
+    "angular": "1.2.12"
   }
 }
