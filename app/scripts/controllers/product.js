@@ -1,6 +1,13 @@
 'use strict';
 
-angular.module('lmisChromeApp')
+angular.module('lmisChromeApp').config(function ($stateProvider) {
+  $stateProvider
+      .state('productTypeListView', {
+        url: '/product-types-view',
+        templateUrl: '/views/products/product-type-list.html',
+        controller: 'ProductListCtrl'
+      });
+})
 /**
  * ProductListCtrl controller handles display of products pulled from storage.
  */
