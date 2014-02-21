@@ -15,20 +15,13 @@ chromeApp.config(function ($stateProvider) {
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageService, bundleFactory, userFactory,
-                                                  programsFactory, facilityFactory, productTypeFactory) {
-
-  productTypeFactory.getAll();
+chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageService, bundleFactory, userFactory, facilityFactory) {
 
   $scope.found = false;
   $scope.clicked = false;
   $scope.bundle = {};
   $scope.bundle.date = '';
   $scope.getFacilityStorageUnits = [];
-  $scope.getBundleProgram = programsFactory.getProgram;
-  $scope.getBatch = bundleFactory.getBatch;
-  $scope.getUOM = bundleFactory.getQuantityUOM
-  $scope.getProductType = bundleFactory.getProductType;
   $scope.logIncomingForm = {};
   $scope.logIncomingForm.verify = [];
   $scope.logIncomingForm.storage_units = [];
@@ -43,8 +36,12 @@ chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageServic
     $scope.loggedInUser = data;
   });
 
+  $scope.getProductType = function(bundleLine){
+    return bundleLine.batch.product;
+  }
+
   $scope.getUOMDetail = function (bundleLine) {
-    return $filter('number')(bundleLine.quantity, 0) + ' ' + $scope.getUOM(bundleLine).symbol;
+    return $filter('number')(bundleLine.quantity, 0) + ' ' + bundleLine.quantity_uom.symbol;
   }
 
 

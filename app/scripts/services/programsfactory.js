@@ -16,8 +16,9 @@ angular.module('lmisChromeApp')
        * @param object
        * @returns {program} - JSON Object
        */
-      getProgram: function (obj) {
-        return obj.program;
+      getProgram: function (uuid) {
+        //TODO: complete implementation
+        return uuid;
       }
     };
   });

@@ -184,24 +184,9 @@ angular.module('lmisChromeApp')
         return bundleLines;
       }
 
-      function getBundleLineBatch(bundleLine) {
-        return bundleLine.batch;
-      }
-
-      function getBundleLineProductType(bundleLine) {
-        return bundleLine.batch.product;
-      }
-
-      function getQuantityUOM(bundleLine) {
-        return bundleLine.quantity_uom;
-      }
-
       return {
         getBundleLines: getBundleLines,
         getBundle: get,
-        getBatch: getBundleLineBatch,
-        getProductType: getBundleLineProductType,
-        getQuantityUOM: getQuantityUOM,
         saveBundleReceipt: saveBundleReceipt,
         getBundleReceiptLines: getBundleReceiptLine
       }

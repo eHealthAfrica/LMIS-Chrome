@@ -14,7 +14,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     .controller('ProductTypeListCtrl', function ($scope, storageService, utility, productTypeFactory, $filter, ngTableParams) {
 
       productTypeFactory.getAll().then(function (data) {
-        console.log(data);
+
         // Table defaults
         var params = {
           page: 1,

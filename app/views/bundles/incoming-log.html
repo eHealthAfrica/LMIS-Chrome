@@ -123,9 +123,9 @@
 
                   <tr ng-repeat="bundleLine in bundle.bundle_lines">
                     <td>{{ $index + 1 }}</td>
-                    <td ng-init="batch = getBatch(bundleLine).batch_no" ng-bind="batch"></td>
-                    <td ng-init="productType = getProductType(bundleLine).name" ng-bind="productType"></td>
-                    <td ng-init="program = getBundleProgram(bundleLine).name" ng-bind="program"></td>
+                    <td ng-init="batch = bundleLine.batch" ng-bind="batch.batch_no"></td>
+                    <td ng-init="productType = getProductType(bundleLine)" ng-bind="productType.name"></td>
+                    <td ng-init="program = bundleLine.program" ng-bind="program.name"></td>
                     <td ng-init="uomDetail = getUOMDetail(bundleLine)" ng-bind="uomDetail"></td>
                     <td>
                       <input type="number" min="0" step="1" ng-model="logIncomingForm.verify[bundleLine.uuid]"/>
