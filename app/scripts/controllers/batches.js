@@ -2,6 +2,17 @@
 
 angular.module('lmisChromeApp')
 /**
+ * configure routes for batch module
+ */
+    .config(function ($stateProvider) {
+      $stateProvider
+          .state('batchListView', {
+            url: '/batch-list-view',
+            templateUrl: '/views/batches/index.html',
+            controller: 'BatchListCtrl'
+          });
+    })
+/**
  * AddProductItemCtrl - This handles the addition of product items
  */
     .controller('AddProductItemCtrl', function ($scope, storageService, $location) {
