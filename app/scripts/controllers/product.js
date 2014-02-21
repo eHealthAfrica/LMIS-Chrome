@@ -5,15 +5,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       .state('productTypeListView', {
         url: '/product-types-view',
         templateUrl: '/views/products/product-type-list.html',
-        controller: 'ProductListCtrl'
+        controller: 'ProductTypeListCtrl'
       });
 })
 /**
  * ProductListCtrl controller handles display of products pulled from storage.
  */
-    .controller('ProductListCtrl', function ($scope, storageService, utility, $filter, ngTableParams) {
+    .controller('ProductTypeListCtrl', function ($scope, storageService, utility, productTypeFactory, $filter, ngTableParams) {
 
-      storageService.all(storageService.PRODUCT_TYPES).then(function (data) {
+      productTypeFactory.getAll().then(function (data) {
+        console.log(data);
         // Table defaults
         var params = {
           page: 1,
@@ -44,11 +45,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
         $scope.productTypes = new ngTableParams(params, resolver);
       });
-
-      storageService.get(storageService.UOM).then(function (data) {
-        $scope.uomList = data;
-      });
-
     })
 
 
