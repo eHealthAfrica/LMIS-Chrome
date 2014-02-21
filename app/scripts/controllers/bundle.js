@@ -41,7 +41,7 @@ chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageServic
   });
 
   $scope.getUOMDetail = function (bundleLine) {
-    return $filter('number')(bundleLine.quantity, 2) + ' ' + $scope.getUOM(bundleLine).symbol;
+    return $filter('number')(bundleLine.quantity, 0) + ' ' + $scope.getUOM(bundleLine).symbol;
   }
 
 
@@ -49,6 +49,8 @@ chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageServic
    * function that shows form used to log incoming bundle if it already exists in the system.
    */
   $scope.showBundle = function () {
+
+
     $scope.clicked = true;
     bundleFactory.getBundle($scope.showBundleNo).then(function (data) {
       if (data !== undefined) {
@@ -101,7 +103,7 @@ chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageServic
       "bundle_receipt_lines": bundleReceiptLines
     };
     var bundleReceiptUUID = bundleFactory.saveBundleReceipt(bundleReceipt);
-    if(bundleReceiptUUID !== undefined){
+    if (bundleReceiptUUID !== undefined) {
       //update inventory
       return;
     }

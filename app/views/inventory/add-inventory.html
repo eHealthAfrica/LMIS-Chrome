@@ -1,7 +1,7 @@
 <div class="row">
   <ol class="breadcrumb">
-    <li><a href="#/main/"><i class="fa fa-home"> Home</i></a></li>
-    <li><a href="#/inventory/index"> Inventory</a></li>
+    <li><a ui-sref="home.index.controlPanel"><i class="fa fa-home"> Home</i></a></li>
+    <li><a <a ui-sref="inventoryListView"> Inventory</a></li>
     <li class="active">Add New Inventory</li>
   </ol>
 </div>
@@ -19,27 +19,33 @@
             <div class="col-sm-6">
 
               <div class="form-group">
-                <label for="productItem">Product Item</label>
-                <select id="productItem" class="form-control" ng-model="inventory.product_item" required>
-                  <option value="">-- select product item--</option>
-                  <option ng-repeat="productItem in productItems" value="{{ productItem.uuid }}">
-                    {{ productItem.batch_no }}
+                <label for="batch">Batch</label>
+                <select id="batch" class="form-control" ng-model="inventory.batch" required>
+                  <option value="">-- select batch --</option>
+                  <option ng-repeat="batch in batches" value="{{ batch.uuid }}">
+                    {{ batch.batch_no }}
                   </option>
                 </select>
               </div>
 
               <div class="form-group">
-                <label for="cceLocation">CCE Location</label>
-                <select id="cceLocation" class="form-control" ng-model="inventory.storage_location" required>
-                  <option value="">-- select CCE --</option>
-                  <option ng-repeat="cce in cceList" value="{{ cce.uuid }}">
-                    {{ cce.name }}
+                <label for="bundleNo">Bundle No. (optional) </label>
+                <input class="form-control" type="text" name="bundleNo" id="bundleNo"
+                       ng-model="inventory.bundleNo" placeholder="e.g KNC-THF-01-9803" required/>
+              </div>
+
+              <div class="form-group">
+                <label for="storageUnit">Storage Unit</label>
+                <select id="storageUnit" class="form-control" ng-model="inventory.storage_unit" required>
+                  <option value="">-- Add to storage unit --</option>
+                  <option ng-repeat="storageUnit in storageUnits" value="{{ storageUnit.uuid }}">
+                    {{ storageUnit.name }}
                   </option>
                 </select>
               </div>
 
               <div class="form-group">
-                <label for="receiptDate">Date Received</label>
+                <label for="receiptDate">Date Received <i class="fa fa-calendar"></i></label>
                 <input ng-model="inventory.date_receipt" class="form-control" type="date" name="receiptDate"
                        id="receiptDate"/>
               </div>
@@ -61,39 +67,34 @@
               </div>
 
               <div class="form-group">
-                <label for="entryType">Stock Entry Type</label>
-                <select id="entryType" class="form-control" ng-model="inventory.entry_type" required>
-                  <option value="">-- select stock  entry type--</option>
-                  <option value="Return">Return</option>
-                  <option value="New Arrival">New Arrival</option>
-                  <option value="Excess From Stock Count">Excess Recorded From Physical Stock Count</option>
-                  <option value="Previous Month Balance">Balance From Previous Month</option>
+                <label for="program">Program</label>
+                <select id="program" class="form-control" ng-model="inventory.program" required>
+                  <option value="">-- select program--</option>
+                  <option ng-repeat="program in programs" value="{{ program.uuid }}">
+                    {{ program.name }}
+                  </option>
                 </select>
               </div>
 
               <div class="form-group">
-                <label for="vvmStage">VVM Stage at Arrival</label>
-                <select id="vvmStage" class="form-control" ng-model="inventory.vvmStage" required>
-                  <option value="">-- select stock  entry type--</option>
-                  <option value="STAGE 1">Stage 1</option>
-                  <option value="STAGE 2">Stage 2</option>
-                  <option value="STAGE 3">Stage 3</option>
-                  <option value="STAGE 4">Stage 4</option>
+                <label for="recipient">Receiving Facility</label>
+                <select id="recipient" class="form-control" ng-model="inventory.receiving_facility" required>
+                  <option value="">-- select recipient--</option>
+                  <option ng-repeat="facility in facilities" value="{{ facility.uuid }}">
+                    {{ facility.name }}
+                  </option>
                 </select>
               </div>
 
               <div class="form-group">
-                <label for="reason">Reason For Returned Entry Type</label>
-                <select id="reason" class="form-control" ng-model="inventory.return_reason" required>
-                  <option value="">-- select reason for return--</option>
-                  <option value="Not Applicable">Not Applicable</option>
-                  <option value="Expired">Expired</option>
-                  <option value="Lack Of Storage Space">Lack Of Storage Space</option>
-                  <option value="Broken">Broken</option>
-                  <option value="Recalled and Return To Manufacturer">Recalled</option>
+                <label for="parentFacility">Parent Facility</label>
+                <select id="parentFacility" class="form-control" ng-model="inventory.parent" required>
+                  <option value="">-- select parent facility--</option>
+                  <option ng-repeat="facility in facilities" value="{{ facility.uuid }}">
+                    {{ facility.name }}
+                  </option>
                 </select>
               </div>
-
             </div>
 
           </div>
