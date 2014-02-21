@@ -45,7 +45,7 @@
     "cli-prompt": "~0.3.2"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": "0.10.x"
   },
   "scripts": {
     "test": "grunt test",
