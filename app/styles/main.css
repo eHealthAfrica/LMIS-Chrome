@@ -89,3 +89,14 @@
     background: #424B43;
     color: #ffffff;
 }
+.form-label{
+    font-weight: bold;
+}
+.w-menu{
+    padding: 10px;
+}
+.w-menu li{
+    padding: 4px 0px;
+    border: #ffffff solid 1px;
+
+}
