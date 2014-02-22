@@ -54,7 +54,10 @@ angular.module('lmisChromeApp')
             'Auto Disable Syringes',
             '5mls Syringes',
             'Safety boxes'
-          ]
+          ],
+        save_stock_count:function(stock_object, date_time){
+            storageService
+        }
 
 
     }
