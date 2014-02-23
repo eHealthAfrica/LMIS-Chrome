@@ -4,6 +4,8 @@ setlocal wildignore+=dist,Ebro
 let g:syntastic_html_tidy_ignore_errors = [
   \ 'trimming empty <i>'
   \ , 'trimming empty <span>'
+  \ , 'trimming empty <label>'
+  \ , 'trimming empty <option>'
   \ , 'unescaped & which should be written as &amp;'
   \ , ' proprietary attribute "ng-'
   \ , ' proprietary attribute "ui-'

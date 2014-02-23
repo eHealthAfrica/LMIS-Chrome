@@ -76,5 +76,11 @@
   },
   "supplementalImmunizationActivity": {
     "message": "Supplemental Immunization Activity"
+  },
+  "ri": {
+    "message": "RI"
+  },
+  "routineImmunization": {
+    "message": "Routine Immunization"
   }
 }
