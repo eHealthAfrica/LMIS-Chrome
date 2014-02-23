@@ -4,7 +4,7 @@
   <div class="form-group">
     <label class="col-md-4 control-label" for="receivingFacilityName" ng-bind="i18n('receivingFacilityName')"></label>
     <div class="col-md-4">
-      <select id="receivingFacilityName" name="receivingFacilityName" class="form-control">
+      <select id="receivingFacilityName" name="receivingFacilityName" class="form-control" ng-model="order.receivingFacilityName">
         <option value="1">Option one</option>
         <option value="2">Option two</option>
       </select>
@@ -14,14 +14,14 @@
   <div class="form-group">
     <label class="col-md-4 control-label" for="childFacilityCode" ng-bind="i18n('childFacilityCode')"></label>
     <div class="col-md-4">
-      <input id="childFacilityCode" name="childFacilityCode" type="text" class="form-control input-md" required>
+      <input id="childFacilityCode" name="childFacilityCode" type="text" class="form-control input-md" required ng-model="order.childFacilityCode">
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-md-4 control-label" for="parentFacilityName" ng-bind="i18n('parentFacilityName')"></label>
     <div class="col-md-4">
-      <select id="parentFacilityName" name="parentFacilityName" class="form-control">
+      <select id="parentFacilityName" name="parentFacilityName" class="form-control" ng-model="order.parentFacilityName">
         <option value="1">Option one</option>
         <option value="2">Option two</option>
       </select>
@@ -31,28 +31,28 @@
   <div class="form-group">
     <label class="col-md-4 control-label" for="parentFacilityCode" ng-bind="i18n('parentFacilityCode')"></label>
     <div class="col-md-4">
-      <input id="parentFacilityCode" name="parentFacilityCode" type="text" class="form-control input-md" required>
+      <input id="parentFacilityCode" name="parentFacilityCode" type="text" class="form-control input-md" required ng-model="order.parentFacilityCode">
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-md-4 control-label" for="userCode" ng-bind="i18n('userCode')"></label>
     <div class="col-md-4">
-      <input id="userCode" name="userCode" type="text" class="form-control input-md" required>
+      <input id="userCode" name="userCode" type="text" class="form-control input-md" required ng-model="order.userCode">
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-md-4 control-label" for="orderNumber" ng-bind="i18n('orderNumber')"></label>
     <div class="col-md-4">
-      <input id="orderNumber" name="orderNumber" type="text" class="form-control input-md" required>
+      <input id="orderNumber" name="orderNumber" type="text" class="form-control input-md" required ng-model="order.number">
     </div>
   </div>
 
   <div class="products">
     <accordion close-others="true">
       <accordion-group heading="{{i18n('product') | titlecase}} {{product.id}}"
-        ng-repeat="product in products" is-open="true">
+        ng-repeat="product in order.products" is-open="true">
         <div ng-include="'views/orders/forms/partials/product.html'"></div>
       </accordion-group>
     </accordion>
