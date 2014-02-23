@@ -1,7 +1,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="productCategory" ng-bind="i18n('productCategory')"></label>
   <div class="col-md-4">
-    <select id="productCategory" name="productCategory" class="form-control">
+    <select name="productCategory" class="form-control" ng-model="product.category">
       <option value="1">Option one</option>
       <option value="2">Option two</option>
     </select>
@@ -11,7 +11,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="productProfile" ng-bind="i18n('productProfile')"></label>
   <div class="col-md-4">
-    <select id="productProfile" name="productProfile" class="form-control">
+    <select name="productProfile" class="form-control" ng-model="product.profile">
       <option value="1">Option one</option>
       <option value="2">Option two</option>
     </select>
@@ -21,7 +21,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="quantity" ng-bind="i18n('quantity')"></label>
   <div class="col-md-4">
-    <input id="quantity" name="quantity" type="number" min="1" class="form-control input-md" required>
+    <input name="quantity" type="number" min="1" class="form-control input-md" required ng-model="product.quantity">
     <span class="help-block" ng-bind="i18n('numberOfDoses')"></span>
   </div>
 </div>
@@ -29,7 +29,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="program" ng-bind="i18n('program')"></label>
   <div class="col-md-4">
-    <select id="program" name="program" class="form-control">
+    <select name="program" class="form-control" ng-model="product.program">
       <option value="ri" ng-bind="i18n('routineImmunization')"></option>
       <option value="sia" ng-bind="i18n('supplementalImmunizationActivity')"></option>
     </select>

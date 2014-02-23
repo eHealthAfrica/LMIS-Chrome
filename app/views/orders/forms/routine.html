@@ -1,4 +1,4 @@
-<form class="form-horizontal" no-validate>
+<form class="form-horizontal" novalidate>
 <fieldset>
 
   <div class="form-group">
@@ -49,13 +49,21 @@
     </div>
   </div>
 
-  <button name="addProduct" class="btn btn-default">
-    <span ng-bind="i18n('add')"></span>
-    <ng-pluralize count="products.length"
-      when="{'0': i18n('a'), 'one': i18n('another'), 'other': i18n('another')}">
-    </ng-pluralize>
-    <span ng-bind="i18n('product')"></span>
-  </button>
+  <div class="products">
+    <accordion close-others="true">
+      <accordion-group heading="{{i18n('product') | titlecase}} {{product.id}}"
+        ng-repeat="product in products" is-open="true">
+        <div ng-include="'views/orders/forms/partials/product.html'"></div>
+      </accordion-group>
+    </accordion>
+    <button name="addProduct" class="btn btn-default" ng-click="addProduct()">
+      <span ng-bind="i18n('add')"></span>
+      <ng-pluralize count="products.length"
+        when="{'0': i18n('a'), 'one': i18n('another'), 'other': i18n('another')}">
+      </ng-pluralize>
+      <span ng-bind="i18n('product')"></span>
+    </button>
+  </div>
 
   <div class="form-group">
     <div class="col-md-4 pull-right">

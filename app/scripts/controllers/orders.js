@@ -143,7 +143,11 @@ angular.module('lmisChromeApp')
     .state('orders.routine', {
       templateUrl: 'views/orders/forms/routine.html',
       controller: function($scope) {
-        $scope.products = ['1'];
+        $scope.products = [];
+        var id = 1;
+        $scope.addProduct = function() {
+          $scope.products.push({id: id++});
+        };
       }
     });
   });

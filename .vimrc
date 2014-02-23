@@ -14,7 +14,7 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , '<td> proprietary attribute "sortable"'
   \ , '<td> proprietary attribute "filter"'
   \ , '<form> lacks "action" attribute'
-  \ , '<form> proprietary attribute "no-validate"'
+  \ , '<form> proprietary attribute "novalidate"'
   \ , '<alert> is not recognized!'
   \ , 'discarding unexpected <alert>'
   \ , 'discarding unexpected </alert>'
