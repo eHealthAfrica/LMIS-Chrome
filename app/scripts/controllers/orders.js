@@ -141,6 +141,9 @@ angular.module('lmisChromeApp')
       templateUrl: 'views/orders/index.html'
     })
     .state('orders.routine', {
-      templateUrl: 'views/orders/forms/routine.html'
+      templateUrl: 'views/orders/forms/routine.html',
+      controller: function($scope) {
+        $scope.products = ['1'];
+      }
     });
   });

@@ -1,4 +1,4 @@
-<form class="form-horizontal">
+<form class="form-horizontal" no-validate>
 <fieldset>
 
   <div class="form-group">
@@ -49,43 +49,13 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="productCategory" ng-bind="i18n('productCategory')"></label>
-    <div class="col-md-4">
-      <select id="productCategory" name="productCategory" class="form-control">
-        <option value="1">Option one</option>
-        <option value="2">Option two</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="productProfile" ng-bind="i18n('productProfile')"></label>
-    <div class="col-md-4">
-      <select id="productProfile" name="productProfile" class="form-control">
-        <option value="1">Option one</option>
-        <option value="2">Option two</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="quantity" ng-bind="i18n('quantity')"></label>
-    <div class="col-md-4">
-      <input id="quantity" name="quantity" type="number" min="1" class="form-control input-md" required>
-      <span class="help-block" ng-bind="i18n('numberOfDoses')"></span>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="program" ng-bind="i18n('program')"></label>
-    <div class="col-md-4">
-      <select id="program" name="program" class="form-control">
-        <option value="ri" ng-bind="i18n('routineImmunization')"></option>
-        <option value="sia" ng-bind="i18n('supplementalImmunizationActivity')"></option>
-      </select>
-    </div>
-  </div>
+  <button name="addProduct" class="btn btn-default">
+    <span ng-bind="i18n('add')"></span>
+    <ng-pluralize count="products.length"
+      when="{'0': i18n('a'), 'one': i18n('another'), 'other': i18n('another')}">
+    </ng-pluralize>
+    <span ng-bind="i18n('product')"></span>
+  </button>
 
   <div class="form-group">
     <div class="col-md-4 pull-right">
