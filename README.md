@@ -1,5 +1,7 @@
 # LMIS-Chrome
 
+[![Build Status](https://travis-ci.org/eHealthAfrica/LMIS-Chrome.png?branch=master)](https://travis-ci.org/eHealthAfrica/LMIS-Chrome)
+
 ## Usage
 
 0. Install [Chrome][] [Node.js][] and [Git][]
