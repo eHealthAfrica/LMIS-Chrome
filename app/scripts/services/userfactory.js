@@ -2,13 +2,22 @@
 
 angular.module('lmisChromeApp')
   .factory('userFactory', function ($q, storageService) {
-    // Service logic
-    // ...
 
-    var meaningOfLife = 42;
 
     // Public API here
     return {
+
+      /**
+       * return complete JSON object of user attributes even nested attributes if exists.
+       * @param id
+       */
+      get: function(id){
+        var deferred = $q.defer();
+        storageService.find(storageService.USER, id).then(function(data){
+          deferred.resolve(data);
+        });
+        return deferred.promise;
+      },
       getLoggedInUser: function () {
         //TODO: replace with logged in user id
         var loggedInUserId = "1";

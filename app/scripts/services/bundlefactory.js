@@ -5,10 +5,6 @@ angular.module('lmisChromeApp')
 
       var BUNDLE_STATUS = ["Pending", "In Transit", "Done"];//TODO: move this to a table in local storage(JIDEOBI)
 
-      function saveBundleReceiptLines(bundleReceiptLines) {
-
-      }
-
       function saveBundleReceipt(bundleReceipt) {
         //TODO: add proper and necessary checks later like validations when the complete flow and data integrity check
         //has been finalized etc.
@@ -26,7 +22,7 @@ angular.module('lmisChromeApp')
               var bundleReceiptLine = bundleReceiptLines[index];
               bundleReceiptLine['bundle_receipt'] = bundleReceiptUUID;
               storageService.insert(storageService.BUNDLE_RECEIPT_LINES, bundleReceiptLine).then(function (bundleReceiptLineUUID) {
-                console.log(bundleReceiptLineUUID);
+
               });
             }
             return bundleReceiptUUID;

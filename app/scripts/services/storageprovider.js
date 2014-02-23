@@ -389,13 +389,16 @@ angular.module('lmisChromeApp')
       function getFromTableByKey(tableName, key){
          var deferred = $q.defer();
           var result = null;
+          var key = ''+key;//force conversion to string
           try{
             getTable(tableName).then(function (data) {
               result = data[key];
               deferred.resolve(result);
+              if (!$rootScope.$$phase) $rootScope.$apply();
             });
           }catch(e){
             deferred.resolve(result);
+            if (!$rootScope.$$phase) $rootScope.$apply();
           }finally{
              return deferred.promise;
           }
@@ -413,6 +416,7 @@ angular.module('lmisChromeApp')
             rows.push(data[key]);
           }
           deferred.resolve(rows);
+          if (!$rootScope.$$phase) $rootScope.$apply();
         });
         return deferred.promise;
       }
