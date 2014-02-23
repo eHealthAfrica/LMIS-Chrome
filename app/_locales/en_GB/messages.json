@@ -1,5 +1,11 @@
 {
   "authorize": {
     "message": "Authorise"
+  },
+  "supplementalImmunizationActivity": {
+    "message": "Supplemental Immunisation Activity"
+  },
+  "routineImmunization": {
+    "message": "Routine Immunisation"
   }
 }
