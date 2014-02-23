@@ -100,5 +100,8 @@
   },
   "removeProduct": {
     "message": "Remove product"
+  },
+  "authorize": {
+    "message": "Authorize"
   }
 }

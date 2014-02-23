@@ -80,7 +80,11 @@
 
   <div class="form-group">
     <div class="col-md-4 pull-right">
-      <button id="submit" name="submit" class="btn btn-success" ng-bind="i18n('submit')"></button>
+      <button id="authorize" name="authorize" class="btn btn-default"
+        ng-disabled="authorized" ng-bind="i18n('authorize')"
+        ng-click="authorized=true"></button>
+      <button id="submit" name="submit" class="btn btn-success"
+        ng-bind="i18n('submit')" ng-disabled="!authorized"></button>
     </div>
   </div>
 
