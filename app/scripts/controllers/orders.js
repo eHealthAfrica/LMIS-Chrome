@@ -147,13 +147,16 @@ angular.module('lmisChromeApp')
         $scope.order = {};
         $scope.order.products = [];
         $scope.order.date = $filter('date')(new Date(), 'yyyy-MM-dd');
+        $scope.productCount = 0;
         $scope.addProduct = function() {
           $scope.order.products.push({id: id++});
+          $scope.productCount++;
         };
         $scope.removeProduct = function(product) {
           $scope.order.products = $scope.order.products.filter(function(p) {
             return p.id !== product.id;
           });
+          $scope.productCount = $scope.order.products.length;
         };
       }
     });

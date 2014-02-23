@@ -70,7 +70,7 @@
     </accordion>
     <button name="addProduct" class="btn btn-default" ng-click="addProduct()">
       <span ng-bind="i18n('add')"></span>
-      <ng-pluralize count="products.length"
+      <ng-pluralize count="productCount"
         when="{'0': i18n('a'), 'one': i18n('another'), 'other': i18n('another')}">
       </ng-pluralize>
       <span ng-bind="i18n('product')"></span>
