@@ -94,5 +94,8 @@
   },
   "product": {
     "message": "product"
+  },
+  "orderDate": {
+    "message": "Order Date"
   }
 }

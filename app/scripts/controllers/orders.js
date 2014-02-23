@@ -142,10 +142,11 @@ angular.module('lmisChromeApp')
     })
     .state('orders.routine', {
       templateUrl: 'views/orders/forms/routine.html',
-      controller: function($scope) {
+      controller: function($scope, $filter) {
         var id = 1;
         $scope.order = {};
         $scope.order.products = [];
+        $scope.order.date = $filter('date')(new Date(), 'yyyy-MM-dd');
         $scope.addProduct = function() {
           $scope.order.products.push({id: id++});
         };

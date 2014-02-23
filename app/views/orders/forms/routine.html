@@ -49,6 +49,13 @@
     </div>
   </div>
 
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="orderDate" ng-bind="i18n('orderDate')"></label>
+    <div class="col-md-4">
+      <input id="orderDate" name="orderDate" type="date" class="form-control input-md" required ng-model="order.date">
+    </div>
+  </div>
+
   <div class="products">
     <accordion close-others="true">
       <accordion-group heading="{{i18n('product') | titlecase}} {{product.id}}"
