@@ -145,7 +145,20 @@ angular.module('lmisChromeApp')
       data: {
         label: 'Routine order'
       },
-      controller: function($scope, $filter) {
+      resolve: {
+        productCategories: function(storageService) {
+          return storageService.get(storageService.PRODUCT_CATEGORY);
+        },
+        productProfiles: function(storageService) {
+          return storageService.get(storageService.PRODUCT_PROFILE);
+        },
+      },
+      controller: function($scope, $filter, productCategories, productProfiles) {
+        $scope.storage = {
+          categories: productCategories,
+          profiles: productProfiles
+        };
+
         var id = 1;
         $scope.order = {};
         $scope.order.products = [];

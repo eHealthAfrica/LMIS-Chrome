@@ -1,9 +1,10 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="productCategory" ng-bind="i18n('productCategory')"></label>
   <div class="col-md-4">
-    <select name="productCategory" class="form-control" ng-model="product.category">
-      <option value="1">Option one</option>
-      <option value="2">Option two</option>
+    <select name="productCategory" class="form-control"
+      ng-model="product.category">
+      <option value="{{category.uuid}}" ng-bind="category.name"
+        ng-repeat="category in storage.categories"></option>
     </select>
   </div>
 </div>
@@ -12,8 +13,8 @@
   <label class="col-md-4 control-label" for="productProfile" ng-bind="i18n('productProfile')"></label>
   <div class="col-md-4">
     <select name="productProfile" class="form-control" ng-model="product.profile">
-      <option value="1">Option one</option>
-      <option value="2">Option two</option>
+      <option value="profile.uuid" ng-bind="profile.name"
+        ng-repeat="profile in storage.profiles | filter:{category: product.category}"></option>
     </select>
   </div>
 </div>

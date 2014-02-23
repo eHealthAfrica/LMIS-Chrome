@@ -286,6 +286,7 @@ angular.module('lmisChromeApp')
           user,
           productCategory,
           productPresentation,
+          productProfile,
           productFormulation,
           modeOfAdministration,
           batches,
