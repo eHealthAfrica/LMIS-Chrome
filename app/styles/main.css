@@ -103,3 +103,6 @@
 accordion .panel-heading:hover {
   cursor: pointer;
 }
+accordion .panel-heading .panel-title i:hover {
+  color: red;
+}

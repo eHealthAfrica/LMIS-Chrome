@@ -150,6 +150,11 @@ angular.module('lmisChromeApp')
         $scope.addProduct = function() {
           $scope.order.products.push({id: id++});
         };
+        $scope.removeProduct = function(product) {
+          $scope.order.products = $scope.order.products.filter(function(p) {
+            return p.id !== product.id;
+          });
+        };
       }
     });
   });

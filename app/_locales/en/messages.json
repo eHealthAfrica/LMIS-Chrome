@@ -97,5 +97,8 @@
   },
   "orderDate": {
     "message": "Order Date"
+  },
+  "removeProduct": {
+    "message": "Remove product"
   }
 }

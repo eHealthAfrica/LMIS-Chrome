@@ -58,8 +58,13 @@
 
   <div class="products">
     <accordion close-others="true">
-      <accordion-group heading="{{i18n('product') | titlecase}} {{product.id}}"
-        ng-repeat="product in order.products" is-open="true">
+      <accordion-group ng-repeat="product in order.products" is-open="true">
+        <accordion-heading>
+          {{i18n('product') | titlecase}} {{product.id}}
+          <i ng-click="removeProduct(product)"
+            ng-attr-title="{{i18n('removeProduct')}} {{product.id}}"
+            class="pull-right text-muted fa fa-times fa-2x"></i>
+        </accordion-heading>
         <div ng-include="'views/orders/forms/partials/product.html'"></div>
       </accordion-group>
     </accordion>
