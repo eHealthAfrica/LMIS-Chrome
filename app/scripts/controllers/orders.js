@@ -142,6 +142,9 @@ angular.module('lmisChromeApp')
     })
     .state('orders.routine', {
       templateUrl: 'views/orders/forms/routine.html',
+      data: {
+        label: 'Routine order'
+      },
       controller: function($scope, $filter) {
         var id = 1;
         $scope.order = {};
