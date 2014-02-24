@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('storageService', function ($q, $rootScope, $http) {
+    .factory('storageService', function ($q, $rootScope, $http, $window) {
 
       /**
        *  Global variables used to define table names, with this there will be one
@@ -68,7 +68,7 @@ angular.module('lmisChromeApp')
         newStorage[key] = value;
 
         if (hasChromeStorage) {
-          chrome.storage.local.set(newStorage, function () {
+          $window.chrome.storage.local.set(newStorage, function () {
             console.log("saved: " + key);
             defered.resolve();
             if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
@@ -88,7 +88,7 @@ angular.module('lmisChromeApp')
       function getTable(key) {
         var defered = $q.defer();
         if (hasChromeStorage) {
-          chrome.storage.local.get(key, function (data) {
+          $window.chrome.storage.local.get(key, function (data) {
             //console.log("getFromChrome: " + key);
             defered.resolve(data[key] || {});
             if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
@@ -107,7 +107,7 @@ angular.module('lmisChromeApp')
       function getAllFromStore() {
         var defered = $q.defer();
         if (hasChromeStorage) {
-          chrome.storage.local.get(null, function (data) {
+          $window.chrome.storage.local.get(null, function (data) {
             //console.log("getAllFromChrome" );
             defered.resolve(data);
             if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
@@ -127,7 +127,7 @@ angular.module('lmisChromeApp')
       function removeTable(key) {
         var defered = $q.defer();
         if (hasChromeStorage) {
-          chrome.storage.local.get(key, function () {
+          $window.chrome.storage.local.get(key, function () {
             console.log("removeFromChrome: " + key);
             defered.resolve();
             if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
@@ -146,7 +146,7 @@ angular.module('lmisChromeApp')
       function clearFromStore() {
         var defered = $q.defer();
         if (hasChromeStorage) {
-          chrome.storage.local.clear(function () {
+          $window.chrome.storage.local.clear(function () {
             console.log("clearFromChrome");
             defered.resolve();
             if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
@@ -164,10 +164,10 @@ angular.module('lmisChromeApp')
        */
       function testChromeStorage() {
         try {
-          chrome.storage.local.set({'angular.chromeStorage.test': true}, function () {
+          $window.chrome.storage.local.set({'angular.chromeStorage.test': true}, function () {
             //console.log('set: success');
           });
-          chrome.storage.local.remove('angular.chromeStorage.test', function () {
+          $window.chrome.storage.local.remove('angular.chromeStorage.test', function () {
             //console.log('remove: success');
           });
           return true;
