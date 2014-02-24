@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <h3>Order Type</h3>
+</div>
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-6">
+      <a ui-sref="orders.place({program: 'edc769e2-b26e-40e0-9b58-b59785cf50f7'})" ng-click="$close()">
+        <div class="box_stat box_ico">
+          <span class="stat_ico stat_ico_1">
+            <i class="li_calendar"></i>
+          </span>
+          <h4 ng-bind="i18n('routine')"></h4>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-6">
+      <a ui-sref="orders.place({program: '39a07d76-9d4b-4c9e-b50b-bba827d08f74'})" ng-click="$close()">
+        <div class="box_stat box_ico">
+          <span class="stat_ico stat_ico_2">
+            <i class="li_tag"></i>
+          </span>
+          <h4>
+            <abbr class="initialism"
+              ng-attr-title="{{i18n('supplementalImmunizationActivity')}}"
+              ng-bind="i18n('sia')"></abbr>
+          </h4>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

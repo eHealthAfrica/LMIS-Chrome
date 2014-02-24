@@ -100,3 +100,9 @@
     border: #ffffff solid 1px;
 
 }
+accordion .panel-heading:hover {
+  cursor: pointer;
+}
+.products accordion .panel-heading .panel-title i:hover {
+  color: red;
+}

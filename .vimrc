@@ -4,6 +4,8 @@ setlocal wildignore+=dist,Ebro
 let g:syntastic_html_tidy_ignore_errors = [
   \ 'trimming empty <i>'
   \ , 'trimming empty <span>'
+  \ , 'trimming empty <label>'
+  \ , 'trimming empty <option>'
   \ , 'unescaped & which should be written as &amp;'
   \ , ' proprietary attribute "ng-'
   \ , ' proprietary attribute "ui-'
@@ -12,6 +14,7 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , '<td> proprietary attribute "sortable"'
   \ , '<td> proprietary attribute "filter"'
   \ , '<form> lacks "action" attribute'
+  \ , '<form> proprietary attribute "novalidate"'
   \ , '<alert> is not recognized!'
   \ , 'discarding unexpected <alert>'
   \ , 'discarding unexpected </alert>'
@@ -33,6 +36,13 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , '<ui-view> is not recognized!'
   \ , 'discarding unexpected <ui-view>'
   \ , 'discarding unexpected </ui-view>'
+  \ , '<ng-pluralize> is not recognized!'
+  \ , 'discarding unexpected <ng-pluralize>'
+  \ , 'discarding unexpected </ng-pluralize>'
+  \ , 'missing </a> before <div>'
+  \ , 'discarding unexpected </a>'
+  \ , '<input> proprietary attribute "required"'
+  \ , '<input> proprietary attribute "min"'
   \ ]
 
 " javascript-libraries-syntax.vim

@@ -31,5 +31,77 @@
   },
   "incomingOrders": {
     "message": "View received orders"
+  },
+  "routine": {
+    "message": "Routine"
+  },
+  "sia": {
+    "message": "SIA"
+  },
+  "submit": {
+    "message": "Submit"
+  },
+  "receivingFacilityName": {
+    "message": "Receiving Facility Name"
+  },
+  "childFacilityCode": {
+    "message": "Child Facility Code"
+  },
+  "parentFacilityCode": {
+    "message": "Parent Facility Code"
+  },
+  "parentFacilityName": {
+    "message": "Parent Facility Name"
+  },
+  "userCode": {
+    "message": "User Code"
+  },
+  "orderNumber": {
+    "message": "Order Number"
+  },
+  "productCategory": {
+    "message": "Product Category"
+  },
+  "productProfile": {
+    "message": "Product Profile"
+  },
+  "quantity": {
+    "message": "Quantity"
+  },
+  "program": {
+    "message": "Program"
+  },
+  "numberOfDoses": {
+    "message": "Number of doses"
+  },
+  "supplementalImmunizationActivity": {
+    "message": "Supplemental Immunization Activity"
+  },
+  "ri": {
+    "message": "RI"
+  },
+  "routineImmunization": {
+    "message": "Routine Immunization"
+  },
+  "a": {
+    "message": "a"
+  },
+  "another": {
+    "message": "another"
+  },
+  "add": {
+    "message": "Add"
+  },
+  "product": {
+    "message": "product"
+  },
+  "orderDate": {
+    "message": "Order Date"
+  },
+  "removeProduct": {
+    "message": "Remove product"
+  },
+  "authorize": {
+    "message": "Authorize"
   }
 }
