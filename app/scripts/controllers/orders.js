@@ -152,17 +152,31 @@ angular.module('lmisChromeApp')
         productProfiles: function(storageService) {
           return storageService.get(storageService.PRODUCT_PROFILE);
         },
+        uuid: function(storageService) {
+          return storageService.uuid;
+        },
+        facilities: function(storageService) {
+          return storageService.get(storageService.FACILITY);
+        },
+        user: function(storageService) {
+          return storageService.get(storageService.USER);
+        },
       },
-      controller: function($scope, $filter, productCategories, productProfiles) {
+      controller: function($scope, $filter, productCategories, productProfiles, uuid, facilities, user) {
         $scope.storage = {
           categories: productCategories,
-          profiles: productProfiles
+          profiles: productProfiles,
+          facilities: facilities,
+        };
+
+        $scope.order = {
+          products: [],
+          date: $filter('date')(new Date(), 'yyyy-MM-dd'),
+          number: uuid(),
+          userCode: user['1'].id,
         };
 
         var id = 1;
-        $scope.order = {};
-        $scope.order.products = [];
-        $scope.order.date = $filter('date')(new Date(), 'yyyy-MM-dd');
         $scope.productCount = 0;
         $scope.addProduct = function() {
           $scope.order.products.push({id: id++});
