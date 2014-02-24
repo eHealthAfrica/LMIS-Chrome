@@ -17,6 +17,12 @@ angular.module('lmisChromeApp', [
     );
   })
 
+  // Disable ui-router auto scrolling
+  .config(function($uiViewScrollProvider, $anchorScrollProvider) {
+    $uiViewScrollProvider.useAnchorScroll();
+    $anchorScrollProvider.disableAutoScrolling();
+  })
+
   // Central Variable for Watching Online/Offline Events
   .run(function($window, $rootScope, $state, $stateParams, storageService) {
     //global message placeholder
