@@ -32,8 +32,9 @@
   <label class="col-md-4 control-label" for="program" ng-bind="i18n('program')"></label>
   <div class="col-md-4">
     <select name="program" class="form-control" ng-model="product.program">
-      <option value="ri" ng-bind="i18n('routineImmunization')"></option>
-      <option value="sia" ng-bind="i18n('supplementalImmunizationActivity')"></option>
+      <option value="{{program.uuid}}" ng-bind="program.name"
+        ng-selected="{{program.uuid === order.program}}"
+        ng-repeat="program in storage.programs"></option>
     </select>
   </div>
 </div>

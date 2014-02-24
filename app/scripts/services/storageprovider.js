@@ -292,7 +292,8 @@ angular.module('lmisChromeApp')
           batches,
           orders,
           bundles,
-          bundleLines
+          bundleLines,
+          program
         ]
         for (var i in database) {
           loadData(database[i]);

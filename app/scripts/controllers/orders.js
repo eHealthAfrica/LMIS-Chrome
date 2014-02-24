@@ -140,10 +140,11 @@ angular.module('lmisChromeApp')
       abstract: true,
       templateUrl: 'views/orders/index.html'
     })
-    .state('orders.routine', {
-      templateUrl: 'views/orders/forms/routine.html',
+    .state('orders.place', {
+      url: '/orders/place?program',
+      templateUrl: 'views/orders/forms/place.html',
       data: {
-        label: 'Routine order'
+        label: 'Place order'
       },
       resolve: {
         productCategories: function(storageService) {
@@ -161,12 +162,16 @@ angular.module('lmisChromeApp')
         user: function(storageService) {
           return storageService.get(storageService.USER);
         },
+        programs: function(storageService) {
+          return storageService.get(storageService.PROGRAM);
+        },
       },
-      controller: function($scope, $filter, productCategories, productProfiles, uuid, facilities, user) {
+      controller: function($scope, $filter, productCategories, productProfiles, uuid, facilities, user, programs, $stateParams) {
         $scope.storage = {
           categories: productCategories,
           profiles: productProfiles,
           facilities: facilities,
+          programs: programs
         };
 
         $scope.order = {
@@ -174,6 +179,7 @@ angular.module('lmisChromeApp')
           date: $filter('date')(new Date(), 'yyyy-MM-dd'),
           number: uuid(),
           userCode: user['1'].id,
+          program: $stateParams.program
         };
 
         var id = 1;
