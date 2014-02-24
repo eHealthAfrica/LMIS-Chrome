@@ -28,8 +28,7 @@
 
 ## Testing
 
-1. `cd test; bower install; cd ..`
-2. `npm test`
+1. `grunt test`
 
 ## Author
 
