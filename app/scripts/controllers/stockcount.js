@@ -131,8 +131,4 @@ angular.module('lmisChromeApp')
         $scope.stock_count.used_opened = [];
         $scope.stock_count.used_unopened = [];
         $scope.stock_count.confirmation = [];
-
     });
-$('.dropdown-btn').on('hide.bs.dropdown', function () {
-    return false;
-});
