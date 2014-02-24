@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp', [
-  'ngCookies',
   'ngResource',
-  'ngSanitize',
   'restangular',
   'ui.bootstrap',
   'ngTable',
