@@ -15,19 +15,8 @@ chromeApp.config(function ($stateProvider) {
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageService, productCategoryFactory, bundleFactory, userFactory, facilityFactory) {
-
-  console.log(userFactory.get("1"));
-
-  userFactory.get(1).then(function(data){
-    console.log(data);
-  });
-
-  console.log(productCategoryFactory.get("00f987e4-54e1-46f0-820b-b249a6d38759"))
-
-  productCategoryFactory.getAll().then(function(data){
-    console.log(data);
-  });
+chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageService, productTypeFactory, productCategoryFactory,
+                                                  uomFactory, uomCategoryFactory, bundleFactory, userFactory, facilityFactory) {
 
   $scope.found = false;
   $scope.clicked = false;
