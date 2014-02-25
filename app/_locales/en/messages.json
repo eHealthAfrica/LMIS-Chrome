@@ -89,11 +89,14 @@
   "another": {
     "message": "another"
   },
-  "add": {
-    "message": "Add"
-  },
-  "product": {
-    "message": "product"
+  "addProduct": {
+    "message": "Add $DETERMINER$ product",
+    "placeholders": {
+      "determiner": {
+        "content": "$1",
+        "example": "another"
+      }
+    }
   },
   "orderDate": {
     "message": "Order Date"
@@ -112,6 +115,18 @@
   },
   "viewProductTypes": {
     "message": "View product types"
+  },
+  "product": {
+    "message": "Product"
+  },
+  "productID": {
+    "message": "Product $id$",
+    "placeholders": {
+      "id": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
   },
   "productTypes": {
     "message": "Product types"
