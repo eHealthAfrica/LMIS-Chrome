@@ -68,7 +68,7 @@
     <accordion close-others="true">
       <accordion-group ng-repeat="product in order.products" is-open="true">
         <accordion-heading>
-          {{i18n('product') | titlecase}} {{product.id}}
+          <span class="text-titlecase">{{i18n('product')}} {{product.id}}</span>
           <i ng-click="removeProduct(product)"
             ng-attr-title="{{i18n('removeProduct')}} {{product.id}}"
             class="pull-right text-muted fa fa-times fa-2x"></i>
