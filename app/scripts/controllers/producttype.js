@@ -5,48 +5,47 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       .state('productTypeListView', {
         url: '/product-types-view',
         templateUrl: '/views/product-types/product-types-list.html',
-        controller: 'ProductTypeListCtrl'
+        controller: 'ProductTypeListCtrl',
+        resolve: {
+          productTypes: function (productTypeFactory) {
+            return productTypeFactory.getAll();
+          }
+        }
       });
 })
 /**
  * ProductListCtrl controller handles display of product-types pulled from storage.
  */
-    .controller('ProductTypeListCtrl', function ($scope, storageService, productTypeFactory, $filter, ngTableParams) {
-
-
-
-   productTypeFactory.getAll().then(function (data) {
-       console.log(data);
-        // Table defaults
-        var params = {
-          page: 1,
-          count: 10,
-          sorting: {
-            name: 'asc'
-          }
-        };
-
-        // Pagination
-        var resolver = {
-          total: data.length,
-          getData: function ($defer, params) {
-            var filtered, sorted = data;
-            if (params.filter()) {
-              filtered = $filter('filter')(data, params.filter());
-            }
-            if (params.sorting()) {
-              sorted = $filter('orderBy')(filtered, params.orderBy());
-            }
-            params.total(sorted.length);
-            $defer.resolve(sorted.slice(
-                (params.page() - 1) * params.count(),
-                params.page() * params.count()
-            ));
-          }
+    .controller('ProductTypeListCtrl', function ($scope, productTypes, $filter, ngTableParams) {
+      // Table defaults
+      var params = {
+        page: 1,
+        count: 10,
+        sorting: {
+          name: 'asc'
         }
-          $scope.productTypes = new ngTableParams(params, resolver);
-      });
+      };
 
+      // Pagination
+      var resolver = {
+        total: productTypes.length,
+        getData: function ($defer, params) {
+          var filtered, sorted = productTypes;
+          if (params.filter()) {
+            filtered = $filter('filter')(productTypes, params.filter());
+          }
+          if (params.sorting()) {
+            sorted = $filter('orderBy')(filtered, params.orderBy());
+          }
+          params.total(sorted.length);
+          $defer.resolve(sorted.slice(
+              (params.page() - 1) * params.count(),
+              params.page() * params.count()
+          ));
+        }
+      }
+
+      $scope.productTypes = new ngTableParams(params, resolver);
     })
 
 
