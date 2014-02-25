@@ -81,7 +81,6 @@ angular.module('lmisChromeApp')
 
       batchFactory.getAll().then(function(data){
 
-
         var params = {
           page: 1,
           count: 10,

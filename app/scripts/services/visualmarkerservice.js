@@ -33,7 +33,7 @@ angular.module('lmisChromeApp')
     };
 
     return {
-      markByExpirationStatus: highlightByExpirationStatus
+      highlightByExpirationStatus: highlightByExpirationStatus
     };
 
   });
