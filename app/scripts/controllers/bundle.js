@@ -1,13 +1,14 @@
 'use strict';
 
-angular.module('lmisChromeApp').chromeApp.config(function ($stateProvider) {
-  $stateProvider
-      .state('incomingLog', {
-        url: '/incoming-log',
-        templateUrl: '/views/bundles/incoming-log.html',
-        controller: 'logIncomingCtrl'
-      });
-})
+angular.module('lmisChromeApp')
+    .config(function ($stateProvider) {
+      $stateProvider
+          .state('incomingLog', {
+            url: '/incoming-log',
+            templateUrl: '/views/bundles/incoming-log.html',
+            controller: 'logIncomingCtrl'
+          });
+    })
 
 /**
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
