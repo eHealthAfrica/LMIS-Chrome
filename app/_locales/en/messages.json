@@ -53,18 +53,6 @@
   "parentFacilityName": {
     "message": "Parent Facility Name"
   },
-  "sendingFacility": {
-    "message": "Sending Facility"
-  },
-  "selectSendingFacility": {
-    "message": "select sending facility"
-  },
-  "receivingFacility": {
-    "message": "Receiving Facility"
-  },
-  "selectReceivingFacility": {
-    "message": "select receiving facility"
-  },
   "userCode": {
     "message": "User Code"
   },
@@ -109,14 +97,6 @@
         "example": "another"
       }
     }
-  "addProduct": {
-    "message": "Add $DETERMINER$ product",
-    "placeholders": {
-      "determiner": {
-        "content": "$1",
-        "example": "another"
-      }
-    }
   },
   "orderDate": {
     "message": "Order Date"
@@ -127,7 +107,7 @@
   "authorize": {
     "message": "Authorize"
   },
-  "manageInventory": {
+  "manageInventory":{
     "message": "Manage inventory"
   },
   "viewBatch": {
@@ -147,44 +127,5 @@
         "example": "1"
       }
     }
-  },
-  "product": {
-    "message": "Product"
-  },
-  "productID": {
-    "message": "Product $id$",
-    "placeholders": {
-      "id": {
-        "content": "$1",
-        "example": "1"
-      }
-    }
-  },
-  "productTypes": {
-    "message": "Product Types"
-  },
-  "addProductType": {
-    "message": "Add Product Type"
-  },
-  "batches": {
-    "message": "Batches"
-  },
-  "batchNo": {
-    "message": "Batch No"
-  },
-  "storageUnit": {
-    "message": "Storage Unit"
-  },
-  "verify": {
-    "message": "Verify"
-  },
-  "quantity": {
-    "message": "Quantity"
-  },
-  "bundleNo": {
-    "message": "Bundle No."
-  },
-  "dateReceived": {
-    "message": "Date Received"
   }
 }
