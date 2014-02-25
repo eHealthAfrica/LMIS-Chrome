@@ -212,7 +212,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       storageService.get('programs').then(function (data) {
         $scope.programs = data;
       });
-      //get program products
+      //get program product-types
       storageService.get(storageService.PROGRAM_PRODUCTS).then(function (data) {
         $scope.program_products = data;
       });

@@ -4,12 +4,12 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider
       .state('productTypeListView', {
         url: '/product-types-view',
-        templateUrl: '/views/products/product-type-list.html',
+        templateUrl: '/views/product-types/product-types-list.html',
         controller: 'ProductTypeListCtrl'
       });
 })
 /**
- * ProductListCtrl controller handles display of products pulled from storage.
+ * ProductListCtrl controller handles display of product-types pulled from storage.
  */
     .controller('ProductTypeListCtrl', function ($scope, storageService, productTypeFactory, $filter, ngTableParams) {
 
@@ -78,7 +78,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
                 message: 'Data saved ',
                 type: 'success'
               });
-              $location.path('/main/products');
+              $location.path('/main/product-types');
             } else {
 
             }

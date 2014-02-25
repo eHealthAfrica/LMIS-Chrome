@@ -83,7 +83,7 @@ angular.module('lmisChromeApp')
 
 
 /**
- *  programProductFormCtrl - This handles the addition of program products
+ *  programProductFormCtrl - This handles the addition of program product-types
  *
  *
  */

@@ -15,7 +15,7 @@ angular.module('lmisChromeApp')
 
         },
         /*
-        * create and populate column based on count of program products for a given facility
+        * create and populate column based on count of program product-types for a given facility
          */
         status_column:function(stock_products){
             var table_html = '<td></td>';
