@@ -68,7 +68,7 @@
     <accordion close-others="true">
       <accordion-group ng-repeat="product in order.products" is-open="true">
         <accordion-heading>
-          <span class="text-titlecase">{{i18n('product')}} {{product.id}}</span>
+          <span ng-bind="i18n('productID', '' + product.id)"></span>
           <i ng-click="removeProduct(product)"
             ng-attr-title="{{i18n('removeProduct')}} {{product.id}}"
             class="pull-right text-muted fa fa-times fa-2x"></i>
@@ -78,11 +78,7 @@
     </accordion>
     <button name="addProduct" class="btn btn-default" ng-click="addProduct()">
       <span><i class="fa fa-plus"></i></span>
-      <span ng-bind="i18n('add')"></span>
-      <ng-pluralize count="productCount"
-        when="{'0': i18n('a'), 'one': i18n('another'), 'other': i18n('another')}">
-      </ng-pluralize>
-      <span ng-bind="i18n('product')"></span>
+      <span ng-bind="i18n('addProduct', determiner)"></span>
     </button>
   </div>
 
