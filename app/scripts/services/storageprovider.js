@@ -390,7 +390,7 @@ angular.module('lmisChromeApp')
       function getFromTableByKey(tableName, key){
          var deferred = $q.defer();
           var result = null;
-          var key = ''+key;//force conversion to string
+          var key = String(key);//force conversion to string
           try{
             getTable(tableName).then(function (data) {
               result = data[key];
