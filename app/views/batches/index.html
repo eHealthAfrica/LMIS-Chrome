@@ -41,33 +41,31 @@
       </div>
 
       <div class="scrollable-container">
-        <table ng-table="productItemList" class="table table-condensed table-hover table-bordered oversize-table">
-          <tr ng-repeat="productItem in $data | filter:search"
-              class="{{ highlight(productItem.expiration_date, orderByMonths) }} center-text">
+        <table ng-table="batches" class="table table-condensed table-hover table-bordered oversize-table">
+          <tr ng-repeat="batch in $data | filter:search"
+              class="{{ highlight(batch.expiration_date, orderByMonths) }} center-text">
             <td data-title="'#'">{{ $index + 1 }}</td>
-            <td data-title="'Batch No'" sortable="'batch_no'">{{ productItem.batch_no }}</td>
-            <td data-title="'Product Name'">{{ products[productItem.product].name }}</td>
-            <td data-title="'Expiration Date'" sortable="'expiration_date'">
-              {{ productItem.expiration_date | date:'dd-MM-yyyy' }}
+            <td data-title="'Batch No'" sortable="'batch_no'" ng-bind="batch.batch_no"></td>
+            <td data-title="'Product Name'"  ng-bind="(batch.product).name"></td>
+            <td data-title="'Expiration Date'" sortable="'expiration_date'"
+                ng-bind="(batch.expiration_date | date:'dd-MM-yyyy')"></td>
+            <td data-title="'Manufacturer'" ng-bind="(batch.manufacturer).name"></td>
+            <td data-title="'Presentation'" ng-bind="(batch.presentation).name"></td>
+            <td data-title="'Formulation'" ng-bind="(batch.formulation).name"></td>
+            <td data-title="'Mode Of Administration'" ng-bind="(batch.mode_of_use).name"></td>
+            <td data-title="'Packed Volume'" sortable="'packed_volume'"
+                ng-bind="(batch.packed_volume+' '+(batch.volume_uom).symbol)">
             </td>
-            <td data-title="'Manufacturer'">{{ companies[productItem.manufacturer].name }}</td>
-            <td data-title="'Presentation'">{{ presentations[productItem.presentation].name }}</td>
-            <td data-title="'Formulation'">{{ productFormulation[productItem.formulation].name }}</td>
-            <td data-title="'Mode Of Administration'">{{ modesOfAdmin[productItem.mode_of_use].name }}</td>
-            <td data-title="'Packed Volume'" sortable="'packed_volume'">
-              {{ productItem.packed_volume +' '+ uomList[productItem.volume_uom].symbol }}
+            <td data-title="'Diluent Packed per Volume'" sortable="'diluent_per_volume'"
+                ng-bind="(batch.diluent_per_volume+' '+(batch.volume_uom).symbol)">
             </td>
-            <td data-title="'Diluent Packed per Volume'" sortable="'diluent_per_volume'">
-              {{ productItem.diluent_per_volume +' '+ uomList[productItem.volume_uom].symbol }}
+            <td data-title="'Price per Unit'" sortable="'price_per_unit'"
+                ng-bind="((batch.price_currency).symbol+' '+batch.price_per_unit)">
             </td>
-            <td data-title="'Price per Unit'" sortable="'price_per_unit'">
-              {{ currencies[productItem.price_currency].symbol +' '+ productItem.price_per_unit }}
-            </td>
-            <td data-title="'Description'">{{ productItem.description }}</td>
-            <td data-title="'Fund Source'">{{ companies[productItem.fund_sources].name }}</td>
+            <td data-title="'Description'" ng-bind="batch.description"></td>
             <td data-title="'Active'" sortable="'active'">
-              <span ng-show="productItem.active"><i class="fa fa-check-circle green-icon"></i></span>
-              <span ng-hide="productItem.active"><i class="fa fa-times-circle red-icon"></i></span>
+              <span ng-show="batch.active"><i class="fa fa-check-circle green-icon"></i></span>
+              <span ng-hide="batch.active"><i class="fa fa-times-circle red-icon"></i></span>
             </td>
           </tr>
         </table>

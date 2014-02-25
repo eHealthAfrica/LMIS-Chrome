@@ -20,7 +20,21 @@ angular.module('lmisChromeApp')
     // Public API here
     return {
 
-
+    getAll: function(){
+        var deferred = $q.defer();
+        storageService.get(storageService.PRODUCT_PRESENTATION).then(function(data){
+          var presentations = [];
+          for(var uuid in data){
+            getByUUID(uuid).then(function(data){
+                if(data !== undefined){
+                  presentations.push(data);
+                }
+            });
+          }
+          deferred.resolve(presentations);
+        });
+        return deferred.promise;
+      },
 
       get: getByUUID
     };

@@ -15,8 +15,7 @@ chromeApp.config(function ($stateProvider) {
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageService, productTypeFactory, productCategoryFactory,
-                                                  uomFactory, uomCategoryFactory, bundleFactory, userFactory, facilityFactory) {
+chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageService, bundleFactory, userFactory, facilityFactory) {
 
   $scope.found = false;
   $scope.clicked = false;
@@ -26,7 +25,6 @@ chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageServic
   $scope.logIncomingForm = {};
   $scope.logIncomingForm.verify = [];
   $scope.logIncomingForm.storage_units = [];
-
 
   $scope.getCurrentDate = function () {
     var today = new Date();
@@ -45,12 +43,10 @@ chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageServic
     return $filter('number')(bundleLine.quantity, 0) + ' ' + bundleLine.quantity_uom.symbol;
   }
 
-
   /**
    * function that shows form used to log incoming bundle if it already exists in the system.
    */
   $scope.showBundle = function () {
-
 
     $scope.clicked = true;
     bundleFactory.getBundle($scope.showBundleNo).then(function (data) {
@@ -67,7 +63,6 @@ chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageServic
       }
       $scope.found = false;
     });
-
   };
 
 
@@ -105,10 +100,9 @@ chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageServic
     };
     var bundleReceiptUUID = bundleFactory.saveBundleReceipt(bundleReceipt);
     if (bundleReceiptUUID !== undefined) {
-      //update inventory
+      //TODO: update inventory(jideobi)
       return;
     }
-    //display error message insertion failed.
   }
 });
 

@@ -11,10 +11,12 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 /**
  * ProductListCtrl controller handles display of products pulled from storage.
  */
-    .controller('ProductTypeListCtrl', function ($scope, storageService, utility, productTypeFactory, $filter, ngTableParams) {
+    .controller('ProductTypeListCtrl', function ($scope, storageService, productTypeFactory, $filter, ngTableParams) {
 
-      productTypeFactory.getAll().then(function (data) {
 
+
+   productTypeFactory.getAll().then(function (data) {
+       console.log(data);
         // Table defaults
         var params = {
           page: 1,
@@ -42,9 +44,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             ));
           }
         }
-
-        $scope.productTypes = new ngTableParams(params, resolver);
+          $scope.productTypes = new ngTableParams(params, resolver);
       });
+
     })
 
 

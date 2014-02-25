@@ -25,11 +25,9 @@ angular.module('lmisChromeApp')
         storageService.get(storageService.UOM).then(function(data){
           var uomList = [];
           for(var uuid in data){
-            var uom = null;
             getUOMbyUUID(uuid).then(function(data){
-                uom = data;
-                if(uom !== undefined){
-                  uomList.push(uom);
+                if(data !== undefined){
+                  uomList.push(data);
                 }
             });
           }

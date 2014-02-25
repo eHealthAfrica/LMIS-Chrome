@@ -16,7 +16,7 @@ angular.module('lmisChromeApp')
     * @return {String} css class
     * @private
     */
-    function  getCCEByExpirationDate(expirationDate, monthsBeforeExpiration) {
+    function  highlightByExpirationStatus(expirationDate, monthsBeforeExpiration) {
         var currentDate = new Date();
         var expirationDateObj = new Date(expirationDate);
         var monthsInAYear = 12;
@@ -33,7 +33,7 @@ angular.module('lmisChromeApp')
     };
 
     return {
-      markByExpirationStatus: getCCEByExpirationDate
+      markByExpirationStatus: highlightByExpirationStatus
     };
 
   });

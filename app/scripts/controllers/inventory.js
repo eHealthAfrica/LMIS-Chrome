@@ -258,7 +258,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.cceList = data;
       });
 
-      $scope.highlight = visualMarkerService.markByExpirationStatus;
+      $scope.highlight = visualMarkerService.highlightByExpirationStatus;
 
       storageService.all(storageService.INVENTORY).then(function (data) {
         // Table defaults
