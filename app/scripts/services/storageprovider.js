@@ -40,6 +40,8 @@ angular.module('lmisChromeApp')
       var orders = "orders";
       var bundles = "bundle";
       var bundleLines = "bundle_lines";
+      var bundleReceipt = "bundle_receipts";
+      var bundleReceiptLines = "bundle_receipt_lines";
 
       /**
        * Boolean flag indicating client support for Chrome Storage
@@ -235,9 +237,10 @@ angular.module('lmisChromeApp')
                     var uuid = (uuid_test)? obj['uuid'] : uuid_generator();
                     table_data[uuid] = obj;
                     addTable(table, table_data);
-                    deferred.resolve(true);
+                    deferred.resolve(uuid);
                 }
                 else{
+                  deferred.resolve(null);
                     console.log(table_data);
                 }
             });
@@ -250,7 +253,7 @@ angular.module('lmisChromeApp')
               obj['modified'] = '0000-00-00 00:00:00';
             table_data[obj['uuid']] = obj;
             addTable(table, table_data);
-            deferred.resolve(true);
+            deferred.resolve(obj.uuid);
             //console.log("new entry");
           }
         });
@@ -293,7 +296,7 @@ angular.module('lmisChromeApp')
           orders,
           bundles,
           bundleLines,
-          program
+          bundleReceipt
         ]
         for (var i in database) {
           loadData(database[i]);
@@ -387,13 +390,16 @@ angular.module('lmisChromeApp')
       function getFromTableByKey(tableName, key){
          var deferred = $q.defer();
           var result = null;
+          var key = ''+key;//force conversion to string
           try{
             getTable(tableName).then(function (data) {
               result = data[key];
               deferred.resolve(result);
+              if (!$rootScope.$$phase) $rootScope.$apply();
             });
           }catch(e){
             deferred.resolve(result);
+            if (!$rootScope.$$phase) $rootScope.$apply();
           }finally{
              return deferred.promise;
           }
@@ -411,6 +417,7 @@ angular.module('lmisChromeApp')
             rows.push(data[key]);
           }
           deferred.resolve(rows);
+          if (!$rootScope.$$phase) $rootScope.$apply();
         });
         return deferred.promise;
       }
@@ -456,7 +463,9 @@ angular.module('lmisChromeApp')
         INVENTORY: inventory,
         ORDERS: orders,
         BUNDLE: bundles,
-        BUNDLE_LINES: bundleLines
+        BUNDLE_LINES: bundleLines,
+        BUNDLE_RECEIPT: bundleReceipt,
+        BUNDLE_RECEIPT_LINES: bundleReceiptLines
       };
 
     });

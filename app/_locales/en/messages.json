@@ -103,5 +103,17 @@
   },
   "authorize": {
     "message": "Authorize"
+  },
+  "manageInventory":{
+    "message": "Manage inventory"
+  },
+  "product":{
+    "message": "Product"
+  },
+  "viewBatch":{
+    "message": "View batch list"
+  },
+  "viewProductTypes":{
+    "message": "View product types"
   }
 }

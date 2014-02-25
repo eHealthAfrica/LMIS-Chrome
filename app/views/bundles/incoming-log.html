@@ -1,0 +1,164 @@
+<div>
+  <div class="row">
+    <ol class="breadcrumb">
+      <li><a ui-sref="home.index.controlPanel"><i class="fa fa-home"> Home</i></a></li>
+      <li> Bundle</li>
+      <li class="active">Log Incoming</li>
+    </ol>
+  </div>
+
+  <div class="row" ng-show="!show">
+    <div class="row alert-danger" ng-if="clicked && !found">
+      <div class="col-sm-18">
+        <div class="col-sm-12">
+          <h5>Bundle with Bundle No: {{ showBundleNo }} not found.</h5>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-18">
+
+        <div class="col-sm-4">
+          <label for="bundleNo">Bundle Number</label>
+          <input class="form-control" type="text" name="bundleNo" id="bundleNo" ng-model="showBundleNo"
+                 placeholder="scan or type bundle number"/>
+        </div>
+
+        <div class="col-sm-4">
+          <label for="loadBundle">&nbsp;</label>
+          <button type="submit" ng-click="showBundle()" id="loadBundle" name="loadBundle"
+                  class="btn btn-success btn-lg btn-block">Show Bundle
+          </button>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-show="show">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="btn-group col-sm-2">
+          <span ng-click="hideBundle()" class="btn btn-default"><i class="fa fa-chevron-circle-left"></i> Back</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">Add Incoming Bundle</h4>
+          </div>
+
+          <div class="panel-body">
+            <form name="logIncomingBundle" ng-submit="authorize()">
+              <div class="row">
+                <div class="col-sm-18">
+                  <div class="col-sm-6">
+                    <label for="receivingFacility">Receiving Facility</label>
+                    <input class="form-control" ng-disabled="true" type="text" name="receivingFacility"
+                           id="receivingFacility" ng-model="receiving_facility"/>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label for="parentFacility">Parent Facility</label>
+                    <input class="form-control" ng-disabled="true" type="text" name="parentFacility" id="parentFacility"
+                           ng-model="parent"/>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-18">
+                  <div class="col-sm-6">
+                    <label for="bundleNumber">Bundle No.</label>
+                    <input ng-model="bundle.uuid" class="form-control" ng-disabled="true" type="text"
+                           name="bundleNumber"
+                           id="bundleNumber"/>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label for="orderNo">Order No.</label>
+                    <input class="form-control" ng-disabled="true" type="text" name="orderNo" id="orderNo"
+                           ng-model="bundle.order"/>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-18">
+                  <div class="col-sm-6">
+                    <label for="user">User</label>
+                    <input class="form-control" ng-disabled="true" type="text" name="user" id="user"
+                           ng-model="loggedInUser.username"/>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label for="date" ng-model="bundle.date">Date <i class="fa fa-calendar"></i></label>
+                    <input class="form-control" type="date" name="date" id="date" value="{{ bundle.date }}"/>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row col-sm-16">
+
+                <table class="table table-condensed table-hover table-bordered">
+                  <tr>
+                    <thead>
+                    <th>#</th>
+                    <th>Batch No.</th>
+                    <th>Product Type</th>
+                    <th>Program</th>
+                    <th>Quantity</th>
+                    <th>Verify</th>
+                    <th>Storage Unit</th>
+                    </thead>
+                  </tr>
+
+                  <tr ng-repeat="bundleLine in bundle.bundle_lines">
+                    <td>{{ $index + 1 }}</td>
+                    <td ng-init="batch = bundleLine.batch" ng-bind="batch.batch_no"></td>
+                    <td ng-init="productType = getProductType(bundleLine)" ng-bind="productType.name"></td>
+                    <td ng-init="program = bundleLine.program" ng-bind="program.name"></td>
+                    <td ng-init="uomDetail = getUOMDetail(bundleLine)" ng-bind="uomDetail"></td>
+                    <td>
+                      <input type="number" min="0" step="1" ng-model="logIncomingForm.verify[bundleLine.uuid]"/>
+                    </td>
+                    <td>
+                      <select ng-model="logIncomingForm.storage_units[bundleLine.uuid]">
+                        <option value="">-- Add to Storage Unit --</option>
+                        <option ng-repeat="storageUnit in receivingFacilityStorageUnits" value="{{ storageUnit.uuid }}">
+                          {{ storageUnit.name }}
+                        </option>
+                      </select>
+                    </td>
+                  </tr>
+
+                </table>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <input type="submit" class="btn btn-success btn-lg btn-block" value="Authorize"/>
+                </div>
+                <div class="col-sm-3">
+                  <button type="button" class="btn btn-success btn-lg btn-block">Save and Exit</button>
+                </div>
+              </div>
+            </form>
+
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -298,6 +298,31 @@
     "rght": 2,
     "tree_id": 10,
     "level": 0
+  },
+  "02b46f06-8270-4e8f-93df-2d602b61817d": {
+    "created_by": null,
+    "modified_by": null,
+    "uuid": "01b46f02-8271-4e8f-93df-2d602b61817d",
+    "created": "2014-01-21T13:27:05.125Z",
+    "modified": "2014-01-28T12:08:31.440Z",
+    "is_deleted": false,
+    "code": "KNS-WICR-00001",
+    "name": "KNS Walk In Cold Room 1",
+    "facility": "d48a39fb-6d37-4472-9983-bc0720403719",
+    "parent": "5667da52-f710-4663-b3fc-ca85676555f7",
+    "gross_capacity": 20000000.0,
+    "net_capacity": 5128200.0,
+    "capacity_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "type": "dfe5b135-12b8-4da0-ad39-b54e864f5663",
+    "is_cold_store": true,
+    "minimum_temperature": 2.0,
+    "maximum_temperature": 8.0,
+    "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
+    "status": 1,
+    "lft": 2,
+    "rght": 3,
+    "tree_id": 1,
+    "level": 1
   }
 }
 

@@ -2,6 +2,19 @@
 
   <accordion-group>
     <accordion-heading>
+      <i class="fa  fa-suitcase"></i>
+      <span ng-bind="i18n('product')"></span>
+    </accordion-heading>
+    <ul>
+      <li><a ui-sref="batchListView" ng-bind="i18n('viewBatch')"></a></li>
+      <li><a ui-sref="productTypeListView" ng-bind="i18n('viewProductTypes')"></a></li>
+      <li><a href="">Manage unit of measurement</a></li>
+      <li><a href="">Add batch</a></li>
+    </ul>
+  </accordion-group>
+
+  <accordion-group>
+    <accordion-heading>
       <i class="fa fa-chevron-down"></i>
       <span ng-bind="i18n('incoming')"></span>
     </accordion-heading>
@@ -16,7 +29,7 @@
       <li><a href="" ng-bind="i18n('incomingTrackIncoming')"></a></li>
       <li><a href="#/orders/index" ng-bind="i18n('incomingOrders')"></a></li>
     </ul>
-    </accordion-group>
+  </accordion-group>
 
   <accordion-group>
     <accordion-heading>
@@ -37,7 +50,7 @@
       <i class="fa fa-list"></i> Inventory
     </accordion-heading>
     <ul>
-      <li><a href="#/inventory/index">Manage inventory</a></li>
+      <li><a ui-sref="inventoryListView" ng-bind="i18n('manageInventory')"></a></li>
       <li><a href="">View forecasts</a></li>
       <li><a href="">Track performace</a></li>
       <li><a class="pointer" ui-sref="stock_count_index">View Stock Count</a></li>

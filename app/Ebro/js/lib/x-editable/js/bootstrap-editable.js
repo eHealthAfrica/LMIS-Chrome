@@ -532,7 +532,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         Usefull to work with json response. For example, if your backend response can be <code>{success: true}</code>
         or <code>{success: false, msg: "server error"}</code> you can check it inside this callback.  
         If it returns **string** - means error occured and string is shown as error message.  
-        If it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  
+        If it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.
         Otherwise newValue simply rendered into element.
         
         @property success 
@@ -1361,7 +1361,7 @@ Applied as jQuery method.
         **/        
         autohide: true,
         /**
-        Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>.  
+        Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>.
         Setting <code>ignore</code> allows to have several containers open. 
 
         @property onblur 
@@ -1833,7 +1833,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.options.unsavedclass) {
                 /*
                  Add unsaved css to element if:
-                  - url is not user's function 
+                  - url is not user's function
                   - value was not sent to server
                   - params.response === undefined, that means data was not sent
                   - value changed 
@@ -3810,14 +3810,14 @@ $(function(){
                this.$input.val(value);
                this.$input.select2(this.options.select2);
            } else {
-               //second argument needed to separate initial change from user's click (for autosubmit)   
+               //second argument needed to separate initial change from user's click (for autosubmit)
                this.$input.val(value).trigger('change', true); 
 
                //Uncaught Error: cannot call val() if initSelection() is not defined
                //this.$input.select2('val', value);
            }
 
-           // if defined remote source AND no multiple mode AND no user's initSelection provided --> 
+           // if defined remote source AND no multiple mode AND no user's initSelection provided -->
            // we should somehow get text for provided id.
            // The solution is to use element's text as text for that id (exclude empty)
            if(this.isRemote && !this.isMultiple && !this.options.select2.initSelection) {

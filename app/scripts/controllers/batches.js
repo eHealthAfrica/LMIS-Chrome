@@ -2,6 +2,17 @@
 
 angular.module('lmisChromeApp')
 /**
+ * configure routes for batch module
+ */
+    .config(function ($stateProvider) {
+      $stateProvider
+          .state('batchListView', {
+            url: '/batch-list-view',
+            templateUrl: '/views/batches/index.html',
+            controller: 'BatchListCtrl'
+          });
+    })
+/**
  * AddProductItemCtrl - This handles the addition of product items
  */
     .controller('AddProductItemCtrl', function ($scope, storageService, $location) {
@@ -64,11 +75,12 @@ angular.module('lmisChromeApp')
  * BatchListCtrl - This handles the display of Product-Items pulled from
  * storage.
  */
-    .controller('BatchListCtrl', function ($scope, storageService, visualMarkerService, utility, $filter, ngTableParams) {
-      $scope.highlight = visualMarkerService.markByExpirationStatus;
+    .controller('BatchListCtrl', function ($scope, storageService, batchFactory, visualMarkerService, $filter, ngTableParams) {
 
-      storageService.all(storageService.BATCH).then(function (data) {
-        // Table defaults
+      $scope.highlight = visualMarkerService.highlightByExpirationStatus;
+
+      batchFactory.getAll().then(function (data) {
+
         var params = {
           page: 1,
           count: 10,
@@ -81,43 +93,23 @@ angular.module('lmisChromeApp')
         var resolver = {
           total: data.length,
           getData: function ($defer, params) {
-            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-            $defer.resolve(orderedData.slice(
+            var filtered, sorted = data;
+            if (params.filter()) {
+              filtered = $filter('filter')(data, params.filter());
+            }
+            if (params.sorting()) {
+              sorted = $filter('orderBy')(filtered, params.orderBy());
+            }
+            params.total(sorted.length);
+            $defer.resolve(sorted.slice(
                 (params.page() - 1) * params.count(),
                 params.page() * params.count()
             ));
           }
         }
 
-        $scope.productItemList = new ngTableParams(params, resolver);
-      });
+        $scope.batches = new ngTableParams(params, resolver);
 
-      storageService.get(storageService.PRODUCT_TYPES).then(function (data) {
-        $scope.products = data;
-      });
-
-      storageService.get(storageService.COMPANY).then(function (data) {
-        $scope.companies = data;
-      });
-
-      storageService.get(storageService.PRODUCT_PRESENTATION).then(function (data) {
-        $scope.presentations = data;
-      });
-
-      storageService.get(storageService.PRODUCT_FORMULATION).then(function (data) {
-        $scope.productFormulation = data;
-      });
-
-      storageService.get(storageService.MODE_OF_ADMINISTRATION).then(function (modesOfAdmin) {
-        $scope.modesOfAdmin = modesOfAdmin;
-      });
-
-      storageService.get(storageService.UOM).then(function (uomList) {
-        $scope.uomList = uomList;
-      });
-
-      storageService.get(storageService.CURRENCY).then(function (currencyList) {
-        $scope.currencies = currencyList;
       });
 
     });
