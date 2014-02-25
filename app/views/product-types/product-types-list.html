@@ -30,7 +30,7 @@
             <td data-title="'#'">{{ $index + 1 }}</td>
             <td data-title="'Name'" sortable="'name'" filter="{'name': 'text'}" ng-bind="productType.name"></td>
             <td data-title="'Code'" sortable="'code'" filter="{'code': 'text'}" ng-bind="productType.code"></td>
-            <td data-title="'Base UOM'" ng-bind="(productType.base_uom).name"></td>
+            <td data-title="'Base UOM'" sortable="'(productType.base_uom).name'" ng-bind="(productType.base_uom).name"></td>
             <td data-title="'Description'" ng-bind="productType.description"></td>
             <td data-title="'Active'" class="text-center" sortable="'active'">
               <span ng-if="productType.active"><i class="fa fa-check-circle green-icon"></i></span>
