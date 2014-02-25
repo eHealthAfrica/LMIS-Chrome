@@ -166,7 +166,7 @@ angular.module('lmisChromeApp')
           return storageService.get(storageService.PROGRAM);
         },
       },
-      controller: function($scope, $filter, productCategories, productProfiles, uuid, facilities, user, programs, $stateParams) {
+      controller: function($scope, $filter, productCategories, productProfiles, uuid, facilities, user, programs, $stateParams, $rootScope) {
         $scope.storage = {
           categories: productCategories,
           profiles: productProfiles,
@@ -184,15 +184,22 @@ angular.module('lmisChromeApp')
 
         var id = 1;
         $scope.productCount = 0;
+        $scope.determiner = $rootScope.i18n('a');
         $scope.addProduct = function() {
           $scope.order.products.push({id: id++});
           $scope.productCount++;
+          if($scope.productCount === 1) {
+            $scope.determiner = $rootScope.i18n('another');
+          }
         };
         $scope.removeProduct = function(product) {
           $scope.order.products = $scope.order.products.filter(function(p) {
             return p.id !== product.id;
           });
           $scope.productCount = $scope.order.products.length;
+          if($scope.productCount === 0) {
+            $scope.determiner = $rootScope.i18n('a');
+          }
         };
       }
     });
