@@ -40,8 +40,6 @@ angular.module('lmisChromeApp')
 
     $scope.format = 'yyyy-MM-dd';
 
-
-
     //chrome.storage.local.clear();
     //populate order object with data if available in storage
 
@@ -94,11 +92,10 @@ angular.module('lmisChromeApp')
         'order_list': $scope.data_storage
       });
     };
-
   })
 
-  .controller('OrdersListCtrl', function ($scope, storageService, $filter, ngTableParams) {
-    storageService.get(storageService.ORDERS).then(function (data) {
+  .controller('OrdersListCtrl', function($scope, storageService, $filter, ngTableParams) {
+    storageService.get(storageService.ORDERS).then(function(data) {
       // Table defaults
       var params = {
         page: 1,
@@ -111,7 +108,7 @@ angular.module('lmisChromeApp')
       // Pagination
       var resolver = {
         total: data.length,
-        getData: function ($defer, params) {
+        getData: function($defer, params) {
           var filtered, sorted = data;
           if (params.filter()) {
             filtered = $filter('filter')(data, params.filter());
@@ -121,8 +118,8 @@ angular.module('lmisChromeApp')
           }
           params.total(sorted.length);
           $defer.resolve(sorted.slice(
-              (params.page() - 1) * params.count(),
-              params.page() * params.count()
+            (params.page() - 1) * params.count(),
+            params.page() * params.count()
           ));
         }
       };
@@ -130,9 +127,73 @@ angular.module('lmisChromeApp')
       // jshint newcap: false
       $scope.salesList = new ngTableParams(params, resolver);
     });
-  }).controller('SalesOrderForm', function($scope, storageService){
+  })
 
-     storageService.get(storageService.FACILITY).then(function(data) {
+  .controller('SalesOrderForm', function($scope, storageService) {
+    storageService.get(storageService.FACILITY).then(function(data) {
       $scope.facilities = data;
     });
- });
+  })
+
+  .config(function($stateProvider) {
+    $stateProvider.state('orders', {
+      abstract: true,
+      templateUrl: 'views/orders/index.html'
+    })
+    .state('orders.place', {
+      url: '/orders/place?program',
+      templateUrl: 'views/orders/forms/place.html',
+      data: {
+        label: 'Place order'
+      },
+      resolve: {
+        productCategories: function(storageService) {
+          return storageService.get(storageService.PRODUCT_CATEGORY);
+        },
+        productProfiles: function(storageService) {
+          return storageService.get(storageService.PRODUCT_PROFILE);
+        },
+        uuid: function(storageService) {
+          return storageService.uuid;
+        },
+        facilities: function(storageService) {
+          return storageService.get(storageService.FACILITY);
+        },
+        user: function(storageService) {
+          return storageService.get(storageService.USER);
+        },
+        programs: function(storageService) {
+          return storageService.get(storageService.PROGRAM);
+        },
+      },
+      controller: function($scope, $filter, productCategories, productProfiles, uuid, facilities, user, programs, $stateParams) {
+        $scope.storage = {
+          categories: productCategories,
+          profiles: productProfiles,
+          facilities: facilities,
+          programs: programs
+        };
+
+        $scope.order = {
+          products: [],
+          date: $filter('date')(new Date(), 'yyyy-MM-dd'),
+          number: uuid(),
+          userCode: user['1'].id,
+          program: $stateParams.program
+        };
+
+        var id = 1;
+        $scope.productCount = 0;
+        $scope.addProduct = function() {
+          $scope.order.products.push({id: id++});
+          $scope.productCount++;
+        };
+        $scope.removeProduct = function(product) {
+          $scope.order.products = $scope.order.products.filter(function(p) {
+            return p.id !== product.id;
+          });
+          $scope.productCount = $scope.order.products.length;
+        };
+      }
+    });
+  });

@@ -1,0 +1,129 @@
+<div ng-controller="WasteCountFormCtrl" xmlns="http://www.w3.org/1999/html">
+    <div class="row">
+        <ul class="breadcrumb">
+            <li><a class="pointer" ui-sref="home.index.controlPanel"><i class="fa fa-home"></i></a></li>
+            <li><a href="">Inventory</a></li>
+            <li><a class="pointer" ui-sref="stock_count_index({facility: facility_uuid,report_year: report_year, report_month: report_month})">Stock Count</a></li>
+            <li class="active">Stock Count Form</li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="info-box">
+                        <div class="info-box-number one">1</div>
+                        <div class="info-box-text">
+                            Count the number of vials
+                            discarded today.
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="info-box">
+                        <div class="info-box-number two">2</div>
+                        <div class="info-box-text">
+                            Enter the TOTAL quantity
+                            of each product type in
+                            the appropriate row.
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="info-box">
+                        <div class="info-box-number three">3</div>
+                        <div class="info-box-text">
+                            Provide the reason or
+                            reasons for why vials of
+                            that product type was
+                            discarded.
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="info-box">
+                        <div class="info-box-number four">4</div>
+                        <div class="info-box-text">
+                            When finished with each
+                            product, submit your
+                            form by clicking the
+                            Submit button below!
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <form action="" method="post" ng-submit="save_stock_count()">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Stock Item</th>
+                                        <th colspan="2">Todays Waste</th>
+                                        <th>Confirm</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th>Total Discarded Today</th>
+                                        <th>Reasons for Discard</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="product in stock_products">
+                                        <td class="form-label">{{ product }}</td>
+                                        <td>
+                                            <div class="col-sm-6">
+                                                <input class="form-control" ng-model="stock_count.used_unopened[$index]">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-sm-6">
+                                                <div class="dropdown clearfix">
+                                                    <button class="dropdown-toggle btn btn-default" type="button"  data-toggle="dropdown" ng-model="stock_count.used_opened[$index]">
+                                                        Select here
+                                                        <b class="caret"></b>
+                                                    </button>
+                                                    <ul class="dropdown-menu w-menu" role="menu">
+                                                        <li>VVM Stage 3 <input type="checkbox"></li>
+                                                        <li>Broken Vial <input type="checkbox"></li>
+                                                        <li>Label Missing <input type="checkbox"></li>
+                                                        <li>Unopened Expiry <input type="checkbox"></li>
+                                                        <li>Opened Expiry <input type="checkbox"></li>
+                                                        <li>Suspected Freezing <input type="checkbox"></li>
+                                                        <li>Other <input type="checkbox"></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                        <td><input ng-model="stock_count.confirmation[$index]" value="1" type="checkbox"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <button class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -19,8 +19,11 @@
       <span ng-bind="i18n('incoming')"></span>
     </accordion-heading>
     <ul>
-      <li><a ui-sref="incomingLog" ng-bind="i18n('incomingLog')"></a></li>
-      <li><a href="" ng-bind="i18n('incomingPlace')"></a></li>
+      <li><a href="" ng-bind="i18n('incomingLog')"></a></li>
+      <li>
+        <a ui-sref="home.index.controlPanel.orderType"
+          ng-bind="i18n('incomingPlace')"></a>
+      </li>
       <li><a href="" ng-bind="i18n('incomingModify')"></a></li>
       <li><a href="" ng-bind="i18n('incomingTrackPending')"></a></li>
       <li><a href="" ng-bind="i18n('incomingTrackIncoming')"></a></li>
@@ -50,6 +53,7 @@
       <li><a ui-sref="inventoryListView" ng-bind="i18n('manageInventory')"></a></li>
       <li><a href="">View forecasts</a></li>
       <li><a href="">Track performace</a></li>
+      <li><a class="pointer" ui-sref="stock_count_index">View Stock Count</a></li>
       <li><a href="">View sub-facility inventories</a></li>
       <li><a href="">View sub-facility forecasts</a></li>
       <li><a href="">View sub-facility reports</a></li>
@@ -85,3 +89,5 @@
   </accordion-group>
 
 </accordion>
+
+<ui-view />

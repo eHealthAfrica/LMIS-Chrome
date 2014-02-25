@@ -4,3 +4,5 @@ node_js:
 before_script:
   - 'npm install -g bower grunt-cli'
   - 'bower install'
+notifications:
+  flowdock: e495ddc185cc199370f8ecc54e409bea

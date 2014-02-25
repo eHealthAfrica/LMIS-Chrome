@@ -57,3 +57,52 @@
 .marker-indicator-space{
   margin-right: 2em;
 }
+.pointer{
+    cursor: pointer;
+}
+.info-box{
+
+}
+.info-box-number{
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    padding-top: 10px;
+    float: left;
+}
+.info-box-text{
+    margin-left: 50px;
+}
+.info-box .one{
+    background: #D4D4D4;
+    color: #ffffff;
+}
+.info-box .two{
+    background: #A7A7A7;
+    color: #ffffff;
+}
+.info-box .three{
+    background: #7A7A7A;
+    color: #ffffff;
+}
+.info-box .four{
+    background: #424B43;
+    color: #ffffff;
+}
+.form-label{
+    font-weight: bold;
+}
+.w-menu{
+    padding: 10px;
+}
+.w-menu li{
+    padding: 4px 0px;
+    border: #ffffff solid 1px;
+
+}
+accordion .panel-heading:hover {
+  cursor: pointer;
+}
+.products accordion .panel-heading .panel-title i:hover {
+  color: red;
+}

@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp', [
-  'ngCookies',
   'ngResource',
-  'ngSanitize',
   'restangular',
   'ui.bootstrap',
   'ngTable',
@@ -15,6 +13,12 @@ angular.module('lmisChromeApp', [
     $compileProvider.aHrefSanitizationWhitelist(
       /^\s*(https?|ftp|mailto|chrome-extension):/
     );
+  })
+
+  // Disable ui-router auto scrolling
+  .config(function($uiViewScrollProvider, $anchorScrollProvider) {
+    $uiViewScrollProvider.useAnchorScroll();
+    $anchorScrollProvider.disableAutoScrolling();
   })
 
   // Central Variable for Watching Online/Offline Events

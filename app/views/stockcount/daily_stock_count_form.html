@@ -1,0 +1,116 @@
+<div ng-controller="StockCountFormCtrl">
+    <div class="row">
+        <ul class="breadcrumb">
+            <li><a class="pointer" ui-sref="home.index.controlPanel"><i class="fa fa-home"></i></a></li>
+            <li><a href="">Inventory</a></li>
+            <li><a class="pointer" ui-sref="stock_count_index({facility: facility_uuid,report_year: report_year, report_month: report_month})">Stock Count</a></li>
+            <li class="active">Stock Count Form</li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="info-box">
+                        <div class="info-box-number one">1</div>
+                        <div class="info-box-text">
+                            Count the number of
+                            products in each row.
+                            Count partially used vials
+                            and bottles separately.
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="info-box">
+                        <div class="info-box-number two">2</div>
+                        <div class="info-box-text">
+                            Enter the TOTAL quantity
+                            of each product type in
+                            the appropriate row.
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="info-box">
+                        <div class="info-box-number three">3</div>
+                        <div class="info-box-text">
+                            Double-check what you
+                            have entered is correct
+                            and conﬁrm your entry by
+                            checking the box.
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="info-box">
+                        <div class="info-box-number four">4</div>
+                        <div class="info-box-text">
+                            When ﬁnished with each
+                            product, submit your
+                            form by clicking the
+                            Submit button below!
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <form action="" method="post" ng-submit="save_stock_count()">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Stock Item</th>
+                                        <th colspan="2">Todays Count</th>
+                                        <th>Confirm</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th>Unopened Vials</th>
+                                        <th>Opened Vials</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="product in stock_products">
+                                        <td class="form-label">{{ product }}</td>
+                                        <td>
+                                            <div class="col-sm-6">
+                                                <input class="form-control" ng-model="stock_count.used_unopened[$index]">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-sm-6">
+                                                <input class="form-control" ng-model="stock_count.used_opened[$index]">
+                                            </div>
+                                        </td>
+                                        <td><input ng-model="stock_count.confirmation[$index]" value="1" type="checkbox"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <button class="form-control">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
