@@ -7,10 +7,8 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         storageService.find(storageService.COMPANY, uuid).then(function (data) {
           if (data !== undefined) {
-            //TODO: add other nested attributes e.g address, contact(Jideobi)
-            companyCategoryFactory.get(data.category).then(function (data) {
-              data.category = data;
-            });
+            //TODO: add other nested attributes e.g company_category, address, contact(Jideobi)
+            
           }
           deferred.resolve(data);
           if (!$rootScope.$$phase) $rootScope.$apply();
