@@ -107,13 +107,10 @@
   "manageInventory":{
     "message": "Manage inventory"
   },
-  "product":{
-    "message": "Product"
-  },
-  "viewBatch":{
+  "viewBatch": {
     "message": "View batch list"
   },
-  "viewProductTypes":{
+  "viewProductTypes": {
     "message": "View product types"
   }
 }
