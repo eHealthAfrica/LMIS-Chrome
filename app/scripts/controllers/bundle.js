@@ -1,21 +1,19 @@
 'use strict';
 
-var chromeApp = angular.module('lmisChromeApp');
-
-chromeApp.config(function ($stateProvider) {
+angular.module('lmisChromeApp').chromeApp.config(function ($stateProvider) {
   $stateProvider
       .state('incomingLog', {
         url: '/incoming-log',
         templateUrl: '/views/bundles/incoming-log.html',
         controller: 'logIncomingCtrl'
       });
-});
+})
 
 /**
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-chromeApp.controller('logIncomingCtrl', function ($scope, $filter, storageService, bundleFactory, userFactory, facilityFactory) {
+.controller('logIncomingCtrl', function ($scope, $filter, storageService, bundleFactory, userFactory, facilityFactory) {
 
   $scope.found = false;
   $scope.clicked = false;

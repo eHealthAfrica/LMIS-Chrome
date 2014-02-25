@@ -79,7 +79,7 @@ angular.module('lmisChromeApp')
 
       $scope.highlight = visualMarkerService.highlightByExpirationStatus;
 
-      batchFactory.getAll().then(function(data){
+      batchFactory.getAll().then(function (data) {
 
         var params = {
           page: 1,
@@ -108,7 +108,7 @@ angular.module('lmisChromeApp')
           }
         }
 
-       $scope.batches = new ngTableParams(params, resolver);
+        $scope.batches = new ngTableParams(params, resolver);
 
       });
 
