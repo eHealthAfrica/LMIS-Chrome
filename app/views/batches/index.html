@@ -45,7 +45,7 @@
               class="{{ highlight(batch.expiration_date, orderByMonths) }} center-text">
             <td data-title="'#'">{{ $index + 1 }}</td>
             <td data-title="'Batch No'" sortable="'batch_no'" ng-bind="batch.batch_no"></td>
-            <td data-title="'Product Name'"  ng-bind="(batch.product).name"></td>
+            <td data-title="'Product Name'"  sortable="'(batch.product).name'" ng-bind="(batch.product).name"></td>
             <td data-title="'Expiration Date'" sortable="'expiration_date'"
                 ng-bind="(batch.expiration_date | date:'dd-MM-yyyy')"></td>
             <td data-title="'Manufacturer'" ng-bind="(batch.manufacturer).name"></td>
