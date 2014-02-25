@@ -11,6 +11,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             return productTypeFactory.getAll();
           }
         }
+      }).state('addProductTypeView', {
+        url: '/add-product-type',
+        templateUrl: '/views/product-types/add-product-type.html',
+        controller: 'AddProductTypeCtrl',
+        data: {
+          label: "Add Product Type"
+        }
       });
 })
 /**
@@ -47,19 +54,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       $scope.productTypes = new ngTableParams(params, resolver);
     })
-
-
 /**
- * AddProductCtrl - handles the addition of product to storage.
+ * AddProductCtrl - This is used to save Product Type to local storage.
  *
- * It uses storage service to load product category and unit of measurement
- * list used to populate product form respective drop downs.
  */
-    .controller('AddProductCtrl', function ($scope, storageService, $location) {
+    .controller('AddProductTypeCtrl', function ($scope, storageService, $location) {
 
       //create a blank object tha will be used to hold product form info
       $scope.product = {};
-
+      //TODO: resolve category(no longer needed here) and uomList(Jideobi)
       storageService.get(storageService.PRODUCT_CATEGORY).then(function (productCategories) {
         $scope.categories = productCategories;
       });
