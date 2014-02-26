@@ -152,7 +152,6 @@
       }
     }
   },
-
   "productTypes": {
     "message": "Product Types"
   },
@@ -179,6 +178,20 @@
   },
   "dateReceived": {
     "message": "Date Received"
-
+  },
+  "selectProductType": {
+    "message": "select product type"
+  },
+  "selectBatch": {
+    "message": "select batch"
+  },
+  "selectProgram":{
+    "message": "select program"
+  },
+  "uom": {
+    "message": "Unit of measurement"
+  },
+  "selectUOM": {
+    "message": "select unit of measurement"
   }
 }
