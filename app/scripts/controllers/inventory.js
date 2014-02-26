@@ -8,9 +8,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }).state('addInventory', {
         url: '/add-inventory',
         templateUrl: '/views/inventory/add-inventory.html',
-        controller: function () {
-
-        }
+        controller: 'addInventoryCtrl'
       });
 })
 /**
@@ -89,7 +87,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
     })
 /**
- * Add to inventory controller
+ * addInventoryCtrl is the controller used to manually add bundles that dont exist already on the local storage
+ * to the inventory upon arrival.
  */
     .controller('addInventoryCtrl', function ($scope, storageService, $location) {
 
