@@ -15,6 +15,10 @@ angular.module('lmisChromeApp')
                 return batchFactory.getAll();
               }
             }
+          }).state('addBatchView', {
+            url: '/add-batch',
+            templateUrl: '/views/batches/add-batch-form.html',
+            controller: 'AddBatchCtrl'
           });
     })
 /**
@@ -58,7 +62,7 @@ angular.module('lmisChromeApp')
 /**
  * AddProductItemCtrl - This handles the addition of product items
  */
-    .controller('AddProductItemCtrl', function ($scope, storageService, $location) {
+    .controller('AddBatchCtrl', function ($scope, storageService, $location) {
       $scope.productItem = {};
       $scope.productItem.active = true; //default is true
 
