@@ -9,7 +9,10 @@ angular.module('lmisChromeApp')
           .state('batchListView', {
             url: '/batch-list-view',
             templateUrl: '/views/batches/index.html',
-            controller: 'BatchListCtrl'
+            controller: 'BatchListCtrl',
+            data: {
+              label: 'Batch List'
+            }
           });
     })
 /**
