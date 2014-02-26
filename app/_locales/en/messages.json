@@ -141,13 +141,25 @@
     }
   },
   "productTypes": {
-    "message": "Product types"
+    "message": "Product Types"
   },
   "addProductType": {
     "message": "Add Product Type"
   },
   "batches": {
     "message": "Batches"
+  },
+  "batchNo": {
+    "message": "Batch No"
+  },
+  "storageUnit": {
+    "message": "Storage Unit"
+  },
+  "verify": {
+    "message": "Verify"
+  },
+  "quantity": {
+    "message": "Quantity"
   },
   "bundleNo": {
     "message": "Bundle No."
