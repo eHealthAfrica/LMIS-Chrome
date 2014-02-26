@@ -104,41 +104,46 @@
                 </div>
               </div>
 
-              <div class="row col-sm-16">
+              <div class="row">
+                <div class="col-sm-18">
+                  <div class="col-sm-12">
 
-                <table class="table table-condensed table-hover table-bordered">
-                  <tr>
-                    <thead>
-                    <th>#</th>
-                    <th ng-bind="i18n('batchNo')"></th>
-                    <th ng-bind="i18n('productTypes')"></th>
-                    <th ng-bind="i18n('program')"></th>
-                    <th ng-bind="i18n('quantity')"></th>
-                    <th ng-bind="i18n('verify')"></th>
-                    <th ng-bind="i18n('storageUnit')"></th>
-                    </thead>
-                  </tr>
+                    <table class="table table-condensed table-hover table-bordered">
+                      <tr>
+                        <thead>
+                        <th>#</th>
+                        <th ng-bind="i18n('batchNo')"></th>
+                        <th ng-bind="i18n('productTypes')"></th>
+                        <th ng-bind="i18n('program')"></th>
+                        <th ng-bind="i18n('quantity')"></th>
+                        <th ng-bind="i18n('verify')"></th>
+                        <th ng-bind="i18n('storageUnit')"></th>
+                        </thead>
+                      </tr>
 
-                  <tr ng-repeat="bundleLine in bundle.bundle_lines">
-                    <td>{{ $index + 1 }}</td>
-                    <td ng-init="batch = bundleLine.batch" ng-bind="batch.batch_no"></td>
-                    <td ng-init="productType = getProductType(bundleLine)" ng-bind="productType.name"></td>
-                    <td ng-init="program = bundleLine.program" ng-bind="program.name"></td>
-                    <td ng-init="uomDetail = getUOMDetail(bundleLine)" ng-bind="uomDetail"></td>
-                    <td>
-                      <input type="number" min="0" step="1" ng-model="logIncomingForm.verify[bundleLine.uuid]"/>
-                    </td>
-                    <td>
-                      <select ng-model="logIncomingForm.storage_units[bundleLine.uuid]">
-                        <option value="">-- Add to Storage Unit --</option>
-                        <option ng-repeat="storageUnit in receivingFacilityStorageUnits" value="{{ storageUnit.uuid }}">
-                          {{ storageUnit.name }}
-                        </option>
-                      </select>
-                    </td>
-                  </tr>
+                      <tr ng-repeat="bundleLine in bundle.bundle_lines">
+                        <td>{{ $index + 1 }}</td>
+                        <td ng-init="batch = bundleLine.batch" ng-bind="batch.batch_no"></td>
+                        <td ng-init="productType = getProductType(bundleLine)" ng-bind="productType.name"></td>
+                        <td ng-init="program = bundleLine.program" ng-bind="program.name"></td>
+                        <td ng-init="uomDetail = getUOMDetail(bundleLine)" ng-bind="uomDetail"></td>
+                        <td>
+                          <input type="number" min="0" step="1" ng-model="logIncomingForm.verify[bundleLine.uuid]"/>
+                        </td>
+                        <td>
+                          <select ng-model="logIncomingForm.storage_units[bundleLine.uuid]">
+                            <option value="">-- Add to Storage Unit --</option>
+                            <option ng-repeat="storageUnit in receivingFacilityStorageUnits"
+                                    value="{{ storageUnit.uuid }}">
+                              {{ storageUnit.name }}
+                            </option>
+                          </select>
+                        </td>
+                      </tr>
 
-                </table>
+                    </table>
+                  </div>
+                </div>
               </div>
 
               <div class="row">
