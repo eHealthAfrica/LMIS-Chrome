@@ -18,36 +18,81 @@ angular.module('lmisChromeApp')
           controller:'StockCountCtrl'
         });
     })
-    .controller('StockCountCtrl', function($scope, $location, storageService, inventoryFactory, $stateParams) {
+/*
+* Base Controller
+ */
+    .controller('StockCountCtrl', function($scope, $stateParams, stockCountFactory) {
 
-          $scope.stock_factory = inventoryFactory.stock_records;
-          /*
-           * get url parameters
-           */
+        var now = new Date();
+        var day = now.getDate();
+        day = day < 10 ? '0' + day : day;
 
-          $scope.facility_uuid = $stateParams.facility;
-          $scope.report_month = $stateParams.report_month;
-          $scope.report_year = $stateParams.report_year;
-          $scope.url_params = $stateParams;
+        $scope.stock_products = stockCountFactory.programProducts;
 
-          var now = new Date();
-          var day = now.getDate();
-          day = day < 10 ? '0' + day : day;
-          $scope.current_day = day;
-        $scope.stock_products = inventoryFactory.stock_records.program_products;
+         /*
+        * get url parameters
+        */
+
+        $scope.facility_uuid = ($stateParams.facility !== null)?$stateParams.facility:'';
+        $scope.report_month = ($stateParams.report_month !== null)?$stateParams.report_month:'';
+        $scope.report_year = ($stateParams.report_year !== null)?$stateParams.report_year: now.getFullYear();
+
+
+        function daysInMonth(){
+            var now = new Date();
+            var year = ($scope.report_year !== '')?$scope.report_year: now.getFullYear();
+            var month = ($scope.report_month !== '')?$scope.report_month: now.getMonth() + 1;
+            var numberOfDays = new Date(month, year, 0).getDate();
+            var dayArray = [];
+            for(var i=0; i<numberOfDays; i++){
+                dayArray.push(i+1);
+            }
+            return dayArray;
+        }
+
+        function yearRange(){
+            var yearRangeArray = [];
+            var currentYear = new Date().getFullYear();
+            var rangeDiff = 3;
+            for(var i=currentYear-rangeDiff; i<currentYear+1; i++){
+                yearRangeArray.push(i);
+            }
+            return yearRangeArray;
+        }
+
+        $scope.current_day = day;
+        $scope.daysInMonth = daysInMonth();
+        $scope.yearRange = yearRange();
+
+        var days = [];
+        for (var i = 1; i < $scope.daysInMonth+1; i++) {
+            days.push(i);
+        }
+        $scope.days = days;
 
     })
-    .controller('StockCountIndexCtrl', function ($scope, $location, storageService, $http, inventoryFactory) {
+ /*
+ * Landing page controller
+  */
+    .controller('StockCountIndexCtrl', function ($scope, $location, storageService, $http, stockCountFactory) {
       /*
        * initialize some variables
        */
       $scope.user_related_facilities = [];
       $scope.fake_locations = [];
       $scope.user_related_facility = ($scope.facility_uuid != null) ? $scope.facility_uuid : '';
-      $scope.report_month = ($scope.report_month != undefined) ? $scope.report_month : '';
-      $scope.report_year = ($scope.report_year != undefined) ? $scope.report_year : '';
       $scope.monthly_stock_record_object = {};
+      $scope.StockCount = {};
+      $scope.WasteCount = {};
 
+      stockCountFactory.get.allStockCount()
+        .then(function(StockCount){
+            $scope.StockCount = StockCount;
+        });
+      stockCountFactory.get.allWasteCount()
+        .then(function(WasteCount){
+            $scope.WasteCount = WasteCount;
+        });
       /*
        * get monthly stock records if any
        */
@@ -71,8 +116,7 @@ angular.module('lmisChromeApp')
       });
 
 
-      $scope.brought_forward_columns = $scope.stock_factory.brought_forward_columns;
-      $scope.table_column = $scope.stock_factory.status_column($scope.stock_products);
+
       $scope.add_button = true;
 
       $scope.$watchCollection('[report_month, report_year, user_related_facility]', function (newvalues) {
@@ -120,15 +164,49 @@ angular.module('lmisChromeApp')
       });
 
      })
-    .controller('StockCountFormCtrl', function($scope, inventoryFactory){
-        $scope.stock_count = {};
-        $scope.stock_count.used_opened = [];
-        $scope.stock_count.used_unopened = [];
-        $scope.stock_count.confirmation = [];
+    /*
+    * Stock Count Controller
+    */
+    .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state){
+        $scope.stockCount = {};
+        $scope.stockCount.used_opened = {};
+        $scope.stockCount.used_unopened = {};
+        $scope.stockCount.confirmation = {};
+        $scope.stockCount.facility = $scope.facility_uuid;
+        $scope.stockCount.month = $scope.report_month;
+        $scope.stockCount.year = $scope.report_year;
+
+        $scope.save = function(){
+            stockCountFactory.save.stock($scope.stockCount)
+                .then(function(uuid){
+                    $state.go('stock_count_index');
+                });
+        }
     })
-    .controller('WasteCountFormCtrl', function($scope){
-        $scope.stock_count = {};
-        $scope.stock_count.used_opened = [];
-        $scope.stock_count.used_unopened = [];
-        $scope.stock_count.confirmation = [];
+   /*
+    * Wastage Count Controller
+    */
+    .controller('WasteCountFormCtrl', function($scope, stockCountFactory, $state){
+        $scope.discardedReasons = stockCountFactory.discardedReasons;
+        $scope.wastageCount = {};
+        $scope.wastageCount.discarded = {};
+        $scope.wastageCount.month = $scope.report_month;
+        $scope.wastageCount.year = $scope.report_year;
+        $scope.wastageCount.facility = $scope.facility_uuid;
+        $scope.wastageCount.wastage_confirmation = {};
+        $scope.wastageCount.reason = {};
+        for(var i=0; i<$scope.stock_products.length; i++){
+            $scope.wastageCount.reason[i]={};
+        }
+
+
+
+
+        $scope.save = function(){
+            stockCountFactory.save.wastage($scope.wastageCount)
+                .then(function(uuid){
+                    $state.go('stock_count_index');
+                });
+        }
+
     });
