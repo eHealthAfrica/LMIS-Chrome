@@ -53,6 +53,18 @@
   "parentFacilityName": {
     "message": "Parent Facility Name"
   },
+  "sendingFacility": {
+    "message": "Sending Facility"
+  },
+  "selectSendingFacility": {
+    "message": "select sending facility"
+  },
+  "receivingFacility": {
+    "message": "Receiving Facility"
+  },
+  "selectReceivingFacility": {
+    "message": "select receiving facility"
+  },
   "userCode": {
     "message": "User Code"
   },
@@ -136,5 +148,11 @@
   },
   "batches": {
     "message": "Batches"
+  },
+  "bundleNo": {
+    "message": "Bundle No."
+  },
+  "dateReceived": {
+    "message": "Date Received"
   }
 }
