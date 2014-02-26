@@ -5,7 +5,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       .state('productTypeListView', {
         url: '/product-types-view',
         templateUrl: '/views/products/product-type-list.html',
-        controller: 'ProductTypeListCtrl'
+        controller: 'ProductTypeListCtrl',
+        data: {
+          label: 'Product types'
+        }
       });
 })
 /**
