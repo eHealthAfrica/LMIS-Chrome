@@ -9,11 +9,11 @@ angular.module('lmisChromeApp')
           .state('storageUnitsView', {
             url: '/storage-units-view',
             templateUrl: '/views/storage-units/index.html',
-            controller: 'StorageUnitsListCtrl'
+            controller: 'StorageUnitListCtrl'
           });
     })
 
-    .controller('StorageUnitsListCtrl', function ($scope, storageService, $filter, ngTableParams) {
+    .controller('StorageUnitListCtrl', function ($scope, storageService, $filter, ngTableParams) {
 
       //constants used to track CCE status
       //TODO: update to add "Needs Review"
