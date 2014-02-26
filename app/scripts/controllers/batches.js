@@ -22,6 +22,10 @@ angular.module('lmisChromeApp')
             data: {
               label: "Add Batch"
             }
+          }).state('addBatchView', {
+            url: '/add-batch',
+            templateUrl: '/views/batches/add-batch-form.html',
+            controller: 'AddBatchCtrl'
           });
     })
 /**
