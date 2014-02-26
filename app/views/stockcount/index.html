@@ -5,16 +5,6 @@
         <li class="active">Stock Count</li>
     </ul>
 </div>
-
-<ul>
-    <li>
-        <a class="pointer" ui-sref="stock_count_form">Daily Stock Count</a>
-    </li>
-     <li>
-        <a  class="pointer" ui-sref="waste_count_form">Daily Waste Count</a>
-    </li>
-</ul>
-
 <div ng-controller="StockCountIndexCtrl">
 
     <div class="row">
@@ -26,7 +16,7 @@
                             <label class="inline-label" for="facility">Health Facility:</label>
                             <select name="facility" id="facility"  ng-model="user_related_facility" class="form-control" >
                                 <option value="">-- select facility --</option>
-                                <option ng-selected="{{ facility.uuid == user_related_facility }}" ng-repeat="facility in user_related_facilities" value="{{ facility.uuid }}">{{ facility.name }}</option>
+                                <option ng-selected="{{ facility.uuid === user_related_facility }}" ng-repeat="facility in user_related_facilities" value="{{ facility.uuid }}">{{ facility.name }}</option>
                             </select>
 
                     </form>
@@ -67,18 +57,9 @@
                        </div>
                        <div class="form-group">
                            <label class="sr-only" for="report_year">Year</label>
-                           <select ng-init="report_year = 2014" id="report_year" ng-model="report_year" class="form-control">
+                           <select id="report_year" ng-model="report_year" class="form-control">
                                <option value="">Year</option>
-                               <option value="2011">2011</option>
-                               <option value="2012">2012</option>
-                               <option value="2013">2013</option>
-                               <option value="2014">2014</option>
-                               <option value="2015">2015</option>
-                               <option value="2016">2016</option>
-                               <option value="2017">2017</option>
-                               <option value="2018">2018</option>
-                               <option value="2019">2019</option>
-                               <option value="2020">2020</option>
+                               <option ng-selected="{{ report_year === year }}" ng-repeat="year in yearRange" value="{{ year }}">{{ year }}</option>
                            </select>
                        </div>
 
@@ -89,13 +70,18 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <a ng-show="add_button" href="" ng-disabled="true"  class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Record</a>
             <a
-                    ng-hide="add_button"
-                    ui-sref="stock_count_form({facility: user_related_facility,report_year: report_year, report_month: report_month})"
-                    ng-disabled="false"
-                    class="btn btn-default">
-                <i class="fa fa-plus-circle"></i> Add Record
+                ui-sref="stock_count_form({facility: user_related_facility,report_year: report_year, report_month: report_month})"
+                ng-disabled="add_button"
+                class="btn btn-default">
+                <i class="fa fa-plus-circle"></i> Add Stock Count
+            </a>
+
+            <a
+                ui-sref="waste_count_form({facility: user_related_facility,report_year: report_year, report_month: report_month})"
+                ng-disabled="add_button"
+                class="btn btn-default">
+                <i class="fa fa-plus-circle"></i> Add Wastage Count
             </a>
         </div>
         <div class="col-sm-6">
@@ -117,8 +103,9 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr ng-repeat="">
 
-
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -132,5 +119,10 @@
             </h3>
         </div>
     </div>
-
+<pre>
+    {{ WasteCount }}
+</pre>
+<pre>
+    {{ StockCount }}
+</pre>
 </div>
