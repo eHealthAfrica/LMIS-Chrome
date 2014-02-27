@@ -10,15 +10,62 @@ angular.module('lmisChromeApp')
             url: '/batch-list-view',
             templateUrl: '/views/batches/index.html',
             controller: 'BatchListCtrl',
-            data: {
-              label: 'Batch List'
+            resolve: {
+              batchList: function (batchFactory) {
+                return batchFactory.getAll();
+              }
             }
-          });
+          }).state('addBatchView', {
+            url: '/add-batch',
+            templateUrl: '/views/batches/add-batch-form.html',
+            controller: 'AddBatchCtrl',
+            data: {
+              label: "Add Batch"
+            }
+          })
+    })
+/**
+ * BatchListCtrl - This handles the display of Product-Items pulled from
+ * storage.
+ */
+    .controller('BatchListCtrl', function ($scope, batchList, visualMarkerService, $filter, ngTableParams) {
+
+      $scope.highlight = visualMarkerService.highlightByExpirationStatus;
+
+      //Table params
+      var params = {
+        page: 1,
+        count: 10,
+        sorting: {
+          name: 'asc'
+        }
+      };
+
+      // Pagination
+      var resolver = {
+        total: batchList.length,
+        getData: function ($defer, params) {
+          var filtered, sorted = batchList;
+          if (params.filter()) {
+            filtered = $filter('filter')(batchList, params.filter());
+          }
+          if (params.sorting()) {
+            sorted = $filter('orderBy')(filtered, params.orderBy());
+          }
+          params.total(sorted.length);
+          $defer.resolve(sorted.slice(
+              (params.page() - 1) * params.count(),
+              params.page() * params.count()
+          ));
+        }
+      }
+
+      $scope.batches = new ngTableParams(params, resolver);
     })
 /**
  * AddProductItemCtrl - This handles the addition of product items
  */
-    .controller('AddProductItemCtrl', function ($scope, storageService, $location) {
+    .controller('AddBatchCtrl', function ($scope, storageService, $location) {
       $scope.productItem = {};
       $scope.productItem.active = true; //default is true
 
@@ -71,48 +118,6 @@ angular.module('lmisChromeApp')
           $location.path('/batches/');
         });
       };
-    })
-
-
-/**
- * BatchListCtrl - This handles the display of Product-Items pulled from
- * storage.
- */
-    .controller('BatchListCtrl', function ($scope, storageService, batchFactory, visualMarkerService, $filter, ngTableParams) {
-
-      $scope.highlight = visualMarkerService.highlightByExpirationStatus;
-
-      batchFactory.getAll().then(function (data) {
-
-        var params = {
-          page: 1,
-          count: 10,
-          sorting: {
-            name: 'asc'
-          }
-        };
-
-        // Pagination
-        var resolver = {
-          total: data.length,
-          getData: function ($defer, params) {
-            var filtered, sorted = data;
-            if (params.filter()) {
-              filtered = $filter('filter')(data, params.filter());
-            }
-            if (params.sorting()) {
-              sorted = $filter('orderBy')(filtered, params.orderBy());
-            }
-            params.total(sorted.length);
-            $defer.resolve(sorted.slice(
-                (params.page() - 1) * params.count(),
-                params.page() * params.count()
-            ));
-          }
-        }
-
-        $scope.batches = new ngTableParams(params, resolver);
-
-      });
-
     });
+
+

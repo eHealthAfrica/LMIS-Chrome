@@ -9,7 +9,7 @@
       <li><a ui-sref="batchListView" ng-bind="i18n('viewBatch')"></a></li>
       <li><a ui-sref="productTypeListView" ng-bind="i18n('viewProductTypes')"></a></li>
       <li><a href="">Manage unit of measurement</a></li>
-      <li><a href="">Add batch</a></li>
+      <li><a ui-sref="addBatchView">Add batch</a></li>
     </ul>
   </accordion-group>
 
@@ -19,7 +19,7 @@
       <span ng-bind="i18n('incoming')"></span>
     </accordion-heading>
     <ul>
-      <li><a href="" ng-bind="i18n('incomingLog')"></a></li>
+      <li><a ui-sref="incomingLog" ng-bind="i18n('incomingLog')"></a></li>
       <li>
         <a ui-sref="home.index.controlPanel.orderType"
           ng-bind="i18n('incomingPlace')"></a>
@@ -52,7 +52,7 @@
     <ul>
       <li><a ui-sref="inventoryListView" ng-bind="i18n('manageInventory')"></a></li>
       <li><a href="">View forecasts</a></li>
-      <li><a href="">Track performace</a></li>
+      <li><a href="">Track performance</a></li>
       <li><a class="pointer" ui-sref="stock_count_index">View Stock Count</a></li>
       <li><a href="">View sub-facility inventories</a></li>
       <li><a href="">View sub-facility forecasts</a></li>
@@ -65,10 +65,10 @@
       <i class="fa fa-th-large"></i> Facilities
     </accordion-heading>
     <ul>
-      <li><a href="#/facilities/index">Manage CCE</a></li>
+      <li><a ui-sref="storageUnitsView">Manage storage units</a></li>
       <li><a href="">Manage fleet</a></li>
       <li><a href="">View sub-facility maps</a></li>
-      <li><a href="">View sub-facility CCE status</a></li>
+      <li><a ui-sref="storageUnitsView">View sub-facility storage units' status</a></li>
     </ul>
   </accordion-group>
 

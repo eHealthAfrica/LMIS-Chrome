@@ -28,4 +28,5 @@ describe('Home controller', function () {
       expect($state.current.name).toBe(cp);
     });
   });
+
 });

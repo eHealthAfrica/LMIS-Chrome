@@ -1,6 +1,7 @@
 <div class="row">
   <div class="btn-group col-sm-2">
-    <a href="#/products/product_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Product Type</a>
+    <a ui-sref="addProductTypeView" class="btn btn-default"><i class="fa fa-plus-circle"></i>
+      {{ i18n('addProductType') }}</a>
   </div>
 </div>
 
@@ -14,7 +15,7 @@
   <div class="col-sm-12">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h4 class="panel-title"><i class="fa fa-list"></i> Product Types</h4>
+        <h4 class="panel-title text-titlecase"><i class="fa fa-list"> {{ i18n('productTypes') }}</i></h4>
       </div>
       <div class="scrollable-container">
         <table ng-table="productTypes" show-filter="true"
@@ -23,7 +24,7 @@
             <td data-title="'#'">{{ $index + 1 }}</td>
             <td data-title="'Name'" sortable="'name'" filter="{'name': 'text'}" ng-bind="productType.name"></td>
             <td data-title="'Code'" sortable="'code'" filter="{'code': 'text'}" ng-bind="productType.code"></td>
-            <td data-title="'Base UOM'" ng-bind="(productType.base_uom).name"></td>
+            <td data-title="'Base UOM'" sortable="'(productType.base_uom).name'" ng-bind="(productType.base_uom).name"></td>
             <td data-title="'Description'" ng-bind="productType.description"></td>
             <td data-title="'Active'" class="text-center" sortable="'active'">
               <span ng-if="productType.active"><i class="fa fa-check-circle green-icon"></i></span>

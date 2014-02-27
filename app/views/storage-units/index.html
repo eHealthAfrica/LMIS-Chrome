@@ -6,28 +6,8 @@
 </div>
 
 <div class="row">
-  <div class="col-lg-3 col-md-6">
-    <a href="#/cce/temperature_log">
-      <div class="box_stat box_ico">
-        <span class="stat_ico stat_ico_1"><i class="li_vallet"></i></span>
-        <h4>CCU Temperature</h4>
-      </div>
-    </a>
-  </div>
-
-  <div class="col-lg-3 col-md-6">
-    <a href="#/cce/problem_log">
-      <div class="box_stat box_ico">
-        <span class="stat_ico stat_ico_2"><i class="li_user"></i></span>
-        <h4>CCU Problem</h4>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="row">
   <div class="btn-group col-sm-2">
-   <a href="#/cce/cce_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add CCU</a>
+   <a href="#/cce/cce_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Storage Unit</a>
   </div>
 </div>
 
@@ -39,18 +19,18 @@
 
 <div class="row">
   <div class="col-sm-12">
-    <span class="marker-indicator-space">CCU Status Indicators:</span>
+    <span class="marker-indicator-space">Storage Unit Status Indicators:</span>
     <i class="fa fa-check-circle green-icon marker-indicator-space"> Working</i>
     <i class="fa fa-times-circle red-icon marker-indicator-space"> Not Working</i>
     <i class="fa fa-times-circle warning-alert marker-indicator-space"> In Repair</i>
   </div>
 </div>
 
-<div class="row" ng-controller="cceCtrl">
+<div class="row">
   <div class="col-sm-12">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h4 class="panel-title">Cold Chain Units</h4>
+        <h4 class="panel-title" ng-bind="i18n('storageUnit')"></h4>
       </div>
       <div class="scrollable-container">
         <table ng-table="cceList" class="table table-condensed table-bordered table-striped oversize-table">

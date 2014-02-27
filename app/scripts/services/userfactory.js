@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('userFactory', function ($q, storageService) {
-
+  .factory('userFactory', function ($q, $rootScope, storageService) {
 
     // Public API here
     return {
@@ -15,6 +14,7 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         storageService.find(storageService.USER, id).then(function(data){
           deferred.resolve(data);
+          if (!$rootScope.$$phase) $rootScope.$apply();
         });
         return deferred.promise;
       },

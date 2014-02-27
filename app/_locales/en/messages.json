@@ -110,14 +110,14 @@
   "manageInventory":{
     "message": "Manage inventory"
   },
-  "viewBatch": {
+  "product":{
+    "message": "Product"
+  },
+  "viewBatch":{
     "message": "View batch list"
   },
-  "viewProductTypes": {
+  "viewProductTypes":{
     "message": "View product types"
-  },
-  "product": {
-    "message": "Product"
   },
   "productID": {
     "message": "Product $id$",
@@ -127,5 +127,59 @@
         "example": "1"
       }
     }
+  },
+  "sendingFacility": {
+    "message": "Sending Facility"
+  },
+  "selectSendingFacility": {
+    "message": "select sending facility"
+  },
+  "receivingFacility": {
+    "message": "Receiving Facility"
+  },
+  "selectReceivingFacility": {
+    "message": "select receiving facility"
+  },
+  "productTypes": {
+    "message": "Product Types"
+  },
+  "addProductType": {
+    "message": "Add Product Type"
+  },
+  "batches": {
+    "message": "Batches"
+  },
+  "batchNo": {
+    "message": "Batch No"
+  },
+  "storageUnit": {
+    "message": "Storage Unit"
+  },
+  "verify": {
+    "message": "Verify"
+  },
+  "quantity": {
+    "message": "Quantity"
+  },
+  "bundleNo": {
+    "message": "Bundle No."
+  },
+  "dateReceived": {
+    "message": "Date Received"
+  },
+  "selectProductType": {
+    "message": "select product type"
+  },
+  "selectBatch": {
+    "message": "select batch"
+  },
+  "selectProgram":{
+    "message": "select program"
+  },
+  "uom": {
+    "message": "Unit of measurement"
+  },
+  "selectUOM": {
+    "message": "select unit of measurement"
   }
 }

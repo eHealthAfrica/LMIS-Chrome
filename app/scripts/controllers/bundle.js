@@ -6,7 +6,10 @@ angular.module('lmisChromeApp')
           .state('incomingLog', {
             url: '/incoming-log',
             templateUrl: '/views/bundles/incoming-log.html',
-            controller: 'logIncomingCtrl'
+            controller: 'logIncomingCtrl',
+            data: {
+              label: 'Home'
+            }
           });
     })
 
