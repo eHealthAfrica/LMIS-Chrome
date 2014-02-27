@@ -28,7 +28,8 @@
 
 ## Testing
 
-1. `grunt test`
+Use `npm test` for the complete test suite. During development, `npm run-script
+test-watch` is useful to automatically re-run the tests when a file changes.
 
 ## Author
 
