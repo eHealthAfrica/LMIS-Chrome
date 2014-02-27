@@ -15,13 +15,15 @@ describe('User factory', function () {
     inject(function (storageService) {
       storageService.find(storageService.USER, "1").then(function(data){
         expect(data).toBeDefined();
+        expect(data.id).toBe("1");
+        expect(data.id).not.toBe("2");
       });
     });
   });
 
   it('should get return undefined from user object store', function () {
     inject(function (storageService) {
-      storageService.find(storageService.USER, "-233").then(function(data){
+      storageService.find(storageService.USER, "1").then(function(data){
         expect(data).toBeUndefined();
       });
     });
