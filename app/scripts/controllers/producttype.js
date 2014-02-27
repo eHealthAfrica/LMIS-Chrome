@@ -4,7 +4,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider
       .state('productTypeListView', {
         url: '/product-types-view',
-        templateUrl: '/views/products/product-type-list.html',
+        templateUrl: '/views/product-types/product-types-list.html',
         controller: 'ProductTypeListCtrl',
         data: {
           label: 'Product types'
