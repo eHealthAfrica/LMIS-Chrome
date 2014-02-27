@@ -12,10 +12,8 @@ angular.module('lmisChromeApp')
        */
       get: function(id){
         var deferred = $q.defer();
-        var user = null;
         storageService.find(storageService.USER, id).then(function(data){
-          user = data;
-          deferred.resolve(user);
+          deferred.resolve(data);
           if (!$rootScope.$$phase) $rootScope.$apply();
         });
         return deferred.promise;

@@ -22,23 +22,4 @@ describe('User controller', function () {
     q = $q;
   }));
 
-  it('should go return user whose user id exists', function (done) {
-    inject(function (userFactory) {
-      userFactory.get('1').then(function (result) {
-        expect(result.id).toBe('1');
-        done();
-      });
-    });
-  });
-
-  it('should go return undefined for non-existent user id', function (done) {
-    inject(function (userFactory) {
-      userFactory.get('-1').then(function (result) {
-        expect(result.id).toBeDefined();
-        expect(result.id).toBe('-1');
-        done();
-      });
-    });
-  });
-
 });
