@@ -98,9 +98,6 @@
       }
     }
   },
-  "product": {
-    "message": "product"
-  },
   "orderDate": {
     "message": "Order Date"
   },
@@ -122,9 +119,6 @@
   "viewProductTypes":{
     "message": "View product types"
   },
-  "product": {
-    "message": "Product"
-  },
   "productID": {
     "message": "Product $id$",
     "placeholders": {
@@ -145,18 +139,6 @@
   },
   "selectReceivingFacility": {
     "message": "select receiving facility"
-  },
-  "product": {
-    "message": "Product"
-  },
-  "productID": {
-    "message": "Product $id$",
-    "placeholders": {
-      "id": {
-        "content": "$1",
-        "example": "1"
-      }
-    }
   },
   "productTypes": {
     "message": "Product Types"
