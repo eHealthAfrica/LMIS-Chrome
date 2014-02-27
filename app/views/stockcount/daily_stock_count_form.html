@@ -63,8 +63,17 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-sm-4">Report Day</div>
+        <div class="col-sm-1">
+            <select ng-model="stockCount.report_day" class="form-control">
+                <option value="">-- select day --</option>
+                <option ng-selected="day == current_day" ng-repeat="day in dates" value="{{ day }}">{{ day }}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-12">
-            <form action="" method="post" ng-submit="save_stock_count()">
+            <form ng-submit="save()">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel panel-default">
@@ -87,15 +96,15 @@
                                         <td class="form-label">{{ product }}</td>
                                         <td>
                                             <div class="col-sm-6">
-                                                <input class="form-control" ng-model="stock_count.used_unopened[$index]">
+                                                <input class="form-control" ng-model="stockCount.used_unopened[$index]">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-sm-6">
-                                                <input class="form-control" ng-model="stock_count.used_opened[$index]">
+                                                <input class="form-control" ng-model="stockCount.used_opened[$index]">
                                             </div>
                                         </td>
-                                        <td><input ng-model="stock_count.confirmation[$index]" value="1" type="checkbox"></td>
+                                        <td><input ng-model="stockCount.confirmation[$index]" value="1" type="checkbox"></td>
                                     </tr>
                                 </tbody>
                             </table>

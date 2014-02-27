@@ -20,7 +20,10 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.controlPanel', {
-      templateUrl: 'views/home/control-panel.html'
+      templateUrl: 'views/home/control-panel.html',
+      data: {
+        label: 'Home'
+      }
     })
     .state('home.index.controlPanel.orderType', {
       controller: function($state, $modal) {

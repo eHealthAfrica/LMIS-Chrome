@@ -32,7 +32,8 @@
              type="alert.type" close="closeAlert($index)"
              ng-bind="alert.message"></alert>
 
-      <div tv-breadcrumbs ng-if="!$state.includes('home')"></div>
+      <tv-breadcrumbs ng-hide="$state.includes('home')"
+        home="home.index.controlPanel"></tv-breadcrumbs>
 
       <div id="main_content" ui-view></div>
     </div>
@@ -94,6 +95,7 @@
 <script src="scripts/services/currencyfactory.js"></script>
 <script src="scripts/services/modeofadministrationfactory.js"></script>
 <script src="scripts/services/formulationfactory.js"></script>
+<script src="scripts/services/stockcountfactory.js"></script>
 <!-- endbuild -->
 </body>
 </html>

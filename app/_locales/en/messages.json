@@ -12,7 +12,7 @@
   },
   "incoming": {
     "message": "Incoming",
-    "description": "Dashboard incoming work-flows header"
+    "description": "Dashboard incoming workflows header"
   },
   "incomingLog": {
     "message": "Log an incoming order"
@@ -98,6 +98,9 @@
       }
     }
   },
+  "product": {
+    "message": "product"
+  },
   "orderDate": {
     "message": "Order Date"
   },
@@ -107,13 +110,16 @@
   "authorize": {
     "message": "Authorize"
   },
-  "manageInventory": {
+  "manageInventory":{
     "message": "Manage inventory"
   },
-  "viewBatch": {
+  "product":{
+    "message": "Product"
+  },
+  "viewBatch":{
     "message": "View batch list"
   },
-  "viewProductTypes": {
+  "viewProductTypes":{
     "message": "View product types"
   },
   "product": {
