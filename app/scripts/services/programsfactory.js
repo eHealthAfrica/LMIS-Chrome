@@ -4,8 +4,7 @@ angular.module('lmisChromeApp')
     .factory('programsFactory', function ($q, $rootScope, storageService) {
 
       /**
-       * This function returns program attribute of any given object. This is used since AngularJS does allow processing
-       * of nested JSON object inside the template.
+       * This returns complete attribute of a program even nested attributes
        *
        * @param uuid
        * @returns {program} - JSON Object
@@ -20,23 +19,23 @@ angular.module('lmisChromeApp')
         return deferred.promise;
       }
 
-      function getAllProgram(){
+      function getAllProgram() {
         var deferred = $q.defer(), programs = [];
 
-          storageService.all(storageService.PROGRAM).then(function (data) {
-            angular.forEach(data, function (datum) {
-              programs.push(getByUUID(datum.uuid).then(function (program) {
-                deferred.notify(datum);
-                return program;
-              }));
-            });
-
-            $q.all(programs).then(function (results) {
-              deferred.resolve(results);
-              if (!$rootScope.$$phase) $rootScope.$apply();
-            });
+        storageService.all(storageService.PROGRAM).then(function (data) {
+          angular.forEach(data, function (datum) {
+            programs.push(getByUUID(datum.uuid).then(function (program) {
+              deferred.notify(datum);
+              return program;
+            }));
           });
-          return deferred.promise;
+
+          $q.all(programs).then(function (results) {
+            deferred.resolve(results);
+            if (!$rootScope.$$phase) $rootScope.$apply();
+          });
+        });
+        return deferred.promise;
       }
 
       // Public API here
