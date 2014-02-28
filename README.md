@@ -28,8 +28,20 @@
 
 ## Testing
 
+### Unit
+
 Use `npm test` for the complete test suite. During development, `npm run-script
 test-watch` is useful to automatically re-run the tests when a file changes.
+
+### e2e
+
+1. Install selenium (one-time only):
+
+```bash
+./node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update
+```
+
+2. `grunt protractor:e2e`
 
 ## Author
 
