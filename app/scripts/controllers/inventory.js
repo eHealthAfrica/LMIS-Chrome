@@ -12,6 +12,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         resolve: {
           productTypes: function (productTypeFactory) {
             return productTypeFactory.getAll();
+          },
+          programs: function(programsFactory){
+            return programsFactory.getAll();
           }
         }
       });
@@ -31,7 +34,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       storageService.get(storageService.UOM).then(function (data) {
         $scope.uomList = data;
       });
-
 
       storageService.get(storageService.PRODUCT_TYPES).then(function (data) {
         $scope.product_types = data;
@@ -85,23 +87,22 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           return storageVolume;
         }
 
-
         $scope.inventory = new ngTableParams(params, resolver);
       });
-
 
     })
 /**
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('addInventoryCtrl', function ($scope, productTypes, batchFactory, storageService, $location) {
+    .controller('addInventoryCtrl', function ($scope, productTypes, programs, batchFactory, storageService, $location) {
 
       //used to hold form data
       $scope.inventory = {}
 
       //load data used to populate form fields
       $scope.productTypes = productTypes;
+      $scope.programs = programs;
 
       $scope.productTypeBatches = [];
       $scope.isDisabled = true;
