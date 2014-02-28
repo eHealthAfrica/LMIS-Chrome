@@ -11,11 +11,15 @@
     <div class="col-sm-12">
       <div class="btn-group col-sm-2">
         <a ui-sref="addInventory" class="btn btn-default">
-          <i class="fa fa-plus-circle"></i> Add New Inventory</a>
+          <span><i class="fa fa-plus"></i></span>
+          <span>Add New Inventory</span>
+        </a>
       </div>
       <div class="btn-group col-sm-2">
         <a ui-sref="incomingLog" class="btn btn-default">
-          <i class="fa fa-plus-circle"></i> {{ i18n('incomingLog') }}</a>
+          <span><i class="fa fa-plus"></i></span>
+          <span ng-bind="i18n('incomingLog')"></span>
+        </a>
       </div>
     </div>
   </div>

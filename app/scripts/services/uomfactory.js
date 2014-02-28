@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('uomFactory', function ($q, uomCategoryFactory, storageService) {
+  .factory('uomFactory', function ($q, $rootScope, uomCategoryFactory, storageService) {
 
-      function getUOMbyUUID(uuid){
+      function getByUUID(uuid){
         var deferred = $q.defer();
-        storageService.get(storageService.UOM).then(function(data){
-          var uom = data[uuid];
+        storageService.find(storageService.UOM, uuid).then(function(data){
+          var uom = data;
           if(uom !== undefined){
             uomCategoryFactory.get(uom.uom_category).then(function(data){
               uom.uom_category  = data;
@@ -21,22 +21,25 @@ angular.module('lmisChromeApp')
     return {
 
       getAll: function(){
-        var deferred = $q.defer();
-        storageService.get(storageService.UOM).then(function(data){
-          var uomList = [];
-          for(var uuid in data){
-            getUOMbyUUID(uuid).then(function(data){
-                if(data !== undefined){
-                  uomList.push(data);
-                }
-            });
-          }
-          deferred.resolve(uomList);
+        var deferred = $q.defer(), uomList = [];
+
+        storageService.all(storageService.UOM).then(function (data) {
+          angular.forEach(data, function (datum) {
+            uomList.push(getByUUID(datum.uuid).then(function (uom) {
+              deferred.notify(datum);
+              return uom;
+            }));
+          });
+
+          $q.all(uomList).then(function (results) {
+            deferred.resolve(results);
+            if (!$rootScope.$$phase) $rootScope.$apply();
+          });
         });
         return deferred.promise;
       },
 
-      get: getUOMbyUUID
+      get: getByUUID
     };
 
   });

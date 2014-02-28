@@ -35,6 +35,34 @@ angular.module('lmisChromeApp')
         return deferred.promise;
       }
 
+      /**
+       *This functions receives product type uuid and returns all batches that belongs to the given product type.
+       *
+       * @param productTypeUUID - uuid of product type you want to return batches that are of the product type.
+       */
+      //TODO: when we move to IndexedDB find a way of using indices to get this from the database.
+      function getBatchesByProductType(productTypeUUID) {
+        var deferred = $q.defer(), productTypeBatches = [];
+
+        storageService.all(storageService.BATCH).then(function (data) {
+
+          angular.forEach(data, function (datum) {
+            if (angular.equals(datum.product , productTypeUUID)) {
+              productTypeBatches.push(getByUUID(datum.uuid).then(function (batch) {
+                deferred.notify(datum);
+                return batch;
+              }));
+            }
+          });
+
+          $q.all(productTypeBatches).then(function (results) {
+            deferred.resolve(results);
+            if (!$rootScope.$$phase) $rootScope.$apply();
+          });
+        });
+        return deferred.promise;
+      }
+
 
       /**
        * Expose Public API
@@ -57,6 +85,10 @@ angular.module('lmisChromeApp')
             });
           });
           return deferred.promise;
-        }
+        },
+
+        get: getByUUID,
+
+        getByProductType: getBatchesByProductType
       };
     });
