@@ -32,10 +32,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6">
-                    Monthly Target Population: {{ monthly_stock_record_object[record_key].target_population }}
-                </div>
-                <div class="col-sm-3 col-sm-offset-3">
+
+                <div class="col-sm-3 col-sm-offset-10">
                     <form class="form-inline">
                        <div class="form-group">
                            <label class="sr-only" for="report_month">Month</label>
@@ -71,14 +69,14 @@
     <div class="row">
         <div class="col-sm-6">
             <a
-                ui-sref="stock_count_form({facility: user_related_facility,report_year: report_year, report_month: report_month})"
+                ui-sref="stockCountForm({facility: user_related_facility,report_year: report_year, report_month: report_month})"
                 ng-disabled="add_button"
                 class="btn btn-default">
                 <i class="fa fa-plus-circle"></i> Add Stock Count
             </a>
 
             <a
-                ui-sref="waste_count_form({facility: user_related_facility,report_year: report_year, report_month: report_month})"
+                ui-sref="wasteCountForm({facility: user_related_facility,report_year: report_year, report_month: report_month})"
                 ng-disabled="add_button"
                 class="btn btn-default">
                 <i class="fa fa-plus-circle"></i> Add Wastage Count
@@ -103,9 +101,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="">
 
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -120,9 +116,7 @@
         </div>
     </div>
 <pre>
-    {{ WasteCount }}
-</pre>
-<pre>
     {{ StockCount }}
 </pre>
+    <pre>{{ WasteCount }}</pre>
 </div>
