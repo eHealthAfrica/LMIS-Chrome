@@ -8,7 +8,7 @@ angular.module('lmisChromeApp')
         storageService.find(storageService.CCU, uuid).then(function (data) {
           var storageUnit = data;
           if (!angular.equals(storageUnit, undefined)) {
-            //TODO: attach JSON object of nested attributes.
+            //TODO: attach JSON object of other nested attributes.
             storageUnitTypeFactory.get(storageUnit.type).then(function (data) {
               storageUnit.type = data;
             });
@@ -22,36 +22,36 @@ angular.module('lmisChromeApp')
       return {
 
         getFacilityStorageUnits: function (facilityUUID) {
-           var deferred = $q.defer(), facilityStorageUnits = [];
-            storageService.all(storageService.CCU).then(function(data){
-              for (var index in data) {
-                var storageUnit = data[index];
-                if (!angular.equals(storageUnit, undefined)) {
-
-                }
+          var deferred = $q.defer(), facilityStorageUnits = [];
+          storageService.all(storageService.CCU).then(function (data) {
+            angular.forEach(data, function (datum) {
+              if (!angular.equals(datum, undefined) && angular.equals(datum.facility, facilityUUID)) {
+                facilityStorageUnits.push(getByUUID(datum.uuid).then(function (storageUnit) {
+                  deferred.notify(datum);
+                  return storageUnit;
+                }));
               }
             });
 
-          storageService.get(storageService.CCU).then(function (data) {
-            for (var key in data) {
-              var storageUnit = data[key];
-              if (storageUnit.facility === facilityUUID) {
-                facilityStorageUnits.push(storageUnit);
-              }
-            }
+            $q.all(facilityStorageUnits).then(function (results) {
+              deferred.resolve(results);
+              if (!$rootScope.$$phase) $rootScope.$apply();
+            });
           });
-          return facilityStorageUnits;
+          return deferred.promise;
         },
 
         getAll: function () {
           var deferred = $q.defer(), storageUnits = [];
 
-          storageService.all(storageService.UOM).then(function (data) {
+          storageService.all(storageService.CCU).then(function (data) {
             angular.forEach(data, function (datum) {
-              storageUnits.push(getByUUID(datum.uuid).then(function (storageUnit) {
-                deferred.notify(datum);
-                return storageUnit;
-              }));
+              if (!angular.equals(datum, undefined)) {
+                storageUnits.push(getByUUID(datum.uuid).then(function (storageUnit) {
+                  deferred.notify(datum);
+                  return storageUnit;
+                }));
+              }
             });
 
             $q.all(storageUnits).then(function (results) {

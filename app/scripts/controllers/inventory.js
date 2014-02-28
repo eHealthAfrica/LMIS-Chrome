@@ -13,11 +13,14 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           productTypes: function (productTypeFactory) {
             return productTypeFactory.getAll();
           },
-          programs: function(programsFactory){
+          programs: function (programsFactory) {
             return programsFactory.getAll();
           },
-          uomList: function(uomFactory){
+          uomList: function (uomFactory) {
             return uomFactory.getAll();
+          },
+          facilities: function(facilityFactory){
+            return facilityFactory.getAll();
           }
         }
       });
@@ -98,7 +101,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('addInventoryCtrl', function ($scope, productTypes, programs, uomList, batchFactory, storageService, $location) {
+    .controller('addInventoryCtrl', function ($scope, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
 
       //used to hold form data
       $scope.inventory = {}
@@ -110,32 +113,28 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.isDisabled = true;
       $scope.batchNo = '';
       $scope.uomList = uomList;
+      $scope.facilities = facilities;
+      $scope.receivingFacilityStorageUnits = [];
 
-      console.log($scope.uomList);
-
-      $scope.loadProductTypeBatches = function(productTypeUUID){
+      $scope.loadProductTypeBatches = function (productTypeUUID) {
         $scope.isDisabled = false;
-        batchFactory.getByProductType(productTypeUUID).then(function(data){
+        batchFactory.getByProductType(productTypeUUID).then(function (data) {
           $scope.productTypeBatches = data;
         });
       }
-      $scope.updateBatchNo = function(selectedBatch){
-        batchFactory.get(selectedBatch).then(function(data){
-            console.log(data);
+
+      $scope.updateBatchNo = function (selectedBatch) {
+        batchFactory.get(selectedBatch).then(function (data) {
           $scope.batchNo = data.batch_no;
         });
       }
 
-      storageService.all(storageService.CCU).then(function (data) {
-        $scope.cceList = data;
-      });
-
-      $scope.save = function () {
-        storageService.insert(storageService.INVENTORY, $scope.inventory).then(function () {
-          $location.path('/inventory/index');
+      $scope.loadReceivingFacilityStorageUnits = function (facilityUUID) {
+        console.log("load receiving facility storage units");
+        storageUnitFactory.getFacilityStorageUnits(facilityUUID).then(function (data) {
+          $scope.receivingFacilityStorageUnits = data;
         });
-        console.log($scope.inventory);
-      };
+      }
 
     });
 

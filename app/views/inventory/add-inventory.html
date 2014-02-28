@@ -39,7 +39,7 @@
                         <div class="form-group">
                           <label for="receivingFacility" ng-bind="i18n('receivingFacility')"></label>
                           <select id="receivingFacility" class="form-control" ng-model="inventory.receivingFacility"
-                                  required>
+                                  ng-change="loadReceivingFacilityStorageUnits(inventory.receivingFacility)" required>
                             <option value="" ng-bind="i18n('selectReceivingFacility')"></option>
                             <option ng-repeat="facility in facilities" value="{{ facility.uuid }}"
                                     ng-bind="facility.name"></option>
@@ -133,11 +133,10 @@
                               </select>
                             </td>
                             <td>
-                              <select class="form-control" ng-model="logIncomingForm.storage_units[bundleLine.uuid]">
+                              <select class="form-control" ng-model="inventory.storage_unit">
                                 <option value="">-- Add to Storage Unit --</option>
                                 <option ng-repeat="storageUnit in receivingFacilityStorageUnits"
-                                        value="{{ storageUnit.uuid }}">
-                                  {{ storageUnit.name }}
+                                        value="{{ storageUnit.uuid }}" ng-bind="storageUnit.name ">
                                 </option>
                               </select>
                             </td>
