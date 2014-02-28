@@ -6,6 +6,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         url: '/product-types-view',
         templateUrl: '/views/product-types/product-types-list.html',
         controller: 'ProductTypeListCtrl',
+        resolve: {
+          productTypes: function (productTypeFactory) {
+            return productTypeFactory.getAll();
+          }
+        },
         data: {
           label: 'Product types'
         }
@@ -19,14 +24,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       });
 })
 /**
- * ProductListCtrl controller handles display of products pulled from storage.
+ * ProductTypeListCtrl controller handles display of products type list view.
  */
-    .controller('ProductTypeListCtrl', function ($scope, storageService, productTypeFactory, $filter, ngTableParams) {
+    .controller('ProductTypeListCtrl', function ($scope, productTypes, $filter, ngTableParams) {
 
-
-
-   productTypeFactory.getAll().then(function (data) {
-       console.log(data);
         // Table defaults
         var params = {
           page: 1,
@@ -38,11 +39,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
         // Pagination
         var resolver = {
-          total: data.length,
+          total: productTypes.length,
           getData: function ($defer, params) {
-            var filtered, sorted = data;
+            var filtered, sorted = productTypes;
             if (params.filter()) {
-              filtered = $filter('filter')(data, params.filter());
+              filtered = $filter('filter')(productTypes, params.filter());
             }
             if (params.sorting()) {
               sorted = $filter('orderBy')(filtered, params.orderBy());
@@ -54,9 +55,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             ));
           }
         }
-          $scope.productTypes = new ngTableParams(params, resolver);
-      });
 
+        $scope.productTypes = new ngTableParams(params, resolver);
     })
 /**
  * AddProductCtrl - This is used to save Product Type to local storage.

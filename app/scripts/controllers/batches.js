@@ -25,8 +25,7 @@ angular.module('lmisChromeApp')
           })
     })
 /**
- * BatchListCtrl - This handles the display of Product-Items pulled from
- * storage.
+ * BatchListCtrl - This handles the display of Batches List View
  */
     .controller('BatchListCtrl', function ($scope, batchList, visualMarkerService, $filter, ngTableParams) {
 
