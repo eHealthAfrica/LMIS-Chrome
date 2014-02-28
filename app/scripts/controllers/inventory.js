@@ -9,8 +9,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         url: '/add-inventory',
         templateUrl: '/views/inventory/add-inventory.html',
         controller: 'addInventoryCtrl',
-        resolve:{
-
+        resolve: {
+          productTypes: function (productTypeFactory) {
+            return productTypeFactory.getAll();
+          }
         }
       });
 })
@@ -93,10 +95,31 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('addInventoryCtrl', function ($scope, storageService, $location) {
+    .controller('addInventoryCtrl', function ($scope, productTypes, batchFactory, storageService, $location) {
 
       //used to hold form data
       $scope.inventory = {}
+
+      //load data used to populate form fields
+      $scope.productTypes = productTypes;
+
+      $scope.productTypeBatches = [];
+      $scope.isDisabled = true;
+      $scope.batchNo = '';
+
+      $scope.loadProductTypeBatches = function(productTypeUUID){
+        $scope.isDisabled = false;
+        batchFactory.getByProductType(productTypeUUID).then(function(data){
+          $scope.productTypeBatches = data;
+        });
+      }
+      $scope.updateBatchNo = function(selectedBatch){
+        batchFactory.get(selectedBatch).then(function(data){
+            console.log(data);
+          $scope.batchNo = data.batch_no;
+        });
+      }
+
 
       storageService.all(storageService.BATCH).then(function (data) {
         console.log()
