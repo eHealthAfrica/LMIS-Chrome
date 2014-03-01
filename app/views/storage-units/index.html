@@ -26,28 +26,30 @@
         <h4 class="panel-title" ng-bind="i18n('storageUnit')"></h4>
       </div>
       <div class="scrollable-container">
-        <table ng-table="cceList" class="table table-condensed table-bordered table-striped oversize-table">
-          <tr ng-repeat="cce in $data | filter:query" ng-class="'center-text'">
-            <td data-title="'#'">{{ $index + 1 }}</td>
-            <td data-title="'Code'" sortable="'code'">{{ cce.code }}</td>
+        <table ng-table="storageUnits" class="table table-condensed table-bordered table-striped oversize-table">
+          <tr ng-repeat="storageUnit in $data | filter:query" ng-class="'center-text'">
+            <td data-title="'#'" ng-bind="($index + 1)"></td>
+            <td data-title="'Code'" sortable="'code'" ng-bind="storageUnit.code"></td>
             <td data-title="'Status'" sortable="'status'">
-              <span ng-if="cce.status == CCE_WORKING"><i class="fa fa-check-circle green-icon"></i></span>
-              <span ng-if="cce.status == NOT_WORKING"><i class="fa fa-times-circle red-icon"></i></span>
-              <span ng-if="cce.status == CCE_IN_REPAIR"><i class="fa fa-times-circle warning-alert"></i></span>
+              <span ng-if="storageUnit.status == CCE_WORKING"><i class="fa fa-check-circle green-icon"></i></span>
+              <span ng-if="storageUnit.status == NOT_WORKING"><i class="fa fa-times-circle red-icon"></i></span>
+              <span ng-if="storageUnit.status == CCE_IN_REPAIR"><i class="fa fa-times-circle warning-alert"></i></span>
             </td>
             <td data-title="'Problem Log'">
-              <a href ng-href="#/cce/problem_log/">Problem Log</a>
+              <a href ng-href="">Problem Log</a>
             </td>
             <td data-title="'Temperature Log'">
-              <a href ng-href="#/cce/temperature_log/">Temperature Log</a>
+              <a href ng-href="">Temperature Log</a>
             </td>
             <td data-title="'Net Capacity'" sortable="'net_capacity'">
-              {{ (cce.net_capacity | number:2) +' '+(uomList[cce.capacity_uom].symbol) }}
+              {{ (storageUnit.net_capacity | number:2) +' '+(uomList[cce.capacity_uom].symbol) }}
             </td>
             <td data-title="'Gross Capacity'" sortable="'gross_capacity'">
-              {{ (cce.gross_capacity | number:2) +' '+(uomList[cce.capacity_uom].symbol) }}
+              {{ (storageUnit.gross_capacity | number:2) +' '+(uomList[cce.capacity_uom].symbol) }}
             </td>
-            <td data-title="'Facility'" sortable="'facility'">{{ facilities[cce.facility].name }}</td>
+            <td data-title="'Facility'" sortable="'facility'" ng-init="facility = storageUnit.facility"
+                    ng-bind="facility.name">
+            </td>
             <td data-title="'Name'" sortable="'name'">{{ cce.name }}</td>
             <td data-title="'Parent CCE'" sortable="'parent'">
               <span ng-if="cce.parent">{{ parentCCEList[cce.parent].name }}</span>
@@ -55,11 +57,11 @@
             </td>
             <td data-title="'Type'" sortable="'type'">{{ cceTypes[cce.type].name }}</td>
             <td data-title="'Temperature Range'">
-              {{ cce.minimum_temperature +' <==> '+cce.maximum_temperature+' '+(uomList[cce.temperature_uom].symbol) }}
+              {{ storageUnit.minimum_temperature +' <==> '+storageUnit.maximum_temperature+' '+(uomList[cce.temperature_uom].symbol) }}
             </td>
             <td data-title="'Is Cold Store'" sortable="'is_cold_store'">
-              <span ng-if="cce.is_cold_store"><i class="fa fa-check-circle green-icon"></i></span>
-              <span ng-if="!cce.is_cold_store"><i class="fa fa-times-circle red-icon"></i></span>
+              <span ng-if="storageUnit.is_cold_store"><i class="fa fa-check-circle green-icon"></i></span>
+              <span ng-if="!storageUnit.is_cold_store"><i class="fa fa-times-circle red-icon"></i></span>
             </td>
           </tr>
         </table>
