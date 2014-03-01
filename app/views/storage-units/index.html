@@ -48,14 +48,14 @@
             <td data-title="'Gross Capacity'" sortable="'gross_capacity'"
                 ng-bind="getCapacityDetails(storageUnit.gross_capacity, storageUnit.capacity_uom)">
             </td>
-            <td data-title="'Facility'" sortable="'facility'" ng-bind="(storageUnit.facility).name">
+            <td data-title="'Facility'" sortable="'facility.name'" ng-bind="(storageUnit.facility).name">
             </td>
             <td data-title="'Name'" sortable="'name'" ng-bind="storageUnit.name"></td>
             <td data-title="'Parent Storage Unit'" sortable="'parent'">
               <span ng-if="storageUnit.parent">{{ storageUnit.parent }}</span>
               <span ng-if="!storageUnit.parent">N/A</span>
             </td>
-            <td data-title="'Type'" sortable="'type'" ng-bind="(storageUnit.type).name"></td>
+            <td data-title="'Type'" sortable="'type.name'" ng-bind="(storageUnit.type).name"></td>
             <td data-title="'Temperature Range'">
               <span ng-bind="storageUnit.minimum_temperature "></span>
               <span><i class="fa fa-arrows-h"></i></span>
