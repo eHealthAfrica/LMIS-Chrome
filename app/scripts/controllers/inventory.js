@@ -4,7 +4,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       .state('inventoryListView', {
         url: '/inventory-list-view',
         templateUrl: '/views/inventory/index.html',
-        controller: 'inventoryMainCtrl'
+        controller: 'inventoryMainCtrl',
+        data: {
+          label: "Inventory List"
+        }
       }).state('addInventory', {
         url: '/add-inventory',
         templateUrl: '/views/inventory/add-inventory.html',
