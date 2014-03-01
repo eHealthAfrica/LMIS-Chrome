@@ -1,6 +1,9 @@
 <div class="row">
   <div class="btn-group col-sm-2">
-   <a href="#/cce/cce_form" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add Storage Unit</a>
+   <a href="#/cce/cce_form" class="btn btn-default">
+     <span><i class="fa fa-plus-circle"></i></span>
+     <span>Add Storage Unit</span>
+   </a>
   </div>
 </div>
 
@@ -12,10 +15,7 @@
 
 <div class="row">
   <div class="col-sm-12">
-    <span class="marker-indicator-space">Storage Unit Status Indicators:</span>
-    <i class="fa fa-check-circle green-icon marker-indicator-space"> Working</i>
-    <i class="fa fa-times-circle red-icon marker-indicator-space"> Not Working</i>
-    <i class="fa fa-times-circle warning-alert marker-indicator-space"> In Repair</i>
+    <div ng-include="'views/storage-units/partials/status-indicators.html'"></div>
   </div>
 </div>
 
