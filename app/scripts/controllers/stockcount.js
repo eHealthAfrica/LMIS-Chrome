@@ -49,11 +49,13 @@ angular.module('lmisChromeApp')
         $scope.report_month = ($stateParams.report_month !== null)?$stateParams.report_month:'';
         $scope.report_year = ($stateParams.report_year !== null)?$stateParams.report_year: now.getFullYear();
 
-        $scope.getDaysInMonth = function (){
+        $scope.getDaysInMonth = function (report_month, report_year){
+
             var now = new Date();
-            var year = ($scope.report_year !== '')?$scope.report_year: now.getFullYear();
-            var month = ($scope.report_month !== '')?$scope.report_month: now.getMonth() + 1;
-            var numberOfDays = new Date(month, year, 0).getDate();
+            var year = (report_year !== '')?report_year: now.getFullYear();
+            var month = (report_month !== '')?report_month: now.getMonth() + 1;
+            var numberOfDays = new Date(year, month, 0).getDate();
+            console.log(numberOfDays);
             var dayArray = [];
             for(var i=0; i<numberOfDays; i++){
                 dayArray.push(i+1);
@@ -72,15 +74,8 @@ angular.module('lmisChromeApp')
         }
 
         $scope.current_day = day;
-        $scope.daysInMonth = $scope.getDaysInMonth();
+        $scope.daysInMonth = $scope.getDaysInMonth($scope.report_month, $scope.report_year);
         $scope.yearRange = yearRange();
-
-        var days = [];
-        for (var i = 1; i < $scope.daysInMonth+1; i++) {
-            days.push(i);
-        }
-        $scope.days = days;
-
     })
  /*
  * Landing page controller
@@ -148,7 +143,8 @@ angular.module('lmisChromeApp')
         else {
           $scope.add_button = false;
         }
-        $scope.daysInMonth = $scope.getDaysInMonth();
+        $scope.daysInMonth = $scope.getDaysInMonth($scope.report_month, $scope.report_year);
+          //console.log($scope.daysInMonth);
       });
 
 
