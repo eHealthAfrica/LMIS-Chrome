@@ -12,6 +12,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         url: '/add-inventory',
         templateUrl: '/views/inventory/add-inventory.html',
         controller: 'addInventoryCtrl',
+        data: {
+          label: "Add Inventory"
+        },
         resolve: {
           productTypes: function (productTypeFactory) {
             return productTypeFactory.getAll();
