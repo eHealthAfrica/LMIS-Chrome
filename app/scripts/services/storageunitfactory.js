@@ -1,7 +1,14 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('storageUnitFactory', function ($q, $rootScope, storageUnitTypeFactory, storageService) {
+    .factory('storageUnitFactory', function ($q, $rootScope, facilityFactory, uomFactory, storageUnitTypeFactory, storageService) {
+
+      var STORAGE_UNIT_STATUS = {
+        NEEDS_REVIEW: 0,
+        NOT_WORKING: 1,
+        IN_REPAIR: 2,
+        WORKING: 3
+      };
 
       function getByUUID(uuid) {
         var deferred = $q.defer();
@@ -11,6 +18,18 @@ angular.module('lmisChromeApp')
             //TODO: attach JSON object of other nested attributes.
             storageUnitTypeFactory.get(storageUnit.type).then(function (data) {
               storageUnit.type = data;
+            });
+
+            facilityFactory.get(storageUnit.facility).then(function (facility) {
+              storageUnit.facility = facility;
+            });
+
+            uomFactory.get(storageUnit.temperature_uom).then(function (uom) {
+              storageUnit.temperature_uom = uom;
+            });
+
+            uomFactory.get(storageUnit.capacity_uom).then(function (uom) {
+              storageUnit.capacity_uom = uom;
             });
           }
           deferred.resolve(storageUnit);
@@ -62,7 +81,10 @@ angular.module('lmisChromeApp')
           return deferred.promise;
         },
 
-        get: getByUUID
+        get: getByUUID,
+
+        STATUS: STORAGE_UNIT_STATUS
+
       };
 
     });

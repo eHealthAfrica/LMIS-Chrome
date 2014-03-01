@@ -31,9 +31,10 @@
             <td data-title="'#'" ng-bind="($index + 1)"></td>
             <td data-title="'Code'" sortable="'code'" ng-bind="storageUnit.code"></td>
             <td data-title="'Status'" sortable="'status'">
-              <span ng-if="storageUnit.status == CCE_WORKING"><i class="fa fa-check-circle green-icon"></i></span>
-              <span ng-if="storageUnit.status == NOT_WORKING"><i class="fa fa-times-circle red-icon"></i></span>
-              <span ng-if="storageUnit.status == CCE_IN_REPAIR"><i class="fa fa-times-circle warning-alert"></i></span>
+              <span ng-if="storageUnit.status == STORAGE_STATUS.WORKING"><i class="fa fa-check-circle green-icon"></i></span>
+              <span ng-if="storageUnit.status == STORAGE_STATUS.NOT_WORKING"><i class="fa fa-times-circle red-icon"></i></span>
+              <span ng-if="storageUnit.status == STORAGE_STATUS.IN_REPAIR"><i class="fa fa-times-circle warning-alert"></i></span>
+              <span ng-if="storageUnit.status == STORAGE_STATUS.NEEDS_REVIEW"><i class="fa fa-times-circle needs-review"></i></span>
             </td>
             <td data-title="'Problem Log'">
               <a href ng-href="">Problem Log</a>
@@ -41,23 +42,25 @@
             <td data-title="'Temperature Log'">
               <a href ng-href="">Temperature Log</a>
             </td>
-            <td data-title="'Net Capacity'" sortable="'net_capacity'">
-              {{ (storageUnit.net_capacity | number:2) +' '+(uomList[cce.capacity_uom].symbol) }}
+            <td data-title="'Net Capacity'" sortable="'net_capacity'"
+                ng-bind="getCapacityDetails(storageUnit.net_capacity, storageUnit.capacity_uom)">
             </td>
-            <td data-title="'Gross Capacity'" sortable="'gross_capacity'">
-              {{ (storageUnit.gross_capacity | number:2) +' '+(uomList[cce.capacity_uom].symbol) }}
+            <td data-title="'Gross Capacity'" sortable="'gross_capacity'"
+                ng-bind="getCapacityDetails(storageUnit.gross_capacity, storageUnit.capacity_uom)">
             </td>
-            <td data-title="'Facility'" sortable="'facility'" ng-init="facility = storageUnit.facility"
-                    ng-bind="facility.name">
+            <td data-title="'Facility'" sortable="'facility'" ng-bind="(storageUnit.facility).name">
             </td>
-            <td data-title="'Name'" sortable="'name'">{{ cce.name }}</td>
-            <td data-title="'Parent CCE'" sortable="'parent'">
-              <span ng-if="cce.parent">{{ parentCCEList[cce.parent].name }}</span>
-              <span ng-if="!cce.parent">N/A</span>
+            <td data-title="'Name'" sortable="'name'" ng-bind="storageUnit.name"></td>
+            <td data-title="'Parent Storage Unit'" sortable="'parent'">
+              <span ng-if="storageUnit.parent">{{ storageUnit.parent }}</span>
+              <span ng-if="!storageUnit.parent">N/A</span>
             </td>
-            <td data-title="'Type'" sortable="'type'">{{ cceTypes[cce.type].name }}</td>
+            <td data-title="'Type'" sortable="'type'" ng-bind="(storageUnit.type).name"></td>
             <td data-title="'Temperature Range'">
-              {{ storageUnit.minimum_temperature +' <==> '+storageUnit.maximum_temperature+' '+(uomList[cce.temperature_uom].symbol) }}
+              <span ng-bind="storageUnit.minimum_temperature "></span>
+              <span><i class="fa fa-arrows-h"></i></span>
+              <span ng-bind="storageUnit.maximum_temperature"></span>
+              <span ng-bind="(storageUnit.temperature_uom).symbol"></span>
             </td>
             <td data-title="'Is Cold Store'" sortable="'is_cold_store'">
               <span ng-if="storageUnit.is_cold_store"><i class="fa fa-check-circle green-icon"></i></span>

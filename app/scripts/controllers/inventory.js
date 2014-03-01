@@ -130,10 +130,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.loadReceivingFacilityStorageUnits = function (facilityUUID) {
-        console.log("load receiving facility storage units");
         storageUnitFactory.getFacilityStorageUnits(facilityUUID).then(function (data) {
           $scope.receivingFacilityStorageUnits = data;
         });
+      }
+
+      $scope.addInventoryLine = function(){
+
       }
 
     });

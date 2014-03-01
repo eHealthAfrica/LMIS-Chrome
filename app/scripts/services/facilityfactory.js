@@ -35,13 +35,10 @@ angular.module('lmisChromeApp')
                   if (!$rootScope.$$phase) $rootScope.$apply();
                 });
               }
-          )
-          ;
+          );
           return deferred.promise;
         },
 
         get: getByUUID
-      }
-          ;
-    })
-;
+      };
+    });
