@@ -1,10 +1,3 @@
-<div class="row">
-    <ul class="breadcrumb">
-        <li><a class="pointer" ui-sref="home.index.controlPanel"><i class="fa fa-home"></i></a></li>
-        <li><a href="">Inventory</a></li>
-        <li class="active">Stock Count</li>
-    </ul>
-</div>
 <div ng-controller="StockCountIndexCtrl">
 
     <div class="row">
@@ -96,12 +89,15 @@
                     <table class="table table-bordered oversize-table" id="vm1-table">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>Days</th>
                                 <th ng-repeat="row in stock_products">{{ row }}</th>
                             </tr>
                         </thead>
                         <tbody>
-
+                            <tr ng-repeat="row in daysInMonth">
+                                <td>{{ row }}</td>
+                                <td ng-repeat="product in stock_products"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -115,8 +111,5 @@
             </h3>
         </div>
     </div>
-<pre>
-    {{ StockCount }}
-</pre>
-    <pre>{{ WasteCount }}</pre>
+    <pre>{{ StockCount | json }}</pre>
 </div>
