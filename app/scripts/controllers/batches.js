@@ -10,6 +10,9 @@ angular.module('lmisChromeApp')
             url: '/batch-list-view',
             templateUrl: '/views/batches/index.html',
             controller: 'BatchListCtrl',
+            data: {
+              label: "Batch List"
+            },
             resolve: {
               batchList: function (batchFactory) {
                 return batchFactory.getAll();
