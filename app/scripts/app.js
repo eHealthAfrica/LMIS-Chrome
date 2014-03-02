@@ -2,6 +2,7 @@
 
 angular.module('lmisChromeApp', [
   'ngResource',
+  'ngSanitize',
   'restangular',
   'ui.bootstrap',
   'ngTable',
