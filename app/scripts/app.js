@@ -3,11 +3,13 @@
 angular.module('lmisChromeApp', [
   'ngResource',
   'ngSanitize',
+  'ngCookies',
   'restangular',
   'ui.bootstrap',
   'ngTable',
   'ui.router',
-  'tv.breadcrumbs'
+  'tv.breadcrumbs',
+  'pascalprecht.translate'
 ])
   .config(function(RestangularProvider, $compileProvider) {
     RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
@@ -20,6 +22,17 @@ angular.module('lmisChromeApp', [
   .config(function($uiViewScrollProvider, $anchorScrollProvider) {
     $uiViewScrollProvider.useAnchorScroll();
     $anchorScrollProvider.disableAutoScrolling();
+  })
+
+  .config(function($translateProvider) {
+    $translateProvider
+      .preferredLanguage('en')
+      .fallbackLanguage('en')
+      .useStaticFilesLoader({
+        prefix: '/locales/',
+        suffix: '.json'
+      })
+      .useCookieStorage();
   })
 
   // Central Variable for Watching Online/Offline Events

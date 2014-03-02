@@ -2,9 +2,10 @@
   "name": "lmis-chrome",
   "version": "0.1.0",
   "dependencies": {
-    "angular": "1.2.12",
-    "angular-resource": "1.2.12",
-    "angular-sanitize": "1.2.12",
+    "angular": "1.2.14",
+    "angular-cookies": "1.2.14",
+    "angular-resource": "1.2.14",
+    "angular-sanitize": "1.2.14",
     "restangular": "1.3.1",
     "angular-bootstrap": "0.10.0",
     "ng-table": "0.3.1",
@@ -13,10 +14,11 @@
     "tv-breadcrumbs": "~0.1.1",
     "bootstrap-css-only": "~3.1.0",
     "angular-translate": "~2.0.1",
-    "angular-translate-loader-static-files": "~2.0.0"
+    "angular-translate-loader-static-files": "~2.0.0",
+    "angular-translate-storage-cookie": "~2.0.0"
   },
   "devDependencies": {
-    "angular-mocks": "1.2.12"
+    "angular-mocks": "1.2.14"
   },
   "homepage": "https://github.com/eHealthAfrica/LMIS-Chrome",
   "authors": [
@@ -33,6 +35,6 @@
   "license": "ISC",
   "private": true,
   "resolutions": {
-    "angular": "1.2.12"
+    "angular": "1.2.14"
   }
 }
