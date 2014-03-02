@@ -227,5 +227,3 @@ angular.module('lmisChromeApp')
       }
 
     });
-
-
