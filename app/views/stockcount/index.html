@@ -1,5 +1,4 @@
 <div ng-controller="StockCountIndexCtrl">
-
     <div class="row">
         <div class="col-sm-12">
             <div class="row">
@@ -89,14 +88,16 @@
                     <table class="table table-bordered oversize-table" id="vm1-table">
                         <thead>
                             <tr>
-                                <th>Days</th>
-                                <th ng-repeat="row in stock_products">{{ row }}</th>
+                                <th></th>
+                                <th colspan="2" ng-repeat="product in stock_products">{{ product }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="row in daysInMonth">
-                                <td>{{ row }}</td>
-                                <td ng-repeat="product in stock_products"></td>
+                            <tr ng-bind-html="subHeader(stock_products)">
+
+                            </tr>
+                            <tr ng-repeat="row in daysInMonth" ng-bind-html="columnData(stock_products, stockCountObject, user_related_facility, report_year, report_month, row)">
+
                             </tr>
                         </tbody>
                     </table>
@@ -111,5 +112,5 @@
             </h3>
         </div>
     </div>
-    <pre>{{ StockCount | json }}</pre>
+
 </div>
