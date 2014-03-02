@@ -3,10 +3,12 @@
 angular.module('lmisChromeApp')
   .config(function($stateProvider) {
     $stateProvider.state('home', {
+      url: '/home',
       abstract: true,
       templateUrl: 'views/home/index.html'
     })
     .state('home.index', {
+      abstract: true,
       views: {
         'nav': {
           templateUrl: 'views/home/nav.html',
@@ -20,12 +22,14 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.controlPanel', {
+      url: '/control-panel',
       templateUrl: 'views/home/control-panel.html',
       data: {
         label: 'Home'
       }
     })
     .state('home.index.controlPanel.orderType', {
+      url: '/place-order',
       controller: function($state, $modal) {
         var modal = $modal.open({
           templateUrl: 'views/home/partials/order-type.html',
@@ -36,6 +40,7 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.dashboard', {
+      url: '/dashboard',
       templateUrl: 'views/home/dashboard.html'
     });
   });
