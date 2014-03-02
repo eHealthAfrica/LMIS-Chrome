@@ -9,7 +9,10 @@ angular.module('lmisChromeApp')
           },
           url:'stockCountIndex?facility&report_month&report_year',
           templateUrl: 'views/stockcount/index.html',
-          controller:'StockCountCtrl'
+          controller:'StockCountCtrl',
+          data: {
+            label: 'Stock Count'
+          }
         })
 
         .state('stockCountForm', {
@@ -18,7 +21,10 @@ angular.module('lmisChromeApp')
           },
           url:'stockCountForm?facility&report_month&report_year',
           templateUrl: 'views/stockcount/daily_stock_count_form.html',
-          controller: 'StockCountCtrl'
+          controller: 'StockCountCtrl',
+          data: {
+            label: 'Add Stock Count'
+          }
         })
 
         .state('wasteCountForm', {
@@ -27,7 +33,10 @@ angular.module('lmisChromeApp')
           },
           url: 'wasteCountForm?facility&report_month&report_year',
           templateUrl: 'views/stockcount/daily_waste_count_form.html',
-          controller:'StockCountCtrl'
+          controller:'StockCountCtrl',
+          data: {
+            label: 'Add Waste Count'
+          }
         });
     })
 /*
