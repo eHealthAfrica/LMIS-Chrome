@@ -4,11 +4,17 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       .state('inventoryListView', {
         url: '/inventory-list-view',
         templateUrl: '/views/inventory/index.html',
-        controller: 'inventoryMainCtrl'
+        controller: 'inventoryMainCtrl',
+        data: {
+          label: "Inventory List"
+        }
       }).state('addInventory', {
         url: '/add-inventory',
         templateUrl: '/views/inventory/add-inventory.html',
         controller: 'addInventoryCtrl',
+        data: {
+          label: "Add Inventory"
+        },
         resolve: {
           productTypes: function (productTypeFactory) {
             return productTypeFactory.getAll();
@@ -130,10 +136,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.loadReceivingFacilityStorageUnits = function (facilityUUID) {
-        console.log("load receiving facility storage units");
         storageUnitFactory.getFacilityStorageUnits(facilityUUID).then(function (data) {
           $scope.receivingFacilityStorageUnits = data;
         });
+      }
+
+      $scope.addInventoryLine = function(){
+
       }
 
     });

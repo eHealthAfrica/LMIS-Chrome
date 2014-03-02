@@ -8,7 +8,7 @@ angular.module('lmisChromeApp')
             templateUrl: '/views/bundles/incoming-log.html',
             controller: 'logIncomingCtrl',
             data: {
-              label: 'Home'
+              label: 'Log Incoming'
             }
           });
     })

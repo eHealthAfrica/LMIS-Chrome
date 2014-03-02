@@ -1,6 +1,8 @@
 <div class="row">
   <div class="btn-group col-sm-2">
-    <a ui-sref="addBatchView" class="btn btn-default"><i class="fa fa-plus"></i> <span>Add Batch</span></a>
+    <a ui-sref="addBatchView" class="btn btn-default">
+      <span><i class="fa fa-plus"></i></span>
+      <span>Add Batch</span></a>
   </div>
 </div>
 
@@ -23,12 +25,13 @@
 </div>
 
 <div class="row">
-  <div class="col-sm-18">
+  <div class="col-sm-12">
     <div class="panel panel-default">
 
       <div class="panel-heading">
         <h3 class="panel-title">
-          <i class="fa fa-list"></i> {{ i18n('batches') }}
+          <span><i class="fa fa-list"></i></span>
+          <span ng-bind="i18n('batches')"></span>
         </h3>
       </div>
 
@@ -38,13 +41,13 @@
               class="{{ highlight(batch.expiration_date, orderByMonths) }} center-text">
             <td data-title="'#'">{{ $index + 1 }}</td>
             <td data-title="'Batch No'" sortable="'batch_no'" ng-bind="batch.batch_no"></td>
-            <td data-title="'Product Name'"  sortable="'(batch.product).name'" ng-bind="(batch.product).name"></td>
+            <td data-title="'Product Name'"  sortable="'product.name'" ng-bind="(batch.product).name"></td>
             <td data-title="'Expiration Date'" sortable="'expiration_date'"
                 ng-bind="(batch.expiration_date | date:'dd-MM-yyyy')"></td>
-            <td data-title="'Manufacturer'" ng-bind="(batch.manufacturer).name"></td>
-            <td data-title="'Presentation'" ng-bind="(batch.presentation).name"></td>
-            <td data-title="'Formulation'" ng-bind="(batch.formulation).name"></td>
-            <td data-title="'Mode Of Administration'" ng-bind="(batch.mode_of_use).name"></td>
+            <td data-title="'Manufacturer'" sortable="'manufacturer.name'" ng-bind="(batch.manufacturer).name"></td>
+            <td data-title="'Presentation'" sortable="'presentation.name'" ng-bind="(batch.presentation).name"></td>
+            <td data-title="'Formulation'" sortable="'formulation.name'" ng-bind="(batch.formulation).name"></td>
+            <td data-title="'Mode Of Administration'" sortable="'mode_of_use.name'" ng-bind="(batch.mode_of_use).name"></td>
             <td data-title="'Packed Volume'" sortable="'packed_volume'"
                 ng-bind="(batch.packed_volume+' '+(batch.volume_uom).symbol)">
             </td>

@@ -9,59 +9,100 @@ angular.module('lmisChromeApp')
           .state('storageUnitsView', {
             url: '/storage-units-view',
             templateUrl: '/views/storage-units/index.html',
-            controller: 'StorageUnitListCtrl'
+            controller: 'StorageUnitListCtrl',
+            data: {
+              label: 'Storage Unit'
+            },
+            resolve: {
+              storageUnits: function (storageUnitFactory) {
+                return storageUnitFactory.getAll();
+              }
+            }
           });
     })
+/**
+ * StorageUnitListCtrl - is the controller responsible for showing storage units
+ *
+ */
+    .controller('StorageUnitListCtrl', function ($scope, storageUnits, storageUnitFactory, storageService, $filter, ngTableParams) {
 
-    .controller('StorageUnitListCtrl', function ($scope, storageService, $filter, ngTableParams) {
-
-      //constants used to track CCE status
-      //TODO: update to add "Needs Review"
-      $scope.CCE_WORKING = 0;
-      $scope.NOT_WORKING = 1;
-      $scope.CCE_IN_REPAIR = 2;
-
-      storageService.all(storageService.CCU).then(function (data) {
-        // Table defaults
-        var params = {
-          page: 1,
-          count: 10,
-          sorting: {
-            code: 'asc'     // initial sorting
-          }
-        };
-
-        // Pagination
-        var resolver = {
-          total: data.length,
-          getData: function ($defer, params) {
-            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-            $defer.resolve(orderedData.slice(
-                (params.page() - 1) * params.count(),
-                params.page() * params.count()
-            ));
-          }
+      // Table defaults
+      var params = {
+        page: 1,
+        count: 10,
+        sorting: {
+          code: 'asc' // initial sorting
         }
+      };
 
-        $scope.cceList = new ngTableParams(params, resolver);
-      });
+      // Pagination
+      var resolver = {
+        total: storageUnits.length,
+        getData: function ($defer, params) {
+          var orderedData = params.sorting() ? $filter('orderBy')(storageUnits, params.orderBy()) : storageUnits;
+          $defer.resolve(orderedData.slice(
+              (params.page() - 1) * params.count(),
+              params.page() * params.count()
+          ));
+        }
+      }
 
-      storageService.loadTableObject(storageService.FACILITY).then(function (data) {
-        $scope.facilities = data;
-      });
+      $scope.storageUnits = new ngTableParams(params, resolver);
+      $scope.STORAGE_STATUS = storageUnitFactory.STATUS;
 
-      storageService.get(storageService.CCU_TYPE).then(function (data) {
-        console.log(data);
-        $scope.cceTypes = data;
-      });
+      $scope.getCapacityDetails = function (capacity, uom) {
+        return  $filter('number')(capacity, 2) + " " + uom.symbol;
+      }
 
-      storageService.get(storageService.UOM).then(function (data) {
-        $scope.uomList = data;
-      });
 
-      storageService.get(storageService.CCU).then(function (data) {
-        $scope.parentCCEList = data;
-      });
+//      console.log(storageUnits);
+//      //constants used to track CCE status
+//      //TODO: update to add "Needs Review"
+//      $scope.CCE_WORKING = 0;
+//      $scope.NOT_WORKING = 1;
+//      $scope.CCE_IN_REPAIR = 2;
+//
+//      storageService.all(storageService.CCU).then(function (data) {
+//        // Table defaults
+//        var params = {
+//          page: 1,
+//          count: 10,
+//          sorting: {
+//            code: 'asc'     // initial sorting
+//          }
+//        };
+//
+//        // Pagination
+//        var resolver = {
+//          total: data.length,
+//          getData: function ($defer, params) {
+//            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+//            $defer.resolve(orderedData.slice(
+//                (params.page() - 1) * params.count(),
+//                params.page() * params.count()
+//            ));
+//          }
+//        }
+//
+//        $scope.cceList = new ngTableParams(params, resolver);
+//      });
+//
+//      storageService.loadTableObject(storageService.FACILITY).then(function (data) {
+//        $scope.facilities = data;
+//      });
+//
+//      storageService.get(storageService.CCU_TYPE).then(function (data) {
+//        console.log(data);
+//        $scope.cceTypes = data;
+//      });
+//
+//      storageService.get(storageService.UOM).then(function (data) {
+//        $scope.uomList = data;
+//      });
+//
+//      storageService.get(storageService.CCU).then(function (data) {
+//        $scope.parentCCEList = data;
+//      });
 
     })
 
