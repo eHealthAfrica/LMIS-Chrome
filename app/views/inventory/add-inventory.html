@@ -17,10 +17,10 @@
                     <div class="col-sm-12">
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label for="sendingFacility" ng-bind="i18n('sendingFacility')"></label>
+                          <label for="sendingFacility" translate="sendingFacility"></label>
                           <select id="sendingFacility" class="form-control" ng-model="inventory.sendingFacility"
                                   required>
-                            <option value="" ng-bind="i18n('selectSendingFacility')"></option>
+                            <option value="" translate="selectSendingFacility"></option>
                             <option ng-repeat="facility in facilities" value="{{ facility.uuid }}"
                                     ng-bind="facility.name"></option>
                           </select>
@@ -29,10 +29,10 @@
 
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label for="receivingFacility" ng-bind="i18n('receivingFacility')"></label>
+                          <label for="receivingFacility" translate="receivingFacility"></label>
                           <select id="receivingFacility" class="form-control" ng-model="inventory.receivingFacility"
                                   ng-change="loadReceivingFacilityStorageUnits(inventory.receivingFacility)" required>
-                            <option value="" ng-bind="i18n('selectReceivingFacility')"></option>
+                            <option value="" translate="selectReceivingFacility"></option>
                             <option ng-repeat="facility in facilities" value="{{ facility.uuid }}"
                                     ng-bind="facility.name"></option>
                           </select>
@@ -41,7 +41,7 @@
 
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label for="bundleNo" ng-bind="i18n('bundleNo')"></label>
+                          <label for="bundleNo" translate="bundleNo"></label>
                           <input class="form-control" type="text" name="bundleNo" id="bundleNo"
                                  ng-model="inventory.bundleNo" placeholder="e.g KNC-THF-01-9803"/>
                         </div>
@@ -49,7 +49,7 @@
 
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label for="receiptDate" ng-bind="i18n('dateReceived')"> <i
+                          <label for="receiptDate" translate="dateReceived"> <i
                                   class="fa fa-calendar"></i></label>
                           <input ng-model="inventory.date_receipt" class="form-control" type="date" name="receiptDate"
                                  id="receiptDate"/>
@@ -79,19 +79,19 @@
                           <tr>
                             <thead>
                             <th>#</th>
-                            <th class="text-titlecase" ng-bind="i18n('productTypes')"></th>
-                            <th class="text-titlecase" ng-bind="i18n('batchNo')"></th>
-                            <th class="text-titlecase" ng-bind="i18n('program')"></th>
-                            <th class="text-titlecase" ng-bind="i18n('quantity')"></th>
-                            <th class="text-titlecase" ng-bind="i18n('uom')"></th>
-                            <th ng-bind="i18n('storageUnit')"></th>
+                            <th class="text-titlecase" translate="productTypes"></th>
+                            <th class="text-titlecase" translate="batchNo"></th>
+                            <th class="text-titlecase" translate="program"></th>
+                            <th class="text-titlecase" translate="quantity"></th>
+                            <th class="text-titlecase" translate="uom"></th>
+                            <th translate="storageUnit"></th>
                             </thead>
                           </tr>
                           <tr>
                             <td>1</td>
                             <td>
                               <select ng-model="productType" class="form-control" ng-change="loadProductTypeBatches(productType)">
-                                <option value="" ng-bind="i18n('selectProductType')"></option>
+                                <option value="" translate="selectProductType"></option>
                                 <option ng-repeat="productType in productTypes" value="{{ productType.uuid }}"
                                         ng-bind="productType.name">
                                 </option>
@@ -100,7 +100,7 @@
                             <td>
                               <select ng-model="selectedBatch" class="form-control" ng-change="updateBatchNo(selectedBatch)"
                                       ng-disabled="isDisabled">
-                                <option value="" ng-bind="i18n('selectBatch')"></option>
+                                <option value="" translate="selectBatch"></option>
                                 <option ng-repeat="batch in productTypeBatches" value="{{ batch.uuid }}" ng-bind="batch.batch_no">
                                 </option>
                               </select>
@@ -109,7 +109,7 @@
                             </td>
                             <td>
                               <select ng-model="program" class="form-control">
-                                <option value="" ng-bind="i18n('selectProgram')"></option>
+                                <option value="" translate="selectProgram"></option>
                                 <option ng-repeat="program in programs" value="{{ program.uuid }}"
                                         ng-bind="program.name"></option>
                               </select>
@@ -120,7 +120,7 @@
                             </td>
                             <td>
                               <select class="form-control" ng-model="uom">
-                                <option value="" ng-bind="i18n('selectUOM')"></option>
+                                <option value="" translate="selectUOM"></option>
                                 <option ng-repeat="uom in uomList" value="{{ uom.uuid }}" ng-bind="uom.name"></option>
                               </select>
                             </td>
@@ -155,10 +155,10 @@
 
               <div class="col-md-4 pull-right">
                 <button id="authorize" name="authorize" class="btn btn-default"
-                        ng-disabled="authorized" ng-bind="i18n('authorize')"
+                        ng-disabled="authorized" translate="authorize"
                         ng-click="authorized=true"></button>
                 <button id="submit" name="submit" class="btn btn-success"
-                        ng-bind="i18n('submit')" ng-disabled="!authorized"></button>
+                        translate="submit" ng-disabled="!authorized"></button>
               </div>
             </div>
           </div>

@@ -3,7 +3,6 @@
 	"description": "LMIS Chrome packaged app",
   	"version": "0.1.0",
   	"manifest_version": 2,
-  	"default_locale": "en",
   	"permissions": [
   		{
   			"fileSystem": [

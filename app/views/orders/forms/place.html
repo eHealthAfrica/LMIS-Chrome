@@ -2,7 +2,7 @@
 <fieldset>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="receivingFacilityName" ng-bind="i18n('receivingFacilityName')"></label>
+    <label class="col-md-4 control-label" for="receivingFacilityName" translate="receivingFacilityName"></label>
     <div class="col-md-4">
       <select id="receivingFacilityName" name="receivingFacilityName"
         class="form-control" ng-model="order.receivingFacility">
@@ -13,7 +13,7 @@
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="childFacilityCode" ng-bind="i18n('childFacilityCode')"></label>
+    <label class="col-md-4 control-label" for="childFacilityCode" translate="childFacilityCode"></label>
     <div class="col-md-4">
       <input id="childFacilityCode" name="childFacilityCode" type="text" disabled
         ng-model="storage.facilities[order.receivingFacility].code"
@@ -22,7 +22,7 @@
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="parentFacilityName" ng-bind="i18n('parentFacilityName')"></label>
+    <label class="col-md-4 control-label" for="parentFacilityName" translate="parentFacilityName"></label>
     <div class="col-md-4">
       <select id="parentFacilityName" name="parentFacilityName"
         class="form-control" ng-model="order.parentFacility">
@@ -33,7 +33,7 @@
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="parentFacilityCode" ng-bind="i18n('parentFacilityCode')"></label>
+    <label class="col-md-4 control-label" for="parentFacilityCode" translate="parentFacilityCode"></label>
     <div class="col-md-4">
       <input id="parentFacilityCode" name="parentFacilityCode" disabled
         type="text" class="form-control input-md" required
@@ -42,7 +42,7 @@
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="userCode" ng-bind="i18n('userCode')"></label>
+    <label class="col-md-4 control-label" for="userCode" translate="userCode"></label>
     <div class="col-md-4">
       <input id="userCode" name="userCode" type="text" class="form-control input-md"
         required disabled ng-model="order.userCode">
@@ -50,7 +50,7 @@
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="orderNumber" ng-bind="i18n('orderNumber')"></label>
+    <label class="col-md-4 control-label" for="orderNumber" translate="orderNumber"></label>
     <div class="col-md-4">
       <input id="orderNumber" name="orderNumber" type="text" required disabled
         class="form-control input-md" ng-model="order.number">
@@ -58,7 +58,7 @@
   </div>
 
   <div class="form-group">
-    <label class="col-md-4 control-label" for="orderDate" ng-bind="i18n('orderDate')"></label>
+    <label class="col-md-4 control-label" for="orderDate" translate="orderDate"></label>
     <div class="col-md-4">
       <input id="orderDate" name="orderDate" type="date" class="form-control input-md" required ng-model="order.date">
     </div>
@@ -68,7 +68,7 @@
     <accordion close-others="true">
       <accordion-group ng-repeat="product in order.products" is-open="true">
         <accordion-heading>
-          <span ng-bind="i18n('productID', '' + product.id)"></span>
+          <span translate="productID', '' + product.id)"></span>
           <i ng-click="removeProduct(product)"
             ng-attr-title="{{i18n('removeProduct')}} {{product.id}}"
             class="pull-right text-muted fa fa-times fa-2x"></i>
@@ -78,17 +78,17 @@
     </accordion>
     <button name="addProduct" class="btn btn-default" ng-click="addProduct()">
       <span><i class="fa fa-plus"></i></span>
-      <span ng-bind="i18n('addProduct', determiner)"></span>
+      <span translate="addProduct', determiner)"></span>
     </button>
   </div>
 
   <div class="form-group">
     <div class="col-md-4 pull-right">
       <button id="authorize" name="authorize" class="btn btn-default"
-        ng-disabled="authorized" ng-bind="i18n('authorize')"
+        ng-disabled="authorized" translate="authorize"
         ng-click="authorized=true"></button>
       <button id="submit" name="submit" class="btn btn-success"
-        ng-bind="i18n('submit')" ng-disabled="!authorized"></button>
+        translate="submit" ng-disabled="!authorized"></button>
     </div>
   </div>
 
