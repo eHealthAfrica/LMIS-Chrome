@@ -26,7 +26,7 @@ angular.module('lmisChromeApp', [
 
   .config(function($translateProvider) {
     $translateProvider
-      .preferredLanguage('en')
+      .preferredLanguage('en_GB')
       .fallbackLanguage('en')
       .useStaticFilesLoader({
         prefix: '/locales/',
