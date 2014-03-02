@@ -1,6 +1,6 @@
 {
-  	"name": "__MSG_appName__",
-  	"description": "__MSG_appDescription__",
+	"name": "LMIS Chrome",
+	"description": "LMIS Chrome packaged app",
   	"version": "0.1.0",
   	"manifest_version": 2,
   	"default_locale": "en",
