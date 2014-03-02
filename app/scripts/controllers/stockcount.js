@@ -55,7 +55,6 @@ angular.module('lmisChromeApp')
             var year = (report_year !== '')?report_year: now.getFullYear();
             var month = (report_month !== '')?report_month: now.getMonth() + 1;
             var numberOfDays = new Date(year, month, 0).getDate();
-            console.log(numberOfDays);
             var dayArray = [];
             for(var i=0; i<numberOfDays; i++){
                 dayArray.push(i+1);
@@ -90,17 +89,31 @@ angular.module('lmisChromeApp')
       $scope.monthly_stock_record_object = {};
       $scope.StockCount = {};
       $scope.WasteCount = {};
+      $scope.stockCountObject = {};
+
 
       stockCountFactory.get.allStockCount()
         .then(function(StockCount){
-              console.log('stock count is');
-              console.log(StockCount);
             $scope.StockCount = StockCount;
+            $scope.stockCountObject = stockCountFactory.get.createStockObject(StockCount);
         });
       stockCountFactory.get.allWasteCount()
         .then(function(WasteCount){
             $scope.WasteCount = WasteCount;
         });
+       $scope.subHeader = function (stock_products){
+            var subHeaderVar = '<td>Days</td>';
+
+               for(var i in stock_products){
+                    subHeaderVar += '<td>Opened</td><td>Unopened</td>'
+               }
+
+            return subHeaderVar;
+        }
+
+        $scope.columnData =  stockCountFactory.get.stockCountColumnData;
+
+
       /*
        * get monthly stock records if any
        */
@@ -144,7 +157,7 @@ angular.module('lmisChromeApp')
           $scope.add_button = false;
         }
         $scope.daysInMonth = $scope.getDaysInMonth($scope.report_month, $scope.report_year);
-          //console.log($scope.daysInMonth);
+
       });
 
 
