@@ -30,7 +30,7 @@
   "another": "another",
   "addProduct": "Add {{determiner}} product",
   "orderDate": "Order Date",
-  "removeProduct": "Remove product",
+  "removeProductID": "Remove product {{id}}",
   "authorize": "Authorize",
   "manageInventory":"Manage inventory",
   "product":"Product",
@@ -56,5 +56,6 @@
   "uom": "Unit of measurement",
   "selectUOM": "select unit of measurement",
   "controlPanel": "Control Panel",
-  "dashboard": "Dashboard"
+  "dashboard": "Dashboard",
+  "toogleNav": "Toggle Navigation"
 }

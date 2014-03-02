@@ -70,7 +70,7 @@
         <accordion-heading>
           <span translate="productID" translate-value-id="{{product.id}}"></span>
           <i ng-click="removeProduct(product)"
-            ng-attr-title="{{i18n('removeProduct')}} {{product.id}}"
+            ng-attr-title="{{'removeProductID' | translate:'{id: product.id}'}}"
             class="pull-right text-muted fa fa-times fa-2x"></i>
         </accordion-heading>
         <div ng-include="'views/orders/forms/partials/product.html'"></div>

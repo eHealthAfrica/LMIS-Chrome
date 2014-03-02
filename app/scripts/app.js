@@ -50,11 +50,6 @@ angular.module('lmisChromeApp', [
       $rootScope.messages.splice(index, 1);
     };
 
-    // https://developer.chrome.com/extensions/i18n.html
-    if('chrome' in $window && 'i18n' in $window.chrome) {
-      $rootScope.i18n = $window.chrome.i18n.getMessage;
-    }
-
     //chrome.storage.local.clear();
     storageService.loadFixtures();
 
