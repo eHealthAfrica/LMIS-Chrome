@@ -1,13 +1,5 @@
 <div ng-controller="WasteCountFormCtrl">
     <div class="row">
-        <ul class="breadcrumb">
-            <li><a class="pointer" ui-sref="home.index.controlPanel"><i class="fa fa-home"></i></a></li>
-            <li><a href="">Inventory</a></li>
-            <li><a class="pointer" ui-sref="stock_count_index({facility: facility_uuid,report_year: report_year, report_month: report_month})">Stock Count</a></li>
-            <li class="active">Stock Count Form</li>
-        </ul>
-    </div>
-    <div class="row">
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-3">
@@ -60,79 +52,73 @@
             </div>
         </div>
     </div>
+<form ng-submit="save()">
     <div class="row">
         <div class="col-sm-4">Report Day</div>
-        <div class="col-sm-1">
-            <select ng-model="wastageCount.report_day" class="form-control">
+        <div class="col-sm-4">
+            <select ng-model="wastageCount.day" class="form-control">
                 <option value="">-- select day --</option>
-                <option ng-selected="day == current_day" ng-repeat="day in dates" value="{{ day }}">{{ day }}</option>
+                <option ng-selected="day == current_day" ng-repeat="day in daysInMonth" value="{{ day }}">{{ day }}</option>
             </select>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <form ng-submit="save()">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="panel panel-default">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Stock Item</th>
-                                        <th colspan="2">Todays Waste</th>
-                                        <th>Confirm</th>
-                                    </tr>
-                                    <tr>
-                                        <th></th>
-                                        <th>Total Discarded Today</th>
-                                        <th>Reasons for Discard</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="(productKey, productName) in stock_products">
-                                        <td class="form-label">{{ productName }}</td>
-                                        <td>
-                                            <div class="col-sm-6">
-                                                <input class="form-control" ng-model="wastageCount.discarded[productKey]">
-                                            </div>
-                                        </td>
-                                        <td>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Stock Item</th>
+                                    <th colspan="2">Todays Waste</th>
+                                    <th>Confirm</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>Total Discarded Today</th>
+                                    <th>Reasons for Discard</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(productKey, productName) in stock_products">
+                                    <td class="form-label">{{ productName }}</td>
+                                    <td>
+                                        <div class="col-sm-6">
+                                            <input class="form-control" ng-model="wastageCount.discarded[productKey]">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" ng-class="{open: open}">
+                                            <button type="button" ng-click="open=!open" class="btn">Select Reason</button>
+                                            <button type="button" class="btn dropdown-toggle" ng-click="open=!open">
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu w-menu">
 
-                                                <div class="btn-group" ng-class="{open: open}">
-                                                    <button type="button" ng-click="open=!open" class="btn">Select Reason</button>
-                                                    <button type="button" class="btn dropdown-toggle" ng-click="open=!open">
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu w-menu">
-
-                                                        <li ng-repeat="(key, value) in discardedReasons">
-                                                            {{ value }}  <input ng-true-value="{{ key }}"  ng-model="wastageCount.reason[productKey][key]" type="checkbox">
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-
-                                        </td>
-                                        <td><input ng-model="wastageCount.wastageConfirmation[productKey]" type="checkbox"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                                <li ng-repeat="(key, value) in discardedReasons">
+                                                    {{ value }}  <input ng-true-value="{{ key }}"  ng-model="wastageCount.reason[productKey][key]" type="checkbox">
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td><input ng-model="wastageCount.wastageConfirmation[productKey]" type="checkbox"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <button class="btn btn-success">Save</button>
-                        </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <button class="btn btn-success">Save</button>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-    <pre>
-        {{ wastageCount }}
-    </pre>
+</form>
 </div>

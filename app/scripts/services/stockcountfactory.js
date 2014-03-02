@@ -64,6 +64,32 @@ angular.module('lmisChromeApp')
             return deferred.promise;
         }
     }
+    var openedProductCount = function(StockObject, facility, year, month, day, product){
+             var day = day < 10 ? '0' + day : day;
+             var key = facility+year+month+day;
+              //return key;
+             var row = StockObject[key];
+             if(Object.prototype.toString.call(row) === '[object Object]'){
+                  if(Object.keys(row).indexOf('used_opened') !== -1){
+                      if(Object.keys(row['used_opened']).indexOf(product.toString()) !== -1){
+                        return row['used_opened'][product.toString()]
+                      }
+                  }
+             }
+        }
+        var unOpenedProductCount = function(StockObject, facility, year, month, day, product){
+               var day = day < 10 ? '0' + day : day;
+                 var key = facility+year+month+day;
+                  //return key;
+                 var row = StockObject[key];
+                 if(Object.prototype.toString.call(row) === '[object Object]'){
+                      if(Object.keys(row).indexOf('used_unopened') !== -1){
+                          if(Object.keys(row['used_unopened']).indexOf(product.toString()) !== -1){
+                            return row['used_unopened'][product.toString()]
+                          }
+                      }
+                 }
+            }
     var load={
         allStockCount: function(){
             var deferred = $q.defer();
@@ -72,6 +98,28 @@ angular.module('lmisChromeApp')
                     deferred.resolve(stockCount);
                 });
             return deferred.promise;
+        },
+        createStockObject: function(stockCount){
+            var stockObject = {};
+            for(var i in stockCount){
+                var key = stockCount[i].facility+stockCount[i].year.toString()+stockCount[i].month.toString()+stockCount[i].day.toString();
+                stockObject[key] = stockCount[i];
+            }
+            return stockObject;
+        },
+
+        stockCountColumnData: function(programProducts, StockObject, facility, year, month, day){
+
+            var html = '<td>'+day+'</td>';
+            for(var i=0; i<programProducts.length; i++){
+                var opened = openedProductCount(StockObject, facility, year, month, day, i);
+                var unopened = unOpenedProductCount(StockObject, facility, year, month, day, i);
+                opened = angular.isUndefined(opened)?'':opened;
+                unopened = angular.isUndefined(unopened)?'':unopened;
+                html += '<td>'+opened+'</td>';
+                html += '<td>'+unopened+'</td>';
+            }
+            return html;
         },
         stockCountRow: function(uuid){
             storageService.get('stockCount', uuid)
@@ -98,6 +146,7 @@ angular.module('lmisChromeApp')
         }
 
     }
+
     return {
         programProducts: program_products,
         discardedReasons: discarded_reasons,

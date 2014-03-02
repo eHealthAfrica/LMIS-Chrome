@@ -1,13 +1,5 @@
 <div ng-controller="StockCountFormCtrl">
     <div class="row">
-        <ul class="breadcrumb">
-            <li><a class="pointer" ui-sref="home.index.controlPanel"><i class="fa fa-home"></i></a></li>
-            <li><a href="">Inventory</a></li>
-            <li><a class="pointer" ui-sref="stock_count_index({facility: facility_uuid,report_year: report_year, report_month: report_month})">Stock Count</a></li>
-            <li class="active">Stock Count Form</li>
-        </ul>
-    </div>
-    <div class="row">
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-3">
@@ -62,18 +54,18 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-4">Report Day</div>
-        <div class="col-sm-1">
-            <select ng-model="stockCount.report_day" class="form-control">
-                <option value="">-- select day --</option>
-                <option ng-selected="day == current_day" ng-repeat="day in dates" value="{{ day }}">{{ day }}</option>
-            </select>
+    <form ng-submit="save()">
+        <div class="row">
+            <div class="col-sm-4">Report Day</div>
+            <div class="col-sm-4">
+                <select ng-model="stockCount.day" class="form-control">
+                    <option value="">-- select day --</option>
+                    <option ng-selected="day == current_day" ng-repeat="day in daysInMonth" value="{{ day }}">{{ day }}</option>
+                </select>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <form ng-submit="save()">
+        <div class="row">
+            <div class="col-sm-12">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel panel-default">
@@ -119,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
+     </form>
 </div>
