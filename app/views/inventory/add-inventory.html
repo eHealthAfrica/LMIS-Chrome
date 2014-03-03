@@ -5,7 +5,7 @@
         <h4 class="panel-title">Add New Inventory</h4>
       </div>
       <div class="panel-body">
-        <form>
+        <form ng-submit="save()">
           <div class="row">
             <div class="col-sm-12">
               <div class="panel panel-default">
@@ -18,7 +18,7 @@
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="sendingFacility" translate="sendingFacility"></label>
-                          <select id="sendingFacility" class="form-control" ng-model="inventory.sendingFacility"
+                          <select id="sendingFacility" class="form-control" ng-model="inventory.sending_facility"
                                   required>
                             <option value="" translate="selectSendingFacility"></option>
                             <option ng-repeat="facility in facilities" value="{{ facility.uuid }}"
@@ -30,8 +30,8 @@
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="receivingFacility" translate="receivingFacility"></label>
-                          <select id="receivingFacility" class="form-control" ng-model="inventory.receivingFacility"
-                                  ng-change="loadReceivingFacilityStorageUnits(inventory.receivingFacility)" required>
+                          <select id="receivingFacility" class="form-control" ng-model="inventory.receiving_facility"
+                                  ng-change="loadReceivingFacilityStorageUnits(inventory.receiving_facility)" required>
                             <option value="" translate="selectReceivingFacility"></option>
                             <option ng-repeat="facility in facilities" value="{{ facility.uuid }}"
                                     ng-bind="facility.name"></option>
@@ -43,7 +43,7 @@
                         <div class="form-group">
                           <label for="bundleNo" translate="bundleNo"></label>
                           <input class="form-control" type="text" name="bundleNo" id="bundleNo"
-                                 ng-model="inventory.bundleNo" placeholder="e.g KNC-THF-01-9803"/>
+                                 ng-model="inventory.bundle_no" placeholder="e.g KNC-THF-01-9803"/>
                         </div>
                       </div>
 
@@ -52,7 +52,7 @@
                           <label for="receiptDate" translate="dateReceived"> <i
                                   class="fa fa-calendar"></i></label>
                           <input ng-model="inventory.date_receipt" class="form-control" type="date" name="receiptDate"
-                                 id="receiptDate"/>
+                                 id="receiptDate" required=""/>
                         </div>
                       </div>
 
@@ -70,7 +70,7 @@
                   <h4 class="panel-title">New Inventory Detail</h4>
                 </div>
 
-                <div class="panel-body">
+                <div class="panel-body" ng-show="(inventory.inventoryLines).length !== 0">
                   <div class="row">
                     <div class="col-sm-12">
                       <div class="col-sm-12">
@@ -84,53 +84,66 @@
                             <th class="text-titlecase" translate="program"></th>
                             <th class="text-titlecase" translate="quantity"></th>
                             <th class="text-titlecase" translate="uom"></th>
-                            <th translate="storageUnit"></th>
+                            <th class="text-titlecase" translate="storageUnit"></th>
+                            <th class="text-titlecase" translate="remove"></th>
                             </thead>
                           </tr>
-                          <tr>
-                            <td>1</td>
+                          <tr ng-repeat="inventoryLine in inventory.inventoryLines">
+                            <td ng-bind="($index + 1)"></td>
                             <td>
-                              <select ng-model="productType" class="form-control" ng-change="loadProductTypeBatches(productType)">
+                              <select ng-model="inventoryLine.productType" class="form-control"
+                                      ng-change="loadProductTypeBatches(inventoryLine)">
                                 <option value="" translate="selectProductType"></option>
-                                <option ng-repeat="productType in productTypes" value="{{ productType.uuid }}"
-                                        ng-bind="productType.name">
+                                <option ng-repeat="type in inventoryLine.productTypes" value="{{ type.uuid }}"
+                                        ng-selected="{{ (inventoryLine.productType).uuid === type.uuid}}"
+                                        ng-bind="type.name">
                                 </option>
                               </select>
                             </td>
                             <td>
-                              <select ng-model="selectedBatch" class="form-control" ng-change="updateBatchNo(selectedBatch)"
-                                      ng-disabled="isDisabled">
+                              <select ng-model="inventoryLine.selectedBatch" class="form-control"
+                                      ng-change="updateBatchNo(inventoryLine)"
+                                      ng-disabled="inventoryLine.isDisabled">
                                 <option value="" translate="selectBatch"></option>
-                                <option ng-repeat="batch in productTypeBatches" value="{{ batch.uuid }}" ng-bind="batch.batch_no">
+                                <option ng-repeat="batch in inventoryLine.productTypeBatches" value="{{ batch.uuid }}"
+                                        ng-bind="batch.batch_no">
                                 </option>
                               </select>
                               <br/>
-                              <input class="form-control" type="text" name="batchNo" ng-model="batchNo"/>
+                              <input class="form-control" type="text" name="batchNo" ng-model="inventoryLine.batch_no"/>
                             </td>
                             <td>
-                              <select ng-model="program" class="form-control">
+                              <select ng-model="inventoryLine.program" class="form-control">
                                 <option value="" translate="selectProgram"></option>
                                 <option ng-repeat="program in programs" value="{{ program.uuid }}"
+                                        ng-selected="{{ (inventoryLine.program).uuid === program.uuid}}"
                                         ng-bind="program.name"></option>
                               </select>
                             </td>
                             <td>
-                              <input class="form-control" type="number" min="0" step="any" name="batchNo"
-                                     ng-model="quantity"/>
+                              <input class="form-control" type="number" min="0" step="any" name="quantity"
+                                     ng-model="inventoryLine.quantity"/>
                             </td>
                             <td>
-                              <select class="form-control" ng-model="uom">
+                              <select class="form-control" ng-model="inventoryLine.uom">
                                 <option value="" translate="selectUOM"></option>
-                                <option ng-repeat="uom in uomList" value="{{ uom.uuid }}" ng-bind="uom.name"></option>
+                                <option ng-repeat="uom in uomList" value="{{ uom.uuid }}" ng-bind="uom.name"
+                                        ng-selected="{{ (inventoryLine.uom).uuid === uom.uuid }}"></option>
                               </select>
                             </td>
                             <td>
-                              <select class="form-control" ng-model="inventory.storage_unit">
-                                <option value="">-- Add to Storage Unit --</option>
+                              <select class="form-control" ng-model="inventoryLine.storage_unit">
+                                <option value="" translate="addToStorageUnit"></option>
                                 <option ng-repeat="storageUnit in receivingFacilityStorageUnits"
-                                        value="{{ storageUnit.uuid }}" ng-bind="storageUnit.name ">
+                                        value="{{ storageUnit.uuid }}"
+                                        ng-selected="{{ (inventoryLine.storageUnit).uuid === storageUnit.uuid }}"
+                                        ng-bind="storageUnit.name ">
                                 </option>
                               </select>
+                            </td>
+                            <td class="removeIcon">
+                              <i ng-click="removeInventoryLine(inventoryLine)"
+                                 class="pull-center text-muted fa fa-times fa-2x"></i>
                             </td>
                           </tr>
                         </table>
@@ -154,11 +167,11 @@
               </div>
 
               <div class="col-md-4 pull-right">
-                <button id="authorize" name="authorize" class="btn btn-default"
-                        ng-disabled="authorized" translate="authorize"
-                        ng-click="authorized=true"></button>
+                <button type="button" id="authorize" name="authorize" class="btn btn-default"
+                        ng-disabled="inventory.authorized"
+                        translate="authorize" ng-click="inventory.authorized =true"></button>
                 <button id="submit" name="submit" class="btn btn-success"
-                        translate="submit" ng-disabled="!authorized"></button>
+                        translate="submit" ng-disabled="!inventory.authorized"></button>
               </div>
             </div>
           </div>

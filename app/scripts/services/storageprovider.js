@@ -12,6 +12,7 @@ angular.module('lmisChromeApp')
        *
        */
       var product_types = 'product_types';
+      
       var productCategory = 'product_category';
       var address = 'address';
       var uom = 'uom';

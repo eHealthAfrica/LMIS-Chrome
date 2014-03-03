@@ -7,6 +7,12 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         controller: 'inventoryMainCtrl',
         data: {
           label: "Inventory List"
+        },
+        resolve: {
+          inventoryLines: function (inventoryFactory) {
+            //TODO: set default facility uuid/object to facility of logged in user.
+            return inventoryFactory.getAll("d48a39fb-6d37-4472-9983-bc0720403719");
+          }
         }
       }).state('addInventory', {
         url: '/add-inventory',
@@ -25,7 +31,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           uomList: function (uomFactory) {
             return uomFactory.getAll();
           },
-          facilities: function(facilityFactory){
+          facilities: function (facilityFactory) {
             return facilityFactory.getAll();
           }
         }
@@ -34,104 +40,86 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 /**
  * Controller for showing inventory
  */
-    .controller('inventoryMainCtrl', function ($scope, storageService, $filter, ngTableParams, visualMarkerService) {
-      storageService.get(storageService.BATCH).then(function (data) {
-        $scope.batches = data;
-      });
-
-      storageService.get(storageService.PRODUCT_PRESENTATION).then(function (data) {
-        $scope.presentations = data;
-      });
-
-      storageService.get(storageService.UOM).then(function (data) {
-        $scope.uomList = data;
-      });
-
-      storageService.get(storageService.PRODUCT_TYPES).then(function (data) {
-        $scope.product_types = data;
-      });
-
-      storageService.get(storageService.CCU).then(function (data) {
-        $scope.cceList = data;
-      });
+    .controller('inventoryMainCtrl', function ($scope, inventoryLines, $filter, ngTableParams, visualMarkerService) {
 
       $scope.highlight = visualMarkerService.highlightByExpirationStatus;
 
-      storageService.all(storageService.INVENTORY).then(function (data) {
-        // Table defaults
-        var params = {
-          page: 1,
-          count: 10,
-          sorting: {
-            expiration_date: 'asc'
-          }
-        };
-
-        // Pagination
-        var resolver = {
-          total: data.length,
-          getData: function ($defer, params) {
-            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-            $defer.resolve(orderedData.slice(
-                (params.page() - 1) * params.count(),
-                params.page() * params.count()
-            ));
-          }
+      // Table defaults
+      var params = {
+        page: 1,
+        count: 10,
+        sorting: {
+          expiration_date: 'asc'
         }
+      };
 
-        $scope.getTotalQuantity = function (inventoryLine) {
-          var inventoryLineBatch = $scope.batches[inventoryLine.batch];
-          var presentation = $scope.presentations[inventoryLineBatch.presentation];
-          var totalQuantity = presentation.value * inventoryLine.quantity;
-          return totalQuantity;
-        };
-
-        $scope.getProductTypeUOM = function (inventoryLine) {
-          var inventoryLineBatch = $scope.batches[inventoryLine.batch];
-          var product = $scope.product_types[inventoryLineBatch.product];
-          var product_uom = $scope.uomList[product.base_uom];
-          return product_uom;
-        };
-
-        $scope.getStorageVolume = function (inventoryLine) {
-          var inventoryLineBatch = $scope.batches[inventoryLine.batch];
-          var storageVolume = inventoryLineBatch.packed_volume * inventoryLine.quantity;
-          return storageVolume;
+      var resolver = {
+        total: inventoryLines.length,
+        getData: function ($defer, params) {
+          var orderedData = params.sorting() ? $filter('orderBy')(inventoryLines, params.orderBy()) : inventoryLines;
+          $defer.resolve(orderedData.slice(
+              (params.page() - 1) * params.count(),
+              params.page() * params.count()
+          ));
         }
+      }
 
-        $scope.inventory = new ngTableParams(params, resolver);
-      });
+      $scope.inventory = new ngTableParams(params, resolver);
+
+      $scope.getTotalQuantity = function (inventoryLine) {
+        var inventoryLineBatch = inventoryLine.batch;
+        var presentation = inventoryLineBatch.presentation;
+        var totalQuantity = presentation.value * inventoryLine.quantity;
+        return totalQuantity;
+      };
+
+      $scope.getProductTypeUOM = function (inventoryLine) {
+        var inventoryLineBatch = inventoryLine.batch;
+        var product = inventoryLineBatch.product;
+        return product.base_uom;
+      };
+
+      $scope.getStorageVolume = function (inventoryLine) {
+        var inventoryLineBatch = inventoryLine.batch;
+        var storageVolume = inventoryLineBatch.packed_volume * inventoryLine.quantity;
+        return storageVolume;
+      }
 
     })
 /**
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('addInventoryCtrl', function ($scope, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
+    .controller('addInventoryCtrl', function ($scope, $filter, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
 
       //used to hold form data
-      $scope.inventory = {}
+      $scope.inventory = {
+        authorized: false,
+        inventoryLines: [],
+        date_receipt: $filter('date')(new Date(), 'yyyy-MM-dd'),
+        bundle_no: ''
+      }
+
+      var id = 0;
 
       //load data used to populate form fields
       $scope.productTypes = productTypes;
       $scope.programs = programs;
-      $scope.productTypeBatches = [];
-      $scope.isDisabled = true;
-      $scope.batchNo = '';
       $scope.uomList = uomList;
       $scope.facilities = facilities;
-      $scope.receivingFacilityStorageUnits = [];
+      $scope.receivingFacilityStorageUnits = []
 
-      $scope.loadProductTypeBatches = function (productTypeUUID) {
-        $scope.isDisabled = false;
-        batchFactory.getByProductType(productTypeUUID).then(function (data) {
-          $scope.productTypeBatches = data;
+
+      $scope.loadProductTypeBatches = function (inventoryLine) {
+        inventoryLine.isDisabled = false;
+        batchFactory.getByProductType(inventoryLine.productType).then(function (data) {
+          inventoryLine.productTypeBatches = data;
         });
       }
 
-      $scope.updateBatchNo = function (selectedBatch) {
-        batchFactory.get(selectedBatch).then(function (data) {
-          $scope.batchNo = data.batch_no;
+      $scope.updateBatchNo = function (inventoryLine) {
+        batchFactory.get(inventoryLine.selectedBatch).then(function (data) {
+          inventoryLine.batch_no = data.batch_no;
         });
       }
 
@@ -141,8 +129,22 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         });
       }
 
-      $scope.addInventoryLine = function(){
+      $scope.addInventoryLine = function () {
+        $scope.inventory.inventoryLines.push({
+          id: id++,
+          productTypes: productTypes,
+          isDisabled: true
+        });
+      }
 
+      $scope.removeInventoryLine = function (inventoryLine) {
+        $scope.inventory.inventoryLines = $scope.inventory.inventoryLines.filter(function (il) {
+          return il.id !== inventoryLine.id;
+        });
+      }
+
+      $scope.save = function () {
+        console.log($scope.inventory);
       }
 
     });
