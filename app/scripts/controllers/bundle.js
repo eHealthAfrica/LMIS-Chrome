@@ -17,9 +17,8 @@ angular.module('lmisChromeApp')
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-    .controller('logIncomingCtrl', function ($scope, $filter, storageService,storageUnitFactory, bundleFactory, userFactory, alert) {
+    .controller('logIncomingCtrl', function ($scope, $filter, storageService,storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
 
-      $scope.found = false;
       $scope.clicked = false;
       $scope.bundle = {};
       $scope.bundle.date = '';
@@ -51,19 +50,21 @@ angular.module('lmisChromeApp')
       $scope.showBundle = function () {
 
         $scope.clicked = true;
-        bundleFactory.getBundle($scope.showBundleNo).then(function (data) {
-          if (data !== undefined) {
-            $scope.bundle = data;
-            $scope.bundle.date = $scope.getCurrentDate();
-            var receivingFacility = $scope.bundle.receiving_facility;
-            $scope.parent = $scope.bundle.parent.name;
-            $scope.receiving_facility = receivingFacility.name;
-            $scope.receivingFacilityStorageUnits = storageUnitFactory.getFacilityStorageUnits(receivingFacility.uuid);
-            $scope.show = true;
-            $scope.found = true;
-            return;
-          }
-          $scope.found = false;
+        bundleFactory.getBundle($scope.showBundleNo).then(function(data) {
+          $scope.bundle = data;
+          $scope.bundle.date = $scope.getCurrentDate();
+          var receivingFacility = $scope.bundle.receiving_facility;
+          $scope.parent = $scope.bundle.parent.name;
+          $scope.receiving_facility = receivingFacility.name;
+          $scope.receivingFacilityStorageUnits = storageUnitFactory.getFacilityStorageUnits(receivingFacility.uuid);
+          $scope.show = true;
+          return;
+        }, function() {
+          $translate('bundleNotFound', {id: $scope.showBundleNo})
+            .then(function(msg) {
+              alertsFactory.add({message: msg, type: 'danger'});
+              $scope.showBundleNo = '';
+            });
         });
       };
 
@@ -72,7 +73,6 @@ angular.module('lmisChromeApp')
        * Function used to hide form used to log incoming bundle form.
        */
       $scope.hideBundle = function () {
-        $scope.found = false;
         $scope.clicked = false;
         $scope.show = false;
       };

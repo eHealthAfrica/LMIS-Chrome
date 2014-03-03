@@ -41,7 +41,6 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         var facilities = {};
         var users = {};
-        var bundle = null;
 
         //TODO: consider refactoring these into their respective factory(JIDEOBI).
         storageService.get(storageService.FACILITY).then(function (data) {
@@ -56,7 +55,7 @@ angular.module('lmisChromeApp')
           storageService.find(storageService.BUNDLE, bundleUUID).then(function (data) {
             //compose bundle response
             if (data !== undefined) {
-              bundle = {
+              var bundle = {
                 "uuid": data.uuid,
                 "receiving_facility": facilities[data.receiving_facility],
                 "parent": facilities[data.parent],
@@ -64,11 +63,13 @@ angular.module('lmisChromeApp')
                 "bundle_lines": getBundleLines(bundleUUID)
               };
               deferred.resolve(bundle);
+            } else {
+              deferred.reject();
             }
           });
 
         } catch (e) {
-          deferred.resolve(null);
+          deferred.reject(e);
         } finally {
           return deferred.promise;
         }

@@ -22,7 +22,7 @@ describe('Service: alertsFactory', function() {
   });
 
   it('should add an alert to the root scope', function() {
-    alertsFactory.add({msg: 'Test'});
+    alertsFactory.add({message: 'Test'});
     expect(scope.alerts.length).toEqual(1);
   });
 
@@ -32,7 +32,7 @@ describe('Service: alertsFactory', function() {
 
   it('should remove an alert by its index', function() {
     expect(scope.alerts.length).toEqual(0);
-    alertsFactory.add({msg: 'Test'});
+    alertsFactory.add({message: 'Test'});
     alertsFactory.remove(0);
     expect(scope.alerts.length).toEqual(0);
   });
@@ -40,13 +40,13 @@ describe('Service: alertsFactory', function() {
   it('should not clobber other alerts when removing', function() {
     var nucleobases = ['Guanine', 'Adenine', 'Thymine', 'Cytosine'];
     nucleobases.forEach(function(nucleobase) {
-      alertsFactory.add({msg: nucleobase});
+      alertsFactory.add({message: nucleobase});
     });
     expect(scope.alerts.length).toEqual(4);
     alertsFactory.remove(2);
     expect(scope.alerts.length).toEqual(3);
     var cytosine = scope.alerts[2];
-    expect(cytosine.msg).toEqual(nucleobases[3]);
+    expect(cytosine.message).toEqual(nucleobases[3]);
   });
 
   it('should provide a clear all alerts method', function() {
@@ -56,7 +56,7 @@ describe('Service: alertsFactory', function() {
   it('should clear alerts when asked', function() {
     var nucleobases = ['Guanine', 'Adenine', 'Thymine', 'Cytosine'];
     nucleobases.forEach(function(nucleobase) {
-      alertsFactory.add({msg: nucleobase});
+      alertsFactory.add({message: nucleobase});
     });
     expect(scope.alerts.length).toEqual(4);
     alertsFactory.clear();
