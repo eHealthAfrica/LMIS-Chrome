@@ -9,11 +9,11 @@ angular.module('lmisChromeApp')
           var inventoryLine = data;
           if (!angular.equals(data, undefined)) {
             //Attach nested attributes complete JSON object.
-            batchFactory.getByBatchNo(inventoryLine.batch).then(function(data){
+            batchFactory.getByBatchNo(inventoryLine.batch).then(function (data) {
               inventoryLine.batch = data;
             });
 
-            programsFactory.get(inventoryLine.program).then(function(data){
+            programsFactory.get(inventoryLine.program).then(function (data) {
               inventoryLine.program = data;
             });
 
@@ -51,13 +51,13 @@ angular.module('lmisChromeApp')
           var uuid = angular.isObject(facility) ? facility.uuid : facility;
           var deferred = $q.defer(), inventory = [];
 
-          storageService.all(storageService.INVENTORY).then(function (inventoryLines) {
-            angular.forEach(inventoryLines, function (line) {
-              if (angular.equals(line.receiving_facility, uuid)) {
-                inventory.push(getByUUID(line.uuid).then(function (inventoryLine) {
-                  deferred.notify(line);
+          storageService.all(storageService.INVENTORY).then(function (data) {
+            angular.forEach(data, function (datum) {
+              if (angular.equals(datum.receiving_facility, uuid)) {
+                inventory.push(getByUUID(datum.uuid).then(function(inventoryLine){
+                  deferred.notify(datum);
                   return inventoryLine;
-                }));
+                }))
               }
             });
 

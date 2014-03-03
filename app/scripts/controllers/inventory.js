@@ -7,6 +7,12 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         controller: 'inventoryMainCtrl',
         data: {
           label: "Inventory List"
+        },
+        resolve: {
+          inventoryLines: function (inventoryFactory) {
+            //TODO: set default facility uuid/object to facility of logged in user.
+            return inventoryFactory.getAll("d48a39fb-6d37-4472-9983-bc0720403719");
+          }
         }
       }).state('addInventory', {
         url: '/add-inventory',
@@ -34,111 +40,50 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 /**
  * Controller for showing inventory
  */
-    .controller('inventoryMainCtrl', function ($scope, batchFactory, inventoryFactory, $filter, ngTableParams, visualMarkerService) {
+    .controller('inventoryMainCtrl', function ($scope, inventoryLines, $filter, ngTableParams, visualMarkerService) {
 
       $scope.highlight = visualMarkerService.highlightByExpirationStatus;
 
-      batchFactory.getByBatchNo("1430").then(function(data){
-        $scope.batch = data;
-        console.log(data);
-      });
-      console.log($scope.batch);
-
-
-      //TODO: set default facility uuid/object to facility of logged in user.
-      inventoryFactory.getAll("d48a39fb-6d37-4472-9983-bc0720403719").then(function (data) {
-         // Table defaults
-        var params = {
-          page: 1,
-          count: 10,
-          sorting: {
-            expiration_date: 'asc'
-          }
-        };
-
-        var resolver = {
-          total: data.length,
-          getData: function ($defer, params) {
-            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-            $defer.resolve(orderedData.slice(
-                (params.page() - 1) * params.count(),
-                params.page() * params.count()
-            ));
-          }
+      // Table defaults
+      var params = {
+        page: 1,
+        count: 10,
+        sorting: {
+          expiration_date: 'asc'
         }
+      };
 
-        $scope.inventory = new ngTableParams(params, resolver);
+      var resolver = {
+        total: inventoryLines.length,
+        getData: function ($defer, params) {
+          var orderedData = params.sorting() ? $filter('orderBy')(inventoryLines, params.orderBy()) : inventoryLines;
+          $defer.resolve(orderedData.slice(
+              (params.page() - 1) * params.count(),
+              params.page() * params.count()
+          ));
+        }
+      }
 
-      });
+      $scope.inventory = new ngTableParams(params, resolver);
 
+      $scope.getTotalQuantity = function (inventoryLine) {
+        var inventoryLineBatch = inventoryLine.batch;
+        var presentation = inventoryLineBatch.presentation;
+        var totalQuantity = presentation.value * inventoryLine.quantity;
+        return totalQuantity;
+      };
 
+      $scope.getProductTypeUOM = function (inventoryLine) {
+        var inventoryLineBatch = inventoryLine.batch;
+        var product = inventoryLineBatch.product;
+        return product.base_uom;
+      };
 
-
-//      storageService.get(storageService.BATCH).then(function (data) {
-//        $scope.batches = data;
-//      });
-//
-//      storageService.get(storageService.PRODUCT_PRESENTATION).then(function (data) {
-//        $scope.presentations = data;
-//      });
-//
-//      storageService.get(storageService.UOM).then(function (data) {
-//        $scope.uomList = data;
-//      });
-//
-//      storageService.get(storageService.PRODUCT_TYPES).then(function (data) {
-//        $scope.product_types = data;
-//      });
-//
-//      storageService.get(storageService.CCU).then(function (data) {
-//        $scope.cceList = data;
-//      });
-
-//
-//      storageService.all(storageService.INVENTORY).then(function (data) {
-//        // Table defaults
-//        var params = {
-//          page: 1,
-//          count: 10,
-//          sorting: {
-//            expiration_date: 'asc'
-//          }
-//        };
-//
-//        // Pagination
-//        var resolver = {
-//          total: data.length,
-//          getData: function ($defer, params) {
-//            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-//            $defer.resolve(orderedData.slice(
-//                (params.page() - 1) * params.count(),
-//                params.page() * params.count()
-//            ));
-//          }
-//        }
-//
-//        $scope.getTotalQuantity = function (inventoryLine) {
-//          var inventoryLineBatch = $scope.batches[inventoryLine.batch];
-//          var presentation = $scope.presentations[inventoryLineBatch.presentation];
-//          var totalQuantity = presentation.value * inventoryLine.quantity;
-//          return totalQuantity;
-//        };
-//
-//        $scope.getProductTypeUOM = function (inventoryLine) {
-//          var inventoryLineBatch = $scope.batches[inventoryLine.batch];
-//          var product = $scope.product_types[inventoryLineBatch.product];
-//          var product_uom = $scope.uomList[product.base_uom];
-//          return product_uom;
-//        };
-//
-//        $scope.getStorageVolume = function (inventoryLine) {
-//          var inventoryLineBatch = $scope.batches[inventoryLine.batch];
-//          var storageVolume = inventoryLineBatch.packed_volume * inventoryLine.quantity;
-//          return storageVolume;
-//        }
-//
-//        $scope.inventory = new ngTableParams(params, resolver);
-//      });
+      $scope.getStorageVolume = function (inventoryLine) {
+        var inventoryLineBatch = inventoryLine.batch;
+        var storageVolume = inventoryLineBatch.packed_volume * inventoryLine.quantity;
+        return storageVolume;
+      }
 
     })
 /**
