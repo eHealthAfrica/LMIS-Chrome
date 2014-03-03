@@ -57,5 +57,6 @@
   "selectUOM": "select unit of measurement",
   "controlPanel": "Control Panel",
   "dashboard": "Dashboard",
-  "toogleNav": "Toggle Navigation"
+  "toogleNav": "Toggle Navigation",
+  "bundleNotFound": "Bundle {{id}} not found"
 }
