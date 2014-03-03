@@ -66,4 +66,40 @@ describe('Service: alertsFactory', function() {
   it('should expose a remove method aliased as "closeAlert"', function() {
     expect(scope.closeAlert).toBeDefined();
   });
+
+  it('should clear alerts when moving between states', function() {
+    var cp = 'home.index.controlPanel',
+        dash = 'home.index.dashboard';
+
+    inject(function($templateCache, $state, $httpBackend) {
+      var templates = [
+        'index',
+        'nav',
+        'sidebar',
+        'control-panel',
+        'dashboard'
+      ];
+
+      templates.forEach(function(template) {
+        $templateCache.put('views/home/' + template + '.html', '');
+      });
+
+      var locales = ['en', 'en_GB'];
+      locales.forEach(function(locale) {
+        $httpBackend.whenGET('/locales/' + locale + '.json').respond(200, {});
+      });
+
+      scope.$apply(function() {
+        $state.go(cp);
+        alertsFactory.add({message: 'Test'});
+      });
+      expect(scope.alerts.length).toEqual(1);
+
+      scope.$apply(function() {
+        $state.go(dash);
+      });
+      expect(scope.alerts.length).toEqual(0);
+    });
+  });
+
 });
