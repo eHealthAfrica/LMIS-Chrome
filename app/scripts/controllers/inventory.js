@@ -25,7 +25,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           uomList: function (uomFactory) {
             return uomFactory.getAll();
           },
-          facilities: function(facilityFactory){
+          facilities: function (facilityFactory) {
             return facilityFactory.getAll();
           }
         }
@@ -107,12 +107,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('addInventoryCtrl', function ($scope, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
+    .controller('addInventoryCtrl', function ($scope, $filter, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
 
       //used to hold form data
       $scope.inventory = {
         authorized: false,
-        inventoryLines: []
+        inventoryLines: [],
+        date_receipt: $filter('date')(new Date(), 'yyyy-MM-dd')
       }
 
       var id = 0;
@@ -122,41 +123,48 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.productTypes = productTypes;
       $scope.programs = programs;
       $scope.productTypeBatches = [];
-      $scope.isDisabled = true;
       $scope.batchNo = '';
       $scope.uomList = uomList;
       $scope.facilities = facilities;
       $scope.receivingFacilityStorageUnits = []
 
 
-
-      $scope.loadProductTypeBatches = function (productTypeUUID) {
-        $scope.isDisabled = false;
-        batchFactory.getByProductType(productTypeUUID).then(function (data) {
-          $scope.productTypeBatches = data;
+      $scope.loadProductTypeBatches = function (inventoryLine) {
+        inventoryLine.isDisabled = false;
+        batchFactory.getByProductType(inventoryLine.productType).then(function (data) {
+          inventoryLine.productTypeBatches = data;
         });
       }
 
       $scope.updateBatchNo = function (inventoryLine) {
-        console.log(inventoryLine);
-//        batchFactory.get(inventoryLine.selectedBatch).then(function (data) {
-//          $scope..inventory.inventoryLines.batchNo = data.batch_no;
-//        });
+        batchFactory.get(inventoryLine.selectedBatch).then(function (data) {
+          inventoryLine.batch_no = data.batch_no;
+        });
       }
 
       $scope.loadReceivingFacilityStorageUnits = function (facilityUUID) {
+        console.log(facilityUUID);
         storageUnitFactory.getFacilityStorageUnits(facilityUUID).then(function (data) {
           $scope.receivingFacilityStorageUnits = data;
         });
       }
 
-      $scope.addInventoryLine = function(){
-         $scope.inventory.inventoryLines.push({id: id++});
-        console.log($scope.inventory.inventoryLines);
+      $scope.addInventoryLine = function () {
+        $scope.inventory.inventoryLines.push({
+          id: id++,
+          productTypes: productTypes,
+          isDisabled: true
+        });
       }
 
-      $scope.removeInventoryLine = function(inventoryLine){
-        console.log(inventoryLine);
+      $scope.removeInventoryLine = function (inventoryLine) {
+        $scope.inventory.inventoryLines = $scope.inventory.inventoryLines.filter(function (il) {
+          return il.id !== inventoryLine.id;
+        });
+      }
+
+      $scope.save = function () {
+        console.log($scope.inventory);
       }
 
     });
