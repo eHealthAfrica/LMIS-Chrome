@@ -3,11 +3,11 @@
   <accordion-group>
     <accordion-heading>
       <i class="fa  fa-suitcase"></i>
-      <span ng-bind="i18n('product')"></span>
+      <span translate="product"></span>
     </accordion-heading>
     <ul>
-      <li><a ui-sref="batchListView" ng-bind="i18n('viewBatch')"></a></li>
-      <li><a ui-sref="productTypeListView" ng-bind="i18n('viewProductTypes')"></a></li>
+      <li><a ui-sref="batchListView" translate="viewBatch"></a></li>
+      <li><a ui-sref="productTypeListView" translate="viewProductTypes"></a></li>
       <li><a href="">Manage unit of measurement</a></li>
       <li><a ui-sref="addBatchView">Add batch</a></li>
     </ul>
@@ -16,18 +16,18 @@
   <accordion-group>
     <accordion-heading>
       <i class="fa fa-chevron-down"></i>
-      <span ng-bind="i18n('incoming')"></span>
+      <span translate="incoming"></span>
     </accordion-heading>
     <ul>
-      <li><a ui-sref="incomingLog" ng-bind="i18n('incomingLog')"></a></li>
+      <li><a ui-sref="incomingLog" translate="incomingLog"></a></li>
       <li>
         <a ui-sref="home.index.controlPanel.orderType"
-          ng-bind="i18n('incomingPlace')"></a>
+          translate="incomingPlace"></a>
       </li>
-      <li><a href="" ng-bind="i18n('incomingModify')"></a></li>
-      <li><a href="" ng-bind="i18n('incomingTrackPending')"></a></li>
-      <li><a href="" ng-bind="i18n('incomingTrackIncoming')"></a></li>
-      <li><a href="#/orders/index" ng-bind="i18n('incomingOrders')"></a></li>
+      <li><a href="" translate="incomingModify"></a></li>
+      <li><a href="" translate="incomingTrackPending"></a></li>
+      <li><a href="" translate="incomingTrackIncoming"></a></li>
+      <li><a href="#/orders/index" translate="incomingOrders"></a></li>
     </ul>
   </accordion-group>
 
@@ -50,7 +50,7 @@
       <i class="fa fa-list"></i> Inventory
     </accordion-heading>
     <ul>
-      <li><a ui-sref="inventoryListView" ng-bind="i18n('manageInventory')"></a></li>
+      <li><a ui-sref="inventoryListView" translate="manageInventory"></a></li>
       <li><a href="">View forecasts</a></li>
       <li><a href="">Track performance</a></li>
       <li><a ui-sref="stockCountIndex">View Stock Count</a></li>

@@ -21,7 +21,9 @@ describe('Home controller', function () {
 
   it('should go to the control panel state', function() {
     var cp = 'home.index.controlPanel';
-    inject(function($rootScope, $state) {
+    inject(function($rootScope, $state, $httpBackend) {
+      $httpBackend.whenGET('/locales/en.json').respond(200, {});
+      $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
       $rootScope.$apply(function() {
         $state.go(cp);
       });

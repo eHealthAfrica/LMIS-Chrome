@@ -3,11 +3,13 @@
 angular.module('lmisChromeApp', [
   'ngResource',
   'ngSanitize',
+  'ngCookies',
   'restangular',
   'ui.bootstrap',
   'ngTable',
   'ui.router',
-  'tv.breadcrumbs'
+  'tv.breadcrumbs',
+  'pascalprecht.translate'
 ])
   .config(function(RestangularProvider, $compileProvider) {
     RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
@@ -20,6 +22,17 @@ angular.module('lmisChromeApp', [
   .config(function($uiViewScrollProvider, $anchorScrollProvider) {
     $uiViewScrollProvider.useAnchorScroll();
     $anchorScrollProvider.disableAutoScrolling();
+  })
+
+  .config(function($translateProvider) {
+    $translateProvider
+      .preferredLanguage('en_GB')
+      .fallbackLanguage('en')
+      .useStaticFilesLoader({
+        prefix: '/locales/',
+        suffix: '.json'
+      })
+      .useCookieStorage();
   })
 
   // Central Variable for Watching Online/Offline Events
@@ -36,11 +49,6 @@ angular.module('lmisChromeApp', [
     $rootScope.closeAlert = function(index) {
       $rootScope.messages.splice(index, 1);
     };
-
-    // https://developer.chrome.com/extensions/i18n.html
-    if('chrome' in $window && 'i18n' in $window.chrome) {
-      $rootScope.i18n = $window.chrome.i18n.getMessage;
-    }
 
     //chrome.storage.local.clear();
     storageService.loadFixtures();

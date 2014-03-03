@@ -9,7 +9,7 @@
     <div class="col-sm-12">
 
       <div class="col-sm-4">
-        <label for="bundleNo" ng-bind="i18n('bundleNo')"></label>
+        <label for="bundleNo" translate="bundleNo"></label>
         <input class="form-control" type="text" name="bundleNo" id="bundleNo" ng-model="showBundleNo"
                placeholder="scan or type bundle number"/>
       </div>
@@ -50,13 +50,13 @@
             <div class="row">
               <div class="col-sm-12">
                 <div class="col-sm-6">
-                  <label for="receivingFacility" ng-bind="i18n('receivingFacility')"></label>
+                  <label for="receivingFacility" translate="receivingFacility"></label>
                   <input class="form-control" ng-disabled="true" type="text" name="receivingFacility"
                          id="receivingFacility" ng-model="receiving_facility"/>
                 </div>
 
                 <div class="col-sm-6">
-                  <label for="parentFacility" ng-bind="i18n('sendingFacility')"></label>
+                  <label for="parentFacility" translate="sendingFacility"></label>
                   <input class="form-control" ng-disabled="true" type="text" name="parentFacility" id="parentFacility"
                          ng-model="parent"/>
                 </div>
@@ -66,7 +66,7 @@
             <div class="row">
               <div class="col-sm-12">
                 <div class="col-sm-6">
-                  <label for="bundleNumber" ng-bind="i18n('bundleNo')"></label>
+                  <label for="bundleNumber" translate="bundleNo"></label>
                   <input ng-model="bundle.uuid" class="form-control" ng-disabled="true" type="text"
                          name="bundleNumber" id="bundleNumber"/>
                 </div>
@@ -102,12 +102,12 @@
                     <tr>
                       <thead>
                       <th>#</th>
-                      <th ng-bind="i18n('batchNo')"></th>
-                      <th ng-bind="i18n('productTypes')"></th>
-                      <th ng-bind="i18n('program')"></th>
-                      <th ng-bind="i18n('quantity')"></th>
-                      <th ng-bind="i18n('verify')"></th>
-                      <th ng-bind="i18n('storageUnit')"></th>
+                      <th translate="batchNo"></th>
+                      <th translate="productTypes"></th>
+                      <th translate="program"></th>
+                      <th translate="quantity"></th>
+                      <th translate="verify"></th>
+                      <th translate="storageUnit"></th>
                       </thead>
                     </tr>
 
