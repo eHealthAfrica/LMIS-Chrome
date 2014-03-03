@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('programsFactory', function ($q, $rootScope, storageService) {
+    .factory('programsFactory', function ($q, storageService) {
 
       /**
        * This returns complete attribute of a program even nested attributes
@@ -32,7 +32,6 @@ angular.module('lmisChromeApp')
 
           $q.all(programs).then(function (results) {
             deferred.resolve(results);
-            if (!$rootScope.$$phase) $rootScope.$apply();
           });
         });
         return deferred.promise;

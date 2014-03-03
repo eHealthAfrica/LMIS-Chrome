@@ -40,14 +40,14 @@ angular.module('lmisChromeApp')
        *
        * @param productTypeUUID - uuid of product type you want to return batches that are of the product type.
        */
-      //TODO: when we move to IndexedDB find a way of using indices to get this from the database.
+        //TODO: when we move to IndexedDB find a way of using indices to get this from the database.
       function getBatchesByProductType(productTypeUUID) {
         var deferred = $q.defer(), productTypeBatches = [];
 
         storageService.all(storageService.BATCH).then(function (data) {
 
           angular.forEach(data, function (datum) {
-            if (angular.equals(datum.product , productTypeUUID)) {
+            if (angular.equals(datum.product, productTypeUUID)) {
               productTypeBatches.push(getByUUID(datum.uuid).then(function (batch) {
                 deferred.notify(datum);
                 return batch;
@@ -73,15 +73,16 @@ angular.module('lmisChromeApp')
 
           storageService.all(storageService.BATCH).then(function (data) {
             angular.forEach(data, function (datum) {
-              batches.push(getByUUID(datum.uuid).then(function (batch) {
-                deferred.notify(datum);
-                return batch;
-              }));
+              if (!angular.equals(datum, undefined)) {
+                batches.push(getByUUID(datum.uuid).then(function (batch) {
+                  deferred.notify(datum);
+                  return batch;
+                }));
+              }
             });
 
             $q.all(batches).then(function (results) {
               deferred.resolve(results);
-              if (!$rootScope.$$phase) $rootScope.$apply();
             });
           });
           return deferred.promise;
@@ -89,6 +90,27 @@ angular.module('lmisChromeApp')
 
         get: getByUUID,
 
-        getByProductType: getBatchesByProductType
+        getByProductType: getBatchesByProductType,
+
+        getByBatchNo: function (batchNo) {
+          var deferred = $q.defer(), batch = [];
+
+          storageService.all(storageService.BATCH).then(function (data) {
+
+            angular.forEach(data, function (datum) {
+
+              if (angular.equals(datum, undefined) || !angular.equals(datum.batch_no, batchNo)) return;
+              getByUUID(datum.uuid).then(function (result) {
+                deferred.notify(datum);
+                batch = result;
+                deferred.resolve(batch);
+              });
+
+            });
+
+          });
+          return deferred.promise;
+        }
+
       };
     });
