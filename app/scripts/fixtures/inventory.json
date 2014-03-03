@@ -2,14 +2,14 @@
   "95d18723-9aef-4f31-9c88-6b1d16f62f6a": {
     "created": "2014-02-12 09:17:08",
     "date_receipt": "2014-02-13",
-    "entry_type": "New Arrival",
-    "batch": "0608c8f6-b215-45bf-be70-e4f53e079c93",
+    "receiving_facility": "d48a39fb-6d37-4472-9983-bc0720403719",
+    "sending_facility": "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
+    "batch": "1430",
     "quantity": 345,
     "program": "edc769e2-b26e-40e0-9b58-b59785cf50f7",
-    "return_reason": "Not Applicable",
-    "ccu": "2376e7de-24c3-46c1-82f3-552fb51ebd85",
+    "storage_unit": "02b46f06-8270-4e8f-93df-2d602b61817d",
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
     "uuid": "95d18723-9aef-4f31-9c88-6b1d16f62f6a",
-    "vvm_stage": "STAGE 1"
+    "bundle_no": ""
   }
 }
