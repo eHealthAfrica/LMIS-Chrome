@@ -110,7 +110,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     .controller('addInventoryCtrl', function ($scope, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
 
       //used to hold form data
-      $scope.inventory = {}
+      $scope.inventory = {
+        authorized: false,
+        inventoryLines: []
+      }
+
+      var id = 0;
+      console.log($scope.inventory.inventoryLines);
 
       //load data used to populate form fields
       $scope.productTypes = productTypes;
@@ -120,7 +126,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.batchNo = '';
       $scope.uomList = uomList;
       $scope.facilities = facilities;
-      $scope.receivingFacilityStorageUnits = [];
+      $scope.receivingFacilityStorageUnits = []
+
+
 
       $scope.loadProductTypeBatches = function (productTypeUUID) {
         $scope.isDisabled = false;
@@ -129,10 +137,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         });
       }
 
-      $scope.updateBatchNo = function (selectedBatch) {
-        batchFactory.get(selectedBatch).then(function (data) {
-          $scope.batchNo = data.batch_no;
-        });
+      $scope.updateBatchNo = function (inventoryLine) {
+        console.log(inventoryLine);
+//        batchFactory.get(inventoryLine.selectedBatch).then(function (data) {
+//          $scope..inventory.inventoryLines.batchNo = data.batch_no;
+//        });
       }
 
       $scope.loadReceivingFacilityStorageUnits = function (facilityUUID) {
@@ -142,7 +151,12 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.addInventoryLine = function(){
+         $scope.inventory.inventoryLines.push({id: id++});
+        console.log($scope.inventory.inventoryLines);
+      }
 
+      $scope.removeInventoryLine = function(inventoryLine){
+        console.log(inventoryLine);
       }
 
     });
