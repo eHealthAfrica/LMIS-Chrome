@@ -58,5 +58,6 @@
   "controlPanel": "Control Panel",
   "dashboard": "Dashboard",
   "toogleNav": "Toggle Navigation",
-  "addToStorageUnit": "Add to Storage Unit"
+  "addToStorageUnit": "Add to Storage Unit",
+  "remove": "Remove"
 }
