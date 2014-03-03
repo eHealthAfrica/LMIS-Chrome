@@ -100,6 +100,9 @@
 accordion .panel-heading:hover {
   cursor: pointer;
 }
+.removeIcon i:hover{
+  color: red;
+}
 .products accordion .panel-heading .panel-title i:hover {
   color: red;
 }
