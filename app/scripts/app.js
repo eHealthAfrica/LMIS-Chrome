@@ -38,19 +38,6 @@ angular.module('lmisChromeApp', [
 
   // Central Variable for Watching Online/Offline Events
   .run(function($window, $rootScope, $state, $stateParams, storageService) {
-    //global message placeholder
-    $rootScope.messages = [];
-
-    $rootScope.setMessage = function(message) {
-      if (Object.prototype.toString.call(message) === '[object Object]') {
-        $rootScope.messages.push(message);
-      }
-    };
-
-    $rootScope.closeAlert = function(index) {
-      $rootScope.messages.splice(index, 1);
-    };
-
     //chrome.storage.local.clear();
     storageService.loadFixtures();
 

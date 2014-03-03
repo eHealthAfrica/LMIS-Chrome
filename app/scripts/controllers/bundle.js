@@ -17,7 +17,7 @@ angular.module('lmisChromeApp')
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-    .controller('logIncomingCtrl', function ($scope, $filter, storageService,storageUnitFactory, bundleFactory, userFactory) {
+    .controller('logIncomingCtrl', function ($scope, $filter, storageService,storageUnitFactory, bundleFactory, userFactory, alert) {
 
       $scope.found = false;
       $scope.clicked = false;

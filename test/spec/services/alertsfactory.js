@@ -62,4 +62,8 @@ describe('Service: alertsFactory', function() {
     alertsFactory.clear();
     expect(scope.alerts.length).toEqual(0);
   });
+
+  it('should expose a remove method aliased as "closeAlert"', function() {
+    expect(scope.closeAlert).toBeDefined();
+  });
 });
