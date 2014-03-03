@@ -47,10 +47,9 @@
               <td data-title="'Product Type'" ng-bind="((inventoryLine.batch).product).name"></td>
               <td data-title="'Program'" ng-bind="(inventoryLine.program).name"></td>
               <td data-title="'Total Quantity'">
-                {{ (getTotalQuantity(inventoryLine) | number)+' '+getProductTypeUOM (inventoryLine).symbol }}
+                {{ (getTotalQuantity(inventoryLine) | number)+' '+(((inventoryLine.batch).product).base_uom).symbol }}
               </td>
-              <td data-title="'Quantity'">
-                {{ (inventoryLine.quantity | number)+' '+uomList[inventoryLine.uom].symbol }}
+              <td data-title="'Quantity'" ng-bind="((inventoryLine.quantity | number)+' '+(inventoryLine.uom).symbol)">
               </td>
               <td data-title="'Expiration Date'">
                 {{ (inventoryLine.batch).expiration_date | date:'dd-MM-yyyy' }}
@@ -60,14 +59,10 @@
               <td data-title="'Bundle No'" ng-bind="inventoryLine.bundle_no"></td>
               <td data-title="'Storage Unit'" ng-bind="(inventoryLine.storage_unit).name"></td>
               <td data-title="'Date Received'">{{ inventoryLine.date_receipt | date:'dd-MM-yyyy' }}</td>
-              <td data-title="'Storage Volume'">
-                {{
-                (getStorageVolume(inventoryLine) | number)+' '+uomList[batches[inventoryLine.batch].volume_uom].symbol
-                }}
+              <td data-title="'Storage Volume'" ng-bind="((getStorageVolume(inventoryLine) | number)+' '+
+              ((inventoryLine.batch).volume_uom).symbol)">
               </td>
-              <td data-title="'Presentation'">
-                {{ presentations[batches[inventoryLine.batch].presentation].name }}
-              </td>
+              <td data-title="'Presentation'" ng-bind="((inventoryLine.batch).presentation).name"></td>
             </tr>
           </table>
         </div>

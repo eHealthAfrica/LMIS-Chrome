@@ -96,9 +96,7 @@ angular.module('lmisChromeApp')
           var deferred = $q.defer(), batch = [];
 
           storageService.all(storageService.BATCH).then(function (data) {
-
             angular.forEach(data, function (datum) {
-
               if (angular.equals(datum, undefined) || !angular.equals(datum.batch_no, batchNo)) return;
               getByUUID(datum.uuid).then(function (result) {
                 deferred.notify(datum);
