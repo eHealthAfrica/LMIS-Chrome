@@ -9,7 +9,8 @@ angular.module('lmisChromeApp', [
   'ngTable',
   'ui.router',
   'tv.breadcrumbs',
-  'pascalprecht.translate'
+  'pascalprecht.translate',
+  'toggle-switch'
 ])
   .config(function(RestangularProvider, $compileProvider) {
     RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
