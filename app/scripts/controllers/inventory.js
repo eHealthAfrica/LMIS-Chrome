@@ -113,17 +113,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.inventory = {
         authorized: false,
         inventoryLines: [],
-        date_receipt: $filter('date')(new Date(), 'yyyy-MM-dd')
+        date_receipt: $filter('date')(new Date(), 'yyyy-MM-dd'),
+        bundle_no: ''
       }
 
       var id = 0;
-      console.log($scope.inventory.inventoryLines);
 
       //load data used to populate form fields
       $scope.productTypes = productTypes;
       $scope.programs = programs;
-      $scope.productTypeBatches = [];
-      $scope.batchNo = '';
       $scope.uomList = uomList;
       $scope.facilities = facilities;
       $scope.receivingFacilityStorageUnits = []
@@ -143,7 +141,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.loadReceivingFacilityStorageUnits = function (facilityUUID) {
-        console.log(facilityUUID);
         storageUnitFactory.getFacilityStorageUnits(facilityUUID).then(function (data) {
           $scope.receivingFacilityStorageUnits = data;
         });
