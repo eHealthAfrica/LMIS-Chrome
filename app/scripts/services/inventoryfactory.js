@@ -54,7 +54,7 @@ angular.module('lmisChromeApp')
           storageService.all(storageService.INVENTORY).then(function (data) {
             angular.forEach(data, function (datum) {
               if (angular.equals(datum.receiving_facility, uuid)) {
-                inventory.push(getByUUID(datum.uuid).then(function(inventoryLine){
+                inventory.push(getByUUID(datum.uuid).then(function (inventoryLine) {
                   deferred.notify(datum);
                   return inventoryLine;
                 }))
@@ -69,8 +69,30 @@ angular.module('lmisChromeApp')
           return deferred.promise;
         },
 
-        save: function(inventory){
-          console.log(inventory);
+        save: function (inventory) {
+          var deferred = $q.defer(), results = [];
+
+          for (var index in inventory.inventory_lines) {
+            var inventoryLine = inventory.inventory_lines[index];
+            var newInventory = {
+              date_receipt: inventory.date_receipt,
+              receiving_facility: inventory.receiving_facility,
+              sending_facility: inventory.sending_facility,
+              batch: inventoryLine.batch_no,
+              quantity: inventoryLine.quantity,
+              program: inventoryLine.program,
+              storage_unit: inventoryLine.storage_unit,
+              uom: inventoryLine.uom,
+              bundle_no: inventory.bundle_no
+            }
+            storageService.insert(storageService.INVENTORY, newInventory).then(function (result) {
+              if (angular.equals(result, false)) deferred.reject();
+              deferred.resolve(result);
+              console.log(result);
+            });
+          }
+
+          return deferred.promise;
         }
 
       };

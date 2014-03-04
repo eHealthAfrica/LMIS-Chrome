@@ -39,7 +39,7 @@
         <div class="row scrollable-container">
           <table ng-table="inventory"
                  class="table table-condensed table-hover table-bordered oversize-table text-center">
-            <tr ng-repeat="inventoryLine in $data | filter:search | orderBy:storage_location"
+            <tr ng-repeat="inventoryLine in $data"
                 class="{{ highlight((inventoryLine.batch).expiration_date, orderByMonths) }}">
               <td data-title="'#'">{{ $index + 1 }}</td>
               <td data-title="'Batch No'" sortable="'((inventoryLine.batch).batch_no)'"

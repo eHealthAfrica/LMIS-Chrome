@@ -228,14 +228,17 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         //get list of existing tables in database. if table exist
         getTables().then(function (tables) {
-          if (tables.hasOwnProperty(table)) console.log("table exists");
-          if (tables.hasOwnProperty("me")) console.log("me exists");
 
           if (tables.indexOf(table) != -1) {
             getTable(table).then(function (table_data) {
-              console.log(obj);
+              console.log(table);
+              console.log(table_data);
+               if (Object.prototype.toString.call(table_data) == '[object Object]'){
+                 var uuid = (obj.hasOwnProperty('uuid'))? obj['uuid'] : uuid_generator();
+               }
+
               if (Object.prototype.toString.call(table_data) == '[object Object]') {
-                var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
+                var uuid_test =  (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
                 obj['created'] = (uuid_test) ? obj['created'] : getDateTime();
                 obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00' : getDateTime();
                 var uuid = (uuid_test) ? obj['uuid'] : uuid_generator();

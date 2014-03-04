@@ -66,14 +66,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       $scope.inventory = new ngTableParams(params, resolver);
 
-      $scope.getTotalQuantity = function (inventoryLine) {
-        //getTotalQuantity(inventoryLine)+' '+(((inventoryLine.batch).product).base_uom).symbol
-        //var inventoryLineBatch = inventoryLine.batch;
-        console.log(inventoryLine.batch.presentation);
-        var totalQuantity = inventoryLine.quantity;
-        return totalQuantity;
-      };
-
       $scope.getProductTypeUOM = function (inventoryLine) {
         var inventoryLineBatch = inventoryLine.batch;
         var product = inventoryLineBatch.product;
@@ -91,8 +83,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('addInventoryCtrl', function ($scope, $filter, inventoryFactory, productTypes, programs, uomList,
-                                              facilities, batchFactory, storageUnitFactory) {
+    .controller('addInventoryCtrl', function ($scope, $filter, $state, inventoryFactory, productTypes, programs,
+                                              uomList, facilities, batchFactory, storageUnitFactory) {
 
       //used to hold form data
       $scope.inventory = {
@@ -146,7 +138,12 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.save = function () {
-        inventoryFactory.save($scope.inventory);
+        inventoryFactory.save($scope.inventory).then(function (data) {
+          console.log(data);
+          if (!angular.equals(data.length, 0)) {
+            $state.go('inventoryListView');
+          }
+        });
       }
 
     });
