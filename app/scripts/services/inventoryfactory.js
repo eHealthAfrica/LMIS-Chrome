@@ -70,7 +70,7 @@ angular.module('lmisChromeApp')
         },
 
         save: function(inventory){
-
+          console.log(inventory);
         }
 
       };

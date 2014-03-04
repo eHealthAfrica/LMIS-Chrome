@@ -5,14 +5,16 @@ angular.module('lmisChromeApp')
 
       function getByUUID(uuid){
         var deferred = $q.defer();
-        storageService.get(storageService.PRODUCT_PRESENTATION).then(function(data){
-          var productPresentation = data[uuid];
+        storageService.find(storageService.PRODUCT_PRESENTATION, uuid).then(function(data){
+          var productPresentation = data
+          productPresentation.uom = data.uom;
           if(productPresentation !== undefined){
             uomFactory.get(productPresentation.uom).then(function(data){
               productPresentation.uom  = data;
+              deferred.notify(productPresentation.uom);
+              deferred.resolve(productPresentation);
             });
           }
-          deferred.resolve(productPresentation);
         });
         return deferred.promise;
       }

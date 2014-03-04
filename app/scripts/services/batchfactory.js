@@ -31,6 +31,7 @@ angular.module('lmisChromeApp')
             batch.volume_uom = data;
           });
           deferred.resolve(batch);
+          if (!$rootScope.$$phase) $rootScope.$apply();
         });
         return deferred.promise;
       }

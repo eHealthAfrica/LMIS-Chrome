@@ -46,9 +46,10 @@
                   ng-bind="(inventoryLine.batch).batch_no"></td>
               <td data-title="'Product Type'" ng-bind="((inventoryLine.batch).product).name"></td>
               <td data-title="'Program'" ng-bind="(inventoryLine.program).name"></td>
-              <td data-title="'Total Quantity'">
-                {{ (getTotalQuantity(inventoryLine) | number)+' '+(((inventoryLine.batch).product).base_uom).symbol }}
-              </td>
+              <td data-title="'Total Quantity'"
+                  ng-bind="((((inventoryLine.batch).presentation).value * inventoryLine.quantity) | number)
+                  +' '+(((inventoryLine.batch).product).base_uom).symbol">
+               </td>
               <td data-title="'Quantity'" ng-bind="((inventoryLine.quantity | number)+' '+(inventoryLine.uom).symbol)">
               </td>
               <td data-title="'Expiration Date'">

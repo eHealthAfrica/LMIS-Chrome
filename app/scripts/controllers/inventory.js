@@ -67,9 +67,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.inventory = new ngTableParams(params, resolver);
 
       $scope.getTotalQuantity = function (inventoryLine) {
-        var inventoryLineBatch = inventoryLine.batch;
-        var presentation = inventoryLineBatch.presentation;
-        var totalQuantity = presentation.value * inventoryLine.quantity;
+        //getTotalQuantity(inventoryLine)+' '+(((inventoryLine.batch).product).base_uom).symbol
+        //var inventoryLineBatch = inventoryLine.batch;
+        console.log(inventoryLine.batch.presentation);
+        var totalQuantity = inventoryLine.quantity;
         return totalQuantity;
       };
 
@@ -90,7 +91,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('addInventoryCtrl', function ($scope, $filter, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
+    .controller('addInventoryCtrl', function ($scope, $filter, inventoryFactory, productTypes, programs, uomList,
+                                              facilities, batchFactory, storageUnitFactory) {
 
       //used to hold form data
       $scope.inventory = {
@@ -144,7 +146,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.save = function () {
-        console.log($scope.inventory);
+        inventoryFactory.save($scope.inventory);
       }
 
     });
