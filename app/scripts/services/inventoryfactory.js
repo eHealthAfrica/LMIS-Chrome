@@ -67,6 +67,10 @@ angular.module('lmisChromeApp')
 
           });
           return deferred.promise;
+        },
+
+        save: function(inventory){
+
         }
 
       };

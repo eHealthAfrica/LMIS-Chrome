@@ -95,7 +95,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       //used to hold form data
       $scope.inventory = {
         authorized: false,
-        inventoryLines: [],
+        inventory_lines: [],
         date_receipt: $filter('date')(new Date(), 'yyyy-MM-dd'),
         bundle_no: ''
       }
@@ -130,7 +130,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.addInventoryLine = function () {
-        $scope.inventory.inventoryLines.push({
+        $scope.inventory.inventory_lines.push({
           id: id++,
           productTypes: productTypes,
           isDisabled: true
@@ -138,7 +138,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.removeInventoryLine = function (inventoryLine) {
-        $scope.inventory.inventoryLines = $scope.inventory.inventoryLines.filter(function (il) {
+        $scope.inventory.inventory_lines = $scope.inventory.inventory_lines.filter(function (il) {
           return il.id !== inventoryLine.id;
         });
       }
