@@ -30,9 +30,10 @@
 
   <section class="container clearfix main_section">
     <div id="main_content_outer" class="clearfix">
-      <alert ng-repeat="alert in alerts"
-             type="alert.type" close="closeAlert($index)"
-             ng-bind="alert.message"></alert>
+      <alert ng-repeat="alert in alerts" type="alert.type"
+        close="closeAlert($index)">
+        <span ng-bind="alert.message"></span>
+      </alert>
 
       <tv-breadcrumbs ng-hide="$state.includes('home')"
         home="home.index.controlPanel"></tv-breadcrumbs>
