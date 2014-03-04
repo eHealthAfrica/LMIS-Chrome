@@ -1,11 +1,17 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('alertsFactory', function($rootScope) {
+  .factory('alertsFactory', function($rootScope, $timeout) {
     $rootScope.alerts = [];
 
     var add = function(alert) {
       $rootScope.alerts.push(alert);
+      $timeout(function() {
+        var index = $rootScope.alerts.indexOf(alert);
+        if(index !== -1) {
+          remove(index);
+        }
+      }, 5000);
     };
 
     var remove = function(index) {
