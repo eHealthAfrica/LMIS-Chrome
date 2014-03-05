@@ -138,9 +138,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.save = function () {
-        if (inventoryFactory.save($scope.inventory) === true) {
-          $state.go('inventoryListView');
-        }
+        inventoryFactory.save($scope.inventory).then(function(result){
+          if(result.length !== 0){
+            $state.go('inventoryListView');
+          }
+        });
       }
 
     });
