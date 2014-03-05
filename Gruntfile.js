@@ -293,6 +293,13 @@ module.exports = function(grunt) {
       e2e: {
         configFile: 'protractor.conf.js'
       }
+    },
+
+    coveralls: {
+      options: {
+        // jshint camelcase: false
+        coverage_dir: 'coverage'
+      }
     }
   });
 
@@ -316,7 +323,8 @@ module.exports = function(grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma'
+    'karma',
+    'coveralls'
   ]);
 
   grunt.registerTask('build', [
