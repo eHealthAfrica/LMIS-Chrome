@@ -7,7 +7,7 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         storageService.find(storageService.INVENTORY, uuid).then(function (data) {
           var inventoryLine = data;
-          if (!angular.equals(data, undefined)) {
+          if (data !== undefined) {
             //Attach nested attributes complete JSON object.
             batchFactory.getByBatchNo(inventoryLine.batch).then(function (data) {
               inventoryLine.batch = data;
@@ -34,7 +34,7 @@ angular.module('lmisChromeApp')
             });
 
           }
-          deferred.resolve(data);
+          deferred.resolve(inventoryLine);
         });
         return deferred.promise;
       }
@@ -47,13 +47,14 @@ angular.module('lmisChromeApp')
          *
          * @param facility - this can be a string(facilityUUID) or an object(facility object with uuid as its property).
          */
-        getAll: function (facility) {
+        getFacilityInventory: function (facility) {
           var uuid = angular.isObject(facility) ? facility.uuid : facility;
           var deferred = $q.defer(), inventory = [];
 
           storageService.all(storageService.INVENTORY).then(function (data) {
+            console.log(data);
             angular.forEach(data, function (datum) {
-              if (angular.equals(datum.receiving_facility, uuid)) {
+              if(datum.receiving_facility === uuid){
                 inventory.push(getByUUID(datum.uuid).then(function (inventoryLine) {
                   deferred.notify(datum);
                   return inventoryLine;
@@ -70,10 +71,8 @@ angular.module('lmisChromeApp')
         },
 
         save: function (inventory) {
-          var deferred = $q.defer(), results = [];
-
-          for (var index in inventory.inventory_lines) {
-            var inventoryLine = inventory.inventory_lines[index];
+          var batches = [];
+          angular.forEach(inventory.inventory_lines, function(inventoryLine){
             var newInventory = {
               date_receipt: inventory.date_receipt,
               receiving_facility: inventory.receiving_facility,
@@ -85,15 +84,17 @@ angular.module('lmisChromeApp')
               uom: inventoryLine.uom,
               bundle_no: inventory.bundle_no
             }
-            storageService.insert(storageService.INVENTORY, newInventory).then(function (result) {
-              if (angular.equals(result, false)) deferred.reject();
-              deferred.resolve(result);
-              console.log(result);
-            });
+            console.log(newInventory);
+            batches.push(newInventory);
+          });
+
+          console.log(batches);
+
+            storageService.insertBatch(storageService.INVENTORY, batches);
+            return true;
+
+         return deferred.promise;
           }
 
-          return deferred.promise;
-        }
-
-      };
+        };
     });

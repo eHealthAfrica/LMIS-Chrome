@@ -69,7 +69,7 @@ angular.module('lmisChromeApp')
        * Expose Public API
        */
       return {
-        getAll: function () {
+        getFacilityInventory: function () {
           var deferred = $q.defer(), batches = [];
 
           storageService.all(storageService.BATCH).then(function (data) {

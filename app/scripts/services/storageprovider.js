@@ -228,17 +228,11 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         //get list of existing tables in database. if table exist
         getTables().then(function (tables) {
-
           if (tables.indexOf(table) != -1) {
             getTable(table).then(function (table_data) {
-              console.log(table);
-              console.log(table_data);
-               if (Object.prototype.toString.call(table_data) == '[object Object]'){
-                 var uuid = (obj.hasOwnProperty('uuid'))? obj['uuid'] : uuid_generator();
-               }
 
               if (Object.prototype.toString.call(table_data) == '[object Object]') {
-                var uuid_test =  (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
+                var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
                 obj['created'] = (uuid_test) ? obj['created'] : getDateTime();
                 obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00' : getDateTime();
                 var uuid = (uuid_test) ? obj['uuid'] : uuid_generator();
@@ -429,12 +423,64 @@ angular.module('lmisChromeApp')
         return deferred.promise;
       }
 
+      function insertBatch(tableName, batchList){
+        var batches = (angular.isArray(batchList))? batchList : [];
+        console.log(batches);
+        console.log(tableName);
+        getTable(tableName).then(function(tableData){
+          console.log(tableData);
+          for(var index in batches){
+            var batch = batches[index];
+            console.log(batch);
+            var hasUUID = batch.hasOwnProperty('uuid');
+            batch['uuid'] = hasUUID? batch['uuid'] : uuid_generator();
+            batch['created'] = hasUUID? batch['created'] : getDateTime();
+            batch['modified'] = hasUUID? '0000-00-00 00:00:00' : getDateTime();
+            tableData[batch.uuid] = batch;
+            console.log(tableData);
+            console.log(batch['uuid']);
+            addTable(tableName, tableData);
+          }
+        });
+
+//        getTable(table).then(function (table_data) {
+//
+//              if (Object.prototype.toString.call(table_data) == '[object Object]') {
+//                var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
+//                obj['created'] = (uuid_test) ? obj['created'] : getDateTime();
+//                obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00' : getDateTime();
+//                var uuid = (uuid_test) ? obj['uuid'] : uuid_generator();
+//                obj['uuid'] = uuid;
+//                table_data[uuid] = obj;
+//                addTable(table, table_data);
+//                deferred.resolve(uuid);
+//              }
+//              else {
+//                deferred.resolve(null);
+//                console.log(table_data);
+//              }
+//            });
+//          }
+//          else {
+//
+//            var table_data = {};
+//            obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1) ? obj['uuid'] : uuid_generator();
+//            obj['created'] = getDateTime();
+//            obj['modified'] = '0000-00-00 00:00:00';
+//            table_data[obj['uuid']] = obj;
+//            addTable(table, table_data);
+//            deferred.resolve(obj.uuid);
+//            //console.log("new entry");
+//          }
+//        }
+      }
+
       return {
         isSupported: hasChromeStorage,
         all: getAllFromTable,
         add: addTable,
         get: getTable,
-        getAll: getAllFromStore,
+        getFacilityInventory: getAllFromStore,
         remove: removeTable, // removeFromChrome,
         clear: clearFromStore, // clearChrome */
         uuid: uuid_generator,
@@ -442,6 +488,7 @@ angular.module('lmisChromeApp')
         loadTableObject: loadRelatedObject,
         insert: insert,
         find: getFromTableByKey,
+        insertBatch: insertBatch,
         PRODUCT_TYPES: product_types,
         PRODUCT_CATEGORY: productCategory,
         ADDRESS: address,

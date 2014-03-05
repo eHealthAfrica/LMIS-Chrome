@@ -7,12 +7,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         controller: 'inventoryMainCtrl',
         data: {
           label: "Inventory List"
-        },
-        resolve: {
-          inventoryLines: function (inventoryFactory) {
-            //TODO: set default facility uuid/object to facility of logged in user.
-            return inventoryFactory.getAll("d48a39fb-6d37-4472-9983-bc0720403719");
-          }
         }
       }).state('addInventory', {
         url: '/add-inventory',
@@ -23,16 +17,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         },
         resolve: {
           productTypes: function (productTypeFactory) {
-            return productTypeFactory.getAll();
+            return productTypeFactory.getFacilityInventory();
           },
           programs: function (programsFactory) {
-            return programsFactory.getAll();
+            return programsFactory.getFacilityInventory();
           },
           uomList: function (uomFactory) {
-            return uomFactory.getAll();
+            return uomFactory.getFacilityInventory();
           },
           facilities: function (facilityFactory) {
-            return facilityFactory.getAll();
+            return facilityFactory.getFacilityInventory();
           }
         }
       });
@@ -40,31 +34,38 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 /**
  * Controller for showing inventory
  */
-    .controller('inventoryMainCtrl', function ($scope, inventoryLines, $filter, ngTableParams, visualMarkerService) {
+    .controller('inventoryMainCtrl', function ($rootScope, $scope, inventoryFactory, $filter, ngTableParams, visualMarkerService) {
 
       $scope.highlight = visualMarkerService.highlightByExpirationStatus;
 
-      // Table defaults
-      var params = {
-        page: 1,
-        count: 10,
-        sorting: {
-          expiration_date: 'asc'
-        }
-      };
+      //TODO: set default facility uuid/object to facility of logged in user.
+      inventoryFactory.getFacilityInventory("d48a39fb-6d37-4472-9983-bc0720403719").then(function (inventoryItems) {
+        console.log(inventoryItems);
+        // Table defaults
+        var params = {
+          page: 1,
+          count: 10,
+          sorting: {
+            expiration_date: 'asc'
+          }
+        };
 
-      var resolver = {
-        total: inventoryLines.length,
-        getData: function ($defer, params) {
-          var orderedData = params.sorting() ? $filter('orderBy')(inventoryLines, params.orderBy()) : inventoryLines;
-          $defer.resolve(orderedData.slice(
-              (params.page() - 1) * params.count(),
-              params.page() * params.count()
-          ));
+        var resolver = {
+          total: inventoryItems.length,
+          getData: function ($defer, params) {
+            var orderedData = params.sorting() ? $filter('orderBy')(inventoryItems, params.orderBy()) : inventoryItems;
+            $defer.resolve(orderedData.slice(
+                (params.page() - 1) * params.count(),
+                params.page() * params.count()
+            ));
+          }
         }
-      }
 
-      $scope.inventory = new ngTableParams(params, resolver);
+        $scope.inventory = new ngTableParams(params, resolver);
+
+      });
+
+
 
       $scope.getProductTypeUOM = function (inventoryLine) {
         var inventoryLineBatch = inventoryLine.batch;
@@ -83,8 +84,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('addInventoryCtrl', function ($scope, $filter, $state, inventoryFactory, productTypes, programs,
-                                              uomList, facilities, batchFactory, storageUnitFactory) {
+    .controller('addInventoryCtrl', function ($scope, $filter, storageService, $state, inventoryFactory, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
 
       //used to hold form data
       $scope.inventory = {
@@ -138,12 +138,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.save = function () {
-        inventoryFactory.save($scope.inventory).then(function (data) {
-          console.log(data);
-          if (!angular.equals(data.length, 0)) {
-            $state.go('inventoryListView');
-          }
-        });
+        if (angular.equals(inventoryFactory.save($scope.inventory), true)) {
+          $state.go('inventoryListView');
+        }
       }
 
     });

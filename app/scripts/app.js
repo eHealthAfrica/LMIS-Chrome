@@ -38,7 +38,7 @@ angular.module('lmisChromeApp', [
 
   // Central Variable for Watching Online/Offline Events
   .run(function($window, $rootScope, $state, $stateParams, storageService) {
-   //storageService.clear();
+    //storageService.clear();
     storageService.loadFixtures();
 
     $rootScope.online = navigator.onLine;

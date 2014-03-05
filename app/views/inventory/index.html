@@ -60,13 +60,14 @@
               <td data-title="'Bundle No'" ng-bind="inventoryLine.bundle_no"></td>
               <td data-title="'Storage Unit'" ng-bind="(inventoryLine.storage_unit).name"></td>
               <td data-title="'Date Received'">{{ inventoryLine.date_receipt | date:'dd-MM-yyyy' }}</td>
-              <td data-title="'Storage Volume'" ng-bind="((getStorageVolume(inventoryLine) | number)+' '+
-              ((inventoryLine.batch).volume_uom).symbol)">
+              <td data-title="'Storage Volume'" >
               </td>
               <td data-title="'Presentation'" ng-bind="((inventoryLine.batch).presentation).name"></td>
             </tr>
           </table>
         </div>
+
+        <pre>{{inventory | json}}</pre>
 
       </div>
     </div>
