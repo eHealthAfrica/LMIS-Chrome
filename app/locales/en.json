@@ -58,7 +58,7 @@
   "controlPanel": "Control Panel",
   "dashboard": "Dashboard",
   "toogleNav": "Toggle Navigation",
-  "bundleNotFound": "Bundle {{id}} not found",
+  "bundleNotFound": "Bundle {{id}} not found, use 'Add Manually' ",
   "addToStorageUnit": "Add to Storage Unit",
   "remove": "Remove"
 }

@@ -60,11 +60,13 @@ angular.module('lmisChromeApp')
             $scope.receivingFacilityStorageUnits = data;
           });
           $scope.show = true;
+          $scope.showAddManually = false;
           return;
         }, function () {
           $translate('bundleNotFound', {id: $scope.showBundleNo})
               .then(function (msg) {
                 alertsFactory.add({message: msg, type: 'danger'});
+                $scope.showAddManually = true;
                 $scope.showBundleNo = '';
               });
         });
@@ -77,6 +79,7 @@ angular.module('lmisChromeApp')
       $scope.hideBundle = function () {
         $scope.clicked = false;
         $scope.show = false;
+        $scope.showAddManually = false;
       };
 
 

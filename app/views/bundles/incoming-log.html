@@ -8,13 +8,20 @@
                placeholder="scan or type bundle number"/>
       </div>
 
-      <div class="col-sm-4">
+      <div class="col-sm-2">
         <label for="loadBundle">&nbsp;</label>
         <button type="submit" ng-click="showBundle()" id="loadBundle" name="loadBundle"
                 class="btn btn-success btn-lg btn-block">Show Bundle
         </button>
       </div>
 
+      <div class="col-sm-2" ng-show="showAddManually">
+        <label for="loadBundle">&nbsp;</label>
+        <a ui-sref="addInventory" class="btn btn-success btn-lg btn-block">
+          <span><i class="fa fa-plus"></i></span>
+          <span>Add Manually</span>
+        </a>
+      </div>
 
     </div>
   </div>
@@ -84,7 +91,7 @@
                 <div class="col-sm-6">
                   <label>Date <i class="fa fa-calendar"></i></label>
                   <input ng-model="bundle.date" class="form-control" type="date" name="receiptDate"
-                                 id="receiptDate" required=""/>
+                         id="receiptDate" required=""/>
                 </div>
               </div>
             </div>
@@ -132,15 +139,15 @@
             </div>
 
             <div class="row">
-            <div class="form-group">
-              <div class="col-md-4 pull-right">
-                <button type="button" id="authorize" name="authorize" class="btn btn-default"
-                        ng-disabled="logIncomingForm.authorized"
-                        translate="authorize" ng-click="logIncomingForm.authorized =true"></button>
-                <button id="submit" name="submit" class="btn btn-success"
-                        translate="submit" ng-disabled="!logIncomingForm.authorized"></button>
+              <div class="form-group">
+                <div class="col-md-4 pull-right">
+                  <button type="button" id="authorize" name="authorize" class="btn btn-default"
+                          ng-disabled="logIncomingForm.authorized"
+                          translate="authorize" ng-click="logIncomingForm.authorized =true"></button>
+                  <button id="submit" name="submit" class="btn btn-success"
+                          translate="submit" ng-disabled="!logIncomingForm.authorized"></button>
+                </div>
               </div>
-            </div>
 
           </form>
 
