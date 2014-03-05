@@ -18,7 +18,8 @@ describe('Service: alertsFactory', function() {
       'nav',
       'sidebar',
       'control-panel',
-      'dashboard'
+      'dashboard',
+      'main-activity'
     ];
 
     templates.forEach(function(template) {
@@ -89,7 +90,7 @@ describe('Service: alertsFactory', function() {
   });
 
   it('should clear alerts when moving between states', function() {
-    var cp = 'home.index.controlPanel',
+    var ma = 'home.index.mainActivity',
         dash = 'home.index.dashboard';
 
     inject(function($templateCache, $state, $httpBackend) {
@@ -97,7 +98,7 @@ describe('Service: alertsFactory', function() {
       loadMockedLocales($httpBackend);
 
       scope.$apply(function() {
-        $state.go(cp);
+        $state.go(ma);
         alertsFactory.add({message: 'Test'});
       });
       expect(scope.alerts.length).toEqual(1);
