@@ -293,6 +293,15 @@ module.exports = function(grunt) {
       e2e: {
         configFile: 'protractor.conf.js'
       }
+    },
+
+    coveralls: {
+      options: {
+        debug: true,
+        // jshint camelcase: false
+        coverage_dir: 'coverage',
+        dryRun: true,
+      }
     }
   });
 
