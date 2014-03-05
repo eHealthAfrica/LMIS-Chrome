@@ -297,10 +297,8 @@ module.exports = function(grunt) {
 
     coveralls: {
       options: {
-        debug: true,
         // jshint camelcase: false
-        coverage_dir: 'coverage',
-        dryRun: true,
+        coverage_dir: 'coverage'
       }
     }
   });
@@ -325,7 +323,8 @@ module.exports = function(grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma'
+    'karma',
+    'coveralls'
   ]);
 
   grunt.registerTask('build', [
