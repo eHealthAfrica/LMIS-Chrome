@@ -31,6 +31,7 @@ angular.module('lmisChromeApp')
             batch.volume_uom = data;
           });
           deferred.resolve(batch);
+          if (!$rootScope.$$phase) $rootScope.$apply();
         });
         return deferred.promise;
       }
@@ -68,7 +69,7 @@ angular.module('lmisChromeApp')
        * Expose Public API
        */
       return {
-        getAll: function () {
+        getFacilityInventory: function () {
           var deferred = $q.defer(), batches = [];
 
           storageService.all(storageService.BATCH).then(function (data) {

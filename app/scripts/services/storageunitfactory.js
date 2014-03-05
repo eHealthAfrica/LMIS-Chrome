@@ -60,7 +60,7 @@ angular.module('lmisChromeApp')
           return deferred.promise;
         },
 
-        getAll: function () {
+        getFacilityInventory: function () {
           var deferred = $q.defer(), storageUnits = [];
 
           storageService.all(storageService.CCU).then(function (data) {

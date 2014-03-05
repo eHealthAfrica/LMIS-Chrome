@@ -23,7 +23,7 @@ angular.module('lmisChromeApp')
       // Public API here
       return {
 
-        getAll: function () {
+        getFacilityInventory: function () {
           var deferred = $q.defer(), categories = [];
 
           storageService.all(storageService.COMPANY_CATEGORY).then(function (data) {

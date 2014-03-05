@@ -20,7 +20,7 @@ angular.module('lmisChromeApp')
     // Public API here
     return {
 
-      getAll: function(){
+      getFacilityInventory: function(){
         var deferred = $q.defer(), uomList = [];
 
         storageService.all(storageService.UOM).then(function (data) {

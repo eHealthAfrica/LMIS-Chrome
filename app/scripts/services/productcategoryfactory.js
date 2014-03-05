@@ -9,7 +9,7 @@ angular.module('lmisChromeApp')
          * returns json object of product category each nested attribute is returned as a JSON,
          *
          */
-        getAll: function () {
+        getFacilityInventory: function () {
           var deferred = $q.defer();
           var users = {};
           storageService.get(storageService.USER).then(function (data) {

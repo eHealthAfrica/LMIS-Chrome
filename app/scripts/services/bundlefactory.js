@@ -3,32 +3,40 @@
 angular.module('lmisChromeApp')
     .factory('bundleFactory', function ($q, storageService) {
 
-      var BUNDLE_STATUS = ["Pending", "In Transit", "Done"];//TODO: move this to a table in local storage(JIDEOBI)
+      var BUNDLE_STATUS = ["Pending", "In Transit", "Done"];
 
       function saveBundleReceipt(bundleReceipt) {
-        //TODO: add proper and necessary checks later like validations when the complete flow and data integrity check
-        //has been finalized etc.
-        //TODO: Also add transaction so that it is either all succeeds or none.
-        storageService.insert(storageService.BUNDLE_RECEIPT, bundleReceipt).then(function (bundleReceiptUUID) {
-          var bundleReceiptLines = bundleReceipt.bundle_receipt_lines;
+        var deferred = $q.defer(), batches = [];
+        var results = [];
+        storageService.insert(storageService.BUNDLE_RECEIPT, bundleReceipt).then(function (data) {
 
-          /* delete bundleReceipt.bundle_receipt_lines before saving so it is not saved along with bundleReceipt
-           since bundle_receipt_lines are saved on different table.
-           */
-          delete bundleReceipt.bundle_receipt_lines;
+          if (data !== undefined) {
 
-          if (bundleReceiptUUID !== undefined) {
-            for (var index in bundleReceiptLines) {
-              var bundleReceiptLine = bundleReceiptLines[index];
-              bundleReceiptLine['bundle_receipt'] = bundleReceiptUUID;
-              storageService.insert(storageService.BUNDLE_RECEIPT_LINES, bundleReceiptLine).then(function (bundleReceiptLineUUID) {
+            angular.forEach(bundleReceipt.bundle_receipt_lines, function (receiptLine) {
+              var newInventory = {
+                date_receipt: bundleReceipt.date,
+                receiving_facility: bundleReceipt.receiving_facility,
+                sending_facility: bundleReceipt.sending_facility,
+                batch: receiptLine.batch,
+                quantity: receiptLine.verify,
+                program: receiptLine.program,
+                storage_unit: receiptLine.storage_unit,
+                uom: receiptLine.quantity_uom,
+                bundle_no: bundleReceipt.bundle
+              }
+              batches.push(newInventory);
+            });
 
-              });
-            }
-            return bundleReceiptUUID;
+
+            storageService.insertBatch(storageService.INVENTORY, batches).then(function (result) {
+              deferred.resolve(result);
+            }, function (error) {
+              deferred.reject(error);
+            });
           }
-          return bundleReceiptUUID;
+
         });
+        return deferred.promise;
       }
 
       /**
@@ -112,7 +120,6 @@ angular.module('lmisChromeApp')
                 if (data !== undefined) {
                   var batch = batches[data.batch];
                   batch.product = productTypes[batch.product];
-                  console.log(data);
                   var bundleLine = {
                     "uuid": data.uuid,
                     "program": programs[data.program],
@@ -163,7 +170,7 @@ angular.module('lmisChromeApp')
                 if (data !== undefined) {
                   var batch = batches[data.batch];
                   batch.product = productTypes[batch.product];
-                  console.log(data);
+
                   var bundleLine = {
                     "bundle": data.uuid,
                     "program": programs[data.program].name,

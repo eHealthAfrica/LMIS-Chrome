@@ -15,7 +15,7 @@ angular.module('lmisChromeApp')
             },
             resolve: {
               storageUnits: function (storageUnitFactory) {
-                return storageUnitFactory.getAll();
+                return storageUnitFactory.getFacilityInventory();
               }
             }
           });

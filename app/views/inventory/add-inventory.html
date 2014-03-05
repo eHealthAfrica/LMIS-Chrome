@@ -49,8 +49,7 @@
 
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label for="receiptDate" translate="dateReceived"> <i
-                                  class="fa fa-calendar"></i></label>
+                          <label for="receiptDate" translate="dateReceived"></label>
                           <input ng-model="inventory.date_receipt" class="form-control" type="date" name="receiptDate"
                                  id="receiptDate" required=""/>
                         </div>
@@ -70,7 +69,7 @@
                   <h4 class="panel-title">New Inventory Detail</h4>
                 </div>
 
-                <div class="panel-body" ng-show="(inventory.inventoryLines).length !== 0">
+                <div class="panel-body" ng-show="(inventory.inventory_lines).length !== 0">
                   <div class="row">
                     <div class="col-sm-12">
                       <div class="col-sm-12">
@@ -88,7 +87,7 @@
                             <th class="text-titlecase" translate="remove"></th>
                             </thead>
                           </tr>
-                          <tr ng-repeat="inventoryLine in inventory.inventoryLines">
+                          <tr ng-repeat="inventoryLine in inventory.inventory_lines">
                             <td ng-bind="($index + 1)"></td>
                             <td>
                               <select ng-model="inventoryLine.productType" class="form-control"

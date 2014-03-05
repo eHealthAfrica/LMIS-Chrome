@@ -7,7 +7,7 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         storageService.find(storageService.INVENTORY, uuid).then(function (data) {
           var inventoryLine = data;
-          if (!angular.equals(data, undefined)) {
+          if (data !== undefined) {
             //Attach nested attributes complete JSON object.
             batchFactory.getByBatchNo(inventoryLine.batch).then(function (data) {
               inventoryLine.batch = data;
@@ -34,7 +34,7 @@ angular.module('lmisChromeApp')
             });
 
           }
-          deferred.resolve(data);
+          deferred.resolve(inventoryLine);
         });
         return deferred.promise;
       }
@@ -47,14 +47,15 @@ angular.module('lmisChromeApp')
          *
          * @param facility - this can be a string(facilityUUID) or an object(facility object with uuid as its property).
          */
-        getAll: function (facility) {
+        getFacilityInventory: function (facility) {
           var uuid = angular.isObject(facility) ? facility.uuid : facility;
           var deferred = $q.defer(), inventory = [];
 
           storageService.all(storageService.INVENTORY).then(function (data) {
+            console.log(data);
             angular.forEach(data, function (datum) {
-              if (angular.equals(datum.receiving_facility, uuid)) {
-                inventory.push(getByUUID(datum.uuid).then(function(inventoryLine){
+              if (datum.receiving_facility === uuid) {
+                inventory.push(getByUUID(datum.uuid).then(function (inventoryLine) {
                   deferred.notify(datum);
                   return inventoryLine;
                 }))
@@ -67,6 +68,33 @@ angular.module('lmisChromeApp')
 
           });
           return deferred.promise;
+        },
+
+        save: function (inventory) {
+          var batches = [], deferred = $q.defer();
+          angular.forEach(inventory.inventory_lines, function (inventoryLine) {
+            var newInventory = {
+              date_receipt: inventory.date_receipt,
+              receiving_facility: inventory.receiving_facility,
+              sending_facility: inventory.sending_facility,
+              batch: inventoryLine.batch_no,
+              quantity: inventoryLine.quantity,
+              program: inventoryLine.program,
+              storage_unit: inventoryLine.storage_unit,
+              uom: inventoryLine.uom,
+              bundle_no: inventory.bundle_no
+            }
+            batches.push(newInventory);
+          });
+
+          storageService.insertBatch(storageService.INVENTORY, batches).then(function (result) {
+            deferred.resolve(result);
+          }, function (error) {
+            deferred.reject(error);
+          });
+
+          return deferred.promise;
+
         }
 
       };
