@@ -1,11 +1,13 @@
 # LMIS-Chrome
 
-[![Build Status][travis-image]][travis-url] [![devDependency Status][daviddm-image]][daviddm-url]
+[![Build Status][travis-image]][travis-url] [![devDependency Status][daviddm-image]][daviddm-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
 [travis-url]: https://travis-ci.org/eHealthAfrica/LMIS-Chrome
 [travis-image]: https://travis-ci.org/eHealthAfrica/LMIS-Chrome.png?branch=master
 [daviddm-url]: https://david-dm.org/eHealthAfrica/LMIS-Chrome#info=devDependencies
 [daviddm-image]: https://david-dm.org/eHealthAfrica/LMIS-Chrome/dev-status.png?theme=shields.io
+[coveralls-url]: https://coveralls.io/r/eHealthAfrica/LMIS-Chrome
+[coveralls-image]: https://coveralls.io/repos/eHealthAfrica/LMIS-Chrome/badge.png
 
 > LMIS Chrome packaged app
 
