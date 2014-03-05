@@ -3,7 +3,7 @@
     <div class="btn-group col-sm-2">
       <a ui-sref="addInventory" class="btn btn-default">
         <span><i class="fa fa-plus"></i></span>
-        <span>Add New Inventory</span>
+        <span translate="addNewInventory"></span>
       </a>
     </div>
     <div class="btn-group col-sm-2">
@@ -60,8 +60,6 @@
               <td data-title="'Bundle No'" ng-bind="inventoryLine.bundle_no"></td>
               <td data-title="'Storage Unit'" ng-bind="(inventoryLine.storage_unit).name"></td>
               <td data-title="'Date Received'">{{ inventoryLine.date_receipt | date:'dd-MM-yyyy' }}</td>
-              <td data-title="'Storage Volume'" >
-              </td>
               <td data-title="'Presentation'" ng-bind="((inventoryLine.batch).presentation).name"></td>
             </tr>
           </table>
