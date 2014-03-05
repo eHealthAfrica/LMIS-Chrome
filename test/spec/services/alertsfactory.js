@@ -12,6 +12,27 @@ describe('Service: alertsFactory', function() {
     scope = $rootScope.$new();
   }));
 
+  var loadMockedTemplates = function($templateCache) {
+    var templates = [
+      'index',
+      'nav',
+      'sidebar',
+      'control-panel',
+      'dashboard'
+    ];
+
+    templates.forEach(function(template) {
+      $templateCache.put('views/home/' + template + '.html', '');
+    });
+  };
+
+  var loadMockedLocales = function($httpBackend) {
+    var locales = ['en', 'en_GB'];
+    locales.forEach(function(locale) {
+      $httpBackend.whenGET('/locales/' + locale + '.json').respond(200, {});
+    });
+  };
+
   it('should attach an alerts array to the root scope', function() {
     expect(scope.alerts).toBeDefined();
     expect(scope.alerts.length).toEqual(0);
@@ -72,22 +93,8 @@ describe('Service: alertsFactory', function() {
         dash = 'home.index.dashboard';
 
     inject(function($templateCache, $state, $httpBackend) {
-      var templates = [
-        'index',
-        'nav',
-        'sidebar',
-        'control-panel',
-        'dashboard'
-      ];
-
-      templates.forEach(function(template) {
-        $templateCache.put('views/home/' + template + '.html', '');
-      });
-
-      var locales = ['en', 'en_GB'];
-      locales.forEach(function(locale) {
-        $httpBackend.whenGET('/locales/' + locale + '.json').respond(200, {});
-      });
+      loadMockedTemplates($templateCache);
+      loadMockedLocales($httpBackend);
 
       scope.$apply(function() {
         $state.go(cp);
@@ -98,6 +105,17 @@ describe('Service: alertsFactory', function() {
       scope.$apply(function() {
         $state.go(dash);
       });
+      expect(scope.alerts.length).toEqual(0);
+    });
+  });
+
+  it('should remove alerts after five seconds', function() {
+    inject(function($timeout, $templateCache, $httpBackend) {
+      loadMockedTemplates($templateCache);
+      loadMockedLocales($httpBackend);
+      alertsFactory.add();
+      expect(scope.alerts.length).toEqual(1);
+      $timeout.flush();
       expect(scope.alerts.length).toEqual(0);
     });
   });
