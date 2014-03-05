@@ -65,20 +65,21 @@ angular.module('lmisChromeApp')
        * @private
        */
       function addTable(key, value) {
-
         var newStorage = {};
         var defered = $q.defer();
+        var result = false;
         newStorage[key] = value;
-
         if (hasChromeStorage) {
           $window.chrome.storage.local.set(newStorage, function () {
             console.log("saved: " + key);
-            defered.resolve();
+            defered.resolve(true)
             if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
           });
-          return defered.promise;
+
+        }else{
+          defered.reject("table update/creation failed");
         }
-        return null; // defer.reject?
+        return defered.promise;
       }
 
       /**
@@ -259,6 +260,7 @@ angular.module('lmisChromeApp')
             //console.log("new entry");
           }
         });
+        if (!$rootScope.$$phase) $rootScope.$apply();
         return deferred.promise;
       }
 
@@ -424,55 +426,32 @@ angular.module('lmisChromeApp')
       }
 
       function insertBatch(tableName, batchList){
-        var batches = (angular.isArray(batchList))? batchList : [];
-        console.log(batches);
-        console.log(tableName);
+
+        var deferred = $q.defer();
         getTable(tableName).then(function(tableData){
-          console.log(tableData);
+          var batches = (angular.isArray(batchList))? batchList : [];
+          var results = [];
+          console.log(tableName+" "+tableData);
           for(var index in batches){
             var batch = batches[index];
-            console.log(batch);
             var hasUUID = batch.hasOwnProperty('uuid');
             batch['uuid'] = hasUUID? batch['uuid'] : uuid_generator();
             batch['created'] = hasUUID? batch['created'] : getDateTime();
             batch['modified'] = hasUUID? '0000-00-00 00:00:00' : getDateTime();
             tableData[batch.uuid] = batch;
-            console.log(tableData);
-            console.log(batch['uuid']);
-            addTable(tableName, tableData);
+            results.push(addTable(tableName, tableData).then(function(result){
+              return batch['uuid'];
+            }, function(error){
+              console.log(error);
+            }));
+            batches[index] = batch;
           }
+          console.log(results);
+          console.log(batches.length);
+          (results.length === batches.length)? deferred.resolve(batches): deferred.resolve("batch insertion failed");;
         });
-
-//        getTable(table).then(function (table_data) {
-//
-//              if (Object.prototype.toString.call(table_data) == '[object Object]') {
-//                var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
-//                obj['created'] = (uuid_test) ? obj['created'] : getDateTime();
-//                obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00' : getDateTime();
-//                var uuid = (uuid_test) ? obj['uuid'] : uuid_generator();
-//                obj['uuid'] = uuid;
-//                table_data[uuid] = obj;
-//                addTable(table, table_data);
-//                deferred.resolve(uuid);
-//              }
-//              else {
-//                deferred.resolve(null);
-//                console.log(table_data);
-//              }
-//            });
-//          }
-//          else {
-//
-//            var table_data = {};
-//            obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1) ? obj['uuid'] : uuid_generator();
-//            obj['created'] = getDateTime();
-//            obj['modified'] = '0000-00-00 00:00:00';
-//            table_data[obj['uuid']] = obj;
-//            addTable(table, table_data);
-//            deferred.resolve(obj.uuid);
-//            //console.log("new entry");
-//          }
-//        }
+        if (!$rootScope.$$phase) $rootScope.$apply();
+        return deferred.promise;
       }
 
       return {

@@ -93,7 +93,6 @@ angular.module('lmisChromeApp')
             storageService.insertBatch(storageService.INVENTORY, batches);
             return true;
 
-         return deferred.promise;
           }
 
         };

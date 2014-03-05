@@ -40,7 +40,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       //TODO: set default facility uuid/object to facility of logged in user.
       inventoryFactory.getFacilityInventory("d48a39fb-6d37-4472-9983-bc0720403719").then(function (inventoryItems) {
-        console.log(inventoryItems);
+
         // Table defaults
         var params = {
           page: 1,
@@ -138,7 +138,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.save = function () {
-        if (angular.equals(inventoryFactory.save($scope.inventory), true)) {
+        if (inventoryFactory.save($scope.inventory) === true) {
           $state.go('inventoryListView');
         }
       }
