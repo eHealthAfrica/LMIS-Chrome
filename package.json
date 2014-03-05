@@ -40,8 +40,8 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "test": "grunt test",
-    "test-watch": "./node_modules/karma/bin/karma start --autoWatch true",
+    "test": "grunt travis",
+    "test-watch": "./node_modules/.bin/karma start --autoWatch true --singleRun false",
     "translate": "node scripts/translate.js"
   },
   "description": "LMIS Chrome packaged app",

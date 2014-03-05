@@ -284,8 +284,7 @@ module.exports = function(grunt) {
     // Test settings
     karma: {
       unit: {
-        configFile: 'karma.conf.js',
-        singleRun: true
+        configFile: 'karma.conf.js'
       }
     },
 
@@ -318,14 +317,22 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.registerTask('test', [
-    'clean:server',
-    'concurrent:test',
-    'autoprefixer',
-    'connect:test',
-    'karma',
-    'coveralls'
-  ]);
+  grunt.registerTask('test', function(target) {
+    if (target === 'unit') {
+      return grunt.task.run(['karma:unit']);
+    }
+    else if (target === 'e2e') {
+      return grunt.task.run(['protractor:e2e']);
+    }
+
+    grunt.task.run([
+      'clean:server',
+      'concurrent:test',
+      'autoprefixer',
+      'connect:test',
+      'karma'
+    ]);
+  });
 
   grunt.registerTask('build', [
     'clean:dist',
@@ -349,4 +356,11 @@ module.exports = function(grunt) {
     'test',
     'build'
   ]);
+
+  grunt.registerTask('travis', function() {
+    grunt.task.run([
+      'test',
+      'coveralls'
+    ]);
+  });
 };
