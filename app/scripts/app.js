@@ -59,5 +59,5 @@ angular.module('lmisChromeApp', [
     $rootScope.$state = $state;
 
     // Default state
-    $state.go('home.index.controlPanel');
+    $state.go('home.index.mainActivity');
   });
