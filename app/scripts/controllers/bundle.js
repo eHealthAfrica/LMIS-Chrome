@@ -32,6 +32,10 @@ angular.module('lmisChromeApp')
         return $filter('date')(today, "yyyy-MM-dd");
       }
 
+      $scope.addNewInventory = function(bundleNumber){
+        $state.go('addInventory', {bundleNo: bundleNumber});
+      }
+
       userFactory.getLoggedInUser().then(function (data) {
         $scope.loggedInUser = data;
       });
@@ -67,7 +71,6 @@ angular.module('lmisChromeApp')
               .then(function (msg) {
                 alertsFactory.add({message: msg, type: 'danger'});
                 $scope.showAddManually = true;
-                $scope.showBundleNo = '';
               });
         });
       };
