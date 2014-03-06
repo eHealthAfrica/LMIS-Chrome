@@ -1,97 +1,181 @@
-<form class="form-horizontal" novalidate>
-<fieldset>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title" translate="incomingPlace"></h4>
+      </div>
+      <div class="panel-body">
+        <form ng-submit="save()">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">Order detail</h4>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="sendingFacility" translate="sendingFacility"></label>
+                          <select id="sendingFacility" class="form-control" ng-model="order.sending_facility"
+                                  required>
+                            <option value="" translate="selectSendingFacility"></option>
+                            <option ng-repeat="facility in facilities" value="{{ facility.uuid }}"
+                                    ng-bind="facility.name"></option>
+                          </select>
+                        </div>
+                      </div>
 
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="receivingFacilityName" translate="receivingFacilityName"></label>
-    <div class="col-md-4">
-      <select id="receivingFacilityName" name="receivingFacilityName"
-        class="form-control" ng-model="order.receivingFacility">
-        <option value="{{facility.uuid}}" ng-bind="facility.name"
-          ng-repeat="facility in storage.facilities"></option>
-      </select>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="receivingFacility" translate="receivingFacility"></label>
+                          <select id="receivingFacility" class="form-control" ng-model="order.receiving_facility" required>
+                            <option value="" translate="selectReceivingFacility"></option>
+                            <option ng-repeat="facility in facilities" value="{{ facility.uuid }}"
+                                    ng-bind="facility.name"></option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="orderNo" translate="orderNumber"></label>
+                          <input class="form-control" type="text" name="orderNo" id="orderNo"
+                                 ng-model="order.order_no" placeholder="e.g KNC-THF-01-9803"/>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="receiptDate" translate="dateReceived"></label>
+                          <input ng-model="order.date_receip" class="form-control" type="date" name="receiptDate"
+                                 id="receiptDate" required=""/>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">Order items</h4>
+                </div>
+
+                <div class="panel-body" ng-show="(inventory.inventory_lines).length !== 0">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="col-sm-12">
+
+                        <table class="table table-condensed table-hover table-bordered">
+                          <tr>
+                            <thead>
+                            <th>#</th>
+                            <th class="text-titlecase" translate="productTypes"></th>
+                            <th class="text-titlecase" translate="batchNo"></th>
+                            <th class="text-titlecase" translate="program"></th>
+                            <th class="text-titlecase" translate="quantity"></th>
+                            <th class="text-titlecase" translate="uom"></th>
+                            <th class="text-titlecase" translate="storageUnit"></th>
+                            <th class="text-titlecase" translate="remove"></th>
+                            </thead>
+                          </tr>
+                          <tr ng-repeat="inventoryLine in inventory.inventory_lines">
+                            <td ng-bind="($index + 1)"></td>
+                            <td>
+                              <select ng-model="inventoryLine.productType" class="form-control"
+                                      ng-change="loadProductTypeBatches(inventoryLine)">
+                                <option value="" translate="selectProductType"></option>
+                                <option ng-repeat="type in inventoryLine.productTypes" value="{{ type.uuid }}"
+                                        ng-selected="{{ (inventoryLine.productType).uuid === type.uuid}}"
+                                        ng-bind="type.name">
+                                </option>
+                              </select>
+                            </td>
+                            <td>
+                              <select ng-model="inventoryLine.selectedBatch" class="form-control"
+                                      ng-change="updateBatchNo(inventoryLine)"
+                                      ng-disabled="inventoryLine.isDisabled">
+                                <option value="" translate="selectBatch"></option>
+                                <option ng-repeat="batch in inventoryLine.productTypeBatches" value="{{ batch.uuid }}"
+                                        ng-bind="batch.batch_no">
+                                </option>
+                              </select>
+                              <br/>
+                              <input class="form-control" type="text" name="batchNo" ng-model="inventoryLine.batch_no"/>
+                            </td>
+                            <td>
+                              <select ng-model="inventoryLine.program" class="form-control">
+                                <option value="" translate="selectProgram"></option>
+                                <option ng-repeat="program in programs" value="{{ program.uuid }}"
+                                        ng-selected="{{ (inventoryLine.program).uuid === program.uuid}}"
+                                        ng-bind="program.name"></option>
+                              </select>
+                            </td>
+                            <td>
+                              <input class="form-control" type="number" min="0" step="any" name="quantity"
+                                     ng-model="inventoryLine.quantity"/>
+                            </td>
+                            <td>
+                              <select class="form-control" ng-model="inventoryLine.uom">
+                                <option value="" translate="selectUOM"></option>
+                                <option ng-repeat="uom in uomList" value="{{ uom.uuid }}" ng-bind="uom.name"
+                                        ng-selected="{{ (inventoryLine.uom).uuid === uom.uuid }}"></option>
+                              </select>
+                            </td>
+                            <td>
+                              <select class="form-control" ng-model="inventoryLine.storage_unit">
+                                <option value="" translate="addToStorageUnit"></option>
+                                <option ng-repeat="storageUnit in receivingFacilityStorageUnits"
+                                        value="{{ storageUnit.uuid }}"
+                                        ng-selected="{{ (inventoryLine.storageUnit).uuid === storageUnit.uuid }}"
+                                        ng-bind="storageUnit.name ">
+                                </option>
+                              </select>
+                            </td>
+                            <td class="removeIcon">
+                              <i ng-click="removeInventoryLine(inventoryLine)"
+                                 class="pull-center text-muted fa fa-times fa-2x"></i>
+                            </td>
+                          </tr>
+                        </table>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <div class="col-md-4 pull-left">
+                <button type="button" name="addInventoryLine" class="btn btn-default" ng-click="addInventoryLine()">
+                  <span><i class="fa fa-plus"></i></span>
+                  <span>Add order item</span>
+                </button>
+              </div>
+
+              <div class="col-md-4 pull-right">
+                <button type="button" id="authorize" name="authorize" class="btn btn-default"
+                        ng-disabled="inventory.authorized"
+                        translate="authorize" ng-click="inventory.authorized =true"></button>
+                <button id="submit" name="submit" class="btn btn-success"
+                        translate="submit" ng-disabled="!inventory.authorized"></button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
     </div>
   </div>
-
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="childFacilityCode" translate="childFacilityCode"></label>
-    <div class="col-md-4">
-      <input id="childFacilityCode" name="childFacilityCode" type="text" disabled
-        ng-model="storage.facilities[order.receivingFacility].code"
-        class="form-control input-md" required>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="parentFacilityName" translate="parentFacilityName"></label>
-    <div class="col-md-4">
-      <select id="parentFacilityName" name="parentFacilityName"
-        class="form-control" ng-model="order.parentFacility">
-        <option value="{{facility.uuid}}" ng-bind="facility.name"
-          ng-repeat="facility in storage.facilities"></option>
-      </select>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="parentFacilityCode" translate="parentFacilityCode"></label>
-    <div class="col-md-4">
-      <input id="parentFacilityCode" name="parentFacilityCode" disabled
-        type="text" class="form-control input-md" required
-        ng-model="storage.facilities[order.parentFacility].code">
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="userCode" translate="userCode"></label>
-    <div class="col-md-4">
-      <input id="userCode" name="userCode" type="text" class="form-control input-md"
-        required disabled ng-model="order.userCode">
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="orderNumber" translate="orderNumber"></label>
-    <div class="col-md-4">
-      <input id="orderNumber" name="orderNumber" type="text" required disabled
-        class="form-control input-md" ng-model="order.number">
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="orderDate" translate="orderDate"></label>
-    <div class="col-md-4">
-      <input id="orderDate" name="orderDate" type="date" class="form-control input-md" required ng-model="order.date">
-    </div>
-  </div>
-
-  <div class="products">
-    <accordion close-others="true">
-      <accordion-group ng-repeat="product in order.products" is-open="true">
-        <accordion-heading>
-          <span translate="productID" translate-value-id="{{product.id}}"></span>
-          <i ng-click="removeProduct(product)"
-            ng-attr-title="{{'removeProductID' | translate:'{id: product.id}'}}"
-            class="pull-right text-muted fa fa-times fa-2x"></i>
-        </accordion-heading>
-        <div ng-include="'views/orders/forms/partials/product.html'"></div>
-      </accordion-group>
-    </accordion>
-    <button name="addProduct" class="btn btn-default" ng-click="addProduct()">
-      <span><i class="fa fa-plus"></i></span>
-      <span translate="addProduct"
-        translate-value-determiner="{{determiner}}"></span>
-    </button>
-  </div>
-
-  <div class="form-group">
-    <div class="col-md-4 pull-right">
-      <button id="authorize" name="authorize" class="btn btn-default"
-        ng-disabled="authorized" translate="authorize"
-        ng-click="authorized=true"></button>
-      <button id="submit" name="submit" class="btn btn-success"
-        translate="submit" ng-disabled="!authorized"></button>
-    </div>
-  </div>
-
-</fieldset>
-</form>
+</div>
