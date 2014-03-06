@@ -1,6 +1,12 @@
 <div ng-controller="StockCountFormCtrl">
     <div class="row">
         <div class="col-sm-12">
+            <h3 class="text-center">Stock Count for {{ facility_object.name }}</h3>
+            <!--h5>Month: {{ report_month }} Year: {{ report_year }}</h5-->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-3">
                     <div class="info-box">
@@ -55,9 +61,9 @@
         </div>
     </div>
     <form ng-submit="save()">
-        <div class="row">
-            <div class="col-sm-4">Report Day</div>
-            <div class="col-sm-4">
+        <div class="row date-row">
+            <div class="col-sm-2">Report Day</div>
+            <div class="col-sm-2">
                 <select ng-model="stockCount.day" class="form-control">
                     <option value="">-- select day --</option>
                     <option ng-selected="day == current_day" ng-repeat="day in daysInMonth" value="{{ day }}">{{ day }}</option>
@@ -88,12 +94,12 @@
                                         <td class="form-label">{{ product }}</td>
                                         <td>
                                             <div class="col-sm-6">
-                                                <input class="form-control" ng-model="stockCount.used_unopened[$index]">
+                                                <input type="number" class="form-control" ng-model="stockCount.used_unopened[$index]">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-sm-6">
-                                                <input class="form-control" ng-model="stockCount.used_opened[$index]">
+                                                <input type="number" class="form-control" ng-model="stockCount.used_opened[$index]">
                                             </div>
                                         </td>
                                         <td><input ng-model="stockCount.confirmation[$index]" value="1" type="checkbox"></td>
@@ -113,5 +119,6 @@
                 </div>
             </div>
         </div>
+
      </form>
 </div>

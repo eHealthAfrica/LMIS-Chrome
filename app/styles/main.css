@@ -100,3 +100,6 @@ accordion .panel-heading:hover {
 .products accordion .panel-heading .panel-title i:hover {
   color: red;
 }
+.date-row{
+    margin: 10px 0px;
+}

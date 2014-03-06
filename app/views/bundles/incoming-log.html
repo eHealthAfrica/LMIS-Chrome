@@ -11,16 +11,17 @@
       <div class="col-sm-2">
         <label for="loadBundle">&nbsp;</label>
         <button type="submit" ng-click="showBundle()" id="loadBundle" name="loadBundle"
-                class="btn btn-success btn-lg btn-block">Show Bundle
+                class="btn btn-success">Show Bundle
         </button>
       </div>
 
-      <div class="col-sm-2" ng-show="showAddManually">
-        <label for="loadBundle">&nbsp;</label>
-        <a ui-sref="addInventory" class="btn btn-success btn-lg btn-block">
+      <div class="col-sm-4" ng-show="showAddManually">
+        <label for="addNewInventory">&nbsp;</label>
+        <button type="submit" ng-click="addNewInventory(showBundleNo)" id="addNewInventory" name="addNewInventory"
+                class="btn btn-success">
           <span><i class="fa fa-plus"></i></span>
           <span translate="addNewInventory"></span>
-        </a>
+        </button>
       </div>
 
     </div>
@@ -148,13 +149,10 @@
                           translate="submit" ng-disabled="!logIncomingForm.authorized"></button>
                 </div>
               </div>
+          </div>
 
           </form>
-
-
         </div>
-
-
       </div>
     </div>
   </div>

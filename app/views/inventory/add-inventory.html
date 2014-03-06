@@ -30,12 +30,8 @@
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="receivingFacility" translate="receivingFacility"></label>
-                          <select id="receivingFacility" class="form-control" ng-model="inventory.receiving_facility"
-                                  ng-change="loadReceivingFacilityStorageUnits(inventory.receiving_facility)" required>
-                            <option value="" translate="selectReceivingFacility"></option>
-                            <option ng-repeat="facility in facilities" value="{{ facility.uuid }}"
-                                    ng-bind="facility.name"></option>
-                          </select>
+                          <input class="form-control" type="text" name="receivingFacility" id="receivingFacility"
+                                 ng-model="(inventory.receiving_facility).name" ng-disabled="true"/>
                         </div>
                       </div>
 
@@ -109,7 +105,7 @@
                                 </option>
                               </select>
                               <br/>
-                              <input class="form-control" type="text" name="batchNo" ng-model="inventoryLine.batch_no"/>
+                              <input class="form-control" type="text" name="batchNo" ng-model="inventoryLine.batch_no" required/>
                             </td>
                             <td>
                               <select ng-model="inventoryLine.program" class="form-control">
@@ -121,10 +117,10 @@
                             </td>
                             <td>
                               <input class="form-control" type="number" min="0" step="any" name="quantity"
-                                     ng-model="inventoryLine.quantity"/>
+                                     ng-model="inventoryLine.quantity" required/>
                             </td>
                             <td>
-                              <select class="form-control" ng-model="inventoryLine.uom">
+                              <select class="form-control" ng-model="inventoryLine.uom" required>
                                 <option value="" translate="selectUOM"></option>
                                 <option ng-repeat="uom in uomList" value="{{ uom.uuid }}" ng-bind="uom.name"
                                         ng-selected="{{ (inventoryLine.uom).uuid === uom.uuid }}"></option>
