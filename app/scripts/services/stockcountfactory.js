@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('stockCountFactory', function ($q, storageService) {
+    .factory('stockCountFactory', function ($q, storageService, $http) {
 
     var discarded_reasons = {
         "0": "VVM Stage 3",
@@ -52,7 +52,6 @@ angular.module('lmisChromeApp')
        *
        * @param {object} Stock wastage Data.
        * @return {Promise} return promise object
-       * @public
        */
         wastage: function(object){
            var deferred = $q.defer();
@@ -136,6 +135,11 @@ angular.module('lmisChromeApp')
                 });
             return deferred.promise;
         },
+        /*
+         * load a single row from waste count table
+         * @param {uuid} .
+         * @return {Promise} return promise object
+         */
         wasteCountRow: function(uuid){
             var deferred = $q.defer();
             storageService.get('wastageCount', uuid)
@@ -143,9 +147,31 @@ angular.module('lmisChromeApp')
                     deferred.resolve(wastageCount);
                 });
             return deferred.promise;
+        },
+        userFacilities: function(){
+          /*
+           * load some none standard fixtures
+           * @param {void}.
+           * @return {Promise} return promise object
+           */
+            var deferred = $q.defer();
+            var file_url = 'scripts/fixtures/user_related_facilities.json';
+            $http.get(file_url).success(function (data) {
+                deferred.resolve(data);
+            });
+            return deferred.promise;
+        },
+        locations: function(){
+            var deferred = $q.defer();
+            var file_url2 = 'scripts/fixtures/locations.json';
+            $http.get(file_url2).success(function (data){
+                deferred.resolve(data);
+            });
+            return deferred.promise;
         }
 
     }
+
 
     return {
         programProducts: program_products,
