@@ -28,6 +28,10 @@ module.exports = function(config) {
       'app/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
       'app/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
       'app/bower_components/angular-toggle-switch/angular-toggle-switch.js',
+      'app/bower_components/d3/d3.js',
+      'app/bower_components/nvd3/nv.d3.js',
+      'app/bower_components/moment/moment.js',
+      'app/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
@@ -60,7 +64,7 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false,
+    singleRun: true,
 
     // grunt-karma-coveralls
     reporters: [
