@@ -48,6 +48,69 @@ angular.module('lmisChromeApp')
     })
     .state('home.index.dashboard', {
       url: '/dashboard',
-      templateUrl: 'views/home/dashboard.html'
+      templateUrl: 'views/home/dashboard.html',
+      controller: function($scope) {
+        var keys = {
+          below: {
+            label: 'Below buffer',
+            color: 'red'
+          },
+          buffer: {
+            label: 'Buffer',
+            color: 'yellow'
+          },
+          safety: {
+            label: 'Safety stock',
+            color: 'black'
+          },
+          max: {
+            label: 'Max',
+            color: 'grey'
+          }
+        };
+
+        var values = [
+          {
+            label: 'BCG',
+            below: -19,
+            buffer: 405,
+            safety: 0,
+            _max: 1000
+          },
+          {
+            label: 'TT',
+            below: 0,
+            buffer: 348,
+            safety: 384,
+            _max: 1500
+          },
+          {
+            label: 'Penta',
+            below: 0,
+            buffer: 310,
+            safety: 272,
+            _max: 1200
+          }
+        ];
+
+        var chart = [];
+        angular.forEach(Object.keys(keys), function(key) {
+          var series = {};
+          series.key = keys[key].label;
+          series.color = keys[key].color;
+          series.values = [];
+          angular.forEach(values, function(value) {
+            if(key === 'max') {
+              value[key] = value._max - (value.buffer + value.safety);
+            }
+            series.values.push([value.label, value[key]]);
+          });
+          chart.push(series);
+        });
+
+        $scope.inventoryChart = chart;
+        $scope.inventoryKeys = keys;
+        $scope.inventoryValues = values;
+      }
     });
   });

@@ -1,12 +1,27 @@
-<div class="list-group">
-  <img src="/images/chart1.png" />
-</div>
-<div class="list-group">
-  <img src="/images/chart2.png" />
-</div>
-<div class="list-group">
-  <img src="/images/chart3.png" />
-</div>
-<div class="list-group">
-  <img src="/images/chart4.png" />
-</div>
+<nvd3-multi-bar-horizontal-chart
+  id="inventory-chart"
+  data="inventoryChart"
+  tooltips="true"
+  stacked="true">
+</nvd3-multi-bar-horizontal-chart>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Inventory</th>
+      <th ng-bind="inventoryKeys['below']['label']"></th>
+      <th ng-bind="inventoryKeys['buffer']['label']"></th>
+      <th ng-bind="inventoryKeys['safety']['label']"></th>
+      <th ng-bind="inventoryKeys['max']['label']"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="value in inventoryValues">
+      <td ng-bind="value.label"></td>
+      <td ng-bind="value.below"></td>
+      <td ng-bind="value.buffer"></td>
+      <td ng-bind="value.safety"></td>
+      <td ng-bind="value._max"></td>
+    </tr>
+  </tbody>
+</table>
