@@ -49,10 +49,9 @@
     background-color: #FFFFFF;
     color: green;
 }
-.red-icon{
-    background-color: #FFFFFF;
-    color: #C00;
-    color: red;
+.blue-icon{
+  background-color:  blue;
+  color: #FFFFFF;
 }
 .marker-indicator-space{
   margin-right: 2em;

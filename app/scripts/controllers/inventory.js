@@ -38,8 +38,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       $scope.highlight = visualMarkerService.highlightByExpirationStatus;
 
-
+      console.log($stateParams);
       if ($stateParams.add === "true") {
+        $stateParams.add = '';
         $translate('addInventorySuccessMessage')
             .then(function (msg) {
               alertsFactory.add({message: msg, type: 'success'});
@@ -48,6 +49,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       //TODO: set default facility uuid/object to facility of logged in user.
       inventoryFactory.getFacilityInventory("d48a39fb-6d37-4472-9983-bc0720403719").then(function (inventoryItems) {
+
+        $scope.totalItems = inventoryItems.length;
 
         // Table defaults
         var params = {
