@@ -9,12 +9,12 @@
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
-  <link rel="stylesheet" href="bower_components/ng-table/ng-table.css" />
-  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
-  <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/ng-table/ng-table.css"/>
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css"/>
+  <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css"/>
   <!-- endbower -->
-  <link rel="stylesheet" href="bower_components/angular-toggle-switch/angular-toggle-switch.css" />
-  <link rel="stylesheet" href="bower_components/angular-toggle-switch/angular-toggle-switch-bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/angular-toggle-switch/angular-toggle-switch.css"/>
+  <link rel="stylesheet" href="bower_components/angular-toggle-switch/angular-toggle-switch-bootstrap.css"/>
   <!-- endbuild -->
   <!-- build:css({.tmp,app}) styles/main.css -->
   <link rel="stylesheet" href="Ebro/css/todc-bootstrap.min.css">
@@ -30,13 +30,15 @@
 
   <section class="container clearfix main_section">
     <div id="main_content_outer" class="clearfix">
-      <alert ng-repeat="alert in alerts" type="alert.type"
-        close="closeAlert($index)">
-        <span ng-bind="alert.message"></span>
-      </alert>
+
 
       <tv-breadcrumbs ng-hide="$state.includes('home')"
-        home="home.index.mainActivity"></tv-breadcrumbs>
+                      home="home.index.mainActivity"></tv-breadcrumbs>
+
+      <alert ng-repeat="alert in alerts" type="alert.type"
+             close="closeAlert($index)">
+        <span ng-bind="alert.message"></span>
+      </alert>
 
       <div id="main_content" ui-view></div>
     </div>
