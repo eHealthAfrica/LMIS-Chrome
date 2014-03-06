@@ -9,7 +9,12 @@ angular.module('lmisChromeApp')
           },
           url:'stockCountIndex?facility&report_month&report_year',
           templateUrl: 'views/stockcount/index.html',
-          controller:'StockCountCtrl'
+          controller:'StockCountCtrl',
+          resolve:{
+              currentFacility: function(facilityFactory){
+                return facilityFactory.getCurrentFacility();
+              }
+          }
         })
 
         .state('stockCountForm', {
@@ -18,7 +23,12 @@ angular.module('lmisChromeApp')
           },
           url:'stockCountForm?facility&report_month&report_year',
           templateUrl: 'views/stockcount/daily_stock_count_form.html',
-          controller: 'StockCountCtrl'
+          controller: 'StockCountCtrl',
+          resolve:{
+              currentFacility: function(facilityFactory){
+                return facilityFactory.getCurrentFacility();
+              }
+          }
         })
 
         .state('wasteCountForm', {
@@ -27,13 +37,18 @@ angular.module('lmisChromeApp')
           },
           url: 'wasteCountForm?facility&report_month&report_year',
           templateUrl: 'views/stockcount/daily_waste_count_form.html',
-          controller:'StockCountCtrl'
+          controller:'StockCountCtrl',
+          resolve: {
+              currentFacility: function(facilityFactory){
+                return facilityFactory.getCurrentFacility();
+              }
+          }
         });
     })
 /*
 * Base Controller
  */
-    .controller('StockCountCtrl', function($scope, $stateParams, stockCountFactory) {
+    .controller('StockCountCtrl', function($scope, $stateParams, stockCountFactory, currentFacility) {
 
         var now = new Date();
         var day = now.getDate();
@@ -44,8 +59,9 @@ angular.module('lmisChromeApp')
          /*
         * get url parameters
         */
-
-        $scope.facility_uuid = ($stateParams.facility !== null)?$stateParams.facility:'';
+        $scope.facility_object = currentFacility;
+        console.log($scope.facility_object.uuid);
+        $scope.facility_uuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facility_object.uuid;
         $scope.report_month = ($stateParams.report_month !== null)?$stateParams.report_month:now.getMonth() + 1;
         $scope.report_year = ($stateParams.report_year !== null)?$stateParams.report_year: now.getFullYear();
         stockCountFactory.get.userFacilities().then(function(data){
