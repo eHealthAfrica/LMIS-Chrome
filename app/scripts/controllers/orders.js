@@ -142,16 +142,19 @@ angular.module('lmisChromeApp')
     })
     .state('orders.place', {
       url: '/orders/place?program',
-      templateUrl: 'views/orders/forms/place.html',
+      templateUrl: 'views/orders/place-order.html',
       data: {
         label: 'Place order'
       },
       resolve: {
-        productCategories: function(storageService) {
-          return storageService.get(storageService.PRODUCT_CATEGORY);
+        currentFacility: function(facilityFactory){
+          return facilityFactory.getCurrentFacility();
         },
-        productProfiles: function(storageService) {
-          return storageService.get(storageService.PRODUCT_PROFILE);
+        uomList: function(storageService) {
+          return storageService.get(storageService.UOM);
+        },
+        productTypes: function(storageService) {
+          return storageService.get(storageService.PRODUCT_TYPES);
         },
         uuid: function(storageService) {
           return storageService.uuid;
@@ -159,55 +162,55 @@ angular.module('lmisChromeApp')
         facilities: function(storageService) {
           return storageService.get(storageService.FACILITY);
         },
-        user: function(storageService) {
-          return storageService.get(storageService.USER);
+        loggedInUser: function(userFactory) {
+          return userFactory.getLoggedInUser();
         },
         programs: function(storageService) {
           return storageService.get(storageService.PROGRAM);
         },
       },
-      controller: function($scope, $filter, productCategories, productProfiles, uuid, facilities, user, programs, $stateParams, $translate) {
+      controller: function($scope, $filter, currentFacility, uomList, productTypes, facilities, loggedInUser, programs,
+                           $stateParams) {
+
         $scope.storage = {
-          categories: productCategories,
-          profiles: productProfiles,
+          uomList: uomList,
+          productTypes: productTypes,
+          receiving_facility: currentFacility,
           facilities: facilities,
           programs: programs
         };
 
+        function setOrderNo(){
+          var timeStamp = String(new Date().getTime());
+          return $scope.storage.receiving_facility.code+'-'+loggedInUser.id+'-'+
+              timeStamp.substring(timeStamp.length -5, timeStamp.length);
+        }
+
         $scope.order = {
-          products: [],
+          order_lines: [],
           date: $filter('date')(new Date(), 'yyyy-MM-dd'),
-          number: uuid(),
-          userCode: user['1'].id,
+          order_no: setOrderNo(),
+          placed_by: loggedInUser.id,
           program: $stateParams.program
         };
 
         var id = 1;
-        $scope.productCount = 0;
 
-        var changeDeterminer = function(key) {
-          $translate(key).then(function(value) {
-            $scope.determiner = value;
+        $scope.addOrderLine = function() {
+          $scope.order.order_lines.push({id: id++});
+        };
+
+        $scope.removeOrderLine = function(orderLine) {
+          $scope.order.order_lines = $scope.order.order_lines.filter(function(line) {
+            return line.id !== orderLine.id;
           });
         };
 
-        changeDeterminer('a');
-        $scope.addProduct = function() {
-          $scope.order.products.push({id: id++});
-          $scope.productCount++;
-          if($scope.productCount === 1) {
-            changeDeterminer('another');
-          }
-        };
-        $scope.removeProduct = function(product) {
-          $scope.order.products = $scope.order.products.filter(function(p) {
-            return p.id !== product.id;
-          });
-          $scope.productCount = $scope.order.products.length;
-          if($scope.productCount === 0) {
-            changeDeterminer('a');
-          }
-        };
+        $scope.save = function(){
+          $scope.order['receiving_facility'] = $scope.storage.receiving_facility.uuid;
+          console.log($scope.order);
+        }
+
       }
     });
   });

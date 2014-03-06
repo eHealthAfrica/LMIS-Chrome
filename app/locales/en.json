@@ -28,7 +28,7 @@
   "routineImmunization": "Routine Immunization",
   "a": "a",
   "another": "another",
-  "addProduct": "Add {{determiner}} product",
+  "addOrderLine": "Add {{determiner}} product",
   "orderDate": "Order Date",
   "removeProductID": "Remove product {{id}}",
   "authorize": "Authorize",
