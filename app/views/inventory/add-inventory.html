@@ -101,11 +101,11 @@
                                       ng-disabled="inventoryLine.isDisabled">
                                 <option value="" translate="selectBatch"></option>
                                 <option ng-repeat="batch in inventoryLine.productTypeBatches" value="{{ batch.uuid }}"
-                                        ng-bind="batch.batch_no" required>
+                                        ng-bind="batch.batch_no">
                                 </option>
                               </select>
                               <br/>
-                              <input class="form-control" type="text" name="batchNo" ng-model="inventoryLine.batch_no"/>
+                              <input class="form-control" type="text" name="batchNo" ng-model="inventoryLine.batch_no" required/>
                             </td>
                             <td>
                               <select ng-model="inventoryLine.program" class="form-control">
@@ -120,7 +120,7 @@
                                      ng-model="inventoryLine.quantity" required/>
                             </td>
                             <td>
-                              <select class="form-control" ng-model="inventoryLine.uom">
+                              <select class="form-control" ng-model="inventoryLine.uom" required>
                                 <option value="" translate="selectUOM"></option>
                                 <option ng-repeat="uom in uomList" value="{{ uom.uuid }}" ng-bind="uom.name"
                                         ng-selected="{{ (inventoryLine.uom).uuid === uom.uuid }}"></option>
