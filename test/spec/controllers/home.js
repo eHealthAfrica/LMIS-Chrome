@@ -11,7 +11,8 @@ describe('Home controller', function () {
       'index',
       'nav',
       'sidebar',
-      'control-panel'
+      'control-panel',
+      'main-activity'
     ];
 
     angular.forEach(templates, function(template) {
@@ -20,14 +21,14 @@ describe('Home controller', function () {
   }));
 
   it('should go to the control panel state', function() {
-    var cp = 'home.index.controlPanel';
+    var ma = 'home.index.mainActivity';
     inject(function($rootScope, $state, $httpBackend) {
       $httpBackend.whenGET('/locales/en.json').respond(200, {});
       $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
       $rootScope.$apply(function() {
-        $state.go(cp);
+        $state.go(ma);
       });
-      expect($state.current.name).toBe(cp);
+      expect($state.current.name).toBe(ma);
     });
   });
 

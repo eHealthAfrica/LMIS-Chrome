@@ -17,7 +17,7 @@ angular.module('lmisChromeApp')
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-    .controller('logIncomingCtrl', function ($scope, $filter, storageService,storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
+    .controller('logIncomingCtrl', function ($scope, $filter, $state, storageService, storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
 
       $scope.clicked = false;
       $scope.bundle = {};
@@ -50,21 +50,25 @@ angular.module('lmisChromeApp')
       $scope.showBundle = function () {
 
         $scope.clicked = true;
-        bundleFactory.getBundle($scope.showBundleNo).then(function(data) {
+        bundleFactory.getBundle($scope.showBundleNo).then(function (data) {
           $scope.bundle = data;
           $scope.bundle.date = $scope.getCurrentDate();
           var receivingFacility = $scope.bundle.receiving_facility;
           $scope.parent = $scope.bundle.parent.name;
           $scope.receiving_facility = receivingFacility.name;
-          $scope.receivingFacilityStorageUnits = storageUnitFactory.getFacilityStorageUnits(receivingFacility.uuid);
+          storageUnitFactory.getFacilityStorageUnits(receivingFacility.uuid).then(function (data) {
+            $scope.receivingFacilityStorageUnits = data;
+          });
           $scope.show = true;
+          $scope.showAddManually = false;
           return;
-        }, function() {
+        }, function () {
           $translate('bundleNotFound', {id: $scope.showBundleNo})
-            .then(function(msg) {
-              alertsFactory.add({message: msg, type: 'danger'});
-              $scope.showBundleNo = '';
-            });
+              .then(function (msg) {
+                alertsFactory.add({message: msg, type: 'danger'});
+                $scope.showAddManually = true;
+                $scope.showBundleNo = '';
+              });
         });
       };
 
@@ -75,13 +79,14 @@ angular.module('lmisChromeApp')
       $scope.hideBundle = function () {
         $scope.clicked = false;
         $scope.show = false;
+        $scope.showAddManually = false;
       };
 
 
       /**
        * Function called when authorize button is clicked and it saves the bundle info, to generate bundle receipt.
        */
-      $scope.authorize = function () {
+      $scope.save = function () {
 
         var bundleReceiptLines = [];
         for (var index in $scope.bundle.bundle_lines) {
@@ -89,22 +94,36 @@ angular.module('lmisChromeApp')
           var bundleReceiptLine = {
             "bundle_line_uuid": bundleLine.uuid,
             "verify": $scope.logIncomingForm.verify[bundleLine.uuid],
-            "storage_unit": $scope.logIncomingForm.storage_units[bundleLine.uuid]
+            "storage_unit": $scope.logIncomingForm.storage_units[bundleLine.uuid],
+            "batch": bundleLine.batch.batch_no,
+            "program": bundleLine.program.uuid,
+            "quantity_uom": bundleLine.quantity_uom.uuid,
+            "quantity": bundleLine.quantity
           }
           bundleReceiptLines.push(bundleReceiptLine);
         }
+
+
 
         var bundleReceipt = {
           "bundle": $scope.bundle.uuid,
           "user": $scope.loggedInUser.id,
           "date": $scope.bundle.date,
-          "bundle_receipt_lines": bundleReceiptLines
+          "bundle_receipt_lines": bundleReceiptLines,
+          "receiving_facility": $scope.bundle.receiving_facility.uuid,
+          "sending_facility": $scope.bundle.parent.uuid
         };
-        var bundleReceiptUUID = bundleFactory.saveBundleReceipt(bundleReceipt);
-        if (bundleReceiptUUID !== undefined) {
-          //TODO: update inventory(jideobi)
-          return;
-        }
+
+        bundleFactory.saveBundleReceipt(bundleReceipt).then(function(data){
+          if(data.length !== 0){
+            $state.go('inventoryListView');
+          }
+
+        },function(error){
+          console.log(error);
+        });
+
+
       }
     });
 

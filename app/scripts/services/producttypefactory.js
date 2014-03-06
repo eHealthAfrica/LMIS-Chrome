@@ -24,7 +24,7 @@ angular.module('lmisChromeApp')
          * returns json object of product types each nested attribute is returned as a JSON,
          * e.g ProductType.UOM will be returned as a JSON of UOM. similar to ORM format.
          */
-        getAll: function () {
+        getFacilityInventory: function () {
           var deferred = $q.defer(), productTypes = [];
 
           storageService.all(storageService.PRODUCT_TYPES).then(function (data) {

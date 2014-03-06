@@ -12,7 +12,7 @@ angular.module('lmisChromeApp')
        *
        */
       var product_types = 'product_types';
-      
+
       var productCategory = 'product_category';
       var address = 'address';
       var uom = 'uom';
@@ -65,20 +65,21 @@ angular.module('lmisChromeApp')
        * @private
        */
       function addTable(key, value) {
-
         var newStorage = {};
         var defered = $q.defer();
+        var result = false;
         newStorage[key] = value;
-
         if (hasChromeStorage) {
           $window.chrome.storage.local.set(newStorage, function () {
             console.log("saved: " + key);
-            defered.resolve();
+            defered.resolve(true)
             if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
           });
-          return defered.promise;
+
+        }else{
+          defered.reject("table update/creation failed");
         }
-        return null; // defer.reject?
+        return defered.promise;
       }
 
       /**
@@ -230,34 +231,36 @@ angular.module('lmisChromeApp')
         getTables().then(function (tables) {
           if (tables.indexOf(table) != -1) {
             getTable(table).then(function (table_data) {
-                console.log(obj);
-                if(Object.prototype.toString.call(table_data) == '[object Object]'){
-                    var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1? true:false;
-                    obj['created'] = (uuid_test) ? obj['created']:getDateTime();
-                    obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00':getDateTime();
-                    var uuid = (uuid_test)? obj['uuid'] : uuid_generator();
-                    table_data[uuid] = obj;
-                    addTable(table, table_data);
-                    deferred.resolve(uuid);
-                }
-                else{
-                  deferred.resolve(null);
-                    console.log(table_data);
-                }
+
+              if (Object.prototype.toString.call(table_data) == '[object Object]') {
+                var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
+                obj['created'] = (uuid_test) ? obj['created'] : getDateTime();
+                obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00' : getDateTime();
+                var uuid = (uuid_test) ? obj['uuid'] : uuid_generator();
+                obj['uuid'] = uuid;
+                table_data[uuid] = obj;
+                addTable(table, table_data);
+                deferred.resolve(uuid);
+              }
+              else {
+                deferred.resolve(null);
+                console.log(table_data);
+              }
             });
           }
           else {
 
             var table_data = {};
-            obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1)?obj['uuid']:uuid_generator();
+            obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1) ? obj['uuid'] : uuid_generator();
             obj['created'] = getDateTime();
-              obj['modified'] = '0000-00-00 00:00:00';
+            obj['modified'] = '0000-00-00 00:00:00';
             table_data[obj['uuid']] = obj;
             addTable(table, table_data);
             deferred.resolve(obj.uuid);
             //console.log("new entry");
           }
         });
+        if (!$rootScope.$$phase) $rootScope.$apply();
         return deferred.promise;
       }
 
@@ -307,20 +310,19 @@ angular.module('lmisChromeApp')
 
           getTable(db_name).then(function (data) {
                 test_data = data;
-                if (test_data.length == 0 || test_data.length == undefined) {
+
+                if ((toString.call(data) == '[object Object]' && angular.equals(Object.keys(test_data).length, 0))
+                    || (angular.isArray(test_data) && angular.equals(test_data.length, 0))) {
 
                   var file_url = 'scripts/fixtures/' + db_name + '.json';
                   $http.get(file_url).success(function (data) {
                     addTable(db_name, data);
-                    //console.log(data);
-                    //loadRelatedObject(db_name);
-
                   }).error(function (err) {
                         console.log(err);
-                      });
+                  });
                 }
                 else {
-                  console.log(db_name + " is loaded with " + test_data.length);
+                  console.log(db_name + " is loaded with " + test_data);
                   //loadRelatedObject(db_name);
                 }
 
@@ -388,28 +390,28 @@ angular.module('lmisChromeApp')
         return uuid;
       }
 
-      function getFromTableByKey(tableName, key){
-         var deferred = $q.defer();
-          var result = null;
-          var key = String(key);//force conversion to string
-          try{
-            getTable(tableName).then(function (data) {
-              result = data[key];
-              deferred.resolve(result);
-              if (!$rootScope.$$phase) $rootScope.$apply();
-            });
-          }catch(e){
+      function getFromTableByKey(tableName, key) {
+        var deferred = $q.defer();
+        var result = null;
+        var key = String(key);//force conversion to string
+        try {
+          getTable(tableName).then(function (data) {
+            result = data[key];
             deferred.resolve(result);
             if (!$rootScope.$$phase) $rootScope.$apply();
-          }finally{
-             return deferred.promise;
-          }
+          });
+        } catch (e) {
+          deferred.resolve(result);
+          if (!$rootScope.$$phase) $rootScope.$apply();
+        } finally {
+          return deferred.promise;
+        }
       }
 
       /**
        * This returns an array or collection of rows in the given table name, this collection can not be
        * indexed via key, to get table rows that can be accessed via keys use all() or getTable()
-      */
+       */
       function getAllFromTable(tableName) {
         var deferred = $q.defer();
         getTable(tableName).then(function (data) {
@@ -423,12 +425,41 @@ angular.module('lmisChromeApp')
         return deferred.promise;
       }
 
+      function insertBatch(tableName, batchList){
+
+        var deferred = $q.defer();
+        getTable(tableName).then(function(tableData){
+          var batches = (angular.isArray(batchList))? batchList : [];
+          var results = [];
+          console.log(tableName+" "+tableData);
+          for(var index in batches){
+            var batch = batches[index];
+            var hasUUID = batch.hasOwnProperty('uuid');
+            batch['uuid'] = hasUUID? batch['uuid'] : uuid_generator();
+            batch['created'] = hasUUID? batch['created'] : getDateTime();
+            batch['modified'] = hasUUID? '0000-00-00 00:00:00' : getDateTime();
+            tableData[batch.uuid] = batch;
+            results.push(addTable(tableName, tableData).then(function(result){
+              return batch['uuid'];
+            }, function(error){
+              console.log(error);
+            }));
+            batches[index] = batch;
+          }
+          console.log(results);
+          console.log(batches.length);
+          (results.length === batches.length)? deferred.resolve(batches): deferred.resolve("batch insertion failed");;
+        });
+        if (!$rootScope.$$phase) $rootScope.$apply();
+        return deferred.promise;
+      }
+
       return {
         isSupported: hasChromeStorage,
         all: getAllFromTable,
         add: addTable,
         get: getTable,
-        getAll: getAllFromStore,
+        getFacilityInventory: getAllFromStore,
         remove: removeTable, // removeFromChrome,
         clear: clearFromStore, // clearChrome */
         uuid: uuid_generator,
@@ -436,6 +467,7 @@ angular.module('lmisChromeApp')
         loadTableObject: loadRelatedObject,
         insert: insert,
         find: getFromTableByKey,
+        insertBatch: insertBatch,
         PRODUCT_TYPES: product_types,
         PRODUCT_CATEGORY: productCategory,
         ADDRESS: address,

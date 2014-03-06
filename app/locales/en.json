@@ -3,7 +3,7 @@
   "appDescription": "LMIS Chrome packaged app",
   "appAuthor": "eHealth Systems Africa Foundation",
   "incoming": "Incoming",
-  "incomingLog": "Log an incoming order",
+  "incomingLog": "Log an incoming bundle",
   "incomingPlace": "Place an order",
   "incomingModify": "Modify an order",
   "incomingTrackPending": "Track pending orders",
@@ -58,7 +58,8 @@
   "controlPanel": "Control Panel",
   "dashboard": "Dashboard",
   "toogleNav": "Toggle Navigation",
-  "bundleNotFound": "Bundle {{id}} not found",
+  "bundleNotFound": "Bundle {{id}} not found, use 'Add New Inventory' ",
   "addToStorageUnit": "Add to Storage Unit",
-  "remove": "Remove"
+  "remove": "Remove",
+  "addNewInventory": "Add New Inventory"
 }

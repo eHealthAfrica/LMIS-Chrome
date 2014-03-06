@@ -38,7 +38,7 @@ angular.module('lmisChromeApp', [
 
   // Central Variable for Watching Online/Offline Events
   .run(function($window, $rootScope, $state, $stateParams, storageService) {
-    //chrome.storage.local.clear();
+    //storageService.clear();
     storageService.loadFixtures();
 
     $rootScope.online = navigator.onLine;
@@ -59,5 +59,5 @@ angular.module('lmisChromeApp', [
     $rootScope.$state = $state;
 
     // Default state
-    $state.go('home.index.controlPanel');
+    $state.go('home.index.mainActivity');
   });

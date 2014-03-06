@@ -28,7 +28,6 @@ module.exports = function(config) {
       'app/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
       'app/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
       'app/bower_components/angular-toggle-switch/angular-toggle-switch.js',
-      'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
@@ -61,6 +60,22 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: true,
+
+    // grunt-karma-coveralls
+    reporters: [
+      'progress',
+      'coverage'
+    ],
+    preprocessors: {
+      'app/scripts/**/*.js': 'coverage'
+    },
+    coverageReporter: {
+      type: 'lcov',
+      dir: 'coverage'
+    },
+    plugins: [
+      'karma-*'
+    ]
   });
 };

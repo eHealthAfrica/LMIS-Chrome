@@ -29,7 +29,7 @@ angular.module('lmisChromeApp')
       // Public API here
       return {
 
-        getAll: function () {
+        getFacilityInventory: function () {
           var deferred = $q.defer(), storageUnitTypes = [];
 
           storageService.all(storageService.CCU_TYPE).then(function (data) {

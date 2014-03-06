@@ -14,7 +14,7 @@ angular.module('lmisChromeApp')
     // Public API here
     return {
 
-    getAll: function(){
+    getFacilityInventory: function(){
         var deferred = $q.defer();
         storageService.get(storageService.MODE_OF_ADMINISTRATION).then(function(data){
           var modes = [];

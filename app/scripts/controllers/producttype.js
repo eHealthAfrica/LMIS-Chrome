@@ -8,7 +8,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         controller: 'ProductTypeListCtrl',
         resolve: {
           productTypes: function (productTypeFactory) {
-            return productTypeFactory.getAll();
+            return productTypeFactory.getFacilityInventory();
           }
         },
         data: {

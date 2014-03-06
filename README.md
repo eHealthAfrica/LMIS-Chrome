@@ -1,11 +1,13 @@
 # LMIS-Chrome
 
-[![Build Status][travis-image]][travis-url] [![devDependency Status][daviddm-image]][daviddm-url]
+[![Build Status][travis-image]][travis-url] [![devDependency Status][daviddm-image]][daviddm-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
 [travis-url]: https://travis-ci.org/eHealthAfrica/LMIS-Chrome
 [travis-image]: https://travis-ci.org/eHealthAfrica/LMIS-Chrome.png?branch=master
 [daviddm-url]: https://david-dm.org/eHealthAfrica/LMIS-Chrome#info=devDependencies
 [daviddm-image]: https://david-dm.org/eHealthAfrica/LMIS-Chrome/dev-status.png?theme=shields.io
+[coveralls-url]: https://coveralls.io/r/eHealthAfrica/LMIS-Chrome
+[coveralls-image]: https://coveralls.io/repos/eHealthAfrica/LMIS-Chrome/badge.png
 
 > LMIS Chrome packaged app
 
@@ -28,20 +30,23 @@
 
 ## Testing
 
+Use `grunt test` for the complete test suite. `npm test` is reserved for our
+continuous integration server (TravisCI).
+
 ### Unit
 
-Use `npm test` for the complete test suite. During development, `npm run-script
-test-watch` is useful to automatically re-run the tests when a file changes.
+Use `grunt test:unit`. During development, `npm run-script test-watch` is
+useful to automatically re-run the tests when a file changes.
 
 ### e2e
 
 1. Install selenium (one-time only):
 
-```bash
-./node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update
-```
+    ```bash
+    ./node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update
+    ```
 
-2. `grunt protractor:e2e`
+2. `grunt test:e2e`
 
 ## Author
 
