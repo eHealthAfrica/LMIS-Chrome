@@ -36,6 +36,7 @@
           <span><i class="fa fa-list"></i></span>
           <span>Batch Inventory</span>
           <span class="badge badge-info" ng-bind="totalItems"></span>
+          <span class="pull-right" ng-bind="currentFacility.name"></span>
         </h4>
       </div>
       <div class="panel-body">
@@ -68,8 +69,6 @@
             </tr>
           </table>
         </div>
-
-        <pre>{{inventory | json}}</pre>
 
       </div>
     </div>
