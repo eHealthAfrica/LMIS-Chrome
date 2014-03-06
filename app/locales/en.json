@@ -61,5 +61,8 @@
   "bundleNotFound": "Bundle {{id}} not found, use 'Add New Inventory' ",
   "addToStorageUnit": "Add to Storage Unit",
   "remove": "Remove",
-  "addNewInventory": "Add New Inventory"
+  "addNewInventory": "Add New Inventory",
+  "stockCount": "Stock Count",
+  "addStockCount": "Add Stock Count",
+  "addWasteCount": "Add Waste Count"
 }
