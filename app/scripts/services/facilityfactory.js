@@ -45,7 +45,6 @@ angular.module('lmisChromeApp')
           //TODO: replace with facility of current logged in user when we have the session and authentication working.
           var deferred = $q.defer();
           getByUUID("d48a39fb-6d37-4472-9983-bc0720403719").then(function(data){
-            console.log(data);
             deferred.resolve(data);
           });
           return deferred.promise;

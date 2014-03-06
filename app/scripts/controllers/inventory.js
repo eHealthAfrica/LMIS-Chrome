@@ -14,7 +14,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           }
         }
       }).state('addInventory', {
-        url: '/add-inventory',
+        url: '/add-inventory?bundleNo',
         templateUrl: '/views/inventory/add-inventory.html',
         controller: 'addInventoryCtrl',
         data: {
@@ -86,15 +86,17 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
 
       $scope.getProductTypeUOM = function (inventoryLine) {
-        var inventoryLineBatch = inventoryLine.batch;
-        var product = inventoryLineBatch.product;
+        var product = $scope.getProductType(inventoryLine)
         return product.base_uom;
       };
 
-      $scope.getStorageVolume = function (inventoryLine) {
-        var inventoryLineBatch = inventoryLine.batch;
-        var storageVolume = inventoryLineBatch.packed_volume * inventoryLine.quantity;
-        return storageVolume;
+      $scope.getBatch= function(inventoryLine){
+        return (toString.call(inventoryLine.batch) === '[object Object]')?
+            inventoryLine.batch.batch_no : inventoryLine.batch;
+      }
+
+      $scope.getProductType= function(inventoryLine){
+        return (toString.call(inventoryLine.batch) === '[object Object]')? inventoryLine.batch.product : inventoryLine.product_type;
       }
 
     })
@@ -102,14 +104,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('addInventoryCtrl', function ($scope, $filter,  currentFacility, storageService, $state, inventoryFactory, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
+    .controller('addInventoryCtrl', function ($scope, $filter, $stateParams, currentFacility, storageService, $state,
+                                              inventoryFactory, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
 
       //used to hold form data
       $scope.inventory = {
         authorized: false,
         inventory_lines: [],
         date_receipt: $filter('date')(new Date(), 'yyyy-MM-dd'),
-        bundle_no: ''
+        bundle_no: $stateParams.bundleNo
       }
 
       var id = 0;
@@ -127,6 +130,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           $scope.receivingFacilityStorageUnits = data;
         });
       }
+
       loadCurrentFacilityStorageUnits($scope.inventory.receiving_facility.uuid);
 
       $scope.loadProductTypeBatches = function (inventoryLine) {
