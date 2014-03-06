@@ -31,14 +31,15 @@
 
   <section class="container clearfix main_section">
     <div id="main_content_outer" class="clearfix">
+     
+         <tv-breadcrumbs ng-hide="$state.includes('home')"
+                      home="home.index.mainActivity"></tv-breadcrumbs>
+
       <alert ng-repeat="alert in alerts" type="alert.type"
-        close="closeAlert($index)">
+             close="closeAlert($index)">
         <span ng-bind="alert.message"></span>
       </alert>
-
-      <tv-breadcrumbs ng-hide="$state.includes('home')"
-        home="home.index.mainActivity"></tv-breadcrumbs>
-
+        
       <div id="main_content" ui-view></div>
     </div>
   </section>

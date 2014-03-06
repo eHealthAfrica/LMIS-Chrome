@@ -104,7 +104,6 @@ angular.module('lmisChromeApp')
         }
 
 
-
         var bundleReceipt = {
           "bundle": $scope.bundle.uuid,
           "user": $scope.loggedInUser.id,
@@ -114,12 +113,12 @@ angular.module('lmisChromeApp')
           "sending_facility": $scope.bundle.parent.uuid
         };
 
-        bundleFactory.saveBundleReceipt(bundleReceipt).then(function(data){
-          if(data.length !== 0){
-            $state.go('inventoryListView');
+        bundleFactory.saveBundleReceipt(bundleReceipt).then(function (data) {
+          if (data.length !== 0) {
+            $state.go('inventoryListView', {add: true});
           }
 
-        },function(error){
+        }, function (error) {
           console.log(error);
         });
 
