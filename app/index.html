@@ -31,7 +31,7 @@
 
   <section class="container clearfix main_section">
     <div id="main_content_outer" class="clearfix">
-     
+
          <tv-breadcrumbs ng-hide="$state.includes('home')"
                       home="home.index.mainActivity"></tv-breadcrumbs>
 
@@ -39,7 +39,7 @@
              close="closeAlert($index)">
         <span ng-bind="alert.message"></span>
       </alert>
-        
+
       <div id="main_content" ui-view></div>
     </div>
   </section>
@@ -112,6 +112,7 @@
 <script src="scripts/services/storageunitfactory.js"></script>
 <script src="scripts/services/storageunittypefactory.js"></script>
 <script src="scripts/services/alertsfactory.js"></script>
+<script src="scripts/services/locationsfactory.js"></script>
 <!-- endbuild -->
 </body>
 </html>

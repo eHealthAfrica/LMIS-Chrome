@@ -5,7 +5,22 @@ angular.module('lmisChromeApp')
     $stateProvider.state('home', {
       url: '/home',
       abstract: true,
-      templateUrl: 'views/home/index.html'
+      templateUrl: 'views/home/index.html',
+      resolve: {
+        currentFacility: function($q, facilityFactory, locationsFactory) {
+          var deferred = $q.defer();
+          facilityFactory.getCurrentFacility().then(function(facility) {
+            locationsFactory.get(facility.location).then(function(location) {
+              facility.location = location;
+              deferred.resolve(facility);
+            });
+          });
+          return deferred.promise;
+        }
+      },
+      controller: function($scope, currentFacility) {
+        $scope.currentFacility = currentFacility;
+      }
     })
     .state('home.index', {
       abstract: true,
