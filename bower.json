@@ -16,7 +16,10 @@
     "angular-translate": "~2.0.1",
     "angular-translate-loader-static-files": "~2.0.0",
     "angular-translate-storage-cookie": "~2.0.0",
-    "angular-toggle-switch": "~0.3.0"
+    "angular-toggle-switch": "~0.3.0",
+    "d3": "~3.4.3",
+    "nvd3": "~1.1.15-beta",
+    "angularjs-nvd3-directives": "~0.0.5-beta"
   },
   "devDependencies": {
     "angular-mocks": "1.2.14"
@@ -36,6 +39,8 @@
   "license": "ISC",
   "private": true,
   "resolutions": {
-    "angular": "1.2.14"
+    "angular": "1.2.14",
+    "nvd3": "v1.1.14-beta",
+    "d3": "3.3.11"
   }
 }

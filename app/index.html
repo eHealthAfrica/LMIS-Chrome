@@ -15,6 +15,7 @@
   <!-- endbower -->
   <link rel="stylesheet" href="bower_components/angular-toggle-switch/angular-toggle-switch.css" />
   <link rel="stylesheet" href="bower_components/angular-toggle-switch/angular-toggle-switch-bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/nvd3/nv.d3.css" />
   <!-- endbuild -->
   <!-- build:css({.tmp,app}) styles/main.css -->
   <link rel="stylesheet" href="Ebro/css/todc-bootstrap.min.css">
@@ -30,14 +31,15 @@
 
   <section class="container clearfix main_section">
     <div id="main_content_outer" class="clearfix">
+     
+         <tv-breadcrumbs ng-hide="$state.includes('home')"
+                      home="home.index.mainActivity"></tv-breadcrumbs>
+
       <alert ng-repeat="alert in alerts" type="alert.type"
-        close="closeAlert($index)">
+             close="closeAlert($index)">
         <span ng-bind="alert.message"></span>
       </alert>
-
-      <tv-breadcrumbs ng-hide="$state.includes('home')"
-        home="home.index.mainActivity"></tv-breadcrumbs>
-
+        
       <div id="main_content" ui-view></div>
     </div>
   </section>
@@ -63,6 +65,10 @@
 <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
 <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
 <script src="bower_components/angular-toggle-switch/angular-toggle-switch.min.js"></script>
+<script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/nvd3/nv.d3.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 

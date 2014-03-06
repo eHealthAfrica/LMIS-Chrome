@@ -296,6 +296,7 @@ module.exports = function(grunt) {
 
     coveralls: {
       options: {
+        force: true,
         // jshint camelcase: false
         coverage_dir: 'coverage'
       }

@@ -62,6 +62,7 @@
   "addToStorageUnit": "Add to Storage Unit",
   "remove": "Remove",
   "addNewInventory": "Add New Inventory",
+  "addInventorySuccessMessage": "Inventory was added successfully !!!",
   "stockCount": "Stock Count",
   "addStockCount": "Add Stock Count",
   "addWasteCount": "Add Waste Count"

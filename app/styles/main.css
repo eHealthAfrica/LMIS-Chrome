@@ -30,12 +30,6 @@
     border-color: #F2DEDE;
     font-weight: bold;
 }
-.danger-alert:hover{
-    color: #B94A48;
-    background-color: #F3DEDE;
-    border-color: #F2DEDE;
-    font-weight: bold;
-}
 .warning-alert{
     color: #C09853;
     background-color: #FCF8E3;
