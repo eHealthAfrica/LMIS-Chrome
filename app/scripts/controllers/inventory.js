@@ -2,7 +2,7 @@
 angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider
       .state('inventoryListView', {
-        url: '/inventory-list-view',
+        url: '/inventory-list?add',
         templateUrl: '/views/inventory/index.html',
         controller: 'inventoryMainCtrl',
         data: {
@@ -34,9 +34,17 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 /**
  * Controller for showing inventory
  */
-    .controller('inventoryMainCtrl', function ($rootScope, $scope, inventoryFactory, $filter, ngTableParams, visualMarkerService) {
+    .controller('inventoryMainCtrl', function ($rootScope, $stateParams, $scope, inventoryFactory, $filter, ngTableParams, visualMarkerService, $translate, alertsFactory) {
 
       $scope.highlight = visualMarkerService.highlightByExpirationStatus;
+
+
+      if ($stateParams.add === "true") {
+        $translate('addInventorySuccessMessage')
+            .then(function (msg) {
+              alertsFactory.add({message: msg, type: 'success'});
+            });
+      }
 
       //TODO: set default facility uuid/object to facility of logged in user.
       inventoryFactory.getFacilityInventory("d48a39fb-6d37-4472-9983-bc0720403719").then(function (inventoryItems) {
@@ -64,7 +72,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.inventory = new ngTableParams(params, resolver);
 
       });
-
 
 
       $scope.getProductTypeUOM = function (inventoryLine) {
@@ -138,9 +145,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.save = function () {
-        inventoryFactory.save($scope.inventory).then(function(result){
-          if(result.length !== 0){
-            $state.go('inventoryListView');
+        inventoryFactory.save($scope.inventory).then(function (result) {
+          if (result.length !== 0) {
+            $state.go('inventoryListView', {add: true});
           }
         });
       }
