@@ -17,8 +17,7 @@ angular.module('lmisChromeApp')
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-    .controller('logIncomingCtrl', function ($scope, $filter, $state, storageService, storageUnitFactory, bundleFactory,
-                                             userFactory, alertsFactory, $translate) {
+    .controller('logIncomingCtrl', function ($scope, $filter, $state, storageService, storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
 
       $scope.clicked = false;
       $scope.bundle = {};
@@ -105,7 +104,6 @@ angular.module('lmisChromeApp')
         }
 
 
-
         var bundleReceipt = {
           "bundle": $scope.bundle.uuid,
           "user": $scope.loggedInUser.id,
@@ -115,12 +113,12 @@ angular.module('lmisChromeApp')
           "sending_facility": $scope.bundle.parent.uuid
         };
 
-        bundleFactory.saveBundleReceipt(bundleReceipt).then(function(data){
-          if(data.length !== 0){
-            $state.go('inventoryListView', {add : true});
+        bundleFactory.saveBundleReceipt(bundleReceipt).then(function (data) {
+          if (data.length !== 0) {
+            $state.go('inventoryListView', {add: true});
           }
 
-        },function(error){
+        }, function (error) {
           console.log(error);
         });
 

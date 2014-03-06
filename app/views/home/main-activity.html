@@ -4,10 +4,44 @@
       <span><i class="fa fa-user"></i></span>
       <span>Activities</span>
     </accordion-heading>
-    <ul>
-      <li><a ui-sref="incomingLog" translate="incomingLog"></a></li>
-      <li><a ui-sref="stockCountIndex">Add stock count</a></li>
-      <li><a >Process an order</a></li>
-    </ul>
+    <div class="row center-text">
+      <div class="row">
+        <div class="col-sm-18">
+          <div class="col-sm-4">
+            <a ui-sref="stockCountIndex">
+              <label>Add stock count</label>
+              <img src="images/dashboard-icons/add_stock_count.png" class="img-rounded">
+            </a>
+          </div>
+          <div class="col-sm-4">
+            <a ui-sref="incomingLog">
+              <label translate="incomingLog"></label>
+              <img src="images/dashboard-icons/log_incoming_bundle.png" class="img-rounded"
+                   width="64" height="64">
+            </a>
+          </div>
+          <div class="col-sm-4">
+            <a ui-sref="home.index.controlPanel.orderType">
+              <label translate="incomingPlace">Place an order</label>
+              <img src="images/dashboard-icons/place_order.png" class="img-rounded"
+                   width="64" height="64">
+            </a>
+          </div>
+        </div>
+      </div>
+
+     <div class="row">
+        <div class="col-sm-18">
+          <div class="col-sm-4">
+            <a>
+              <label>Process an order</label>
+              <img src="images/dashboard-icons/process_order.png" class="img-rounded" width="64" height="64">
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
   </accordion-group>
 </accordion>

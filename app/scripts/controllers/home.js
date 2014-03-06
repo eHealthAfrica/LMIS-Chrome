@@ -42,7 +42,7 @@ angular.module('lmisChromeApp')
                 templateUrl: 'views/home/partials/order-type.html',
               });
               modal.result.catch(function () {
-                $state.go('home.index.controlPanel');
+                $state.go('home.index.mainActivity');
               });
             }
           })
