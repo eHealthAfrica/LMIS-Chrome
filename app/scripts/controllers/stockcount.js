@@ -46,8 +46,15 @@ angular.module('lmisChromeApp')
         */
 
         $scope.facility_uuid = ($stateParams.facility !== null)?$stateParams.facility:'';
-        $scope.report_month = ($stateParams.report_month !== null)?$stateParams.report_month:'';
+        $scope.report_month = ($stateParams.report_month !== null)?$stateParams.report_month:now.getMonth() + 1;
         $scope.report_year = ($stateParams.report_year !== null)?$stateParams.report_year: now.getFullYear();
+        stockCountFactory.get.userFacilities().then(function(data){
+          $scope.user_related_facilities = data;
+          if(data.length>0){
+              $scope.facility_uuid = $scope.facility_uuid===''?$scope.user_related_facilities[0].uuid:$scope.facility_uuid;
+              $scope.user_related_facility =  $scope.facility_uuid;
+          }
+        });
 
         $scope.getDaysInMonth = function (report_month, report_year){
 
@@ -79,14 +86,12 @@ angular.module('lmisChromeApp')
  /*
  * Landing page controller
   */
-    .controller('StockCountIndexCtrl', function ($scope, $location, storageService, $http, stockCountFactory) {
+    .controller('StockCountIndexCtrl', function ($scope, $http, stockCountFactory) {
       /*
        * initialize some variables
        */
-      $scope.user_related_facilities = [];
-      $scope.fake_locations = [];
-      $scope.user_related_facility = ($scope.facility_uuid != null) ? $scope.facility_uuid : '';
-      $scope.monthly_stock_record_object = {};
+
+      //$scope.user_related_facility = ($scope.facility_uuid !== '') ? $scope.facility_uuid : $scope.facility_uuid;
       $scope.StockCount = {};
       $scope.WasteCount = {};
       $scope.stockCountObject = {};
@@ -113,28 +118,15 @@ angular.module('lmisChromeApp')
 
         $scope.columnData =  stockCountFactory.get.stockCountColumnData;
 
-
-      /*
-       * get monthly stock records if any
-       */
-      storageService.all('monthly_stock_record').then(function (data) {
-        $scope.monthly_stock_record = data;
-      });
-      /*
-       * create an object of stock record using uuid as key for easy access
-       */
-      storageService.loadTableObject('monthly_stock_record').then(function (data) {
-        $scope.monthly_stock_record_object = data;
-      });
-
       /*
        * load some none standard fixtures
        */
-      var file_url = 'scripts/fixtures/user_related_facilities.json';
+      /*var file_url = 'scripts/fixtures/user_related_facilities.json';
       $http.get(file_url).success(function (data) {
         $scope.user_related_facilities = data;
 
-      });
+      });*/
+
 
 
 
@@ -142,14 +134,6 @@ angular.module('lmisChromeApp')
 
       $scope.$watchCollection('[report_month, report_year, user_related_facility]', function (newvalues) {
 
-        $scope.record_key = $scope.user_related_facility + $scope.report_month + $scope.report_year;
-
-        storageService.all('monthly_stock_record').then(function (data) {
-          $scope.monthly_stock_record = data;
-        });
-        storageService.loadTableObject('monthly_stock_record').then(function (data) {
-          $scope.monthly_stock_record_object = data;
-        });
         if (newvalues[0] == '' || newvalues[1] == '' || newvalues[2] == '') {
           $scope.add_button = true;
         }
@@ -163,44 +147,40 @@ angular.module('lmisChromeApp')
 
       $scope.$watch('user_related_facility', function () {
         if ($scope.user_related_facility != '') {
-          var file_url2 = 'scripts/fixtures/locations.json';
-          $http.get(file_url2).success(function (data) {
-            for (var k in $scope.user_related_facilities) {
-              if ($scope.user_related_facilities[k].uuid == $scope.user_related_facility) {
-                $scope.ward = data[$scope.user_related_facilities[k].location].name;
-                $scope.lga = data[$scope.user_related_facilities[k].location].lga;
-                $scope.state = data[$scope.user_related_facilities[k].location].state;
-                break;
-              }
-            }
-          });
+           stockCountFactory.get.locations().then(function(data){
+               for (var k in $scope.user_related_facilities) {
+                  if ($scope.user_related_facilities[k].uuid == $scope.user_related_facility) {
+                    $scope.ward = data[$scope.user_related_facilities[k].location].name;
+                    $scope.lga = data[$scope.user_related_facilities[k].location].lga;
+                    $scope.state = data[$scope.user_related_facilities[k].location].state;
+                    break;
+                  }
+                }
+            });
         }
-      });
-
-
-      $scope.stock_records = {};
-      storageService.all('facility').then(function (data) {
-        $scope.facilities = data;
-      });
-      storageService.all('programs').then(function (data) {
-        $scope.programs = data;
       });
 
      })
     /*
     * Stock Count Controller
     */
-    .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state){
+    .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, $stateParams){
+        if($scope.facility_uuid === ''){
+            $scope.hidden_uuid = true;
+        }
         $scope.stockCount = {};
         $scope.stockCount.used_opened = {};
         $scope.stockCount.used_unopened = {};
         $scope.stockCount.confirmation = {};
-        $scope.stockCount.facility = $scope.facility_uuid;
+
+
         $scope.stockCount.month = $scope.report_month;
         $scope.stockCount.year = $scope.report_year;
         $scope.stockCount.day = $scope.current_day;
 
+
         $scope.save = function(){
+            $scope.stockCount.facility = $scope.facility_uuid;
             stockCountFactory.save.stock($scope.stockCount)
                 .then(function(uuid){
                     $state.go('stockCountIndex',
@@ -228,9 +208,6 @@ angular.module('lmisChromeApp')
         for(var i=0; i<$scope.stock_products.length; i++){
             $scope.wastageCount.reason[i]={};
         }
-
-
-
 
         $scope.save = function(){
             stockCountFactory.save.wastage($scope.wastageCount)
