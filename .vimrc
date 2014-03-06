@@ -1,4 +1,4 @@
-setlocal wildignore+=dist,Ebro
+setlocal wildignore+=dist,Ebro,coverage
 
 " Syntastic options
 let g:syntastic_html_tidy_ignore_errors = [
@@ -47,6 +47,9 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , 'discarding unexpected </a>'
   \ , '<input> proprietary attribute "required"'
   \ , '<input> proprietary attribute "min"'
+  \ , '<nvd3-'
+  \ , 'discarding unexpected <nvd3-'
+  \ , 'discarding unexpected </nvd3-'
   \ ]
 
 " javascript-libraries-syntax.vim
