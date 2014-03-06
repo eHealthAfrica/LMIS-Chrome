@@ -1,16 +1,23 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('inventoryFactory', function ($q, storageService, programsFactory, storageUnitFactory, batchFactory, facilityFactory, uomFactory) {
+    .factory('inventoryFactory', function ($q, storageService, productTypeFactory, programsFactory, storageUnitFactory, batchFactory, facilityFactory, uomFactory) {
 
       function getByUUID(uuid) {
         var deferred = $q.defer();
         storageService.find(storageService.INVENTORY, uuid).then(function (data) {
+
           var inventoryLine = data;
+
           if (data !== undefined) {
+
             //Attach nested attributes complete JSON object.
             batchFactory.getByBatchNo(inventoryLine.batch).then(function (data) {
-              inventoryLine.batch = data;
+              inventoryLine.batch = (toString.call(data) === '[object Object]')? data : inventoryLine.batch;
+            });
+
+            productTypeFactory.get(inventoryLine.product_type).then(function(data){
+              inventoryLine.product_type = data;
             });
 
             programsFactory.get(inventoryLine.program).then(function (data) {
@@ -52,7 +59,7 @@ angular.module('lmisChromeApp')
           var deferred = $q.defer(), inventory = [];
 
           storageService.all(storageService.INVENTORY).then(function (data) {
-            console.log(data);
+
             angular.forEach(data, function (datum) {
               if (datum.receiving_facility === uuid) {
                 inventory.push(getByUUID(datum.uuid).then(function (inventoryLine) {
@@ -74,6 +81,7 @@ angular.module('lmisChromeApp')
           var batches = [], deferred = $q.defer();
 
           angular.forEach(inventory.inventory_lines, function (inventoryLine) {
+
             var newInventory = {
               date_receipt: inventory.date_receipt,
               receiving_facility: inventory.receiving_facility.uuid,
@@ -83,7 +91,8 @@ angular.module('lmisChromeApp')
               program: inventoryLine.program,
               storage_unit: inventoryLine.storage_unit,
               uom: inventoryLine.uom,
-              bundle_no: inventory.bundle_no
+              bundle_no: inventory.bundle_no,
+              product_type: inventoryLine.productType
             }
             batches.push(newInventory);
           });

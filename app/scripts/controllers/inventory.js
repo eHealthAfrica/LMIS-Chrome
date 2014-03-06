@@ -86,15 +86,17 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
 
       $scope.getProductTypeUOM = function (inventoryLine) {
-        var inventoryLineBatch = inventoryLine.batch;
-        var product = inventoryLineBatch.product;
+        var product = $scope.getProductType(inventoryLine)
         return product.base_uom;
       };
 
-      $scope.getStorageVolume = function (inventoryLine) {
-        var inventoryLineBatch = inventoryLine.batch;
-        var storageVolume = inventoryLineBatch.packed_volume * inventoryLine.quantity;
-        return storageVolume;
+      $scope.getBatch= function(inventoryLine){
+        return (toString.call(inventoryLine.batch) === '[object Object]')?
+            inventoryLine.batch.batch_no : inventoryLine.batch;
+      }
+
+      $scope.getProductType= function(inventoryLine){
+        return (toString.call(inventoryLine.batch) === '[object Object]')? inventoryLine.batch.product : inventoryLine.product_type;
       }
 
     })
