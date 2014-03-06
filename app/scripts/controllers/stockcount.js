@@ -164,17 +164,23 @@ angular.module('lmisChromeApp')
     /*
     * Stock Count Controller
     */
-    .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state){
+    .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, $stateParams){
+        if($scope.facility_uuid === ''){
+            $scope.hidden_uuid = true;
+        }
         $scope.stockCount = {};
         $scope.stockCount.used_opened = {};
         $scope.stockCount.used_unopened = {};
         $scope.stockCount.confirmation = {};
-        $scope.stockCount.facility = $scope.facility_uuid;
+
+
         $scope.stockCount.month = $scope.report_month;
         $scope.stockCount.year = $scope.report_year;
         $scope.stockCount.day = $scope.current_day;
 
+
         $scope.save = function(){
+            $scope.stockCount.facility = $scope.facility_uuid;
             stockCountFactory.save.stock($scope.stockCount)
                 .then(function(uuid){
                     $state.go('stockCountIndex',
@@ -202,9 +208,6 @@ angular.module('lmisChromeApp')
         for(var i=0; i<$scope.stock_products.length; i++){
             $scope.wastageCount.reason[i]={};
         }
-
-
-
 
         $scope.save = function(){
             stockCountFactory.save.wastage($scope.wastageCount)
