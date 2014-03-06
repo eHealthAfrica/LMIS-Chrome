@@ -35,14 +35,14 @@ angular.module('lmisChromeApp')
         label: 'Home'
       }
     })
-    .state('home.index.controlPanel.orderType', {
+    .state('home.index.mainActivity.orderType', {
       url: '/place-order',
       controller: function ($state, $modal) {
         var modal = $modal.open({
           templateUrl: 'views/home/partials/order-type.html',
         });
         modal.result.catch(function () {
-          $state.go('home.index.controlPanel');
+          $state.go('home.index.mainActivity');
         });
       }
     })
