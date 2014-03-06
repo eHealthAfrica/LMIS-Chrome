@@ -7,6 +7,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         controller: 'inventoryMainCtrl',
         data: {
           label: "Inventory List"
+        },
+        resolve: {
+          currentFacility: function(facilityFactory){
+            return facilityFactory.getCurrentFacility();
+          }
         }
       }).state('addInventory', {
         url: '/add-inventory',
@@ -27,6 +32,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           },
           facilities: function (facilityFactory) {
             return facilityFactory.getFacilityInventory();
+          },
+          currentFacility: function(facilityFactory){
+            return facilityFactory.getCurrentFacility();
           }
         }
       });
@@ -34,11 +42,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 /**
  * Controller for showing inventory
  */
-    .controller('inventoryMainCtrl', function ($rootScope, $stateParams, $scope, inventoryFactory, $filter, ngTableParams, visualMarkerService, $translate, alertsFactory) {
+    .controller('inventoryMainCtrl', function ($rootScope, $stateParams, $scope, currentFacility, inventoryFactory, $filter, ngTableParams, visualMarkerService, $translate, alertsFactory) {
 
       $scope.highlight = visualMarkerService.highlightByExpirationStatus;
 
-      console.log($stateParams);
       if ($stateParams.add === "true") {
         $stateParams.add = '';
         $translate('addInventorySuccessMessage')
@@ -47,8 +54,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             });
       }
 
-      //TODO: set default facility uuid/object to facility of logged in user.
-      inventoryFactory.getFacilityInventory("d48a39fb-6d37-4472-9983-bc0720403719").then(function (inventoryItems) {
+      $scope.currentFacility = currentFacility;
+
+      inventoryFactory.getFacilityInventory(currentFacility.uuid).then(function (inventoryItems) {
 
         $scope.totalItems = inventoryItems.length;
 
@@ -94,7 +102,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('addInventoryCtrl', function ($scope, $filter, storageService, $state, inventoryFactory, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
+    .controller('addInventoryCtrl', function ($scope, $filter,  currentFacility, storageService, $state, inventoryFactory, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
 
       //used to hold form data
       $scope.inventory = {
@@ -111,8 +119,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.programs = programs;
       $scope.uomList = uomList;
       $scope.facilities = facilities;
+      $scope.inventory.receiving_facility =  currentFacility;
       $scope.receivingFacilityStorageUnits = []
 
+      function loadCurrentFacilityStorageUnits(facilityUUID) {
+        storageUnitFactory.getFacilityStorageUnits(facilityUUID).then(function (data) {
+          $scope.receivingFacilityStorageUnits = data;
+        });
+      }
+      loadCurrentFacilityStorageUnits($scope.inventory.receiving_facility.uuid);
 
       $scope.loadProductTypeBatches = function (inventoryLine) {
         inventoryLine.isDisabled = false;
@@ -124,12 +139,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.updateBatchNo = function (inventoryLine) {
         batchFactory.get(inventoryLine.selectedBatch).then(function (data) {
           inventoryLine.batch_no = data.batch_no;
-        });
-      }
-
-      $scope.loadReceivingFacilityStorageUnits = function (facilityUUID) {
-        storageUnitFactory.getFacilityStorageUnits(facilityUUID).then(function (data) {
-          $scope.receivingFacilityStorageUnits = data;
         });
       }
 

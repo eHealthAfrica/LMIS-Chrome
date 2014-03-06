@@ -7,7 +7,7 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         storageService.find(storageService.FACILITY, uuid).then(function (data) {
           var facility = data;
-          if (!angular.equals(facility, undefined)) {
+          if (facility !== undefined) {
             //TODO: add nested attributes such as facility type, location etc when their factories are ready
           }
           deferred.resolve(facility);
@@ -22,7 +22,7 @@ angular.module('lmisChromeApp')
 
           storageService.all(storageService.FACILITY).then(function (data) {
                 angular.forEach(data, function (datum) {
-                  if (!angular.equals(datum, undefined)) {
+                  if (datum !== undefined) {
                     facilities.push(getByUUID(datum.uuid).then(function (facility) {
                       deferred.notify(datum);
                       return facility;
@@ -39,6 +39,17 @@ angular.module('lmisChromeApp')
           return deferred.promise;
         },
 
-        get: getByUUID
+        get: getByUUID,
+
+        getCurrentFacility: function(){
+          //TODO: replace with facility of current logged in user when we have the session and authentication working.
+          var deferred = $q.defer();
+          getByUUID("d48a39fb-6d37-4472-9983-bc0720403719").then(function(data){
+            console.log(data);
+            deferred.resolve(data);
+          });
+          return deferred.promise;
+        }
+
       };
     });
