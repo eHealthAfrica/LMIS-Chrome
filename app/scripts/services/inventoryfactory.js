@@ -72,10 +72,11 @@ angular.module('lmisChromeApp')
 
         save: function (inventory) {
           var batches = [], deferred = $q.defer();
+
           angular.forEach(inventory.inventory_lines, function (inventoryLine) {
             var newInventory = {
               date_receipt: inventory.date_receipt,
-              receiving_facility: inventory.receiving_facility,
+              receiving_facility: inventory.receiving_facility.uuid,
               sending_facility: inventory.sending_facility,
               batch: inventoryLine.batch_no,
               quantity: inventoryLine.quantity,
