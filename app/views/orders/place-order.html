@@ -1,0 +1,152 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title" translate="incomingPlace"></h4>
+      </div>
+      <div class="panel-body">
+        <form ng-submit="save()">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">Order detail</h4>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="sendingFacility" translate="sendingFacility"></label>
+                          <select id="sendingFacility" class="form-control" ng-model="order.sending_facility"
+                                  required>
+                            <option value="" translate="selectSendingFacility"></option>
+                            <option ng-repeat="facility in storage.facilities" value="{{ facility.uuid }}"
+                                    ng-bind="facility.name"></option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="receivingFacility" translate="receivingFacility"></label>
+                          <input class="form-control" type="text" name="receivingFacility" id="receivingFacility"
+                                 ng-model="(storage.receiving_facility).name" ng-disabled="true"/>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="orderNo" translate="orderNumber"></label>
+                          <input class="form-control" type="text" name="orderNo" id="orderNo" ng-disabled="true"
+                                 ng-model="order.order_no"/>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="orderDate" translate="orderDate"></label>
+                          <input ng-model="order.date" class="form-control" type="date" name="orderDate"
+                                 id="orderDate" required=""/>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">Order item detail</h4>
+                </div>
+
+                <div class="panel-body" ng-show="(order.order_lines).length !== 0">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="col-sm-12">
+
+                        <table class="table table-condensed table-hover table-bordered">
+                          <tr>
+                            <th>#</th>
+                            <th class="text-titlecase" translate="productTypes"></th>
+                            <th class="text-titlecase" translate="program"></th>
+                            <th class="text-titlecase" translate="quantity"></th>
+                            <th class="text-titlecase" translate="uom"></th>
+                            <th class="text-titlecase" translate="remove"></th>
+                          </tr>
+                          <tr ng-repeat="orderLine in order.order_lines">
+                            <td ng-bind="($index + 1)"></td>
+                            <td>
+                              <select ng-model="orderLine.productType" class="form-control" required="">
+                                <option value="" translate="selectProductType"></option>
+                                <option ng-repeat="type in storage.productTypes" value="{{ type.uuid }}"
+                                        ng-selected="{{ (orderLine.productType).uuid === type.uuid}}"
+                                        ng-bind="type.name">
+                                </option>
+                              </select>
+                            </td>
+                            <td>
+                              <select ng-model="orderLine.program" class="form-control" required>
+                                <option value="" translate="selectProgram"></option>
+                                <option ng-repeat="program in storage.programs" value="{{ program.uuid }}"
+                                        ng-selected="{{ order.program === program.uuid}}"
+                                        ng-bind="program.name"></option>
+                              </select>
+                            </td>
+                            <td>
+                              <input class="form-control" type="number" min="0" step="any" name="quantity"
+                                     ng-model="orderLine.quantity" required/>
+                            </td>
+                            <td>
+                              <select class="form-control" ng-model="orderLine.uom" required>
+                                <option value="" translate="selectUOM"></option>
+                                <option ng-repeat="uom in storage.uomList" value="{{ uom.uuid }}" ng-bind="uom.name"
+                                        ng-selected="{{ (orderLine.uom).uuid === uom.uuid }}"></option>
+                              </select>
+                            </td>
+                            <td class="removeIcon">
+                              <i ng-click="removeOrderLine(orderLine)"
+                                 class="pull-center text-muted fa fa-times fa-2x"></i>
+                            </td>
+                          </tr>
+                        </table>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <div class="col-md-4 pull-left">
+                <button type="button" name="addOrderLine" class="btn btn-default" ng-click="addOrderLine()">
+                  <span><i class="fa fa-plus"></i></span>
+                  <span>Add order line</span>
+                </button>
+              </div>
+
+              <div class="col-md-4 pull-right">
+                <button type="button" id="authorize" name="authorize" class="btn btn-default"
+                        ng-disabled="order.authorized"
+                        translate="authorize" ng-click="order.authorized =true"></button>
+                <button id="submit" name="submit" class="btn btn-success"
+                        translate="submit" ng-disabled="!order.authorized"></button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

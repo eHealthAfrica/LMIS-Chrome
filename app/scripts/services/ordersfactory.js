@@ -2,24 +2,15 @@
 
 angular.module('lmisChromeApp')
   .factory('ordersFactory', function (storageService, $q) {
-    // Service logic
-    // ...
-    var salesOrder ={
-        save:function(sales_object){
-
-        },
-        remove:function(object_uuid){
-
-        }
-
-    }
-    var purchaseOrder = function(){
-
-    }
 
     // Public API here
     return {
-      sales: salesOrder,
-      purchase: purchaseOrder
+      save: function(order){
+        var deferred = $q.defer();
+        storageService.insert(storageService.ORDERS, order).then(function(result){
+          (result !== undefined)? deferred.resolve(result): deferred.reject("order saving failed");
+        });
+        return deferred.promise;
+      }
     };
   });
