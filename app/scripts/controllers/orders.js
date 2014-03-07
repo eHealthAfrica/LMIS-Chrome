@@ -123,13 +123,13 @@ angular.module('lmisChromeApp')
           ));
         }
       };
-
       // jshint newcap: false
       $scope.salesList = new ngTableParams(params, resolver);
     });
   })
 
   .controller('SalesOrderForm', function($scope, storageService) {
+
     storageService.get(storageService.FACILITY).then(function(data) {
       $scope.facilities = data;
     });
@@ -170,7 +170,7 @@ angular.module('lmisChromeApp')
         },
       },
       controller: function($scope, $filter, currentFacility, uomList, productTypes, facilities, loggedInUser, programs,
-                           $stateParams) {
+                           $stateParams, $state, ordersFactory) {
 
         $scope.storage = {
           uomList: uomList,
@@ -208,7 +208,11 @@ angular.module('lmisChromeApp')
 
         $scope.save = function(){
           $scope.order['receiving_facility'] = $scope.storage.receiving_facility.uuid;
-          console.log($scope.order);
+         ordersFactory.save($scope.order).then(function(result){
+          if(result !== undefined){
+            $state.go('home.index.mainActivity', {orderNo: $scope.order.order_no});
+          }
+         });
         }
 
       }

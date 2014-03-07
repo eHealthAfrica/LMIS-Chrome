@@ -65,5 +65,6 @@
   "addInventorySuccessMessage": "Inventory was added successfully !!!",
   "stockCount": "Stock Count",
   "addStockCount": "Add Stock Count",
-  "addWasteCount": "Add Waste Count"
+  "addWasteCount": "Add Waste Count",
+  "orderPlacedSuccess": "Order placed successfully!"
 }
