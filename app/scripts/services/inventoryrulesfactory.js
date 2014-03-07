@@ -16,8 +16,14 @@ angular.module('lmisChromeApp')
       return order.consumption;
     };
 
+    // Average Consumption * Average Lead Time
+    var leadTimeConsumption = function(leadTime, consumption) {
+      return leadTime * consumption;
+    };
+
     return {
       leadTime: leadTime,
-      consumption: consumption
+      consumption: consumption,
+      leadTimeConsumption: leadTimeConsumption
     };
   });

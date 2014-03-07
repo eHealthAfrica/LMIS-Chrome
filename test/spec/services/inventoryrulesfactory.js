@@ -23,4 +23,13 @@ describe('Service: inventoryRulesFactory', function() {
     expect(typeof consumption).toBe('number');
   });
 
+  it('should calculate the lead-time consumption', function() {
+    var order = orders[0],
+        leadTime = inventoryRulesFactory.leadTime(order),
+        consumption = inventoryRulesFactory.consumption(order);
+
+    var ltc = inventoryRulesFactory.leadTimeConsumption(leadTime, consumption);
+    expect(typeof ltc).toBe('number');
+  });
+
 });
