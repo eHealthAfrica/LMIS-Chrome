@@ -12,9 +12,15 @@ describe('Service: inventoryRulesFactory', function() {
     orders = ordersMock;
   }));
 
-  it('should calculate the lead time for an order as a timestamp', function() {
-    var leadTime = inventoryRulesFactory.leadTime(orders);
+  it('should calculate the lead time for an order in ms', function() {
+    var leadTime = inventoryRulesFactory.leadTime(orders[0]);
     expect(typeof leadTime).toBe('number');
+    expect(leadTime).toBe(345600000);
+  });
+
+  it('should calculate a facility consumption level', function() {
+    var consumption = inventoryRulesFactory.consumption(orders[0]);
+    expect(typeof consumption).toBe('number');
   });
 
 });
