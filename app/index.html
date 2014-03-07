@@ -31,7 +31,7 @@
 
   <section class="container clearfix main_section">
     <div id="main_content_outer" class="clearfix">
-     
+
          <tv-breadcrumbs ng-hide="$state.includes('home')"
                       home="home.index.mainActivity"></tv-breadcrumbs>
 
@@ -39,7 +39,7 @@
              close="closeAlert($index)">
         <span ng-bind="alert.message"></span>
       </alert>
-        
+
       <div id="main_content" ui-view></div>
     </div>
   </section>
@@ -51,6 +51,7 @@
 <!-- build:js scripts/vendor.js -->
 <!-- Manual reference to prevent CSP error, see #110 -->
 <script src="bower_components/lodash/dist/lodash.js"></script>
+<script src="bower_components/HumanizeDuration.js/humanize-duration.js"></script>
 <!-- bower:js -->
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -67,7 +68,6 @@
 <script src="bower_components/angular-toggle-switch/angular-toggle-switch.min.js"></script>
 <script src="bower_components/d3/d3.js"></script>
 <script src="bower_components/nvd3/nv.d3.js"></script>
-<script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
@@ -113,6 +113,8 @@
 <script src="scripts/services/storageunitfactory.js"></script>
 <script src="scripts/services/storageunittypefactory.js"></script>
 <script src="scripts/services/alertsfactory.js"></script>
+<script src="scripts/services/locationsfactory.js"></script>
+<script src="scripts/services/inventoryRulesFactory.js"></script>
 <!-- endbuild -->
 </body>
 </html>
