@@ -5,7 +5,7 @@ describe('Home controller', function () {
   beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks'));
 
   // Initialize the state
-  beforeEach(inject(function($templateCache) {
+  beforeEach(inject(function($templateCache, $httpBackend) {
     // Mock each template used by the state
     var templates = [
       'index',
@@ -18,18 +18,29 @@ describe('Home controller', function () {
     angular.forEach(templates, function(template) {
       $templateCache.put('views/home/' + template + '.html', '');
     });
+
+    $httpBackend.whenGET('/locales/en.json').respond(200, {});
+    $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
   }));
 
-  it('should go to the control panel state', function() {
-    var ma = 'home.index.mainActivity';
-    inject(function($rootScope, $state, $httpBackend) {
-      $httpBackend.whenGET('/locales/en.json').respond(200, {});
-      $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
-      $rootScope.$apply(function() {
-        $state.go(ma);
-      });
-      expect($state.current.name).toBe(ma);
+  var $rootScope, $state;
+  beforeEach(inject(function(_$rootScope_, _$state_) {
+    $rootScope = _$rootScope_;
+    $state = _$state_;
+  }));
+
+  var state = 'home.index.mainActivity';
+  it('should respond to URL', function() {
+    expect($state.href(state)).toEqual('#/home/main-activity');
+  });
+
+  it('should go to the main activity state', function() {
+    var home = $state.get('home');
+    home.resolve.currentFacility = function() { return {}; };
+    $rootScope.$apply(function() {
+      $state.go(state);
     });
+    expect($state.current.name).toBe(state);
   });
 
 });
