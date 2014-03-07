@@ -25,3 +25,20 @@
     </tr>
   </tbody>
 </table>
+
+<h3>Live view</h3>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Inventory</th>
+      <th>Lead time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="inventory in inventories">
+      <td ng-bind="inventory.batch['product']['code']"></td>
+      <td ng-bind="inventory.leadTime"></td>
+    </tr>
+  </tbody>
+</table>

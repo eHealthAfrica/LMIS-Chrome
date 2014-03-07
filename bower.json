@@ -19,7 +19,8 @@
     "angular-toggle-switch": "~0.3.0",
     "d3": "~3.4.3",
     "nvd3": "~1.1.15-beta",
-    "angularjs-nvd3-directives": "~0.0.5-beta"
+    "angularjs-nvd3-directives": "~0.0.5-beta",
+    "HumanizeDuration.js": "EvanHahn/HumanizeDuration.js"
   },
   "devDependencies": {
     "angular-mocks": "1.2.14"

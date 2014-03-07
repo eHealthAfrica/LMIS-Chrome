@@ -74,7 +74,22 @@ angular.module('lmisChromeApp')
     .state('home.index.dashboard', {
       url: '/dashboard',
       templateUrl: 'views/home/dashboard.html',
-      controller: function ($scope) {
+      resolve: {
+        inventories: function($q, facilityFactory, inventoryFactory) {
+          // XXX: Shouldn't need to re-resolve the current facility since
+          //      we have it in the top-level state ('home') as
+          //      `$scope.currentFacility`
+          var deferred = $q.defer();
+          facilityFactory.getCurrentFacility().then(function(facility) {
+            inventoryFactory.getFacilityInventory(facility.uuid)
+              .then(function(inventory) {
+                deferred.resolve(inventory);
+              });
+          });
+          return deferred.promise;
+        }
+      },
+      controller: function($scope, inventories, inventoryRulesFactory, $window) {
         var keys = {
           below: {
             label: 'Below buffer',
@@ -136,6 +151,14 @@ angular.module('lmisChromeApp')
         $scope.inventoryChart = chart;
         $scope.inventoryKeys = keys;
         $scope.inventoryValues = values;
+
+        angular.forEach(inventories, function(inventory) {
+          var lt = inventoryRulesFactory.leadTime(inventory);
+          lt = $window.humanizeDuration(lt);
+          inventory.leadTime = lt;
+        });
+
+        $scope.inventories = inventories;
       }
     });
   });
