@@ -2,11 +2,11 @@
 
 This project adopts the following guidelines:
 
-* [GitHub flow][]
+* [Git flow][]
 * [necolas/issue-guidelines][]
 * Tim Pope's [Git commit message model][tpope]
 
-[GitHub flow]: http://scottchacon.com/2011/08/31/github-flow.html
+[Git flow]: http://nvie.com/posts/a-successful-git-branching-model/
 [necolas/issue-guidelines]: https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md
 [tpope]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 
@@ -21,7 +21,7 @@ Fixed a bug, done some refactoring or wrote a new feature? Awesome! File a
 1. Search the [GitHub issue tracker][] to see if the issue has already been
    reported
 
-2. Update your local `master` to check if the issue has already been fixed
+2. Update your local `develop` to check if the issue has already been fixed
 
 Otherwise, confirm the issue is reproducible, create a [reduced test
 case][] and file a [new issue][] with as much detail as possible.
@@ -32,7 +32,7 @@ case][] and file a [new issue][] with as much detail as possible.
 
 ## Pull requests
 
-We use the [GitHub flow][] branching strategy, [hub][] and [git-extras][]. The
+We use the [Git flow][] branching strategy, [hub][] and [git-extras][]. The
 following command line examples assume you do too (if not, the basic steps are
 the same)
 
@@ -44,9 +44,10 @@ the same)
     git fork
     ```
 
-2. Create a topic (bug/feature/refactor) branch:
+2. Create a topic (bug/feature/refactor) branch off `develop`:
 
     ```bash
+    git checkout --track origin/develop
     git feature my-feature
     ```
 
@@ -61,7 +62,7 @@ the same)
 4. When you're topic is finished, make sure it's up-to-date
 
     ```bash
-    git pull --rebase origin master
+    git pull --rebase origin develop
     ```
 
 5. Push it to your fork
@@ -76,7 +77,7 @@ the same)
     git pull-request
     ```
 
-A member of [the team][] will review the request and merge it into `master` if
+A member of [the team][] will review the request and merge it into `develop` if
 it looks good and/or discuss with you accordingly.
 
 [the repo]: https://github.com/eHealthAfrica/LMIS-Chrome
