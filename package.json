@@ -30,8 +30,6 @@
     "grunt-karma": "~0.6.2",
     "karma-jasmine": "~0.1.5",
     "karma-phantomjs-launcher": "~0.1.2",
-    "change-case": "~1.0.6",
-    "cli-prompt": "~0.3.2",
     "grunt-protractor-runner": "^0.2.3",
     "grunt-karma-coveralls": "^2.4.0",
     "karma-coverage": "^0.2.0"
@@ -41,8 +39,7 @@
   },
   "scripts": {
     "test": "grunt travis",
-    "test-watch": "./node_modules/.bin/karma start --autoWatch true --singleRun false",
-    "translate": "node scripts/translate.js"
+    "test-watch": "./node_modules/.bin/karma start --autoWatch true --singleRun false"
   },
   "description": "LMIS Chrome packaged app",
   "main": "Gruntfile.js",
