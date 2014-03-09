@@ -4,41 +4,27 @@
       <span><i class="fa fa-user"></i></span>
       <span>Activities</span>
     </accordion-heading>
-    <div class="row center-text">
-      <div class="row">
-        <div class="col-sm-18">
-          <div class="col-sm-4">
-            <a ui-sref="stockCountForm">
-              <label translate="addStockCount">Add stock count</label>
-              <img src="images/dashboard-icons/add_stock_count.png" class="img-rounded">
-            </a>
-          </div>
-          <div class="col-sm-4">
-            <a ui-sref="incomingLog">
-              <label translate="incomingLog"></label>
-              <img src="images/dashboard-icons/log_incoming_bundle.png" class="img-rounded">
-            </a>
-          </div>
-          <div class="col-sm-4">
-            <a ui-sref="home.index.mainActivity.orderType">
-              <label translate="incomingPlace">Place an order</label>
-              <img src="images/dashboard-icons/place_order.png" class="img-rounded">
-            </a>
-          </div>
-        </div>
-      </div>
+    <div class="btn-group btn-group-sm">
 
-     <div class="row">
-        <div class="col-sm-18">
-          <div class="col-sm-4">
-            <a>
-              <label>Process an order</label>
-              <img src="images/dashboard-icons/process_order.png">
-            </a>
-          </div>
+      <a ui-sref="stockCountForm" class="btn btn-default">
+        <img src="images/dashboard-icons/add_stock_count.png" class="img-rounded">
+        <span translate="addStockCount"></span>
+      </a>
 
-        </div>
-      </div>
+      <a ui-sref="incomingLog" class="btn btn-default">
+        <img src="images/dashboard-icons/log_incoming_bundle.png" class="img-rounded">
+        <span translate="incomingLog"></span>
+      </a>
+
+      <a ui-sref="home.index.mainActivity.orderType" class="btn btn-default">
+        <img src="images/dashboard-icons/place_order.png" class="img-rounded">
+        <span translate="incomingPlace"></span>
+      </a>
+
+      <a class="btn btn-default">
+        <img src="images/dashboard-icons/process_order.png">
+        <span translate="processAnOrder"></span>
+      </a>
 
     </div>
   </accordion-group>
