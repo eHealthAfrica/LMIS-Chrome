@@ -1,0 +1,49 @@
+<div class="row" ng-controller="StockCountStepsFormCtrl">
+  <div class="col-sm-12">
+     <div class="row">
+        <div class="col-sm-12">
+            <h3 class="text-center">Stock Count for {{ facility_object.name }}</h3>
+            <h5 class="text-center">{{ monthList[report_month] }} {{ report_year }}</h5>
+        </div>
+    </div>
+    <form ng-submit="save()">
+      <div class="row" ng-hide="preview">
+        <div class="col-sm-12">
+          <div class="row" ng-repeat="product in stock_products" ng-show="step === $index">
+            <div class="col-sm-2">
+              <strong>{{ product }}</strong>
+            </div>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <label for="opened1">Opened</label>
+                <input id="opened1" type="number" class="form-control" ng-model="stockCount.used_opened" />
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <label>Unopened</label>
+                <input type="number" class="form-control" ng-model="stockCount.used_unopened" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="from-group">
+            <button ng-disabled="step === 0" class="btn btn-lg btn-default col-sm-4" ng-click="step = step - 1">
+              <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
+            </button>
+            <button ng-disabled="step === maxStep" class="btn btn-lg btn-default col-sm-4" ng-click="step = step + 1">
+              Next <i class="fa fa-chevron-circle-right fa-lg"></i>
+            </button>
+             <button ng-disabled="step !== maxStep" class="btn btn-lg btn-default col-sm-4" ng-click="preview=!preview">
+              Preview <i class="fa fa-bullseye fa-lg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
