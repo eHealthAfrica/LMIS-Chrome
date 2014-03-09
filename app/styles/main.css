@@ -1,3 +1,6 @@
+html, body {
+  overflow: auto;
+}
 html {
   position: relative;
   min-height: 100%;
