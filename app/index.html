@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Nigeria LMIS</title>
   <meta name="description" content="">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
@@ -18,33 +18,24 @@
   <link rel="stylesheet" href="bower_components/nvd3/nv.d3.css" />
   <!-- endbuild -->
   <!-- build:css({.tmp,app}) styles/main.css -->
-  <link rel="stylesheet" href="Ebro/css/todc-bootstrap.min.css">
-  <link rel="stylesheet" href="Ebro/css/style.css">
-  <link rel="stylesheet" href="Ebro/css/theme/color_1.css" id="theme">
-  <link rel="stylesheet" href="Ebro/css/linecons/style.css">
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
 </head>
 <body>
-<div id="wrapper_all">
-  <div ng-include="'views/partials/header.html'"></div>
 
-  <section class="container clearfix main_section">
-    <div id="main_content_outer" class="clearfix">
+<div ng-include="'views/partials/header.html'"></div>
 
-         <tv-breadcrumbs ng-hide="$state.includes('home')"
-                      home="home.index.mainActivity"></tv-breadcrumbs>
+<section class="container">
+  <tv-breadcrumbs ng-hide="$state.includes('home')"
+    home="home.index.mainActivity">
+  </tv-breadcrumbs>
 
-      <alert ng-repeat="alert in alerts" type="alert.type"
-             close="closeAlert($index)">
-        <span ng-bind="alert.message"></span>
-      </alert>
+  <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">
+    <span ng-bind="alert.message"></span>
+  </alert>
 
-      <div id="main_content" ui-view></div>
-    </div>
-  </section>
-  <div id="footer_space"></div>
-</div>
+  <div ui-view></div>
+</section>
 
 <div ng-include="'views/partials/footer.html'"></div>
 
