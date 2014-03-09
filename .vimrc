@@ -1,4 +1,4 @@
-setlocal wildignore+=dist,Ebro,coverage
+setlocal wildignore+=dist,coverage
 
 " Syntastic options
 let g:syntastic_html_tidy_ignore_errors = [

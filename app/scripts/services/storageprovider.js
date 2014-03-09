@@ -93,13 +93,13 @@ angular.module('lmisChromeApp')
         var defered = $q.defer();
         if (hasChromeStorage) {
           $window.chrome.storage.local.get(key, function (data) {
-            //console.log("getFromChrome: " + key);
             defered.resolve(data[key] || {});
-            if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
+            if (!$rootScope.$$phase) {
+              $rootScope.$apply();
+            }
           });
-          return defered.promise;
         }
-        return null;
+        return defered.promise;
       }
 
       /**
