@@ -66,5 +66,8 @@
   "stockCount": "Stock Count",
   "addStockCount": "Add Stock Count",
   "addWasteCount": "Add Waste Count",
-  "orderPlacedSuccess": "Order placed successfully!"
+  "orderPlacedSuccess": "Order placed successfully!",
+  "online": "Online",
+  "offline": "Offline",
+  "toggleNavigation": "Toggle navigation"
 }
