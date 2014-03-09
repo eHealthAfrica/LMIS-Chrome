@@ -69,5 +69,8 @@
   "orderPlacedSuccess": "Order placed successfully!",
   "online": "Online",
   "offline": "Offline",
-  "toggleNavigation": "Toggle navigation"
+  "toggleNavigation": "Toggle navigation",
+  "termsOfService": "Terms of Service",
+  "privacyPolicy": "Privacy Policy",
+  "contactUs": "Contact us"
 }
