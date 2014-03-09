@@ -1,24 +1,17 @@
 <footer id="footer" ng-controller="FooterCtrl">
   <div class="container">
-    <div class="row">
-      <div class="col-sm-3">
-        <span ng-cloak>&copy; {{ now | date: 'yyyy' }}</span>
-        <span translate="appAuthor"><span>
-      </div>
-      <div class="col-sm-8">
-        <ul>
+    <small class="text-muted">
+      <span ng-cloak>&copy; {{ now | date: 'yyyy' }}</span>
+      <span translate="appAuthor"></span>
+      <span class="pull-right" ng-bind="'v' + version"></span>
+      <nav role="navigation">
+        <ul class="list-inline">
           <li><a ui-sref="home.index.controlPanel">Dashboard</a></li>
-          <li>&middot;</li>
-          <li><a href="#">Terms of Service</a></li>
-          <li>&middot;</li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li>&middot;</li>
-          <li><a href="#">Contact us</a></li>
+          <li><a translate="termsOfService"></a></li>
+          <li><a translate="privacyPolicy"></a></li>
+          <li><a translate="contactUs"></a></li>
         </ul>
-      </div>
-      <div class="col-sm-1 text-right">
-        <small class="text-muted" ng-cloak>v{{version}}</small>
-      </div>
-    </div>
+      </nav>
+    </small>
   </div>
 </footer>
