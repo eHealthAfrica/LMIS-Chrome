@@ -68,6 +68,10 @@ footer {
 .marker-indicator-space{
   margin-right: 2em;
 }
+.sequence-map-box{
+  background: #D4D4D4;
+  color: #ffffff;
+}
 .info-box{
 
 }
