@@ -2,45 +2,105 @@
   <div class="col-sm-12">
      <div class="row">
         <div class="col-sm-12">
-            <h3 class="text-center">Stock Count for {{ facility_object.name }}</h3>
-            <h5 class="text-center">{{ monthList[report_month] }} {{ report_year }}</h5>
+            <h3 class="text-center">Stock Count for {{ facilityObject.name }}</h3>
+            <h5 class="text-center">{{ monthList[reportMonth] }} {{ reportYear }}</h5>
         </div>
     </div>
     <form ng-submit="save()">
-      <div class="row" ng-hide="preview">
-        <div class="col-sm-12">
-          <div class="row" ng-repeat="product in stock_products" ng-show="step === $index">
-            <div class="col-sm-2">
-              <strong>{{ product }}</strong>
-            </div>
-            <div class="col-sm-2">
-              <div class="form-group">
-                <label for="opened1">Opened</label>
-                <input id="opened1" type="number" class="form-control" ng-model="stockCount.used_opened" />
+      <div class="row">
+        <div class="col-sm-12" ng-hide="preview">
+          <div class="row">
+              <div class="col-sm-12">
+                <div class="row" ng-repeat="product in stockProducts" ng-show="step === $index">
+                  <div class="col-sm-2">
+                    <strong>{{ product }}</strong>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label for="opened1">Opened</label>
+                      <input id="opened1" type="number" class="form-control" ng-model="stockCount.used_opened[$index]" />
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label>Unopened</label>
+                      <input type="number" class="form-control" ng-model="stockCount.used_unopened[$index]" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="col-sm-2">
-              <div class="form-group">
-                <label>Unopened</label>
-                <input type="number" class="form-control" ng-model="stockCount.used_unopened" />
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="row">
+                  <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default"
+                          ng-click="step = step - 1">
+                    <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
+                  </button>
+                  <button type="button" ng-disabled="step === maxStep" class="btn btn-lg btn-default"
+                          ng-click="step = step + 1">
+                    Next <i class="fa fa-chevron-circle-right fa-lg"></i>
+                  </button>
+                   <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
+                    Preview <i class="fa fa-bullseye fa-lg"></i>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
         </div>
       </div>
-
-      <div class="row">
-        <div class="col-sm-4">
-          <div class="from-group">
-            <button ng-disabled="step === 0" class="btn btn-lg btn-default col-sm-4" ng-click="step = step - 1">
-              <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
-            </button>
-            <button ng-disabled="step === maxStep" class="btn btn-lg btn-default col-sm-4" ng-click="step = step + 1">
-              Next <i class="fa fa-chevron-circle-right fa-lg"></i>
-            </button>
-             <button ng-disabled="step !== maxStep" class="btn btn-lg btn-default col-sm-4" ng-click="preview=!preview">
-              Preview <i class="fa fa-bullseye fa-lg"></i>
-            </button>
+      <div class="row" ng-show="preview">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-12">
+              <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
+                  Preview <i class="fa fa-bullseye fa-lg"></i>
+                </button>
+                <select ng-model="selectedProduct" ng-change="jumpTo()" class="btn btn-lg btn-default">
+                  <option value="">Jump to</option>
+                  <option ng-repeat="product in stockProducts" value="{{ $index }}">{{ product }}</option>
+                </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <button class="btn btn-default">Save</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="panel panel-default">
+                <table class="table table-bordered">
+                  <thead>
+                  <tr>
+                    <th>Stock Item</th>
+                    <th colspan="2">Todays Count</th>
+                    <!--th>Confirm</th-->
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th>Unopened Vials</th>
+                    <th>Opened Vials</th>
+                    <!--th></th-->
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="product in stockProducts">
+                    <td class="form-label">{{ product }}</td>
+                    <td>
+                      {{ stockCount.used_unopened[$index] }}
+                    </td>
+                    <td>
+                      <div class="col-sm-6">
+                        {{ stockCount.used_opened[$index] }}
+                      </div>
+                    </td>
+                    <!--td><input ng-model="stockCount.confirmation[$index]" value="1" type="checkbox"></td-->
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
