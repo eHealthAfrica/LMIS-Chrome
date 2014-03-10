@@ -19,9 +19,18 @@ angular.module('lmisChromeApp')
       return received - created;
     };
 
-    // Faciity consumption level
-    var consumption = function(order) {
-      return order.consumption;
+    /**
+     * Consumption.
+     *
+     * The amount of its inventory a facility consumes per the forecasting
+     * interval.
+     *
+     * @param {Object} facility The facility object.
+     * @return {Number} the consumption level.
+     */
+    var consumption = function(facility) {
+      // FIXME: Awaiting discussion, see #222
+      return 10;
     };
 
     // Average Consumption * Average Lead Time

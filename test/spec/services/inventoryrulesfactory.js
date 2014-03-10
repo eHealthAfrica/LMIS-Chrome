@@ -3,13 +3,19 @@
 describe('Service: inventoryRulesFactory', function() {
 
   // load the service's module
-  beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks', 'ordersMocks'));
+  beforeEach(module(
+    'lmisChromeApp',
+    'lmisChromeAppMocks',
+    'ordersMocks',
+    'facilitiesMocks'
+  ));
 
   // instantiate service
-  var inventoryRulesFactory, orders;
-  beforeEach(inject(function(_inventoryRulesFactory_, ordersMock) {
+  var inventoryRulesFactory, orders, facilities;
+  beforeEach(inject(function(_inventoryRulesFactory_, ordersMock, facilitiesMock) {
     inventoryRulesFactory = _inventoryRulesFactory_;
     orders = ordersMock;
+    facilities = facilitiesMock;
   }));
 
   it('should calculate the lead time for an order in ms', function() {
@@ -34,7 +40,7 @@ describe('Service: inventoryRulesFactory', function() {
   });
 
   it('should calculate a facility consumption level', function() {
-    var consumption = inventoryRulesFactory.consumption(orders[0]);
+    var consumption = inventoryRulesFactory.consumption(facilities[0]);
     expect(typeof consumption).toBe('number');
   });
 
