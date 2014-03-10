@@ -3,7 +3,15 @@
 angular.module('lmisChromeApp')
   .factory('inventoryRulesFactory', function() {
 
-    // Arrival Date/time - Order Date/time
+    /**
+     * Order lead time.
+     *
+     * The duration between the time an order is authorized and the time the
+     * bundle arrives at the facility, measured in days.
+     *
+     * @param {Object} order An order object with created & date_receipt fields
+     * @return {Number} the lead time in ms, otherwise NaN
+     */
     var leadTime = function(order) {
       var created = new Date(order.created);
       // jshint camelcase: false
