@@ -45,12 +45,17 @@ describe('Service: inventoryRulesFactory', function() {
   });
 
   it('should calculate the lead-time consumption', function() {
-    var order = orders[0],
-        leadTime = inventoryRulesFactory.leadTime(order),
-        consumption = inventoryRulesFactory.consumption(order);
+    var leadTime = 0, leadTimes = [], consumptions = [10, 40];
 
-    var ltc = inventoryRulesFactory.leadTimeConsumption(leadTime, consumption);
+    orders.forEach(function(order) {
+      leadTime = inventoryRulesFactory.leadTime(order);
+      leadTimes.push(leadTime);
+    });
+
+    var ltc = inventoryRulesFactory.leadTimeConsumption(leadTimes, consumptions);
+
     expect(typeof ltc).toBe('number');
+    expect(ltc).toBe(42660000000);
   });
 
 });
