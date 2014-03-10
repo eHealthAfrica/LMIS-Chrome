@@ -113,14 +113,17 @@ footer {
 
 }
 accordion .panel-heading:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 .removeIcon i:hover{
   color: red;
 }
 .products accordion .panel-heading .panel-title i:hover {
-  color: red;
+    color: red;
 }
 .date-row{
     margin: 10px 0px;
+}
+.div-striped:nth-child(even) {
+    background: #f9f9f9;
 }

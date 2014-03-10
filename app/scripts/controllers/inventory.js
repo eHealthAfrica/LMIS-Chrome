@@ -107,6 +107,14 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     .controller('addInventoryCtrl', function ($scope, $filter, $stateParams, currentFacility, storageService, $state,
                                               inventoryFactory, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
 
+      $scope.add = function(inventoryLine){
+        inventoryLine.quantity = isNaN(inventoryLine.quantity)? 1 : (parseInt(inventoryLine.quantity) + 1);
+      }
+
+      $scope.subtract = function(inventoryLine){
+        inventoryLine.quantity = isNaN(inventoryLine.quantity)? 0 : (parseInt(inventoryLine.quantity) - 1);
+      }
+
       //used to hold form data
       $scope.inventory = {
         authorized: false,
