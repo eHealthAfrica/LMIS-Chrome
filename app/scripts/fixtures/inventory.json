@@ -1,6 +1,6 @@
 {
   "09U78723-9aef-4f31-9c88-6b1d16f62f6a": {
-    "created": "2014-02-12 09:17:08",
+    "created": "2014-02-12T09:17:08Z",
     "date_receipt": "2014-02-13",
     "receiving_facility": "d48a39fb-6d37-4472-9983-bc0720403719",
     "sending_facility": "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
@@ -13,7 +13,7 @@
     "bundle_no": ""
   },
   "13t18723-3456-4f31-9c98-6b1d16f62f6a": {
-    "created": "2014-02-12 09:17:08",
+    "created": "2014-02-12T09:17:08Z",
     "date_receipt": "2014-02-13",
     "receiving_facility": "d48a39fb-6d37-4472-9983-bc0720403719",
     "sending_facility": "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
@@ -26,7 +26,7 @@
     "bundle_no": ""
   },
   "95d18723-9aef-5668-9c77-6b1d16f62f0a": {
-    "created": "2014-02-12 09:17:08",
+    "created": "2014-02-12T09:17:08Z",
     "date_receipt": "2014-02-13",
     "receiving_facility": "d48a39fb-6d37-4472-9983-bc0720403719",
     "sending_facility": "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
@@ -41,9 +41,9 @@
   "d3f52dc6-5c24-477c-dc01-3b2e22787883": {
     "batch": "1430",
     "bundle_no": "2345",
-    "created": "2014-03-04 13:12:07",
+    "created": "2014-03-04T13:12:07Z",
     "date_receipt": "2014-03-08",
-    "modified": "2014-03-04 13:12:07",
+    "modified": "2014-03-04T13:12:07Z",
     "program": "39a07d76-9d4b-4c9e-b50b-bba827d08f74",
     "quantity": 123,
     "receiving_facility": "d48a39fb-6d37-4472-9983-bc0720403719",
