@@ -106,21 +106,21 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  */
     .controller('addInventoryCtrl', function ($scope, $filter, $stateParams, currentFacility, storageService, $state,
                                               inventoryFactory, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
+    //used to hold form data
+      $scope.inventory = {
+        authorized: false,
+        inventory_lines: [],
+        date_receipt: $filter('date')(new Date(), 'yyyy-MM-dd'),
+        bundle_no: $stateParams.bundleNo
+      }
 
       $scope.add = function(inventoryLine){
         inventoryLine.quantity = isNaN(inventoryLine.quantity)? 1 : (parseInt(inventoryLine.quantity) + 1);
       }
 
       $scope.subtract = function(inventoryLine){
-        inventoryLine.quantity = isNaN(inventoryLine.quantity)? 0 : (parseInt(inventoryLine.quantity) - 1);
-      }
-
-      //used to hold form data
-      $scope.inventory = {
-        authorized: false,
-        inventory_lines: [],
-        date_receipt: $filter('date')(new Date(), 'yyyy-MM-dd'),
-        bundle_no: $stateParams.bundleNo
+        inventoryLine.quantity = (isNaN(inventoryLine.quantity) || (inventoryLine.quantity <= 0))
+            ? 0 : (parseInt(inventoryLine.quantity) - 1);
       }
 
       var id = 0;
@@ -139,6 +139,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         });
       }
 
+      //pre-loads storage unit of current facility.
       loadCurrentFacilityStorageUnits($scope.inventory.receiving_facility.uuid);
 
       $scope.loadProductTypeBatches = function (inventoryLine) {
@@ -169,6 +170,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.save = function () {
+
+        console.log($scope.inventory);
+        return;
         inventoryFactory.save($scope.inventory).then(function (result) {
           if (result.length !== 0) {
             $state.go('inventoryListView', {add: true});

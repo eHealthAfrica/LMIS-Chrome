@@ -19,6 +19,8 @@ angular.module('lmisChromeApp')
  */
     .controller('logIncomingCtrl', function ($scope, $filter, $state, storageService, storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
 
+      $scope.bundleNumbers = ['908-HJK', 'LKO-10-67728', '127-GHF'];
+
       $scope.clicked = false;
       $scope.bundle = {};
       $scope.bundle.date = '';
@@ -32,7 +34,7 @@ angular.module('lmisChromeApp')
         return $filter('date')(today, "yyyy-MM-dd");
       }
 
-      $scope.addNewInventory = function(bundleNumber){
+      $scope.addNewInventory = function (bundleNumber) {
         $state.go('addInventory', {bundleNo: bundleNumber});
       }
 
@@ -52,6 +54,15 @@ angular.module('lmisChromeApp')
        * function that shows form used to log incoming bundle if it already exists in the system.
        */
       $scope.showBundle = function () {
+
+        $scope.add = function (bundleLine) {
+          bundleLine.verify = isNaN(bundleLine.verify) ? 1 : (parseInt(bundleLine.verify) + 1);
+        };
+
+        $scope.subtract = function (bundleLine) {
+          bundleLine.verify = (isNaN(bundleLine.verify) || (bundleLine.verify <= 0))
+              ? 0 : (parseInt(bundleLine.verify) - 1);
+        };
 
         $scope.clicked = true;
         bundleFactory.getBundle($scope.showBundleNo).then(function (data) {
@@ -84,6 +95,10 @@ angular.module('lmisChromeApp')
         $scope.show = false;
         $scope.showAddManually = false;
       };
+
+      $scope.previewLogBundleForm = function(){
+        console.log("preview me");
+      }
 
 
       /**

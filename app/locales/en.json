@@ -73,5 +73,7 @@
   "termsOfService": "Terms of Service",
   "privacyPolicy": "Privacy Policy",
   "contactUs": "Contact us",
-  "processAnOrder": "Process an order"
+  "processAnOrder": "Process an order",
+  "showBundle": "Show Bundle",
+  "preview": "Preview"
 }
