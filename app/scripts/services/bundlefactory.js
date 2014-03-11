@@ -188,7 +188,24 @@ angular.module('lmisChromeApp')
         return bundleLines;
       }
 
+      /**
+       * This functions, currently returns collection of bundle object uuid(bundle no.).
+       *
+       * @returns {promise|promise|*|Function|promise}
+       */
+      function getBundleNumbers(){
+        var bundleNumbers = [];
+        var deferred = $q.defer();
+        storageService.get(storageService.BUNDLE).then(function(data){
+          bundleNumbers = Object.keys(data);
+          deferred.resolve(bundleNumbers);
+          console.log(bundleNumbers);
+        });
+        return deferred.promise;
+      }
+
       return {
+        getBundleNumbers: getBundleNumbers,
         getBundleLines: getBundleLines,
         getBundle: get,
         saveBundleReceipt: saveBundleReceipt,

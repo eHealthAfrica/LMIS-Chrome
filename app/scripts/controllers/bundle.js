@@ -7,6 +7,11 @@ angular.module('lmisChromeApp')
             url: '/incoming-log',
             templateUrl: '/views/bundles/incoming-log.html',
             controller: 'logIncomingCtrl',
+            resolve: {
+              bundleNumbers: function(bundleFactory){
+                return bundleFactory.getBundleNumbers();
+              }
+            },
             data: {
               label: 'Log Incoming'
             }
@@ -17,9 +22,9 @@ angular.module('lmisChromeApp')
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-    .controller('logIncomingCtrl', function ($scope, $filter, $state, storageService, storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
+    .controller('logIncomingCtrl', function ($scope, $filter, $state, bundleNumbers, storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
 
-      $scope.bundleNumbers = ['908-HJK', 'LKO-10-67728', '127-GHF'];
+      $scope.bundleNumbers = bundleNumbers;
 
       $scope.clicked = false;
       $scope.bundle = {};
