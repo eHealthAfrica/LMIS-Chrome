@@ -14,7 +14,7 @@ angular.module('lmisChromeApp')
 
             angular.forEach(bundleReceipt.bundle_receipt_lines, function (receiptLine) {
               var newInventory = {
-                date_receipt: bundleReceipt.date,
+                date_receipt: bundleReceipt.date_receipt,
                 receiving_facility: bundleReceipt.receiving_facility,
                 sending_facility: bundleReceipt.sending_facility,
                 batch: receiptLine.batch,
@@ -24,6 +24,7 @@ angular.module('lmisChromeApp')
                 uom: receiptLine.quantity_uom,
                 bundle_no: bundleReceipt.bundle
               }
+
               batches.push(newInventory);
             });
 

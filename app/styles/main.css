@@ -124,6 +124,6 @@ accordion .panel-heading:hover {
 .date-row{
     margin: 10px 0px;
 }
-.div-striped:nth-child(even) {
-    background: #f9f9f9;
+.new-line{
+  display: block;
 }

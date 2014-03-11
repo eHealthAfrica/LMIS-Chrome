@@ -8,29 +8,33 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         storageService.find(storageService.BATCH, uuid).then(function (data) {
           var batch = data;
-          //replace nested attribute with their json object
-          productTypeFactory.get(batch.product).then(function (data) {
-            batch.product = data;
-          });
-          presentationFactory.get(batch.presentation).then(function (data) {
-            batch.presentation = data;
-          });
-          companyFactory.get(batch.manufacturer).then(function (data) {
-            batch.manufacturer = data;
-          });
-          currencyFactory.get(batch.price_currency).then(function (data) {
-            batch.price_currency = data;
-          });
-          modeOfAdministrationFactory.get(batch.mode_of_use).then(function (data) {
-            batch.mode_of_use = data;
-          });
-          formulationFactory.get(batch.formulation).then(function (data) {
-            batch.formulation = data;
-          });
-          uomFactory.get(batch.volume_uom).then(function (data) {
-            batch.volume_uom = data;
-          });
-          deferred.resolve(batch);
+          if (batch !== undefined) {
+            //replace nested attribute with their json object
+            productTypeFactory.get(batch.product.uuid).then(function (data) {
+              batch.product = data;
+            });
+            presentationFactory.get(batch.presentation).then(function (data) {
+              batch.presentation = data;
+            });
+            companyFactory.get(batch.manufacturer).then(function (data) {
+              batch.manufacturer = data;
+            });
+            currencyFactory.get(batch.price_currency).then(function (data) {
+              batch.price_currency = data;
+            });
+            modeOfAdministrationFactory.get(batch.mode_of_use).then(function (data) {
+              batch.mode_of_use = data;
+            });
+            formulationFactory.get(batch.formulation).then(function (data) {
+              batch.formulation = data;
+            });
+            uomFactory.get(batch.volume_uom).then(function (data) {
+              batch.volume_uom = data;
+            });
+            deferred.resolve(batch);
+          } else {
+            deferred.reject('batch with given uuid not found.');
+          }
           if (!$rootScope.$$phase) $rootScope.$apply();
         });
         return deferred.promise;

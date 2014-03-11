@@ -146,6 +146,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         inventoryLine.isDisabled = false;
         batchFactory.getByProductType(inventoryLine.productType).then(function (data) {
           inventoryLine.productTypeBatches = data;
+          if(inventoryLine.productTypeBatches.length === 0) {inventoryLine.batch_no = '';}
         });
       }
 
@@ -170,7 +171,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.save = function () {
-
+        console.log($scope.inventory);
+        $scope.inventory.date_receipt = Date.parse($scope.inventory.date_receipt);
         console.log($scope.inventory);
         return;
         inventoryFactory.save($scope.inventory).then(function (result) {

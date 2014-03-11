@@ -33,13 +33,22 @@ angular.module('lmisChromeApp')
 
       $scope.clicked = false;
       $scope.bundle = {};
-      $scope.bundle.date = getCurrentDate();
+      $scope.bundle.date = $filter('date')((new Date()).toTimeString(), "yyyy-MM-dd");
       $scope.getFacilityStorageUnits = [];
       $scope.logIncomingForm = {};
       $scope.logIncomingForm.verify = [];
       $scope.logIncomingForm.storage_units = [];
 
-
+      /**
+       * this is used to return storage unit object at preview page based on the uuid.
+       * */
+      $scope.getStorageUnit = function(storageUnitUUID){
+       for(var index in $scope.receivingFacilityStorageUnits){
+         var storageUnit = $scope.receivingFacilityStorageUnits[index];
+         if(storageUnit.uuid === storageUnitUUID) return storageUnit;
+       }
+        return {};
+      };
 
       $scope.addNewInventory = function (bundleNumber) {
         $state.go('addInventory', {bundleNo: bundleNumber});
@@ -74,7 +83,6 @@ angular.module('lmisChromeApp')
         $scope.clicked = true;
         bundleFactory.getBundle($scope.showBundleNo).then(function (data) {
           $scope.bundle = data;
-          //$scope.bundle.date = $scope.getCurrentDate();
           var receivingFacility = $scope.bundle.receiving_facility;
           $scope.parent = $scope.bundle.parent.name;
           $scope.receiving_facility = receivingFacility.name;
@@ -109,6 +117,7 @@ angular.module('lmisChromeApp')
        */
       $scope.previewLogBundleForm = function(){
         $scope.showPreview = true;
+        console.log($scope.logIncomingForm);
       }
 
 
@@ -116,6 +125,8 @@ angular.module('lmisChromeApp')
        * Function called when authorize button is clicked and it saves the bundle info, to generate bundle receipt.
        */
       $scope.save = function () {
+
+        console.log($scope.bundle);
 
         var bundleReceiptLines = [];
         for (var index in $scope.bundle.bundle_lines) {
@@ -136,7 +147,7 @@ angular.module('lmisChromeApp')
         var bundleReceipt = {
           "bundle": $scope.bundle.uuid,
           "user": $scope.loggedInUser.id,
-          "date": $scope.bundle.date,
+          "date_receipt": Date.parse($scope.bundle.date),
           "bundle_receipt_lines": bundleReceiptLines,
           "receiving_facility": $scope.bundle.receiving_facility.uuid,
           "sending_facility": $scope.bundle.parent.uuid

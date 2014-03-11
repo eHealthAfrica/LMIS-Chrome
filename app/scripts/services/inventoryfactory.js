@@ -61,6 +61,7 @@ angular.module('lmisChromeApp')
           storageService.all(storageService.INVENTORY).then(function (data) {
 
             angular.forEach(data, function (datum) {
+              console.log(datum);
               if (datum.receiving_facility === uuid) {
                 inventory.push(getByUUID(datum.uuid).then(function (inventoryLine) {
                   deferred.notify(datum);

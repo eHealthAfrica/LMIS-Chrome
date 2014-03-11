@@ -22,12 +22,12 @@
 
       <div class="col-sm-4">
         <label translate="batchNo"></label>
-        <select ng-show="(inventoryLine.productTypeBatches).length !== 0" ng-model="inventoryLine.batch_no"
+        <select ng-show="(inventoryLine.productTypeBatches).length !== 0" ng-model="inventoryLine.selectedBatch"
                 class="form-control"
                 ng-change="updateBatchNo(inventoryLine)"
                 ng-disabled="inventoryLine.isDisabled">
           <option value="" translate="selectBatch"></option>
-          <option ng-repeat="batch in inventoryLine.productTypeBatches" value="{{ batch.batch_no }}"
+          <option ng-repeat="batch in inventoryLine.productTypeBatches" value="{{ batch.uuid }}"
                   ng-bind="batch.batch_no">
           </option>
         </select>

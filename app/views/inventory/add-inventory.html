@@ -65,7 +65,9 @@
                   <h4 class="panel-title">New Inventory Detail</h4>
                 </div>
                 <div class="panel-body" ng-show="(inventory.inventory_lines).length !== 0">
-                  <div class="div-striped" ng-repeat="inventoryLine in inventory.inventory_lines" ng-include="'views/inventory/partials/add-inventory-line.html'"></div>
+                  <div class="div-striped" ng-repeat="inventoryLine in inventory.inventory_lines"
+                       ng-include="'views/inventory/partials/add-inventory-line.html'">
+                  </div>
                 </div>
               </div>
             </div>
