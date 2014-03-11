@@ -33,7 +33,7 @@
 
             <div class="col-sm-6">
               <label>Date <i class="fa fa-calendar"></i></label>
-              <input ng-model="bundle.date" class="form-control" type="date" name="receiptDate"
+              <input ng-model="($parent.bundle).date" class="form-control" type="date" name="receiptDate"
                      id="receiptDate" required=""/>
             </div>
           </div>
@@ -127,7 +127,7 @@
               <button ng-click="previewLogBundleForm()" type="button" id="preview" name="preview"
                       class="btn btn-success">
                 <span translate="preview"></span>
-                <i class="fa fa-preview"></i>
+                <i class="fa fa-eye"></i>
               </button>
             </div>
           </div>

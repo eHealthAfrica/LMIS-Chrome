@@ -24,20 +24,22 @@ angular.module('lmisChromeApp')
  */
     .controller('logIncomingCtrl', function ($scope, $filter, $state, bundleNumbers, storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
 
+      function getCurrentDate() {
+        var today = new Date();
+        return $filter('date')(today, "yyyy-MM-dd");
+      }
+
       $scope.bundleNumbers = bundleNumbers;
 
       $scope.clicked = false;
       $scope.bundle = {};
-      $scope.bundle.date = '';
+      $scope.bundle.date = getCurrentDate();
       $scope.getFacilityStorageUnits = [];
       $scope.logIncomingForm = {};
       $scope.logIncomingForm.verify = [];
       $scope.logIncomingForm.storage_units = [];
 
-      $scope.getCurrentDate = function () {
-        var today = new Date();
-        return $filter('date')(today, "yyyy-MM-dd");
-      }
+
 
       $scope.addNewInventory = function (bundleNumber) {
         $state.go('addInventory', {bundleNo: bundleNumber});
@@ -72,7 +74,7 @@ angular.module('lmisChromeApp')
         $scope.clicked = true;
         bundleFactory.getBundle($scope.showBundleNo).then(function (data) {
           $scope.bundle = data;
-          $scope.bundle.date = $scope.getCurrentDate();
+          //$scope.bundle.date = $scope.getCurrentDate();
           var receivingFacility = $scope.bundle.receiving_facility;
           $scope.parent = $scope.bundle.parent.name;
           $scope.receiving_facility = receivingFacility.name;
@@ -101,8 +103,12 @@ angular.module('lmisChromeApp')
         $scope.showAddManually = false;
       };
 
+      /**
+       * shows preview page after entering incoming bundle details. validations and display of error message takes place
+       * here.
+       */
       $scope.previewLogBundleForm = function(){
-        console.log("preview me");
+        $scope.showPreview = true;
       }
 
 

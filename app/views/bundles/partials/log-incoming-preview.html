@@ -1,0 +1,138 @@
+<div class="col-sm-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">Log Incoming Preview</h4>
+    </div>
+
+    <form name="logIncomingBundle" ng-submit="save()">
+      <div class="panel-body">
+        <div class="col-sm-12">
+          <div class="col-sm-6">
+            <label for="receivingFacility" translate="receivingFacility"></label>
+            <input class="form-control" ng-disabled="true" type="text" name="receivingFacility"
+                   id="receivingFacility" ng-model="receiving_facility"/>
+          </div>
+
+          <div class="col-sm-6">
+            <label for="parentFacility" translate="sendingFacility"></label>
+            <input class="form-control" ng-disabled="true" type="text" name="parentFacility" id="parentFacility"
+                   ng-model="parent"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="col-sm-12">
+          <div class="col-sm-6">
+            <label for="bundleNumber" translate="bundleNo"></label>
+            <input ng-model="bundle.uuid" class="form-control" ng-disabled="true" type="text"
+                   name="bundleNumber" id="bundleNumber"/>
+          </div>
+
+          <div class="col-sm-6">
+            <label>Date <i class="fa fa-calendar"></i></label>
+            <input ng-model="bundle.date" class="form-control" ng-disabled="true" type="text"
+                   name="bundleNumber" id="receiptDate"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="col-sm-12">
+          <div class="col-sm-12" ng-repeat="bundleLine in bundle.bundle_lines">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">{{ $index + 1 }}</h4>
+              </div>
+              <div class="panel-body">
+                <div class="col-sm-12">
+                  <div class="col-sm-4">
+                    <label translate="productTypes"></label>
+                    <input class="form-control" ng-disabled="true" type="text" name="productType"
+                           id="productType"
+                           ng-model="getProductType(bundleLine).code"/>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <label translate="batchNo"></label>
+                    <input class="form-control" ng-disabled="true" type="text" name="batchNo" id="batchNo"
+                           ng-model="(bundleLine.batch).batch_no"/>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <label translate="program"></label>
+                    <input class="form-control" ng-disabled="true" type="text" name="program" id="program"
+                           ng-model="(bundleLine.program).code"/>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="panel-body">
+                <div class="col-sm-12">
+
+                  <div class="col-sm-4">
+                    <label translate="quantity"></label>
+                    <input class="form-control" ng-disabled="true" type="text" name="program" id="quantity"
+                           value="{{ getUOMDetail(bundleLine) }}"/>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <label>Verify Quantity</label>
+
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                          <button class="btn btn-warning" type="button" ng-click="subtract(bundleLine)">
+                            <i class="fa fa-minus"></i>
+                          </button>
+                      </span>
+                      <input type="text" class="form-control" ng-model="bundleLine.verify" required>
+                        <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" ng-click="add(bundleLine)">
+                          <i class="fa fa-plus"></i>
+                        </button>
+                        </span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <label translate="storageUnit"></label>
+                    <select class="form-control" ng-model="inventoryLine.storage_unit">
+                      <option value="" translate="addToStorageUnit"></option>
+                      <option ng-repeat="storageUnit in receivingFacilityStorageUnits"
+                              value="{{ storageUnit.uuid }}"
+                              ng-selected="{{ (inventoryLine.storageUnit).uuid === storageUnit.uuid }}"
+                              ng-bind="storageUnit.name ">
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="form-group">
+          <div class="col-md-4 pull-left">
+            <div class="btn-group col-sm-3">
+            <span ng-click="showLogIncomingForm()" class="btn btn-default">
+              <i class="fa fa-chevron-circle-left"></i>Back</span>
+            </div>
+          </div>
+          <div class="col-md-4 pull-right">
+            <button type="submit" id="preview" name="preview" class="btn btn-success">
+              <span translate="submit"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+

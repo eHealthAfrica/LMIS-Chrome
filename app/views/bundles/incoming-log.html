@@ -11,7 +11,10 @@
         <div class="row" ng-show="!show" ng-include="'views/bundles/partials/enter-bundle-no.html'"></div>
       </div>
       <div class="panel-body">
-        <div class="row" ng-show="show" ng-include="'views/bundles/partials/log-automatically.html'"></div>
+        <div class="row" ng-show="show && !showPreview" ng-include="'views/bundles/partials/log-automatically.html'"></div>
+      </div>
+      <div class="panel-body">
+        <div class="row" ng-show="showPreview" ng-include="'views/bundles/partials/log-incoming-preview.html'"></div>
       </div>
     </div>
   </div>
