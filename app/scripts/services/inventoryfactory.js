@@ -8,9 +8,7 @@ angular.module('lmisChromeApp')
         storageService.find(storageService.INVENTORY, uuid).then(function (data) {
 
           var inventoryLine = data;
-
           if (data !== undefined) {
-
             //Attach nested attributes complete JSON object.
             batchFactory.getByBatchNo(inventoryLine.batch).then(function (data) {
               inventoryLine.batch = (toString.call(data) === '[object Object]')? data : inventoryLine.batch;
@@ -54,26 +52,22 @@ angular.module('lmisChromeApp')
          *
          * @param facility - this can be a string(facilityUUID) or an object(facility object with uuid as its property).
          */
-        getFacilityInventory: function (facility) {
+        getAll: function (facility) {
           var uuid = angular.isObject(facility) ? facility.uuid : facility;
           var deferred = $q.defer(), inventory = [];
 
           storageService.all(storageService.INVENTORY).then(function (data) {
-
             angular.forEach(data, function (datum) {
-              console.log(datum);
               if (datum.receiving_facility === uuid) {
                 inventory.push(getByUUID(datum.uuid).then(function (inventoryLine) {
                   deferred.notify(datum);
                   return inventoryLine;
-                }))
+                }));
               }
             });
-
             $q.all(inventory).then(function (results) {
               deferred.resolve(results);
             });
-
           });
           return deferred.promise;
         },
@@ -82,7 +76,6 @@ angular.module('lmisChromeApp')
           var batches = [], deferred = $q.defer();
 
           angular.forEach(inventory.inventory_lines, function (inventoryLine) {
-
             var newInventory = {
               date_receipt: inventory.date_receipt,
               receiving_facility: inventory.receiving_facility.uuid,
@@ -94,7 +87,7 @@ angular.module('lmisChromeApp')
               uom: inventoryLine.uom,
               bundle_no: inventory.bundle_no,
               product_type: inventoryLine.productType
-            }
+            };
             batches.push(newInventory);
           });
 
@@ -103,10 +96,7 @@ angular.module('lmisChromeApp')
           }, function (error) {
             deferred.reject(error);
           });
-
           return deferred.promise;
-
         }
-
       };
     });

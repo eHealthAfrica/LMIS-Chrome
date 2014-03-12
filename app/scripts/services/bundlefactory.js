@@ -3,15 +3,10 @@
 angular.module('lmisChromeApp')
     .factory('bundleFactory', function ($q, storageService) {
 
-      var BUNDLE_STATUS = ["Pending", "In Transit", "Done"];
-
       function saveBundleReceipt(bundleReceipt) {
         var deferred = $q.defer(), batches = [];
-        var results = [];
         storageService.insert(storageService.BUNDLE_RECEIPT, bundleReceipt).then(function (data) {
-
           if (data !== undefined) {
-
             angular.forEach(bundleReceipt.bundle_receipt_lines, function (receiptLine) {
               var newInventory = {
                 date_receipt: bundleReceipt.date_receipt,
@@ -23,11 +18,9 @@ angular.module('lmisChromeApp')
                 storage_unit: receiptLine.storage_unit,
                 uom: receiptLine.quantity_uom,
                 bundle_no: bundleReceipt.bundle
-              }
-
+              };
               batches.push(newInventory);
             });
-
 
             storageService.insertBatch(storageService.INVENTORY, batches).then(function (result) {
               deferred.resolve(result);
@@ -35,7 +28,6 @@ angular.module('lmisChromeApp')
               deferred.reject(error);
             });
           }
-
         });
         return deferred.promise;
       }
@@ -65,18 +57,17 @@ angular.module('lmisChromeApp')
             //compose bundle response
             if (data !== undefined) {
               var bundle = {
-                "uuid": data.uuid,
-                "receiving_facility": facilities[data.receiving_facility],
-                "parent": facilities[data.parent],
-                "order": "12345-90882", //TODO: replace with order object when complete
-                "bundle_lines": getBundleLines(bundleUUID)
+                'uuid': data.uuid,
+                'receiving_facility': facilities[data.receiving_facility],
+                'parent': facilities[data.parent],
+                'order': '12345-90882', //TODO: replace with order object when complete
+                'bundle_lines': getBundleLines(bundleUUID)
               };
               deferred.resolve(bundle);
             } else {
               deferred.reject();
             }
           });
-
         } catch (e) {
           deferred.reject(e);
         } finally {
@@ -114,7 +105,6 @@ angular.module('lmisChromeApp')
         var bundleLines = [];
         storageService.find(storageService.BUNDLE, bundleUUID).then(function (data) {
           if (data !== undefined) {
-
             for (var index in data.bundle_lines) {
               var bundleLineUUID = data.bundle_lines[index];
               storageService.find(storageService.BUNDLE_LINES, bundleLineUUID).then(function (data) {
@@ -122,13 +112,13 @@ angular.module('lmisChromeApp')
                   var batch = batches[data.batch];
                   batch.product = productTypes[batch.product];
                   var bundleLine = {
-                    "uuid": data.uuid,
-                    "program": programs[data.program],
-                    "batch": batch,
-                    "quantity": data.quantity,
-                    "quantity_uom": uomList[data.quantity_uom],
-                    "verify": 0,
-                    "storage_units": ""
+                    'uuid': data.uuid,
+                    'program': programs[data.program],
+                    'batch': batch,
+                    'quantity': data.quantity,
+                    'quantity_uom': uomList[data.quantity_uom],
+                    'verify': 0,
+                    'storage_units': ''
                   };
                   bundleLines.push(bundleLine);
                 }
@@ -173,12 +163,12 @@ angular.module('lmisChromeApp')
                   batch.product = productTypes[batch.product];
 
                   var bundleLine = {
-                    "bundle": data.uuid,
-                    "program": programs[data.program].name,
-                    "batch": batch,
-                    "quantity": data.quantity,
-                    "quantity_uom": uomList[data.quantity_uom],
-                    "verify": 0
+                    'bundle': data.uuid,
+                    'program': programs[data.program].name,
+                    'batch': batch,
+                    'quantity': data.quantity,
+                    'quantity_uom': uomList[data.quantity_uom],
+                    'verify': 0
                   };
                   bundleLines.push(bundleLine);
                 }
@@ -194,13 +184,12 @@ angular.module('lmisChromeApp')
        *
        * @returns {promise|promise|*|Function|promise}
        */
-      function getBundleNumbers(){
+      function getBundleNumbers() {
         var bundleNumbers = [];
         var deferred = $q.defer();
-        storageService.get(storageService.BUNDLE).then(function(data){
+        storageService.get(storageService.BUNDLE).then(function (data) {
           bundleNumbers = Object.keys(data);
           deferred.resolve(bundleNumbers);
-          console.log(bundleNumbers);
         });
         return deferred.promise;
       }
@@ -211,5 +200,5 @@ angular.module('lmisChromeApp')
         getBundle: get,
         saveBundleReceipt: saveBundleReceipt,
         getBundleReceiptLines: getBundleReceiptLine
-      }
+      };
     });

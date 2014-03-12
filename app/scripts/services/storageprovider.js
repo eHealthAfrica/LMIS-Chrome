@@ -462,7 +462,7 @@ angular.module('lmisChromeApp')
         all: getAllFromTable,
         add: addTable,
         get: getTable,
-        getFacilityInventory: getAllFromStore,
+        getAll: getAllFromStore,
         remove: removeTable, // removeFromChrome,
         clear: clearFromStore, // clearChrome */
         uuid: uuid_generator,

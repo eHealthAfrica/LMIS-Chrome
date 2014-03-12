@@ -3,13 +3,12 @@
 angular.module('lmisChromeApp')
     .factory('batchFactory', function ($q, $rootScope, storageService, productTypeFactory, presentationFactory, companyFactory, currencyFactory, modeOfAdministrationFactory, formulationFactory, uomFactory) {
 
-
       function getByUUID(uuid) {
         var deferred = $q.defer();
         storageService.find(storageService.BATCH, uuid).then(function (data) {
           var batch = data;
           if (batch !== undefined) {
-            //replace nested attribute with their json object
+            //TODO: replace nested attribute with their json object
             productTypeFactory.get(batch.product).then(function (data) {
               batch.product = data;
             });
@@ -35,7 +34,9 @@ angular.module('lmisChromeApp')
           } else {
             deferred.reject('batch with given uuid not found.');
           }
-          if (!$rootScope.$$phase) $rootScope.$apply();
+          if (!$rootScope.$$phase) {
+            $rootScope.$apply();
+          }
         });
         return deferred.promise;
       }
@@ -61,7 +62,9 @@ angular.module('lmisChromeApp')
 
           $q.all(productTypeBatches).then(function (results) {
             deferred.resolve(results);
-            if (!$rootScope.$$phase) $rootScope.$apply();
+            if (!$rootScope.$$phase) {
+              $rootScope.$apply();
+            }
           });
         });
         return deferred.promise;
@@ -72,9 +75,8 @@ angular.module('lmisChromeApp')
        * Expose Public API
        */
       return {
-        getFacilityInventory: function () {
+        getAll: function () {
           var deferred = $q.defer(), batches = [];
-
           storageService.all(storageService.BATCH).then(function (data) {
             angular.forEach(data, function (datum) {
               if (!angular.equals(datum, undefined)) {
@@ -98,18 +100,17 @@ angular.module('lmisChromeApp')
 
         getByBatchNo: function (batchNo) {
           var deferred = $q.defer(), batch = [];
-
           storageService.all(storageService.BATCH).then(function (data) {
             angular.forEach(data, function (datum) {
-              if (angular.equals(datum, undefined) || !angular.equals(datum.batch_no, batchNo)) return;
+              if (angular.equals(datum, undefined) || !angular.equals(datum.batch_no, batchNo)) {
+                return;
+              }
               getByUUID(datum.uuid).then(function (result) {
                 deferred.notify(datum);
                 batch = result;
                 deferred.resolve(batch);
               });
-
             });
-
           });
           return deferred.promise;
         }

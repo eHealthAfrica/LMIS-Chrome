@@ -17,7 +17,7 @@ angular.module('lmisChromeApp')
 
       // Public API here
       return {
-        getFacilityInventory: function () {
+        getAll: function () {
           var deferred = $q.defer(), facilities = [];
 
           storageService.all(storageService.FACILITY).then(function (data) {
@@ -32,7 +32,9 @@ angular.module('lmisChromeApp')
 
                 $q.all(facilities).then(function (results) {
                   deferred.resolve(results);
-                  if (!$rootScope.$$phase) $rootScope.$apply();
+                  if (!$rootScope.$$phase){
+                    $rootScope.$apply();
+                  }
                 });
               }
           );
@@ -44,7 +46,7 @@ angular.module('lmisChromeApp')
         getCurrentFacility: function(){
           //TODO: replace with facility of current logged in user when we have the session and authentication working.
           var deferred = $q.defer();
-          getByUUID("d48a39fb-6d37-4472-9983-bc0720403719").then(function(data){
+          getByUUID('d48a39fb-6d37-4472-9983-bc0720403719').then(function(data){
             deferred.resolve(data);
           });
           return deferred.promise;

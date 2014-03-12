@@ -41,6 +41,6 @@ angular.module('lmisChromeApp')
       return {
         get: getByUUID,
 
-        getFacilityInventory: getAllProgram
+        getAll: getAllProgram
       };
     });

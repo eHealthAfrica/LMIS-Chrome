@@ -54,13 +54,15 @@ angular.module('lmisChromeApp')
 
             $q.all(facilityStorageUnits).then(function (results) {
               deferred.resolve(results);
-              if (!$rootScope.$$phase) $rootScope.$apply();
+              if (!$rootScope.$$phase) {
+                $rootScope.$apply();
+              }
             });
           });
           return deferred.promise;
         },
 
-        getFacilityInventory: function () {
+        getAll: function () {
           var deferred = $q.defer(), storageUnits = [];
 
           storageService.all(storageService.CCU).then(function (data) {
@@ -75,7 +77,9 @@ angular.module('lmisChromeApp')
 
             $q.all(storageUnits).then(function (results) {
               deferred.resolve(results);
-              if (!$rootScope.$$phase) $rootScope.$apply();
+              if (!$rootScope.$$phase) {
+                $rootScope.$apply();
+              }
             });
           });
           return deferred.promise;

@@ -81,7 +81,7 @@ angular.module('lmisChromeApp')
                 //      `$scope.currentFacility`
                 var deferred = $q.defer();
                 facilityFactory.getCurrentFacility().then(function (facility) {
-                  inventoryFactory.getFacilityInventory(facility.uuid)
+                  inventoryFactory.getAll(facility.uuid)
                       .then(function (inventory) {
                         deferred.resolve(inventory);
                       });

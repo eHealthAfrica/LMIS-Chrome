@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('presentationFactory', function ($q, uomFactory, storageService) {
+    .factory('presentationFactory', function ($q, uomFactory, storageService) {
 
-      function getByUUID(uuid){
+      function getByUUID(uuid) {
         var deferred = $q.defer();
-        storageService.find(storageService.PRODUCT_PRESENTATION, uuid).then(function(data){
-          var productPresentation = data
+        storageService.find(storageService.PRODUCT_PRESENTATION, uuid).then(function (data) {
+          var productPresentation = data;
           productPresentation.uom = data.uom;
-          if(productPresentation !== undefined){
-            uomFactory.get(productPresentation.uom).then(function(data){
-              productPresentation.uom  = data;
+          if (productPresentation !== undefined) {
+            uomFactory.get(productPresentation.uom).then(function (data) {
+              productPresentation.uom = data;
               deferred.notify(productPresentation.uom);
               deferred.resolve(productPresentation);
             });
@@ -19,26 +19,26 @@ angular.module('lmisChromeApp')
         return deferred.promise;
       }
 
-    // Public API here
-    return {
+      // Public API here
+      return {
 
-    getFacilityInventory: function(){
-        var deferred = $q.defer();
-        storageService.get(storageService.PRODUCT_PRESENTATION).then(function(data){
-          var presentations = [];
-          for(var uuid in data){
-            getByUUID(uuid).then(function(data){
-                if(data !== undefined){
+        getAll: function () {
+          var deferred = $q.defer();
+          storageService.get(storageService.PRODUCT_PRESENTATION).then(function (data) {
+            var presentations = [];
+            for (var uuid in data) {
+              getByUUID(uuid).then(function (data) {
+                if (data !== undefined) {
                   presentations.push(data);
                 }
-            });
-          }
-          deferred.resolve(presentations);
-        });
-        return deferred.promise;
-      },
+              });
+            }
+            deferred.resolve(presentations);
+          });
+          return deferred.promise;
+        },
 
-      get: getByUUID
-    };
+        get: getByUUID
+      };
 
-  });
+    });

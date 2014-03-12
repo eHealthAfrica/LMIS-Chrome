@@ -1,20 +1,20 @@
 'use strict';
 
 angular.module('lmisChromeApp').config(function ($stateProvider) {
-  $stateProvider
-      .state('productTypeListView', {
-        url: '/product-types-view',
-        templateUrl: '/views/product-types/product-types-list.html',
-        controller: 'ProductTypeListCtrl',
-        resolve: {
-          productTypes: function (productTypeFactory) {
-            return productTypeFactory.getFacilityInventory();
-          }
-        },
-        data: {
-          label: 'Product types'
-        }
-      }).state('addProductTypeView', {
+  $stateProvider.state('productTypeListView', {
+    url: '/product-types-view',
+    templateUrl: '/views/product-types/product-types-list.html',
+    controller: 'ProductTypeListCtrl',
+    resolve: {
+      productTypes: function (productTypeFactory) {
+        return productTypeFactory.getAll();
+      }
+    },
+    data: {
+      label: 'Product types'
+    }
+  })
+      .state('addProductTypeView', {
         url: '/add-product-type',
         templateUrl: '/views/product-types/add-product-type.html',
         controller: 'AddProductTypeCtrl',
@@ -28,35 +28,35 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  */
     .controller('ProductTypeListCtrl', function ($scope, productTypes, $filter, ngTableParams) {
 
-        // Table defaults
-        var params = {
-          page: 1,
-          count: 10,
-          sorting: {
-            name: 'asc'
-          }
-        };
-
-        // Pagination
-        var resolver = {
-          total: productTypes.length,
-          getData: function ($defer, params) {
-            var filtered, sorted = productTypes;
-            if (params.filter()) {
-              filtered = $filter('filter')(productTypes, params.filter());
-            }
-            if (params.sorting()) {
-              sorted = $filter('orderBy')(filtered, params.orderBy());
-            }
-            params.total(sorted.length);
-            $defer.resolve(sorted.slice(
-                (params.page() - 1) * params.count(),
-                params.page() * params.count()
-            ));
-          }
+      // Table defaults
+      var params = {
+        page: 1,
+        count: 10,
+        sorting: {
+          name: 'asc'
         }
+      };
 
-        $scope.productTypes = new ngTableParams(params, resolver);
+      // Pagination
+      var resolver = {
+        total: productTypes.length,
+        getData: function ($defer, params) {
+          var filtered, sorted = productTypes;
+          if (params.filter()) {
+            filtered = $filter('filter')(productTypes, params.filter());
+          }
+          if (params.sorting()) {
+            sorted = $filter('orderBy')(filtered, params.orderBy());
+          }
+          params.total(sorted.length);
+          $defer.resolve(sorted.slice(
+              (params.page() - 1) * params.count(),
+              params.page() * params.count()
+          ));
+        }
+      };
+
+      $scope.productTypes = new ngTableParams(params, resolver);
     })
 /**
  * AddProductCtrl - This is used to save Product Type to local storage.
@@ -95,7 +95,5 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             type: 'danger'
           });
         }
-
       };
-
-    })
+    });

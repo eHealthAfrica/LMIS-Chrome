@@ -13,7 +13,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             return facilityFactory.getCurrentFacility();
           }
         }
-      }).state('addInventory', {
+      }).state('addNewInventory', {
         url: '/add-inventory?bundleNo',
         templateUrl: '/views/inventory/add-inventory.html',
         controller: 'addInventoryCtrl',
@@ -22,16 +22,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         },
         resolve: {
           productTypes: function (productTypeFactory) {
-            return productTypeFactory.getFacilityInventory();
+            return productTypeFactory.getAll();
           },
           programs: function (programsFactory) {
-            return programsFactory.getFacilityInventory();
+            return programsFactory.getAll();
           },
           uomList: function (uomFactory) {
-            return uomFactory.getFacilityInventory();
+            return uomFactory.getAll();
           },
           facilities: function (facilityFactory) {
-            return facilityFactory.getFacilityInventory();
+            return facilityFactory.getAll();
           },
           currentFacility: function (facilityFactory) {
             return facilityFactory.getCurrentFacility();
@@ -47,7 +47,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       $scope.highlight = visualMarkerService.highlightByExpirationStatus;
       $scope.currentFacility = currentFacility;
-      inventoryFactory.getFacilityInventory(currentFacility.uuid).then(function (inventoryItems) {
+      inventoryFactory.getAll(currentFacility.uuid).then(function (inventoryItems) {
         $scope.totalItems = inventoryItems.length;
 
         // Table defaults

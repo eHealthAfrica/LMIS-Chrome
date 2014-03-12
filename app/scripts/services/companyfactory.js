@@ -8,10 +8,11 @@ angular.module('lmisChromeApp')
         storageService.find(storageService.COMPANY, uuid).then(function (data) {
           if (data !== undefined) {
             //TODO: add other nested attributes e.g company_category, address, contact(Jideobi)
-            
           }
           deferred.resolve(data);
-          if (!$rootScope.$$phase) $rootScope.$apply();
+          if (!$rootScope.$$phase){
+            $rootScope.$apply();
+          }
         });
         return deferred.promise;
       }
@@ -19,7 +20,7 @@ angular.module('lmisChromeApp')
       // Public API here
       return {
 
-        getFacilityInventory: function () {
+        getAll: function () {
           var deferred = $q.defer(), companies = [];
 
           storageService.all(storageService.COMPANY).then(function (data) {
@@ -32,7 +33,9 @@ angular.module('lmisChromeApp')
 
             $q.all(companies).then(function (results) {
               deferred.resolve(results);
-              if (!$rootScope.$$phase) $rootScope.$apply();
+              if (!$rootScope.$$phase){
+                $rootScope.$apply();
+              }
             });
           });
           return deferred.promise;
