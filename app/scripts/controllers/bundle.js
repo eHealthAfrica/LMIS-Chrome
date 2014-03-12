@@ -160,10 +160,11 @@ angular.module('lmisChromeApp')
 
         bundleFactory.saveBundleReceipt(bundleReceipt).then(function (data) {
           if (data.length !== 0) {
-            $state.go('inventoryListView', {add: true});
+            $state.go('home.index.dashboard', {add: true});
           }
 
         }, function (error) {
+          alertsFactory.add({message: error, type: 'danger'});
           console.log(error);
         });
 
