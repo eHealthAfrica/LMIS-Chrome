@@ -160,5 +160,17 @@ angular.module('lmisChromeApp')
 
         $scope.inventories = inventories;
       }
+    })
+    .state('home.index.settings', {
+      url: '/settings',
+      templateUrl: 'views/home/settings.html',
+      resolve: {
+        settings: function(settingsService) {
+          return settingsService.load();
+        }
+      },
+      controller: function($scope, settings) {
+        $scope.settings = settings;
+      }
     });
   });

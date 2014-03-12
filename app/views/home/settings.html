@@ -1,0 +1,99 @@
+<form novalidate ng-submit="save()">
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">Facility Configuration</h4>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label for="settings_facility_name">Facility Name</label>
+              <input type="text" id="settings_facility_name" class="form-control" ng-model="settings.facility_name" />
+            </div>
+            <div class="form-group">
+              <label for="settings_facility_address">Description/Notes</label>
+              <textarea id="settings_facility_address" cols="10" rows="3" class="form-control" ng-model="settings.facility_description"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="settings_facility_operators">Facility Operators</label>
+              <select multiple="multiple" id="settings_facility_operators" class="form-control" ng-model="settings.facility_operators">
+                <option>NPHCDA</option>
+                <option>Kano SPHCMB</option>
+                <option>Katsina SPHCMB</option>
+                <option>Private</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label for="settings_facility_type">Facility Type</label>
+              <select id="settings_facility_type" class="form-control" ng-model="settings.facility_type">
+                <option>Health Facility</option>
+                <option>Zonal Store</option>
+                <option>State Store</option>
+                <option>Regional Store</option>
+                <option>National Store</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="settings_facility_pop">Facility Catchment Population</label>
+              <input type="number" id="settings_facility_pop" class="form-control" ng-model="settings.facility_catchment_population" />
+            </div>
+            <div class="form-group">
+              <label for="settings_facility_products">Facility Products</label>
+              <select multiple="multiple" id="settings_facility_products" class="form-control" ng-model="settings.facility_products">
+                <option>OPV</option>
+                <option>BCG</option>
+                <option>Anti-Malarial</option>
+                <option>Syringe</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <label>Facility Details</label>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="sdp" ng-model="settings.facility_sdp">
+                Service Delivery Point
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="supplier" ng-model="settings.facility_supplies_others">
+                Suppliers Other Facilities
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="active" ng-model="settings.facility_is_active">
+                Facility Currently Active
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="active" ng-model="settings.facility_is_online">
+                On-Line
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="active" ng-model="settings.facility_has_electricity">
+                Has Electricity
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="active" ng-model="settings.facility_is_satellite">
+                Satellite
+              </label>
+            </div>
+          </div>
+          <input type="submit" class="btn btn-default" value="Save" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
