@@ -8,7 +8,7 @@ angular.module('lmisChromeApp')
             templateUrl: '/views/bundles/incoming-log.html',
             controller: 'logIncomingCtrl',
             resolve: {
-              bundleNumbers: function(bundleFactory){
+              bundleNumbers: function (bundleFactory) {
                 return bundleFactory.getBundleNumbers();
               }
             },
@@ -24,13 +24,7 @@ angular.module('lmisChromeApp')
  */
     .controller('logIncomingCtrl', function ($scope, $filter, $state, bundleNumbers, storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
 
-      function getCurrentDate() {
-        var today = new Date();
-        return $filter('date')(today, "yyyy-MM-dd");
-      }
-
       $scope.bundleNumbers = bundleNumbers;
-
       $scope.clicked = false;
       $scope.bundle = {};
       $scope.bundle.date = $filter('date')((new Date()).toTimeString(), "yyyy-MM-dd");
@@ -42,11 +36,11 @@ angular.module('lmisChromeApp')
       /**
        * this is used to return storage unit object at preview page based on the uuid.
        * */
-      $scope.getStorageUnit = function(storageUnitUUID){
-       for(var index in $scope.receivingFacilityStorageUnits){
-         var storageUnit = $scope.receivingFacilityStorageUnits[index];
-         if(storageUnit.uuid === storageUnitUUID) return storageUnit;
-       }
+      $scope.getStorageUnit = function (storageUnitUUID) {
+        for (var index in $scope.receivingFacilityStorageUnits) {
+          var storageUnit = $scope.receivingFacilityStorageUnits[index];
+          if (storageUnit.uuid === storageUnitUUID) return storageUnit;
+        }
         return {};
       };
 
@@ -71,7 +65,7 @@ angular.module('lmisChromeApp')
        */
       $scope.showBundle = function () {
 
-        if($scope.show === true && $scope.showPreview === true){
+        if ($scope.show === true && $scope.showPreview === true) {
           $scope.showPreview = false;
           return;
         }
@@ -82,7 +76,7 @@ angular.module('lmisChromeApp')
         };
 
         $scope.subtract = function (param) {
-          param = (isNaN(param) || (param <= 0))? 0 : (parseInt(param) - 1);
+          param = (isNaN(param) || (param <= 0)) ? 0 : (parseInt(param) - 1);
           return param;
         };
 
@@ -120,19 +114,16 @@ angular.module('lmisChromeApp')
        * shows preview page after entering incoming bundle details. validations and display of error message takes place
        * here.
        */
-      $scope.previewLogBundleForm = function(){
+      $scope.previewLogBundleForm = function () {
         $scope.showPreview = true;
         console.log($scope.logIncomingForm);
-      }
+      };
 
 
       /**
        * Function called when authorize button is clicked and it saves the bundle info, to generate bundle receipt.
        */
       $scope.save = function () {
-
-        console.log($scope.bundle);
-
         var bundleReceiptLines = [];
         for (var index in $scope.bundle.bundle_lines) {
           var bundleLine = $scope.bundle.bundle_lines[index];
@@ -148,7 +139,6 @@ angular.module('lmisChromeApp')
           bundleReceiptLines.push(bundleReceiptLine);
         }
 
-
         var bundleReceipt = {
           "bundle": $scope.bundle.uuid,
           "user": $scope.loggedInUser.id,
@@ -160,15 +150,13 @@ angular.module('lmisChromeApp')
 
         bundleFactory.saveBundleReceipt(bundleReceipt).then(function (data) {
           if (data.length !== 0) {
-            $state.go('home.index.dashboard', {add: true});
+            $state.go('home.index.dashboard', {logSucceeded: true});
           }
-
         }, function (error) {
           alertsFactory.add({message: error, type: 'danger'});
           console.log(error);
         });
 
-
-      }
+      };
     });
 

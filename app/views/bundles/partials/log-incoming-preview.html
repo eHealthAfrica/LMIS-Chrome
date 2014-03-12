@@ -75,14 +75,20 @@
 
                   <div class="col-sm-4">
                     <label>Verify Quantity</label>
-                    <input ng-model="logIncomingForm.verify[bundleLine.uuid]" class="form-control" ng-disabled="true" type="text"/>
+                    <input ng-model="logIncomingForm.verify[bundleLine.uuid]" class="form-control" ng-disabled="true"
+                           type="text"/>
                   </div>
 
                   <div class="col-sm-4">
                     <label translate="storageUnit"></label>
-                    <input value="{{ getStorageUnit(logIncomingForm.storage_units[bundleLine.uuid]).name }}" class="form-control"
-                           ng-disabled="true" type="text"/>
-
+                    <select class="form-control" ng-model="logIncomingForm.storage_units[bundleLine.uuid]" ng-disabled="true">
+                      <option value="" translate="addToStorageUnit"></option>
+                      <option ng-repeat="storageUnit in receivingFacilityStorageUnits"
+                              value="{{ storageUnit.uuid }}"
+                              ng-selected="{{ (logIncomingForm.storage_units[bundleLine.uuid]).uuid === storageUnit.uuid }}"
+                              ng-bind="storageUnit.name ">
+                      </option>
+                    </select>
                   </div>
                 </div>
               </div>

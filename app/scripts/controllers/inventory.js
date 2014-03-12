@@ -2,14 +2,14 @@
 angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider
       .state('inventoryListView', {
-        url: '/inventory-list?add',
+        url: '/inventory-list',
         templateUrl: '/views/inventory/index.html',
         controller: 'inventoryMainCtrl',
         data: {
           label: "Inventory List"
         },
         resolve: {
-          currentFacility: function(facilityFactory){
+          currentFacility: function (facilityFactory) {
             return facilityFactory.getCurrentFacility();
           }
         }
@@ -33,7 +33,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           facilities: function (facilityFactory) {
             return facilityFactory.getFacilityInventory();
           },
-          currentFacility: function(facilityFactory){
+          currentFacility: function (facilityFactory) {
             return facilityFactory.getCurrentFacility();
           }
         }
@@ -42,22 +42,12 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 /**
  * Controller for showing inventory
  */
-    .controller('inventoryMainCtrl', function ($rootScope, $stateParams, $scope, currentFacility, inventoryFactory, $filter, ngTableParams, visualMarkerService, $translate, alertsFactory) {
+    .controller('inventoryMainCtrl', function ($rootScope, $stateParams, $scope, currentFacility, inventoryFactory,
+                                               $filter, ngTableParams, visualMarkerService, $translate, alertsFactory) {
 
       $scope.highlight = visualMarkerService.highlightByExpirationStatus;
-
-      if ($stateParams.add === "true") {
-        $stateParams.add = '';
-        $translate('addInventorySuccessMessage')
-            .then(function (msg) {
-              alertsFactory.add({message: msg, type: 'success'});
-            });
-      }
-
       $scope.currentFacility = currentFacility;
-
       inventoryFactory.getFacilityInventory(currentFacility.uuid).then(function (inventoryItems) {
-
         $scope.totalItems = inventoryItems.length;
 
         // Table defaults
@@ -79,35 +69,34 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             ));
           }
         }
-
         $scope.inventory = new ngTableParams(params, resolver);
-
       });
-
 
       $scope.getProductTypeUOM = function (inventoryLine) {
         var product = $scope.getProductType(inventoryLine)
         return product.base_uom;
       };
 
-      $scope.getBatch= function(inventoryLine){
-        return (toString.call(inventoryLine.batch) === '[object Object]')?
+      $scope.getBatch = function (inventoryLine) {
+        return (toString.call(inventoryLine.batch) === '[object Object]') ?
             inventoryLine.batch.batch_no : inventoryLine.batch;
       }
 
-      $scope.getProductType= function(inventoryLine){
-        console.log(inventoryLine);
-        return (toString.call(inventoryLine.batch) === '[object Object]')? inventoryLine.batch.product : inventoryLine.product_type;
+      $scope.getProductType = function (inventoryLine) {
+        return (toString.call(inventoryLine.batch) === '[object Object]')
+            ? inventoryLine.batch.product : inventoryLine.product_type;
       }
-
     })
 /**
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
     .controller('addInventoryCtrl', function ($scope, $filter, $stateParams, currentFacility, storageService, $state,
-                                              inventoryFactory, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
-    //used to hold form data
+                                              inventoryFactory, productTypes, programs, uomList, facilities,
+                                              batchFactory, storageUnitFactory) {
+
+      //used to hold form data
+      var id = 0;
       $scope.inventory = {
         showForm: true,
         authorized: false,
@@ -116,23 +105,21 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         bundle_no: $stateParams.bundleNo
       }
 
-      $scope.add = function(inventoryLine){
-        inventoryLine.quantity = isNaN(inventoryLine.quantity)? 1 : (parseInt(inventoryLine.quantity) + 1);
+      $scope.add = function (inventoryLine) {
+        inventoryLine.quantity = isNaN(inventoryLine.quantity) ? 1 : (parseInt(inventoryLine.quantity) + 1);
       }
 
-      $scope.subtract = function(inventoryLine){
+      $scope.subtract = function (inventoryLine) {
         inventoryLine.quantity = (isNaN(inventoryLine.quantity) || (inventoryLine.quantity <= 0))
             ? 0 : (parseInt(inventoryLine.quantity) - 1);
       }
-
-      var id = 0;
 
       //load data used to populate form fields
       $scope.productTypes = productTypes;
       $scope.programs = programs;
       $scope.uomList = uomList;
       $scope.facilities = facilities;
-      $scope.inventory.receiving_facility =  currentFacility;
+      $scope.inventory.receiving_facility = currentFacility;
       $scope.receivingFacilityStorageUnits = []
 
       function loadCurrentFacilityStorageUnits(facilityUUID) {
@@ -148,7 +135,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         inventoryLine.isDisabled = false;
         batchFactory.getByProductType(inventoryLine.productType).then(function (data) {
           inventoryLine.productTypeBatches = data;
-          if(inventoryLine.productTypeBatches.length === 0) {inventoryLine.batch_no = '';}
+          if (inventoryLine.productTypeBatches.length === 0) {
+            inventoryLine.batch_no = '';
+          }
         });
       }
 
@@ -176,7 +165,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.inventory.date_receipt = Date.parse($scope.inventory.date_receipt);
         inventoryFactory.save($scope.inventory).then(function (result) {
           if (result.length !== 0) {
-            $state.go('inventoryListView', {add: true});
+            $state.go('home.index.dashboard', {logSucceeded: true});
           }
         });
       }
