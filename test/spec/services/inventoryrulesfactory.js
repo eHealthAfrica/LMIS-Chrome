@@ -18,44 +18,49 @@ describe('Service: inventoryRulesFactory', function() {
     facilities = facilitiesMock;
   }));
 
-  it('should calculate the lead time for an order in ms', function() {
-    var leadTime = inventoryRulesFactory.leadTime(orders[0]);
-    expect(typeof leadTime).toBe('number');
-    expect(leadTime).toBe(302400000);
-  });
-
-  it('should fail with non-compliant datestrings', function() {
-    // Expects RFC2822 or ISO 8601 dates
-    // See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-    var order = {
-      // Whitespace separator is invalid here; should be 'T'
-      created: '2014-03-04 12:30:30',
-      // Just the date component is valid ISO 8601
-      // jshint camelcase: false
-      date_receipt: '2014-03-08',
-    };
-
-    var leadTime = inventoryRulesFactory.leadTime(order);
-    expect(leadTime).toBeNaN();
-  });
-
-  it('should calculate a facility consumption level', function() {
-    var consumption = inventoryRulesFactory.consumption(facilities[0]);
-    expect(typeof consumption).toBe('number');
-  });
-
-  it('should calculate the lead-time consumption', function() {
-    var leadTime = 0, leadTimes = [], consumptions = [10, 40];
-
-    orders.forEach(function(order) {
-      leadTime = inventoryRulesFactory.leadTime(order);
-      leadTimes.push(leadTime);
+  describe('lead time', function() {
+    it('should calculate the lead time for an order in ms', function() {
+      var leadTime = inventoryRulesFactory.leadTime(orders[0]);
+      expect(typeof leadTime).toBe('number');
+      expect(leadTime).toBe(302400000);
     });
 
-    var ltc = inventoryRulesFactory.leadTimeConsumption(leadTimes, consumptions);
+    it('should fail with non-compliant datestrings', function() {
+      // Expects RFC2822 or ISO 8601 dates
+      // See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+      var order = {
+        // Whitespace separator is invalid here; should be 'T'
+        created: '2014-03-04 12:30:30',
+        // Just the date component is valid ISO 8601
+        // jshint camelcase: false
+        date_receipt: '2014-03-08',
+      };
 
-    expect(typeof ltc).toBe('number');
-    expect(ltc).toBe(42660000000);
+      var leadTime = inventoryRulesFactory.leadTime(order);
+      expect(leadTime).toBeNaN();
+    });
   });
 
+  describe('consumption', function() {
+    it('should calculate a facility consumption level', function() {
+      var consumption = inventoryRulesFactory.consumption(facilities[0]);
+      expect(typeof consumption).toBe('number');
+    });
+  });
+
+  describe('lead-time consumption', function() {
+    it('should calculate the lead-time consumption', function() {
+      var leadTime = 0, leadTimes = [], consumptions = [10, 40];
+
+      orders.forEach(function(order) {
+        leadTime = inventoryRulesFactory.leadTime(order);
+        leadTimes.push(leadTime);
+      });
+
+      var ltc = inventoryRulesFactory.leadTimeConsumption(leadTimes, consumptions);
+
+      expect(typeof ltc).toBe('number');
+      expect(ltc).toBe(42660000000);
+    });
+  });
 });
