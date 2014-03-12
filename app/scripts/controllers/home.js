@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .config(function ($stateProvider) {
+  .config(function($stateProvider) {
     $stateProvider.state('home', {
       url: '/home',
       abstract: true,
@@ -163,6 +163,7 @@ angular.module('lmisChromeApp')
     })
     .state('home.index.settings', {
       url: '/settings',
+      abstract: true,
       templateUrl: 'views/home/settings.html',
       resolve: {
         settings: function(settingsService) {
@@ -170,7 +171,21 @@ angular.module('lmisChromeApp')
         }
       },
       controller: function($scope, settings) {
+        settings.facility = {};
+        settings.inventory = {};
         $scope.settings = settings;
+      }
+    })
+    .state('home.index.settings.facility', {
+      templateUrl: 'views/home/settings/facility.html',
+      controller: function($scope, settings) {
+        $scope.facility = settings.facility;
+      }
+    })
+    .state('home.index.settings.inventory', {
+      templateUrl: 'views/home/settings/inventory.html',
+      controller: function($scope, settings) {
+        $scope.inventory = settings.inventory;
       }
     });
   });

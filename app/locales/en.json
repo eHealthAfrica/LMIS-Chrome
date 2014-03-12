@@ -74,5 +74,8 @@
   "privacyPolicy": "Privacy Policy",
   "contactUs": "Contact us",
   "processAnOrder": "Process an order",
-  "settings": "Settings"
+  "settings": "Settings",
+  "facility": "Facility",
+  "inventory": "Inventory",
+  "reset": "Reset"
 }
