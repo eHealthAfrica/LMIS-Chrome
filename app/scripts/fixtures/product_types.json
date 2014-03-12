@@ -10,39 +10,6 @@
       "description": "auto disable 0.05ml syringe for injection",
       "active": true
     },
-    "28cfb1aa-a2e9-4283-8854-5bdd81aeb00c": {
-      "uuid": "28cfb1aa-a2e9-4283-8854-5bdd81aeb00c",
-      "created": "2014-01-16T20:07:24.146Z",
-      "modified": "2014-01-16T20:10:44.410Z",
-      "is_deleted": false,
-      "code": "ITN-Small-Circular",
-      "name": "Insectide Treated Net Circular 850x56x220",
-      "base_uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
-      "description": "",
-      "active": true
-    },
-    "2d7bb63c-ebbc-474c-a2bc-685245241e73": {
-      "uuid": "2d7bb63c-ebbc-474c-a2bc-685245241e73",
-      "created": "2014-01-17T11:19:48.225Z",
-      "modified": "2014-01-17T11:19:48.269Z",
-      "is_deleted": false,
-      "code": "Vit-A-Cap-100000-UL",
-      "name": "Vitamin A Capsule 100,000 UL",
-      "base_uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
-      "description": "for child suppliments",
-      "active": true
-    },
-    "332dba42-88c8-42bf-873c-3f177bd494ae": {
-      "uuid": "332dba42-88c8-42bf-873c-3f177bd494ae",
-      "created": "2014-01-15T15:35:10.482Z",
-      "modified": "2014-01-15T15:35:10.508Z",
-      "is_deleted": false,
-      "code": "DTP-HepB",
-      "name": "Diphtheria, Tetanus and Pertussis - Hepatitis B Vaccine",
-      "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
-      "description": "",
-      "active": true
-    },
     "367f3f7f-a1cc-4266-8a0a-020722576cc9": {
       "uuid": "367f3f7f-a1cc-4266-8a0a-020722576cc9",
       "created": "2014-01-16T19:55:24.948Z",
@@ -74,17 +41,6 @@
       "name": "Oral Polio Vaccine",
       "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
       "description": "",
-      "active": true
-    },
-    "de686858-088b-40c7-b22f-727ec8856374": {
-      "uuid": "de686858-088b-40c7-b22f-727ec8856374",
-      "created": "2014-01-15T16:03:30.515Z",
-      "modified": "2014-01-15T16:03:30.541Z",
-      "is_deleted": false,
-      "code": "M-OPV1",
-      "name": "Monovalent OPV-1 Vaccine",
-      "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
-      "description": "it consists of live, attenuated (weakened) poliovirus strains of Type 1",
       "active": true
     },
     "00f987e4-54e1-46f0-820b-b249a6d38759": {
@@ -164,17 +120,6 @@
       "description": "",
       "active": true
     },
-    "06c300db-cd21-401d-9bba-71d0b0b0b3b2": {
-      "uuid": "06c300db-cd21-401d-9bba-71d0b0b0b3b2",
-      "created": "2014-01-16T13:41:09.609Z",
-      "modified": "2014-01-16T13:44:46.507Z",
-      "is_deleted": false,
-      "code": "MV-A/C/W/Y",
-      "name": "Meningococcal A/C/W/Y Vaccine",
-      "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
-      "description": "",
-      "active": true
-    },
     "abe41e88-ab4a-4c6f-b7a4-4549e13fb758": {
       "uuid": "abe41e88-ab4a-4c6f-b7a4-4549e13fb758",
       "created": "2014-01-16T08:22:44.387Z",
@@ -184,28 +129,6 @@
       "name": "Bacillus Calmette\u2013Gu\u00e9rin Diluent",
       "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
       "description": "diluent for Bacillus Calmette\u2013Gu\u00e9rin vaccine",
-      "active": true
-    },
-    "dcd39603-a606-4d49-b72f-ce902c57e689": {
-      "uuid": "dcd39603-a606-4d49-b72f-ce902c57e689",
-      "created": "2014-01-16T08:04:37.917Z",
-      "modified": "2014-01-16T08:04:37.940Z",
-      "is_deleted": false,
-      "code": "dil-MV-A",
-      "name": "Meningitis A Diluent",
-      "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
-      "description": "diluent for Meningitis A vaccine",
-      "active": false
-    },
-    "07c310db-cd21-401d-9bba-71d0b0b0b3b2": {
-      "uuid": "07c310db-cd21-401d-9bba-71d0b0b0b3b2",
-      "created": "2014-01-16T13:41:09.609Z",
-      "modified": "2014-01-16T13:44:46.507Z",
-      "is_deleted": false,
-      "code": "Dil-MV-A/C/W/Y",
-      "name": "Meningococcal A/C/W/Y Diluent",
-      "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
-      "description": "Dileunt for Meningococcal A/C/W/Y Vaccine",
       "active": true
     },
     "111fbb51-0c5a-492a-97f6-2c7664e23d01": {
@@ -235,10 +158,10 @@
       "created": "2014-01-16T08:23:10.175Z",
       "modified": "2014-01-16T08:23:10.194Z",
       "is_deleted": false,
-      "code": "Dil-Measles",
-      "name": "Measles Diluent",
+      "code": "Penta",
+      "name": "Penta Vaccine",
       "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
-      "description": "diluent for Measles Vaccine",
+      "description": "provides protection against dangerous child-hood diseases.",
       "active": true
     }
   }

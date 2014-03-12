@@ -11,7 +11,7 @@ angular.module('lmisChromeApp')
        *  folder that holds data used to pre-fill local storage if it is empty.
        *
        */
-      var product_types = 'new_product_types';
+      var product_types = 'product_types';
       var productCategory = 'product_category';
       var address = 'address';
       var uom = 'uom';
@@ -398,6 +398,8 @@ angular.module('lmisChromeApp')
         try {
           getTable(tableName).then(function (data) {
             result = data[key];
+            console.log(tableName)
+            console.log(result);
             deferred.resolve(result);
             if (!$rootScope.$$phase) $rootScope.$apply();
           });

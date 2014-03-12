@@ -1,0 +1,95 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">Add New Inventory</h4>
+  </div>
+  <div class="panel-body">
+    <form ng-submit="save()">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">Order Detail</h4>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="sendingFacility" translate="sendingFacility"></label>
+                      <select id="sendingFacility" class="form-control" ng-model="inventory.sending_facility"
+                              required>
+                        <option value="" translate="selectSendingFacility"></option>
+                        <option ng-repeat="facility in facilities" value="{{ facility.uuid }}"
+                                ng-bind="facility.name"></option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="receivingFacility" translate="receivingFacility"></label>
+                      <input class="form-control" type="text" name="receivingFacility" id="receivingFacility"
+                             ng-model="(inventory.receiving_facility).name" ng-disabled="true"/>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="bundleNo" translate="bundleNo"></label>
+                      <input class="form-control" type="text" name="bundleNo" id="bundleNo"
+                             ng-model="inventory.bundle_no" placeholder="e.g KNC-THF-01-9803" required/>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="receiptDate" translate="dateReceived"></label>
+                      <input ng-model="inventory.date_receipt" class="form-control" type="date" name="receiptDate"
+                             id="receiptDate" required/>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">New Inventory Detail</h4>
+            </div>
+            <div class="panel-body" ng-show="(inventory.inventory_lines).length !== 0">
+              <div class="div-striped" ng-repeat="inventoryLine in inventory.inventory_lines"
+                   ng-include="'views/inventory/forms/partials/add-inventory-line.html'">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <div class="col-md-4 pull-left">
+            <button type="button" name="addInventoryLine" class="btn btn-default" ng-click="addInventoryLine()">
+              <span><i class="fa fa-plus"></i></span>
+              <span>Add inventory line</span>
+            </button>
+          </div>
+
+          <div class="col-md-4 pull-right">
+            <button ng-click="inventory.showForm = false" type="button" id="preview" name="preview"
+                    class="btn btn-success">
+              <span translate="preview"></span>
+              <i class="fa fa-eye"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

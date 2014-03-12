@@ -96,6 +96,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.getProductType= function(inventoryLine){
+        console.log(inventoryLine);
         return (toString.call(inventoryLine.batch) === '[object Object]')? inventoryLine.batch.product : inventoryLine.product_type;
       }
 
@@ -108,6 +109,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
                                               inventoryFactory, productTypes, programs, uomList, facilities, batchFactory, storageUnitFactory) {
     //used to hold form data
       $scope.inventory = {
+        showForm: true,
         authorized: false,
         inventory_lines: [],
         date_receipt: $filter('date')(Date.parse(new Date()), 'yyyy-MM-dd'),
@@ -171,10 +173,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.save = function () {
-        console.log($scope.inventory);
         $scope.inventory.date_receipt = Date.parse($scope.inventory.date_receipt);
-        console.log($scope.inventory);
-        return;
         inventoryFactory.save($scope.inventory).then(function (result) {
           if (result.length !== 0) {
             $state.go('inventoryListView', {add: true});

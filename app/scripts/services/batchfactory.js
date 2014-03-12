@@ -10,7 +10,7 @@ angular.module('lmisChromeApp')
           var batch = data;
           if (batch !== undefined) {
             //replace nested attribute with their json object
-            productTypeFactory.get(batch.product.uuid).then(function (data) {
+            productTypeFactory.get(batch.product).then(function (data) {
               batch.product = data;
             });
             presentationFactory.get(batch.presentation).then(function (data) {
@@ -45,7 +45,6 @@ angular.module('lmisChromeApp')
        *
        * @param productTypeUUID - uuid of product type you want to return batches that are of the product type.
        */
-        //TODO: when we move to IndexedDB find a way of using indices to get this from the database.
       function getBatchesByProductType(productTypeUUID) {
         var deferred = $q.defer(), productTypeBatches = [];
 
