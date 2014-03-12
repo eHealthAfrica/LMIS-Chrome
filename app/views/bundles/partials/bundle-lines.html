@@ -38,13 +38,15 @@
 
       <div class="input-group">
                         <span class="input-group-btn">
-                          <button class="btn btn-warning" type="button" ng-click="subtract(bundleLine)">
+                          <button class="btn btn-warning" type="button"
+                                  ng-click="logIncomingForm.verify[bundleLine.uuid] =subtract(logIncomingForm.verify[bundleLine.uuid])">
                             <i class="fa fa-minus"></i>
                           </button>
                       </span>
         <input type="text" class="form-control" ng-model="logIncomingForm.verify[bundleLine.uuid]" required>
                         <span class="input-group-btn">
-                        <button class="btn btn-info" type="button" ng-click="add(bundleLine)">
+                        <button class="btn btn-info" type="button"
+                                ng-click="logIncomingForm.verify[bundleLine.uuid] = add(logIncomingForm.verify[bundleLine.uuid])">
                           <i class="fa fa-plus"></i>
                         </button>
                         </span>

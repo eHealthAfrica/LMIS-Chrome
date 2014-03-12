@@ -110,7 +110,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.inventory = {
         authorized: false,
         inventory_lines: [],
-        date_receipt: $filter('date')(new Date(), 'yyyy-MM-dd'),
+        date_receipt: $filter('date')(Date.parse(new Date()), 'yyyy-MM-dd'),
         bundle_no: $stateParams.bundleNo
       }
 

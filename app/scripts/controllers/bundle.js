@@ -71,13 +71,19 @@ angular.module('lmisChromeApp')
        */
       $scope.showBundle = function () {
 
-        $scope.add = function (bundleLine) {
-          bundleLine.verify = isNaN(bundleLine.verify) ? 1 : (parseInt(bundleLine.verify) + 1);
+        if($scope.show === true && $scope.showPreview === true){
+          $scope.showPreview = false;
+          return;
+        }
+
+        $scope.add = function (param) {
+          param = isNaN(param) ? 1 : (parseInt(param) + 1);
+          return param;
         };
 
-        $scope.subtract = function (bundleLine) {
-          bundleLine.verify = (isNaN(bundleLine.verify) || (bundleLine.verify <= 0))
-              ? 0 : (parseInt(bundleLine.verify) - 1);
+        $scope.subtract = function (param) {
+          param = (isNaN(param) || (param <= 0))? 0 : (parseInt(param) - 1);
+          return param;
         };
 
         $scope.clicked = true;
@@ -100,7 +106,6 @@ angular.module('lmisChromeApp')
               });
         });
       };
-
 
       /**
        * Function used to hide form used to log incoming bundle form.
