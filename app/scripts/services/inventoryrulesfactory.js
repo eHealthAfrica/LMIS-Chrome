@@ -10,12 +10,30 @@ angular.module('lmisChromeApp')
      * bundle arrives at the facility, measured in days.
      *
      * @param {Object} order An order object with created & date_receipt fields
-     * @return {Number} the lead time in ms, otherwise NaN
+     * @return {Number} the lead time in ms
+     * @throws error on an invalid date field
      */
     var leadTime = function(order) {
+      var isValidDate = function isValidDate(date) {
+        if(Object.prototype.toString.call(date) !== '[object Date]') {
+          return false;
+        }
+        if(isNaN(date.getTime())) {
+          throw new Error(date);
+        }
+      };
+
       var created = new Date(order.created);
       // jshint camelcase: false
       var received = new Date(order.date_receipt);
+
+      isValidDate(created);
+      isValidDate(received);
+
+      if(created > received) {
+        throw new Error('Order was created before it was received');
+      }
+
       return received - created;
     };
 

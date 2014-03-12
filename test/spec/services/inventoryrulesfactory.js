@@ -36,8 +36,9 @@ describe('Service: inventoryRulesFactory', function() {
         date_receipt: '2014-03-08',
       };
 
-      var leadTime = inventoryRulesFactory.leadTime(order);
-      expect(leadTime).toBeNaN();
+      expect(function() {
+        inventoryRulesFactory.leadTime(order);
+      }).toThrow('Invalid Date');
     });
 
     it('should fail if the order has not been received', function() {
@@ -47,9 +48,21 @@ describe('Service: inventoryRulesFactory', function() {
         {created: '2014-03-04T12:30:30', date_receipt: ''}
       ];
       orders.forEach(function(order) {
-        var leadTime = inventoryRulesFactory.leadTime(order);
-        expect(leadTime).toBeNaN();
+        expect(function() {
+          inventoryRulesFactory.leadTime(order);
+        }).toThrow('Invalid Date');
       });
+    });
+
+    it('should throw if created before received', function() {
+      var order = {
+        created: '2014-03-04T12:30:30Z',
+        // jshint camelcase: false
+        date_receipt: '2014-03-04',
+      };
+      expect(function() {
+        inventoryRulesFactory.leadTime(order);
+      }).toThrow('Order was created before it was received');
     });
   });
 

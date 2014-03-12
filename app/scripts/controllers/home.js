@@ -139,10 +139,15 @@ angular.module('lmisChromeApp')
 
         inventoryFactory.getFacilityInventory(currentFacility.uuid)
           .then(function(inventories) {
+            var lt = -1;
             angular.forEach(inventories, function(inventory) {
-              var lt = inventoryRulesFactory.leadTime(inventory);
-              lt = $window.humanizeDuration(lt);
-              inventory.leadTime = lt;
+              try {
+                lt = inventoryRulesFactory.leadTime(inventory);
+                lt = $window.humanizeDuration(lt);
+                inventory.leadTime = lt;
+              } catch(e) {
+                inventory.leadTime = e;
+              }
             });
             $scope.inventories = inventories;
           });
