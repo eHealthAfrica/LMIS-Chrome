@@ -39,6 +39,18 @@ describe('Service: inventoryRulesFactory', function() {
       var leadTime = inventoryRulesFactory.leadTime(order);
       expect(leadTime).toBeNaN();
     });
+
+    it('should fail if the order has not been received', function() {
+      // jshint camelcase: false
+      var orders = [
+        {created: '2014-03-04T12:30:30'},
+        {created: '2014-03-04T12:30:30', date_receipt: ''}
+      ];
+      orders.forEach(function(order) {
+        var leadTime = inventoryRulesFactory.leadTime(order);
+        expect(leadTime).toBeNaN();
+      });
+    });
   });
 
   describe('consumption', function() {
