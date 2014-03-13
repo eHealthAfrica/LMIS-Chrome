@@ -1,8 +1,8 @@
 <div ng-controller="StockCountFormCtrl">
     <div class="row">
         <div class="col-sm-12">
-            <h3 class="text-center">Stock Count for {{ facility_object.name }}</h3>
-            <!--h5>Month: {{ report_month }} Year: {{ report_year }}</h5-->
+            <h3 class="text-center">Stock Count for {{ facilityObject.name }}</h3>
+            <h5 class="text-center">{{ monthList[reportMonth] }} {{ reportYear }}</h5>
         </div>
     </div>
     <div class="row">
@@ -66,7 +66,8 @@
             <div class="col-sm-2">
                 <select ng-model="stockCount.day" class="form-control">
                     <option value="">-- select day --</option>
-                    <option ng-selected="day == current_day" ng-repeat="day in daysInMonth" value="{{ day }}">{{ day }}</option>
+                    <option ng-selected="day == currentDay" ng-repeat="day in daysInMonth" value="{{ day }}">{{ day
+                      }}</option>
                 </select>
             </div>
         </div>
@@ -90,7 +91,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="product in stock_products">
+                                    <tr ng-repeat="product in stockProducts">
                                         <td class="form-label">{{ product }}</td>
                                         <td>
                                             <div class="col-sm-6">
