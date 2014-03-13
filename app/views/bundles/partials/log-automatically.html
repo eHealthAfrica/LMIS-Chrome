@@ -5,8 +5,7 @@
       <div class="panel-heading">
         <h4 class="panel-title">Bundle Detail</h4>
       </div>
-
-      <form name="logIncomingBundle" ng-submit="save()">
+      <form name="logIncomingBundle" ng-submit="previewLogBundleForm()">
         <div class="panel-body">
           <div class="col-sm-12">
             <div class="col-sm-6">
@@ -33,8 +32,7 @@
 
             <div class="col-sm-6">
               <label>Date <i class="fa fa-calendar"></i></label>
-              <input ng-model="bundle.date" class="form-control" type="date" name="receiptDate"
-                     id="receiptDate" required=""/>
+              <input ng-model="date_receipt" class="form-control" type="date" name="receiptDate" required/>
             </div>
           </div>
         </div>
@@ -56,15 +54,13 @@
               </div>
             </div>
             <div class="col-md-4 pull-right">
-              <button ng-click="previewLogBundleForm()" type="button" id="preview" name="preview"
-                      class="btn btn-success">
-                <span translate="preview"></span>
-                <i class="fa fa-eye"></i>
+              <button type="submit" id="save" name="save" class="btn btn-success">
+                <span translate="save"></span>
+                <i class="fa fa-save"></i>
               </button>
             </div>
           </div>
         </div>
-
       </form>
     </div>
   </div>

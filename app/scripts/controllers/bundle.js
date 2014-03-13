@@ -25,12 +25,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.bundleNumbersAutoCompleteList = bundleNumbers;
       $scope.clicked = false;
       $scope.bundle = {};
-      $scope.bundle.date = $filter('date')((new Date()), "yyyy-MM-dd");
+      $scope.date_receipt = new Date();
       $scope.getFacilityStorageUnits = [];
       $scope.logIncomingForm = {};
       $scope.logIncomingForm.verify = [];
       $scope.logIncomingForm.storage_units = [];
-
       /**
        * this is used to return storage unit object at preview page based on the uuid.
        * */
@@ -68,16 +67,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           return;
         }
 
-        $scope.add = function (param) {
-          param = isNaN(param) ? 1 : (parseInt(param) + 1);
-          return param;
-        };
-
-        $scope.subtract = function (param) {
-          param = (isNaN(param) || (param <= 0)) ? 0 : (parseInt(param) - 1);
-          return param;
-        };
-
         $scope.clicked = true;
         bundleFactory.getBundle($scope.showBundleNo).then(function (data) {
           $scope.bundle = data;
@@ -88,11 +77,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           $scope.showAddManually = false;
           return;
         }, function () {
+          var errorMsg;
           $translate('bundleNotFound', {id: $scope.showBundleNo})
               .then(function (msg) {
-                alertsFactory.add({message: msg, type: 'danger'});
+                errorMsg = msg;
                 $scope.showAddManually = true;
               });
+          $scope.bundleNoErrorMsg = errorMsg;
         });
       };
 
@@ -110,8 +101,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
        * here.
        */
       $scope.previewLogBundleForm = function () {
+        console.log("here");
         $scope.showPreview = true;
-        console.log($scope.logIncomingForm);
       };
 
 
@@ -137,7 +128,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         var bundleReceipt = {
           "bundle": $scope.bundle.uuid,
           "user": $scope.loggedInUser.id,
-          "date_receipt": Date.parse($scope.bundle.date),
+          "date_receipt": $scope.date_receipt.toISOString(),
           "bundle_receipt_lines": bundleReceiptLines,
           "receiving_facility": $scope.bundle.receiving_facility.uuid,
           "sending_facility": $scope.bundle.parent.uuid

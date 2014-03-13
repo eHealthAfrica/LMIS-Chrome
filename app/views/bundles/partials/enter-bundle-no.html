@@ -17,7 +17,7 @@
 
 
 <div class="col-sm-6" ng-show="showAddManually">
-  <div class="row ">
+  <div class="row">
     <div class="col-sm-6 pull-left">
       <span class="label"></span>
       <label for="bundleNo">&nbsp;</label>
@@ -27,5 +27,31 @@
     <span><i class="fa fa-plus"></i></span>
     <span translate="addNewInventory"></span>
   </a>
-
 </div>
+
+<div class="col-sm-12" ng-show="!show && clicked">
+  <br/>
+  <div class="alert alert-danger">
+    <span translate="bundleNotFound" translate-value-id="{{$parent.showBundleNo}}"></span>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
