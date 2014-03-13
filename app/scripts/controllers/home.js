@@ -7,19 +7,16 @@ angular.module('lmisChromeApp')
       abstract: true,
       templateUrl: 'views/home/index.html',
       resolve: {
-        currentFacility: function($q, facilityFactory, locationsFactory) {
-          var deferred = $q.defer();
-          facilityFactory.getCurrentFacility().then(function(facility) {
-            locationsFactory.get(facility.location).then(function(location) {
-              facility.location = location;
-              deferred.resolve(facility);
-            });
-          });
-          return deferred.promise;
+        currentFacility: function(facilityFactory) {
+          return facilityFactory.getCurrentFacility();
+        },
+        facilityLocation: function(currentFacility, locationsFactory) {
+          return locationsFactory.get(currentFacility.location);
         }
       },
-      controller: function($scope, currentFacility) {
+      controller: function($scope, currentFacility, facilityLocation) {
         $scope.currentFacility = currentFacility;
+        $scope.facilityLocation = facilityLocation;
       }
     })
     .state('home.index', {
@@ -74,7 +71,12 @@ angular.module('lmisChromeApp')
     .state('home.index.dashboard', {
       url: '/dashboard',
       templateUrl: 'views/home/dashboard.html',
-      controller: function($scope, inventoryFactory, inventoryRulesFactory, $window, currentFacility) {
+      resolve: {
+        inventories: function(currentFacility, inventoryFactory) {
+          return inventoryFactory.getFacilityInventory(currentFacility.uuid);
+        }
+      },
+      controller: function($scope, inventories, inventoryRulesFactory, $window) {
         var keys = {
           below: {
             label: 'Below buffer',
@@ -137,20 +139,17 @@ angular.module('lmisChromeApp')
         $scope.inventoryKeys = keys;
         $scope.inventoryValues = values;
 
-        inventoryFactory.getFacilityInventory(currentFacility.uuid)
-          .then(function(inventories) {
-            var lt = -1;
-            angular.forEach(inventories, function(inventory) {
-              try {
-                lt = inventoryRulesFactory.leadTime(inventory);
-                lt = $window.humanizeDuration(lt);
-                inventory.leadTime = lt;
-              } catch(e) {
-                inventory.leadTime = e;
-              }
-            });
-            $scope.inventories = inventories;
-          });
+        var lt = -1;
+        angular.forEach(inventories, function(inventory) {
+          try {
+            lt = inventoryRulesFactory.leadTime(inventory);
+            lt = $window.humanizeDuration(lt);
+            inventory.leadTime = lt;
+          } catch(e) {
+            inventory.leadTime = e;
+          }
+        });
+        $scope.inventories = inventories;
       }
     })
     .state('home.index.settings', {
