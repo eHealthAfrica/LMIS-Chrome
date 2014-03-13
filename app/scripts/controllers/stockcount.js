@@ -65,17 +65,21 @@ angular.module('lmisChromeApp')
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
 
+    var month = now.getMonth() + 1;
+    month = month < 10 ? '0' + month : month;
+
     $scope.products = stockCountFactory.programProducts;
 
     $scope.step = 0;
     $scope.maxStep =  $scope.products.length>0?$scope.products.length - 1: 0;
+    $scope.monthList = stockCountFactory.monthList;
 
     /*
      * get url parameters
      */
     $scope.facilityObject = currentFacility;
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
-    $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:now.getMonth() + 1;
+    $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
     stockCountFactory.get.userFacilities().then(function(data){
       $scope.userRelatedFacilities = data;
