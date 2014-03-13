@@ -29,6 +29,19 @@ angular.module('lmisChromeApp')
           }
         }
       })
+      .state('stockCountStepForm', {
+        data:{
+          label:'Stock Count Form'
+        },
+        url:'stockCountStepForm?facility&reportMonth&reportYear',
+        templateUrl: 'views/stockcount/step_entry_form.html',
+        controller: 'StockCountCtrl',
+        resolve:{
+          currentFacility: function(facilityFactory){
+            return facilityFactory.getCurrentFacility();
+          }
+        }
+      })
       .state('wasteCountForm', {
         data:{
           label:'Waste Count Form'
@@ -53,6 +66,9 @@ angular.module('lmisChromeApp')
     day = day < 10 ? '0' + day : day;
 
     $scope.products = stockCountFactory.programProducts;
+
+    $scope.step = 0;
+    $scope.maxStep =  $scope.products.length>0?$scope.products.length - 1: 0;
 
     /*
      * get url parameters
@@ -220,4 +236,44 @@ angular.module('lmisChromeApp')
         });
     };
 
-  });
+  })
+  .controller('StockCountStepsFormCtrl', function($scope,stockCountFactory, $state){
+    $scope.preview = false;
+    $scope.selectedProduct = '';
+    $scope.jumpTo = function(){
+      $scope.step = parseInt($scope.selectedProduct);
+      $scope.preview = false;
+    }
+
+    $scope.edit = function(index){
+      $scope.step = index;
+      $scope.preview = false;
+    }
+
+    $scope.showDay = false;
+    $scope.hideSelect = function(){
+      $scope.showDay = false;
+    }
+
+    $scope.stockCount = {};
+    $scope.stockCount.opened = {};
+    $scope.stockCount.unopened = {};
+    $scope.stockCount.confirmation = {};
+
+    $scope.stockCount.month = $scope.reportMonth;
+    $scope.stockCount.year = $scope.reportYear;
+    $scope.stockCount.day = $scope.currentDay;
+
+    $scope.save = function(){
+      $scope.stockCount.facility = $scope.facilityUuid;
+      stockCountFactory.save.stock($scope.stockCount)
+        .then(function(uuid){
+          $state.go('stockCountIndex',
+            {
+              'facility': $scope.facilityUuid,
+              'reportMonth': $scope.reportMonth,
+              'reportYear': $scope.reportYear
+            });
+        });
+    }
+    });
