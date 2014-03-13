@@ -12,6 +12,22 @@ angular.module('lmisChromeApp')
       '5': 'Suspected Freezing',
       '6': 'Other'
     };
+
+    var months = {
+      '01': 'January',
+      '02': 'February',
+      '03': 'March',
+      '04': 'April',
+      '05': 'May',
+      '06': 'June',
+      '07': 'July',
+      '08': 'August',
+      '09': 'September',
+      '10': 'October',
+      '11': 'November',
+      '12': 'December'
+    };
+
     var programProducts= [
       'BCG doses',
       'BCG Diluent',
@@ -115,7 +131,7 @@ angular.module('lmisChromeApp')
           var unopened = unOpenedProductCount(StockObject, facility, year, month, day, i);
           opened = angular.isUndefined(opened)?'':opened;
           unopened = angular.isUndefined(unopened)?'':unopened;
-          html += '<td>'+opened+'</td>';
+          //html += '<td>'+opened+'</td>';
           html += '<td>'+unopened+'</td>';
         }
         return html;
@@ -173,6 +189,7 @@ angular.module('lmisChromeApp')
     };
     return {
       programProducts: programProducts,
+      monthList: months,
       discardedReasons: discardedReasons,
       save:addRecord,
       get:load
