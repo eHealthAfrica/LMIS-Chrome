@@ -18,22 +18,19 @@ angular.module('lmisChromeApp')
               inventoryLine.batch = data;
             }
 
-            var promises = [
-              productTypeFactory.get(inventoryLine.product_type),
-              programsFactory.get(inventoryLine.program),
-              uomFactory.get(inventoryLine.uom),
-              facilityFactory.get(inventoryLine.receiving_facility),
-              facilityFactory.get(inventoryLine.sending_facility),
-              storageUnitFactory.get(inventoryLine.storage_unit)
-            ];
+            var promises = {
+              product_type: productTypeFactory.get(inventoryLine.product_type),
+              program: programsFactory.get(inventoryLine.program),
+              uom: uomFactory.get(inventoryLine.uom),
+              receiving_facility: facilityFactory.get(inventoryLine.receiving_facility),
+              sending_facility: facilityFactory.get(inventoryLine.sending_facility),
+              storage_unit: storageUnitFactory.get(inventoryLine.storage_unit)
+            };
 
             $q.all(promises).then(function(result) {
-              inventoryLine.product_type = result[0];
-              inventoryLine.program = result[1];
-              inventoryLine.uom = result[2];
-              inventoryLine.receiving_facility = result[3];
-              inventoryLine.sending_facility = result[4];
-              inventoryLine.storage_unit = result[5];
+              for(var key in result) {
+                inventoryLine[key] = result[key];
+              }
               deferred.resolve(inventoryLine);
             });
           });

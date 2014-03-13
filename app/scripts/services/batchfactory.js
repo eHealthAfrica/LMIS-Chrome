@@ -7,24 +7,20 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
 
         storageService.find(storageService.BATCH, uuid).then(function(batch) {
-          var promises = [
-            productTypeFactory.get(batch.product),
-            presentationFactory.get(batch.presentation),
-            companyFactory.get(batch.manufacturer),
-            currencyFactory.get(batch.price_currency),
-            modeOfAdministrationFactory.get(batch.mode_of_use),
-            formulationFactory.get(batch.formulation),
-            uomFactory.get(batch.volume_uom),
-          ];
+          var promises = {
+            product: productTypeFactory.get(batch.product),
+            presentation: presentationFactory.get(batch.presentation),
+            manufacturer: companyFactory.get(batch.manufacturer),
+            price_currency: currencyFactory.get(batch.price_currency),
+            mode_of_use: modeOfAdministrationFactory.get(batch.mode_of_use),
+            formulation: formulationFactory.get(batch.formulation),
+            volume_uom: uomFactory.get(batch.volume_uom)
+          };
 
-          $q.all(promises).then(function(results) {
-            batch.product = results[0];
-            batch.presentation = results[1];
-            batch.manufacturer = results[2];
-            batch.price_currency = results[3];
-            batch.mode_of_use = results[4];
-            batch.formulation = results[5];
-            batch.volume_uom = results[6];
+          $q.all(promises).then(function(result) {
+            for(var key in result) {
+              batch[key] = result[key];
+            }
             deferred.resolve(batch);
             if(!$rootScope.$$phase) {
               $rootScope.$apply();
