@@ -33,8 +33,7 @@ describe('Inventory controller', function () {
 
   it('as a user, i want to add new inventory url to be /add-inventory', function() {
     var addNewInventory = $state.get('addNewInventory');
-    expect($state.href(addNewInventory)).toEqual('#/add-inventory');
-    expect($state.href(addNewInventory)).not.toEqual('#/add-inventories');
+    expect($state.href(addNewInventory)).toBe('#/add-inventory');
   });
 
 });

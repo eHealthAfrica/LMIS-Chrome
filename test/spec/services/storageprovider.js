@@ -9,22 +9,6 @@ describe('storageService test', function () {
   beforeEach(inject(function (_storageService_, _$rootScope_, $templateCache, $httpBackend) {
     storageService = _storageService_;
     rootScope = _$rootScope_;
-
-    // Mock each template used by the state
-    var templates = [
-      'index',
-      'nav',
-      'sidebar',
-      'control-panel',
-      'main-activity'
-    ];
-
-    angular.forEach(templates, function (template) {
-      $templateCache.put('views/home/' + template + '.html', '');
-    });
-
-    $httpBackend.whenGET('/locales/en.json').respond(200, {});
-    $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
   }));
 
   it('as a user, i expect storageService to be defined so i can access storage features', function () {
@@ -59,20 +43,6 @@ describe('storageService test', function () {
     expect(uuid.length).toBe(36);
   });
 
-  it('as a user, i want to see a product types list', function () {
-    var result = [];
-    storageService.all(storageService.PRODUCT_TYPES).then(function (data) {
-      result = data;
-      rootScope.$apply();
-    });
 
-    rootScope.$apply(function () {
-      storageService.all(storageService.PRODUCT_TYPES).then(function (data) {
-        result = data;
-      });
-    });
-
-    expect(result.length).toBe(2);
-  });
 
 });
