@@ -7,7 +7,7 @@ angular.module('lmisChromeApp')
         data:{
           label:'Stock Count'
         },
-        url:'stockCountIndex?facility&report_month&report_year',
+        url:'stockCountIndex?facility&reportMonth&reportYear',
         templateUrl: 'views/stockcount/index.html',
         controller:'StockCountCtrl',
         resolve:{
@@ -20,7 +20,7 @@ angular.module('lmisChromeApp')
         data:{
           label:'Stock Count Form'
         },
-        url:'stockCountForm?facility&report_month&report_year',
+        url:'stockCountForm?facility&reportMonth&reportYear',
         templateUrl: 'views/stockcount/daily_stock_count_form.html',
         controller: 'StockCountCtrl',
         resolve:{
@@ -33,7 +33,7 @@ angular.module('lmisChromeApp')
         data:{
           label:'Waste Count Form'
         },
-        url: 'wasteCountForm?facility&report_month&report_year',
+        url: 'wasteCountForm?facility&reportMonth&reportYear',
         templateUrl: 'views/stockcount/daily_waste_count_form.html',
         controller:'StockCountCtrl',
         resolve: {
@@ -57,24 +57,24 @@ angular.module('lmisChromeApp')
     /*
      * get url parameters
      */
-    $scope.facility_object = currentFacility;
-    console.log($scope.facility_object.uuid);
-    $scope.facility_uuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facility_object.uuid;
-    $scope.report_month = ($stateParams.report_month !== null)?$stateParams.report_month:now.getMonth() + 1;
-    $scope.report_year = ($stateParams.report_year !== null)?$stateParams.report_year: now.getFullYear();
+    $scope.facilityObject = currentFacility;
+    console.log($scope.facilityObject.uuid);
+    $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
+    $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:now.getMonth() + 1;
+    $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
     stockCountFactory.get.userFacilities().then(function(data){
       $scope.user_related_facilities = data;
       if(data.length>0){
-        $scope.facility_uuid = $scope.facility_uuid===''?$scope.user_related_facilities[0].uuid:$scope.facility_uuid;
-        $scope.user_related_facility =  $scope.facility_uuid;
+        $scope.facilityUuid = $scope.facilityUuid===''?$scope.user_related_facilities[0].uuid:$scope.facilityUuid;
+        $scope.user_related_facility =  $scope.facilityUuid;
       }
     });
 
-    $scope.getDaysInMonth = function (report_month, report_year){
+    $scope.getDaysInMonth = function (reportMonth, reportYear){
 
       var now = new Date();
-      var year = (report_year !== '')?report_year: now.getFullYear();
-      var month = (report_month !== '')?report_month: now.getMonth() + 1;
+      var year = (reportYear !== '')?reportYear: now.getFullYear();
+      var month = (reportMonth !== '')?reportMonth: now.getMonth() + 1;
       var numberOfDays = new Date(year, month, 0).getDate();
       var dayArray = [];
       for(var i=0; i<numberOfDays; i++){
@@ -93,7 +93,7 @@ angular.module('lmisChromeApp')
       return yearRangeArray;
     }
     $scope.current_day = day;
-    $scope.daysInMonth = $scope.getDaysInMonth($scope.report_month, $scope.report_year);
+    $scope.daysInMonth = $scope.getDaysInMonth($scope.reportMonth, $scope.reportYear);
     $scope.yearRange = yearRange();
   })
 /*
@@ -103,7 +103,7 @@ angular.module('lmisChromeApp')
     /*
      * initialize some variables
      */
-    //$scope.user_related_facility = ($scope.facility_uuid !== '') ? $scope.facility_uuid : $scope.facility_uuid;
+    //$scope.user_related_facility = ($scope.facilityUuid !== '') ? $scope.facilityUuid : $scope.facilityUuid;
     $scope.StockCount = {};
     $scope.WasteCount = {};
     $scope.stockCountObject = {};
@@ -138,7 +138,7 @@ angular.module('lmisChromeApp')
 
     $scope.add_button = true;
 
-    $scope.$watchCollection('[report_month, report_year, user_related_facility]', function (newvalues) {
+    $scope.$watchCollection('[reportMonth, reportYear, user_related_facility]', function (newvalues) {
 
       if (newvalues[0] == '' || newvalues[1] == '' || newvalues[2] == '') {
         $scope.add_button = true;
@@ -146,7 +146,7 @@ angular.module('lmisChromeApp')
       else {
         $scope.add_button = false;
       }
-      $scope.daysInMonth = $scope.getDaysInMonth($scope.report_month, $scope.report_year);
+      $scope.daysInMonth = $scope.getDaysInMonth($scope.reportMonth, $scope.reportYear);
 
     });
 
@@ -168,27 +168,27 @@ angular.module('lmisChromeApp')
 /*
  * Stock Count Controller
  */
-  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, $stateParams){
-    if($scope.facility_uuid === ''){
+  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state){
+    if($scope.facilityUuid === ''){
       $scope.hidden_uuid = true;
     }
     $scope.stockCount = {};
     $scope.stockCount.opened = {};
     $scope.stockCount.unopened = {};
     $scope.stockCount.confirmation = {};
-    $scope.stockCount.month = $scope.report_month;
-    $scope.stockCount.year = $scope.report_year;
+    $scope.stockCount.month = $scope.reportMonth;
+    $scope.stockCount.year = $scope.reportYear;
     $scope.stockCount.day = $scope.current_day;
 
     $scope.save = function(){
-      $scope.stockCount.facility = $scope.facility_uuid;
+      $scope.stockCount.facility = $scope.facilityUuid;
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(uuid){
           $state.go('stockCountIndex',
             {
-              "facility": $scope.facility_uuid,
-              "report_month": $scope.report_month,
-              "report_year": $scope.report_year
+              "facility": $scope.facilityUuid,
+              "reportMonth": $scope.reportMonth,
+              "reportYear": $scope.reportYear
             });
         });
     }
@@ -200,9 +200,9 @@ angular.module('lmisChromeApp')
     $scope.discardedReasons = stockCountFactory.discardedReasons;
     $scope.wastageCount = {};
     $scope.wastageCount.discarded = {};
-    $scope.wastageCount.month = $scope.report_month;
-    $scope.wastageCount.year = $scope.report_year;
-    $scope.wastageCount.facility = $scope.facility_uuid;
+    $scope.wastageCount.month = $scope.reportMonth;
+    $scope.wastageCount.year = $scope.reportYear;
+    $scope.wastageCount.facility = $scope.facilityUuid;
     $scope.wastageCount.wastage_confirmation = {};
     $scope.wastageCount.reason = {};
     $scope.wastageCount.day= $scope.current_day;
@@ -215,9 +215,9 @@ angular.module('lmisChromeApp')
         .then(function(uuid){
           $state.go('stockCountIndex',
             {
-              "facility": $scope.facility_uuid,
-              "report_month": $scope.report_month,
-              "report_year": $scope.report_year
+              "facility": $scope.facilityUuid,
+              "reportMonth": $scope.reportMonth,
+              "reportYear": $scope.reportYear
             });
         });
     }
