@@ -35,6 +35,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           },
           currentFacility: function (facilityFactory) {
             return facilityFactory.getCurrentFacility();
+          },
+          currentFacilityStorageUnits: function($q, facilityFactory, storageUnitFactory){
+            var deferred = $q.defer();
+            facilityFactory.getCurrentFacility().then(function (facility) {
+              storageUnitFactory.getFacilityStorageUnits(facility.uuid).then(function(storageUnits){
+                deferred.resolve(storageUnits);
+              });
+            });
+            return deferred.promise;
           }
         }
       });
@@ -93,7 +102,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  */
     .controller('addInventoryCtrl', function ($scope, $filter, $stateParams, currentFacility, storageService, $state,
                                               inventoryFactory, productTypes, programs, uomList, facilities,
-                                              batchFactory, storageUnitFactory) {
+                                              batchFactory, currentFacilityStorageUnits) {
 
       //used to hold form data
       var id = 0;
@@ -105,31 +114,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         bundle_no: $stateParams.bundleNo
       }
 
-      $scope.add = function (inventoryLine) {
-        inventoryLine.quantity = isNaN(inventoryLine.quantity) ? 1 : (parseInt(inventoryLine.quantity) + 1);
-      }
-
-      $scope.subtract = function (inventoryLine) {
-        inventoryLine.quantity = (isNaN(inventoryLine.quantity) || (inventoryLine.quantity <= 0))
-            ? 0 : (parseInt(inventoryLine.quantity) - 1);
-      }
-
       //load data used to populate form fields
       $scope.productTypes = productTypes;
       $scope.programs = programs;
       $scope.uomList = uomList;
       $scope.facilities = facilities;
       $scope.inventory.receiving_facility = currentFacility;
-      $scope.receivingFacilityStorageUnits = []
-
-      function loadCurrentFacilityStorageUnits(facilityUUID) {
-        storageUnitFactory.getFacilityStorageUnits(facilityUUID).then(function (data) {
-          $scope.receivingFacilityStorageUnits = data;
-        });
-      }
-
-      //pre-loads storage unit of current facility.
-      loadCurrentFacilityStorageUnits($scope.inventory.receiving_facility.uuid);
+      $scope.receivingFacilityStorageUnits = currentFacilityStorageUnits;
 
       $scope.loadProductTypeBatches = function (inventoryLine) {
         inventoryLine.isDisabled = false;
@@ -156,8 +147,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.removeInventoryLine = function (inventoryLine) {
-        $scope.inventory.inventory_lines = $scope.inventory.inventory_lines.filter(function (il) {
-          return il.id !== inventoryLine.id;
+        $scope.inventory.inventory_lines = $scope.inventory.inventory_lines.filter(function (invLine) {
+          return invLine.id !== inventoryLine.id;
         });
       }
 

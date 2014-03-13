@@ -22,10 +22,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  */
     .controller('logIncomingCtrl', function ($scope, $filter, $state, bundleNumbers, storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
 
-      $scope.bundleNumbers = bundleNumbers;
+      $scope.bundleNumbersAutoCompleteList = bundleNumbers;
       $scope.clicked = false;
       $scope.bundle = {};
-      $scope.bundle.date = $filter('date')((new Date()).toTimeString(), "yyyy-MM-dd");
+      $scope.bundle.date = $filter('date')((new Date()), "yyyy-MM-dd");
       $scope.getFacilityStorageUnits = [];
       $scope.logIncomingForm = {};
       $scope.logIncomingForm.verify = [];
@@ -81,10 +81,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.clicked = true;
         bundleFactory.getBundle($scope.showBundleNo).then(function (data) {
           $scope.bundle = data;
-          var receivingFacility = $scope.bundle.receiving_facility;
-          $scope.parent = $scope.bundle.parent.name;
-          $scope.receiving_facility = receivingFacility.name;
-          storageUnitFactory.getFacilityStorageUnits(receivingFacility.uuid).then(function (data) {
+          storageUnitFactory.getFacilityStorageUnits($scope.bundle.receiving_facility.uuid).then(function (data) {
             $scope.receivingFacilityStorageUnits = data;
           });
           $scope.show = true;

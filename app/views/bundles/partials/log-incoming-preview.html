@@ -8,15 +8,13 @@
       <div class="panel-body">
         <div class="col-sm-12">
           <div class="col-sm-6">
-            <label for="receivingFacility" translate="receivingFacility"></label>
-            <input class="form-control" ng-disabled="true" type="text" name="receivingFacility"
-                   id="receivingFacility" ng-model="receiving_facility"/>
+            <label translate="receivingFacility"></label>
+            <span class="new-line" ng-bind="(bundle.receiving_facility).name"></span>
           </div>
 
           <div class="col-sm-6">
-            <label for="parentFacility" translate="sendingFacility"></label>
-            <input class="form-control" ng-disabled="true" type="text" name="parentFacility" id="parentFacility"
-                   ng-model="parent"/>
+            <label translate="sendingFacility"></label>
+            <span class="new-line" ng-bind="(bundle.parent).name"></span>
           </div>
         </div>
       </div>
@@ -24,14 +22,13 @@
       <div class="panel-body">
         <div class="col-sm-12">
           <div class="col-sm-6">
-            <label for="bundleNumber" translate="bundleNo"></label>
-            <input ng-model="bundle.uuid" class="form-control" ng-disabled="true" type="text"
-                   name="bundleNumber" id="bundleNumber"/>
+            <label translate="bundleNo"></label>
+            <span class="new-line" ng-bind="bundle.uuid"></span>
           </div>
 
           <div class="col-sm-6">
             <label>Date <i class="fa fa-calendar"></i></label>
-            <input ng-model="bundle.date" class="form-control" type="date" ng-disabled="true" required/>
+            <span class="new-line" ng-bind="bundle.date | date:'dd MMMM, yyyy' "></span>
           </div>
         </div>
       </div>
@@ -47,19 +44,17 @@
                 <div class="col-sm-12">
                   <div class="col-sm-4">
                     <label translate="productTypes"></label>
-                    <input class="form-control" ng-disabled="true" type="text" name="productType"
-                           id="productType"
-                           ng-model="getProductType(bundleLine).code"/>
+                    <span class="new-line" ng-bind="getProductType(bundleLine).code"></span>
                   </div>
 
                   <div class="col-sm-4">
                     <label translate="batchNo"></label>
-                    <input class="form-control" ng-disabled="true" type="text" ng-model="(bundleLine.batch).batch_no"/>
+                    <span class="new-line" ng-bind="(bundleLine.batch).batch_no"></span>
                   </div>
 
                   <div class="col-sm-4">
                     <label translate="program"></label>
-                    <input class="form-control" ng-disabled="true" type="text" ng-model="(bundleLine.program).code"/>
+                    <span class="new-line" ng-bind="(bundleLine.program).code"></span>
                   </div>
 
                 </div>
@@ -70,25 +65,19 @@
 
                   <div class="col-sm-4">
                     <label translate="quantity"></label>
-                    <input class="form-control" ng-disabled="true" type="text" value="{{ getUOMDetail(bundleLine) }}"/>
+                    <span class="new-line" ng-bind="getUOMDetail(bundleLine)"></span>
                   </div>
 
                   <div class="col-sm-4">
                     <label>Verify Quantity</label>
-                    <input ng-model="logIncomingForm.verify[bundleLine.uuid]" class="form-control" ng-disabled="true"
-                           type="text"/>
+                    <span class="new-line" ng-bind="logIncomingForm.verify[bundleLine.uuid]"></span>
                   </div>
 
                   <div class="col-sm-4">
                     <label translate="storageUnit"></label>
-                    <select class="form-control" ng-model="logIncomingForm.storage_units[bundleLine.uuid]" ng-disabled="true">
-                      <option value="" translate="addToStorageUnit"></option>
-                      <option ng-repeat="storageUnit in receivingFacilityStorageUnits"
-                              value="{{ storageUnit.uuid }}"
-                              ng-selected="{{ (logIncomingForm.storage_units[bundleLine.uuid]).uuid === storageUnit.uuid }}"
-                              ng-bind="storageUnit.name ">
-                      </option>
-                    </select>
+                    <span class="new-line"
+                          ng-bind="getStorageUnit(logIncomingForm.storage_units[bundleLine.uuid]).name">
+                    </span>
                   </div>
                 </div>
               </div>
@@ -108,7 +97,7 @@
           </div>
           <div class="col-md-4 pull-right">
             <button type="submit" id="preview" name="preview" class="btn btn-success">
-              <span translate="submit"></span>
+              <span translate="confirm"></span>
             </button>
           </div>
         </div>
