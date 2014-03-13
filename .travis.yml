@@ -4,6 +4,7 @@ node_js:
 before_script:
   - 'npm install -g bower grunt-cli'
   - 'bower install'
+  - 'grunt serve'
 notifications:
   flowdock:
     secure: 'FdO2tCN2svozYRR5OAXTD9uctkYaxAU6pR9Oz8mnmOtsjbUszzzUFYFzWxm69hg2qfdFBxvdYAdPECOA2L0JTwWB3fLacG1rjU32bkj0VPQ+bePYkdZNk36occegA1a0AgI73DkruMrArDzNBOM+4PtMzThsuj9S+K8BwMOf/+0='
