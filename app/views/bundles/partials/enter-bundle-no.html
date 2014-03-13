@@ -1,6 +1,9 @@
 <div class="col-sm-6">
-  <label for="bundleNo" translate="bundleNo"></label>
-
+  <div class="row ">
+    <div class="col-sm-6 pull-left">
+      <label for="bundleNo" translate="bundleNo"></label>
+    </div>
+  </div>
   <div class="input-group">
     <input class="form-control"
            typeahead="bundleNo for bundleNo in bundleNumbersAutoCompleteList | filter:$viewValue | limitTo:8"
@@ -12,10 +15,17 @@
   </div>
 </div>
 
+
 <div class="col-sm-6" ng-show="showAddManually">
-  <br/>
+  <div class="row ">
+    <div class="col-sm-6 pull-left">
+      <span class="label"></span>
+      <label for="bundleNo">&nbsp;</label>
+    </div>
+  </div>
   <a ui-sref="addNewInventory" class="btn btn-success">
     <span><i class="fa fa-plus"></i></span>
     <span translate="addNewInventory"></span>
   </a>
+
 </div>
