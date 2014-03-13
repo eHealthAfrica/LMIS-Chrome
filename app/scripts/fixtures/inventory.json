@@ -51,5 +51,19 @@
     "storage_unit": "02b46f06-8270-4e8f-93df-2d602b61817d",
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
     "uuid": "d3f52dc6-5c24-477c-dc01-3b2e22787883"
+  },
+  "d3f52dc6-5c24-477c-dc01-3b2e22787882": {
+    "batch": "1110007A",
+    "bundle_no": "2345",
+    "created": "2014-03-04T13:12:07Z",
+    "date_receipt": "2014-03-08",
+    "modified": "2014-03-04T13:12:07Z",
+    "program": "39a07d76-9d4b-4c9e-b50b-bba827d08f74",
+    "quantity": 123,
+    "receiving_facility": "d48a39fb-6d37-4472-9983-bc0720403719",
+    "sending_facility": "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
+    "storage_unit": "02b46f06-8270-4e8f-93df-2d602b61817d",
+    "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
+    "uuid": "d3f52dc6-5c24-477c-dc01-3b2e22787882"
   }
 }

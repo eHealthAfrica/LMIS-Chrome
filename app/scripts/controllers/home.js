@@ -47,7 +47,6 @@ angular.module('lmisChromeApp')
         label: 'Home'
       },
       controller: function ($stateParams, $translate, alertsFactory) {
-        console.log($stateParams.orderNo);
         if ($stateParams.orderNo !== null) {
           $stateParams.orderNo = null;
           $translate('orderPlacedSuccess', {orderNo: $stateParams.orderNo})
@@ -175,8 +174,15 @@ angular.module('lmisChromeApp')
     })
     .state('home.index.settings.inventory', {
       templateUrl: 'views/home/settings/inventory.html',
-      controller: function($scope, settings) {
-        $scope.inventory = settings.inventory;
+      resolve: {
+        products: function(currentFacility, inventoryFactory) {
+          return inventoryFactory.getUniqueProducts(currentFacility.uuid);
+        }
+      },
+      controller: function($scope, settings, products) {
+        var inventory = settings.inventory;
+        inventory.products = products;
+        $scope.inventory = inventory;
       }
     });
   });

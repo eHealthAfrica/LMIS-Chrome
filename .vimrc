@@ -48,6 +48,7 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , 'discarding unexpected </a>'
   \ , '<input> proprietary attribute "required"'
   \ , '<input> proprietary attribute "min"'
+  \ , '<input> proprietary attribute "max"'
   \ , '<nvd3-'
   \ , 'discarding unexpected <nvd3-'
   \ , 'discarding unexpected </nvd3-'

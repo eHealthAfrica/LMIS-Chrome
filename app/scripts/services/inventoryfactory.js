@@ -2,7 +2,7 @@
 // jshint camelcase: false
 
 angular.module('lmisChromeApp')
-  .factory('inventoryFactory', function($q, storageService, productTypeFactory, programsFactory, storageUnitFactory, batchFactory, facilityFactory, uomFactory) {
+  .factory('inventoryFactory', function($q, storageService, productTypeFactory, programsFactory, storageUnitFactory, batchFactory, facilityFactory, uomFactory, $timeout) {
 
     function getByUUID(uuid) {
       var deferred = $q.defer();
@@ -78,6 +78,29 @@ angular.module('lmisChromeApp')
           });
 
         });
+        return deferred.promise;
+      },
+
+      getUniqueProducts: function(facility) {
+        var deferred = $q.defer();
+        this.getFacilityInventory(facility)
+          .then(function(inventories) {
+            var collateCodes = function() {
+              var codes = {}, code = '', batch;
+              for(var i = inventories.length - 1; i >= 0; i--) {
+                batch = inventories[i].batch;
+                if(typeof batch !== 'string') {
+                  if('product' in batch) {
+                    code = batch.product.code;
+                    codes[code] = {};
+                  }
+                }
+              }
+              deferred.resolve(codes);
+            };
+            // XXX: Need to wait until batch promise is settled (line 16)
+            $timeout(collateCodes, 1000);
+          });
         return deferred.promise;
       },
 

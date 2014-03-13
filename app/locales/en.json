@@ -77,5 +77,8 @@
   "settings": "Settings",
   "facility": "Facility",
   "inventory": "Inventory",
-  "reset": "Reset"
+  "reset": "Reset",
+  "minimum": "Minimum",
+  "maximum": "Maximum",
+  "serviceLevel": "Service Level"
 }
