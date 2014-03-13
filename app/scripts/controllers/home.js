@@ -1,25 +1,22 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .config(function ($stateProvider) {
+  .config(function($stateProvider) {
     $stateProvider.state('home', {
       url: '/home',
       abstract: true,
       templateUrl: 'views/home/index.html',
       resolve: {
-        currentFacility: function($q, facilityFactory, locationsFactory) {
-          var deferred = $q.defer();
-          facilityFactory.getCurrentFacility().then(function(facility) {
-            locationsFactory.get(facility.location).then(function(location) {
-              facility.location = location;
-              deferred.resolve(facility);
-            });
-          });
-          return deferred.promise;
+        currentFacility: function(facilityFactory) {
+          return facilityFactory.getCurrentFacility();
+        },
+        facilityLocation: function(currentFacility, locationsFactory) {
+          return locationsFactory.get(currentFacility.location);
         }
       },
-      controller: function($scope, currentFacility) {
+      controller: function($scope, currentFacility, facilityLocation) {
         $scope.currentFacility = currentFacility;
+        $scope.facilityLocation = facilityLocation;
       }
     })
     .state('home.index', {
@@ -50,7 +47,6 @@ angular.module('lmisChromeApp')
         label: 'Home'
       },
       controller: function ($stateParams, $translate, alertsFactory) {
-        console.log($stateParams.orderNo);
         if ($stateParams.orderNo !== null) {
           $stateParams.orderNo = null;
           $translate('orderPlacedSuccess', {orderNo: $stateParams.orderNo})
@@ -75,18 +71,8 @@ angular.module('lmisChromeApp')
       url: '/dashboard',
       templateUrl: 'views/home/dashboard.html',
       resolve: {
-        inventories: function($q, facilityFactory, inventoryFactory) {
-          // XXX: Shouldn't need to re-resolve the current facility since
-          //      we have it in the top-level state ('home') as
-          //      `$scope.currentFacility`
-          var deferred = $q.defer();
-          facilityFactory.getCurrentFacility().then(function(facility) {
-            inventoryFactory.getFacilityInventory(facility.uuid)
-              .then(function(inventory) {
-                deferred.resolve(inventory);
-              });
-          });
-          return deferred.promise;
+        inventories: function(currentFacility, inventoryFactory) {
+          return inventoryFactory.getFacilityInventory(currentFacility.uuid);
         }
       },
       controller: function($scope, inventories, inventoryRulesFactory, $window) {
@@ -152,13 +138,51 @@ angular.module('lmisChromeApp')
         $scope.inventoryKeys = keys;
         $scope.inventoryValues = values;
 
+        var lt = -1;
         angular.forEach(inventories, function(inventory) {
-          var lt = inventoryRulesFactory.leadTime(inventory);
-          lt = $window.humanizeDuration(lt);
-          inventory.leadTime = lt;
+          try {
+            lt = inventoryRulesFactory.leadTime(inventory);
+            lt = $window.humanizeDuration(lt);
+            inventory.leadTime = lt;
+          } catch(e) {
+            inventory.leadTime = e;
+          }
         });
-
         $scope.inventories = inventories;
+      }
+    })
+    .state('home.index.settings', {
+      url: '/settings',
+      abstract: true,
+      templateUrl: 'views/home/settings.html',
+      resolve: {
+        settings: function(settingsService) {
+          return settingsService.load();
+        }
+      },
+      controller: function($scope, settings) {
+        settings.facility = {};
+        settings.inventory = {};
+        $scope.settings = settings;
+      }
+    })
+    .state('home.index.settings.facility', {
+      templateUrl: 'views/home/settings/facility.html',
+      controller: function($scope, settings) {
+        $scope.facility = settings.facility;
+      }
+    })
+    .state('home.index.settings.inventory', {
+      templateUrl: 'views/home/settings/inventory.html',
+      resolve: {
+        products: function(currentFacility, inventoryFactory) {
+          return inventoryFactory.getUniqueProducts(currentFacility.uuid);
+        }
+      },
+      controller: function($scope, settings, products) {
+        var inventory = settings.inventory;
+        inventory.products = products;
+        $scope.inventory = inventory;
       }
     });
   });
