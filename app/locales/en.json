@@ -58,7 +58,7 @@
   "controlPanel": "Control Panel",
   "dashboard": "Dashboard",
   "toogleNav": "Toggle Navigation",
-  "bundleNotFound": "Bundle {{id}} not found, use 'Add New Inventory' ",
+  "bundleNotFound": "Bundle no: {{id}} not found, confirm that you entered the correct bundle number before using 'Add New Inventory' ",
   "addToStorageUnit": "Add to Storage Unit",
   "remove": "Remove",
   "addNewInventory": "Add New Inventory",
@@ -80,5 +80,8 @@
   "reset": "Reset",
   "minimum": "Minimum",
   "maximum": "Maximum",
-  "serviceLevel": "Service Level"
+  "serviceLevel": "Service Level",
+  "showBundle": "Show Bundle",
+  "confirm": "Confirm",
+  "save": "Save"
 }

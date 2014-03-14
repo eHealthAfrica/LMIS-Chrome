@@ -7,21 +7,23 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         storageService.find(storageService.CCU_TYPE, uuid).then(function (data) {
           if (data !== undefined) {
-            userFactory.get(data.created_by).then(function(created_by){
+            userFactory.get(data.created_by).then(function (created_by) {
               data.created_by = created_by;
             });
 
-             userFactory.get(data.modified_by).then(function(modified_by){
+            userFactory.get(data.modified_by).then(function (modified_by) {
               data.modified_by = modified_by;
             });
 
-            storageService.find(storageService.CCU_TYPE, uuid).then(function(parent){
+            storageService.find(storageService.CCU_TYPE, uuid).then(function (parent) {
               data.parent = parent;
             });
 
           }
           deferred.resolve(data);
-          if (!$rootScope.$$phase) $rootScope.$apply();
+          if (!$rootScope.$$phase){
+            $rootScope.$apply();
+          }
         });
         return deferred.promise;
       }
@@ -29,7 +31,7 @@ angular.module('lmisChromeApp')
       // Public API here
       return {
 
-        getFacilityInventory: function () {
+        getAll: function () {
           var deferred = $q.defer(), storageUnitTypes = [];
 
           storageService.all(storageService.CCU_TYPE).then(function (data) {
@@ -42,7 +44,9 @@ angular.module('lmisChromeApp')
 
             $q.all(storageUnitTypes).then(function (results) {
               deferred.resolve(results);
-              if (!$rootScope.$$phase) $rootScope.$apply();
+              if (!$rootScope.$$phase){
+                $rootScope.$apply();
+              }
             });
           });
           return deferred.promise;

@@ -15,7 +15,7 @@ angular.module('lmisChromeApp')
             },
             resolve: {
               batchList: function (batchFactory) {
-                return batchFactory.getFacilityInventory();
+                return batchFactory.getAll();
               }
             }
           }).state('addBatchView', {

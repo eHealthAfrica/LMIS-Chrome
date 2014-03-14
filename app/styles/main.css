@@ -68,8 +68,9 @@ footer {
 .marker-indicator-space{
   margin-right: 2em;
 }
-.info-box{
-
+.sequence-map-box{
+  background: #D4D4D4;
+  color: #ffffff;
 }
 .info-box-number{
     height: 40px;
@@ -109,14 +110,17 @@ footer {
 
 }
 accordion .panel-heading:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 .removeIcon i:hover{
   color: red;
 }
 .products accordion .panel-heading .panel-title i:hover {
-  color: red;
+    color: red;
 }
 .date-row{
     margin: 10px 0px;
+}
+.new-line{
+  display: block;
 }

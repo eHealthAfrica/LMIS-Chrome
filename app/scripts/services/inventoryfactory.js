@@ -1,12 +1,11 @@
 'use strict';
-// jshint camelcase: false
 
 angular.module('lmisChromeApp')
-  .factory('inventoryFactory', function($q, storageService, productTypeFactory, programsFactory, storageUnitFactory, batchFactory, facilityFactory, uomFactory, $timeout) {
+    .factory('inventoryFactory', function ($q, storageService, productTypeFactory, programsFactory, storageUnitFactory, batchFactory, facilityFactory, uomFactory) {
 
-    function getByUUID(uuid) {
-      var deferred = $q.defer();
-      storageService.find(storageService.INVENTORY, uuid).then(function(data) {
+      function getByUUID(uuid) {
+        var deferred = $q.defer();
+        storageService.find(storageService.INVENTORY, uuid).then(function (data) {
 
         var inventoryLine = data;
 
@@ -19,38 +18,38 @@ angular.module('lmisChromeApp')
             }
           });
 
-          productTypeFactory.get(inventoryLine.product_type).then(function(data) {
-            inventoryLine.product_type = data;
-          });
+            productTypeFactory.get(inventoryLine.product_type).then(function(data){
+              inventoryLine.product_type = data;
+            });
 
-          programsFactory.get(inventoryLine.program).then(function(data) {
-            inventoryLine.program = data;
-          });
+            programsFactory.get(inventoryLine.program).then(function (data) {
+              inventoryLine.program = data;
+            });
 
-          uomFactory.get(inventoryLine.uom).then(function(data) {
-            inventoryLine.uom = data;
-          });
+            uomFactory.get(inventoryLine.uom).then(function (data) {
+              inventoryLine.uom = data;
+            });
 
-          facilityFactory.get(inventoryLine.receiving_facility).then(function(data) {
-            inventoryLine.receiving_facility = data;
-          });
+            facilityFactory.get(inventoryLine.receiving_facility).then(function (data) {
+              inventoryLine.receiving_facility = data;
+            });
 
-          facilityFactory.get(inventoryLine.sending_facility).then(function(data) {
-            inventoryLine.sending_facility = data;
-          });
+            facilityFactory.get(inventoryLine.sending_facility).then(function (data) {
+              inventoryLine.sending_facility = data;
+            });
 
-          storageUnitFactory.get(inventoryLine.storage_unit).then(function(data) {
-            inventoryLine.storage_unit = data;
-          });
+            storageUnitFactory.get(inventoryLine.storage_unit).then(function (data) {
+              inventoryLine.storage_unit = data;
+            });
 
-        }
-        deferred.resolve(inventoryLine);
-      });
-      return deferred.promise;
-    }
+          }
+          deferred.resolve(inventoryLine);
+        });
+        return deferred.promise;
+      }
 
-    return {
-      get: getByUUID,
+      return {
+        get: getByUUID,
 
       /**
        *  This functions returns all the inventory of a given facility.
@@ -130,9 +129,7 @@ angular.module('lmisChromeApp')
         }, function(error) {
           deferred.reject(error);
         });
-
         return deferred.promise;
-
       }
 
     };

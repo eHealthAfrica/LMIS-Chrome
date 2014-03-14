@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('productCategoryFactory', function ($q, storageService, userFactory) {
+    .factory('productCategoryFactory', function ($q, storageService) {
 
       // Public API here
       return {
@@ -9,7 +9,7 @@ angular.module('lmisChromeApp')
          * returns json object of product category each nested attribute is returned as a JSON,
          *
          */
-        getFacilityInventory: function () {
+        getAll: function () {
           var deferred = $q.defer();
           var users = {};
           storageService.get(storageService.USER).then(function (data) {
@@ -40,7 +40,6 @@ angular.module('lmisChromeApp')
          */
         get: function (uuid) {
           var deferred = $q.defer();
-          var productCategory = null;
           var users = {};
           storageService.get(storageService.USER).then(function (data) {
             users = data;

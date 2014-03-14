@@ -11,7 +11,7 @@ angular.module('lmisChromeApp')
        *  folder that holds data used to pre-fill local storage if it is empty.
        *
        */
-      var product_types = 'new_product_types';
+      var product_types = 'product_types';
       var productCategory = 'product_category';
       var address = 'address';
       var uom = 'uom';
@@ -460,7 +460,7 @@ angular.module('lmisChromeApp')
         all: getAllFromTable,
         add: addTable,
         get: getTable,
-        getFacilityInventory: getAllFromStore,
+        getAll: getAllFromStore,
         remove: removeTable, // removeFromChrome,
         clear: clearFromStore, // clearChrome */
         uuid: uuid_generator,

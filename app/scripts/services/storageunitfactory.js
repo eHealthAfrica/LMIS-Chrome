@@ -35,32 +35,48 @@ angular.module('lmisChromeApp')
           deferred.resolve(storageUnit);
         });
         return deferred.promise;
+      };
+
+      var getFacilityStorageUnits = function (facilityUUID) {
+        var deferred = $q.defer(), facilityStorageUnits = [];
+        storageService.all(storageService.CCU).then(function (data) {
+          angular.forEach(data, function (datum) {
+            if (!angular.equals(datum, undefined) && angular.equals(datum.facility, facilityUUID)) {
+              facilityStorageUnits.push(getByUUID(datum.uuid).then(function (storageUnit) {
+                deferred.notify(datum);
+                return storageUnit;
+              }));
+            }
+          });
+
+          $q.all(facilityStorageUnits).then(function (results) {
+            deferred.resolve(results);
+            if (!$rootScope.$$phase) {
+              $rootScope.$apply();
+            }
+          });
+        });
+        return deferred.promise;
+      };
+
+      var getStorageUnitsByCurrentFacility = function () {
+        var deferred = $q.defer();
+        facilityFactory.getCurrentFacility().then(function (facility) {
+          getFacilityStorageUnits(facility.uuid).then(function (storageUnits) {
+            deferred.resolve(storageUnits);
+          });
+        });
+        return deferred.promise;
       }
 
       // Public API here
       return {
 
-        getFacilityStorageUnits: function (facilityUUID) {
-          var deferred = $q.defer(), facilityStorageUnits = [];
-          storageService.all(storageService.CCU).then(function (data) {
-            angular.forEach(data, function (datum) {
-              if (!angular.equals(datum, undefined) && angular.equals(datum.facility, facilityUUID)) {
-                facilityStorageUnits.push(getByUUID(datum.uuid).then(function (storageUnit) {
-                  deferred.notify(datum);
-                  return storageUnit;
-                }));
-              }
-            });
+        getStorageUnitsByCurrentFacility: getStorageUnitsByCurrentFacility,
 
-            $q.all(facilityStorageUnits).then(function (results) {
-              deferred.resolve(results);
-              if (!$rootScope.$$phase) $rootScope.$apply();
-            });
-          });
-          return deferred.promise;
-        },
+        getFacilityStorageUnits: getFacilityStorageUnits,
 
-        getFacilityInventory: function () {
+        getAll: function () {
           var deferred = $q.defer(), storageUnits = [];
 
           storageService.all(storageService.CCU).then(function (data) {
@@ -75,7 +91,9 @@ angular.module('lmisChromeApp')
 
             $q.all(storageUnits).then(function (results) {
               deferred.resolve(results);
-              if (!$rootScope.$$phase) $rootScope.$apply();
+              if (!$rootScope.$$phase) {
+                $rootScope.$apply();
+              }
             });
           });
           return deferred.promise;

@@ -12,7 +12,9 @@ angular.module('lmisChromeApp')
             });
           }
           deferred.resolve(uom);
-          if (!$rootScope.$$phase) $rootScope.$apply();
+          if (!$rootScope.$$phase) {
+            $rootScope.$apply();
+          }
         });
         return deferred.promise;
       }
@@ -24,7 +26,7 @@ angular.module('lmisChromeApp')
          * returns json object of product types each nested attribute is returned as a JSON,
          * e.g ProductType.UOM will be returned as a JSON of UOM. similar to ORM format.
          */
-        getFacilityInventory: function () {
+        getAll: function () {
           var deferred = $q.defer(), productTypes = [];
 
           storageService.all(storageService.PRODUCT_TYPES).then(function (data) {
@@ -37,7 +39,9 @@ angular.module('lmisChromeApp')
 
             $q.all(productTypes).then(function (results) {
               deferred.resolve(results);
-              if (!$rootScope.$$phase) $rootScope.$apply();
+              if (!$rootScope.$$phase) {
+                $rootScope.$apply();
+              }
             });
           });
           return deferred.promise;

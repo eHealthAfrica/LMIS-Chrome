@@ -1,40 +1,52 @@
 'use strict';
 
-angular.module('lmisChromeApp')
-    .config(function ($stateProvider) {
-      $stateProvider
-          .state('incomingLog', {
-            url: '/incoming-log',
-            templateUrl: '/views/bundles/incoming-log.html',
-            controller: 'logIncomingCtrl',
-            data: {
-              label: 'Log Incoming'
-            }
-          });
-    })
+angular.module('lmisChromeApp').config(function ($stateProvider) {
+  $stateProvider.state('incomingLog', {
+    url: '/incoming-log',
+    templateUrl: '/views/bundles/incoming-log.html',
+    controller: 'logIncomingCtrl',
+    resolve: {
+      bundleNumbers: function (bundleFactory) {
+        return bundleFactory.getBundleNumbers();
+      },
+      currentFacilityStorageUnits: function (storageUnitFactory) {
+        return storageUnitFactory.getStorageUnitsByCurrentFacility();
+      }
+    },
+    data: {
+      label: 'Log Incoming'
+    }
+  });
+})
 
 /**
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-    .controller('logIncomingCtrl', function ($scope, $filter, $state, storageService, storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
+    .controller('logIncomingCtrl', function ($scope, $filter, $state, bundleNumbers, storageUnitFactory,
+                                             currentFacilityStorageUnits, bundleFactory, userFactory, alertsFactory) {
 
+      $scope.LOG_STEPS = {ENTER_BUNDLE_NO: 1, BUNDLE_NOT_FOUND: 2, VERIFY: 3, CONFIRM: 4};
+      $scope.bundleNumbersAutoCompleteList = bundleNumbers;
       $scope.clicked = false;
       $scope.bundle = {};
-      $scope.bundle.date = '';
-      $scope.getFacilityStorageUnits = [];
-      $scope.logIncomingForm = {};
+      $scope.currentStep = 1;
+      $scope.receivingFacilityStorageUnits = currentFacilityStorageUnits;
+      $scope.logIncomingForm = {
+        dateReceipt: new Date()
+      };
       $scope.logIncomingForm.verify = [];
       $scope.logIncomingForm.storage_units = [];
-
-      $scope.getCurrentDate = function () {
-        var today = new Date();
-        return $filter('date')(today, "yyyy-MM-dd");
-      }
-
-      $scope.addNewInventory = function(bundleNumber){
-        $state.go('addInventory', {bundleNo: bundleNumber});
-      }
+      /**
+       * this is used to return storage unit object at preview page based on the uuid.
+       * */
+      $scope.getStorageUnit = function (storageUnitUUID) {
+        for (var index in $scope.receivingFacilityStorageUnits) {
+          var storageUnit = $scope.receivingFacilityStorageUnits[index];
+          if (storageUnit.uuid === storageUnitUUID) return storageUnit;
+        }
+        return {};
+      };
 
       userFactory.getLoggedInUser().then(function (data) {
         $scope.loggedInUser = data;
@@ -44,8 +56,8 @@ angular.module('lmisChromeApp')
         return bundleLine.batch.product;
       }
 
-      $scope.getUOMDetail = function (bundleLine) {
-        return $filter('number')(bundleLine.quantity, 0) + ' ' + bundleLine.quantity_uom.symbol;
+      $scope.getQuantityDetail = function (quantity, uom) {
+        return $filter('number')(quantity, 0) + ' ' + uom.symbol;
       }
 
       /**
@@ -53,44 +65,50 @@ angular.module('lmisChromeApp')
        */
       $scope.showBundle = function () {
 
+        if ($scope.show === true && $scope.showPreview === true) {
+          $scope.showPreview = false;
+          $scope.currentStep = $scope.LOG_STEPS.VERIFY;
+          return;
+        }
+
         $scope.clicked = true;
         bundleFactory.getBundle($scope.showBundleNo).then(function (data) {
           $scope.bundle = data;
-          $scope.bundle.date = $scope.getCurrentDate();
-          var receivingFacility = $scope.bundle.receiving_facility;
-          $scope.parent = $scope.bundle.parent.name;
-          $scope.receiving_facility = receivingFacility.name;
-          storageUnitFactory.getFacilityStorageUnits(receivingFacility.uuid).then(function (data) {
-            $scope.receivingFacilityStorageUnits = data;
-          });
           $scope.show = true;
+          $scope.currentStep = $scope.LOG_STEPS.VERIFY;
           $scope.showAddManually = false;
           return;
-        }, function () {
-          $translate('bundleNotFound', {id: $scope.showBundleNo})
-              .then(function (msg) {
-                alertsFactory.add({message: msg, type: 'danger'});
-                $scope.showAddManually = true;
-              });
+        }, function (error) {
+          $scope.currentStep = $scope.LOG_STEPS.BUNDLE_NOT_FOUND;
+          $scope.showAddManually = true;
         });
       };
-
 
       /**
        * Function used to hide form used to log incoming bundle form.
        */
       $scope.hideBundle = function () {
+        $scope.currentStep = $scope.LOG_STEPS.ENTER_BUNDLE_NO;
         $scope.clicked = false;
         $scope.show = false;
         $scope.showAddManually = false;
       };
 
+      /**
+       * shows preview page after entering incoming bundle details. validations and display of error message takes place
+       * here.
+       */
+      $scope.previewLogBundleForm = function () {
+        //TODO: add validations when they have been defined
+        $scope.currentStep = $scope.LOG_STEPS.CONFIRM;
+        $scope.showPreview = true;
+      };
+
 
       /**
-       * Function called when authorize button is clicked and it saves the bundle info, to generate bundle receipt.
+       * Function called when confirm button is clicked and it saves the bundle info, to generate bundle receipt.
        */
-      $scope.save = function () {
-
+      $scope.confirm = function () {
         var bundleReceiptLines = [];
         for (var index in $scope.bundle.bundle_lines) {
           var bundleLine = $scope.bundle.bundle_lines[index];
@@ -106,11 +124,10 @@ angular.module('lmisChromeApp')
           bundleReceiptLines.push(bundleReceiptLine);
         }
 
-
         var bundleReceipt = {
           "bundle": $scope.bundle.uuid,
           "user": $scope.loggedInUser.id,
-          "date": $scope.bundle.date,
+          "date_receipt": $scope.logIncomingForm.dateReceipt.toISOString(),
           "bundle_receipt_lines": bundleReceiptLines,
           "receiving_facility": $scope.bundle.receiving_facility.uuid,
           "sending_facility": $scope.bundle.parent.uuid
@@ -118,14 +135,13 @@ angular.module('lmisChromeApp')
 
         bundleFactory.saveBundleReceipt(bundleReceipt).then(function (data) {
           if (data.length !== 0) {
-            $state.go('inventoryListView', {add: true});
+            $state.go('home.index.dashboard', {logSucceeded: true});
           }
-
         }, function (error) {
+          alertsFactory.add({message: error, type: 'danger'});
           console.log(error);
         });
 
-
-      }
+      };
     });
 

@@ -1,0 +1,111 @@
+<div class="col-sm-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">Log Bundle Preview</h4>
+    </div>
+    <div class="panel-body">
+      <div class="col-sm-12">
+        <div class="col-sm-6">
+          <label translate="receivingFacility"></label>
+          <span class="new-line" ng-bind="(bundle.receiving_facility).name"></span>
+        </div>
+
+        <div class="col-sm-6">
+          <label translate="sendingFacility"></label>
+          <span class="new-line" ng-bind="(bundle.parent).name"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="col-sm-12">
+        <div class="col-sm-6">
+          <label translate="bundleNo"></label>
+          <span class="new-line" ng-bind="bundle.uuid"></span>
+        </div>
+
+        <div class="col-sm-6">
+          <label>Date <i class="fa fa-calendar"></i></label>
+          <span class="new-line" ng-bind="logIncomingForm.dateReceipt | date:'dd MMMM, yyyy' "></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="col-sm-12">
+        <div class="col-sm-12" ng-repeat="bundleLine in bundle.bundle_lines">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">{{ $index + 1 }}</h4>
+            </div>
+            <div class="panel-body">
+              <div class="col-sm-12">
+                <div class="col-sm-4">
+                  <label translate="productTypes"></label>
+                  <span class="new-line" ng-bind="getProductType(bundleLine).code"></span>
+                </div>
+
+                <div class="col-sm-4">
+                  <label translate="batchNo"></label>
+                  <span class="new-line" ng-bind="(bundleLine.batch).batch_no"></span>
+                </div>
+
+                <div class="col-sm-4">
+                  <label translate="program"></label>
+                  <span class="new-line" ng-bind="(bundleLine.program).code"></span>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="panel-body">
+              <div class="col-sm-12">
+
+                <div class="col-sm-4">
+                  <label translate="quantity"></label>
+                    <span class="new-line"
+                          ng-bind="getQuantityDetail(bundleLine.quantity, bundleLine.quantity_uom)"></span>
+                </div>
+
+                <div class="col-sm-4">
+                  <label>Verify Quantity</label>
+                    <span class="new-line"
+                          ng-bind="getQuantityDetail(logIncomingForm.verify[bundleLine.uuid], bundleLine.quantity_uom)">
+                    </span>
+                </div>
+
+                <div class="col-sm-4">
+                  <label translate="storageUnit"></label>
+                    <span class="new-line"
+                          ng-bind="getStorageUnit(logIncomingForm.storage_units[bundleLine.uuid]).name">
+                    </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="form-group">
+        <div class="col-md-4 pull-left">
+          <div class="btn-group col-sm-3">
+            <span ng-click="showBundle()" class="btn btn-default">
+              <i class="fa fa-chevron-circle-left"></i>Back</span>
+          </div>
+        </div>
+        <div class="col-md-4 pull-right">
+          <button type="button" id="preview" name="preview" class="btn btn-success">
+            <span translate="confirm" ng-click="confirm()"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
