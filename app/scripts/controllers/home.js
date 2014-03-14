@@ -78,7 +78,7 @@ angular.module('lmisChromeApp')
           return settingsService.load();
         }
       },
-      controller: function($scope, inventories, inventoryRulesFactory, $window, settings) {
+      controller: function($scope, $stateParams, $translate, alertsFactory, inventories, inventoryRulesFactory, $window, settings) {
         var keys = {
           below: {
             label: 'Below buffer',
@@ -98,13 +98,14 @@ angular.module('lmisChromeApp')
           }
         };
 
-        if ($stateParams.logSucceeded === "true") {
+        if($stateParams.logSucceeded === 'true') {
           $stateParams.logSucceeded = '';
           $translate('addInventorySuccessMessage')
-              .then(function (msg) {
-                alertsFactory.add({message: msg, type: 'success'});
-              });
+            .then(function(msg) {
+              alertsFactory.add({message: msg, type: 'success'});
+            });
         }
+
         var values = [];
 
         // var values = [
