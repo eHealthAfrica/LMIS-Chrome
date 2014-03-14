@@ -108,6 +108,18 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         bundle_no: $stateParams.bundleNo
       }
 
+      //TODO: find better way to hold complete object of form data and selections. e.g session or utility service
+      // so that at preview page you can access objects properties.
+      $scope.getProductTypeByUUID = function(productTypeUUID){
+        var deferred = $q.defer();
+        var productType = {};
+        productTypeFactory.get(productTypeUUID).then(function(result){
+          productType = result;
+        });
+        return productType;
+      }
+
+
       //load data used to populate form fields
       $scope.productTypes = productTypes;
       $scope.programs = programs;
