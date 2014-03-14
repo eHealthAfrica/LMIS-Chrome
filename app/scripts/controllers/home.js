@@ -168,10 +168,34 @@ angular.module('lmisChromeApp')
           return settingsService.load();
         }
       },
-      controller: function($scope, settings) {
-        settings.facility = {};
-        settings.inventory = {};
+      controller: function($scope, settings, settingsService, alertsFactory, $translate) {
+        var fields = ['facility', 'inventory'];
+        for(var i = fields.length - 1; i >= 0; i--) {
+          if(!(fields[i] in settings)) {
+            settings[fields[i]] = {};
+          }
+        }
+
         $scope.settings = settings;
+        $scope.save = function(settings) {
+          settingsService.save(settings)
+            .then(function() {
+              $translate('settingsSaved').then(function(settingsSaved) {
+                alertsFactory.add({
+                  message: settingsSaved,
+                  type: 'success'
+                });
+              });
+            })
+            .catch(function() {
+              $translate('settingsFailed').then(function(settingsFailed) {
+                alertsFactory.add({
+                  message: settingsFailed,
+                  type: 'danger'
+                });
+              });
+            });
+        };
       }
     })
     .state('home.index.settings.facility', {

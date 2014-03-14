@@ -12,8 +12,6 @@
 <div class="row" ui-view></div>
 <div class="pull-right">
   <button class="btn btn-default" translate="reset" />
-  <button type="submit" class="btn btn-success" translate="submit" />
-</div>
-<div>
-  <pre ng-bind="settings | json"></pre>
+  <button type="submit" class="btn btn-success"
+    translate="submit" ng-click="save(settings)" />
 </div>

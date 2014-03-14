@@ -83,5 +83,7 @@
   "serviceLevel": "Service Level",
   "showBundle": "Show Bundle",
   "confirm": "Confirm",
-  "save": "Save"
+  "save": "Save",
+  "settingsSaved": "Settings saved",
+  "settingsFailed": "Could not save settings"
 }
