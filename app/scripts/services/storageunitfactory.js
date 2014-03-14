@@ -72,6 +72,7 @@ angular.module('lmisChromeApp')
       // Public API here
       return {
 
+        getStorageUnitsByCurrentFacility: getStorageUnitsByCurrentFacility,
 
         getFacilityStorageUnits: getFacilityStorageUnits,
 

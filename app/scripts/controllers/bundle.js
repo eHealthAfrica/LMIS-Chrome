@@ -8,6 +8,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     resolve: {
       bundleNumbers: function (bundleFactory) {
         return bundleFactory.getBundleNumbers();
+      },
+      currentFacilityStorageUnits: function (storageUnitFactory) {
+        return storageUnitFactory.getStorageUnitsByCurrentFacility();
       }
     },
     data: {
@@ -20,14 +23,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-    .controller('logIncomingCtrl', function ($scope, $filter, $state, bundleNumbers, storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
+    .controller('logIncomingCtrl', function ($scope, $filter, $state, bundleNumbers, storageUnitFactory,
+                                             currentFacilityStorageUnits, bundleFactory, userFactory, alertsFactory) {
 
       $scope.LOG_STEPS = {ENTER_BUNDLE_NO: 1, BUNDLE_NOT_FOUND: 2, VERIFY: 3, CONFIRM: 4};
       $scope.bundleNumbersAutoCompleteList = bundleNumbers;
       $scope.clicked = false;
       $scope.bundle = {};
       $scope.currentStep = 1;
-      $scope.getFacilityStorageUnits = [];
+      $scope.receivingFacilityStorageUnits = currentFacilityStorageUnits;
       $scope.logIncomingForm = {
         dateReceipt: new Date()
       };
@@ -70,9 +74,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.clicked = true;
         bundleFactory.getBundle($scope.showBundleNo).then(function (data) {
           $scope.bundle = data;
-          storageUnitFactory.getFacilityStorageUnits($scope.bundle.receiving_facility.uuid).then(function (data) {
-            $scope.receivingFacilityStorageUnits = data;
-          });
           $scope.show = true;
           $scope.currentStep = $scope.LOG_STEPS.VERIFY;
           $scope.showAddManually = false;

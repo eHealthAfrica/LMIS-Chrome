@@ -1,63 +1,57 @@
 'use strict';
 angular.module('lmisChromeApp').config(function ($stateProvider) {
-  $stateProvider
-      .state('inventoryListView', {
-        url: '/inventory-list',
-        templateUrl: '/views/inventory/index.html',
-        controller: 'inventoryMainCtrl',
-        data: {
-          label: "Inventory List"
-        },
-        resolve: {
-          currentFacility: function (facilityFactory) {
-            return facilityFactory.getCurrentFacility();
-          }
-        }
-      }).state('addNewInventory', {
-        url: '/add-inventory?bundleNo',
-        templateUrl: '/views/inventory/add-inventory.html',
-        controller: 'addInventoryCtrl',
-        data: {
-          label: "Add Inventory"
-        },
-        resolve: {
-          productTypes: function (productTypeFactory) {
-            return productTypeFactory.getAll();
-          },
-          programs: function (programsFactory) {
-            return programsFactory.getAll();
-          },
-          uomList: function (uomFactory) {
-            return uomFactory.getAll();
-          },
-          facilities: function (facilityFactory) {
-            return facilityFactory.getAll();
-          },
-          currentFacility: function (facilityFactory) {
-            return facilityFactory.getCurrentFacility();
-          },
-          currentFacilityStorageUnits: function($q, facilityFactory, storageUnitFactory){
-            var deferred = $q.defer();
-            facilityFactory.getCurrentFacility().then(function (facility) {
-              storageUnitFactory.getFacilityStorageUnits(facility.uuid).then(function(storageUnits){
-                deferred.resolve(storageUnits);
-              });
-            });
-            return deferred.promise;
-          }
-        }
-      });
+  $stateProvider.state('inventoryListView', {
+    url: '/inventory-list',
+    templateUrl: '/views/inventory/index.html',
+    controller: 'inventoryMainCtrl',
+    data: {
+      label: "Inventory List"
+    },
+    resolve: {
+      currentFacility: function (facilityFactory) {
+        return facilityFactory.getCurrentFacility();
+      }
+    }
+  })
+  .state('addNewInventory', {
+    url: '/add-inventory?bundleNo',
+    templateUrl: '/views/inventory/add-inventory.html',
+    controller: 'addInventoryCtrl',
+    data: {
+      label: "Add Inventory"
+    },
+    resolve: {
+      productTypes: function (productTypeFactory) {
+        return productTypeFactory.getAll();
+      },
+      programs: function (programsFactory) {
+        return programsFactory.getAll();
+      },
+      uomList: function (uomFactory) {
+        return uomFactory.getAll();
+      },
+      facilities: function (facilityFactory) {
+        return facilityFactory.getAll();
+      },
+      currentFacility: function (facilityFactory) {
+        return facilityFactory.getCurrentFacility();
+      },
+      currentFacilityStorageUnits: function (storageUnitFactory) {
+        return storageUnitFactory.getStorageUnitsByCurrentFacility();
+      }
+    }
+  });
 })
 /**
  * Controller for showing inventory
  */
     .controller('inventoryMainCtrl', function ($rootScope, $stateParams, $scope, currentFacility, inventoryFactory,
-                                               $filter, ngTableParams, visualMarkerService, $translate, alertsFactory) {
+                                               $filter, ngTableParams, visualMarkerService) {
 
       $scope.highlight = visualMarkerService.highlightByExpirationStatus;
       $scope.currentFacility = currentFacility;
       inventoryFactory.getAll(currentFacility.uuid).then(function (inventoryItems) {
-        $scope.totalItems = inventoryItems.length;
+      $scope.totalItems = inventoryItems.length;
 
         // Table defaults
         var params = {
@@ -101,8 +95,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * to the inventory upon arrival.
  */
     .controller('addInventoryCtrl', function ($scope, $filter, $stateParams, currentFacility, storageService, $state,
-                                              inventoryFactory, productTypes, programs, uomList, facilities,
-                                              batchFactory, currentFacilityStorageUnits) {
+                                              inventoryFactory, productTypes, programs, uomList, facilities, batchFactory,
+                                              currentFacilityStorageUnits) {
 
       //used to hold form data
       var id = 0;
@@ -110,7 +104,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         showForm: true,
         authorized: false,
         inventory_lines: [],
-        date_receipt: $filter('date')(new Date(), 'yyyy-MM-dd'),
+        date_receipt: new Date(),
         bundle_no: $stateParams.bundleNo
       }
 
