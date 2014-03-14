@@ -10,7 +10,7 @@
     <div class="col-sm-12">
       <div class="col-sm-4">
         <label translate="productTypes"></label>
-        <span class="new-line" ng-bind="inventoryLine.productType"></span>
+        <span class="new-line" ng-bind="getProductTypeByUUID(inventoryLine.productType).name"></span>
       </div>
 
       <div class="col-sm-4">

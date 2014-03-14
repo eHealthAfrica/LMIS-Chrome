@@ -94,9 +94,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('addInventoryCtrl', function ($scope, $filter, $stateParams, currentFacility, storageService, $state,
+    .controller('addInventoryCtrl', function ($q, $scope, $filter, $stateParams, currentFacility, storageService, $state,
                                               inventoryFactory, productTypes, programs, uomList, facilities, batchFactory,
-                                              currentFacilityStorageUnits) {
+                                              currentFacilityStorageUnits, productTypeFactory) {
 
       //used to hold form data
       var id = 0;
