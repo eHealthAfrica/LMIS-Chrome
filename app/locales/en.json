@@ -80,6 +80,7 @@
   "reset": "Reset",
   "minimum": "Minimum",
   "maximum": "Maximum",
+  "forecastingInterval": "Forecasting Interval",
   "serviceLevel": "Service Level",
   "showBundle": "Show Bundle",
   "confirm": "Confirm",
