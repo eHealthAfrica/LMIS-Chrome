@@ -194,12 +194,13 @@ angular.module('lmisChromeApp')
     $scope.stockCount.opened = {};
     $scope.stockCount.unopened = {};
     $scope.stockCount.confirmation = {};
-    $scope.stockCount.month = $scope.reportMonth;
-    $scope.stockCount.year = $scope.reportYear;
-    $scope.stockCount.day = $scope.currentDay;
+
 
     $scope.save = function(){
       $scope.stockCount.facility = $scope.facilityUuid;
+      $scope.stockCount.month = $scope.reportMonth;
+      $scope.stockCount.year = $scope.reportYear;
+      $scope.stockCount.day = $scope.currentDay;
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(){
           $state.go('stockCountIndex',
@@ -241,17 +242,14 @@ angular.module('lmisChromeApp')
     };
 
   })
-  .controller('StockCountStepsFormCtrl', function($scope,stockCountFactory, $state){
+  .controller('StockCountStepsFormCtrl', function($scope,stockCountFactory, $state, alertsFactory){
     $scope.preview = false;
     $scope.selectedProduct = '';
-    $scope.jumpTo = function(){
-      $scope.step = parseInt($scope.selectedProduct);
-      $scope.preview = false;
-    }
-
+    $scope.editOn = false;
     $scope.edit = function(index){
       $scope.step = index;
       $scope.preview = false;
+      $scope.editOn = true;
     }
 
     $scope.showDay = false;
@@ -266,13 +264,16 @@ angular.module('lmisChromeApp')
 
     $scope.stockCount.month = $scope.reportMonth;
     $scope.stockCount.year = $scope.reportYear;
-    $scope.stockCount.day = $scope.currentDay;
+    $scope.stockCount.day = $scope.stockCount.day ? $scope.stockCount.day: $scope.currentDay;
 
     $scope.save = function(){
+      $scope.stockCount.day = $scope.stockCount.day ? $scope.stockCount.day: $scope.currentDay;
       $scope.stockCount.facility = $scope.facilityUuid;
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(uuid){
-          $state.go('stockCountIndex',
+          var msg = 'stock for '+$scope.stockCount.day+' '+$scope.monthList[$scope.reportMonth]+' '+$scope.reportYear;
+          alertsFactory.add({message: msg, type: 'success'});
+          $state.go('home.index.mainActivity',
             {
               'facility': $scope.facilityUuid,
               'reportMonth': $scope.reportMonth,
