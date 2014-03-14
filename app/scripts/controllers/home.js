@@ -213,7 +213,12 @@ angular.module('lmisChromeApp')
       },
       controller: function($scope, settings, products) {
         var inventory = settings.inventory;
-        inventory.products = products;
+        // Check if a product has been added since the settings were saved
+        for(var code in products) {
+          if(!(code in inventory.products)) {
+            inventory.products[code] = products[code];
+          }
+        }
         $scope.inventory = inventory;
       }
     });
