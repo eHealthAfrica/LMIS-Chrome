@@ -15,37 +15,29 @@
                 <div class="col-sm-12">
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="sendingFacility" translate="sendingFacility"></label>
-                      <select id="sendingFacility" class="form-control" ng-model="inventory.sending_facility"
-                              ng-disabled="true" required>
-                        <option value="" translate="selectSendingFacility"></option>
-                        <option ng-repeat="facility in facilities" value="{{ facility.uuid }}"
-                                ng-bind="facility.name"></option>
-                      </select>
+                      <label translate="sendingFacility"></label>
+                      <span class="new-line" ng-bind="inventory.sending_facility"></span>
                     </div>
                   </div>
 
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="receivingFacility" translate="receivingFacility"></label>
-                      <input class="form-control" type="text" name="receivingFacility" id="receivingFacility"
-                             ng-model="(inventory.receiving_facility).name" ng-disabled="true"/>
+                      <label translate="receivingFacility"></label>
+                      <span class="new-line" ng-bind="(inventory.receiving_facility).name"></span>
                     </div>
                   </div>
 
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="bundleNo" translate="bundleNo"></label>
-                      <input class="form-control" type="text" name="bundleNo" id="bundleNo"
-                             ng-model="inventory.bundle_no" ng-disabled="true" placeholder="e.g KNC-THF-01-9803"/>
+                      <label translate="bundleNo"></label>
+                      <span class="new-line" ng-bind="inventory.bundle_no"></span>
                     </div>
                   </div>
 
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="receiptDate" translate="dateReceived"></label>
-                      <input ng-model="inventory.date_receipt" class="form-control" type="date" name="receiptDate"
-                             id="receiptDate" ng-disabled="true" required/>
+                      <label translate="dateReceived"></label>
+                      <span class="new-line" ng-bind="(inventory.date_receipt | date: 'dd MMMM, yyyy')"></span>
                     </div>
                   </div>
 
@@ -82,7 +74,7 @@
 
           <div class="col-md-4 pull-right">
             <button type="submit" id="preview" name="preview" class="btn btn-success">
-              <span translate="submit"></span>
+              <span translate="confirm"></span>
             </button>
           </div>
         </div>

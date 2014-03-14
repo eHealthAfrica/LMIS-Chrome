@@ -147,7 +147,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       $scope.save = function () {
-        $scope.inventory.date_receipt = Date.parse($scope.inventory.date_receipt);
+        $scope.inventory.date_receipt = $scope.inventory.date_receipt.toISOString();
+
+        console.log($scope.inventory);
+
         inventoryFactory.save($scope.inventory).then(function (result) {
           if (result.length !== 0) {
             $state.go('home.index.dashboard', {logSucceeded: true});

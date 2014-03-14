@@ -33,7 +33,7 @@
       <label for="bundleNo">&nbsp;</label>
     </div>
   </div>
-  <a ui-sref="addNewInventory" class="btn btn-success">
+  <a ui-sref="addNewInventory({bundleNo: $parent.showBundleNo})" class="btn btn-success">
     <span><i class="fa fa-plus"></i></span>
     <span translate="addNewInventory"></span>
   </a>

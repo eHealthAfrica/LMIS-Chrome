@@ -52,18 +52,8 @@
     <div class="col-sm-12">
       <div class="col-sm-4">
         <label translate="quantity"></label>
-        <div class="input-group">
-        <span class="input-group-btn">
-          <button class="btn btn-warning" type="button" ng-click="subtract(inventoryLine)"><i class="fa fa-minus"></i>
-          </button>
-        </span>
-          <input type="text" class="form-control" ng-model="inventoryLine.quantity" required>
-        <span class="input-group-btn">
-          <button class="btn btn-info" type="button" ng-click="add(inventoryLine)"><i class="fa fa-plus"></i></button>
-        </span>
-        </div>
+        <counter bind="inventoryLine.quantity"></counter>
       </div>
-
       <div class="col-sm-4">
         <label translate="uom"></label>
         <select class="form-control" ng-model="inventoryLine.uom" required>
