@@ -87,5 +87,7 @@
   "save": "Save",
   "settingsSaved": "Settings saved",
   "settingsFailed": "Could not save settings",
-  "products": "Products"
+  "products": "Products",
+  "productsUnset": "Product settings are unset. Please define them in",
+  "inventorySettings": "inventory settings"
 }
