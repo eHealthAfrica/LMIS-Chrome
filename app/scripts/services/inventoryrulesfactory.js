@@ -3,6 +3,19 @@
 angular.module('lmisChromeApp')
   .factory('inventoryRulesFactory', function() {
 
+    // Returns the average of a list of numbers
+    var average = function(things) {
+      var sum = 0;
+      for(var i = things.length - 1; i >= 0; i--) {
+        sum = sum + things[i];
+      }
+      return sum / things.length;
+    };
+
+    var randInterval = function(min, max) {
+      return Math.floor(Math.random()*(max-min+1)+min);
+    };
+
     /**
      * Order lead time.
      *
@@ -60,14 +73,6 @@ angular.module('lmisChromeApp')
      * @return {Number} average LTC in ms
      */
     var leadTimeConsumption = function(leadTimes, consumptions) {
-      var average = function(things) {
-        var sum = 0;
-        for(var i = things.length - 1; i >= 0; i--) {
-          sum = sum + things[i];
-        }
-        return sum / things.length;
-      };
-
       var leadAvg = average(leadTimes),
           consAvg = average(consumptions);
 
@@ -97,11 +102,26 @@ angular.module('lmisChromeApp')
      * site at all times given its supply access, consumption patterns, and
      * desired service level.
      *
-     * @param {Object[]} inventory The inventory held at a facility
+     * @param {Object[]} inventories The inventory held at a facility
+     * @param {Number} serviceFactor The facility's service factor
      * @return {Number[]} the buffer levels for each product
      */
-    var bufferStock = function(inventory) {
-      return inventory;
+    var bufferStock = function(inventories, serviceFactor, consumption) {
+      var leadTimes = [];
+      inventories.forEach(function(inventory) {
+        leadTimes.push(leadTime(inventory));
+      });
+      var avgLeadTime = average(leadTimes);
+
+      var first = Math.pow(avgLeadTime * consumption, 2),
+          second = Math.pow(consumption, 2) * Math.pow(avgLeadTime, 2);
+      var buffer = serviceFactor * Math.sqrt(first + second);
+
+      // TODO: calculate real buffer
+      inventories.forEach(function(inventory) {
+        inventory.buffer = randInterval(100, 500);
+      });
+      return inventories;
     };
 
     return {

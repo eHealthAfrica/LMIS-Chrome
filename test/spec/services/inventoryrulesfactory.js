@@ -103,7 +103,13 @@ describe('Service: inventoryRulesFactory', function() {
 
   describe('buffer stock', function() {
     it('should return a list of buffer levels for each product', function() {
-      var levels = inventoryRulesFactory.bufferStock(inventory);
+      var serviceLevel = settings.inventory.serviceLevel,
+          serviceFactor = inventoryRulesFactory.serviceFactor(serviceLevel),
+          consumption = inventoryRulesFactory.consumption(facilities[0]);
+
+      var levels = inventoryRulesFactory.bufferStock(
+        inventory, serviceFactor, consumption
+      );
       expect(angular.isArray(levels)).toBe(true);
     });
   });
