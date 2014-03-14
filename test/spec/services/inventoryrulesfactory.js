@@ -7,15 +7,17 @@ describe('Service: inventoryRulesFactory', function() {
     'lmisChromeApp',
     'lmisChromeAppMocks',
     'ordersMocks',
-    'facilitiesMocks'
+    'facilitiesMocks',
+    'settingsMocks'
   ));
 
   // instantiate service
-  var inventoryRulesFactory, orders, facilities;
-  beforeEach(inject(function(_inventoryRulesFactory_, ordersMock, facilitiesMock) {
+  var inventoryRulesFactory, orders, facilities, settings;
+  beforeEach(inject(function(_inventoryRulesFactory_, ordersMock, facilitiesMock, settingsMock) {
     inventoryRulesFactory = _inventoryRulesFactory_;
     orders = ordersMock;
     facilities = facilitiesMock;
+    settings = settingsMock;
   }));
 
   describe('lead time', function() {
@@ -86,6 +88,14 @@ describe('Service: inventoryRulesFactory', function() {
 
       expect(typeof ltc).toBe('number');
       expect(ltc).toBe(42660000000);
+    });
+  });
+
+  describe('service factor', function() {
+    it('should return a number between zero and 100', function() {
+      var serviceLevel = settings.inventory.serviceLevel;
+      var serviceFactor = inventoryRulesFactory.serviceFactor(serviceLevel);
+      expect(serviceFactor).toBe(1.28);
     });
   });
 });

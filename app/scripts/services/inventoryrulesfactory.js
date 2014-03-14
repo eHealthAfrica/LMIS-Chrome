@@ -74,9 +74,26 @@ angular.module('lmisChromeApp')
       return leadAvg * consAvg;
     };
 
+    /**
+     * Service factor.
+     *
+     * The desired level (availability) of facility service expressed as a
+     * percentage.
+     *
+     * @param {Number} serviceLevel A facility's desired service level.
+     * @return {Number} the service factor as a decimal
+     */
+    var serviceFactor = function(serviceLevel) {
+      var serviceFactor = serviceLevel;
+      // TODO: bring in actual normsinv function (JStat?)
+      serviceFactor = 1.28;
+      return serviceFactor;
+    };
+
     return {
       leadTime: leadTime,
       consumption: consumption,
-      leadTimeConsumption: leadTimeConsumption
+      leadTimeConsumption: leadTimeConsumption,
+      serviceFactor: serviceFactor
     };
   });
