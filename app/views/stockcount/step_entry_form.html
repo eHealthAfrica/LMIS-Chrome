@@ -1,0 +1,105 @@
+<div class="row" ng-controller="StockCountStepsFormCtrl">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-sm-12">
+        <h3 >Stock Count for {{ facilityObject.name }}</h3>
+        <h5>
+          <select ng-model="stockCount.day" ng-show="showDay" ng-change="hideSelect()">
+            <option value="">-- select day --</option>
+            <option  ng-selected="day == currentDay" ng-repeat="day in daysInMonth" val
+                    ue="{{ day }}">
+              {{ day }}
+            </option>
+          </select>
+          <span class="badge badge-info" ng-hide="showDay" ng-click="showDay=!showDay">{{ stockCount.day }}</span>
+          {{ monthList[reportMonth] }} {{ reportYear }}
+        </h5>
+      </div>
+    </div>
+    <form ng-submit="save()">
+      <div class="row">
+        <div class="col-sm-12" ng-hide="preview">
+          <div class="row">
+            <div class="col-sm-12">
+              <h1>{{ products[step] }}</h1>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="row">
+                  <div class="col-xs-12 col-sm-4">
+                      <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default col-sm-12 col-xs-12"
+                          ng-click="step = step - 1">
+                        <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
+                      </button>
+                  </div>
+                  <div class="col-sm-4 col-xs-12">
+                     <input ng-repeat="product in products" ng-show="step === $index" type="number"
+                            class="form-control input-lg" ng-model="stockCount.unopened[$index]" />
+                  </div>
+                  <div class="col-sm-4 col-xs-12">
+                    <button type="button" ng-hide="step === maxStep"
+                            class="btn btn-lg btn-success col-sm-12 col-xs-12"
+                            ng-click="step = step + 1">
+                      Next <i class="fa fa-chevron-circle-right fa-lg"></i>
+                    </button>
+                  </div>
+                  <div class="col-sm-4 col-xs-12">
+                    <button type="button" ng-show="step === maxStep"
+                            class="btn btn-lg btn-success col-sm-12 col-xs-12"
+                            ng-click="preview=!preview">
+                      Save <i class="fa fa-save fa-lg"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-show="editOn">
+              <div class="col-sm-6 data-row">
+                   <button type="button" class="btn btn-lg btn-warning col-sm-12 col-xs-12" ng-click="preview=!preview">
+                    Save <i class="fa fa-save fa-lg"></i>
+                  </button>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row" ng-show="preview">
+        <div class="col-sm-12">
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="panel panel-default">
+                <table class="table table-bordered">
+                  <thead>
+                  <tr>
+                    <th>Stock Item</th>
+                    <th>Todays Count</th>
+                    <!--th>Confirm</th-->
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="product in products" ng-click="edit($index)">
+                    <td class="form-label">{{ product }}</td>
+                    <td>
+                      {{ stockCount.unopened[$index] }}
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12 date-row">
+              <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
+                  <i class="fa fa-chevron-circle-left"></i> Back to form
+              </button>
+              <button class="btn btn-success btn-lg">Confirm and Save <i class="fa fa-save"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
