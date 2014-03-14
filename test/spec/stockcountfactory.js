@@ -17,8 +17,8 @@ describe('Service stockCountFactory', function(){
     expect(stockCountFactory).toBeDefined();
   });
 
-  it('should contain the name of a method', function(){
-    expect(stockCountFactory.get.hasOwnProperty('allStockCount')).toBeTruthy();
+  it('should contain the name of a function', function(){
+    expect(stockCountFactory.get.allStockCount).toBeDefined();
   });
 
   it('should return Month object', function(){
