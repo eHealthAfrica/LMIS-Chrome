@@ -15,8 +15,8 @@ angular.module('lmisChromeApp')
         }
       },
       controller: function($scope, currentFacility, facilityLocation) {
-        $scope.currentFacility = currentFacility;
-        $scope.facilityLocation = facilityLocation;
+        $scope.facility = currentFacility.name + ' (' +
+          facilityLocation.name + ')';
       }
     })
     .state('home.index', {
