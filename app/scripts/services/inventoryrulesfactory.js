@@ -124,11 +124,26 @@ angular.module('lmisChromeApp')
       return inventories;
     };
 
+    /**
+     * Reorder point.
+     *
+     * The inventory level for each item in a facility stock list at which a
+     * refill of supplies must be ordered.
+     *
+     * @param {Object} inventories The facility's inventory
+     * @return {Object} the facility's inventory
+     */
+    var reorderPoint = function(inventory) {
+      inventory.min = inventory.buffer + 10;
+      return inventory;
+    };
+
     return {
       leadTime: leadTime,
       consumption: consumption,
       leadTimeConsumption: leadTimeConsumption,
       serviceFactor: serviceFactor,
-      bufferStock: bufferStock
+      bufferStock: bufferStock,
+      reorderPoint: reorderPoint
     };
   });

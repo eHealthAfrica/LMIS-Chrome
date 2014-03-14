@@ -113,4 +113,11 @@ describe('Service: inventoryRulesFactory', function() {
       expect(angular.isArray(levels)).toBe(true);
     });
   });
+
+  describe('reorder point', function() {
+    it('should return an order reorder point', function() {
+      var order = inventoryRulesFactory.reorderPoint({buffer: 10}, order);
+      expect(typeof order.min).toBe('number');
+    });
+  });
 });
