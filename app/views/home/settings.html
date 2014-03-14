@@ -1,0 +1,19 @@
+<div>
+  <ul class="nav nav-pills">
+    <li ui-sref-active="active">
+      <a ui-sref="home.index.settings.facility" translate="facility"></a>
+    </li>
+    <li ui-sref-active="active">
+      <a ui-sref="home.index.settings.inventory" translate="inventory"></a>
+    </li>
+  </ul>
+</div>
+
+<div class="row" ui-view></div>
+<div class="pull-right">
+  <button class="btn btn-default" translate="reset" />
+  <button type="submit" class="btn btn-success" translate="submit" />
+</div>
+<div>
+  <pre ng-bind="settings | json"></pre>
+</div>

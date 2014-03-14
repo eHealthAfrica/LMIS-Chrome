@@ -1,124 +1,124 @@
 <div ng-controller="WasteCountFormCtrl">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="info-box">
-                        <div class="info-box-number one">1</div>
-                        <div class="info-box-text">
-                            Count the number of vials
-                            discarded today.
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-
-                </div>
-                <div class="col-sm-3">
-                    <div class="info-box">
-                        <div class="info-box-number two">2</div>
-                        <div class="info-box-text">
-                            Enter the TOTAL quantity
-                            of each product type in
-                            the appropriate row.
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="info-box">
-                        <div class="info-box-number three">3</div>
-                        <div class="info-box-text">
-                            Provide the reason or
-                            reasons for why vials of
-                            that product type was
-                            discarded.
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-
-                </div>
-                <div class="col-sm-3">
-                    <div class="info-box">
-                        <div class="info-box-number four">4</div>
-                        <div class="info-box-text">
-                            When finished with each
-                            product, submit your
-                            form by clicking the
-                            Submit button below!
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="info-box">
+            <div class="info-box-number one">1</div>
+            <div class="info-box-text">
+              Count the number of vials
+              discarded today.
             </div>
-        </div>
-    </div>
-<form ng-submit="save()">
-    <div class="row">
-        <div class="col-sm-3">Report Day</div>
-        <div class="col-sm-2">
-            <select ng-model="wastageCount.day" class="form-control">
-                <option value="">-- select day --</option>
-                <option ng-selected="day == current_day" ng-repeat="day in daysInMonth" value="{{ day }}">{{ day }}</option>
-            </select>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Stock Item</th>
-                                    <th colspan="2">Todays Waste</th>
-                                    <th>Confirm</th>
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Total Discarded Today</th>
-                                    <th>Reasons for Discard</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="(productKey, productName) in stock_products">
-                                    <td class="form-label">{{ productName }}</td>
-                                    <td>
-                                        <div class="col-sm-6">
-                                            <input type="number" class="form-control" ng-model="wastageCount.discarded[productKey]">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group" ng-class="{open: open}">
-                                            <button type="button" ng-click="open=!open" class="btn">Select Reason</button>
-                                            <button type="button" class="btn dropdown-toggle" ng-click="open=!open">
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu w-menu">
+            <div class="clearfix"></div>
+          </div>
 
-                                                <li ng-repeat="(key, value) in discardedReasons">
-                                                    {{ value }}  <input ng-true-value="{{ key }}"  ng-model="wastageCount.reason[productKey][key]" type="checkbox">
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                    <td><input ng-model="wastageCount.wastageConfirmation[productKey]" type="checkbox"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <button class="btn btn-success">Save</button>
-                    </div>
-                </div>
-            </div>
         </div>
+        <div class="col-sm-3">
+          <div class="info-box">
+            <div class="info-box-number two">2</div>
+            <div class="info-box-text">
+              Enter the TOTAL quantity
+              of each product type in
+              the appropriate row.
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="info-box">
+            <div class="info-box-number three">3</div>
+            <div class="info-box-text">
+              Provide the reason or
+              reasons for why vials of
+              that product type was
+              discarded.
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+        </div>
+        <div class="col-sm-3">
+          <div class="info-box">
+            <div class="info-box-number four">4</div>
+            <div class="info-box-text">
+              When finished with each
+              product, submit your
+              form by clicking the
+              Submit button below!
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
     </div>
-</form>
+  </div>
+  <form ng-submit="save()">
+    <div class="row">
+      <div class="col-sm-3">Report Day</div>
+      <div class="col-sm-2">
+        <select ng-model="wastageCount.day" class="form-control">
+          <option value="">-- select day --</option>
+          <option ng-selected="day == currentDay" ng-repeat="day in daysInMonth" value="{{ day }}">{{ day }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="panel panel-default">
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>Stock Item</th>
+                  <th colspan="2">Todays Waste</th>
+                  <th>Confirm</th>
+                </tr>
+                <tr>
+                  <th></th>
+                  <th>Total Discarded Today</th>
+                  <th>Reasons for Discard</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="(productKey, productName) in products">
+                  <td class="form-label">{{ productName }}</td>
+                  <td>
+                    <div class="col-sm-6">
+                      <input type="number" class="form-control" ng-model="wastageCount.discarded[productKey]">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="btn-group" ng-class="{open: open}">
+                      <button type="button" ng-click="open=!open" class="btn">Select Reason</button>
+                      <button type="button" class="btn dropdown-toggle" ng-click="open=!open">
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu w-menu">
+
+                        <li ng-repeat="(key, value) in discardedReasons">
+                          {{ value }}  <input ng-true-value="{{ key }}"  ng-model="wastageCount.reason[productKey][key]" type="checkbox">
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td><input ng-model="wastageCount.wastageConfirmation[productKey]" type="checkbox"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="form-group">
+              <button class="btn btn-success">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>

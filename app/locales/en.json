@@ -74,6 +74,13 @@
   "privacyPolicy": "Privacy Policy",
   "contactUs": "Contact us",
   "processAnOrder": "Process an order",
+  "settings": "Settings",
+  "facility": "Facility",
+  "inventory": "Inventory",
+  "reset": "Reset",
+  "minimum": "Minimum",
+  "maximum": "Maximum",
+  "serviceLevel": "Service Level",
   "showBundle": "Show Bundle",
   "confirm": "Confirm",
   "save": "Save"
