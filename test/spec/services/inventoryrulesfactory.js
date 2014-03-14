@@ -7,15 +7,19 @@ describe('Service: inventoryRulesFactory', function() {
     'lmisChromeApp',
     'lmisChromeAppMocks',
     'ordersMocks',
-    'facilitiesMocks'
+    'facilitiesMocks',
+    'settingsMocks',
+    'inventoriesMocks'
   ));
 
   // instantiate service
-  var inventoryRulesFactory, orders, facilities;
-  beforeEach(inject(function(_inventoryRulesFactory_, ordersMock, facilitiesMock) {
+  var inventoryRulesFactory, orders, facilities, settings, inventory;
+  beforeEach(inject(function(_inventoryRulesFactory_, ordersMock, facilitiesMock, settingsMock, inventoriesMock) {
     inventoryRulesFactory = _inventoryRulesFactory_;
     orders = ordersMock;
     facilities = facilitiesMock;
+    settings = settingsMock;
+    inventory = inventoriesMock;
   }));
 
   describe('lead time', function() {
@@ -86,6 +90,34 @@ describe('Service: inventoryRulesFactory', function() {
 
       expect(typeof ltc).toBe('number');
       expect(ltc).toBe(42660000000);
+    });
+  });
+
+  describe('service factor', function() {
+    it('should return a number between zero and 100', function() {
+      var serviceLevel = settings.inventory.serviceLevel;
+      var serviceFactor = inventoryRulesFactory.serviceFactor(serviceLevel);
+      expect(serviceFactor).toBe(1.28);
+    });
+  });
+
+  describe('buffer stock', function() {
+    it('should return a list of buffer levels for each product', function() {
+      var serviceLevel = settings.inventory.serviceLevel,
+          serviceFactor = inventoryRulesFactory.serviceFactor(serviceLevel),
+          consumption = inventoryRulesFactory.consumption(facilities[0]);
+
+      var levels = inventoryRulesFactory.bufferStock(
+        inventory, serviceFactor, consumption
+      );
+      expect(angular.isArray(levels)).toBe(true);
+    });
+  });
+
+  describe('reorder point', function() {
+    it('should return an order reorder point', function() {
+      var order = inventoryRulesFactory.reorderPoint({buffer: 10}, order);
+      expect(typeof order.min).toBe('number');
     });
   });
 });

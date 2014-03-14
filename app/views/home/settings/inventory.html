@@ -3,27 +3,32 @@
     <div class="container">
       <div class="col-sm-3">
         <div class="form-group">
-          <label for="name">Forecasting Interval</label>
+          <label for="name" translate="forecastingInterval"></label>
           <input type="number" class="form-control" min="1"
             ng-model="inventory.interval" />
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="name" translate="serviceLevel"></label>
+          <input type="number" class="form-control" min="1" max="100"
+            ng-model="inventory.serviceLevel" />
         </div>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="container">
+      <div class="col-sm-12">
+        <h3 translate="products"></h3>
+      </div>
       <div ng-repeat="(product, value) in inventory.products">
         <div class="col-sm-3">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title" ng-bind="product"></h3>
+              <h4 class="panel-title" ng-bind="product"></h4>
             </div>
             <div class="panel-body">
-              <div class="form-group">
-                <label for="name" translate="minimum"></label>
-                <input type="number" class="form-control" min="1"
-                  ng-model="inventory.products[product]['min']" />
-              </div>
               <div class="form-group">
                 <label for="name" translate="maximum"></label>
                 <input type="number" class="form-control" min="1"
