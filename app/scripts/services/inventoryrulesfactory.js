@@ -107,15 +107,15 @@ angular.module('lmisChromeApp')
      * @return {Number[]} the buffer levels for each product
      */
     var bufferStock = function(inventories, serviceFactor, consumption) {
-      var leadTimes = [];
-      inventories.forEach(function(inventory) {
-        leadTimes.push(leadTime(inventory));
-      });
-      var avgLeadTime = average(leadTimes);
+      // var leadTimes = [];
+      // inventories.forEach(function(inventory) {
+      //   leadTimes.push(leadTime(inventory));
+      // });
+      // var avgLeadTime = average(leadTimes);
 
-      var first = Math.pow(avgLeadTime * consumption, 2),
-          second = Math.pow(consumption, 2) * Math.pow(avgLeadTime, 2);
-      var buffer = serviceFactor * Math.sqrt(first + second);
+      // var first = Math.pow(avgLeadTime * consumption, 2),
+      //     second = Math.pow(consumption, 2) * Math.pow(avgLeadTime, 2);
+      // var buffer = serviceFactor * Math.sqrt(first + second);
 
       // TODO: calculate real buffer
       inventories.forEach(function(inventory) {
