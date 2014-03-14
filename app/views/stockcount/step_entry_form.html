@@ -1,20 +1,20 @@
 <div class="row" ng-controller="StockCountStepsFormCtrl">
   <div class="col-sm-12">
-     <div class="row">
-        <div class="col-sm-12">
-            <h3 >Stock Count for {{ facilityObject.name }}</h3>
-            <h5>
-              <select ng-model="stockCount.day" ng-show="showDay" ng-change="hideSelect()">
-                  <option value="">-- select day --</option>
-                  <option  ng-selected="day == currentDay" ng-repeat="day in daysInMonth" val
-                          ue="{{ day }}">
-                    {{ day }}
-                  </option>
-              </select>
-              <span class="badge badge-info" ng-hide="showDay" ng-click="showDay=!showDay">{{ stockCount.day }}</span>
-              {{ monthList[reportMonth] }} {{ reportMonth }} {{ reportYear
-              }}</h5>
-        </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <h3 >Stock Count for {{ facilityObject.name }}</h3>
+        <h5>
+          <select ng-model="stockCount.day" ng-show="showDay" ng-change="hideSelect()">
+            <option value="">-- select day --</option>
+            <option  ng-selected="day == currentDay" ng-repeat="day in daysInMonth" val
+                    ue="{{ day }}">
+              {{ day }}
+            </option>
+          </select>
+          <span class="badge badge-info" ng-hide="showDay" ng-click="showDay=!showDay">{{ stockCount.day }}</span>
+          {{ monthList[reportMonth] }} {{ reportYear }}
+        </h5>
+      </div>
     </div>
     <form ng-submit="save()">
       <div class="row">
@@ -38,18 +38,26 @@
                             class="form-control input-lg" ng-model="stockCount.unopened[$index]" />
                   </div>
                   <div class="col-sm-4 col-xs-12">
-                    <button type="button" ng-disabled="step === maxStep" class="btn btn-lg btn-default col-sm-12 col-xs-12"
+                    <button type="button" ng-hide="step === maxStep"
+                            class="btn btn-lg btn-success col-sm-12 col-xs-12"
                             ng-click="step = step + 1">
                       Next <i class="fa fa-chevron-circle-right fa-lg"></i>
+                    </button>
+                  </div>
+                  <div class="col-sm-4 col-xs-12">
+                    <button type="button" ng-show="step === maxStep"
+                            class="btn btn-lg btn-success col-sm-12 col-xs-12"
+                            ng-click="preview=!preview">
+                      Save <i class="fa fa-save fa-lg"></i>
                     </button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="row" ng-show="editOn">
               <div class="col-sm-6 data-row">
-                   <button type="button" class="btn btn-lg btn-default col-sm-12 col-xs-12" ng-click="preview=!preview">
-                    Preview <i class="fa fa-bullseye fa-lg"></i>
+                   <button type="button" class="btn btn-lg btn-warning col-sm-12 col-xs-12" ng-click="preview=!preview">
+                    Save <i class="fa fa-save fa-lg"></i>
                   </button>
               </div>
             </div>
@@ -57,14 +65,7 @@
       </div>
       <div class="row" ng-show="preview">
         <div class="col-sm-12">
-          <div class="row">
-            <div class="col-sm-12 date-row">
-              <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
-                  Back to form <i class="fa fa-bullseye fa-lg"></i>
-                </button>
-                <button class="btn btn-default btn-lg">Save <i class="fa fa-save"></i></button>
-            </div>
-          </div>
+
           <div class="row">
             <div class="col-sm-12">
               <div class="panel panel-default">
@@ -86,6 +87,15 @@
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12 date-row">
+              <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
+                  <i class="fa fa-chevron-circle-left"></i> Back to form
+              </button>
+              <button class="btn btn-success btn-lg">Confirm and Save <i class="fa fa-save"></i></button>
             </div>
           </div>
         </div>
