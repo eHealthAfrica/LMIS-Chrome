@@ -5,39 +5,29 @@ angular.module('lmisChromeApp')
 
       function getByUUID(uuid) {
         var deferred = $q.defer();
-        storageService.find(storageService.BATCH, uuid).then(function (data) {
-          var batch = data;
-          if (batch !== undefined) {
-            //TODO: replace nested attribute with their json object
-            productTypeFactory.get(batch.product).then(function (data) {
-              batch.product = data;
-            });
-            presentationFactory.get(batch.presentation).then(function (data) {
-              batch.presentation = data;
-            });
-            companyFactory.get(batch.manufacturer).then(function (data) {
-              batch.manufacturer = data;
-            });
-            currencyFactory.get(batch.price_currency).then(function (data) {
-              batch.price_currency = data;
-            });
-            modeOfAdministrationFactory.get(batch.mode_of_use).then(function (data) {
-              batch.mode_of_use = data;
-            });
-            formulationFactory.get(batch.formulation).then(function (data) {
-              batch.formulation = data;
-            });
-            uomFactory.get(batch.volume_uom).then(function (data) {
-              batch.volume_uom = data;
-            });
+
+        storageService.find(storageService.BATCH, uuid).then(function(batch) {
+          var promises = {
+            product: productTypeFactory.get(batch.product),
+            presentation: presentationFactory.get(batch.presentation),
+            manufacturer: companyFactory.get(batch.manufacturer),
+            price_currency: currencyFactory.get(batch.price_currency),
+            mode_of_use: modeOfAdministrationFactory.get(batch.mode_of_use),
+            formulation: formulationFactory.get(batch.formulation),
+            volume_uom: uomFactory.get(batch.volume_uom)
+          };
+
+          $q.all(promises).then(function(result) {
+            for(var key in result) {
+              batch[key] = result[key];
+            }
             deferred.resolve(batch);
-          } else {
-            deferred.reject('batch with given uuid not found.');
-          }
-          if (!$rootScope.$$phase) {
-            $rootScope.$apply();
-          }
+            if(!$rootScope.$$phase) {
+              $rootScope.$apply();
+            }
+          });
         });
+
         return deferred.promise;
       }
 
@@ -70,6 +60,26 @@ angular.module('lmisChromeApp')
         return deferred.promise;
       }
 
+      var getByBatchNo = function(batchNo) {
+        var deferred = $q.defer();
+
+        var resolveBatch = function(batch) {
+          getByUUID(batch.uuid).then(function(batch) {
+            deferred.resolve(batch);
+          });
+        };
+
+        storageService.all(storageService.BATCH).then(function(datum) {
+          for(var i = datum.length - 1; i >= 0; i--) {
+            if(angular.equals(datum[i].batch_no, batchNo)) {
+              resolveBatch(datum[i]);
+            }
+          }
+        });
+
+        return deferred.promise;
+      }
+
 
       /**
        * Expose Public API
@@ -95,25 +105,7 @@ angular.module('lmisChromeApp')
         },
 
         get: getByUUID,
-
         getByProductType: getBatchesByProductType,
-
-        getByBatchNo: function (batchNo) {
-          var deferred = $q.defer(), batch = [];
-          storageService.all(storageService.BATCH).then(function (data) {
-            angular.forEach(data, function (datum) {
-              if (angular.equals(datum, undefined) || !angular.equals(datum.batch_no, batchNo)) {
-                return;
-              }
-              getByUUID(datum.uuid).then(function (result) {
-                deferred.notify(datum);
-                batch = result;
-                deferred.resolve(batch);
-              });
-            });
-          });
-          return deferred.promise;
-        }
-
+        getByBatchNo: getByBatchNo
       };
     });

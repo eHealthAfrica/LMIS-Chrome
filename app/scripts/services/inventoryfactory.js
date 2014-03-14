@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('inventoryFactory', function ($q, storageService, productTypeFactory, programsFactory, storageUnitFactory, batchFactory, facilityFactory, uomFactory) {
+  .factory('inventoryFactory', function($q, storageService, productTypeFactory, programsFactory, storageUnitFactory, batchFactory, facilityFactory, uomFactory) {
 
       function getByUUID(uuid) {
         var deferred = $q.defer();
@@ -16,37 +16,27 @@ angular.module('lmisChromeApp')
             if(data.toString() === '[object Object]') {
               inventoryLine.batch = data;
             }
+
+            var promises = {
+              product_type: productTypeFactory.get(inventoryLine.product_type),
+              program: programsFactory.get(inventoryLine.program),
+              uom: uomFactory.get(inventoryLine.uom),
+              receiving_facility: facilityFactory.get(inventoryLine.receiving_facility),
+              sending_facility: facilityFactory.get(inventoryLine.sending_facility),
+              storage_unit: storageUnitFactory.get(inventoryLine.storage_unit)
+            };
+
+            $q.all(promises).then(function(result) {
+              for(var key in result) {
+                inventoryLine[key] = result[key];
+              }
+              deferred.resolve(inventoryLine);
+            });
           });
-
-            productTypeFactory.get(inventoryLine.product_type).then(function(data){
-              inventoryLine.product_type = data;
-            });
-
-            programsFactory.get(inventoryLine.program).then(function (data) {
-              inventoryLine.program = data;
-            });
-
-            uomFactory.get(inventoryLine.uom).then(function (data) {
-              inventoryLine.uom = data;
-            });
-
-            facilityFactory.get(inventoryLine.receiving_facility).then(function (data) {
-              inventoryLine.receiving_facility = data;
-            });
-
-            facilityFactory.get(inventoryLine.sending_facility).then(function (data) {
-              inventoryLine.sending_facility = data;
-            });
-
-            storageUnitFactory.get(inventoryLine.storage_unit).then(function (data) {
-              inventoryLine.storage_unit = data;
-            });
-
-          }
-          deferred.resolve(inventoryLine);
-        });
-        return deferred.promise;
-      }
+        }
+      });
+      return deferred.promise;
+    }
 
       return {
         get: getByUUID,
@@ -97,8 +87,7 @@ angular.module('lmisChromeApp')
               }
               deferred.resolve(codes);
             };
-            // XXX: Need to wait until batch promise is settled (line 16)
-            $timeout(collateCodes, 1000);
+            collateCodes();
           });
         return deferred.promise;
       },
