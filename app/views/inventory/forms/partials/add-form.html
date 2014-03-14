@@ -17,9 +17,9 @@
                     <div class="form-group">
                       <label for="sendingFacility" translate="sendingFacility"></label>
                       <select id="sendingFacility" class="form-control" ng-model="inventory.sending_facility"
-                              required>
+                              ng-change="createSendingFacilityObj(inventory)" required>
                         <option value="" translate="selectSendingFacility"></option>
-                        <option ng-repeat="facility in facilities" value="{{ facility.uuid }}"
+                        <option ng-repeat="facility in facilities" value="{{ facility }}"
                                 ng-bind="facility.name"></option>
                       </select>
                     </div>

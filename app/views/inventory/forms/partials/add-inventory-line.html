@@ -13,7 +13,7 @@
         <select ng-model="inventoryLine.productType" class="form-control"
                 ng-change="loadProductTypeBatches(inventoryLine)">
           <option value="" translate="selectProductType"></option>
-          <option ng-repeat="type in inventoryLine.productTypes" value="{{ type.uuid }}"
+          <option ng-repeat="type in inventoryLine.productTypes" value="{{ type }}"
                   ng-selected="{{ (inventoryLine.productType).uuid === type.uuid}}"
                   ng-bind="type.name">
           </option>
@@ -38,9 +38,9 @@
 
       <div class="col-sm-4">
         <label translate="program"></label>
-        <select ng-model="inventoryLine.program" class="form-control">
+        <select ng-model="inventoryLine.program" class="form-control" ng-change="createProgramObj(inventoryLine)">
           <option value="" translate="selectProgram"></option>
-          <option ng-repeat="program in programs" value="{{ program.uuid }}"
+          <option ng-repeat="program in programs" value="{{ program }}"
                   ng-selected="{{ (inventoryLine.program).uuid === program.uuid}}"
                   ng-bind="program.name"></option>
         </select>
@@ -56,19 +56,19 @@
       </div>
       <div class="col-sm-4">
         <label translate="uom"></label>
-        <select class="form-control" ng-model="inventoryLine.uom" required>
+        <select class="form-control" ng-model="inventoryLine.uom" ng-change="createUOMObj(inventoryLine)" required>
           <option value="" translate="selectUOM"></option>
-          <option ng-repeat="uom in uomList" value="{{ uom.uuid }}" ng-bind="uom.name"
+          <option ng-repeat="uom in uomList" value="{{ uom }}" ng-bind="uom.name"
                   ng-selected="{{ (inventoryLine.uom).uuid === uom.uuid }}"></option>
         </select>
       </div>
 
       <div class="col-sm-4">
         <label translate="storageUnit"></label>
-        <select class="form-control" ng-model="inventoryLine.storage_unit">
+        <select class="form-control" ng-model="inventoryLine.storage_unit" ng-change="createStorageUnitObj(inventoryLine)">
           <option value="" translate="addToStorageUnit"></option>
           <option ng-repeat="storageUnit in receivingFacilityStorageUnits"
-                  value="{{ storageUnit.uuid }}"
+                  value="{{ storageUnit }}"
                   ng-selected="{{ (inventoryLine.storageUnit).uuid === storageUnit.uuid }}"
                   ng-bind="storageUnit.name ">
           </option>

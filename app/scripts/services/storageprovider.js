@@ -398,8 +398,6 @@ angular.module('lmisChromeApp')
         try {
           getTable(tableName).then(function (data) {
             result = data[key];
-            console.log(tableName)
-            console.log(result);
             deferred.resolve(result);
             if (!$rootScope.$$phase) $rootScope.$apply();
           });

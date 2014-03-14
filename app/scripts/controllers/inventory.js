@@ -96,7 +96,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  */
     .controller('addInventoryCtrl', function ($q, $scope, $filter, $stateParams, currentFacility, storageService, $state,
                                               inventoryFactory, productTypes, programs, uomList, facilities, batchFactory,
-                                              currentFacilityStorageUnits, productTypeFactory) {
+                                              currentFacilityStorageUnits) {
 
       //used to hold form data
       var id = 0;
@@ -106,19 +106,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         inventory_lines: [],
         date_receipt: new Date(),
         bundle_no: $stateParams.bundleNo
-      }
-
-      //TODO: find better way to hold complete object of form data and selections. e.g session or utility service
-      // so that at preview page you can access objects properties.
-      $scope.getProductTypeByUUID = function(productTypeUUID){
-        var deferred = $q.defer();
-        var productType = {};
-        productTypeFactory.get(productTypeUUID).then(function(result){
-          productType = result;
-        });
-        return productType;
-      }
-
+      };
 
       //load data used to populate form fields
       $scope.productTypes = productTypes;
@@ -130,19 +118,40 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       $scope.loadProductTypeBatches = function (inventoryLine) {
         inventoryLine.isDisabled = false;
-        batchFactory.getByProductType(inventoryLine.productType).then(function (data) {
+        //TODO: find better way to persist form input at preview page not uuid
+        inventoryLine.productTypeObj = JSON.parse(inventoryLine.productType);
+        batchFactory.getByProductType(inventoryLine.productTypeObj.uuid).then(function (data) {
           inventoryLine.productTypeBatches = data;
           if (inventoryLine.productTypeBatches.length === 0) {
             inventoryLine.batch_no = '';
           }
         });
-      }
+      };
+
+      $scope.createProgramObj = function(inventoryLine){
+        //TODO: find better way to persist form input at preview page not uuid
+        inventoryLine.programObj = JSON.parse(inventoryLine.program);
+      };
+
+      $scope.createUOMObj = function(inventoryLine){
+        //TODO: find better way to persist form input at preview page not uuid
+        inventoryLine.uomObj = JSON.parse(inventoryLine.uom);
+      };
+
+      $scope.createStorageUnitObj = function(inventoryLine){
+        //TODO: find better way to persist form input at preview page not uuid
+       inventoryLine.storageUnitObj = JSON.parse(inventoryLine.storage_unit);
+      };
+
+      $scope.createSendingFacilityObj = function(inventory){
+        inventory.sendingFacilityObj = JSON.parse(inventory.sending_facility);
+      };
 
       $scope.updateBatchNo = function (inventoryLine) {
         batchFactory.get(inventoryLine.selectedBatch).then(function (data) {
           inventoryLine.batch_no = data.batch_no;
         });
-      }
+      };
 
       $scope.addInventoryLine = function () {
         $scope.inventory.inventory_lines.push({
@@ -150,16 +159,26 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           productTypes: productTypes,
           isDisabled: true
         });
-      }
+      };
 
       $scope.removeInventoryLine = function (inventoryLine) {
         $scope.inventory.inventory_lines = $scope.inventory.inventory_lines.filter(function (invLine) {
           return invLine.id !== inventoryLine.id;
         });
-      }
+      };
 
       $scope.save = function () {
         $scope.inventory.date_receipt = $scope.inventory.date_receipt.toISOString();
+
+        //TODO: remove this when saving form selections for preview has been resolved.
+        $scope.inventory.sending_facility = $scope.inventory.sendingFacilityObj.uuid;
+        for(var index in $scope.inventory.inventory_lines){
+          var inventoryLine = $scope.inventory.inventory_lines[index];
+          inventoryLine.uom = inventoryLine.uomObj.uuid;
+          inventoryLine.productType = inventoryLine.productTypeObj.uuid;
+          inventoryLine.program = inventoryLine.programObj.uuid;
+          inventoryLine.storage_unit = inventoryLine.storageUnitObj.uuid
+        }
 
         console.log($scope.inventory);
 
@@ -168,7 +187,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             $state.go('home.index.dashboard', {logSucceeded: true});
           }
         });
-      }
+      };
 
     });
 
