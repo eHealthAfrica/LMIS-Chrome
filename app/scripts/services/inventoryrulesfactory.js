@@ -3,6 +3,19 @@
 angular.module('lmisChromeApp')
   .factory('inventoryRulesFactory', function() {
 
+    // Returns the average of a list of numbers
+    var average = function(things) {
+      var sum = 0;
+      for(var i = things.length - 1; i >= 0; i--) {
+        sum = sum + things[i];
+      }
+      return sum / things.length;
+    };
+
+    var randInterval = function(min, max) {
+      return Math.floor(Math.random()*(max-min+1)+min);
+    };
+
     /**
      * Order lead time.
      *
@@ -60,23 +73,62 @@ angular.module('lmisChromeApp')
      * @return {Number} average LTC in ms
      */
     var leadTimeConsumption = function(leadTimes, consumptions) {
-      var average = function(things) {
-        var sum = 0;
-        for(var i = things.length - 1; i >= 0; i--) {
-          sum = sum + things[i];
-        }
-        return sum / things.length;
-      };
-
       var leadAvg = average(leadTimes),
           consAvg = average(consumptions);
 
       return leadAvg * consAvg;
     };
 
+    /**
+     * Service factor.
+     *
+     * The desired level (availability) of facility service expressed as a
+     * percentage.
+     *
+     * @param {Number} serviceLevel A facility's desired service level.
+     * @return {Number} the service factor as a decimal
+     */
+    var serviceFactor = function(serviceLevel) {
+      var serviceFactor = serviceLevel;
+      // TODO: bring in actual normsinv function (JStat?)
+      serviceFactor = 1.28;
+      return serviceFactor;
+    };
+
+    /**
+     * Buffer stock.
+     *
+     * The minimum level of each product profile a facility must maintain on
+     * site at all times given its supply access, consumption patterns, and
+     * desired service level.
+     *
+     * @param {Object[]} inventories The inventory held at a facility
+     * @param {Number} serviceFactor The facility's service factor
+     * @return {Number[]} the buffer levels for each product
+     */
+    var bufferStock = function(inventories, serviceFactor, consumption) {
+      // var leadTimes = [];
+      // inventories.forEach(function(inventory) {
+      //   leadTimes.push(leadTime(inventory));
+      // });
+      // var avgLeadTime = average(leadTimes);
+
+      // var first = Math.pow(avgLeadTime * consumption, 2),
+      //     second = Math.pow(consumption, 2) * Math.pow(avgLeadTime, 2);
+      // var buffer = serviceFactor * Math.sqrt(first + second);
+
+      // TODO: calculate real buffer
+      inventories.forEach(function(inventory) {
+        inventory.buffer = randInterval(100, 500);
+      });
+      return inventories;
+    };
+
     return {
       leadTime: leadTime,
       consumption: consumption,
-      leadTimeConsumption: leadTimeConsumption
+      leadTimeConsumption: leadTimeConsumption,
+      serviceFactor: serviceFactor,
+      bufferStock: bufferStock
     };
   });

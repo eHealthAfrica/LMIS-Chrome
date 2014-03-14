@@ -62,11 +62,11 @@
   "addToStorageUnit": "Add to Storage Unit",
   "remove": "Remove",
   "addNewInventory": "Add New Inventory",
-  "addInventorySuccessMessage": "Inventory was added successfully !!!",
+  "addInventorySuccessMessage": "Inventory added successfully",
   "stockCount": "Stock Count",
   "addStockCount": "Add Stock Count",
   "addWasteCount": "Add Waste Count",
-  "orderPlacedSuccess": "Order placed successfully!",
+  "orderPlacedSuccess": "Order placed successfully",
   "online": "Online",
   "offline": "Offline",
   "toggleNavigation": "Toggle navigation",
@@ -80,8 +80,12 @@
   "reset": "Reset",
   "minimum": "Minimum",
   "maximum": "Maximum",
+  "forecastingInterval": "Forecasting Interval",
   "serviceLevel": "Service Level",
   "showBundle": "Show Bundle",
   "confirm": "Confirm",
-  "save": "Save"
+  "save": "Save",
+  "settingsSaved": "Settings saved",
+  "settingsFailed": "Could not save settings",
+  "products": "Products"
 }

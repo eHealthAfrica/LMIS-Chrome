@@ -15,8 +15,8 @@ angular.module('lmisChromeApp')
         }
       },
       controller: function($scope, currentFacility, facilityLocation) {
-        $scope.currentFacility = currentFacility;
-        $scope.facilityLocation = facilityLocation;
+        $scope.facility = currentFacility.name + ' (' +
+          facilityLocation.name + ')';
       }
     })
     .state('home.index', {
@@ -28,8 +28,8 @@ angular.module('lmisChromeApp')
             $scope.$state = $state;
           }
         },
-        controller: function ($scope, currentFacility) {
-          $scope.currentFacility = currentFacility;
+        'sidebar': {
+          templateUrl: 'views/home/sidebar.html'
         }
       }
     })
@@ -73,9 +73,12 @@ angular.module('lmisChromeApp')
       resolve: {
         inventories: function(currentFacility, inventoryFactory) {
           return inventoryFactory.getFacilityInventory(currentFacility.uuid);
+        },
+        settings: function(settingsService) {
+          return settingsService.load();
         }
       },
-      controller: function($scope, inventories, inventoryRulesFactory, $window) {
+      controller: function($scope, inventories, inventoryRulesFactory, $window, settings) {
         var keys = {
           below: {
             label: 'Below buffer',
@@ -95,56 +98,72 @@ angular.module('lmisChromeApp')
           }
         };
 
-              if ($stateParams.logSucceeded === "true") {
-                $stateParams.logSucceeded = '';
-                $translate('addInventorySuccessMessage')
-                    .then(function (msg) {
-                      alertsFactory.add({message: msg, type: 'success'});
-                    });
-              }
+        if ($stateParams.logSucceeded === "true") {
+          $stateParams.logSucceeded = '';
+          $translate('addInventorySuccessMessage')
+              .then(function (msg) {
+                alertsFactory.add({message: msg, type: 'success'});
+              });
+        }
+        var values = [];
 
-              var keys = {
-                below: {
-                  label: 'Below buffer',
-                  color: 'red'
-                },
-                buffer: {
-                  label: 'Buffer',
-                  color: 'yellow'
-                },
-                safety: {
-                  label: 'Safety stock',
-                  color: 'black'
-                },
-                max: {
-                  label: 'Max',
-                  color: 'grey'
-                }
-              };
+        // var values = [
+        //   {
+        //     label: 'BCG',
+        //     below: -19,
+        //     buffer: 405,
+        //     safety: 0,
+        //     _max: 1000
+        //   },
+        //   {
+        //     label: 'TT',
+        //     below: 0,
+        //     buffer: 348,
+        //     safety: 384,
+        //     _max: 1500
+        //   },
+        //   {
+        //     label: 'Penta',
+        //     below: 0,
+        //     buffer: 310,
+        //     safety: 272,
+        //     _max: 1200
+        //   }
+        // ];
 
-              var values = [
-                {
-                  label: 'BCG',
-                  below: -19,
-                  buffer: 405,
-                  safety: 0,
-                  _max: 1000
-                },
-                {
-                  label: 'TT',
-                  below: 0,
-                  buffer: 348,
-                  safety: 384,
-                  _max: 1500
-                },
-                {
-                  label: 'Penta',
-                  below: 0,
-                  buffer: 310,
-                  safety: 272,
-                  _max: 1200
-                }
-              ];
+        var buffers = inventoryRulesFactory.bufferStock(inventories);
+        var code = '';
+        angular.forEach(buffers, function(inventory) {
+          code = inventory.batch.product.code;
+          values.push({
+            label: code,
+            below: 0,
+            buffer: inventory.buffer,
+            safety: 384,
+            _max: settings.inventory.products[code].max
+          });
+        });
+
+        console.log(values);
+
+        var chart = [];
+        angular.forEach(Object.keys(keys), function (key) {
+          var series = {};
+          series.key = keys[key].label;
+          series.color = keys[key].color;
+          series.values = [];
+          angular.forEach(values, function (value) {
+            if (key === 'max') {
+              value[key] = value._max - (value.buffer + value.safety);
+            }
+            series.values.push([value.label, value[key]]);
+          });
+          chart.push(series);
+        });
+
+        $scope.inventoryChart = chart;
+        $scope.inventoryKeys = keys;
+        $scope.inventoryValues = values;
 
         var lt = -1;
         angular.forEach(inventories, function(inventory) {
@@ -168,10 +187,34 @@ angular.module('lmisChromeApp')
           return settingsService.load();
         }
       },
-      controller: function($scope, settings) {
-        settings.facility = {};
-        settings.inventory = {};
+      controller: function($scope, settings, settingsService, alertsFactory, $translate) {
+        var fields = ['facility', 'inventory'];
+        for(var i = fields.length - 1; i >= 0; i--) {
+          if(!(fields[i] in settings)) {
+            settings[fields[i]] = {};
+          }
+        }
+
         $scope.settings = settings;
+        $scope.save = function(settings) {
+          settingsService.save(settings)
+            .then(function() {
+              $translate('settingsSaved').then(function(settingsSaved) {
+                alertsFactory.add({
+                  message: settingsSaved,
+                  type: 'success'
+                });
+              });
+            })
+            .catch(function() {
+              $translate('settingsFailed').then(function(settingsFailed) {
+                alertsFactory.add({
+                  message: settingsFailed,
+                  type: 'danger'
+                });
+              });
+            });
+        };
       }
     })
     .state('home.index.settings.facility', {
@@ -189,7 +232,12 @@ angular.module('lmisChromeApp')
       },
       controller: function($scope, settings, products) {
         var inventory = settings.inventory;
-        inventory.products = products;
+        // Check if a product has been added since the settings were saved
+        for(var code in products) {
+          if(!(code in inventory.products)) {
+            inventory.products[code] = products[code];
+          }
+        }
         $scope.inventory = inventory;
       }
     });
