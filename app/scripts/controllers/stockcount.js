@@ -271,13 +271,15 @@ angular.module('lmisChromeApp')
       $scope.stockCount.facility = $scope.facilityUuid;
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(uuid){
-          var msg = 'stock for '+$scope.stockCount.day+' '+$scope.monthList[$scope.reportMonth]+' '+$scope.reportYear;
+          var msg = 'You have completed stock count for '+$scope.stockCount.day+
+              ' '+$scope.monthList[$scope.reportMonth]+' '+$scope.reportYear;
           alertsFactory.add({message: msg, type: 'success'});
           $state.go('home.index.mainActivity',
             {
               'facility': $scope.facilityUuid,
               'reportMonth': $scope.reportMonth,
-              'reportYear': $scope.reportYear
+              'reportYear': $scope.reportYear,
+              'stockResult': msg
             });
         });
     }
