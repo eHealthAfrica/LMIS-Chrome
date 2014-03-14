@@ -90,10 +90,25 @@ angular.module('lmisChromeApp')
       return serviceFactor;
     };
 
+    /**
+     * Buffer stock.
+     *
+     * The minimum level of each product profile a facility must maintain on
+     * site at all times given its supply access, consumption patterns, and
+     * desired service level.
+     *
+     * @param {Object[]} inventory The inventory held at a facility
+     * @return {Number[]} the buffer levels for each product
+     */
+    var bufferStock = function(inventory) {
+      return inventory;
+    };
+
     return {
       leadTime: leadTime,
       consumption: consumption,
       leadTimeConsumption: leadTimeConsumption,
-      serviceFactor: serviceFactor
+      serviceFactor: serviceFactor,
+      bufferStock: bufferStock
     };
   });

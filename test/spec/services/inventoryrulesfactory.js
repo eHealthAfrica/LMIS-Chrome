@@ -8,16 +8,18 @@ describe('Service: inventoryRulesFactory', function() {
     'lmisChromeAppMocks',
     'ordersMocks',
     'facilitiesMocks',
-    'settingsMocks'
+    'settingsMocks',
+    'inventoriesMocks'
   ));
 
   // instantiate service
-  var inventoryRulesFactory, orders, facilities, settings;
-  beforeEach(inject(function(_inventoryRulesFactory_, ordersMock, facilitiesMock, settingsMock) {
+  var inventoryRulesFactory, orders, facilities, settings, inventory;
+  beforeEach(inject(function(_inventoryRulesFactory_, ordersMock, facilitiesMock, settingsMock, inventoriesMock) {
     inventoryRulesFactory = _inventoryRulesFactory_;
     orders = ordersMock;
     facilities = facilitiesMock;
     settings = settingsMock;
+    inventory = inventoriesMock;
   }));
 
   describe('lead time', function() {
@@ -96,6 +98,13 @@ describe('Service: inventoryRulesFactory', function() {
       var serviceLevel = settings.inventory.serviceLevel;
       var serviceFactor = inventoryRulesFactory.serviceFactor(serviceLevel);
       expect(serviceFactor).toBe(1.28);
+    });
+  });
+
+  describe('buffer stock', function() {
+    it('should return a list of buffer levels for each product', function() {
+      var levels = inventoryRulesFactory.bufferStock(inventory);
+      expect(angular.isArray(levels)).toBe(true);
     });
   });
 });
