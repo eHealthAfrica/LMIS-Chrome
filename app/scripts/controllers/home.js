@@ -41,7 +41,7 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.mainActivity', {
-      url: '/main-activity?orderNo',
+      url: '/main-activity?orderNo&stockResult',
       templateUrl: 'views/home/main-activity.html',
       data: {
         label: 'Home'
@@ -53,6 +53,11 @@ angular.module('lmisChromeApp')
             .then(function (msg) {
               alertsFactory.add({message: msg, type: 'success'});
             });
+        }
+
+        if($stateParams.stockResult !== null){
+          alertsFactory.add({message: $stateParams.stockResult, type: 'success'});
+          $stateParams.stockResult = null;
         }
       }
     })
