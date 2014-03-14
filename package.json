@@ -31,7 +31,7 @@
     "karma-jasmine": "~0.1.5",
     "karma-phantomjs-launcher": "~0.1.2",
     "grunt-protractor-runner": "^0.2.3",
-    "grunt-karma-coveralls": "^2.4.0",
+    "grunt-karma-coveralls": "git+https://github.com/tlvince/grunt-karma-coveralls.git#bug/undefined-statuscode",
     "karma-coverage": "^0.2.0"
   },
   "engines": {
