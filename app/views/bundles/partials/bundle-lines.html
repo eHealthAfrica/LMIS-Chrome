@@ -30,7 +30,7 @@
     <div class="col-sm-4">
       <label translate="quantity"></label>
       <input class="form-control" ng-disabled="true" type="text" name="program" id="quantity"
-             value="{{ getUOMDetail(bundleLine) }}"/>
+             value="{{ getQuantityDetail(bundleLine.quantity, bundleLine.quantity_uom) }}"/>
     </div>
 
     <div class="col-sm-4">

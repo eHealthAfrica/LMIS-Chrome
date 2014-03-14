@@ -22,12 +22,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  */
     .controller('logIncomingCtrl', function ($scope, $filter, $state, bundleNumbers, storageUnitFactory, bundleFactory, userFactory, alertsFactory, $translate) {
 
+      $scope.LOG_STEPS = {ENTER_BUNDLE_NO: 1, BUNDLE_NOT_FOUND: 2, VERIFY: 3, CONFIRM: 4};
       $scope.bundleNumbersAutoCompleteList = bundleNumbers;
       $scope.clicked = false;
       $scope.bundle = {};
-      $scope.date_receipt = new Date();
+      $scope.currentStep = 1;
       $scope.getFacilityStorageUnits = [];
-      $scope.logIncomingForm = {};
+      $scope.logIncomingForm = {
+        dateReceipt: new Date()
+      };
       $scope.logIncomingForm.verify = [];
       $scope.logIncomingForm.storage_units = [];
       /**
@@ -41,10 +44,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return {};
       };
 
-      $scope.addNewInventory = function (bundleNumber) {
-        $state.go('addInventory', {bundleNo: bundleNumber});
-      }
-
       userFactory.getLoggedInUser().then(function (data) {
         $scope.loggedInUser = data;
       });
@@ -53,8 +52,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return bundleLine.batch.product;
       }
 
-      $scope.getUOMDetail = function (bundleLine) {
-        return $filter('number')(bundleLine.quantity, 0) + ' ' + bundleLine.quantity_uom.symbol;
+      $scope.getQuantityDetail = function (quantity, uom) {
+        return $filter('number')(quantity, 0) + ' ' + uom.symbol;
       }
 
       /**
@@ -64,6 +63,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
         if ($scope.show === true && $scope.showPreview === true) {
           $scope.showPreview = false;
+          $scope.currentStep = $scope.LOG_STEPS.VERIFY;
           return;
         }
 
@@ -74,16 +74,12 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             $scope.receivingFacilityStorageUnits = data;
           });
           $scope.show = true;
+          $scope.currentStep = $scope.LOG_STEPS.VERIFY;
           $scope.showAddManually = false;
           return;
-        }, function () {
-          var errorMsg;
-          $translate('bundleNotFound', {id: $scope.showBundleNo})
-              .then(function (msg) {
-                errorMsg = msg;
-                $scope.showAddManually = true;
-              });
-          $scope.bundleNoErrorMsg = errorMsg;
+        }, function (error) {
+          $scope.currentStep = $scope.LOG_STEPS.BUNDLE_NOT_FOUND;
+          $scope.showAddManually = true;
         });
       };
 
@@ -91,6 +87,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
        * Function used to hide form used to log incoming bundle form.
        */
       $scope.hideBundle = function () {
+        $scope.currentStep = $scope.LOG_STEPS.ENTER_BUNDLE_NO;
         $scope.clicked = false;
         $scope.show = false;
         $scope.showAddManually = false;
@@ -101,15 +98,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
        * here.
        */
       $scope.previewLogBundleForm = function () {
-        console.log("here");
+        //TODO: add validations when they have been defined
+        $scope.currentStep = $scope.LOG_STEPS.CONFIRM;
         $scope.showPreview = true;
       };
 
 
       /**
-       * Function called when authorize button is clicked and it saves the bundle info, to generate bundle receipt.
+       * Function called when confirm button is clicked and it saves the bundle info, to generate bundle receipt.
        */
-      $scope.save = function () {
+      $scope.confirm = function () {
         var bundleReceiptLines = [];
         for (var index in $scope.bundle.bundle_lines) {
           var bundleLine = $scope.bundle.bundle_lines[index];
@@ -128,7 +126,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         var bundleReceipt = {
           "bundle": $scope.bundle.uuid,
           "user": $scope.loggedInUser.id,
-          "date_receipt": $scope.date_receipt.toISOString(),
+          "date_receipt": $scope.logIncomingForm.dateReceipt.toISOString(),
           "bundle_receipt_lines": bundleReceiptLines,
           "receiving_facility": $scope.bundle.receiving_facility.uuid,
           "sending_facility": $scope.bundle.parent.uuid

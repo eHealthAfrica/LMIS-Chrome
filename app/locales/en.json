@@ -58,7 +58,7 @@
   "controlPanel": "Control Panel",
   "dashboard": "Dashboard",
   "toogleNav": "Toggle Navigation",
-  "bundleNotFound": "Bundle no: {{id}} not found, confirm that you entered the correct number before using 'Add New Inventory' ",
+  "bundleNotFound": "Bundle no: {{id}} not found, confirm that you entered the correct bundle number before using 'Add New Inventory' ",
   "addToStorageUnit": "Add to Storage Unit",
   "remove": "Remove",
   "addNewInventory": "Add New Inventory",
