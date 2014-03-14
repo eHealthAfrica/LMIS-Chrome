@@ -111,6 +111,9 @@ angular.module('lmisChromeApp')
             });
         }
 
+        if(!('inventory' in settings && 'products' in settings.inventory)) {
+          $scope.productsUnset = true;
+        }
 
         // var values = [
         //   {
@@ -168,7 +171,10 @@ angular.module('lmisChromeApp')
           return values;
         };
 
-        var values = nauseatingHack();
+        var values = [];
+        if(!$scope.productsUnset) {
+          values = nauseatingHack();
+        }
         var chart = [];
         angular.forEach(Object.keys(keys), function (key) {
           var series = {};
@@ -241,12 +247,14 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.settings.facility', {
+      url: '/facility',
       templateUrl: 'views/home/settings/facility.html',
       controller: function($scope, settings) {
         $scope.facility = settings.facility;
       }
     })
     .state('home.index.settings.inventory', {
+      url: '/inventory',
       templateUrl: 'views/home/settings/inventory.html',
       resolve: {
         products: function(currentFacility, inventoryFactory) {
@@ -255,6 +263,12 @@ angular.module('lmisChromeApp')
       },
       controller: function($scope, settings, products) {
         var inventory = settings.inventory;
+
+        // User hasn't made any settings
+        if(!('products' in inventory)) {
+          inventory.products = {};
+        }
+
         // Check if a product has been added since the settings were saved
         for(var code in products) {
           if(!(code in inventory.products)) {
