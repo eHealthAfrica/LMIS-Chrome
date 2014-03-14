@@ -106,7 +106,6 @@ angular.module('lmisChromeApp')
             });
         }
 
-        var values = [];
 
         // var values = [
         //   {
@@ -132,21 +131,39 @@ angular.module('lmisChromeApp')
         //   }
         // ];
 
-        var buffers = inventoryRulesFactory.bufferStock(inventories);
-        var code = '';
-        angular.forEach(buffers, function(inventory) {
-          code = inventory.batch.product.code;
-          values.push({
-            label: code,
-            below: 0,
-            buffer: inventory.buffer,
-            safety: 384,
-            _max: settings.inventory.products[code].max
+
+        // FIXME Just here for end-of-sprint demo
+        var nauseatingHack = function() {
+          var values = [];
+          var buffers = inventoryRulesFactory.bufferStock(inventories);
+          var code = '';
+
+          var unique = {};
+
+          angular.forEach(buffers, function(inventory) {
+            code = inventory.batch.product.code;
+            if(!(code in unique)) {
+              unique[code] = {
+                label: code,
+                below: 0,
+                buffer: inventory.buffer,
+                safety: 100,
+                _max: settings.inventory.products[code].max
+              };
+            }
+            else {
+              unique[code].buffer = unique[code].buffer + inventory.buffer / 2;
+            }
           });
-        });
 
-        console.log(values);
+          for(var key in unique) {
+            values.push(unique[key]);
+          }
 
+          return values;
+        };
+
+        var values = nauseatingHack();
         var chart = [];
         angular.forEach(Object.keys(keys), function (key) {
           var series = {};

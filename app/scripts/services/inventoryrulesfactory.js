@@ -119,7 +119,7 @@ angular.module('lmisChromeApp')
 
       // TODO: calculate real buffer
       inventories.forEach(function(inventory) {
-        inventory.buffer = randInterval(100, 500);
+        inventory.buffer = randInterval(100, 300);
       });
       return inventories;
     };
