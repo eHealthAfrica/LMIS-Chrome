@@ -2,7 +2,7 @@
   <div class="col-sm-12">
     <div class="row">
       <div class="col-sm-12">
-        <h3 >Stock Count for {{ facilityObject.name }}
+        <h3 >Stock Count for {{ facilityObject.name }} -
           <select ng-model="stockCount.day" ng-show="showDay" ng-change="hideSelect()">
             <option value="">-- select day --</option>
             <option  ng-selected="day == currentDay" ng-repeat="day in daysInMonth" val
@@ -27,7 +27,7 @@
                 <div class="row">
                   <div class="col-xs-12 col-sm-4">
                       <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default col-sm-12 col-xs-12"
-                          ng-click="step = step - 1">
+                          ng-click="prev()">
                         <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
                       </button>
                   </div>
@@ -38,7 +38,7 @@
                   <div class="col-sm-4 col-xs-12">
                     <button type="button" ng-hide="step === maxStep"
                             class="btn btn-lg btn-success col-sm-12 col-xs-12"
-                            ng-click="step = step + 1">
+                            ng-click="next()">
                       Next <i class="fa fa-chevron-circle-right fa-lg"></i>
                     </button>
                   </div>
