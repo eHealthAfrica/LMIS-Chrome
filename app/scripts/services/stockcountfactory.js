@@ -106,6 +106,15 @@ angular.module('lmisChromeApp')
       }
     };
 
+    var validate = {
+     /*
+      * I'm going to assume any value entered that is not a number is invalid
+      */
+      invalid: function(entry){
+        return !!((entry === '' || angular.isUndefined(entry) || !angular.isNumber(parseInt(entry)) || entry < 0));
+      }
+    };
+
     var load={
       allStockCount: function(){
         var deferred = $q.defer();
@@ -192,6 +201,7 @@ angular.module('lmisChromeApp')
       monthList: months,
       discardedReasons: discardedReasons,
       save:addRecord,
-      get:load
+      get:load,
+      validate: validate
     };
   });
