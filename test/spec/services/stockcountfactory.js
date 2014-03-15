@@ -33,4 +33,12 @@ describe('Service stockCountFactory', function(){
   it('should return the first month in the object', function(){
     expect(stockCountFactory.monthList['01']).toEqual('January');
   });
+
+  it('should confirm validate object exist', function(){
+    expect(stockCountFactory.validate).toBeDefined();
+  });
+
+  it('it should return true if variable is empty (""), undefined, not a number or is negative', function(){
+    expect(stockCountFactory.validate.invalid(-20)).toBeTruthy();
+  });
 });
