@@ -3,7 +3,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider.state('inventoryListView', {
     url: '/inventory-list',
     templateUrl: '/views/inventory/index.html',
-    controller: 'inventoryMainCtrl',
+    controller: 'inventoryListCtrl',
     data: {
       label: "Inventory List"
     },
@@ -16,9 +16,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   .state('addNewInventory', {
     url: '/add-inventory?bundleNo',
     templateUrl: '/views/inventory/add-inventory.html',
-    controller: 'addInventoryCtrl',
+    controller: 'AddNewInventoryCtrl',
     data: {
-      label: "Add Inventory"
+      label: "Add New Inventory"
     },
     resolve: {
       productTypes: function (productTypeFactory) {
@@ -45,7 +45,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 /**
  * Controller for showing inventory
  */
-    .controller('inventoryMainCtrl', function ($rootScope, $stateParams, $scope, currentFacility, inventoryFactory,
+    .controller('inventoryListCtrl', function ($rootScope, $stateParams, $scope, currentFacility, inventoryFactory,
                                                $filter, ngTableParams, visualMarkerService) {
 
       $scope.highlight = visualMarkerService.highlightByExpirationStatus;
@@ -94,17 +94,18 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('addInventoryCtrl', function ($q, $scope, $filter, $stateParams, currentFacility, storageService, $state,
+    .controller('AddNewInventoryCtrl', function ($q, $scope, $filter, $stateParams, currentFacility, storageService, $state,
                                               inventoryFactory, productTypes, programs, uomList, facilities, batchFactory,
                                               currentFacilityStorageUnits) {
 
       //used to hold form data
       var id = 0;
+
       $scope.inventory = {
         showForm: true,
         authorized: false,
         inventory_lines: [],
-        date_receipt: new Date(),
+        date_receipt: $filter('date')(new Date(), 'yyyy-MM-dd'),
         bundle_no: $stateParams.bundleNo
       };
 
@@ -167,8 +168,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         });
       };
 
-      $scope.save = function () {
-        $scope.inventory.date_receipt = $scope.inventory.date_receipt.toISOString();
+      $scope.confirm = function () {
+
+        console.log($scope.inventory);
+
+        return;
 
         //TODO: remove this when saving form selections for preview has been resolved.
         $scope.inventory.sending_facility = $scope.inventory.sendingFacilityObj.uuid;
