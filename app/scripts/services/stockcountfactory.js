@@ -58,7 +58,7 @@ angular.module('lmisChromeApp')
       stock: function(object){
         var deferred = $q.defer();
 
-        storageService.insert('stockCount', object).then(function(uuid){
+        storageService.insert(storageService.STOCK_COUNT, object).then(function(uuid){
           deferred.resolve(uuid);
         });
         return deferred.promise;
@@ -107,9 +107,14 @@ angular.module('lmisChromeApp')
     };
 
     var load={
+      getMissedStockCounts: function(){
+        var deferred = $q.defer();
+
+        return deferred.promise;
+      },
       allStockCount: function(){
         var deferred = $q.defer();
-        storageService.all('stockCount')
+        storageService.all(storageService.STOCK_COUNT)
           .then(function(stockCount){
             deferred.resolve(stockCount);
           });
@@ -138,7 +143,7 @@ angular.module('lmisChromeApp')
       },
       stockCountRow: function(uuid){
         var deferred = $q.defer();
-        storageService.get('stockCount', uuid)
+        storageService.get(storageService.STOCK_COUNT, uuid)
           .then(function(stockCount){
             deferred.resolve(stockCount);
           });
