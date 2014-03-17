@@ -51,6 +51,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.currentFacility = currentFacility;
       inventoryFactory.getFacilityInventory(currentFacility.uuid).then(function (inventoryItems) {
         $scope.totalItems = inventoryItems.length;
+        console.log('hey here -- '+inventoryItems);
 
         // Table defaults
         var params = {
@@ -88,6 +89,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return (toString.call(inventoryLine.batch) === '[object Object]')
             ? inventoryLine.batch.product : inventoryLine.product_type;
       }
+    }, function(error){
+      console.log(error);
     })
 /**
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
