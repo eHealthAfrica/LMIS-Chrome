@@ -100,13 +100,13 @@ describe('Service: alertsFactory', function() {
       scope.$apply(function() {
         $state.go(ma);
         alertsFactory.add({message: 'Test'});
+        expect(scope.alerts.length).toEqual(1);
       });
-      expect(scope.alerts.length).toEqual(1);
 
       scope.$apply(function() {
         $state.go(dash);
+        expect(scope.alerts.length).toEqual(0);
       });
-      expect(scope.alerts.length).toEqual(0);
     });
   });
 
