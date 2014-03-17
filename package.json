@@ -1,6 +1,6 @@
 {
   "name": "lmis-chrome",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.2",
@@ -32,7 +32,7 @@
     "karma-phantomjs-launcher": "~0.1.2",
     "grunt-protractor-runner": "^0.2.3",
     "grunt-karma-coveralls": "^2.4.3",
-    "karma-coverage": "^0.2.0"
+    "karma-coverage": "^0.2.0",
     "semver": "^2.2.1",
     "gift": "^0.3.0"
   },
