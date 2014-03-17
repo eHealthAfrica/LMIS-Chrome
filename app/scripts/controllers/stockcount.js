@@ -243,6 +243,7 @@ angular.module('lmisChromeApp')
 
   })
   .controller('StockCountStepsFormCtrl', function($scope,stockCountFactory, $state, alertsFactory){
+
     $scope.preview = false;
     $scope.selectedProduct = '';
     $scope.editOn = false;

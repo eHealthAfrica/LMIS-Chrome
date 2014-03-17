@@ -43,6 +43,7 @@ angular.module('lmisChromeApp')
       var bundleReceipt = "bundle_receipts";
       var bundleReceiptLines = "bundle_receipt_lines";
       var locations = "locations";
+      var stockCount = 'stockCount';
 
       /**
        * Boolean flag indicating client support for Chrome Storage
@@ -500,7 +501,8 @@ angular.module('lmisChromeApp')
         BUNDLE_LINES: bundleLines,
         BUNDLE_RECEIPT: bundleReceipt,
         BUNDLE_RECEIPT_LINES: bundleReceiptLines,
-        LOCATIONS: locations
+        LOCATIONS: locations,
+        STOCK_COUNT: stockCount
       };
 
     });

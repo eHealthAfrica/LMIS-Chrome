@@ -38,6 +38,7 @@ describe('Home controller', function () {
     var home = $state.get('home');
     home.resolve.currentFacility = function() { return {}; };
     home.resolve.facilityLocation = function() { return {}; };
+    home.resolve.todayStockCount = function() { return {}; };
     $rootScope.$apply(function() {
       $state.go(state);
     });
