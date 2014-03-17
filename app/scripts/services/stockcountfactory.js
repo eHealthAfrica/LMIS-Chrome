@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('stockCountFactory', function ($q, storageService, $http) {
+  .factory('stockCountFactory', function ($q, storageService, $http, $filter) {
 
     var discardedReasons = {
       '0': 'VVM Stage 3',
@@ -106,12 +106,25 @@ angular.module('lmisChromeApp')
       }
     };
 
-    var load={
-      getMissedStockCounts: function(){
+      var getStockCountByDate = function (date) {
         var deferred = $q.defer();
-
+        storageService.all(storageService.STOCK_COUNT).then(function (stockCounts) {
+          var stockCount = null;
+          for (var index in stockCounts) {
+            var row = stockCounts[index];
+            var stockCountDate = $filter('date')(new Date(row.created), 'yyyy-MM-dd');
+            date = $filter('date')(new Date(date), 'yyyy-MM-dd');
+            if (date === stockCountDate) {
+              stockCount = row;
+              break;
+            }
+          }
+          deferred.resolve(stockCount);
+        });
         return deferred.promise;
-      },
+      };
+
+    var load={
       allStockCount: function(){
         var deferred = $q.defer();
         storageService.all(storageService.STOCK_COUNT)
@@ -197,6 +210,7 @@ angular.module('lmisChromeApp')
       monthList: months,
       discardedReasons: discardedReasons,
       save:addRecord,
-      get:load
+      get:load,
+      getStockCountByDate: getStockCountByDate
     };
   });
