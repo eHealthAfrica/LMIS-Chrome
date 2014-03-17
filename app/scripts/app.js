@@ -58,7 +58,4 @@ angular.module('lmisChromeApp', [
 
       // Convenience property to get the current state
       $rootScope.$state = $state;
-
-      // Default state
-      $state.go('home.index.mainActivity');
     });
