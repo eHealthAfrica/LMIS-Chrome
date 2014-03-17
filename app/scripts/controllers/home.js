@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .config(function($stateProvider) {
+  .config(function($urlRouterProvider, $stateProvider) {
+    // Initial state
+    $urlRouterProvider.otherwise('/main-activity');
     $stateProvider.state('home', {
-      url: '/home',
+      url: '',
       abstract: true,
       templateUrl: 'views/home/index.html',
       resolve: {
