@@ -73,7 +73,7 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.dashboard', {
-      url: '/dashboard',
+      url: '/dashboard?logIncomingMsg',
       templateUrl: 'views/home/dashboard.html',
       resolve: {
         inventories: function(currentFacility, inventoryFactory) {
@@ -103,12 +103,9 @@ angular.module('lmisChromeApp')
           }
         };
 
-        if($stateParams.logSucceeded === 'true') {
-          $stateParams.logSucceeded = '';
-          $translate('addInventorySuccessMessage')
-            .then(function(msg) {
-              alertsFactory.add({message: msg, type: 'success'});
-            });
+        if($stateParams.logIncomingMsg !== undefined && $stateParams.logIncomingMsg !== '') {
+           alertsFactory.add({message: $stateParams.logIncomingMsg, type: 'success'});
+           $stateParams.logIncomingMsg = null;
         }
 
         if(!('inventory' in settings && 'products' in settings.inventory)) {

@@ -23,7 +23,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-    .controller('logIncomingCtrl', function ($scope, $filter, $state, bundleNumbers, storageUnitFactory,
+    .controller('logIncomingCtrl', function ($scope, $filter, $state, bundleNumbers, storageUnitFactory, $translate,
                                              currentFacilityStorageUnits, bundleFactory, userFactory, alertsFactory) {
 
       $scope.LOG_STEPS = {ENTER_BUNDLE_NO: 1, BUNDLE_NOT_FOUND: 2, VERIFY: 3, CONFIRM: 4};
@@ -37,6 +37,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       };
       $scope.logIncomingForm.verify = [];
       $scope.logIncomingForm.storage_units = [];
+
       /**
        * this is used to return storage unit object at preview page based on the uuid.
        * */
@@ -132,12 +133,12 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           "receiving_facility": $scope.bundle.receiving_facility.uuid,
           "sending_facility": $scope.bundle.parent.uuid
         };
-        console.log(bundleReceipt);
-        return;
 
         bundleFactory.saveBundleReceipt(bundleReceipt).then(function (data) {
           if (data.length !== 0) {
-            $state.go('home.index.dashboard', {logSucceeded: true});
+            $translate('logIncomingSuccessMessage').then(function (msg) {
+              $state.go('home.index.dashboard', {logIncomingMsg: msg});
+            });
           }
         }, function (error) {
           alertsFactory.add({message: error, type: 'danger'});

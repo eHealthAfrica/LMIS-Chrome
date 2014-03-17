@@ -89,5 +89,6 @@
   "settingsFailed": "Could not save settings",
   "products": "Products",
   "productsUnset": "Product settings are unset. Please define them in",
-  "inventorySettings": "inventory settings"
+  "inventorySettings": "inventory settings",
+  "logIncomingSuccessMessage": "Incoming Bundle was logged successfully !!!"
 }
