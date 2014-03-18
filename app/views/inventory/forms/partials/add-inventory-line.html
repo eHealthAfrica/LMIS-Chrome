@@ -51,16 +51,17 @@
   <div class="panel-body">
     <div class="col-sm-12">
       <div class="col-sm-4">
-        <label translate="quantity"></label>
-        <counter bind="inventoryLine.quantity"></counter>
-      </div>
-      <div class="col-sm-4">
         <label translate="uom"></label>
         <select class="form-control" ng-model="inventoryLine.uom" ng-change="createUOMObj(inventoryLine)" required>
           <option value="" translate="selectUOM"></option>
           <option ng-repeat="uom in uomList" value="{{ uom }}" ng-bind="uom.name"
                   ng-selected="{{ (inventoryLine.uom).uuid === uom.uuid }}"></option>
         </select>
+      </div>
+
+      <div class="col-sm-4">
+        <label translate="quantity"></label>
+        <counter bind="inventoryLine.quantity"></counter>
       </div>
 
       <div class="col-sm-4">
