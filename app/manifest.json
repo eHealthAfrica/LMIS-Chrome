@@ -1,31 +1,31 @@
 {
-	"name": "LMIS Chrome",
-	"description": "LMIS Chrome packaged app",
-  	"version": "0.1.0",
-  	"manifest_version": 2,
-  	"permissions": [
-  		{
-  			"fileSystem": [
-  				"write",
-  				"retainEntries",
-  				"directory"
-  			]
-  		},
-  		"fullscreen",
-  		"geolocation",
-  		"storage",
-  		"unlimitedStorage"
-  	],
-  	"icons": {
-  		"16": "images/icon-16.png",
-  		"128": "images/icon-128.png"
-  	},
-  	"app": {
-  		"background": {
-  			"scripts": [
-  				"scripts/main.js",
-  				"scripts/chromereload.js"
-  			]
-  		}
-  	}
+  "name": "LMIS Chrome",
+  "description": "LMIS Chrome packaged app",
+  "version": "0.3.0",
+  "manifest_version": 2,
+  "permissions": [
+    {
+      "fileSystem": [
+        "write",
+        "retainEntries",
+        "directory"
+      ]
+    },
+    "fullscreen",
+    "geolocation",
+    "storage",
+    "unlimitedStorage"
+  ],
+  "icons": {
+    "16": "images/icon-16.png",
+    "128": "images/icon-128.png"
+  },
+  "app": {
+    "background": {
+      "scripts": [
+        "scripts/main.js",
+        "scripts/chromereload.js"
+      ]
+    }
   }
+}

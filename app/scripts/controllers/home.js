@@ -1,22 +1,29 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .config(function($stateProvider) {
+  .config(function($urlRouterProvider, $stateProvider) {
+    // Initial state
+    $urlRouterProvider.otherwise('/main-activity');
     $stateProvider.state('home', {
-      url: '/home',
+      url: '',
       abstract: true,
       templateUrl: 'views/home/index.html',
       resolve: {
-        currentFacility: function(facilityFactory) {
+        currentFacility: function (facilityFactory) {
           return facilityFactory.getCurrentFacility();
         },
-        facilityLocation: function(currentFacility, locationsFactory) {
+        facilityLocation: function (currentFacility, locationsFactory) {
           return locationsFactory.get(currentFacility.location);
+        },
+        todayStockCount: function (stockCountFactory) {
+          var today = new Date();
+          return stockCountFactory.getStockCountByDate(today);
         }
       },
-      controller: function($scope, currentFacility, facilityLocation) {
+      controller: function($scope, currentFacility, facilityLocation, todayStockCount) {
         $scope.facility = currentFacility.name + ' (' +
           facilityLocation.name + ')';
+        $scope.hasPendingStockCount = (todayStockCount === null);
       }
     })
     .state('home.index', {
@@ -46,7 +53,8 @@ angular.module('lmisChromeApp')
       data: {
         label: 'Home'
       },
-      controller: function ($stateParams, $translate, alertsFactory) {
+      controller: function ($scope, $stateParams, $modal, $state, $translate, alertsFactory) {
+
         if ($stateParams.orderNo !== null) {
           $stateParams.orderNo = null;
           $translate('orderPlacedSuccess', {orderNo: $stateParams.orderNo})
@@ -73,7 +81,7 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.dashboard', {
-      url: '/dashboard',
+      url: '/dashboard?logIncomingMsg',
       templateUrl: 'views/home/dashboard.html',
       resolve: {
         inventories: function(currentFacility, inventoryFactory) {
@@ -103,12 +111,9 @@ angular.module('lmisChromeApp')
           }
         };
 
-        if($stateParams.logSucceeded === 'true') {
-          $stateParams.logSucceeded = '';
-          $translate('addInventorySuccessMessage')
-            .then(function(msg) {
-              alertsFactory.add({message: msg, type: 'success'});
-            });
+        if($stateParams.logIncomingMsg !== undefined && $stateParams.logIncomingMsg !== '') {
+           alertsFactory.add({message: $stateParams.logIncomingMsg, type: 'success'});
+           $stateParams.logIncomingMsg = null;
         }
 
         if(!('inventory' in settings && 'products' in settings.inventory)) {

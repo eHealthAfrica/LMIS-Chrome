@@ -7,7 +7,7 @@ angular.module('lmisChromeApp')
         data:{
           label:'Stock Count'
         },
-        url:'stockCountIndex?facility&reportMonth&reportYear',
+        url:'/stockCountIndex?facility&reportMonth&reportYear',
         templateUrl: 'views/stockcount/index.html',
         controller:'StockCountCtrl',
         resolve:{
@@ -20,7 +20,7 @@ angular.module('lmisChromeApp')
         data:{
           label:'Stock Count Form'
         },
-        url:'stockCountForm?facility&reportMonth&reportYear',
+        url:'/stockCountForm?facility&reportMonth&reportYear',
         templateUrl: 'views/stockcount/daily_stock_count_form.html',
         controller: 'StockCountCtrl',
         resolve:{
@@ -33,7 +33,7 @@ angular.module('lmisChromeApp')
         data:{
           label:'Stock Count Form'
         },
-        url:'stockCountStepForm?facility&reportMonth&reportYear',
+        url:'/stockCountStepForm?facility&reportMonth&reportYear',
         templateUrl: 'views/stockcount/step_entry_form.html',
         controller: 'StockCountCtrl',
         resolve:{
@@ -46,7 +46,7 @@ angular.module('lmisChromeApp')
         data:{
           label:'Waste Count Form'
         },
-        url: 'wasteCountForm?facility&reportMonth&reportYear',
+        url: '/wasteCountForm?facility&reportMonth&reportYear',
         templateUrl: 'views/stockcount/daily_waste_count_form.html',
         controller:'StockCountCtrl',
         resolve: {
@@ -243,6 +243,7 @@ angular.module('lmisChromeApp')
 
   })
   .controller('StockCountStepsFormCtrl', function($scope,stockCountFactory, $state, alertsFactory){
+
     $scope.preview = false;
     $scope.selectedProduct = '';
     $scope.editOn = false;

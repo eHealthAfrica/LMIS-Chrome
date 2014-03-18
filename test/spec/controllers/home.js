@@ -31,13 +31,14 @@ describe('Home controller', function () {
 
   var state = 'home.index.mainActivity';
   it('should respond to URL', function() {
-    expect($state.href(state)).toEqual('#/home/main-activity');
+    expect($state.href(state)).toEqual('#/main-activity');
   });
 
   it('should go to the main activity state', function() {
     var home = $state.get('home');
     home.resolve.currentFacility = function() { return {}; };
     home.resolve.facilityLocation = function() { return {}; };
+    home.resolve.todayStockCount = function() { return {}; };
     $rootScope.$apply(function() {
       $state.go(state);
     });

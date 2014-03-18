@@ -3,7 +3,6 @@
     <h4 class="panel-title">Preview New Inventory</h4>
   </div>
   <div class="panel-body">
-    <form ng-submit="save()">
       <div class="row">
         <div class="col-sm-12">
           <div class="panel panel-default">
@@ -73,13 +72,11 @@
           </div>
 
           <div class="col-md-4 pull-right">
-            <button type="submit" id="preview" name="preview" class="btn btn-success">
+            <button type="button" ng-click="confirm()" id="confirm" name="confirm" class="btn btn-success">
               <span translate="confirm"></span>
             </button>
           </div>
         </div>
       </div>
-
-    </form>
   </div>
 </div>
