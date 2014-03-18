@@ -7,11 +7,37 @@ describe('Service stockCountFactory', function(){
   var stockCount;
   var scope;
   var q;
-  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData){
+  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q, $templateCache, $httpBackend){
     stockCountFactory = _stockCountFactory_;
     scope = $rootScope.$new();
     stockCount = stockData;
+
+    spyOn(stockCountFactory, "getStockCountByDate").andCallFake(function (date) {
+      //TODO: re-write this when local storage and storageprovider mocks are completed.
+      if (date > new Date()) {
+        return $q.when({uuid: "1234567890-08829199-89872-9087-1234567892"});
+      } else {
+        return $q.when(null);
+      }
+    });
+
+    // Mock each template used by the state
+    var templates = [
+      'index',
+      'nav',
+      'sidebar',
+      'control-panel',
+      'main-activity'
+    ];
+
+    angular.forEach(templates, function (template) {
+      $templateCache.put('views/home/' + template + '.html', '');
+    });
+
+    $httpBackend.whenGET('/locales/en.json').respond(200, {});
+    $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
   }));
+
 
   it('should expose a load method aliased as "get"', function(){
     expect(stockCountFactory).toBeDefined();
@@ -40,5 +66,16 @@ describe('Service stockCountFactory', function(){
 
   it('it should return true if variable is empty (""), undefined, not a number or is negative', function(){
     expect(stockCountFactory.validate.invalid(-20)).toBeTruthy();
+  });
+
+  it('as user i want to be access stock count for a given date', function(){
+    var stockCount = {};
+    stockCountFactory.getStockCountByDate((new Date()).getDate() + 1).then(function(result){
+      stockCount = result;
+    });
+    expect(stockCount).not.toBeNull();
+    scope.$digest();
+    expect(stockCountFactory.getStockCountByDate).toHaveBeenCalled();
+    expect(stockCount).toBeNull();
   });
 });
