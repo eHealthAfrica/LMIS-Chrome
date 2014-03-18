@@ -58,7 +58,7 @@ angular.module('lmisChromeApp')
       stock: function(object){
         var deferred = $q.defer();
 
-        storageService.insert(storageService.STOCK_COUNT, object).then(function(uuid){
+        storageService.insert('stockCount', object).then(function(uuid){
           deferred.resolve(uuid);
         });
         return deferred.promise;
@@ -103,6 +103,15 @@ angular.module('lmisChromeApp')
             return row['unopened'][product.toString()];
           }
         }
+      }
+    };
+
+    var validate = {
+     /*
+      * I'm going to assume any value entered that is not a number is invalid
+      */
+      invalid: function(entry){
+        return !!((entry === '' || angular.isUndefined(entry) || !angular.isNumber(parseInt(entry)) || entry < 0));
       }
     };
 
@@ -211,6 +220,7 @@ angular.module('lmisChromeApp')
       discardedReasons: discardedReasons,
       save:addRecord,
       get:load,
-      getStockCountByDate: getStockCountByDate
+      getStockCountByDate: getStockCountByDate,
+      validate: validate
     };
   });
