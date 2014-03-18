@@ -12,7 +12,7 @@ describe('Service stockCountFactory', function(){
 
     spyOn(stockCountFactory, "getStockCountByDate").andCallFake(function (date) {
       //TODO: re-write this when local storage and storageprovider mocks are completed.
-      if (date < new Date()) {
+      if (date > new Date()) {
         return $q.when({uuid: "1234567890-08829199-89872-9087-1234567892"});
       } else {
         return $q.when(null);
@@ -59,7 +59,7 @@ describe('Service stockCountFactory', function(){
 
   it('as user i want to be access stock count for a given date', function(){
     var stockCount = {};
-    stockCountFactory.getStockCountByDate(new Date()).then(function(result){
+    stockCountFactory.getStockCountByDate((new Date()).getDate() + 1).then(function(result){
       stockCount = result;
     });
     expect(stockCount).not.toBeNull();
