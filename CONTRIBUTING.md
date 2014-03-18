@@ -56,7 +56,7 @@ the same)
     * Group logical steps (Git's interactive rebase can help)
     * Make sure to maintain the project's coding style
         * Our supplied [EditorConfig][] and [JSHint][] settings make it easy!
-    * Write an appropriate test case
+    * *Write an appropriate test case*
     * Write a short (50 chars or less) commit summary and a detailed body
 
 4. When you're topic is finished, make sure it's up-to-date
