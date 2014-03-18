@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('stockCountFactory', function ($q, storageService, $http) {
+  .factory('stockCountFactory', function ($q, storageService, $http, $filter) {
 
     var discardedReasons = {
       '0': 'VVM Stage 3',
@@ -220,7 +220,7 @@ angular.module('lmisChromeApp')
       discardedReasons: discardedReasons,
       save:addRecord,
       get:load,
-      getStockCountByDate: getStockCountByDate
+      getStockCountByDate: getStockCountByDate,
       validate: validate
     };
   });
