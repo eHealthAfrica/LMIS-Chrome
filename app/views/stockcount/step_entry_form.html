@@ -1,3 +1,57 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="info-box">
+          <div class="info-box-number one">1</div>
+          <div class="info-box-text">
+            Count the number of
+            products in each row.
+            Count partially used vials
+            and bottles separately.
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="info-box">
+          <div class="info-box-number two">2</div>
+          <div class="info-box-text">
+            Enter the TOTAL quantity
+            of each product type in
+            the appropriate row.
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="info-box">
+          <div class="info-box-number three">3</div>
+          <div class="info-box-text">
+            Double-check what you
+            have entered is correct
+            and conﬁrm your entry by
+            checking the box.
+          </div>
+          <div class="clearfix"></div>
+        </div>
+
+      </div>
+      <div class="col-sm-3">
+        <div class="info-box">
+          <div class="info-box-number four">4</div>
+          <div class="info-box-text">
+            When ﬁnished with each
+            product, submit your
+            form by clicking the
+            Submit button below!
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row" ng-controller="StockCountStepsFormCtrl">
   <div class="col-sm-12">
     <div class="row">
@@ -23,11 +77,11 @@
             </div>
           </div>
           <div class="row">
-              <div class="col-xs-12 col-sm-6">
+              <div class="col-xs-12 col-sm-12 col-md-6">
                 <div class="row">
                   <div class="col-xs-12 col-sm-4">
                       <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default col-sm-12 col-xs-12"
-                          ng-click="prev()">
+                          ng-click="changeState(0)">
                         <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
                       </button>
                   </div>
@@ -38,7 +92,7 @@
                   <div class="col-sm-4 col-xs-12">
                     <button type="button" ng-hide="step === maxStep"
                             class="btn btn-lg btn-success col-sm-12 col-xs-12"
-                            ng-click="next()">
+                            ng-click="changeState(1)">
                       Next <i class="fa fa-chevron-circle-right fa-lg"></i>
                     </button>
                   </div>
