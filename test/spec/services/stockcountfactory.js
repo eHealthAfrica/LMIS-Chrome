@@ -12,10 +12,12 @@ describe('Service stockCountFactory', function(){
 
     spyOn(stockCountFactory, "getStockCountByDate").andCallFake(function (date) {
       //TODO: re-write this when local storage and storageprovider mocks are completed.
-      if (date > new Date()) {
-        return $q.when({uuid: "1234567890-08829199-89872-9087-1234567892"});
-      } else {
+      var currentDate = new Date();
+      var today = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
+      if (date > today) {
         return $q.when(null);
+      } else {
+        return $q.when({uuid: "1234567890-08829199-89872-9087-1234567892"});
       }
     });
 
@@ -59,7 +61,9 @@ describe('Service stockCountFactory', function(){
 
   it('as user i want to be access stock count for a given date', function(){
     var stockCount = {};
-    stockCountFactory.getStockCountByDate((new Date()).getDate() + 1).then(function(result){
+    var today = new Date();
+    var tomorrow = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate() + 1);
+    stockCountFactory.getStockCountByDate(tomorrow).then(function(result){
       stockCount = result;
     });
     expect(stockCount).not.toBeNull();
@@ -67,5 +71,18 @@ describe('Service stockCountFactory', function(){
     expect(stockCountFactory.getStockCountByDate).toHaveBeenCalled();
     expect(stockCount).toBeNull();
 
+  });
+
+  it('as a user, i should be able to retrieve stock count that was done in the past', function(){
+    var stockCount = null;
+    var today = new Date();
+    var dateInThePast = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate() - 5); //5 days ago
+    stockCountFactory.getStockCountByDate(dateInThePast).then(function(result){
+      stockCount = result;
+    });
+    expect(stockCount).toBeNull();
+    scope.$digest();
+    expect(stockCountFactory.getStockCountByDate).toHaveBeenCalled();
+    expect(stockCount).not.toBeNull();
   });
 });
