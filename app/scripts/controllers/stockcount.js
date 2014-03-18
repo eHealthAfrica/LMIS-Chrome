@@ -266,30 +266,19 @@ angular.module('lmisChromeApp')
     $scope.stockCount.month = $scope.reportMonth;
     $scope.stockCount.year = $scope.reportYear;
     $scope.stockCount.day = $scope.stockCount.day ? $scope.stockCount.day: $scope.currentDay;
+    $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
 
-    $scope.next = function(){
-      var entry = $scope.stockCount.unopened[$scope.step];
 
-      if(stockCountFactory.validate.invalid(entry)){
-        $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
+    $scope.changeState = function(direction){
+      $scope.currentEntry = $scope.stockCount.unopened[$scope.step];
+      if(stockCountFactory.validate.invalid($scope.currentEntry)){
+
         alertsFactory.add({message: $scope.alertMsg, type: 'danger'});
       }
       else{
-        $scope.step ++;
+        $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
       }
-    }
-
-    $scope.prev = function(){
-      var entry = $scope.stockCount.unopened[$scope.step];
-
-     if(stockCountFactory.validate.invalid(entry)){
-        $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
-        alertsFactory.add({message: $scope.alertMsg, type: 'danger'});
-      }
-      else{
-        $scope.step --;
-      }
-    }
+    };
 
     $scope.save = function(){
       $scope.stockCount.day = $scope.stockCount.day ? $scope.stockCount.day: $scope.currentDay;
