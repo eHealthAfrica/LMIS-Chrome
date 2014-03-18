@@ -59,7 +59,7 @@ the same)
     * **Write an appropriate test case**
     * Write a short (50 chars or less) commit summary and a detailed body
 
-4. When you're topic is finished, make sure it's up-to-date
+4. When your topic is finished, make sure it's up-to-date
 
     ```bash
     git pull --rebase origin develop
