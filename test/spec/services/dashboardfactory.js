@@ -50,9 +50,13 @@ describe('Service: dashboardfactory', function() {
     });
   });
 
-  it('should create a series object', function() {
-    var series = dashboardfactory.series(seriesKeys.below, seriesValues);
+  it('should create an nvd3 formatted series object', function() {
+    var key = seriesKeys.below;
+    var series = dashboardfactory.series(key, seriesValues);
     expect(angular.isObject(series)).toBe(true);
+    expect(series.key).toBe(key.label);
+    expect(series.color).toBe(key.color);
+    expect(angular.isArray(series.values)).toBe(true);
   });
 
   it('should construct chart data', function() {
