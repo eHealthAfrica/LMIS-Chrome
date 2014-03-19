@@ -90,9 +90,6 @@ angular.module('lmisChromeApp')
         },
         settings: function(settingsService) {
           return settingsService.load();
-        },
-        products: function(currentFacility, inventoryFactory) {
-          return inventoryFactory.getUniqueProducts(currentFacility.uuid);
         }
       },
       controller: function($scope, settings) {
@@ -119,8 +116,8 @@ angular.module('lmisChromeApp')
         },
         'table': {
           templateUrl: 'views/home/dashboard/table.html',
-          controller: function($scope, products) {
-            $scope.products = products;
+          controller: function($scope, settings) {
+            $scope.products = settings.inventory.products;
           }
         }
       }

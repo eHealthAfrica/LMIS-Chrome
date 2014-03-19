@@ -7,6 +7,7 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , 'trimming empty <label>'
   \ , 'trimming empty <option>'
   \ , 'trimming empty <button>'
+  \ , 'trimming empty <dd>'
   \ , 'trimming empty <dt>'
   \ , 'unescaped & which should be written as &amp;'
   \ , ' proprietary attribute "ng-'

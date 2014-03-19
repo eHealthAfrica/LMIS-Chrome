@@ -1,4 +1,4 @@
-<div ng-repeat="(product, value) in products">
+<div ng-repeat="(product, setting) in products">
   <div class="col-sm-4">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -14,9 +14,9 @@
         <h4 translate="inventoryRules"></h4>
         <dl class="dl-horizontal">
           <dt translate="setServiceLevel"></dt>
-          <dd>365</dd>
+          <dd ng-bind="setting.max"></dd>
           <dt translate="setMaximumLevel"></dt>
-          <dd>365</dd>
+          <dd ng-bind="setting.serviceLevel"></dd>
         </dl>
 
         <h4 translate="inventoryPerformance"></h4>
