@@ -1,0 +1,37 @@
+<div ng-repeat="(product, value) in products">
+  <div class="col-sm-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title" ng-bind="product"></h4>
+      </div>
+      <div class="panel-body">
+
+        <dl class="dl-horizontal">
+          <dt translate="actual"></dt>
+          <dd>365</dd>
+        </dl>
+
+        <h4 translate="inventoryRules"></h4>
+        <dl class="dl-horizontal">
+          <dt translate="setServiceLevel"></dt>
+          <dd>365</dd>
+          <dt translate="setMaximumLevel"></dt>
+          <dd>365</dd>
+        </dl>
+
+        <h4 translate="inventoryPerformance"></h4>
+        <dl class="dl-horizontal">
+          <dt translate="leadTimeConsumption"></dt>
+          <dd>365</dd>
+          <dt translate="bufferStock"></dt>
+          <dd>365</dd>
+          <dt translate="reorderPoint"></dt>
+          <dd>365</dd>
+          <dt translate="discrepancyThreshold"></dt>
+          <dd>365</dd>
+        </dl>
+
+      </div>
+    </div>
+  </div>
+</div>
