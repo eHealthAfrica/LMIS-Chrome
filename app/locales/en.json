@@ -100,5 +100,8 @@
   "setServiceLevel": "Set Service Level",
   "setMaximumLevel": "Set Maximum Level",
   "inventoryPerformance": "Inventory Performance",
-  "leadTimeConsumption": "Lead-time Consumption"
+  "leadTimeConsumption": "Lead-time Consumption",
+  "bufferStock": "Buffet Stock",
+  "reorderPoint": "Reorder Point",
+  "discrepancyThreshold": "Discrepancy Threshold"
 }
