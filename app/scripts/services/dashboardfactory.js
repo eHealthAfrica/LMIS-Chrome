@@ -41,7 +41,12 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    var chart = function() {
+      return [];
+    };
+
     return {
-      keys: keys
+      keys: keys,
+      chart: chart
     };
   });

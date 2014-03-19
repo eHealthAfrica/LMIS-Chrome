@@ -47,4 +47,9 @@ describe('Service: dashboardfactory', function() {
       });
     });
   });
+
+  it('should construct chart data', function() {
+    var chart = dashboardfactory.chart();
+    expect(angular.isArray(chart)).toBe(true);
+  });
 });
