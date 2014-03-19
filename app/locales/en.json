@@ -101,7 +101,7 @@
   "setMaximumLevel": "Set Maximum Level",
   "inventoryPerformance": "Inventory Performance",
   "leadTimeConsumption": "Lead-time Consumption",
-  "bufferStock": "Buffet Stock",
+  "bufferStock": "Buffer Stock",
   "reorderPoint": "Reorder Point",
   "discrepancyThreshold": "Discrepancy Threshold"
 }
