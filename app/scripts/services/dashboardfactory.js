@@ -65,8 +65,12 @@ angular.module('lmisChromeApp')
       return series;
     };
 
-    var chart = function() {
-      return [];
+    var chart = function(keys, values) {
+      var chart = [];
+      for(var i = keys.length - 1; i >= 0; i--) {
+        chart.push(series(keys[i], values));
+      }
+      return chart;
     };
 
     return {

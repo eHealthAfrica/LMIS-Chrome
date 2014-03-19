@@ -66,7 +66,8 @@ describe('Service: dashboardfactory', function() {
   });
 
   it('should construct chart data', function() {
-    var chart = dashboardfactory.chart();
+    var chart = dashboardfactory.chart(seriesKeys, seriesValues);
     expect(angular.isArray(chart)).toBe(true);
+    expect(chart.length).toEqual(seriesKeys.length);
   });
 });
