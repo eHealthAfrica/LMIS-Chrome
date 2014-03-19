@@ -83,6 +83,7 @@ angular.module('lmisChromeApp')
     .state('home.index.dashboard', {
       url: '/dashboard',
       templateUrl: 'views/home/dashboard.html',
+      abstract: true,
       resolve: {
         inventories: function(currentFacility, inventoryFactory) {
           return inventoryFactory.getFacilityInventory(currentFacility.uuid);
@@ -91,19 +92,31 @@ angular.module('lmisChromeApp')
           return settingsService.load();
         }
       },
-      controller: function($scope, inventories, settings, dashboardfactory, $log) {
+      controller: function($scope, settings) {
         if(!('inventory' in settings && 'products' in settings.inventory)) {
           $scope.productsUnset = true;
-          return;
         }
-        var values = dashboardfactory.aggregateInventory(inventories, settings);
-        dashboardfactory.keys()
-          .then(function(keys) {
-            $scope.inventoryChart = dashboardfactory.chart(keys, values);
-          })
-          .catch(function(reason) {
-            $log.error(reason);
-          });
+      },
+    })
+    .state('home.index.dashboard.chart', {
+      url: '',
+      views: {
+        'chart': {
+          templateUrl: 'views/home/dashboard/chart.html',
+          controller: function($scope, inventories, settings, dashboardfactory, $log) {
+            var values = dashboardfactory.aggregateInventory(inventories, settings);
+            dashboardfactory.keys()
+              .then(function(keys) {
+                $scope.inventoryChart = dashboardfactory.chart(keys, values);
+              })
+              .catch(function(reason) {
+                $log.error(reason);
+              });
+          }
+        },
+        'table': {
+          templateUrl: 'views/home/dashboard/table.html'
+        }
       }
     })
     .state('home.index.settings', {
