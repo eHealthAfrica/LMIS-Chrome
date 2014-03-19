@@ -81,7 +81,7 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.dashboard', {
-      url: '/dashboard?logIncomingMsg',
+      url: '/dashboard',
       templateUrl: 'views/home/dashboard.html',
       resolve: {
         inventories: function(currentFacility, inventoryFactory) {
@@ -91,18 +91,11 @@ angular.module('lmisChromeApp')
           return settingsService.load();
         }
       },
-      controller: function($scope, $stateParams, $translate, alertsFactory, inventories, inventoryRulesFactory, $window, settings, dashboardfactory, $log) {
-        if($stateParams.logIncomingMsg !== undefined && $stateParams.logIncomingMsg !== '') {
-          alertsFactory.add({message: $stateParams.logIncomingMsg, type: 'success'});
-          $stateParams.logIncomingMsg = null;
-        }
-
+      controller: function($scope, inventories, settings, dashboardfactory, $log) {
         if(!('inventory' in settings && 'products' in settings.inventory)) {
           $scope.productsUnset = true;
           return;
         }
-
-        // Plot the chart
         var values = dashboardfactory.aggregateInventory(inventories, settings);
         dashboardfactory.keys()
           .then(function(keys) {
