@@ -3,7 +3,7 @@
 describe('Service: dashboardfactory', function() {
 
   // load the service's module
-  beforeEach(module('lmisChromeApp'));
+  beforeEach(module('lmisChromeApp', 'seriesMocks'));
 
   beforeEach(inject(function($templateCache, $httpBackend) {
     // Mock each template used by the state
@@ -24,11 +24,13 @@ describe('Service: dashboardfactory', function() {
   }));
 
   // instantiate service
-  var $q, $rootScope, dashboardfactory;
-  beforeEach(inject(function(_$q_, _$rootScope_, _dashboardfactory_) {
+  var $q, $rootScope, dashboardfactory, seriesKeys, seriesValues;
+  beforeEach(inject(function(_$q_, _$rootScope_, _dashboardfactory_, seriesKeysMock, seriesValuesMock) {
     $q = _$q_;
     $rootScope = _$rootScope_;
     dashboardfactory = _dashboardfactory_;
+    seriesKeys = seriesKeysMock;
+    seriesValues = seriesValuesMock;
   }));
 
   it('should plot the required keys', function() {
@@ -49,7 +51,7 @@ describe('Service: dashboardfactory', function() {
   });
 
   it('should create a series object', function() {
-    var series = dashboardfactory.series();
+    var series = dashboardfactory.series(seriesKeys.below, seriesValues);
     expect(angular.isObject(series)).toBe(true);
   });
 
