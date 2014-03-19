@@ -76,7 +76,8 @@ describe('Service stockCountFactory', function(){
   it('as a user, i should be able to retrieve stock count that was done in the past', function(){
     var stockCount = null;
     var today = new Date();
-    var dateInThePast = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate() - 5); //5 days ago
+    var dateInThePast = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate() - 5);
+    //assumes stock was done 5 days ago
     stockCountFactory.getStockCountByDate(dateInThePast).then(function(result){
       stockCount = result;
     });
