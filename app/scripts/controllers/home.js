@@ -99,44 +99,11 @@ angular.module('lmisChromeApp')
 
         if(!('inventory' in settings && 'products' in settings.inventory)) {
           $scope.productsUnset = true;
+          return;
         }
 
-        // FIXME Just here for end-of-sprint demo
-        var nauseatingHack = function() {
-          var values = [];
-          var buffers = inventoryRulesFactory.bufferStock(inventories);
-          var code = '';
-
-          var unique = {};
-
-          angular.forEach(buffers, function(inventory) {
-            code = inventory.batch.product.code;
-            if(!(code in unique)) {
-              unique[code] = {
-                label: code,
-                below: 0,
-                buffer: inventory.buffer,
-                safety: 100,
-                _max: settings.inventory.products[code].max
-              };
-            }
-            else {
-              unique[code].buffer = unique[code].buffer + inventory.buffer / 2;
-            }
-          });
-
-          for(var key in unique) {
-            values.push(unique[key]);
-          }
-
-          return values;
-        };
-
-        var values = [];
-        if(!$scope.productsUnset) {
-          values = nauseatingHack();
-        }
-
+        // Plot the chart
+        var values = dashboardfactory.aggregateInventory(inventories, settings);
         dashboardfactory.keys()
           .then(function(keys) {
             $scope.inventoryChart = dashboardfactory.chart(keys, values);

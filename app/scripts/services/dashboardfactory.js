@@ -76,6 +76,7 @@ angular.module('lmisChromeApp')
       return chart;
     };
 
+    // FIXME: integrate with inventory rules
     var aggregateInventory = function(inventories, settings) {
       var aggregate = [], code = '', unique = {}, inventory = {};
       var buffers = inventoryRulesFactory.bufferStock(inventories);
