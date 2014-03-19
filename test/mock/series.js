@@ -1,24 +1,28 @@
 'use strict';
 
 angular.module('seriesMocks', [])
-  .value('seriesKeysMock', {
-    below: {
+  .value('seriesKeysMock', [
+    {
+      key: 'below',
       label: 'Below buffer',
       color: 'red'
     },
-    buffer: {
+    {
+      key: 'buffer',
       label: 'Buffer',
       color: 'yellow'
     },
-    safety: {
+    {
+      key: 'safety',
       label: 'Safety stock',
       color: 'black'
     },
-    max: {
+    {
+      key: 'max',
       label: 'Max',
       color: 'grey'
     }
-  })
+  ])
   .value('seriesValuesMock', [
     {
       label: 'BCG',

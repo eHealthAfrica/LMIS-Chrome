@@ -41,11 +41,25 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    // Transposes chart values into nvd3 chart values format (an array of
+    // [x, y] data points).
+    var transposeValues = function(key, values) {
+      var value = {}, _values = [];
+      for(var i = values.length - 1; i >= 0; i--) {
+        value = values[i];
+        if (key === 'max') {
+          value[key] = value._max - (value.buffer + value.safety);
+        }
+        _values.push([value.label, value[key]]);
+      }
+      return _values;
+    };
+
     var series = function(key, values) {
       var series = {
         key: key.label,
         color: key.color,
-        values: values
+        values: transposeValues(key.key, values)
       };
 
       return series;

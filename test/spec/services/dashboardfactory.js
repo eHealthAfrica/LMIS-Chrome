@@ -51,12 +51,18 @@ describe('Service: dashboardfactory', function() {
   });
 
   it('should create an nvd3 formatted series object', function() {
-    var key = seriesKeys.below;
+    var key = seriesKeys[0];
     var series = dashboardfactory.series(key, seriesValues);
     expect(angular.isObject(series)).toBe(true);
     expect(series.key).toBe(key.label);
     expect(series.color).toBe(key.color);
     expect(angular.isArray(series.values)).toBe(true);
+    expect(series.values.length).toEqual(seriesValues.length);
+    // ['label', value]
+    var value = series.values[0];
+    expect(angular.isArray(value)).toBe(true);
+    expect(angular.isString(value[0])).toBe(true);
+    expect(angular.isNumber(value[1])).toBe(true);
   });
 
   it('should construct chart data', function() {
