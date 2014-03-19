@@ -91,59 +91,15 @@ angular.module('lmisChromeApp')
           return settingsService.load();
         }
       },
-      controller: function($scope, $stateParams, $translate, alertsFactory, inventories, inventoryRulesFactory, $window, settings) {
-        var keys = {
-          below: {
-            label: 'Below buffer',
-            color: 'red'
-          },
-          buffer: {
-            label: 'Buffer',
-            color: 'yellow'
-          },
-          safety: {
-            label: 'Safety stock',
-            color: 'black'
-          },
-          max: {
-            label: 'Max',
-            color: 'grey'
-          }
-        };
-
+      controller: function($scope, $stateParams, $translate, alertsFactory, inventories, inventoryRulesFactory, $window, settings, dashboardfactory, $log) {
         if($stateParams.logIncomingMsg !== undefined && $stateParams.logIncomingMsg !== '') {
-           alertsFactory.add({message: $stateParams.logIncomingMsg, type: 'success'});
-           $stateParams.logIncomingMsg = null;
+          alertsFactory.add({message: $stateParams.logIncomingMsg, type: 'success'});
+          $stateParams.logIncomingMsg = null;
         }
 
         if(!('inventory' in settings && 'products' in settings.inventory)) {
           $scope.productsUnset = true;
         }
-
-        // var values = [
-        //   {
-        //     label: 'BCG',
-        //     below: -19,
-        //     buffer: 405,
-        //     safety: 0,
-        //     _max: 1000
-        //   },
-        //   {
-        //     label: 'TT',
-        //     below: 0,
-        //     buffer: 348,
-        //     safety: 384,
-        //     _max: 1500
-        //   },
-        //   {
-        //     label: 'Penta',
-        //     below: 0,
-        //     buffer: 310,
-        //     safety: 272,
-        //     _max: 1200
-        //   }
-        // ];
-
 
         // FIXME Just here for end-of-sprint demo
         var nauseatingHack = function() {
@@ -180,24 +136,18 @@ angular.module('lmisChromeApp')
         if(!$scope.productsUnset) {
           values = nauseatingHack();
         }
-        var chart = [];
-        angular.forEach(Object.keys(keys), function (key) {
-          var series = {};
-          series.key = keys[key].label;
-          series.color = keys[key].color;
-          series.values = [];
-          angular.forEach(values, function (value) {
-            if (key === 'max') {
-              value[key] = value._max - (value.buffer + value.safety);
-            }
-            series.values.push([value.label, value[key]]);
-          });
-          chart.push(series);
-        });
 
-        $scope.inventoryChart = chart;
-        $scope.inventoryKeys = keys;
-        $scope.inventoryValues = values;
+        dashboardfactory.keys()
+          .then(function(keys) {
+            var chart = dashboardfactory.chart(keys, values);
+            console.log(chart);
+            $scope.inventoryChart = chart;
+            $scope.inventoryKeys = keys;
+            $scope.inventoryValues = values;
+          })
+          .catch(function(reason) {
+            $log.error(reason);
+          });
 
         var lt = -1;
         angular.forEach(inventories, function(inventory) {

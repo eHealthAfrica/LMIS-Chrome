@@ -65,9 +65,16 @@ describe('Service: dashboardfactory', function() {
     expect(angular.isNumber(value[1])).toBe(true);
   });
 
-  it('should construct chart data', function() {
-    var chart = dashboardfactory.chart(seriesKeys, seriesValues);
-    expect(angular.isArray(chart)).toBe(true);
-    expect(chart.length).toEqual(seriesKeys.length);
+  describe('#chart', function() {
+    it('should construct chart data', function() {
+      var chart = dashboardfactory.chart(seriesKeys, seriesValues);
+      expect(angular.isArray(chart)).toBe(true);
+      expect(chart.length).toEqual(seriesKeys.length);
+    });
+
+    it('should maintain key order', function() {
+      var chart = dashboardfactory.chart(seriesKeys, seriesValues);
+      expect(chart[0].key).toEqual(seriesKeys[0].label);
+    });
   });
 });

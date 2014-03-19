@@ -90,5 +90,9 @@
   "products": "Products",
   "productsUnset": "Product settings are unset. Please define them in",
   "inventorySettings": "inventory settings",
-  "logIncomingSuccessMessage": "Incoming Bundle was logged successfully !!!"
+  "logIncomingSuccessMessage": "Incoming Bundle was logged successfully !!!",
+  "belowBuffer": "Below buffer",
+  "buffer": "Buffer",
+  "safetyStock": "Safety Stock",
+  "max": "Max"
 }

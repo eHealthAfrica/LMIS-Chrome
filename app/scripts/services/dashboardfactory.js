@@ -3,34 +3,38 @@
 angular.module('lmisChromeApp')
   .factory('dashboardfactory', function($q, $translate) {
     var keys = function() {
-      var keys = {
-        below: {
+      var keys = [
+        {
+          key: 'below',
           color: 'red'
         },
-        buffer: {
+        {
+          key: 'buffer',
           color: 'yellow'
         },
-        safety: {
+        {
+          key: 'safety',
           color: 'black'
         },
-        max: {
+        {
+          key: 'max',
           color: 'grey'
         }
-      };
+      ];
 
       var deferred = $q.defer();
 
-      var promises = {
-        below: $translate('belowBuffer'),
-        buffer: $translate('buffer'),
-        safety: $translate('safetyStock'),
-        max: $translate('max')
-      };
+      var promises = [
+        $translate('belowBuffer'),
+        $translate('buffer'),
+        $translate('safetyStock'),
+        $translate('max')
+      ];
 
       $q.all(promises)
         .then(function(result) {
-          for(var key in result) {
-            keys[key].label = result[key];
+          for(var i = result.length - 1; i >= 0; i--) {
+            keys[i].label = result[i];
           }
           deferred.resolve(keys);
         })
@@ -61,13 +65,12 @@ angular.module('lmisChromeApp')
         color: key.color,
         values: transposeValues(key.key, values)
       };
-
       return series;
     };
 
     var chart = function(keys, values) {
       var chart = [];
-      for(var i = keys.length - 1; i >= 0; i--) {
+      for (var i = 0, len = keys.length; i < len; i++) {
         chart.push(series(keys[i], values));
       }
       return chart;
