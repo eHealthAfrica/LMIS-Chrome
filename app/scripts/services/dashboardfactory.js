@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('dashboardfactory', function($q, $translate) {
+  .factory('dashboardfactory', function($q, $translate, inventoryRulesFactory) {
     var keys = function() {
       var keys = [
         {
@@ -76,9 +76,38 @@ angular.module('lmisChromeApp')
       return chart;
     };
 
+    var aggregateInventory = function(inventories, settings) {
+      var aggregate = [], code = '', unique = {}, inventory = {};
+      var buffers = inventoryRulesFactory.bufferStock(inventories);
+
+      for(var i = buffers.length - 1; i >= 0; i--) {
+        inventory = buffers[i];
+        code = inventory.batch.product.code;
+        if(!(code in unique)) {
+          unique[code] = {
+            label: code,
+            below: 0,
+            buffer: inventory.buffer,
+            safety: 100,
+            _max: settings.inventory.products[code].max
+          };
+        }
+        else {
+          unique[code].buffer = unique[code].buffer + inventory.buffer / 2;
+        }
+      }
+
+      for(var key in unique) {
+        aggregate.push(unique[key]);
+      }
+
+      return aggregate;
+    };
+
     return {
       keys: keys,
       series: series,
-      chart: chart
+      chart: chart,
+      aggregateInventory: aggregateInventory
     };
   });

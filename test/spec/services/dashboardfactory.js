@@ -77,4 +77,11 @@ describe('Service: dashboardfactory', function() {
       expect(chart[0].key).toEqual(seriesKeys[0].label);
     });
   });
+
+  describe('#aggregateInventory', function() {
+    it('should return an aggregate of a facility inventory', function() {
+      var inventory = dashboardfactory.aggregateInventory([]);
+      expect(angular.isArray(inventory)).toBe(true);
+    });
+  });
 });
