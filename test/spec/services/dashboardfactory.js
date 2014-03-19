@@ -48,6 +48,11 @@ describe('Service: dashboardfactory', function() {
     });
   });
 
+  it('should create a series object', function() {
+    var series = dashboardfactory.series();
+    expect(angular.isObject(series)).toBe(true);
+  });
+
   it('should construct chart data', function() {
     var chart = dashboardfactory.chart();
     expect(angular.isArray(chart)).toBe(true);
