@@ -94,5 +94,11 @@
   "belowBuffer": "Below buffer",
   "buffer": "Buffer",
   "safetyStock": "Safety Stock",
-  "max": "Max"
+  "max": "Max",
+  "actual": "Actual",
+  "inventoryRules": "Inventory Rules",
+  "setServiceLevel": "Set Service Level",
+  "setMaximumLevel": "Set Maximum Level",
+  "inventoryPerformance": "Inventory Performance",
+  "leadTimeConsumption": "Lead-time Consumption"
 }

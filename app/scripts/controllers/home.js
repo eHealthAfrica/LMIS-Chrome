@@ -139,27 +139,11 @@ angular.module('lmisChromeApp')
 
         dashboardfactory.keys()
           .then(function(keys) {
-            var chart = dashboardfactory.chart(keys, values);
-            console.log(chart);
-            $scope.inventoryChart = chart;
-            $scope.inventoryKeys = keys;
-            $scope.inventoryValues = values;
+            $scope.inventoryChart = dashboardfactory.chart(keys, values);
           })
           .catch(function(reason) {
             $log.error(reason);
           });
-
-        var lt = -1;
-        angular.forEach(inventories, function(inventory) {
-          try {
-            lt = inventoryRulesFactory.leadTime(inventory);
-            lt = $window.humanizeDuration(lt);
-            inventory.leadTime = lt;
-          } catch(e) {
-            inventory.leadTime = e;
-          }
-        });
-        $scope.inventories = inventories;
       }
     })
     .state('home.index.settings', {
