@@ -81,135 +81,63 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.dashboard', {
-      url: '/dashboard?logIncomingMsg',
+      url: '/dashboard',
       templateUrl: 'views/home/dashboard.html',
+      abstract: true,
       resolve: {
-        inventories: function(currentFacility, inventoryFactory) {
-          return inventoryFactory.getFacilityInventory(currentFacility.uuid);
-        },
         settings: function(settingsService) {
           return settingsService.load();
+        },
+        aggregatedInventory: function($q, $log, currentFacility, inventoryFactory, dashboardfactory, settings) {
+          var deferred = $q.defer();
+
+          inventoryFactory.getFacilityInventory(currentFacility.uuid)
+            .then(function(inventory) {
+              var values = dashboardfactory.aggregateInventory(inventory, settings);
+              deferred.resolve(values);
+            })
+            .catch(function(reason) {
+              $log.error(reason);
+            });
+
+          return deferred.promise;
         }
       },
-      controller: function($scope, $stateParams, $translate, alertsFactory, inventories, inventoryRulesFactory, $window, settings) {
-        var keys = {
-          below: {
-            label: 'Below buffer',
-            color: 'red'
-          },
-          buffer: {
-            label: 'Buffer',
-            color: 'yellow'
-          },
-          safety: {
-            label: 'Safety stock',
-            color: 'black'
-          },
-          max: {
-            label: 'Max',
-            color: 'grey'
-          }
-        };
-
-        if($stateParams.logIncomingMsg !== undefined && $stateParams.logIncomingMsg !== '') {
-           alertsFactory.add({message: $stateParams.logIncomingMsg, type: 'success'});
-           $stateParams.logIncomingMsg = null;
-        }
-
+      controller: function($scope, settings) {
         if(!('inventory' in settings && 'products' in settings.inventory)) {
           $scope.productsUnset = true;
         }
-
-        // var values = [
-        //   {
-        //     label: 'BCG',
-        //     below: -19,
-        //     buffer: 405,
-        //     safety: 0,
-        //     _max: 1000
-        //   },
-        //   {
-        //     label: 'TT',
-        //     below: 0,
-        //     buffer: 348,
-        //     safety: 384,
-        //     _max: 1500
-        //   },
-        //   {
-        //     label: 'Penta',
-        //     below: 0,
-        //     buffer: 310,
-        //     safety: 272,
-        //     _max: 1200
-        //   }
-        // ];
-
-
-        // FIXME Just here for end-of-sprint demo
-        var nauseatingHack = function() {
-          var values = [];
-          var buffers = inventoryRulesFactory.bufferStock(inventories);
-          var code = '';
-
-          var unique = {};
-
-          angular.forEach(buffers, function(inventory) {
-            code = inventory.batch.product.code;
-            if(!(code in unique)) {
-              unique[code] = {
-                label: code,
-                below: 0,
-                buffer: inventory.buffer,
-                safety: 100,
-                _max: settings.inventory.products[code].max
-              };
-            }
-            else {
-              unique[code].buffer = unique[code].buffer + inventory.buffer / 2;
-            }
-          });
-
-          for(var key in unique) {
-            values.push(unique[key]);
-          }
-
-          return values;
-        };
-
-        var values = [];
-        if(!$scope.productsUnset) {
-          values = nauseatingHack();
+      },
+    })
+    .state('home.index.dashboard.chart', {
+      url: '',
+      resolve: {
+        keys: function(dashboardfactory) {
+          return dashboardfactory.keys();
         }
-        var chart = [];
-        angular.forEach(Object.keys(keys), function (key) {
-          var series = {};
-          series.key = keys[key].label;
-          series.color = keys[key].color;
-          series.values = [];
-          angular.forEach(values, function (value) {
-            if (key === 'max') {
-              value[key] = value._max - (value.buffer + value.safety);
-            }
-            series.values.push([value.label, value[key]]);
-          });
-          chart.push(series);
-        });
-
-        $scope.inventoryChart = chart;
-        $scope.inventoryKeys = keys;
-        $scope.inventoryValues = values;
-
-        var lt = -1;
-        angular.forEach(inventories, function(inventory) {
-          try {
-            lt = inventoryRulesFactory.leadTime(inventory);
-            lt = $window.humanizeDuration(lt);
-            inventory.leadTime = lt;
-          } catch(e) {
-            inventory.leadTime = e;
+      },
+      views: {
+        'chart': {
+          templateUrl: 'views/home/dashboard/chart.html',
+          controller: function($scope, $log, dashboardfactory, keys, aggregatedInventory) {
+            $scope.inventoryChart = dashboardfactory.chart(keys, aggregatedInventory);
           }
-        });
-        $scope.inventories = inventories;
+        },
+        'table': {
+          templateUrl: 'views/home/dashboard/table.html',
+          controller: function($scope, settings, aggregatedInventory) {
+            var products = settings.inventory.products;
+
+            // Get the service level for use in view
+            var serviceLevel = 0;
+            for(var i = aggregatedInventory.length - 1; i >= 0; i--) {
+              serviceLevel = products[aggregatedInventory[i].label].serviceLevel;
+              aggregatedInventory[i].serviceLevel = serviceLevel;
+            }
+
+            $scope.products = aggregatedInventory;
+          }
+        }
       }
     })
     .state('home.index.settings', {
