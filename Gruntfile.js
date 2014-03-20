@@ -139,7 +139,6 @@ module.exports = function(grunt) {
         src: '<%= yeoman.app %>/index.html',
         ignorePath: '<%= yeoman.app %>/',
         exclude: [
-          'bower_components/lodash/dist/lodash.compat.js',
           'bower_components/moment/moment.js'
         ]
       }
