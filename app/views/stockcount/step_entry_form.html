@@ -87,8 +87,9 @@
                 </div>
                 <div class="col-sm-4 col-xs-12">
                   <span ng-repeat="key in facilityProductsKeys" ng-show="step === $index"  type="number">
-                    <input
-                          class="form-control input-lg" ng-model="stockCount.unopened[key]" />
+                    <!--input
+                          class="form-control input-lg" ng-model="stockCount.unopened[key]" /-->
+                    <counter bind="stockCount.unopened[key]"></counter>
                   </span>
 
                 </div>
