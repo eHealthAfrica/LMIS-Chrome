@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Service: dashboardfactory', function() {
+xdescribe('Service: dashboardfactory', function() {
 
   // load the service's module
   beforeEach(module('lmisChromeApp', 'seriesMocks'));

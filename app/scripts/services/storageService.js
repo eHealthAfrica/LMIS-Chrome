@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('storageService', function ($q, $rootScope, $http, $window) {
+    .factory('storageService', function ($q, $rootScope, $http, $window, chromeStorageApi) {
 
       /**
        *  Global variables used to define table names, with this there will be one
@@ -45,142 +45,96 @@ angular.module('lmisChromeApp')
       var locations = "locations";
       var stockCount = 'stockCount';
 
-      /**
-       * Boolean flag indicating client support for Chrome Storage
-       * @private
-       */
-      var hasChromeStorage = testChromeStorage();
 
-      /**
-       * Boolean flag indicating client access to API Storage
-       * @private
-       */
-      var hasApiStorage = testApiStorage();
+        /**
+         * Add new table to the chrome store.
+         *
+         * @param {string} key - Table name.
+         * @param {mixed} value - rows of the table (all values are stored as JSON.)
+         * @return {Promise} Promise object
+         * @private
+         */
 
-      /**
-       * Add the specified key/value pair to the local web store.
-       *
-       * @param {string} key The name of the table, the value under.
-       * @param {mixed} value The value(table rows) to set (all values are stored as JSON.)
-       * @return {Promise} return promise object
-       * @private
-       */
-      function addTable(key, value) {
-        var newStorage = {};
-        var defered = $q.defer();
-        var result = false;
-        newStorage[key] = value;
-        if (hasChromeStorage) {
-          $window.chrome.storage.local.set(newStorage, function () {
-            console.log("saved: " + key);
-            defered.resolve(true)
-            if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
-          });
-
-        }else{
-          defered.reject("table update/creation failed");
-        }
-        return defered.promise;
-      }
-
-      /**
-       * Get the rows that belongs to the given table name from the local web store.
-       *
-       * @param {string} key The name of the value.
-       * @return {Promise} Promise to be resolved with the settings object
-       * @private
-       */
-      function getTable(key) {
-        var defered = $q.defer();
-        if (hasChromeStorage) {
-          $window.chrome.storage.local.get(key, function (data) {
-            defered.resolve(data[key] || {});
-            if (!$rootScope.$$phase) {
-              $rootScope.$apply();
+        function addTable(key, value) {
+            var data = {
+                key:value
             }
-          });
+            var defered = $q.defer();
+            var result = chromeStorageApi.set(data, function(){
+                defered.resolve(true)
+            });
+            if(!result)
+                defered.reject("Could not create a table")
+            return defered.promise;
         }
-        return defered.promise;
-      }
+
+        /**
+         * Get table data from the chrome store
+         *
+         * @param {string} key - Table name.
+         * @return {Promise} Promise to be resolved with the settings object
+         * @private
+         */
+
+        function getTable(key) {
+            var defered = $q.defer();
+            var result = chromeStorageApi.get(key, function(data){
+                defered.resolve(data[key] || {});
+            });
+            if(!result)
+                defered.reject("Could not get data from the storage")
+            return defered.promise;
+        }
+
+        /**
+         * Get All data from the chrome store.
+         *
+         * @return {Promise} Promise to be resolved with the settings object
+         * @private
+         */
+
+        function getAllFromStore() {
+            var defered = $q.defer();
+            var result = chromeStorageApi.get(null, function(){
+                defered.resolve(data);
+            });
+            if(!result)
+                defered.reject("Could not get data from the storage")
+            return defered.promise;
+        }
+
+        /**
+         * Remove a table from the chrome store.
+         *
+         * @param {string} key - Table name.
+         * @return {Promise} Promise to be resolved with the settings object
+         * @private
+         */
+
+        function removeTable(key) {
+            var defered = $q.defer();
+            var result = chromeStorageApi.remove(key, function(){
+                defered.resolve(true);
+            });
+            if(!result)
+                defered.reject("Could not remove data from the storage")
+            return defered.promise;
+        }
 
       /**
-       * Get All data from from the local web store.
+       * Clear all data from the chrome storage (will not work on API).
        *
        * @return {Promise} Promise to be resolved with the settings object
        * @private
        */
-      function getAllFromStore() {
-        var defered = $q.defer();
-        if (hasChromeStorage) {
-          $window.chrome.storage.local.get(null, function (data) {
-            //console.log("getAllFromChrome" );
-            defered.resolve(data);
-            if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
-          });
-          return defered.promise;
-        }
-        return null;
-      }
-
-      /**
-       * Remove the specified value from the local web store.
-       *
-       * @param {string} key The name of table to be removed.
-       * @return {Promise} Promise to be resolved with the settings object
-       * @private
-       */
-      function removeTable(key) {
-        var defered = $q.defer();
-        if (hasChromeStorage) {
-          $window.chrome.storage.local.get(key, function () {
-            console.log("removeFromChrome: " + key);
-            defered.resolve();
-            if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
-          });
-          return defered.promise;
-        }
-        return null;
-      }
-
-      /**
-       * Clear all data from storage (will not work on API).
-       *
-       * @return {Promise} Promise to be resolved with the settings object
-       * @private
-       */
-      function clearFromStore() {
-        var defered = $q.defer();
-        if (hasChromeStorage) {
-          $window.chrome.storage.local.clear(function () {
-            console.log("clearFromChrome");
-            defered.resolve();
-            if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
-          });
-          return defered.promise;
-        }
-        return null;
-      }
-
-      /**
-       * Test the client's support for storing values in the local store.
-       *
-       * @return {boolean} True if the client has support for the local store, else false.
-       * @private
-       */
-      function testChromeStorage() {
-        try {
-          $window.chrome.storage.local.set({'angular.chromeStorage.test': true}, function () {
-            //console.log('set: success');
-          });
-          $window.chrome.storage.local.remove('angular.chromeStorage.test', function () {
-            //console.log('remove: success');
-          });
-          return true;
-        } catch (e) {
-          // FIXME: Revert when specs are implemented
-          // console.log(e);
-          return false;
-        }
+        function clearFromStore() {
+            var defered = $q.defer();
+            var result = chromeStorageApi.clear(function(){
+                defered.resolve();
+            });
+            if(!result)
+                defered.reject("Could not remove data from the storage")
+            return defered.promise;
       }
 
       /**.
@@ -206,7 +160,7 @@ angular.module('lmisChromeApp')
       }
 
       /**
-       * get list of tables from local storage.
+       * Get list of tables from the chrome storage.
        *
        * @return {array} array list of tables in local storage.
        * @private
@@ -221,7 +175,7 @@ angular.module('lmisChromeApp')
       }
 
       /**
-       * add new or update database table row.
+       * Add new or update database table row.
        *
        * @return {promise} promise to access data from local storage.
        * @private
@@ -373,16 +327,6 @@ angular.module('lmisChromeApp')
         return deferred.promise;
       }
 
-      /**
-       * Test the client's support for storing values in the local store.
-       *
-       * @return {boolean} True if the client can access the API with the Key, else false.
-       * @private
-       */
-      function testApiStorage() {
-        return false;
-      }
-
       function uuid_generator() {
         var now = Date.now();
         var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -458,7 +402,6 @@ angular.module('lmisChromeApp')
       }
 
       return {
-        isSupported: hasChromeStorage,
         all: getAllFromTable,
         add: addTable,
         get: getTable,
