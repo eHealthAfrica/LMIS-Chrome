@@ -140,6 +140,36 @@ describe('Service: alertsFactory', function() {
       alertsFactory.success(expected.message);
       expect(scope.alerts[0]).toEqual(expected);
     });
+
+    it('should set an alert type to info if asked to', function() {
+      var expected = {
+        type: 'info',
+        message: 'Info message'
+      };
+
+      alertsFactory.info(expected.message);
+      expect(scope.alerts[0]).toEqual(expected);
+    });
+
+    it('should set an alert type to warning if asked to', function() {
+      var expected = {
+        type: 'warning',
+        message: 'Warning message'
+      };
+
+      alertsFactory.warning(expected.message);
+      expect(scope.alerts[0]).toEqual(expected);
+    });
+
+    it('should set an alert type to danger if asked to', function() {
+      var expected = {
+        type: 'danger',
+        message: 'Danger message'
+      };
+
+      alertsFactory.danger(expected.message);
+      expect(scope.alerts[0]).toEqual(expected);
+    });
   });
 
 });

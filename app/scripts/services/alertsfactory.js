@@ -28,15 +28,24 @@ angular.module('lmisChromeApp')
     };
 
     var info = function(message) {
-      return message;
+      add({
+        type: 'info',
+        message: message
+      });
     };
 
     var warning = function(message) {
-      return message;
+      add({
+        type: 'warning',
+        message: message
+      });
     };
 
     var danger = function(message) {
-      return message;
+      add({
+        type: 'danger',
+        message: message
+      });
     };
 
     var remove = function(index) {
