@@ -4,6 +4,12 @@ angular.module('lmisChromeApp')
   .factory('alertsFactory', function($rootScope, $timeout) {
     $rootScope.alerts = [];
 
+    // Examples
+    //
+    //    alert({type: '[type]', message: 'message'})
+    //
+    // ... where type is a Bootstrap alert class, see:
+    // http://getbootstrap.com/components/#alerts-examples
     var add = function(alert) {
       $rootScope.alerts.push(alert);
       $timeout(function() {
@@ -15,7 +21,10 @@ angular.module('lmisChromeApp')
     };
 
     var success = function(message) {
-      return message;
+      add({
+        type: 'success',
+        message: message
+      });
     };
 
     var info = function(message) {

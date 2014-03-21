@@ -123,10 +123,22 @@ describe('Service: alertsFactory', function() {
     });
   });
 
-  it('should expose alert levels', function() {
-    var levels = ['success', 'info', 'warning', 'danger'];
-    levels.forEach(function(level) {
-      expect(alertsFactory[level]).toBeDefined();
+  describe('levels', function() {
+    it('should expose alert levels', function() {
+      var levels = ['success', 'info', 'warning', 'danger'];
+      levels.forEach(function(level) {
+        expect(alertsFactory[level]).toBeDefined();
+      });
+    });
+
+    it('should set an alert type to success if asked to', function() {
+      var expected = {
+        type: 'success',
+        message: 'Success message'
+      };
+
+      alertsFactory.success(expected.message);
+      expect(scope.alerts[0]).toEqual(expected);
     });
   });
 
