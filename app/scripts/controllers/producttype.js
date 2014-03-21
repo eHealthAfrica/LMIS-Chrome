@@ -80,20 +80,14 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         if (Object.keys($scope.product).length > 0) {
           storageService.insert(storageService.PRODUCT_TYPES, $scope.product).then(function (bool) {
             if (bool) {
-              alertsFactory.add({
-                message: 'Data saved ',
-                type: 'success'
-              });
+              alertsFactory.success('Data saved');
               $location.path('/main/products');
             } else {
 
             }
           });
         } else {
-          alertsFactory.add({
-            message: 'can\'t save empty form',
-            type: 'danger'
-          });
+          alertsFactory.danger('can\'t save empty form');
         }
       };
     });

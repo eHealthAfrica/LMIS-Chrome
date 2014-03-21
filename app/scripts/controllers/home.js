@@ -59,12 +59,12 @@ angular.module('lmisChromeApp')
           $stateParams.orderNo = null;
           $translate('orderPlacedSuccess', {orderNo: $stateParams.orderNo})
             .then(function (msg) {
-              alertsFactory.add({message: msg, type: 'success'});
+              alertsFactory.success(msg);
             });
         }
 
         if($stateParams.stockResult !== null){
-          alertsFactory.add({message: $stateParams.stockResult, type: 'success'});
+          alertsFactory.success($stateParams.stockResult);
           $stateParams.stockResult = null;
         }
       }
@@ -162,18 +162,12 @@ angular.module('lmisChromeApp')
           settingsService.save(settings)
             .then(function() {
               $translate('settingsSaved').then(function(settingsSaved) {
-                alertsFactory.add({
-                  message: settingsSaved,
-                  type: 'success'
-                });
+                alertsFactory.success(settingsSaved);
               });
             })
             .catch(function() {
               $translate('settingsFailed').then(function(settingsFailed) {
-                alertsFactory.add({
-                  message: settingsFailed,
-                  type: 'danger'
-                });
+                alertsFactory.danger(settingsFailed);
               });
             });
         };

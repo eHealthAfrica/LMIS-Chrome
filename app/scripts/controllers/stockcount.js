@@ -291,7 +291,7 @@ angular.module('lmisChromeApp')
     $scope.changeState = function(direction){
       $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
-        alertsFactory.add({message: $scope.alertMsg, type: 'danger'});
+        alertsFactory.danger($scope.alertMsg);
       }
       else{
         $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
@@ -308,7 +308,7 @@ angular.module('lmisChromeApp')
         .then(function(uuid){
           var msg = 'You have completed stock count for '+$scope.stockCount.day+
               ' '+$scope.monthList[$scope.reportMonth]+' '+$scope.reportYear;
-          alertsFactory.add({message: msg, type: 'success'});
+          alertsFactory.success(msg);
           $state.go('home.index.mainActivity',
             {
               'facility': $scope.facilityUuid,

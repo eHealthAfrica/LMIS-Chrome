@@ -4,6 +4,12 @@ angular.module('lmisChromeApp')
   .factory('alertsFactory', function($rootScope, $timeout) {
     $rootScope.alerts = [];
 
+    // Examples
+    //
+    //    alert({type: '[type]', message: 'message'})
+    //
+    // ... where type is a Bootstrap alert class, see:
+    // http://getbootstrap.com/components/#alerts-examples
     var add = function(alert) {
       $rootScope.alerts.push(alert);
       $timeout(function() {
@@ -12,6 +18,34 @@ angular.module('lmisChromeApp')
           remove(index);
         }
       }, 5000);
+    };
+
+    var success = function(message) {
+      add({
+        type: 'success',
+        message: message
+      });
+    };
+
+    var info = function(message) {
+      add({
+        type: 'info',
+        message: message
+      });
+    };
+
+    var warning = function(message) {
+      add({
+        type: 'warning',
+        message: message
+      });
+    };
+
+    var danger = function(message) {
+      add({
+        type: 'danger',
+        message: message
+      });
     };
 
     var remove = function(index) {
@@ -28,7 +62,10 @@ angular.module('lmisChromeApp')
     });
 
     return {
-      add: add,
+      success: success,
+      info: info,
+      warning: warning,
+      danger: danger,
       remove: remove,
       clear: clear
     };
