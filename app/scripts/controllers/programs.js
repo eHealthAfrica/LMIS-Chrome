@@ -24,20 +24,15 @@ angular.module('lmisChromeApp')
         storageService.insert(storageService.PROGRAM, $scope.program).then(
           function() {
             var msg = ($scope.uuid) ? {
-              type: 'success',
               message: 'Program update was successful'
             } : {
-              type: 'success',
               message: 'Program entry was successful'
             };
-            alertsFactory.add(msg);
+            alertsFactory.success(msg);
             $location.path('/main/programs');
           });
       } else {
-        alertsFactory.add({
-          type: 'danger',
-          message: 'Can\'t save a blank form'
-        });
+        alertsFactory.danger('Can\'t save a blank form');
       }
     };
 
@@ -114,21 +109,16 @@ angular.module('lmisChromeApp')
         storageService.insert(storageService.PROGRAM_PRODUCTS, $scope.program_product)
           .then(function() {
             var msg = ($scope.uuid) ? {
-              type: 'success',
               message: 'Program update was successful'
             } : {
-              type: 'success',
               message: 'Program entry was successful'
             };
-            alertsFactory.add(msg);
+            alertsFactory.success(msg);
             $location.path('/main/program_products');
           });
 
       } else {
-        alertsFactory.add({
-          type: 'danger',
-          message: 'Can\'t save a blank form'
-        });
+        alertsFactory.danger('Can\'t save a blank form');
       }
     };
     storageService.get(storageService.PROGRAM_PRODUCTS).then(function(

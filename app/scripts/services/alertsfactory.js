@@ -62,7 +62,6 @@ angular.module('lmisChromeApp')
     });
 
     return {
-      add: add,
       success: success,
       info: info,
       warning: warning,

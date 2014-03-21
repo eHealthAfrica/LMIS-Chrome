@@ -141,7 +141,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             });
           }
         }, function (error) {
-          alertsFactory.add({message: error, type: 'danger'});
+          alertsFactory.danger(error);
           console.log(error);
         });
 
