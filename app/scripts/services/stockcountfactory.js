@@ -380,7 +380,21 @@ angular.module('lmisChromeApp')
       },
       readableName: function(name) {
         return name.replace(/\-/g,' - ').replace(/([0-9])([a-zA-Z])/g,'$1 $2').replace(/([a-z][a-z])([A-Z])/g,'$1 $2');
+      },
+      currentProductObject: function(productObject, index){
+        var productUuidList = Object.keys(productObject);
+        return productObject[productUuidList[index]];
+      },
+      productReadableName: function(productObject, index){
+
+        var productName = this.currentProductObject(productObject, index).name;
+        return this.readableName(productName);
+      },
+      productTypeCode: function(productObject, index, productType){
+        var currentProductUuid = this.currentProductObject(productObject, index).product;
+        return productType[currentProductUuid].code;
       }
+
     };
     return {
       programProducts: programProducts,
