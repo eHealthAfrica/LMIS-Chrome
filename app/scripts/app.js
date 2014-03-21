@@ -4,7 +4,6 @@ angular.module('lmisChromeApp', [
       'ngResource',
       'ngSanitize',
       'ngCookies',
-      'restangular',
       'ui.bootstrap',
       'ngTable',
       'ui.router',
@@ -13,13 +12,6 @@ angular.module('lmisChromeApp', [
       'toggle-switch',
       'nvd3ChartDirectives'
     ])
-    .config(function (RestangularProvider, $compileProvider) {
-      RestangularProvider.setBaseUrl('http://lmis.ehealth.org.ng/api/v1');
-      $compileProvider.aHrefSanitizationWhitelist(
-          /^\s*(https?|ftp|mailto|chrome-extension):/
-      );
-    })
-
   // Disable ui-router auto scrolling
     .config(function ($uiViewScrollProvider, $anchorScrollProvider) {
       $uiViewScrollProvider.useAnchorScroll();
@@ -58,7 +50,4 @@ angular.module('lmisChromeApp', [
 
       // Convenience property to get the current state
       $rootScope.$state = $state;
-
-      // Default state
-      $state.go('home.index.mainActivity');
     });

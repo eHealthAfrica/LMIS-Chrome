@@ -19,6 +19,8 @@ describe('Service: alertsFactory', function() {
       'sidebar',
       'control-panel',
       'dashboard',
+      'dashboard/chart',
+      'dashboard/table',
       'main-activity'
     ];
 
@@ -39,12 +41,8 @@ describe('Service: alertsFactory', function() {
     expect(scope.alerts.length).toEqual(0);
   });
 
-  it('should provide an add method', function() {
-    expect(alertsFactory.add).toBeDefined();
-  });
-
   it('should add an alert to the root scope', function() {
-    alertsFactory.add({message: 'Test'});
+    alertsFactory.info('Test');
     expect(scope.alerts.length).toEqual(1);
   });
 
@@ -54,7 +52,7 @@ describe('Service: alertsFactory', function() {
 
   it('should remove an alert by its index', function() {
     expect(scope.alerts.length).toEqual(0);
-    alertsFactory.add({message: 'Test'});
+    alertsFactory.info('Test');
     alertsFactory.remove(0);
     expect(scope.alerts.length).toEqual(0);
   });
@@ -62,7 +60,7 @@ describe('Service: alertsFactory', function() {
   it('should not clobber other alerts when removing', function() {
     var nucleobases = ['Guanine', 'Adenine', 'Thymine', 'Cytosine'];
     nucleobases.forEach(function(nucleobase) {
-      alertsFactory.add({message: nucleobase});
+      alertsFactory.info(nucleobase);
     });
     expect(scope.alerts.length).toEqual(4);
     alertsFactory.remove(2);
@@ -78,7 +76,7 @@ describe('Service: alertsFactory', function() {
   it('should clear alerts when asked', function() {
     var nucleobases = ['Guanine', 'Adenine', 'Thymine', 'Cytosine'];
     nucleobases.forEach(function(nucleobase) {
-      alertsFactory.add({message: nucleobase});
+      alertsFactory.info(nucleobase);
     });
     expect(scope.alerts.length).toEqual(4);
     alertsFactory.clear();
@@ -91,7 +89,7 @@ describe('Service: alertsFactory', function() {
 
   it('should clear alerts when moving between states', function() {
     var ma = 'home.index.mainActivity',
-        dash = 'home.index.dashboard';
+        dash = 'home.index.dashboard.chart';
 
     inject(function($templateCache, $state, $httpBackend) {
       loadMockedTemplates($templateCache);
@@ -99,14 +97,14 @@ describe('Service: alertsFactory', function() {
 
       scope.$apply(function() {
         $state.go(ma);
-        alertsFactory.add({message: 'Test'});
+        alertsFactory.info('Test');
+        expect(scope.alerts.length).toEqual(1);
       });
-      expect(scope.alerts.length).toEqual(1);
 
       scope.$apply(function() {
         $state.go(dash);
+        expect(scope.alerts.length).toEqual(0);
       });
-      expect(scope.alerts.length).toEqual(0);
     });
   });
 
@@ -114,10 +112,59 @@ describe('Service: alertsFactory', function() {
     inject(function($timeout, $templateCache, $httpBackend) {
       loadMockedTemplates($templateCache);
       loadMockedLocales($httpBackend);
-      alertsFactory.add();
+      alertsFactory.info('');
       expect(scope.alerts.length).toEqual(1);
       $timeout.flush();
       expect(scope.alerts.length).toEqual(0);
+    });
+  });
+
+  describe('levels', function() {
+    it('should expose alert levels', function() {
+      var levels = ['success', 'info', 'warning', 'danger'];
+      levels.forEach(function(level) {
+        expect(alertsFactory[level]).toBeDefined();
+      });
+    });
+
+    it('should set an alert type to success if asked to', function() {
+      var expected = {
+        type: 'success',
+        message: 'Success message'
+      };
+
+      alertsFactory.success(expected.message);
+      expect(scope.alerts[0]).toEqual(expected);
+    });
+
+    it('should set an alert type to info if asked to', function() {
+      var expected = {
+        type: 'info',
+        message: 'Info message'
+      };
+
+      alertsFactory.info(expected.message);
+      expect(scope.alerts[0]).toEqual(expected);
+    });
+
+    it('should set an alert type to warning if asked to', function() {
+      var expected = {
+        type: 'warning',
+        message: 'Warning message'
+      };
+
+      alertsFactory.warning(expected.message);
+      expect(scope.alerts[0]).toEqual(expected);
+    });
+
+    it('should set an alert type to danger if asked to', function() {
+      var expected = {
+        type: 'danger',
+        message: 'Danger message'
+      };
+
+      alertsFactory.danger(expected.message);
+      expect(scope.alerts[0]).toEqual(expected);
     });
   });
 
