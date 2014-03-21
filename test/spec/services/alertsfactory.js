@@ -123,4 +123,11 @@ describe('Service: alertsFactory', function() {
     });
   });
 
+  it('should expose alert levels', function() {
+    var levels = ['success', 'info', 'warning', 'danger'];
+    levels.forEach(function(level) {
+      expect(alertsFactory[level]).toBeDefined();
+    });
+  });
+
 });

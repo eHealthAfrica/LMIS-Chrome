@@ -14,6 +14,22 @@ angular.module('lmisChromeApp')
       }, 5000);
     };
 
+    var success = function(message) {
+      return message;
+    };
+
+    var info = function(message) {
+      return message;
+    };
+
+    var warning = function(message) {
+      return message;
+    };
+
+    var danger = function(message) {
+      return message;
+    };
+
     var remove = function(index) {
       $rootScope.alerts.splice(index, 1);
     };
@@ -29,6 +45,10 @@ angular.module('lmisChromeApp')
 
     return {
       add: add,
+      success: success,
+      info: info,
+      warning: warning,
+      danger: danger,
       remove: remove,
       clear: clear
     };
