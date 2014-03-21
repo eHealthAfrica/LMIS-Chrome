@@ -275,23 +275,31 @@ angular.module('lmisChromeApp')
     $scope.stockCount.day = $scope.stockCount.day ? $scope.stockCount.day: $scope.currentDay;
     $scope.stockCount.countDate = '';
     $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
-    $scope.facilityProducts = stockCountFactory.facilityProducts();
-    $scope.facilityProductsKeys = Object.keys($scope.facilityProducts);
-    $scope.maxStep =  $scope.facilityProductsKeys.length>0?$scope.facilityProductsKeys.length - 1: 0;
+    $scope.facilityProducts = stockCountFactory.facilityProducts(); // selected products for current facility
+    $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
+
+    //set maximum steps
+    if($scope.facilityProductsKeys.length>0){
+      $scope.maxStep =  $scope.facilityProductsKeys.length-1;
+    }
+    else{
+      $scope.maxStep =0;
+    }
+
+    $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
+    $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
     $scope.changeState = function(direction){
-      console.log($scope.facilityProductsKeys);
-      console.log($scope.facilityProductsKeys[$scope.step]);
-      console.log($scope.stockCount.unopened);
       $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];
-      console.log($scope.currentEntry);
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
         alertsFactory.add({message: $scope.alertMsg, type: 'danger'});
       }
       else{
         $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
       }
+      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
+      $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
     };
-    $scope.getReadableName = stockCountFactory.get.readableName;
+
     $scope.save = function(){
       $scope.stockCount.day = $scope.stockCount.day ? $scope.stockCount.day: $scope.currentDay;
       $scope.stockCount.facility = $scope.facilityUuid;
