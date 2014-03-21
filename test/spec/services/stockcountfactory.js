@@ -3,41 +3,25 @@
 describe('Service stockCountFactory', function(){
   beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks', 'stockCountMocks'));
 
-  var stockCountFactory;
-  var stockCount;
-  var scope;
-  var q;
+  var stockCountFactory,
+      stockCount,
+      scope;
   beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q, $templateCache, $httpBackend){
     stockCountFactory = _stockCountFactory_;
     scope = $rootScope.$new();
     stockCount = stockData;
 
-    spyOn(stockCountFactory, "getStockCountByDate").andCallFake(function (date) {
+    spyOn(stockCountFactory, 'getStockCountByDate').andCallFake(function (date) {
       //TODO: re-write this when local storage and storageprovider mocks are completed.
       if (date > new Date()) {
-        return $q.when({uuid: "1234567890-08829199-89872-9087-1234567892"});
+        return $q.when({uuid: '1234567890-08829199-89872-9087-1234567892'});
       } else {
         return $q.when(null);
       }
     });
-
-    // Mock each template used by the state
-    var templates = [
-      'index',
-      'nav',
-      'sidebar',
-      'control-panel',
-      'main-activity'
-    ];
-
-    angular.forEach(templates, function (template) {
-      $templateCache.put('views/home/' + template + '.html', '');
-    });
-
     $httpBackend.whenGET('/locales/en.json').respond(200, {});
     $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
   }));
-
 
   it('should expose a load method aliased as "get"', function(){
     expect(stockCountFactory).toBeDefined();

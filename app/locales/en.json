@@ -90,5 +90,18 @@
   "products": "Products",
   "productsUnset": "Product settings are unset. Please define them in",
   "inventorySettings": "inventory settings",
-  "logIncomingSuccessMessage": "Incoming Bundle was logged successfully !!!"
+  "logIncomingSuccessMessage": "Incoming Bundle was logged successfully !!!",
+  "belowBuffer": "Below buffer",
+  "buffer": "Buffer",
+  "safetyStock": "Safety Stock",
+  "max": "Max",
+  "actual": "Actual",
+  "inventoryRules": "Inventory Rules",
+  "setServiceLevel": "Set Service Level",
+  "setMaximumLevel": "Set Maximum Level",
+  "inventoryPerformance": "Inventory Performance",
+  "leadTimeConsumption": "Lead-time Consumption",
+  "bufferStock": "Buffer Stock",
+  "reorderPoint": "Reorder Point",
+  "discrepancyThreshold": "Discrepancy Threshold"
 }

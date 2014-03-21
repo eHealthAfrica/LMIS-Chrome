@@ -19,6 +19,8 @@ describe('Service: alertsFactory', function() {
       'sidebar',
       'control-panel',
       'dashboard',
+      'dashboard/chart',
+      'dashboard/table',
       'main-activity'
     ];
 
@@ -91,7 +93,7 @@ describe('Service: alertsFactory', function() {
 
   it('should clear alerts when moving between states', function() {
     var ma = 'home.index.mainActivity',
-        dash = 'home.index.dashboard';
+        dash = 'home.index.dashboard.chart';
 
     inject(function($templateCache, $state, $httpBackend) {
       loadMockedTemplates($templateCache);
