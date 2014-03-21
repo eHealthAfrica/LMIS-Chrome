@@ -345,40 +345,56 @@
     "diluent_per_volume": 0.0,
     "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
   },
-
-
-
-
   "6240f4fb-1416-4d16-b124-f1641d541dcb": {
     "uuid": "6240f4fb-1416-4d16-b124-f1641d541dcb",
-    "created_by": null,
-    "modified_by": null,
+    "created_by": 2,
+    "modified_by": 1,
     "created": "2014-01-16T16:00:32.775Z",
     "modified": "2014-01-16T16:00:32.804Z",
     "is_deleted": false,
-    "name": "HPV-1-DPV-Liquid-IM-47.0PackedVol-0.0DilPerVol-SanofiPasteur-CSV",
+    "name": "HPV-1-DPV-Liquid-IM-47.0PackedVol-0.0DilPerVol-R.Bieliks May-CSV",
     "product": "939d5e05-2aa4-4883-9246-35c60dfa06a5",
     "presentation": "c8dac343-4f92-4974-af5c-0737bd8e68e9",
-    "formulation": "d2a1ae75-8fb0-4c80-80f7-0b05ba445b8a",
-    "mode_of_use": "ac55e51c-c9b0-4d52-8865-05f5c8e1df23",
+    "formulation": "ad999cfe-a74d-4f8d-964a-98a40a705ed5",
+    "mode_of_use": "d4957c68-d977-4ff2-a5c2-3e8538d302cd",
     "description": "",
-    "packed_volume": 72.0,
+    "packed_volume": 47.0,
     "diluent_per_volume": 0.0,
     "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
-  }
-
-  ,
+  },
   "6e2a882b-eeeb-4caf-96e2-46167c0c1aac": {
     "uuid": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "created_by": 2,
+    "modified_by": 1,
     "created": "2014-01-15T14:22:02.130Z",
     "modified": "2014-01-15T14:22:02.147Z",
     "is_deleted": false,
-    "name": "Cubic Centimetres",
-    "symbol": "cm3",
-    "uom_category": "cfa527af-105c-46f1-a105-4366a220e9e0",
-    "rate": 0.0,
-    "factor": 0.0,
-    "rounding_precision": 2
+    "name": "HPV-1-DPV-Liquid-IM-47.0PackedVol-0.0DilPerVol-R.Bieliks May-CSV",
+    "product": "939d5e05-2aa4-4883-9246-35c60dfa06a5",
+    "presentation": "c8dac343-4f92-4974-af5c-0737bd8e68e9",
+    "formulation": "ad999cfe-a74d-4f8d-964a-98a40a705ed5",
+    "mode_of_use": "d4957c68-d977-4ff2-a5c2-3e8538d302cd",
+    "description": "",
+    "packed_volume": 15.0,
+    "diluent_per_volume": 0.0,
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+  },
+  "8471294c0c04-3ac0-46c6-80c3-032404e3": {
+    "uuid": "8471294c0c04-3ac0-46c6-80c3-032404e3",
+    "created": "2014-01-16T15:39:21.555Z",
+    "modified": "2014-01-16T15:46:16.889Z",
+    "is_deleted": false,
+    "created_by": 2,
+    "modified_by": 1,
+    "name": "Measles-1-DPV-Liquid-IM-47.0PackedVol-0.0DilPerVol-R.Bieliks May-CSV",
+    "product": "939d5e05-2aa4-4883-9246-35c60dfa06a5",
+    "presentation": "c8dac343-4f92-4974-af5c-0737bd8e68e9",
+    "formulation": "ad999cfe-a74d-4f8d-964a-98a40a705ed5",
+    "mode_of_use": "d4957c68-d977-4ff2-a5c2-3e8538d302cd",
+    "description": "",
+    "packed_volume": 15.0,
+    "diluent_per_volume": 0.0,
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
   }
 
 }
