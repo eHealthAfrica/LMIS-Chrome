@@ -41,12 +41,8 @@ describe('Service: alertsFactory', function() {
     expect(scope.alerts.length).toEqual(0);
   });
 
-  it('should provide an add method', function() {
-    expect(alertsFactory.add).toBeDefined();
-  });
-
   it('should add an alert to the root scope', function() {
-    alertsFactory.add({message: 'Test'});
+    alertsFactory.info('Test');
     expect(scope.alerts.length).toEqual(1);
   });
 
@@ -56,7 +52,7 @@ describe('Service: alertsFactory', function() {
 
   it('should remove an alert by its index', function() {
     expect(scope.alerts.length).toEqual(0);
-    alertsFactory.add({message: 'Test'});
+    alertsFactory.info('Test');
     alertsFactory.remove(0);
     expect(scope.alerts.length).toEqual(0);
   });
@@ -64,7 +60,7 @@ describe('Service: alertsFactory', function() {
   it('should not clobber other alerts when removing', function() {
     var nucleobases = ['Guanine', 'Adenine', 'Thymine', 'Cytosine'];
     nucleobases.forEach(function(nucleobase) {
-      alertsFactory.add({message: nucleobase});
+      alertsFactory.info(nucleobase);
     });
     expect(scope.alerts.length).toEqual(4);
     alertsFactory.remove(2);
@@ -80,7 +76,7 @@ describe('Service: alertsFactory', function() {
   it('should clear alerts when asked', function() {
     var nucleobases = ['Guanine', 'Adenine', 'Thymine', 'Cytosine'];
     nucleobases.forEach(function(nucleobase) {
-      alertsFactory.add({message: nucleobase});
+      alertsFactory.info(nucleobase);
     });
     expect(scope.alerts.length).toEqual(4);
     alertsFactory.clear();
@@ -101,7 +97,7 @@ describe('Service: alertsFactory', function() {
 
       scope.$apply(function() {
         $state.go(ma);
-        alertsFactory.add({message: 'Test'});
+        alertsFactory.info('Test');
         expect(scope.alerts.length).toEqual(1);
       });
 
@@ -116,7 +112,7 @@ describe('Service: alertsFactory', function() {
     inject(function($timeout, $templateCache, $httpBackend) {
       loadMockedTemplates($templateCache);
       loadMockedLocales($httpBackend);
-      alertsFactory.add();
+      alertsFactory.info('');
       expect(scope.alerts.length).toEqual(1);
       $timeout.flush();
       expect(scope.alerts.length).toEqual(0);
