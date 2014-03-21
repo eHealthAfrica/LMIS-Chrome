@@ -14,6 +14,10 @@ angular.module('lmisChromeApp')
           currentFacility: function(facilityFactory){
             return facilityFactory.getCurrentFacility();
           }
+          ,
+          productType: function(stockCountFactory){
+            return stockCountFactory.productType();
+          }
         }
       })
       .state('stockCountForm', {
@@ -39,6 +43,9 @@ angular.module('lmisChromeApp')
         resolve:{
           currentFacility: function(facilityFactory){
             return facilityFactory.getCurrentFacility();
+          },
+          productType: function(stockCountFactory){
+            return stockCountFactory.productType();
           }
         }
       })
@@ -59,7 +66,7 @@ angular.module('lmisChromeApp')
 /*
  * Base Controller
  */
-  .controller('StockCountCtrl', function($scope, $stateParams, stockCountFactory, currentFacility) {
+  .controller('StockCountCtrl', function($scope, $stateParams, stockCountFactory, currentFacility, productType) {
 
     var now = new Date();
     var day = now.getDate();
@@ -69,6 +76,7 @@ angular.module('lmisChromeApp')
     month = month < 10 ? '0' + month : month;
 
     $scope.products = stockCountFactory.programProducts;
+    $scope.productType = productType;
 
     $scope.step = 0;
     $scope.maxStep =  $scope.products.length>0?$scope.products.length - 1: 0;
@@ -245,7 +253,6 @@ angular.module('lmisChromeApp')
   .controller('StockCountStepsFormCtrl', function($scope,stockCountFactory, $state, alertsFactory){
 
     $scope.preview = false;
-    $scope.selectedProduct = '';
     $scope.editOn = false;
     $scope.edit = function(index){
       $scope.step = index;
@@ -266,23 +273,29 @@ angular.module('lmisChromeApp')
     $scope.stockCount.month = $scope.reportMonth;
     $scope.stockCount.year = $scope.reportYear;
     $scope.stockCount.day = $scope.stockCount.day ? $scope.stockCount.day: $scope.currentDay;
+    $scope.stockCount.countDate = '';
     $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
-
-
+    $scope.facilityProducts = stockCountFactory.facilityProducts();
+    $scope.facilityProductsKeys = Object.keys($scope.facilityProducts);
+    $scope.maxStep =  $scope.facilityProductsKeys.length>0?$scope.facilityProductsKeys.length - 1: 0;
     $scope.changeState = function(direction){
-      $scope.currentEntry = $scope.stockCount.unopened[$scope.step];
-      if(stockCountFactory.validate.invalid($scope.currentEntry)){
-
+      console.log($scope.facilityProductsKeys);
+      console.log($scope.facilityProductsKeys[$scope.step]);
+      console.log($scope.stockCount.unopened);
+      $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];
+      console.log($scope.currentEntry);
+      if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
         alertsFactory.add({message: $scope.alertMsg, type: 'danger'});
       }
       else{
         $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
       }
     };
-
+    $scope.getReadableName = stockCountFactory.get.readableName;
     $scope.save = function(){
       $scope.stockCount.day = $scope.stockCount.day ? $scope.stockCount.day: $scope.currentDay;
       $scope.stockCount.facility = $scope.facilityUuid;
+      $scope.stockCount.countDate = $scope.reportYear+'-'+$scope.reportMonth+'-'+$scope.currentDay;
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(uuid){
           var msg = 'You have completed stock count for '+$scope.stockCount.day+
