@@ -125,10 +125,10 @@
       "created": "2014-01-16T08:22:44.387Z",
       "modified": "2014-01-16T08:22:44.426Z",
       "is_deleted": false,
-      "code": "Dil-BCG",
-      "name": "Bacillus Calmette\u2013Gu\u00e9rin Diluent",
+      "code": "HPV",
+      "name": "Human Papilloma Virus Vaccine",
       "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
-      "description": "diluent for Bacillus Calmette\u2013Gu\u00e9rin vaccine",
+      "description": "HPV prevents infections such cervical cancer, genital warts, and some less common cancers",
       "active": true
     },
     "111fbb51-0c5a-492a-97f6-2c7664e23d01": {
