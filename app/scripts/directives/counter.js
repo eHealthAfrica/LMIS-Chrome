@@ -19,15 +19,15 @@ angular.module('lmisChromeApp').directive('counter', function () {
       count: '=bind'
     },
     link: function (scope, element, attr) {
-      function isValid(value){
+      function isInvalid(value){
         return (isNaN(value) || value === '' || value <= 0);
       };
 
       scope._tapInputAdd = function (param) {
-        return isValid(param)? 1 : (parseInt(param) + 1);
+        return isInvalid(param)? 1 : (parseInt(param) + 1);
       };
       scope._tapInputSub = function (param) {
-        return isValid(param)? 0 : (parseInt(param) - 1);
+        return isInvalid(param)? 0 : (parseInt(param) - 1);
       };
     }
   };
