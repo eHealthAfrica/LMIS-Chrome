@@ -6,7 +6,7 @@
     "is_deleted": false,
     "created_by": 1,
     "modified_by": 1,
-    "name": "Liquid-Lyophilized",
+    "name": "Liquid+Freeze-Dried",
     "description": "both liquid and lyophilized form"
   },
   "ad999cfe-a74d-4f8d-964a-98a40a705ed5": {
@@ -26,18 +26,7 @@
     "is_deleted": false,
     "created_by": 1,
     "modified_by": 1,
-    "name": "Lyophilized",
+    "name": "Freeze-Dried",
     "description": "vaccine stabilized for storage and distribution via dry freezing."
-  },
-  "e16c54e4-74bd-4de0-9360-7067cc98648e": {
-    "uuid": "e16c54e4-74bd-4de0-9360-7067cc98648e",
-    "created": "2014-01-30T11:08:57.825Z",
-    "modified": "2014-01-30T11:08:58.022Z",
-    "is_deleted": false,
-    "created_by": 1,
-    "modified_by": 1,
-    "name": "Plastic Syringe",
-    "description": "auto disable plastic syringe"
   }
-
 }
