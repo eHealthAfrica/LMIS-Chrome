@@ -270,9 +270,6 @@ angular.module('lmisChromeApp')
     $scope.stockCount.unopened = {};
     $scope.stockCount.confirmation = {};
 
-    $scope.stockCount.month = $scope.reportMonth;
-    $scope.stockCount.year = $scope.reportYear;
-    $scope.stockCount.day = $scope.stockCount.day ? $scope.stockCount.day: $scope.currentDay;
     $scope.stockCount.countDate = '';
     $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
     $scope.facilityProducts = stockCountFactory.facilityProducts(); // selected products for current facility
@@ -301,9 +298,9 @@ angular.module('lmisChromeApp')
     };
 
     $scope.save = function(){
-      $scope.stockCount.day = $scope.stockCount.day ? $scope.stockCount.day: $scope.currentDay;
+
       $scope.stockCount.facility = $scope.facilityUuid;
-      $scope.stockCount.countDate = $scope.reportYear+'-'+$scope.reportMonth+'-'+$scope.currentDay;
+      $scope.stockCount.countDate = new Date($scope.reportYear, $scope.reportMonth, $scope.currentDay);
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(uuid){
           var msg = 'You have completed stock count for '+$scope.stockCount.day+
@@ -318,4 +315,4 @@ angular.module('lmisChromeApp')
             });
         });
     }
-    });
+  });

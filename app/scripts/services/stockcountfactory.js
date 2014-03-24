@@ -222,7 +222,9 @@ angular.module('lmisChromeApp')
        */
       stock: function(object){
         var deferred = $q.defer();
-
+        if(object.countDate instanceof Date){
+          object.countDate = object.countDate.toJSON();
+        }
         storageService.insert('stockCount', object).then(function(uuid){
           deferred.resolve(uuid);
         });
