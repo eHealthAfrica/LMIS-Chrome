@@ -1,6 +1,6 @@
 'use strict';
 
-xdescribe('Inventory controller', function () {
+describe('Inventory controller', function () {
   // Load the controller's module
   beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks'));
 

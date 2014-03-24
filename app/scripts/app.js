@@ -5,10 +5,12 @@ angular.module('lmisChromeApp', [
       'ngSanitize',
       'ngCookies',
       'ui.bootstrap',
+      //FIXME: uncomment 'ngTable',
       'ui.router',
       'tv.breadcrumbs',
       'pascalprecht.translate',
       'toggle-switch'
+      //FIXME: uncomment 'nvd3ChartDirectives'
     ])
   // Disable ui-router auto scrolling
     .config(function ($uiViewScrollProvider, $anchorScrollProvider) {
@@ -28,7 +30,7 @@ angular.module('lmisChromeApp', [
     })
 
   // Central Variable for Watching Online/Offline Events
-    .run(function ($window, $rootScope, $state, storageService) {
+    .run(function ($window, $rootScope, $state, $stateParams, storageService) {
       //storageService.clear();
       storageService.loadFixtures();
 

@@ -1,6 +1,6 @@
 'use strict';
 
-xdescribe('Service: inventoryRulesFactory', function() {
+describe('Service: inventoryRulesFactory', function() {
 
   // load the service's module
   beforeEach(module(
