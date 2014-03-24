@@ -125,10 +125,10 @@
       "created": "2014-01-16T08:22:44.387Z",
       "modified": "2014-01-16T08:22:44.426Z",
       "is_deleted": false,
-      "code": "Dil-BCG",
-      "name": "Bacillus Calmette\u2013Gu\u00e9rin Diluent",
+      "code": "HPV",
+      "name": "Human Papilloma Virus Vaccine",
       "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
-      "description": "diluent for Bacillus Calmette\u2013Gu\u00e9rin vaccine",
+      "description": "HPV prevents infections such cervical cancer, genital warts, and some less common cancers",
       "active": true
     },
     "111fbb51-0c5a-492a-97f6-2c7664e23d01": {
@@ -136,10 +136,10 @@
       "created": "2014-01-16T08:31:06.444Z",
       "modified": "2014-01-16T08:31:06.466Z",
       "is_deleted": false,
-      "code": "Dil-YF",
-      "name": "Yellow Fever Diluent",
+      "code": "HepA",
+      "name": "Hepatitis A",
       "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
-      "description": "diluent for Yellow Fever vaccine",
+      "description": "vaccine against hepatitis A virus.",
       "active": true
     },
     "f96946be-7dac-438e-9220-efc386276481": {
@@ -147,21 +147,21 @@
       "created": "2014-01-16T08:23:10.175Z",
       "modified": "2014-01-16T08:23:10.194Z",
       "is_deleted": false,
-      "code": "Dil-Measles",
-      "name": "Measles Diluent",
-      "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
-      "description": "diluent for Measles Vaccine",
-      "active": true
-    },
-    "7b13b5b0-8ce8-4867-efd2-cf305c56a5f7": {
-      "uuid": "7b13b5b0-8ce8-4867-efd2-cf305c56a5f7",
-      "created": "2014-01-16T08:23:10.175Z",
-      "modified": "2014-01-16T08:23:10.194Z",
-      "is_deleted": false,
       "code": "Penta",
       "name": "Penta Vaccine",
       "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
       "description": "provides protection against dangerous child-hood diseases.",
+      "active": true
+    },
+    "2fee31f0-7757-4f06-9914-d16c5ca9cc5f": {
+      "uuid": "2fee31f0-7757-4f06-9914-d16c5ca9cc5f",
+      "created": "2014-01-16T08:23:10.175Z",
+      "modified": "2014-01-16T08:23:10.194Z",
+      "is_deleted": false,
+      "code": "DT",
+      "name": "Diphtheria-Tetanus Pediatrics Vaccine",
+      "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
+      "description": "Diphtheria-Tetanus vaccine for children",
       "active": true
     }
   }

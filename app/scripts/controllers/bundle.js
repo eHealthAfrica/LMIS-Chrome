@@ -55,11 +55,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       $scope.getProductType = function (bundleLine) {
         return bundleLine.batch.product;
-      }
+      };
 
       $scope.getQuantityDetail = function (quantity, uom) {
         return $filter('number')(quantity, 0) + ' ' + uom.symbol;
-      }
+      };
 
       /**
        * function that shows form used to log incoming bundle if it already exists in the system.
