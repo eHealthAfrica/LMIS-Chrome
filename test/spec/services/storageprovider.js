@@ -6,7 +6,7 @@ describe('storageService test', function () {
 
   // instantiate service
   var storageService, rootScope;
-  beforeEach(inject(function (_storageService_, _$rootScope_, $templateCache, $httpBackend) {
+  beforeEach(inject(function (_storageService_, _$rootScope_) {
     storageService = _storageService_;
     rootScope = _$rootScope_;
   }));
@@ -20,8 +20,8 @@ describe('storageService test', function () {
   });
 
   it('i expect storageService.USER to be equal to "user" ', function () {
-    expect(storageService.USER).toBe("user");
-    expect(storageService.USER).not.toBe("product");
+    expect(storageService.USER).toBe('user');
+    expect(storageService.USER).not.toBe('product');
   });
 
   it('as a user, i want to know if i can check if chrome local storage is supported', function () {
@@ -37,12 +37,9 @@ describe('storageService test', function () {
     expect(angular.isFunction(storageService.uuid)).toBeTruthy();
   });
 
-
   it('as a user, i want uuid length to be 36', function () {
     var uuid = storageService.uuid();
     expect(uuid.length).toBe(36);
   });
-
-
 
 });

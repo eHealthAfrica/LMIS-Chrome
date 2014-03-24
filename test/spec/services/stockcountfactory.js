@@ -3,37 +3,22 @@
 describe('Service stockCountFactory', function(){
   beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks', 'stockCountMocks'));
 
-  var stockCountFactory;
-
-  var scope;
-  beforeEach(inject(function(_stockCountFactory_, $rootScope, $q, $templateCache, $httpBackend){
+  var stockCountFactory,
+      stockCount,
+      scope;
+  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q, $templateCache, $httpBackend){
     stockCountFactory = _stockCountFactory_;
-    scope = $rootScope;
+    scope = $rootScope.$new();
+    stockCount = stockData;
 
-    spyOn(stockCountFactory, "getStockCountByDate").andCallFake(function (date) {
+    spyOn(stockCountFactory, 'getStockCountByDate').andCallFake(function (date) {
       //TODO: re-write this when local storage and storageprovider mocks are completed.
-      var currentDate = new Date();
-      var today = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
-      if (date > today) {
-        return $q.when(null);
+      if (date > new Date()) {
+        return $q.when({uuid: '1234567890-08829199-89872-9087-1234567892'});
       } else {
-        return $q.when({uuid: "1234567890-08829199-89872-9087-1234567892"});
+        return $q.when(null);
       }
     });
-
-    // Mock each template used by the state
-    var templates = [
-      'index',
-      'nav',
-      'sidebar',
-      'control-panel',
-      'main-activity'
-    ];
-
-    angular.forEach(templates, function (template) {
-      $templateCache.put('views/home/' + template + '.html', '');
-    });
-
     $httpBackend.whenGET('/locales/en.json').respond(200, {});
     $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
   }));
@@ -59,31 +44,22 @@ describe('Service stockCountFactory', function(){
     expect(stockCountFactory.monthList['01']).toEqual('January');
   });
 
-  it('as user i want to be access stock count for a given date', function(){
-    var stockCount = {};
-    var today = new Date();
-    var tomorrow = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate() + 1);
-    stockCountFactory.getStockCountByDate(tomorrow).then(function(result){
-      stockCount = result;
-    });
-    expect(stockCount).not.toBeNull();
-    scope.$digest();
-    expect(stockCountFactory.getStockCountByDate).toHaveBeenCalled();
-    expect(stockCount).toBeNull();
-
+  it('should confirm validate object exist', function(){
+    expect(stockCountFactory.validate).toBeDefined();
   });
 
-  it('as a user, i should be able to retrieve stock count that was done in the past', function(){
-    var stockCount = null;
-    var today = new Date();
-    var dateInThePast = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate() - 5);
-    //assumes stock was done 5 days ago
-    stockCountFactory.getStockCountByDate(dateInThePast).then(function(result){
+  it('it should return true if variable is empty (""), undefined, not a number or is negative', function(){
+    expect(stockCountFactory.validate.invalid(-20)).toBeTruthy();
+  });
+
+  it('as user i want to be access stock count for a given date', function(){
+    var stockCount = {};
+    stockCountFactory.getStockCountByDate((new Date()).getDate() + 1).then(function(result){
       stockCount = result;
     });
-    expect(stockCount).toBeNull();
+    expect(stockCount).not.toBeNull();
     scope.$digest();
     expect(stockCountFactory.getStockCountByDate).toHaveBeenCalled();
-    expect(stockCount).not.toBeNull();
+    expect(stockCount).toBeNull();
   });
 });

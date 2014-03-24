@@ -177,7 +177,8 @@ angular.module('lmisChromeApp')
           });
           return true;
         } catch (e) {
-          console.log(e);
+          // FIXME: Revert when specs are implemented
+          // console.log(e);
           return false;
         }
       }

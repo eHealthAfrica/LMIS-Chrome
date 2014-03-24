@@ -137,11 +137,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         bundleFactory.saveBundleReceipt(bundleReceipt).then(function (data) {
           if (data.length !== 0) {
             $translate('logIncomingSuccessMessage').then(function (msg) {
-              $state.go('home.index.dashboard', {logIncomingMsg: msg});
+              $state.go('home.index.dashboard.chart', {logIncomingMsg: msg});
             });
           }
         }, function (error) {
-          alertsFactory.add({message: error, type: 'danger'});
+          alertsFactory.danger(error);
           console.log(error);
         });
 
