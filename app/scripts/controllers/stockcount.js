@@ -300,7 +300,7 @@ angular.module('lmisChromeApp')
     $scope.save = function(){
 
       $scope.stockCount.facility = $scope.facilityUuid;
-      $scope.stockCount.countDate = new Date($scope.reportYear, $scope.reportMonth, $scope.currentDay).toJSON();
+      $scope.stockCount.countDate = new Date($scope.reportYear, $scope.reportMonth, $scope.currentDay);
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(uuid){
           var msg = 'You have completed stock count for '+$scope.stockCount.day+
