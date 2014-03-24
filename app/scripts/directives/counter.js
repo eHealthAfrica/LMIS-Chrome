@@ -4,13 +4,13 @@ angular.module('lmisChromeApp').directive('counter', function () {
     transclude: true,
     template: '<div class="input-group">' +
         '<span class="input-group-btn">' +
-        '<button class="btn btn-warning btn-lg" type="button" ng-click="count = _tapInputSub(count)">' +
+        '<button id="_$counterMinusBtn" class="btn btn-warning btn-lg" type="button" ng-click="count = _tapInputSub(count)">' +
         '<i class="fa fa-minus"></i>' +
         '</button>' +
         '</span>' +
         '<input type="text" class="form-control input-lg" size="20" ng-model="count" required>' +
         '<span class="input-group-btn">' +
-        '<button class="btn btn-info btn-lg" type="button" ng-click="count = _tapInputAdd(count)">' +
+        '<button id="_$counterAddBtn" class="btn btn-info btn-lg" type="button" ng-click="count = _tapInputAdd(count)">' +
         '<i class="fa fa-plus"></i>' +
         '</button>' +
         '</span>' +
