@@ -9,11 +9,13 @@
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/ng-table/ng-table.css" />
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
   <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css" />
   <!-- endbower -->
   <link rel="stylesheet" href="bower_components/angular-toggle-switch/angular-toggle-switch.css" />
   <link rel="stylesheet" href="bower_components/angular-toggle-switch/angular-toggle-switch-bootstrap.css" />
+  <!--TODO: uncomment <link rel="stylesheet" href="bower_components/nvd3/nv.d3.css" /> -->
   <!-- endbuild -->
   <!-- build:css({.tmp,app}) styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
@@ -44,36 +46,63 @@
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<!--FIXME: uncomment <script src="bower_components/ng-table/ng-table.js"></script> -->
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/tv-breadcrumbs/dist/tv-breadcrumbs.min.js"></script>
 <script src="bower_components/angular-translate/angular-translate.js"></script>
 <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
 <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
 <script src="bower_components/angular-toggle-switch/angular-toggle-switch.min.js"></script>
+<!--FIXME: uncomment
+<script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/nvd3/nv.d3.js"></script>
+ uncomment <script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
+ -->
 <!-- endbower -->
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
+<script src="scripts/controllers/programs.js"></script>
 <script src="scripts/controllers/home.js"></script>
 <script src="scripts/controllers/footer.js"></script>
+<script src="scripts/controllers/orders.js"></script>
+<script src="scripts/controllers/inventory.js"></script>
+<script src="scripts/controllers/facilities.js"></script>
+<script src="scripts/controllers/producttype.js"></script>
+<script src="scripts/controllers/storageunits.js"></script>
+<script src="scripts/controllers/batches.js"></script>
+<script src="scripts/controllers/bundle.js"></script>
 <script src="scripts/controllers/stockcount.js"></script>
 <script src="scripts/services/storageprovider.js"></script>
+<script src="scripts/services/settingsfactory.js"></script>
+<script src="scripts/services/syncservice.js"></script>
+<script src="scripts/services/visualmarkerservice.js"></script>
+<script src="scripts/services/ordersfactory.js"></script>
 <script src="scripts/services/userfactory.js"></script>
+<script src="scripts/services/inventoryfactory.js"></script>
 <script src="scripts/services/producttypefactory.js"></script>
+<script src="scripts/services/programsfactory.js"></script>
 <script src="scripts/services/facilityfactory.js"></script>
+<script src="scripts/services/bundlefactory.js"></script>
 <script src="scripts/services/productcategoryfactory.js"></script>
 <script src="scripts/services/uomcategoryfactory.js"></script>
 <script src="scripts/services/uomfactory.js"></script>
 <script src="scripts/services/companyfactory.js"></script>
 <script src="scripts/services/presentationfactory.js"></script>
 <script src="scripts/services/companycategoryfactory.js"></script>
+<script src="scripts/services/batchfactory.js"></script>
+<script src="scripts/services/currencyfactory.js"></script>
 <script src="scripts/services/modeofadministrationfactory.js"></script>
 <script src="scripts/services/formulationfactory.js"></script>
 <script src="scripts/services/stockcountfactory.js"></script>
+<script src="scripts/services/storageunitfactory.js"></script>
+<script src="scripts/services/storageunittypefactory.js"></script>
 <script src="scripts/services/alertsfactory.js"></script>
 <script src="scripts/services/locationsfactory.js"></script>
+<script src="scripts/services/inventoryrulesfactory.js"></script>
 <script src="scripts/directives/counter.js"></script>
+<script src="scripts/services/dashboardfactory.js"></script>
 <!-- endbuild -->
 </body>
 </html>
