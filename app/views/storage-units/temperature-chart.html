@@ -1,0 +1,28 @@
+<div class="row" ng-controller="cceTemperatureChartCtrl">
+  <div class="row">
+    <div class="col-sm-12">
+
+      <div class="form-group col-sm-4">
+        <select id="tempUOM" class="form-control" ng-model="temperatureLog.temperature_uom" required>
+          <option value="">-- select cold chain equipment --</option>
+          <option ng-repeat="cce in cceList" value="{{ cce.uuid }}">
+            {{ cce.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">Temperature Chart</h4>
+        </div>
+        <div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

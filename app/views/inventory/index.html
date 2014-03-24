@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="btn-group col-sm-2">
+      <a ui-sref="addInventory" class="btn btn-default">
+        <span><i class="fa fa-plus"></i></span>
+        <span translate="addNewInventory"></span>
+      </a>
+    </div>
+    <div class="btn-group col-sm-2">
+      <a ui-sref="incomingLog" class="btn btn-default">
+        <span><i class="fa fa-plus"></i></span>
+        <span translate="incomingLog"></span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div ng-include="'views/partials/search.html'"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div ng-include="'views/partials/expiration-indicators.html'"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <span><i class="fa fa-list"></i></span>
+          <span>Batch Inventory</span>
+          <span class="badge badge-info" ng-bind="totalItems"></span>
+          <span class="pull-right" ng-bind="currentFacility.name"></span>
+        </h4>
+      </div>
+      <div class="panel-body">
+
+        <div class="row scrollable-container">
+          <table ng-table="inventory"
+                 class="table table-condensed table-hover table-bordered oversize-table text-center">
+            <tr ng-repeat="inventoryLine in $data"
+                class="{{ highlight((inventoryLine.batch).expiration_date, orderByMonths) }}">
+              <td data-title="'#'">{{ $index + 1 }}</td>
+              <td data-title="'Batch No'" sortable="'((inventoryLine.batch).batch_no)'"
+                  ng-bind="getBatch(inventoryLine)"></td>
+              <td data-title="'Product Type'" ng-bind="getProductType(inventoryLine).name"></td>
+              <td data-title="'Program'" ng-bind="(inventoryLine.program).name"></td>
+              <td data-title="'Total Quantity'"
+                  ng-bind="((((inventoryLine.batch).presentation).value * inventoryLine.quantity) | number)
+                  +' '+(((inventoryLine.batch).product).base_uom).symbol">
+               </td>
+              <td data-title="'Quantity'" ng-bind="((inventoryLine.quantity | number)+' '+(inventoryLine.uom).symbol)">
+              </td>
+              <td data-title="'Expiration Date'">
+                {{ (inventoryLine.batch).expiration_date | date:'dd-MM-yyyy' }}
+              </td>
+              <td data-title="'Receiving facility'" ng-bind="(inventoryLine.receiving_facility).name"></td>
+              <td data-title="'Sending Facility'" ng-bind="(inventoryLine.sending_facility).name"></td>
+              <td data-title="'Bundle No'" ng-bind="inventoryLine.bundle_no"></td>
+              <td data-title="'Storage Unit'" ng-bind="(inventoryLine.storage_unit).name"></td>
+              <td data-title="'Date Received'">{{ inventoryLine.date_receipt | date:'dd-MM-yyyy' }}</td>
+              <td data-title="'Presentation'" ng-bind="((inventoryLine.batch).presentation).name"></td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

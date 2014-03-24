@@ -1,0 +1,80 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      <span class="removeIcon" title="click to remove this row.">
+        <i ng-click="removeInventoryLine(inventoryLine)" class="pull-center text-muted fa fa-times fa-2x"></i>
+      </span>
+    </h4>
+  </div>
+  <div class="panel-body">
+    <div class="col-sm-12">
+      <div class="col-sm-4">
+        <label translate="productTypes"></label>
+        <select ng-model="inventoryLine.productType" class="form-control"
+                ng-change="loadProductTypeBatches(inventoryLine)">
+          <option value="" translate="selectProductType"></option>
+          <option ng-repeat="type in inventoryLine.productTypes" value="{{ type }}"
+                  ng-selected="{{ (inventoryLine.productType).uuid === type.uuid}}"
+                  ng-bind="type.name">
+          </option>
+        </select>
+      </div>
+
+      <div class="col-sm-4">
+        <label translate="batchNo"></label>
+        <select ng-show="(inventoryLine.productTypeBatches).length !== 0" ng-model="inventoryLine.selectedBatch"
+                class="form-control"
+                ng-change="updateBatchNo(inventoryLine)"
+                ng-disabled="inventoryLine.isDisabled">
+          <option value="" translate="selectBatch"></option>
+          <option ng-repeat="batch in inventoryLine.productTypeBatches" value="{{ batch.uuid }}"
+                  ng-bind="batch.batch_no">
+          </option>
+        </select>
+        <input ng-show="(inventoryLine.productTypeBatches).length === 0" class="form-control" type="text" name="batchNo"
+               ng-model="inventoryLine.batch_no"
+               placeholder="enter batch no" required/>
+      </div>
+
+      <div class="col-sm-4">
+        <label translate="program"></label>
+        <select ng-model="inventoryLine.program" class="form-control" ng-change="createProgramObj(inventoryLine)">
+          <option value="" translate="selectProgram"></option>
+          <option ng-repeat="program in programs" value="{{ program }}"
+                  ng-selected="{{ (inventoryLine.program).uuid === program.uuid}}"
+                  ng-bind="program.name"></option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="col-sm-12">
+      <div class="col-sm-4">
+        <label translate="uom"></label>
+        <select class="form-control" ng-model="inventoryLine.uom" ng-change="createUOMObj(inventoryLine)" required>
+          <option value="" translate="selectUOM"></option>
+          <option ng-repeat="uom in uomList" value="{{ uom }}" ng-bind="uom.name"
+                  ng-selected="{{ (inventoryLine.uom).uuid === uom.uuid }}"></option>
+        </select>
+      </div>
+
+      <div class="col-sm-4">
+        <label translate="quantity"></label>
+        <counter bind="inventoryLine.quantity"></counter>
+      </div>
+
+      <div class="col-sm-4">
+        <label translate="storageUnit"></label>
+        <select class="form-control" ng-model="inventoryLine.storage_unit" ng-change="createStorageUnitObj(inventoryLine)">
+          <option value="" translate="addToStorageUnit"></option>
+          <option ng-repeat="storageUnit in receivingFacilityStorageUnits"
+                  value="{{ storageUnit }}"
+                  ng-selected="{{ (inventoryLine.storageUnit).uuid === storageUnit.uuid }}"
+                  ng-bind="storageUnit.name ">
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

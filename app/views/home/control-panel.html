@@ -1,0 +1,97 @@
+<accordion close-others="true">
+
+  <accordion-group>
+    <accordion-heading>
+      <i class="fa  fa-suitcase"></i>
+      <span translate="product"></span>
+    </accordion-heading>
+    <ul>
+      <li><a ui-sref="batchListView" translate="viewBatch"></a></li>
+      <li><a ui-sref="productTypeListView" translate="viewProductTypes"></a></li>
+      <li><a href="">Manage unit of measurement</a></li>
+      <li><a ui-sref="addBatchView">Add batch</a></li>
+    </ul>
+  </accordion-group>
+
+  <accordion-group>
+    <accordion-heading>
+      <i class="fa fa-chevron-down"></i>
+      <span translate="incoming"></span>
+    </accordion-heading>
+    <ul>
+      <li><a ui-sref="incomingLog" translate="incomingLog"></a></li>
+      <li>
+        <a ui-sref="home.index.mainActivity.orderType"
+           translate="incomingPlace"></a>
+      </li>
+      <li><a href="" translate="incomingModify"></a></li>
+      <li><a href="" translate="incomingTrackPending"></a></li>
+      <li><a href="" translate="incomingTrackIncoming"></a></li>
+      <li><a href="#/orders/index" translate="incomingOrders"></a></li>
+    </ul>
+  </accordion-group>
+
+  <accordion-group>
+    <accordion-heading>
+      <span><i class="fa fa-chevron-up"></i></span>
+      <span>Outgoing</span>
+    </accordion-heading>
+    <ul>
+      <li><a href="">Process an order</a></li>
+      <li><a href="">Return a shipment</a></li>
+      <li><a href="">Calculate routes</a></li>
+      <li><a href="">Track pending shipments</a></li>
+      <li><a href="">Track outgoing shipments</a></li>
+      <li><a href="#/deliveries/index">View delivered shipments</a></li>
+    </ul>
+  </accordion-group>
+
+  <accordion-group>
+    <accordion-heading>
+      <span><i class="fa fa-list"></i></span>
+      <span>Inventory</span>
+    </accordion-heading>
+    <ul>
+      <li><a ui-sref="inventoryListView" translate="manageInventory"></a></li>
+      <li><a href="">View forecasts</a></li>
+      <li><a href="">Track performance</a></li>
+      <li><a ui-sref="stockCountIndex">View Stock Count</a></li>
+      <li><a href="">View sub-facility inventories</a></li>
+      <li><a href="">View sub-facility forecasts</a></li>
+      <li><a href="">View sub-facility reports</a></li>
+    </ul>
+  </accordion-group>
+
+  <accordion-group>
+    <accordion-heading>
+      <span><i class="fa fa-th-large"></i></span>
+      <span>Facilities</span>
+    </accordion-heading>
+    <ul>
+      <li><a ui-sref="storageUnitsView">Manage storage units</a></li>
+      <li><a href="">Manage fleet</a></li>
+      <li><a href="">View sub-facility maps</a></li>
+      <li><a ui-sref="storageUnitsView">View sub-facility storage units' status</a></li>
+    </ul>
+  </accordion-group>
+
+  <accordion-group>
+    <accordion-heading>
+      <span><i class="fa fa-pencil"></i></span>
+      <span>Reports</span>
+    </accordion-heading>
+    <ul>
+      <li><a href="">Start daily stock count</a></li>
+      <li><a href="">Generate supply plan</a></li>
+      <li><a href="">Generate CCE report</a></li>
+      <li><a href="">Generate fleet report</a></li>
+      <li><a href="">Generate inventory report</a></li>
+      <li><a href="">Start monthly report</a></li>
+      <li><a href="">Start quarterly report</a></li>
+      <li><a href="">Review complete reports</a></li>
+    </ul>
+  </accordion-group>
+
+</accordion>
+
+<ui-view/>

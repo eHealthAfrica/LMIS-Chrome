@@ -1,0 +1,11 @@
+<div ng-if="productsUnset">
+  <div class="alert alert-warning">
+    <span translate="productsUnset"></span>
+    <a ui-sref="home.index.settings.facility" class="alert-link"
+      translate="inventorySettings">
+    </a>
+  </div>
+</div>
+
+<div ui-view="chart"></div>
+<div ui-view="table"></div>

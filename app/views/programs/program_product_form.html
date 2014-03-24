@@ -1,0 +1,60 @@
+<div class="row" ng-controller="programProductFormCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Program Product Form</h4>
+            </div>
+            <div class="panel-body">
+                <form ng-submit="saveProgramProduct()">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="program">Program</label>
+                                <select id="program" class="form-control" name="program" ng-model="program_product.program">
+                                    <option value="">-- select program --</option>
+                                    <option ng-repeat="row in programList" value="{{ row.uuid }}">{{ row.name }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="product">Product</label>
+                                <select id="product" class="form-control" name="product" ng-model="program_product.product">
+                                    <option value="">-- select product --</option>
+                                    <option ng-repeat="row in productList" value="{{ row.uuid }}">{{ row.name }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="unitPerTarget">Unit Per Target</label>
+                                <input class="form-control" name="unit_per_target" id="unitPerTarget" ng-model="program_product.unit_per_target">
+                            </div>
+                            <div class="form-group">
+                                <label for="currentPricePerUnit">Current Price per Unit</label>
+                                <input class="form-control" name="current_price_per_unit" id="currentPricePerUnit" ng-model="program_product.current_price_per_unit">
+                            </div>
+                            <div class="form-group">
+                                <label for="priceCurrency">Currency</label>
+                                <select id="priceCurrency" class="form-control" name="price_currency" ng-model="program_product.price_currency">
+                                    <option value="">-- select currency --</option>
+                                    <option ng-repeat="row in priceCurrencyList" value="{{ row.uuid }}">{{ row.name }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="fundingSource">Funding Source</label>
+                                <select id="fundingSource" class="form-control" name="funding_source" ng-model="program_product.funding_source">
+                                    <option value="">-- select funding source --</option>
+                                    <option ng-repeat="row in companyList" value="{{ row.uuid }}">{{ row.name }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="isActive">Active</label>
+                                <input type="checkbox" id="isActive" name="is_active" ng-model="program_product.is_active" >
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="form-control" value="save">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="row" ng-controller="AddProductProfileCtrl">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">Add Product Profile</h4>
+      </div>
+
+      <div class="panel-body">
+
+        <!-- used to show form submission error or success message -->
+        <div id="messages" ng-show="message">{{ message }}</div>
+        <br/>
+
+        <form ng-submit="save()">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="productProfileName">Product Profile Name</label>
+                <input class="form-control" type="text" name="name" id="productProfileName"
+                       ng-model="productProfile.name" placeholder="e.g BCG-10DPV-Lyophilized-ID" required>
+              </div>
+
+              <div class="form-group">
+                <label for="product">Product</label>
+                <select id="product" class="form-control" ng-model="productProfile.product" required>
+                  <option value="">-- select product --</option>
+                  <option ng-repeat="product in products" value="{{ product.uuid }}">
+                    {{product.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="presentation">Presentation</label>
+                <select id="presentation" class="form-control" ng-model="productProfile.presentation" required>
+                  <option value="">-- select product presentation --</option>
+                  <option ng-repeat="presentation in presentations" value="{{ presentation.uuid }}">
+                    {{ presentation.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="formulation">Formulation</label>
+                <select id="formulation" class="form-control" ng-model="productProfile.formulation" required>
+                  <option value="">-- select product formulation --</option>
+                  <option ng-repeat="formulation in formulations" value="{{ formulation.uuid }}">
+                    {{ formulation.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="modeOfUse">Mode Of Administration</label>
+                <select id="modeOfUse" class="form-control" ng-model="productProfile.mode_of_use" required>
+                  <option value="">-- select mode of use --</option>
+                  <option ng-repeat="mode in modes" value="{{ mode.uuid }}">
+                    {{mode.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="packedVolume">Packed Volume</label>
+                <input class="form-control" type="number" name="packedVolume" id="packedVolume" min="0"
+                       ng-model="productProfile.packed_volume" placeholder="e.g 2.3, 0.7" step="any"/>
+              </div>
+
+              <div class="form-group">
+                <label for="diluentPackedVolume">Diluent Packed Per Volume</label>
+                <input class="form-control" type="number" name="dilPackedVol" id="diluentPackedVolume" min="0"
+                       ng-model="productProfile.diluent_per_volume" placeholder="e.g 2.3, 0.7" step="any"/>
+              </div>
+
+              <div class="form-group">
+                <label for="volumeUOM">Volume Unit Of Measurement</label>
+                <select id="volumeUOM" class="form-control" ng-model="productProfile.volume_uom" required>
+                  <option value="">-- select volume unit of measurement --</option>
+                  <option ng-repeat="uom in uomList" value="{{uom.uuid}}">
+                    {{uom.name}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="productProfileDesc">Description</label>
+                <input class="form-control" type="text" name="code" id="productProfileDesc"
+                       ng-model="productProfile.description" placeholder="text description for this profile"/>
+              </div>
+
+              <div class="col-sm-4">
+                <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

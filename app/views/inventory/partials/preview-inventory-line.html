@@ -1,0 +1,46 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      <span>
+        {{ ($index + 1) }}
+      </span>
+    </h4>
+  </div>
+  <div class="panel-body">
+    <div class="col-sm-12">
+      <div class="col-sm-4">
+        <label translate="productTypes"></label>
+        <span class="new-line" ng-bind="(inventoryLine.productTypeObj).name"></span>
+      </div>
+
+      <div class="col-sm-4">
+        <label translate="batchNo"></label>
+        <span class="new-line" ng-bind="inventoryLine.batch_no"></span>
+      </div>
+
+      <div class="col-sm-4">
+        <label translate="program"></label>
+        <span class="new-line" ng-bind="(inventoryLine.programObj).name"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="col-sm-12">
+      <div class="col-sm-4">
+        <label translate="quantity"></label>
+        <span class="new-line" ng-bind="inventoryLine.quantity"></span>
+      </div>
+
+      <div class="col-sm-4">
+        <label translate="uom"></label>
+        <span class="new-line" ng-bind="(inventoryLine.uomObj).name"></span>
+      </div>
+
+      <div class="col-sm-4">
+        <label translate="storageUnit"></label>
+        <span class="new-line" ng-bind="(inventoryLine.storageUnitObj).name"></span>
+      </div>
+    </div>
+  </div>
+</div>
