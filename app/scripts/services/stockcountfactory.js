@@ -212,11 +212,6 @@ angular.module('lmisChromeApp')
       //TODO: add logic to retrieve data from database when facility settings is complete
       return productProfileMock;
     };
-    var setter = {
-      dateObject: function(year, month, day){
-        return new Date(year, month, day).toJSON();
-      }
-    };
     var addRecord={
       /**
        * Add/Update Stock count
@@ -409,7 +404,6 @@ angular.module('lmisChromeApp')
       discardedReasons: discardedReasons,
       save:addRecord,
       get:load,
-      set: setter,
       getStockCountByDate: getStockCountByDate,
       validate: validate
     };
