@@ -98,7 +98,6 @@ angular.module('lmisChromeApp')
     });
 
     $scope.getDaysInMonth = function (reportMonth, reportYear){
-
       var now = new Date();
       var year = (reportYear !== '')?reportYear: now.getFullYear();
       var month = (reportMonth !== '')?reportMonth: now.getMonth() + 1;
