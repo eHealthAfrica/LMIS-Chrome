@@ -103,5 +103,6 @@
   "leadTimeConsumption": "Lead-time Consumption",
   "bufferStock": "Buffer Stock",
   "reorderPoint": "Reorder Point",
-  "discrepancyThreshold": "Discrepancy Threshold"
+  "discrepancyThreshold": "Discrepancy Threshold",
+  "counterSample": "Counter Sample"
 }
