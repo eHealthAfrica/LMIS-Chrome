@@ -141,7 +141,8 @@ module.exports = function(grunt) {
         exclude: [
           'bower_components/moment/moment.js',
           'ng-table',
-          'angularjs-nvd3-directives'
+          'angularjs-nvd3-directives',
+          'bower_components/pouchdb/index.js'
         ]
       }
     },

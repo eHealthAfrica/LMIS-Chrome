@@ -19,7 +19,8 @@
     "d3": "~3.4.3",
     "nvd3": "~1.1.15-beta",
     "angularjs-nvd3-directives": "~0.0.5-beta",
-    "angular-pouchdb": "tlvince/angular-pouchdb"
+    "angular-pouchdb": "tlvince/angular-pouchdb",
+    "pouchdb-nightly": "https://gist.githubusercontent.com/tlvince/9769464/raw/c83878e990ad8e85e8f6597edf4070e233176707/pouchdb-nightly.js"
   },
   "devDependencies": {
     "angular-mocks": "1.2.14"
