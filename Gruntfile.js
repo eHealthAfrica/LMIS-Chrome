@@ -37,7 +37,8 @@ module.exports = function(grunt) {
         tasks: ['newer:copy:styles', 'autoprefixer']
       },
       gruntfile: {
-        files: ['Gruntfile.js']
+        files: ['Gruntfile.js'],
+        tasks: ['ngconstant:development']
       },
       livereload: {
         options: {
@@ -304,6 +305,24 @@ module.exports = function(grunt) {
         // jshint camelcase: false
         coverage_dir: 'coverage'
       }
+    },
+
+    ngconstant: {
+      options: {
+        name: 'config',
+        dest: '<%= yeoman.app %>/scripts/config.js',
+      },
+      // Targets
+      development: {
+        constants: {
+          config: grunt.file.readJSON('config/development.json')
+        }
+      },
+      production: {
+        constants: {
+          config: grunt.file.readJSON('config/production.json')
+        }
+      }
     }
   });
 
@@ -315,6 +334,7 @@ module.exports = function(grunt) {
     grunt.task.run([
       'clean:server',
       'bowerInstall',
+      'ngconstant:development',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -342,6 +362,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'bowerInstall',
+    'ngconstant:production',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
