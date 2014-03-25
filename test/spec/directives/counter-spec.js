@@ -39,8 +39,8 @@ describe('Tests Counter Directive', function () {
     expect(counter.find('button').length).toBe(2);
   });
 
-  it('as a user, i want counter to have have input field', function(){
-    expect(counter.find('input').length).toBe(1);
+  it('as a user, i want counter to have have select/drop down field', function(){
+    expect(counter.find('select').length).toBe(1);
   });
 
   it('i want counter buttons to be accessible via unique ids ', function(){
