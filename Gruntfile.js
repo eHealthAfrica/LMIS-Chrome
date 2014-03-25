@@ -139,7 +139,9 @@ module.exports = function(grunt) {
         src: '<%= yeoman.app %>/index.html',
         ignorePath: '<%= yeoman.app %>/',
         exclude: [
-          'bower_components/moment/moment.js'
+          'bower_components/moment/moment.js',
+          'ng-table',
+          'angularjs-nvd3-directives'
         ]
       }
     },

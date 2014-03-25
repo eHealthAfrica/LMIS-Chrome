@@ -18,7 +18,8 @@
     "angular-toggle-switch": "~0.3.0",
     "d3": "~3.4.3",
     "nvd3": "~1.1.15-beta",
-    "angularjs-nvd3-directives": "~0.0.5-beta"
+    "angularjs-nvd3-directives": "~0.0.5-beta",
+    "angular-pouchdb": "tlvince/angular-pouchdb"
   },
   "devDependencies": {
     "angular-mocks": "1.2.14"
@@ -40,6 +41,7 @@
   "resolutions": {
     "angular": "1.2.14",
     "nvd3": "v1.1.14-beta",
-    "d3": "3.3.11"
+    "d3": "3.3.11",
+    "angular-pouchdb": "d920e0c060"
   }
 }
