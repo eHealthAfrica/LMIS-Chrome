@@ -44,6 +44,57 @@ angular.module('lmisChromeApp')
             return facilityFactory.getCurrentFacility();
           }
         }
+      })
+      .state('syncStockCount', {
+        data: {
+          label: 'Sync stock count'
+        },
+        url: '/sync-stock-count',
+        templateUrl: 'views/stockcount/sync.html',
+        resolve: {
+          stockCount: function(stockCountFactory) {
+            return stockCountFactory.get.allStockCount();
+          }
+        },
+        controller: function($log, $scope, $translate, config, pouchdb, stockCount, alertsFactory) {
+          var dbName = 'stockcount',
+              db = pouchdb.create(dbName),
+              remote = config.apiBaseURI + '/' + dbName;
+
+          db.info()
+            .then(function(info) {
+              $scope.local = info;
+            })
+            .then(function() {
+              $scope.remoteSyncing = true;
+              var remoteDB = pouchdb.create(remote);
+              remoteDB.info()
+                .then(function(info) {
+                  $scope.remote = info;
+                  $scope.remoteSyncing = false;
+                });
+            })
+            .catch(function(reason) {
+              $log.error(reason);
+            });
+
+          $scope.sync = function() {
+            $scope.syncing = true;
+            var cb = {complete: function() {
+              $translate('syncSuccess')
+                .then(function(syncSuccess) {
+                  alertsFactory.success(syncSuccess);
+                })
+                .catch(function(reason) {
+                  $log.error(reason);
+                })
+                .finally(function() {
+                  $scope.syncing = false;
+                });
+            }};
+            db.replicate.sync(remote, cb);
+          };
+        }
       });
   })
 /*
@@ -290,7 +341,9 @@ angular.module('lmisChromeApp')
         })
         .then(function() {
           var db = pouchdb.create(name);
-          db.post($scope.stockCount);
+          var obj = $scope.stockCount;
+          obj._id = obj.uuid;
+          db.put(obj);
         })
         .then(function() {
           var cb = {complete: function() {

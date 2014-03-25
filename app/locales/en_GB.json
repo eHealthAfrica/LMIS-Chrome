@@ -3,5 +3,7 @@
   "supplementalImmunizationActivity": "Supplemental Immunisation Activity",
   "routineImmunization": "Routine Immunisation",
   "stockCountSaved": "Stock count saved. Synchronising with cloud backup…",
-  "syncSuccess": "Successfully synchronised"
+  "syncSuccess": "Successfully synchronised",
+  "syncStockCount": "Synch stock count",
+  "sync": "Synch"
 }

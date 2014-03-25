@@ -106,5 +106,10 @@
   "discrepancyThreshold": "Discrepancy Threshold",
   "counterSample": "Counter Sample",
   "stockCountSaved": "Stock count saved. Syncronising with cloud backup…",
-  "syncSuccess": "Successfully syncronised"
+  "syncSuccess": "Successfully syncronised",
+  "syncStockCount": "Sync stock count",
+  "sync": "Sync",
+  "local": "Local",
+  "remote": "Remote",
+  "records": "Records"
 }
