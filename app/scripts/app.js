@@ -10,7 +10,8 @@ angular.module('lmisChromeApp', [
       'tv.breadcrumbs',
       'pascalprecht.translate',
       'toggle-switch',
-      'pouchdb'
+      'pouchdb',
+      'config'
       //FIXME: uncomment 'nvd3ChartDirectives'
     ])
   // Disable ui-router auto scrolling

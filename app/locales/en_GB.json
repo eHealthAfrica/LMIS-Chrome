@@ -1,5 +1,7 @@
 {
   "authorize": "Authorise",
   "supplementalImmunizationActivity": "Supplemental Immunisation Activity",
-  "routineImmunization": "Routine Immunisation"
+  "routineImmunization": "Routine Immunisation",
+  "stockCountSaved": "Stock count saved. Synchronising with cloud backup…",
+  "syncSuccess": "Successfully synchronised"
 }
