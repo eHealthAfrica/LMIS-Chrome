@@ -11,7 +11,7 @@ angular.module('lmisChromeApp')
        *  folder that holds data used to pre-fill local storage if it is empty.
        *
        */
-      var product_types = 'product_types';
+      var productTypes = 'product_types';
       var productCategory = 'product_category';
       var address = 'address';
       var uom = 'uom';
@@ -37,88 +37,67 @@ angular.module('lmisChromeApp')
       var ccuTemperatureLog = 'ccu_temp_log';
       var productProfile = 'product_profiles';
       var inventory = 'inventory';
-      var orders = "orders";
-      var bundles = "bundle";
-      var bundleLines = "bundle_lines";
-      var bundleReceipt = "bundle_receipts";
-      var bundleReceiptLines = "bundle_receipt_lines";
-      var locations = "locations";
+      var orders = 'orders';
+      var bundles = 'bundle';
+      var bundleLines = 'bundle_lines';
+      var bundleReceipt = 'bundle_receipts';
+      var bundleReceiptLines = 'bundle_receipt_lines';
+      var locations = 'locations';
       var stockCount = 'stockCount';
 
 
-        /**
-         * Add new table to the chrome store.
-         *
-         * @param {string} key - Table name.
-         * @param {mixed} value - rows of the table (all values are stored as JSON.)
-         * @return {Promise} Promise object
-         * @private
-         */
 
-        function addTable(key, value) {
-            var data = {
-                key:value
-            }
-            var defered = $q.defer();
-            var result = chromeStorageApi.set(data, function(){
-                defered.resolve(true)
-            });
-            if(!result)
-                defered.reject("Could not create a table")
-            return defered.promise;
+      /**
+       * Add new table to the chrome store.
+       *
+       * @param {string} key - Table name.
+       * @param {mixed} value - rows of the table (all values are stored as JSON.)
+       * @return {Promise} Promise object
+       * @private
+       */
+
+      function addTable(key, value) {
+        var obj = {key:value};
+        var promise = chromeStorageApi.set(obj);
+        return promise;
+      }
+
+      /**
+       * Get table data from the chrome store
+       *
+       * @param {string} key - Table name.
+       * @return {Promise} Promise to be resolved with the settings object
+       * @private
+       */
+
+      function getTable(key) {
+         var promise = chromeStorageApi.get(key);
+         return promise;
         }
 
-        /**
-         * Get table data from the chrome store
-         *
-         * @param {string} key - Table name.
-         * @return {Promise} Promise to be resolved with the settings object
-         * @private
-         */
-
-        function getTable(key) {
-            var defered = $q.defer();
-            var result = chromeStorageApi.get(key, function(data){
-                defered.resolve(data[key] || {});
-            });
-            if(!result)
-                defered.reject("Could not get data from the storage")
-            return defered.promise;
-        }
-
-        /**
-         * Get All data from the chrome store.
-         *
-         * @return {Promise} Promise to be resolved with the settings object
-         * @private
-         */
-
+      /**
+       * Get All data from the chrome store.
+       *
+       * @return {Promise} Promise to be resolved with the settings object
+       * @private
+       */
+        // TODO - consider to deprecate
         function getAllFromStore() {
-            var defered = $q.defer();
-            var result = chromeStorageApi.get(null, function(){
-                defered.resolve(data);
-            });
-            if(!result)
-                defered.reject("Could not get data from the storage")
-            return defered.promise;
+          var promise = chromeStorageApi.get(null);
+          return promise;
         }
 
-        /**
-         * Remove a table from the chrome store.
-         *
-         * @param {string} key - Table name.
-         * @return {Promise} Promise to be resolved with the settings object
-         * @private
-         */
+      /**
+       * Remove a table from the chrome store.
+       *
+       * @param {string} key - Table name.
+       * @return {Promise} Promise to be resolved with the settings object
+       * @private
+       */
 
         function removeTable(key) {
-            var defered = $q.defer();
-            var result = chromeStorageApi.remove(key, function(){
-                defered.resolve(true);
-            });
-            if(!result)
-                defered.reject("Could not remove data from the storage")
-            return defered.promise;
+          var promise = chromeStorageApi.remove(key);
+          return promise;
         }
 
       /**
@@ -128,36 +107,31 @@ angular.module('lmisChromeApp')
        * @private
        */
         function clearFromStore() {
-            var defered = $q.defer();
-            var result = chromeStorageApi.clear(function(){
-                defered.resolve();
-            });
-            if(!result)
-                defered.reject("Could not remove data from the storage")
-            return defered.promise;
-      }
+          var promise = chromeStorageApi.clear();
+          return promise;
+        }
 
       /**.
        * @return {string} yyyy-MMMM-dd H:m:s  of current date and time.
        * @private
        */
 
-      function getDateTime() {
-        var now = new Date();
-        var day = now.getDate();
-        day = day < 10 ? '0' + day : day;
-        var month = now.getMonth() + 1;
-        month = month < 10 ? '0' + month : month;
-        var year = now.getFullYear();
-        var hour = now.getHours();
-        hour = hour < 10 ? '0' + hour : hour;
-        var minutes = now.getMinutes();
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        var seconds = now.getSeconds();
-        seconds = seconds < 10 ? '0' + seconds : seconds;
-        var datetime = year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':' + seconds;
-        return datetime;
-      }
+        function getDateTime() {
+          var now = new Date();
+          var day = now.getDate();
+          day = day < 10 ? '0' + day : day;
+          var month = now.getMonth() + 1;
+          month = month < 10 ? '0' + month : month;
+          var year = now.getFullYear();
+          var hour = now.getHours();
+          hour = hour < 10 ? '0' + hour : hour;
+          var minutes = now.getMinutes();
+          minutes = minutes < 10 ? '0' + minutes : minutes;
+          var seconds = now.getSeconds();
+          seconds = seconds < 10 ? '0' + seconds : seconds;
+          var datetime = year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':' + seconds;
+          return datetime;
+        }
 
       /**
        * Get list of tables from the chrome storage.
@@ -165,14 +139,14 @@ angular.module('lmisChromeApp')
        * @return {array} array list of tables in local storage.
        * @private
        */
-      function getTables() {
-        var deferred = $q.defer();
-        getAllFromStore().then(function (data) {
-          var tbl = Object.keys(data);
-          deferred.resolve(tbl);
-        });
-        return deferred.promise;
-      }
+        function getTables() {
+          var deferred = $q.defer();
+          getAllFromStore().then(function (data) {
+            var tbl = Object.keys(data);
+            deferred.resolve(tbl);
+          });
+          return deferred.promise;
+        }
 
       /**
        * Add new or update database table row.
@@ -180,45 +154,44 @@ angular.module('lmisChromeApp')
        * @return {promise} promise to access data from local storage.
        * @private
        */
-      function insert(table, obj) {
+        function insert(table, obj) {
+          var deferred = $q.defer();
+          //get list of existing tables in database. if table exist
+          getTables().then(function (tables) {
+            if (tables.indexOf(table) != -1) {
+              getTable(table).then(function (table_data) {
 
-        var deferred = $q.defer();
-        //get list of existing tables in database. if table exist
-        getTables().then(function (tables) {
-          if (tables.indexOf(table) != -1) {
-            getTable(table).then(function (table_data) {
+                if (Object.prototype.toString.call(table_data) == '[object Object]') {
+                  var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
+                  obj['created'] = (uuid_test) ? obj['created'] : getDateTime();
+                  obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00' : getDateTime();
+                  var uuid = (uuid_test) ? obj['uuid'] : uuid_generator();
+                  obj['uuid'] = uuid;
+                  table_data[uuid] = obj;
+                  addTable(table, table_data);
+                  deferred.resolve(uuid);
+                }
+                else {
+                  deferred.resolve(null);
+                  console.log(table_data);
+                }
+              });
+            }
+            else {
 
-              if (Object.prototype.toString.call(table_data) == '[object Object]') {
-                var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
-                obj['created'] = (uuid_test) ? obj['created'] : getDateTime();
-                obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00' : getDateTime();
-                var uuid = (uuid_test) ? obj['uuid'] : uuid_generator();
-                obj['uuid'] = uuid;
-                table_data[uuid] = obj;
-                addTable(table, table_data);
-                deferred.resolve(uuid);
-              }
-              else {
-                deferred.resolve(null);
-                console.log(table_data);
-              }
-            });
-          }
-          else {
-
-            var table_data = {};
-            obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1) ? obj['uuid'] : uuid_generator();
-            obj['created'] = getDateTime();
-            obj['modified'] = '0000-00-00 00:00:00';
-            table_data[obj['uuid']] = obj;
-            addTable(table, table_data);
-            deferred.resolve(obj.uuid);
-            //console.log("new entry");
-          }
-        });
-        if (!$rootScope.$$phase) $rootScope.$apply();
-        return deferred.promise;
-      }
+              var table_data = {};
+              obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1) ? obj['uuid'] : uuid_generator();
+              obj['created'] = getDateTime();
+              obj['modified'] = '0000-00-00 00:00:00';
+              table_data[obj['uuid']] = obj;
+              addTable(table, table_data);
+              deferred.resolve(obj.uuid);
+              //console.log("new entry");
+            }
+          });
+          if (!$rootScope.$$phase) $rootScope.$apply();
+          return deferred.promise;
+        }
 
       /**
        * loads fixtures on app startup
@@ -227,7 +200,7 @@ angular.module('lmisChromeApp')
        */
       function loadFixtures() {
         var database = [
-          product_types,
+          productTypes,
           address,
           uom,
           uomCategory,
@@ -264,13 +237,10 @@ angular.module('lmisChromeApp')
         }
         function loadData(db_name) {
           var test_data = [];
-
           getTable(db_name).then(function (data) {
                 test_data = data;
-
                 if ((toString.call(data) == '[object Object]' && angular.equals(Object.keys(test_data).length, 0))
                     || (angular.isArray(test_data) && angular.equals(test_data.length, 0))) {
-
                   var file_url = 'scripts/fixtures/' + db_name + '.json';
                   $http.get(file_url).success(function (data) {
                     addTable(db_name, data);
@@ -414,7 +384,7 @@ angular.module('lmisChromeApp')
         insert: insert,
         find: getFromTableByKey,
         insertBatch: insertBatch,
-        PRODUCT_TYPES: product_types,
+        PRODUCT_TYPES: productTypes,
         PRODUCT_CATEGORY: productCategory,
         ADDRESS: address,
         UOM: uom,
