@@ -1,14 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('stockCountFactory', function ($q, storageService, $http, $filter, $stateParams, $timeout) {
-    var globalVariables = {
-      reportMonth: function(){
-        var month = new Date().getMonth() + 1;
-        month = month < 10 ? '0' + month : month;
-        return ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month
-      }
-    }
+  .factory('stockCountFactory', function ($q, storageService, $http, $filter) {
 
     var discardedReasons = {
       '0': 'VVM Stage 3',
@@ -225,8 +218,13 @@ angular.module('lmisChromeApp')
         if(object.countDate instanceof Date){
           object.countDate = object.countDate.toJSON();
         }
-        storageService.insert('stockCount', object).then(function(uuid){
-          deferred.resolve(uuid);
+        validate.countExist(object.countDate).then(function(stockCount){
+          if(stockCount !== null){
+            object.uuid = stockCount.uuid;
+          }
+          storageService.insert('stockCount', object).then(function(uuid){
+            deferred.resolve(uuid);
+          });
         });
         return deferred.promise;
       },
@@ -279,6 +277,9 @@ angular.module('lmisChromeApp')
       */
       invalid: function(entry){
         return !!((entry === '' || angular.isUndefined(entry) || isNaN(entry) || entry < 0));
+      },
+      countExist: function(date){
+        return getStockCountByDate(date);
       }
     };
 
@@ -288,7 +289,7 @@ angular.module('lmisChromeApp')
         var stockCount = null;
         for (var index in stockCounts) {
           var row = stockCounts[index];
-          var stockCountDate = $filter('date')(new Date(row.created), 'yyyy-MM-dd');
+          var stockCountDate = $filter('date')(new Date(row.countDate), 'yyyy-MM-dd');
           date = $filter('date')(new Date(date), 'yyyy-MM-dd');
           if (date === stockCountDate) {
             stockCount = row;
@@ -428,6 +429,15 @@ angular.module('lmisChromeApp')
       productTypeCode: function(productObject, index, productType){
         var currentProductUuid = this.currentProductObject(productObject, index).product;
         return productType[currentProductUuid].code;
+      },
+      /*
+       *
+       */
+      timezone: function(){
+        //TODO: this needs to be a global function with better timezone calculation
+        //TODO: ref https://bitbucket.org/pellepim/jstimezonedetect
+        var tz = new Date().getTimezoneOffset()/60;
+        return (tz < 0) ? parseInt('+'+Math.abs(tz)) : parseInt('-'+Math.abs(tz));
       }
 
     };
