@@ -41,7 +41,6 @@
   "resolutions": {
     "angular": "1.2.14",
     "nvd3": "v1.1.14-beta",
-    "d3": "3.3.11",
-    "angular-pouchdb": "d920e0c060"
+    "d3": "3.3.11"
   }
 }
