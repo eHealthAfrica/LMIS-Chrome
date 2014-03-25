@@ -126,7 +126,7 @@ angular.module('lmisChromeApp')
 /*
  * Landing page controller
  */
-  .controller('StockCountIndexCtrl', function ($scope, $http, stockCountFactory) {
+  .controller('StockCountIndexCtrl', function ($scope, stockCountFactory) {
     /*
      * initialize some variables
      */
@@ -251,7 +251,6 @@ angular.module('lmisChromeApp')
 
   })
   .controller('StockCountStepsFormCtrl', function($scope,stockCountFactory, $state, alertsFactory){
-
     $scope.preview = false;
     $scope.editOn = false;
     $scope.edit = function(index){
@@ -285,34 +284,54 @@ angular.module('lmisChromeApp')
 
     $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
     $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
+    $scope.redirect = true; //initialize redirect as true
+    $scope.stockCount.isComplete = 1; //and stock count entry as completed
+
+
+    $scope.save = function(){
+      var timezone = stockCountFactory.get.timezone();
+      $scope.stockCount.facility = $scope.facilityUuid;
+      $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.currentDay, timezone);
+
+      stockCountFactory.save.stock($scope.stockCount)
+        .then(function(){
+          //if redirect is true - only happens when save button is clicked - save as completed
+          if($scope.redirect){
+            var msg = 'You have completed stock count for '+$scope.currentDay+
+                ' '+$scope.monthList[$scope.reportMonth]+' '+$scope.reportYear;
+            alertsFactory.success(msg);
+            $state.go('home.index.mainActivity',
+              {
+                'facility': $scope.facilityUuid,
+                'reportMonth': $scope.reportMonth,
+                'reportYear': $scope.reportYear,
+                'stockResult': msg
+              });
+          }
+          $scope.redirect = true; // always reset to true after every save
+          $scope.stockCount.isComplete = 1;
+        });
+    };
+
     $scope.changeState = function(direction){
       $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
         alertsFactory.danger($scope.alertMsg);
       }
       else{
-        $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
+        if(direction !== 2){
+          $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
+        }
+        else{
+          $scope.preview = true;
+        }
+        //TODO: this is best done with $timeout to auto save data when interface is idle for x mount of time
+        $scope.redirect = false;// we don't need to redirect when this fn calls save()
+        $scope.stockCount.isComplete = 0;// when saved from this fn its not complete yet
+        $scope.save();
       }
       $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
       $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
     };
 
-    $scope.save = function(){
-
-      $scope.stockCount.facility = $scope.facilityUuid;
-      $scope.stockCount.countDate = new Date($scope.reportYear, $scope.reportMonth, $scope.currentDay);
-      stockCountFactory.save.stock($scope.stockCount)
-        .then(function(uuid){
-          var msg = 'You have completed stock count for '+$scope.stockCount.day+
-              ' '+$scope.monthList[$scope.reportMonth]+' '+$scope.reportYear;
-          alertsFactory.success(msg);
-          $state.go('home.index.mainActivity',
-            {
-              'facility': $scope.facilityUuid,
-              'reportMonth': $scope.reportMonth,
-              'reportYear': $scope.reportYear,
-              'stockResult': msg
-            });
-        });
-    }
   });
