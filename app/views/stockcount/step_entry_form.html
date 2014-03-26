@@ -70,18 +70,13 @@
 <div class="panel panel-default">
   <div class="panel-body">
 
-    <div ng-controller="StockCountStepsFormCtrl">
+    <div>
       <div class="col-sm-12">
         <div class="row">
           <div class="col-sm-12">
-            <h3 >Stock Count for {{ currentFacility.name }} -
-              <select ng-model="stockCount.day" ng-show="showDay" ng-change="hideSelect()">
-                <option value="">-- select day --</option>
-                <option  ng-selected="day === currentDay" ng-repeat="day in daysInMonth" value="{{ day }}">
-                  {{ day }}
-                </option>
-              </select>
-              {{ stockCount.day }} {{ monthList[reportMonth] }} {{ reportYear }}
+            <h3 >Stock Count for {{ facilityObject.name }} -
+
+              {{ currentDay }} {{ monthList[reportMonth] }} {{ reportYear }}
             </h3>
           </div>
         </div>
@@ -94,7 +89,7 @@
                   <h5>{{productTypeCode}}</h5>
               </div>
               <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-6">
+                <div class="col-xs-12 col-sm-12 col-md-12">
                   <div class="row">
                     <!-- start form previous button -->
                     <div class="col-xs-12 col-sm-4 ">
