@@ -1,4 +1,5 @@
 'use strict';
+
 describe('chromeStorageApi', function () {
   var mockWindow, chromeStorageApi;
 
@@ -9,14 +10,10 @@ describe('chromeStorageApi', function () {
       chrome: {
         storage: {
           local: {
-            set: function () {
-            },
-            get: function () {
-            },
-            remove: function () {
-            },
-            clear: function () {
-            }
+            set: function() { },
+            get: function() { },
+            remove: function() { },
+            clear: function() { }
           }
         }
       },
@@ -36,7 +33,6 @@ describe('chromeStorageApi', function () {
     spyOn(mockWindow.chrome.storage.local,'set');
     chromeStorageApi.set({'key':'value'});
     expect(mockWindow.chrome.storage.local.set).toHaveBeenCalled();
-
   });
 
   it('should be able to get an item from the storage', function () {
