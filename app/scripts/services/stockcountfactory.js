@@ -428,7 +428,7 @@ angular.module('lmisChromeApp')
        */
       productTypeCode: function(productObject, index, productType){
         var currentProductUuid = this.currentProductObject(productObject, index).product;
-        return productType[currentProductUuid].code;
+        return productType[currentProductUuid];
       },
       /*
        *
