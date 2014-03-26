@@ -71,7 +71,7 @@ angular.module('lmisChromeApp')
        */
 
       function getTable(key) {
-         var promise = chromeStorageApi.get(key);
+         var promise = chromeStorageApi.get(key, false);
          return promise;
         }
 
@@ -83,7 +83,7 @@ angular.module('lmisChromeApp')
        */
         // TODO - consider to deprecate
         function getAllFromStore() {
-          var promise = chromeStorageApi.get(null);
+          var promise = chromeStorageApi.get(null, true);
           return promise;
         }
 
@@ -249,7 +249,7 @@ angular.module('lmisChromeApp')
                   });
                 }
                 else {
-                  console.log(db_name + " is loaded with " + JSON.stringify(test_data));
+                  //console.log(db_name + " is loaded with " + JSON.stringify(test_data));
                   //loadRelatedObject(db_name);
                 }
 

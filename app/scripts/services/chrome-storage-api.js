@@ -26,14 +26,19 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
 
       return deferred.promise;
     },
-    get: function (item) {
+    /*
+     * Get method should work for both cases returning particular item or entire collection.
+     * @param {boolean} mode - whether return data of particular item (false) or entire collection (true).
+     */
+    get: function (item, mode) {
       var deferred = $q.defer();
       if(chromeStorage){
         chromeStorage.get(item, function(data){
           if($window.chrome.runtime.lastError !== undefined) {
             deferred.reject();
           }
-          deferred.resolve(data[item]);
+          if(mode){ deferred.resolve(data);
+          } else { deferred.resolve(data[item]); }
         });
       } else {
         deferred.reject();

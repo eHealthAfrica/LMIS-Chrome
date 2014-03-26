@@ -68,14 +68,14 @@ describe('storageService', function () {
 
   it('should be able to get all data from the chrome storage', function(){
     spyOn(chromeStorageApi, 'get').andReturn(deferred.promise);
-    storageService.getAll(null);
+    storageService.getAll();
     expect(chromeStorageApi.get).toHaveBeenCalled();
   });
 
   it('should be able to resolve promise when getting all data from the chrome storage', function(){
     deferred.resolve('resolvedData');
     spyOn(chromeStorageApi, 'get').andReturn(deferred.promise);
-    storageService.getAll(null).then(function(value){
+    storageService.getAll().then(function(value){
       resolvedValue = value;
     });
     rootScope.$apply();

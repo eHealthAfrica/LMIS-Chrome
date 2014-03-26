@@ -29,6 +29,7 @@ describe('chromeStorageApi', function () {
     chromeStorageApi = _chromeStorageApi_;
   }));
 
+
   it('should be able to set data to the storage', function () {
     spyOn(mockWindow.chrome.storage.local,'set');
     chromeStorageApi.set({'key':'value'});
