@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 describe('chromeStorageApi', function () {
   var mockWindow, chromeStorageApi;
 
@@ -8,7 +8,7 @@ describe('chromeStorageApi', function () {
     mockWindow = {
       chrome: {
         storage: {
-          local: sinon.stub({
+          local: {
             set: function () {
             },
             get: function () {
@@ -17,7 +17,7 @@ describe('chromeStorageApi', function () {
             },
             clear: function () {
             }
-          })
+          }
         }
       },
       addEventListener: function () {
@@ -33,22 +33,26 @@ describe('chromeStorageApi', function () {
   }));
 
   it('should be able to set data to the storage', function () {
+    spyOn(mockWindow.chrome.storage.local,'set');
     chromeStorageApi.set({'key':'value'});
-    expect(mockWindow.chrome.storage.local.set).toHaveBeenCalledWith({'key':'value'});
+    expect(mockWindow.chrome.storage.local.set).toHaveBeenCalled();
 
   });
 
   it('should be able to get an item from the storage', function () {
+    spyOn(mockWindow.chrome.storage.local,'get');
     chromeStorageApi.get('key');
-    expect(mockWindow.chrome.storage.local.get).toHaveBeenCalledWith('key');
+    expect(mockWindow.chrome.storage.local.get).toHaveBeenCalled();
   });
 
   it('should be able to remove an item from the storage', function () {
+    spyOn(mockWindow.chrome.storage.local,'remove');
     chromeStorageApi.remove('key');
-    expect(mockWindow.chrome.storage.local.remove).toHaveBeenCalledWith('key');
+    expect(mockWindow.chrome.storage.local.remove).toHaveBeenCalled();
   });
 
   it('should be able to remove all item from the storage', function () {
+    spyOn(mockWindow.chrome.storage.local,'clear');
     chromeStorageApi.clear();
     expect(mockWindow.chrome.storage.local.clear).toHaveBeenCalled();
   });
