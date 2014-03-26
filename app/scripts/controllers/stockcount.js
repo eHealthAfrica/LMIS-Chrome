@@ -260,6 +260,14 @@ angular.module('lmisChromeApp')
     $scope.stockCount.isComplete = 1; //and stock count entry as completed
     var timezone = stockCountFactory.get.timezone();
 
+    //load existing count for the day if any.
+    var date = $scope.reportYear+'-'+$scope.reportMonth+'-'+$scope.currentDay;
+    stockCountFactory.getStockCountByDate(date).then(function(stockCount){
+      if(stockCount !== null){
+        $scope.stockCount = stockCount;
+        $scope.editOn = true // enable edit mode
+      }
+    });
 
     $scope.save = function(){
       $scope.stockCount.facility = $scope.facilityUuid;
