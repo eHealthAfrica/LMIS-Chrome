@@ -313,6 +313,11 @@ module.exports = function(grunt) {
         dest: '<%= yeoman.app %>/scripts/config.js',
       },
       // Targets
+      test: {
+        constants: {
+          config: grunt.file.readJSON('config/test.json')
+        }
+      },
       development: {
         constants: {
           config: grunt.file.readJSON('config/development.json')
@@ -343,6 +348,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('test', function(target) {
+    grunt.task.run(['ngconstant:test']);
     if (target === 'unit') {
       return grunt.task.run(['karma:unit']);
     }
