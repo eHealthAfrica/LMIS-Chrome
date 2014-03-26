@@ -226,23 +226,6 @@
     "diluent_per_volume": 0.0,
     "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
   },
-  "dfe5b135-12b8-4da0-ad39-b54e864f5663": {
-    "created_by": null,
-    "modified_by": null,
-    "uuid": "dfe5b135-12b8-4da0-ad39-b54e864f5663",
-    "created": "2014-01-21T13:03:29.578Z",
-    "modified": "2014-01-21T13:03:29.611Z",
-    "is_deleted": false,
-    "name": "TT-10-DPV-Liquid-IM-3.0PackedVol-0.0DilPerVol-WHO-CSV",
-    "product": "939d5e05-2aa4-4883-9246-35c60dfa06a5",
-    "presentation": "c0994b0e-c607-445c-b202-4d61b8c6cff0",
-    "formulation": "ad999cfe-a74d-4f8d-964a-98a40a705ed5",
-    "mode_of_use": "d4957c68-d977-4ff2-a5c2-3e8538d302cd",
-    "description": "",
-    "packed_volume": 3.0,
-    "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
-  },
   "f431494a-6c48-4d85-b6ee-1229f458756c": {
     "created_by": null,
     "modified_by": null,
