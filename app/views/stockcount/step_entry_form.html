@@ -130,11 +130,13 @@
                   </div>
                 </div>
                 </div>
-                <div class="row" ng-show="editOn">
+                <div class="row" ng-show="editOn && step !== maxStep">
                   <div class="col-sm-6 data-row">
-                     <button type="button" class="btn btn-lg btn-warning col-sm-12 col-xs-12" ng-click="preview=!preview">
-                        Save <i class="fa fa-save fa-lg"></i>
-                     </button>
+                    <div class="btn-separator">
+                       <button type="button" class="btn btn-lg btn-warning col-sm-12 col-xs-12" ng-click="preview=!preview">
+                          Save <i class="fa fa-save fa-lg"></i>
+                       </button>
+                    </div>
                   </div>
                 </div>
             </div>
