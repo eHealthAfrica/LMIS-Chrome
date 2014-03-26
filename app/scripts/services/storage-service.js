@@ -57,7 +57,8 @@ angular.module('lmisChromeApp')
        */
 
       function addTable(key, value) {
-        var obj = {key:value};
+        var obj = {};
+        obj[key] = value;
         var promise = chromeStorageApi.set(obj);
         return promise;
       }
@@ -239,8 +240,7 @@ angular.module('lmisChromeApp')
           var test_data = [];
           getTable(db_name).then(function (data) {
                 test_data = data;
-                if ((toString.call(data) == '[object Object]' && angular.equals(Object.keys(test_data).length, 0))
-                    || (angular.isArray(test_data) && angular.equals(test_data.length, 0))) {
+                if (angular.isUndefined(data)) {
                   var file_url = 'scripts/fixtures/' + db_name + '.json';
                   $http.get(file_url).success(function (data) {
                     addTable(db_name, data);
