@@ -104,5 +104,11 @@
   "bufferStock": "Buffer Stock",
   "reorderPoint": "Reorder Point",
   "discrepancyThreshold": "Discrepancy Threshold",
-  "counterSample": "Counter Sample"
+  "counterSample": "Counter Sample",
+  "facilityContactPersonInfo": "Facility contact person info",
+  "name": "Name",
+  "phoneNo": "Phone no",
+  "stockCountInterval": "Stock count Interval",
+  "email": "E-mail",
+  "selectFacilityProductProfiles": "Select facility product profiles"
 }

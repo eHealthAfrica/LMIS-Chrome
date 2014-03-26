@@ -9,7 +9,7 @@ angular.module('lmisChromeApp').service('appConfigService', function () {
     {name: 'Monthly', value: 30}
   ];
 
-  this.setup = function () {
-    //TODO: implement this to init and setup an app.
+  this.setup = function (appConfig) {
+    console.log(appConfig);
   };
 });
