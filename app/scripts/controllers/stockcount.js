@@ -230,11 +230,7 @@ angular.module('lmisChromeApp')
 
     $scope.preview = false;
     $scope.editOn = false;
-    $scope.edit = function(index){
-      $scope.step = index;
-      $scope.preview = false;
-      $scope.editOn = true;
-    }
+
 
     $scope.stockCount = {};
     $scope.stockCount.opened = {};
@@ -245,6 +241,7 @@ angular.module('lmisChromeApp')
     $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
     $scope.facilityProducts = stockCountFactory.facilityProducts(); // selected products for current facility
     $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
+    $scope.productKey = $scope.facilityProductsKeys[$scope.step];
 
     //set maximum steps
     if($scope.facilityProductsKeys.length>0){
@@ -252,6 +249,13 @@ angular.module('lmisChromeApp')
     }
     else{
       $scope.maxStep =0;
+    }
+
+    $scope.edit = function(index){
+      $scope.step = index;
+      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+      $scope.preview = false;
+      $scope.editOn = true;
     }
 
     $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
@@ -305,6 +309,7 @@ angular.module('lmisChromeApp')
         else{
           $scope.preview = true;
         }
+        $scope.productKey = $scope.facilityProductsKeys[$scope.step];
         //TODO: this is best done with $timeout to auto save data when interface is idle for x mount of time
         $scope.redirect = false;// we don't need to redirect when this fn calls save()
         $scope.stockCount.isComplete = 0;// when saved from this fn its not complete yet
