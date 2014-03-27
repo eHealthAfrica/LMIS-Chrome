@@ -36,8 +36,6 @@ describe('Home controller', function () {
 
   it('should go to the main activity state', function() {
     var home = $state.get('home');
-    home.resolve.appConfig = function() { return {}; };
-    home.resolve.facilityLocation = function() { return {}; };
     home.resolve.todayStockCount = function() { return {}; };
     home.resolve.appConfig = function(){ return {}; };
     $rootScope.$apply(function() {
