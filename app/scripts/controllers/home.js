@@ -48,19 +48,16 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.mainActivity', {
-      url: '/main-activity?orderNo&stockResult',
+      url: '/main-activity?appConfigResult&stockResult',
       templateUrl: 'views/home/main-activity.html',
       data: {
         label: 'Home'
       },
       controller: function ($scope, $stateParams, $modal, $state, $translate, alertsFactory) {
 
-        if ($stateParams.orderNo !== null) {
-          $stateParams.orderNo = null;
-          $translate('orderPlacedSuccess', {orderNo: $stateParams.orderNo})
-            .then(function (msg) {
-              alertsFactory.success(msg);
-            });
+        if ($stateParams.appConfigResult !== null) {
+          alertsFactory.success($stateParams.appConfigResult);
+          $stateParams.appConfigResult = null;
         }
 
         if($stateParams.stockResult !== null){
