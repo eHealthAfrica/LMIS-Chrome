@@ -53,7 +53,16 @@ angular.module('lmisChromeApp')
       data: {
         label: 'Home'
       },
-      controller: function ($scope, $stateParams, $modal, $state, $translate, alertsFactory) {
+      resolve: {
+        appConfig: function(appConfigService){
+          return appConfigService.load();
+        }
+      },
+      controller: function ($scope, $stateParams, $modal, $state, alertsFactory, appConfig) {
+        if(appConfig === undefined){
+          $state.go('appConfig');
+          return;
+        }
 
         if ($stateParams.appConfigResult !== null) {
           alertsFactory.success($stateParams.appConfigResult);

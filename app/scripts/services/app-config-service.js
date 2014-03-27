@@ -38,9 +38,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         });
 
       } else {
-        //app config exist, overwrite
-        var storedAppConfigUUID = Object.keys(result)[0];//get key of the first and only app config
-        appConfig['uuid'] = storedAppConfigUUID;//over-write appConfig by using same uuid.
+        //over-write appConfig by using existing appConfig uuid for the new appConfig.
+        appConfig['uuid'] = result.uuid;
         createAppConfig(appConfig).then(function (result) {
           deferred.resolve(result);
         }, function (reason) {
@@ -59,7 +58,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         return;
       }
       if (Object.keys(data).length === 1) {
-        deferred.resolve(data);
+        var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
+        deferred.resolve(data[appConfigUUID ]);
       } else {
         throw 'there are more than one app config on this app.';
       }
