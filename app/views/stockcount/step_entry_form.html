@@ -103,9 +103,7 @@
                     <!-- start form counter input -->
                     <div class="col-sm-4 col-xs-12">
                       <div class="btn-separator">
-                        <span ng-repeat="key in facilityProductsKeys" ng-show="step === $index"  type="number">
-                          <counter bind="stockCount.unopened[key]"></counter>
-                        </span>
+                        <counter bind="stockCount.unopened[productKey]"></counter>
                       </div>
                     </div>
                     <!-- start form next button -->
