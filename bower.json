@@ -18,8 +18,7 @@
     "angular-toggle-switch": "~0.3.0",
     "d3": "~3.4.3",
     "nvd3": "~1.1.15-beta",
-    "angularjs-nvd3-directives": "~0.0.5-beta",
-    "jasmine-as-promised": "~0.0.8"
+    "angularjs-nvd3-directives": "~0.0.5-beta"
   },
   "devDependencies": {
     "angular-mocks": "1.2.14"
