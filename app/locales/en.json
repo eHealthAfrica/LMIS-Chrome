@@ -119,5 +119,6 @@
   "email": "E-mail",
   "selectFacilityProductProfiles": "Select facility product profiles",
   "appConfigFailedMsg": "Application configuration was failed, try again!",
-  "appConfigSuccessMsg": "Application configuration was successful!!!"
+  "appConfigSuccessMsg": "Application configuration was successful!!!",
+  "appConfigWelcomeMsg": "Welcome to LoMIS! Please take a few minutes to tell us about your facility"
 }
