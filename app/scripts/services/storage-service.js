@@ -230,8 +230,7 @@ angular.module('lmisChromeApp')
           bundles,
           bundleLines,
           bundleReceipt,
-          locations,
-          appConfig
+          locations
         ];
         for (var i in database) {
           loadData(database[i]);
