@@ -1,57 +1,38 @@
 'use strict';
 
 describe('chromeStorageApi', function () {
-  var mockWindow, chromeStorageApi;
+  var $window, chromeStorageApi;
 
-  beforeEach(module('lmisChromeApp'));
+  beforeEach(module('lmisChromeApp', 'chromeStorageAPIMocks'));
 
-  beforeEach(function () {
-    mockWindow = {
-      chrome: {
-        storage: {
-          local: {
-            set: function() { },
-            get: function() { },
-            remove: function() { },
-            clear: function() { }
-          }
-        }
-      },
-      addEventListener: function () {
-      }
-    };
-    module(function ($provide) {
-      $provide.value('$window', mockWindow);
-    });
-  });
-
-  beforeEach(inject(function (_chromeStorageApi_) {
+  beforeEach(inject(function (_chromeStorageApi_, _$window_) {
+    $window = _$window_;
     chromeStorageApi = _chromeStorageApi_;
   }));
 
 
   it('should be able to set data to the storage', function () {
-    spyOn(mockWindow.chrome.storage.local,'set');
+    spyOn($window.chrome.storage.local,'set');
     chromeStorageApi.set({'key':'value'});
-    expect(mockWindow.chrome.storage.local.set).toHaveBeenCalled();
+    expect($window.chrome.storage.local.set).toHaveBeenCalled();
   });
 
   it('should be able to get an item from the storage', function () {
-    spyOn(mockWindow.chrome.storage.local,'get');
+    spyOn($window.chrome.storage.local,'get');
     chromeStorageApi.get('key');
-    expect(mockWindow.chrome.storage.local.get).toHaveBeenCalled();
+    expect($window.chrome.storage.local.get).toHaveBeenCalled();
   });
 
   it('should be able to remove an item from the storage', function () {
-    spyOn(mockWindow.chrome.storage.local,'remove');
+    spyOn($window.chrome.storage.local,'remove');
     chromeStorageApi.remove('key');
-    expect(mockWindow.chrome.storage.local.remove).toHaveBeenCalled();
+    expect($window.chrome.storage.local.remove).toHaveBeenCalled();
   });
 
   it('should be able to remove all item from the storage', function () {
-    spyOn(mockWindow.chrome.storage.local,'clear');
+    spyOn($window.chrome.storage.local,'clear');
     chromeStorageApi.clear();
-    expect(mockWindow.chrome.storage.local.clear).toHaveBeenCalled();
+    expect($window.chrome.storage.local.clear).toHaveBeenCalled();
   });
 
 });
