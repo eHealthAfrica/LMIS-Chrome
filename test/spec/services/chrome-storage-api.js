@@ -11,8 +11,8 @@ describe('chromeStorageApi', function () {
   }));
 
   it('should be able to set data to the storage', function() {
-      chromeStorageApi.set({'e':'f'});
-      expect($window._storageMock).toEqual({'a':'b', 'c':'d','e':'f'});
+      chromeStorageApi.set({e:'f'});
+      expect($window._storageMock).toEqual({a:'b', c:'d', e:'f'});
     });
 
   it('should be able to get an item from the storage', function() {
@@ -22,16 +22,16 @@ describe('chromeStorageApi', function () {
 
   it('should be able to get entire collection from the storage', function() {
       chromeStorageApi.get(null, true);
-      expect($window.chrome.storage.local.get(null, true)).toEqual({'a':'b', 'c':'d'});
+      expect($window.chrome.storage.local.get(null, true)).toEqual({a:'b', c:'d'});
   });
 
   it('should be able to remove an item from the storage', function() {
     chromeStorageApi.remove('c');
-    expect($window._storageMock).toEqual({'a':'b'});
+    expect($window._storageMock).toEqual({a:'b'});
   });
 
   it('should be able to remove all item from the storage', function() {
-    expect($window._storageMock).toEqual({'a':'b', 'c':'d'});
+    expect($window._storageMock).toEqual({a:'b', c:'d'});
     chromeStorageApi.clear();
     expect($window._storageMock).toEqual({});
   });
