@@ -56,14 +56,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){
-        $translate('appConfigSuccessMsg').then(function(msg){
-           $state.go('home.index.mainActivity',{'appConfigResult': msg });
+        var msg = 'Application configuration was successful!!!';
+        $state.go('home.index.mainActivity',{'appConfigResult': msg });
+      } else {
+        $translate('appConfigFailedMsg').then(function (msg) {
+          alertsFactory.danger(msg);
         });
-        return;
       }
-      $translate('appConfigFailedMsg').then(function(msg){
-        alertsFactory.danger(msg);
-      });
    }, function (reason) {
       $translate('appConfigFailedMsg').then(function(msg){
         alertsFactory.danger(msg);
