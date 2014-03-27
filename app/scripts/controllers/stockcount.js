@@ -11,8 +11,8 @@ angular.module('lmisChromeApp')
         templateUrl: 'views/stockcount/index.html',
         controller:'StockCountCtrl',
         resolve:{
-          currentFacility: function(facilityFactory){
-            return facilityFactory.getCurrentFacility();
+          appConfig: function(appConfigService){
+            return appConfigService.load();
           }
         }
       })
@@ -24,8 +24,8 @@ angular.module('lmisChromeApp')
         templateUrl: 'views/stockcount/step_entry_form.html',
         controller: 'StockCountStepsFormCtrl',
         resolve:{
-          currentFacility: function(facilityFactory){
-            return facilityFactory.getCurrentFacility();
+          appConfig: function(appConfigService){
+            return appConfigService.load();
           },
           productType: function(stockCountFactory){
             return stockCountFactory.productType();
@@ -40,8 +40,8 @@ angular.module('lmisChromeApp')
         templateUrl: 'views/stockcount/daily_waste_count_form.html',
         controller:'StockCountCtrl',
         resolve: {
-          currentFacility: function(facilityFactory){
-            return facilityFactory.getCurrentFacility();
+          appConfig: function(appConfigService){
+            return appConfigService.load();
           }
         }
       })
@@ -100,7 +100,7 @@ angular.module('lmisChromeApp')
 /*
  * Base Controller
  */
-  .controller('StockCountCtrl', function($scope, $stateParams, stockCountFactory, currentFacility) {
+  .controller('StockCountCtrl', function($scope, $stateParams, stockCountFactory, appConfig) {
 
     var now = new Date();
     var day = now.getDate();
@@ -119,7 +119,7 @@ angular.module('lmisChromeApp')
     /*
      * get url parameters
      */
-    $scope.facilityObject = currentFacility;
+    $scope.facilityObject = appConfig.appFacility;
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
@@ -258,7 +258,7 @@ angular.module('lmisChromeApp')
     };
 
   })
-  .controller('StockCountStepsFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, currentFacility, productType, $log, $translate, pouchdb, config){
+  .controller('StockCountStepsFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, $translate, pouchdb, config){
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
@@ -272,7 +272,7 @@ angular.module('lmisChromeApp')
     /*
      * get url parameters
      */
-    $scope.facilityObject = currentFacility;
+    $scope.facilityObject = appConfig.appFacility;
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
