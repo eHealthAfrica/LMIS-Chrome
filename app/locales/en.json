@@ -110,5 +110,7 @@
   "phoneNo": "Phone no",
   "stockCountInterval": "Stock count Interval",
   "email": "E-mail",
-  "selectFacilityProductProfiles": "Select facility product profiles"
+  "selectFacilityProductProfiles": "Select facility product profiles",
+  "appConfigFailedMsg": "Application configuration was failed, try again!",
+  "appConfigSuccessMsg": "Application configuration was successful!!!"
 }
