@@ -19,6 +19,14 @@ describe('Service stockCountFactory', function(){
         return $q.when(null);
       }
     });
+    spyOn(stockCountFactory.validate, 'countExist').andCallFake(function (date) {
+      if(date === '2014-03-25'){
+        return $q.when({isComplete: true});
+      }else{
+        return $q.when(null);
+      }
+
+    });
     $httpBackend.whenGET('/locales/en.json').respond(200, {});
     $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
   }));
@@ -62,4 +70,16 @@ describe('Service stockCountFactory', function(){
     expect(stockCountFactory.getStockCountByDate).toHaveBeenCalled();
     expect(stockCount).toBeNull();
   });
+
+  it('should not return if date exist', function(){
+    var stockCount = null;
+    stockCountFactory.validate.countExist('2014-03-25').then(function(data){
+      stockCount = data;
+    });
+    expect(stockCount).toBeNull();
+    scope.$digest();
+    expect(stockCountFactory.validate.countExist).toHaveBeenCalled();
+    expect(stockCount).not.toBeNull();
+  });
+
 });

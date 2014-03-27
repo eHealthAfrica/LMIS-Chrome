@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('storageService', function ($q, $rootScope, $http, $window) {
+    .factory('storageService', function ($q, $rootScope, $http, $window, chromeStorageApi) {
 
       /**
        *  Global variables used to define table names, with this there will be one
@@ -11,7 +11,7 @@ angular.module('lmisChromeApp')
        *  folder that holds data used to pre-fill local storage if it is empty.
        *
        */
-      var product_types = 'product_types';
+      var productTypes = 'product_types';
       var productCategory = 'product_category';
       var address = 'address';
       var uom = 'uom';
@@ -37,234 +37,162 @@ angular.module('lmisChromeApp')
       var ccuTemperatureLog = 'ccu_temp_log';
       var productProfile = 'product_profiles';
       var inventory = 'inventory';
-      var orders = "orders";
-      var bundles = "bundle";
-      var bundleLines = "bundle_lines";
-      var bundleReceipt = "bundle_receipts";
-      var bundleReceiptLines = "bundle_receipt_lines";
-      var locations = "locations";
+      var orders = 'orders';
+      var bundles = 'bundle';
+      var bundleLines = 'bundle_lines';
+      var bundleReceipt = 'bundle_receipts';
+      var bundleReceiptLines = 'bundle_receipt_lines';
+      var locations = 'locations';
       var stockCount = 'stockCount';
 
-      /**
-       * Boolean flag indicating client support for Chrome Storage
-       * @private
-       */
-      var hasChromeStorage = testChromeStorage();
+
 
       /**
-       * Boolean flag indicating client access to API Storage
-       * @private
-       */
-      var hasApiStorage = testApiStorage();
-
-      /**
-       * Add the specified key/value pair to the local web store.
+       * Add new table to the chrome store.
        *
-       * @param {string} key The name of the table, the value under.
-       * @param {mixed} value The value(table rows) to set (all values are stored as JSON.)
-       * @return {Promise} return promise object
+       * @param {string} key - Table name.
+       * @param {mixed} value - rows of the table (all values are stored as JSON.)
+       * @return {Promise} Promise object
        * @private
        */
+
       function addTable(key, value) {
-        var newStorage = {};
-        var defered = $q.defer();
-        var result = false;
-        newStorage[key] = value;
-        if (hasChromeStorage) {
-          $window.chrome.storage.local.set(newStorage, function () {
-            console.log("saved: " + key);
-            defered.resolve(true)
-            if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
-          });
-
-        }else{
-          defered.reject("table update/creation failed");
-        }
-        return defered.promise;
+        var obj = {};
+        obj[key] = value;
+        var promise = chromeStorageApi.set(obj);
+        return promise;
       }
 
       /**
-       * Get the rows that belongs to the given table name from the local web store.
+       * Get table data from the chrome store
        *
-       * @param {string} key The name of the value.
+       * @param {string} key - Table name.
        * @return {Promise} Promise to be resolved with the settings object
        * @private
        */
+
       function getTable(key) {
-        var defered = $q.defer();
-        if (hasChromeStorage) {
-          $window.chrome.storage.local.get(key, function (data) {
-            defered.resolve(data[key] || {});
-            if (!$rootScope.$$phase) {
-              $rootScope.$apply();
-            }
-          });
+         var promise = chromeStorageApi.get(key, false);
+         return promise;
         }
-        return defered.promise;
-      }
 
       /**
-       * Get All data from from the local web store.
+       * Get All data from the chrome store.
        *
        * @return {Promise} Promise to be resolved with the settings object
        * @private
        */
-      function getAllFromStore() {
-        var defered = $q.defer();
-        if (hasChromeStorage) {
-          $window.chrome.storage.local.get(null, function (data) {
-            //console.log("getAllFromChrome" );
-            defered.resolve(data);
-            if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
-          });
-          return defered.promise;
+        // TODO - consider to deprecate
+        function getAllFromStore() {
+          var promise = chromeStorageApi.get(null, true);
+          return promise;
         }
-        return null;
-      }
 
       /**
-       * Remove the specified value from the local web store.
+       * Remove a table from the chrome store.
        *
-       * @param {string} key The name of table to be removed.
+       * @param {string} key - Table name.
        * @return {Promise} Promise to be resolved with the settings object
        * @private
        */
-      function removeTable(key) {
-        var defered = $q.defer();
-        if (hasChromeStorage) {
-          $window.chrome.storage.local.get(key, function () {
-            console.log("removeFromChrome: " + key);
-            defered.resolve();
-            if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
-          });
-          return defered.promise;
+
+        function removeTable(key) {
+          var promise = chromeStorageApi.remove(key);
+          return promise;
         }
-        return null;
-      }
 
       /**
-       * Clear all data from storage (will not work on API).
+       * Clear all data from the chrome storage (will not work on API).
        *
        * @return {Promise} Promise to be resolved with the settings object
        * @private
        */
-      function clearFromStore() {
-        var defered = $q.defer();
-        if (hasChromeStorage) {
-          $window.chrome.storage.local.clear(function () {
-            console.log("clearFromChrome");
-            defered.resolve();
-            if (!$rootScope.$$phase) $rootScope.$apply(); // flush evalAsyncQueue
-          });
-          return defered.promise;
+        function clearFromStore() {
+          var promise = chromeStorageApi.clear();
+          return promise;
         }
-        return null;
-      }
-
-      /**
-       * Test the client's support for storing values in the local store.
-       *
-       * @return {boolean} True if the client has support for the local store, else false.
-       * @private
-       */
-      function testChromeStorage() {
-        try {
-          $window.chrome.storage.local.set({'angular.chromeStorage.test': true}, function () {
-            //console.log('set: success');
-          });
-          $window.chrome.storage.local.remove('angular.chromeStorage.test', function () {
-            //console.log('remove: success');
-          });
-          return true;
-        } catch (e) {
-          // FIXME: Revert when specs are implemented
-          // console.log(e);
-          return false;
-        }
-      }
 
       /**.
        * @return {string} yyyy-MMMM-dd H:m:s  of current date and time.
        * @private
        */
 
-      function getDateTime() {
-        var now = new Date();
-        var day = now.getDate();
-        day = day < 10 ? '0' + day : day;
-        var month = now.getMonth() + 1;
-        month = month < 10 ? '0' + month : month;
-        var year = now.getFullYear();
-        var hour = now.getHours();
-        hour = hour < 10 ? '0' + hour : hour;
-        var minutes = now.getMinutes();
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        var seconds = now.getSeconds();
-        seconds = seconds < 10 ? '0' + seconds : seconds;
-        var datetime = year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':' + seconds;
-        return datetime;
-      }
+        function getDateTime() {
+          var now = new Date();
+          var day = now.getDate();
+          day = day < 10 ? '0' + day : day;
+          var month = now.getMonth() + 1;
+          month = month < 10 ? '0' + month : month;
+          var year = now.getFullYear();
+          var hour = now.getHours();
+          hour = hour < 10 ? '0' + hour : hour;
+          var minutes = now.getMinutes();
+          minutes = minutes < 10 ? '0' + minutes : minutes;
+          var seconds = now.getSeconds();
+          seconds = seconds < 10 ? '0' + seconds : seconds;
+          var datetime = year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':' + seconds;
+          return datetime;
+        }
 
       /**
-       * get list of tables from local storage.
+       * Get list of tables from the chrome storage.
        *
        * @return {array} array list of tables in local storage.
        * @private
        */
-      function getTables() {
-        var deferred = $q.defer();
-        getAllFromStore().then(function (data) {
-          var tbl = Object.keys(data);
-          deferred.resolve(tbl);
-        });
-        return deferred.promise;
-      }
+        function getTables() {
+          var deferred = $q.defer();
+          getAllFromStore().then(function (data) {
+            var tbl = Object.keys(data);
+            deferred.resolve(tbl);
+          });
+          return deferred.promise;
+        }
 
       /**
-       * add new or update database table row.
+       * Add new or update database table row.
        *
        * @return {promise} promise to access data from local storage.
        * @private
        */
-      function insert(table, obj) {
+        function insert(table, obj) {
+          var deferred = $q.defer();
+          //get list of existing tables in database. if table exist
+          getTables().then(function (tables) {
+            if (tables.indexOf(table) != -1) {
+              getTable(table).then(function (table_data) {
 
-        var deferred = $q.defer();
-        //get list of existing tables in database. if table exist
-        getTables().then(function (tables) {
-          if (tables.indexOf(table) != -1) {
-            getTable(table).then(function (table_data) {
+                if (Object.prototype.toString.call(table_data) == '[object Object]') {
+                  var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
+                  obj['created'] = (uuid_test) ? obj['created'] : getDateTime();
+                  obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00' : getDateTime();
+                  var uuid = (uuid_test) ? obj['uuid'] : uuid_generator();
+                  obj['uuid'] = uuid;
+                  table_data[uuid] = obj;
+                  addTable(table, table_data);
+                  deferred.resolve(uuid);
+                }
+                else {
+                  deferred.resolve(null);
+                  console.log(table_data);
+                }
+              });
+            }
+            else {
 
-              if (Object.prototype.toString.call(table_data) == '[object Object]') {
-                var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
-                obj['created'] = (uuid_test) ? obj['created'] : getDateTime();
-                obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00' : getDateTime();
-                var uuid = (uuid_test) ? obj['uuid'] : uuid_generator();
-                obj['uuid'] = uuid;
-                table_data[uuid] = obj;
-                addTable(table, table_data);
-                deferred.resolve(uuid);
-              }
-              else {
-                deferred.resolve(null);
-                console.log(table_data);
-              }
-            });
-          }
-          else {
-
-            var table_data = {};
-            obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1) ? obj['uuid'] : uuid_generator();
-            obj['created'] = getDateTime();
-            obj['modified'] = '0000-00-00 00:00:00';
-            table_data[obj['uuid']] = obj;
-            addTable(table, table_data);
-            deferred.resolve(obj.uuid);
-            //console.log("new entry");
-          }
-        });
-        if (!$rootScope.$$phase) $rootScope.$apply();
-        return deferred.promise;
-      }
+              var table_data = {};
+              obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1) ? obj['uuid'] : uuid_generator();
+              obj['created'] = getDateTime();
+              obj['modified'] = '0000-00-00 00:00:00';
+              table_data[obj['uuid']] = obj;
+              addTable(table, table_data);
+              deferred.resolve(obj.uuid);
+              //console.log("new entry");
+            }
+          });
+          if (!$rootScope.$$phase) $rootScope.$apply();
+          return deferred.promise;
+        }
 
       /**
        * loads fixtures on app startup
@@ -273,7 +201,7 @@ angular.module('lmisChromeApp')
        */
       function loadFixtures() {
         var database = [
-          product_types,
+          productTypes,
           address,
           uom,
           uomCategory,
@@ -310,13 +238,9 @@ angular.module('lmisChromeApp')
         }
         function loadData(db_name) {
           var test_data = [];
-
           getTable(db_name).then(function (data) {
                 test_data = data;
-
-                if ((toString.call(data) == '[object Object]' && angular.equals(Object.keys(test_data).length, 0))
-                    || (angular.isArray(test_data) && angular.equals(test_data.length, 0))) {
-
+                if (angular.isUndefined(data)) {
                   var file_url = 'scripts/fixtures/' + db_name + '.json';
                   $http.get(file_url).success(function (data) {
                     addTable(db_name, data);
@@ -325,7 +249,7 @@ angular.module('lmisChromeApp')
                   });
                 }
                 else {
-                  console.log(db_name + " is loaded with " + JSON.stringify(test_data));
+                  //console.log(db_name + " is loaded with " + JSON.stringify(test_data));
                   //loadRelatedObject(db_name);
                 }
 
@@ -371,16 +295,6 @@ angular.module('lmisChromeApp')
           }
         });
         return deferred.promise;
-      }
-
-      /**
-       * Test the client's support for storing values in the local store.
-       *
-       * @return {boolean} True if the client can access the API with the Key, else false.
-       * @private
-       */
-      function testApiStorage() {
-        return false;
       }
 
       function uuid_generator() {
@@ -458,7 +372,6 @@ angular.module('lmisChromeApp')
       }
 
       return {
-        isSupported: hasChromeStorage,
         all: getAllFromTable,
         add: addTable,
         get: getTable,
@@ -471,7 +384,7 @@ angular.module('lmisChromeApp')
         insert: insert,
         find: getFromTableByKey,
         insertBatch: insertBatch,
-        PRODUCT_TYPES: product_types,
+        PRODUCT_TYPES: productTypes,
         PRODUCT_CATEGORY: productCategory,
         ADDRESS: address,
         UOM: uom,
