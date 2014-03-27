@@ -17,7 +17,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       label: 'App Configuration'
     }
   })
-}).controller('AppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService) {
+}).controller('AppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
+                                         $translate, $state) {
  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
  $scope.facilities = facilities;
  $scope.productProfiles = productProfiles;
@@ -51,9 +52,23 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  };
 
  $scope.save = function(){
-   //TODO: save config to db and respond accordingly.
-   $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility);
-   appConfigService.setup($scope.appConfig);
-
+   $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility)
+   appConfigService.setup($scope.appConfig)
+    .then(function (result) {
+      if(result !== undefined){
+        $translate('appConfigSuccessMsg').then(function(msg){
+           $state.go('home.index.mainActivity',{'appConfigResult': msg });
+        });
+        return;
+      }
+      $translate('appConfigFailedMsg').then(function(msg){
+        alertsFactory.danger(msg);
+      });
+   }, function (reason) {
+      $translate('appConfigFailedMsg').then(function(msg){
+        alertsFactory.danger(msg);
+      });
+      $log.error(reason);
+   });
  };
 });
