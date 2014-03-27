@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('lmisChromeApp').service('appConfigService', function () {
+angular.module('lmisChromeApp').service('appConfigService', function (storageService) {
 
   this.stockCountIntervals = [
     {name: 'Daily', value: 1},
@@ -12,4 +12,11 @@ angular.module('lmisChromeApp').service('appConfigService', function () {
   this.setup = function (appConfig) {
     console.log(appConfig);
   };
+
+  this.load = function(){
+    storageService.all(storageService.APP_CONFIG).then(function(){
+
+    });
+  };
+
 });
