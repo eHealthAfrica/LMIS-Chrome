@@ -41,7 +41,7 @@ angular.module('lmisChromeApp').directive('counter', function () {
         '<i class="fa fa-minus"></i>' +
         '</button>' +
         '</span>' +
-        '<input type="text" class="form-control input-lg" pattern="\d*" ng-model="count" required>'+
+        '<input type="text" class="form-control input-lg" pattern="[0-9]" ng-model="count" required>'+
         '<span class="input-group-btn">' +
         '<button id="_$counterAddBtn" class="btn btn-info btn-lg" type="button" ng-click="count = _tapInputAdd(count)">' +
         '<i class="fa fa-plus"></i>' +
