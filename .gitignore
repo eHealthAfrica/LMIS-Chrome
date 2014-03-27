@@ -7,3 +7,4 @@ app/bower_components
 npm-debug.log
 test/bower_components
 coverage
+app/scripts/config.js
