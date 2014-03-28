@@ -28,6 +28,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  $scope.facilities = facilities;
  $scope.productProfiles = productProfiles;
  $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
+ $scope.preSelectProductProfileCheckBox = {};
  //used to hold config form data
  $scope.appConfig = {
    facility: '',
@@ -40,7 +41,22 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    selectedProductProfiles: []
  };
 
- function removeProductProfile(productProfile){
+ function preLoadConfigForm(appConfig){
+   if (appConfig !== undefined) {
+     $scope.appConfig.contactPerson = appConfig.contactPerson;
+     $scope.appConfig.stockCountInterval = parseInt(appConfig.stockCountInterval);
+     $scope.appConfig.facility = appConfig.facility;
+     $scope.appConfig.appFacility = appConfig.appFacility;
+     $scope.appConfig.selectedProductProfiles = appConfig.selectedProductProfiles;
+     for (var index in appConfig.selectedProductProfiles) {
+       var selectedProductProfile = appConfig.selectedProductProfiles[index];
+       $scope.preSelectProductProfileCheckBox[selectedProductProfile.uuid] = selectedProductProfile;
+     }
+   }
+ };
+ preLoadConfigForm(appConfig);//pre-load config form with previous saved values.
+
+ function removeSelectedProductProfile(productProfile){
   $scope.appConfig.selectedProductProfiles = $scope.appConfig.selectedProductProfiles
     .filter(function (prodProf) {
       return prodProf.uuid !== productProfile.uuid;
@@ -53,7 +69,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
      $scope.appConfig.selectedProductProfiles.push(productProfile);
      return;
    }
-   removeProductProfile(productProfile);
+   removeSelectedProductProfile(productProfile);
  };
 
  $scope.save = function(){

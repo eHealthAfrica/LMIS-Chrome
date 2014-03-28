@@ -21,6 +21,7 @@
                     <select id="appFacility" class="form-control" ng-model="appConfig.facility" required>
                       <option value="">-- select facility --</option>
                       <option ng-repeat="facility in facilities" value="{{ facility }}"
+                              ng-selected="facility.uuid === (appConfig.appFacility).uuid"
                               ng-bind="facility.name" required>
                       </option>
                     </select>
@@ -34,6 +35,7 @@
                             required>
                       <option value="">-- select stock count interval --</option>
                       <option ng-repeat="interval in stockCountIntervals" value="{{ interval.value }}"
+                              ng-selected="interval.value === appConfig.stockCountInterval"
                               ng-bind="interval.name" required>
                       </option>
                     </select>
@@ -87,7 +89,8 @@
                         <input type="checkbox" ng-model="productProfileCheckBoxes[productProfile.uuid]"
                                ng-true-value="{{ productProfile }}"
                                ng-false-value="{{ {'uuid': productProfile.uuid, deSelected: true} }}"
-                               ng-change="handleSelectionEvent(productProfileCheckBoxes[productProfile.uuid])"/>
+                               ng-change="handleSelectionEvent(productProfileCheckBoxes[productProfile.uuid])"
+                               ng-checked="preSelectProductProfileCheckBox[productProfile.uuid]"/>
                         {{ productProfile.name }}
                       </label>
                     </div>
@@ -101,7 +104,8 @@
                   <legend>Selected product profiles</legend>
                   <div class="pre-scrollable">
                     <ul class="list-group">
-                      <li class="list-group-item" ng-repeat="productProfile in appConfig.selectedProductProfiles"
+                      <li class="list-group-item" ng-repeat="productProfile in appConfig.selectedProductProfiles
+                          track by $index"
                           ng-bind="productProfile.name">
                       </li>
                     </ul>
