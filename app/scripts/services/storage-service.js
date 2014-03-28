@@ -45,8 +45,7 @@ angular.module('lmisChromeApp')
       var locations = 'locations';
       var stockCount = 'stockCount';
       var wasteCount = 'wasteCount';
-
-
+      var appConfig = 'app_config';
 
       /**
        * Add new table to the chrome store.
@@ -419,6 +418,8 @@ angular.module('lmisChromeApp')
         LOCATIONS: locations,
         STOCK_COUNT: stockCount,
         WASTE_COUNT: wasteCount
+        STOCK_COUNT: stockCount,
+        APP_CONFIG: appConfig
       };
 
     });

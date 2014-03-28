@@ -11,8 +11,8 @@ angular.module('lmisChromeApp')
         templateUrl: 'views/stockcount/index.html',
         controller:'StockCountCtrl',
         resolve:{
-          currentFacility: function(facilityFactory){
-            return facilityFactory.getCurrentFacility();
+          appConfig: function(appConfigService){
+            return appConfigService.load();
           }
         }
       })
@@ -24,8 +24,8 @@ angular.module('lmisChromeApp')
         templateUrl: 'views/stockcount/step_entry_form.html',
         controller: 'StockCountStepsFormCtrl',
         resolve:{
-          currentFacility: function(facilityFactory){
-            return facilityFactory.getCurrentFacility();
+          appConfig: function(appConfigService){
+            return appConfigService.load();
           },
           productType: function(stockCountFactory){
             return stockCountFactory.productType();
@@ -40,8 +40,8 @@ angular.module('lmisChromeApp')
         templateUrl: 'views/stockcount/waste-count-form.html',
         controller:'WasteCountFormCtrl',
         resolve: {
-          currentFacility: function(facilityFactory){
-            return facilityFactory.getCurrentFacility();
+          appConfig: function(appConfigService){
+            return appConfigService.load();
           },
           productType: function(stockCountFactory){
             return stockCountFactory.productType();
@@ -49,61 +49,113 @@ angular.module('lmisChromeApp')
         }
       })
       .state('syncStockCount', {
+        abstract: true,
+        templateUrl: 'views/stockcount/sync.html',
+      })
+      .state('syncStockCount.detail', {
         data: {
           label: 'Sync stock count'
         },
         url: '/sync-stock-count',
-        templateUrl: 'views/stockcount/sync.html',
         resolve: {
-          stockCount: function(stockCountFactory) {
-            return stockCountFactory.get.allStockCount();
+          localDocs: function(pouchdb) {
+            var db = pouchdb.create('stockcount');
+            // XXX: db#info returns incorrect doc_count, see item:333
+            return db.allDocs();
           }
         },
-        controller: function($log, $scope, $translate, config, pouchdb, stockCount, alertsFactory) {
-          var dbName = 'stockcount',
-              db = pouchdb.create(dbName),
-              remote = config.apiBaseURI + '/' + dbName;
+        views: {
+          'stats': {
+            templateUrl: 'views/stockcount/sync/stats.html',
+            controller: function($log, $scope, $translate, config, pouchdb, localDocs, alertsFactory) {
+              $scope.local = {
+                // jshint camelcase: false
+                doc_count: localDocs.total_rows
+              };
 
-          db.info()
-            .then(function(info) {
-              $scope.local = info;
-            })
-            .then(function() {
               $scope.remoteSyncing = true;
-              var remoteDB = pouchdb.create(remote);
-              remoteDB.info()
+              var remote = pouchdb.create(config.apiBaseURI + '/stockcount');
+              remote.info()
                 .then(function(info) {
                   $scope.remote = info;
                   $scope.remoteSyncing = false;
-                });
-            })
-            .catch(function(reason) {
-              $log.error(reason);
-            });
-
-          $scope.sync = function() {
-            $scope.syncing = true;
-            var cb = {complete: function() {
-              $translate('syncSuccess')
-                .then(function(syncSuccess) {
-                  alertsFactory.success(syncSuccess);
                 })
                 .catch(function(reason) {
                   $log.error(reason);
-                })
-                .finally(function() {
-                  $scope.syncing = false;
                 });
-            }};
-            db.replicate.sync(remote, cb);
-          };
+
+              $scope.sync = function() {
+                $scope.syncing = true;
+                var cb = {complete: function() {
+                  $translate('syncSuccess')
+                    .then(function(syncSuccess) {
+                      alertsFactory.success(syncSuccess);
+                    })
+                    .catch(function(reason) {
+                      $log.error(reason);
+                    })
+                    .finally(function() {
+                      $scope.syncing = false;
+                    });
+                }};
+                var db = pouchdb.create('stockcount');
+                db.replicate.sync(remote, cb);
+              };
+            }
+          },
+          'status': {
+            templateUrl: 'views/stockcount/sync/status.html',
+            controller: function($log, $scope, localDocs, config, pouchdb) {
+              $scope.locals = localDocs.rows.map(function(local) {
+                return local.id;
+              });
+
+              $scope.compare = function() {
+                $scope.syncing = true;
+                var remote = pouchdb.create(config.apiBaseURI + '/stockcount');
+                remote.allDocs()
+                  .then(function(remotes) {
+                    remotes = remotes.rows.map(function(remote) {
+                      return remote.id;
+                    });
+                    $scope.synced = [];
+                    $scope.unsynced = {
+                      local: [],
+                      remote: []
+                    };
+
+                    for (var i = 0, len = $scope.locals.length; i < len; i++) {
+                      if(remotes.indexOf($scope.locals[i]) !== -1) {
+                        $scope.synced.push($scope.locals[i]);
+                      }
+                      else {
+                        $scope.unsynced.local.push($scope.locals[i]);
+                      }
+                    }
+
+                    for (var j = remotes.length - 1; j >= 0; j--) {
+                      if($scope.locals.indexOf(remotes[j]) === -1) {
+                        $scope.unsynced.remote.push(remotes[j]);
+                      }
+                    }
+                  })
+                  .catch(function(reason) {
+                    $log.error(reason);
+                  })
+                  .finally(function() {
+                    $scope.syncing = false;
+                  });
+              };
+            }
+          }
         }
       });
   })
 /*
  * Landing page controller
  */
-  .controller('StockCountIndexCtrl', function ($scope, stockCountFactory) {
+
+  .controller('StockCountCtrl', function($scope, $stateParams, stockCountFactory, appConfig) {
 
   })
 
@@ -118,15 +170,16 @@ angular.module('lmisChromeApp')
 
     var month = now.getMonth() + 1;
     month = month < 10 ? '0' + month : month;
+
+    $scope.products = stockCountFactory.programProducts;
     $scope.productType = productType;
-    $scope.discardedReasons = stockCountFactory.discardedReasons;
 
     $scope.step = 0;
     $scope.monthList = stockCountFactory.monthList;
     /*
      * get url parameters
      */
-    $scope.facilityObject = currentFacility;
+    $scope.facilityObject = appConfig.appFacility;
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
@@ -262,7 +315,7 @@ angular.module('lmisChromeApp')
     };
 
   })
-  .controller('StockCountStepsFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, currentFacility, productType, $log, $translate, pouchdb, config){
+  .controller('StockCountStepsFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, $translate, pouchdb, config){
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
@@ -276,7 +329,7 @@ angular.module('lmisChromeApp')
     /*
      * get url parameters
      */
-    $scope.facilityObject = currentFacility;
+    $scope.facilityObject = appConfig.appFacility;
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
@@ -356,8 +409,8 @@ angular.module('lmisChromeApp')
                               $scope.currentDay,
                               $scope.monthList[$scope.reportMonth],
                               $scope.reportYear
-                            ];
-                            alertsFactory.success(msg.join(' '));
+                            ].join(' ');
+                            alertsFactory.success(msg);
                             $state.go('home.index.mainActivity', {
                               'facility': $scope.facilityUuid,
                               'reportMonth': $scope.reportMonth,

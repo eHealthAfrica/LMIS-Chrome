@@ -5,14 +5,12 @@ angular.module('lmisChromeApp', [
       'ngSanitize',
       'ngCookies',
       'ui.bootstrap',
-      //FIXME: uncomment 'ngTable',
       'ui.router',
       'tv.breadcrumbs',
       'pascalprecht.translate',
       'toggle-switch',
       'pouchdb',
       'config'
-      //FIXME: uncomment 'nvd3ChartDirectives'
     ])
   // Disable ui-router auto scrolling
     .config(function ($uiViewScrollProvider, $anchorScrollProvider) {

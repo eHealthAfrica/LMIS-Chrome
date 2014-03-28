@@ -135,3 +135,6 @@ accordion .panel-heading:hover {
     width: 100%;
     display: block;
 }
+.text-capitalize {
+  text-transform: capitalize;
+}
