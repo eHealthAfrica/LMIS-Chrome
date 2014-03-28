@@ -1,4 +1,4 @@
-angular.module('lmisChromeApp').directive('counter', function () {
+angular.module('lmisChromeApp').directive('counterdropdown', function () {
   return {
     restrict: 'E',
     template: '<div class="input-group">' +
@@ -32,7 +32,7 @@ angular.module('lmisChromeApp').directive('counter', function () {
       };
     }
   };
-}).directive('countertwo', function () {
+}).directive('countertext', function () {
   return {
     restrict: 'E',
     template: '<div class="input-group">' +
@@ -64,7 +64,7 @@ angular.module('lmisChromeApp').directive('counter', function () {
       };
     }
   };
-}).directive('counterthree', function () {
+}).directive('counter', function () {
   return {
     restrict: 'E',
     template: '<div class="input-group">' +
