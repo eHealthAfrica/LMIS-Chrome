@@ -102,8 +102,51 @@ angular.module('lmisChromeApp')
           },
           'status': {
             templateUrl: 'views/stockcount/sync/status.html',
-            controller: function($scope, localDocs) {
-              $scope.localDocs = localDocs.rows;
+            controller: function($log, $scope, localDocs, config, pouchdb) {
+              var collateIDs = function(rows) {
+                var ids = [];
+                for(var i = rows.length - 1; i >= 0; i--) {
+                  ids.push(rows[i].id);
+                }
+                return ids;
+              };
+
+              $scope.locals = collateIDs(localDocs.rows);
+
+              $scope.compare = function() {
+                $scope.syncing = true;
+                var remote = pouchdb.create(config.apiBaseURI + '/stockcount');
+                remote.allDocs()
+                  .then(function(remotes) {
+                    remotes = collateIDs(remotes.rows);
+                    $scope.synced = [];
+                    $scope.unsynced = {
+                      local: [],
+                      remote: []
+                    };
+
+                    for (var i = 0, len = $scope.locals.length; i < len; i++) {
+                      if(remotes.indexOf($scope.locals[i]) !== -1) {
+                        $scope.synced.push($scope.locals[i]);
+                      }
+                      else {
+                        $scope.unsynced.local.push($scope.locals[i]);
+                      }
+                    }
+
+                    for (var j = remotes.length - 1; j >= 0; j--) {
+                      if($scope.locals.indexOf(remotes[j]) === -1) {
+                        $scope.unsynced.remote.push(remotes[j]);
+                      }
+                    }
+                  })
+                  .catch(function(reason) {
+                    $log.error(reason);
+                  })
+                  .finally(function() {
+                    $scope.syncing = false;
+                  });
+              };
             }
           }
         }

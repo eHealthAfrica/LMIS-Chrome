@@ -130,3 +130,6 @@ accordion .panel-heading:hover {
 .fa-5-3x {
   font-size: 5.3em;
 }
+.text-capitalize {
+  text-transform: capitalize;
+}

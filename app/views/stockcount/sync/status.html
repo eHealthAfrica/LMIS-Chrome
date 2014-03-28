@@ -3,16 +3,54 @@
     <h3 class="panel-title" translate="records"></h3>
   </div>
   <div class="panel-body">
-    <ul>
-      <li ng-repeat="doc in localDocs">
-        <span ng-bind="doc.id"></span>
+
+    <ul class="fa-ul" ng-hide="synced">
+      <li ng-repeat="doc in locals">
+        <i class="fa fa-li fa-circle-o"></i>
+        <span ng-bind="doc"></span>
       </li>
     </ul>
 
-    <button
-      class="btn btn-default"
-      ng-click="compareDocs()"
-      translate="compare">
+    <ul class="fa-ul" ng-show="synced">
+      <li ng-repeat="doc in synced">
+        <i class="fa fa-li fa-check-circle-o text-success"></i>
+        <span ng-bind="doc"></span>
+      </li>
+    </ul>
+
+    <div ng-if="unsynced">
+      <div ng-repeat="(key, value) in unsynced">
+        <div class="col-sm-6">
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title text-capitalize" ng-bind="key"></h3>
+            </div>
+            <div class="panel-body">
+
+              <div ng-show="unsynced[key]">
+                <ul class="fa-ul">
+                  <li ng-repeat="doc in unsynced[key]">
+                    <i class="fa fa-li fa-circle-o"></i>
+                    <span ng-bind="doc"></span>
+                  </li>
+                </ul>
+              </div>
+
+              <div ng-hide="unsynced[key]">
+                <span translate="syncSuccess"></span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-default" ng-click="compare()">
+      <i class="fa fa-refresh" ng-class="{'fa-spin': syncing}"></i>
+      <span translate="compare"></span>
     </button>
 
   </div>
