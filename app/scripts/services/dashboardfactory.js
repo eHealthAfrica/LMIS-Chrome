@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('dashboardfactory', function($q, i18n, inventoryRulesFactory) {
+  .factory('dashboardfactory', function(i18n, inventoryRulesFactory) {
     var keys = [
       {
         key: 'below',

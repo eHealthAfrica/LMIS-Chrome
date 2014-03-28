@@ -32,13 +32,10 @@ describe('Service: dashboardfactory', function() {
   }));
 
   it('should plot the required keys', function() {
-    var required = ['below', 'buffer', 'safety', 'max'], keysMock = {};
-    required.forEach(function(key) {
-      keysMock[key] = {};
-    });
-
+    var required = ['below', 'buffer', 'safety', 'max'];
     var result = dashboardfactory.keys;
-    expect(result).toBe(keysMock);
+    result = result.map(function(e) { return e.key; });
+    expect(result).toEqual(required);
   });
 
   it('should create an nvd3 formatted series object', function() {
