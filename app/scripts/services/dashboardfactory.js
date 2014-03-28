@@ -2,31 +2,28 @@
 
 angular.module('lmisChromeApp')
   .factory('dashboardfactory', function($q, i18n, inventoryRulesFactory) {
-    var keys = function() {
-      var keys = [
-        {
-          key: 'below',
-          color: 'red',
-          label: i18n('belowBuffer')
-        },
-        {
-          key: 'buffer',
-          color: 'yellow',
-          label: i18n('buffer')
-        },
-        {
-          key: 'safety',
-          color: 'black',
-          label: i18n('safetyStock')
-        },
-        {
-          key: 'max',
-          color: 'grey',
-          label: i18n('max')
-        }
-      ];
-      return keys;
-    };
+    var keys = [
+      {
+        key: 'below',
+        color: 'red',
+        label: i18n('belowBuffer')
+      },
+      {
+        key: 'buffer',
+        color: 'yellow',
+        label: i18n('buffer')
+      },
+      {
+        key: 'safety',
+        color: 'black',
+        label: i18n('safetyStock')
+      },
+      {
+        key: 'max',
+        color: 'grey',
+        label: i18n('max')
+      }
+    ];
 
     // Transposes chart values into nvd3 chart values format (an array of
     // [x, y] data points).

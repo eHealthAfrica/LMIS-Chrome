@@ -114,7 +114,7 @@ angular.module('lmisChromeApp')
       url: '',
       resolve: {
         keys: function(dashboardfactory) {
-          return dashboardfactory.keys();
+          return dashboardfactory.keys;
         }
       },
       views: {

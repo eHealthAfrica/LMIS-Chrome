@@ -37,15 +37,8 @@ describe('Service: dashboardfactory', function() {
       keysMock[key] = {};
     });
 
-    var deferred = $q.defer();
-    deferred.resolve(keysMock);
-    spyOn(dashboardfactory, 'keys').andReturn(deferred.promise);
-
-    $rootScope.$apply(function() {
-      dashboardfactory.keys().then(function(result) {
-        expect(result).toBe(keysMock);
-      });
-    });
+    var result = dashboardfactory.keys;
+    expect(result).toBe(keysMock);
   });
 
   it('should create an nvd3 formatted series object', function() {
