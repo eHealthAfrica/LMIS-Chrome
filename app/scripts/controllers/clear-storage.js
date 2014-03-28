@@ -5,8 +5,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     url: '/clear-storage',
     controller: function(storageService, $state){
       storageService.clear();
+      storageService.loadFixtures();
       $state.go('home.index.mainActivity', {storageClear: true});
-      console.log('clear storage');
     }
   });
 })

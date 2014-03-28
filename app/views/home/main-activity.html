@@ -16,11 +16,6 @@
         <span translate="addWasteCount"></span>
       </a>
 
-      <a ui-sref="counterSamples" class="btn btn-default">
-        <img src="images/dashboard-icons/counter-samples.png" class="img-rounded">
-        <span translate="counterSample"></span>
-      </a>
-
       <a ui-sref="syncStockCount.detail" class="btn btn-default">
         <span>
           <i class="fa fa-cloud fa-5-3x"></i>
@@ -31,6 +26,20 @@
       <a ui-sref="appConfig" class="btn btn-default">
         <img src="images/dashboard-icons/app-config.png" class="img-rounded">
         <span>App Config</span>
+      </a>
+
+    </div>
+  </accordion-group>
+
+  <accordion-group>
+   <accordion-heading>
+      <span><i class="fa fa-user"></i></span>
+      <span>More</span>
+    </accordion-heading>
+    <div class="btn-group btn-group-sm">
+      <a ui-sref="counterSamples" class="btn btn-default">
+        <img src="images/dashboard-icons/counter-samples.png" class="img-rounded">
+        <span translate="counterSample"></span>
       </a>
 
       <a ui-sref="clearStorage" class="btn btn-default">
@@ -47,6 +56,7 @@
 
     </div>
   </accordion-group>
+
 </accordion>
 
 <ui-view />
