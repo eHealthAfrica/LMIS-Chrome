@@ -103,6 +103,7 @@ footer {
 }
 .w-menu{
     padding: 10px;
+    position: relative;
 }
 .w-menu li{
     padding: 4px 0px;
@@ -129,4 +130,8 @@ accordion .panel-heading:hover {
 }
 .fa-5-3x {
   font-size: 5.3em;
+}
+.lmis-block{
+    width: 100%;
+    display: block;
 }
