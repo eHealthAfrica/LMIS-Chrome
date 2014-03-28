@@ -1,0 +1,157 @@
+<div class="row">
+  <div class="col-sm-12" ng-if="isFirstConfiguration">
+    <div class="panel-body alert-info">
+      <span translate="appConfigWelcomeMsg"></span>
+    </div>
+  </div>
+
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title" translate="settings"></h4>
+      </div>
+      <div class="panel-body">
+        <form ng-submit="save()">
+
+          <div class="col-sm-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">Facility info.</h4>
+              </div>
+              <div class="panel-body">
+                <fieldset>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label translate="facility"></label>
+                      <select id="appFacility" class="form-control" ng-model="appConfig.facility" required>
+                        <option value="" translate="Select facility"></option>
+                        <option ng-repeat="facility in facilities" value="{{ facility }}"
+                                ng-selected="facility.uuid === (appConfig.appFacility).uuid"
+                                ng-bind="facility.name" required>
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="stockCountInterval" translate="stockCountInterval"></label>
+                      <select id="stockCountInterval" class="form-control" ng-model="appConfig.stockCountInterval"
+                              required>
+                        <option value="" translate="selectStockCountInterval"></option>
+                        <option ng-repeat="interval in stockCountIntervals" value="{{ interval.value }}"
+                                ng-selected="interval.value === appConfig.stockCountInterval"
+                                ng-bind="interval.name" required>
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-sm-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title" translate="contactPersonInfo"></h4>
+              </div>
+              <div class="panel-body">
+                <fieldset>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="contactPerson" translate="name"></label>
+                      <input type="text" class="form-control" ng-model="(appConfig.contactPerson).name"
+                             name="contactPersonName"
+                             id="contactPerson" required/>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="contactPhoneNo" translate="phoneNo"></label>
+                      <input type="tel" class="form-control" ng-model="(appConfig.contactPerson).phoneNo"
+                             name="contactPhoneNo"
+                             id="contactPhoneNo" required/>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="email" translate="email"></label>
+                      <input type="email" class="form-control" ng-model="(appConfig.contactPerson).email" name="email"
+                             id="email"
+                             required/>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-15">
+            <div class="col-sm-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title" translate="selectFacilityProductProfiles"></h4>
+                </div>
+                <div class="panel-body">
+                  <fieldset>
+                    <div ng-include="'views/partials/search.html'"></div>
+                    <div class="panel-body"></div>
+                    <div class="pre-scrollable">
+                      <div class="checkbox"
+                           ng-repeat="productProfile in productProfiles | filter:search track by productProfile.uuid">
+                        <label>
+                          <input type="checkbox" ng-model="productProfileCheckBoxes[productProfile.uuid]"
+                                 ng-true-value="{{ productProfile }}"
+                                 ng-false-value="{{ {'uuid': productProfile.uuid, deSelected: true} }}"
+                                 ng-change="handleSelectionEvent(productProfileCheckBoxes[productProfile.uuid])"
+                                 ng-checked="preSelectProductProfileCheckBox[productProfile.uuid]"/>
+                          {{ productProfile.name }}
+                        </label>
+                      </div>
+                      <br/>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title" translate="selectedProductProfile"></h4>
+                </div>
+                <div class="panel-body">
+                  <fieldset>
+                    <div class="pre-scrollable">
+                      <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="productProfile in appConfig.selectedProductProfiles
+                          track by $index"
+                            ng-bind="productProfile.name">
+                        </li>
+                      </ul>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="panel-body"></div>
+            <div class="col-md-4 pull-left">
+              <button type="submit" id="save" name="save"
+                      class="btn btn-success">
+                <span translate="save"></span>
+                <i class="fa fa-save"></i>
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

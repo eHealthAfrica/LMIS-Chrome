@@ -1,14 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('stockCountFactory', function ($q, storageService, $http, $filter, $stateParams) {
-    var globalVariables = {
-      reportMonth: function(){
-        var month = new Date().getMonth() + 1;
-        month = month < 10 ? '0' + month : month;
-        return ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month
-      }
-    }
+  .factory('stockCountFactory', function ($q, storageService, $http, $filter) {
 
     var discardedReasons = {
       '0': 'VVM Stage 3',
@@ -222,9 +215,16 @@ angular.module('lmisChromeApp')
        */
       stock: function(object){
         var deferred = $q.defer();
-
-        storageService.insert('stockCount', object).then(function(uuid){
-          deferred.resolve(uuid);
+        if(object.countDate instanceof Date){
+          object.countDate = object.countDate.toJSON();
+        }
+        validate.countExist(object.countDate).then(function(stockCount){
+          if(stockCount !== null){
+            object.uuid = stockCount.uuid;
+          }
+          storageService.insert('stockCount', object).then(function(uuid){
+            deferred.resolve(uuid);
+          });
         });
         return deferred.promise;
       },
@@ -276,29 +276,35 @@ angular.module('lmisChromeApp')
       * I'm going to assume any value entered that is not a number is invalid
       */
       invalid: function(entry){
-        return !!((entry === '' || angular.isUndefined(entry) || !angular.isNumber(parseInt(entry)) || entry < 0));
+        return !!((entry === '' || angular.isUndefined(entry) || isNaN(entry) || entry < 0));
+      },
+      countExist: function(date){
+        return getStockCountByDate(date);
       }
     };
 
-      var getStockCountByDate = function (date) {
-        var deferred = $q.defer();
-        storageService.all(storageService.STOCK_COUNT).then(function (stockCounts) {
-          var stockCount = null;
-          for (var index in stockCounts) {
-            var row = stockCounts[index];
-            var stockCountDate = $filter('date')(new Date(row.created), 'yyyy-MM-dd');
-            date = $filter('date')(new Date(date), 'yyyy-MM-dd');
-            if (date === stockCountDate) {
-              stockCount = row;
-              break;
-            }
+    var getStockCountByDate = function (date) {
+      var deferred = $q.defer();
+      storageService.all(storageService.STOCK_COUNT).then(function (stockCounts) {
+        var stockCount = null;
+        for (var index in stockCounts) {
+          var row = stockCounts[index];
+          var stockCountDate = $filter('date')(new Date(row.countDate), 'yyyy-MM-dd');
+          date = $filter('date')(new Date(date), 'yyyy-MM-dd');
+          if (date === stockCountDate) {
+            stockCount = row;
+            break;
           }
-          deferred.resolve(stockCount);
-        });
-        return deferred.promise;
-      };
+        }
+        deferred.resolve(stockCount);
+      });
+      return deferred.promise;
+    };
 
     var load={
+      /*
+       *
+       */
       allStockCount: function(){
         var deferred = $q.defer();
         storageService.all(storageService.STOCK_COUNT)
@@ -307,6 +313,9 @@ angular.module('lmisChromeApp')
           });
         return deferred.promise;
       },
+       /*
+       *
+       */
       createStockObject: function(stockCount){
         var stockObject = {};
         for(var i in stockCount){
@@ -315,6 +324,9 @@ angular.module('lmisChromeApp')
         }
         return stockObject;
       },
+       /*
+       *
+       */
       stockCountColumnData: function(programProducts, StockObject, facility, year, month, day){
 
         var html = '<td>'+day+'</td>';
@@ -328,6 +340,9 @@ angular.module('lmisChromeApp')
         }
         return html;
       },
+       /*
+       *
+       */
       stockCountRow: function(uuid){
         var deferred = $q.defer();
         storageService.get(storageService.STOCK_COUNT, uuid)
@@ -336,6 +351,9 @@ angular.module('lmisChromeApp')
           });
         return deferred.promise;
       },
+       /*
+       *
+       */
       allWasteCount: function(){
         var deferred = $q.defer();
         storageService.all('wastageCount')
@@ -357,6 +375,9 @@ angular.module('lmisChromeApp')
           });
         return deferred.promise;
       },
+       /*
+       *
+       */
       userFacilities: function(){
         /*
          * load some none standard fixtures
@@ -370,6 +391,9 @@ angular.module('lmisChromeApp')
         });
         return deferred.promise;
       },
+       /*
+       *
+       */
       locations: function(){
         var deferred = $q.defer();
         var fileUrl = 'scripts/fixtures/locations.json';
@@ -378,21 +402,44 @@ angular.module('lmisChromeApp')
         });
         return deferred.promise;
       },
+       /*
+       *
+       */
+      //TODO: use utility service function
       readableName: function(name) {
         return name.replace(/\-/g,' - ').replace(/([0-9])([a-zA-Z])/g,'$1 $2').replace(/([a-z][a-z])([A-Z])/g,'$1 $2');
       },
+       /*
+       *
+       */
       currentProductObject: function(productObject, index){
         var productUuidList = Object.keys(productObject);
         return productObject[productUuidList[index]];
       },
+       /*
+       *
+       */
       productReadableName: function(productObject, index){
 
         var productName = this.currentProductObject(productObject, index).name;
         return this.readableName(productName);
       },
+       /*
+       *
+       */
       productTypeCode: function(productObject, index, productType){
         var currentProductUuid = this.currentProductObject(productObject, index).product;
-        return productType[currentProductUuid].code;
+        return productType[currentProductUuid];
+      },
+      /*
+       *
+       */
+      timezone: function(){
+        //FIXME: use utility service function
+        //TODO: this needs to be a global function with better timezone calculation
+        //TODO: ref https://bitbucket.org/pellepim/jstimezonedetect
+        var tz = new Date().getTimezoneOffset()/60;
+        return (tz < 0) ? parseInt('+'+Math.abs(tz)) : parseInt('-'+Math.abs(tz));
       }
 
     };
