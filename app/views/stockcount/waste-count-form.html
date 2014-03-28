@@ -1,0 +1,202 @@
+<div class="row" ng-hide="showHelp">
+  <div class="col-sm-12">
+    <div class="pull-right">
+      <span ng-click="showHelp=!showHelp">
+        <i class="green-icon fa fa-info-circle fa-2x"></i>
+      </span>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>
+
+<div class="panel panel-default" ng-show="showHelp">
+  <div class="panel-body">
+
+    <div class="col-sm-12">
+      <div class="pull-right" ng-click="showHelp=!showHelp">
+        <i class="green-icon fa fa-info-circle fa-2x"></i>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="info-box">
+            <div class="info-box-number one">1</div>
+            <div class="info-box-text">
+              Count the number of vials
+              discarded today.
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+        </div>
+        <div class="col-sm-3">
+          <div class="info-box">
+            <div class="info-box-number two">2</div>
+            <div class="info-box-text">
+              Enter the TOTAL quantity
+              of each product type in
+              the appropriate row.
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="info-box">
+            <div class="info-box-number three">3</div>
+            <div class="info-box-text">
+              Provide the reason or
+              reasons for why vials of
+              that product type was
+              discarded.
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+        </div>
+        <div class="col-sm-3">
+          <div class="info-box">
+            <div class="info-box-number four">4</div>
+            <div class="info-box-text">
+              When finished with each
+              product, submit your
+              form by clicking the
+              Submit button below!
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title" >
+      Stock Count for {{ facilityObject.name }} - {{ currentDay }} {{ monthList[reportMonth] }} {{ reportYear }}
+    </h3>
+  </div>
+
+  <div class="panel-body">
+    <form ng-submit="save()">
+      <div>
+        <div class="col-sm-12" ng-hide="preview">
+          <div class="row">
+            <div class="col-sm-12">
+              <h3>{{ selectedFacility }}</h3>
+              <h5>{{productTypeCode.code}}</h5>
+          </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="row">
+                  <!-- start form previous button -->
+                  <div class="col-xs-12 col-sm-4 ">
+                    <div class="btn-separator">
+                      <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default col-sm-12 col-xs-12"
+                          ng-click="changeState(0)">
+                        <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
+                      </button>
+                    </div>
+                  </div>
+                  <!-- start form counter input -->
+                  <div class="col-sm-4 col-xs-12">
+                    <div class="btn-separator">
+                      <counter bind="wasteCount.discarded[productKey]"></counter>
+                    </div>
+                  </div>
+                  <!-- reasons for wastage -->
+                  <!--
+                  <div class="col-sm-3 col-xs-12">
+                    <div class="btn-separator">
+                      <div class="btn-group lmis-block" ng-class="{open: open}">
+                        <button type="button" ng-click="open=!open" class="btn btn-lg col-xs-9">Select Reason</button>
+                        <button type="button" class="btn btn-lg dropdown-toggle col-xs-3" ng-click="open=!open">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu w-menu">
+
+                          <li ng-repeat="(key, value) in discardedReasons">
+                            {{ value }}  <input ng-true-value="{{ key }}"
+                                                ng-model="wastageCount.reason[productKey][key]
+                            " type="checkbox">
+                          </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                      </div>
+                    </div>
+                  </div> -->
+                  <!-- start form next button -->
+                  <div class="col-sm-4 col-xs-12">
+                    <div class="btn-separator">
+                      <button type="button" ng-hide="step === maxStep"
+                              class="btn btn-lg btn-success col-sm-12 col-xs-12"
+                              ng-click="changeState(1)">
+                        Next <i class="fa fa-chevron-circle-right fa-lg"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- this button is shown when we get tp the end of the list -->
+                  <div class="col-sm-4 col-xs-12">
+                    <button type="button" ng-show="step === maxStep"
+                            class="btn btn-lg btn-success col-sm-12 col-xs-12"
+                            ng-click="changeState(2)">
+                      Save <i class="fa fa-save fa-lg"></i>
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-show="editOn && step !== maxStep">
+              <div class="col-sm-6 data-row">
+                <div class="btn-separator">
+                   <button type="button" class="btn btn-lg btn-warning col-sm-12 col-xs-12" ng-click="preview=!preview">
+                      Save <i class="fa fa-save fa-lg"></i>
+                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" ng-show="preview">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="panel panel-default">
+                <table class="table table-bordered">
+                  <thead>
+                  <tr>
+                    <th>Stock Item</th>
+                    <th>Todays Count</th>
+                    <!--th>Confirm</th-->
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="key in facilityProductsKeys" ng-click="edit($index)">
+                    <td class="form-label">{{ facilityProducts[key].name }}</td>
+                    <td>
+                      {{ wasteCount.discarded[key] }}
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 date-row">
+              <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
+                  <i class="fa fa-chevron-circle-left"></i> Back to form
+              </button>
+              <button class="btn btn-success btn-lg">Confirm and Save <i class="fa fa-save"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

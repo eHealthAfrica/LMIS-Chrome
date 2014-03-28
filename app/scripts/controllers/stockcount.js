@@ -37,17 +37,20 @@ angular.module('lmisChromeApp')
           label:'Waste Count Form'
         },
         url: '/wasteCountForm?facility&reportMonth&reportYear',
-        templateUrl: 'views/stockcount/daily_waste_count_form.html',
-        controller:'StockCountCtrl',
+        templateUrl: 'views/stockcount/waste-count-form.html',
+        controller:'WasteCountFormCtrl',
         resolve: {
           appConfig: function(appConfigService){
             return appConfigService.load();
+          },
+          productType: function(stockCountFactory){
+            return stockCountFactory.productType();
           }
         }
       })
       .state('syncStockCount', {
         abstract: true,
-        templateUrl: 'views/stockcount/sync.html',
+        templateUrl: 'views/stockcount/sync.html'
       })
       .state('syncStockCount.detail', {
         data: {
@@ -149,9 +152,17 @@ angular.module('lmisChromeApp')
       });
   })
 /*
- * Base Controller
+ * Landing page controller
  */
+
   .controller('StockCountCtrl', function($scope, $stateParams, stockCountFactory, appConfig) {
+
+  })
+
+/*
+ * Wastage Count Controller
+ */
+  .controller('WasteCountFormCtrl', function($scope, stockCountFactory, alertsFactory, $stateParams, appConfig, $state, productType, $log, $translate, pouchdb, config){
 
     var now = new Date();
     var day = now.getDate();
@@ -161,12 +172,10 @@ angular.module('lmisChromeApp')
     month = month < 10 ? '0' + month : month;
 
     $scope.products = stockCountFactory.programProducts;
-    // $scope.productType = productType;
+    $scope.productType = productType;
 
     $scope.step = 0;
-    $scope.maxStep =  $scope.products.length>0?$scope.products.length - 1: 0;
     $scope.monthList = stockCountFactory.monthList;
-
     /*
      * get url parameters
      */
@@ -174,138 +183,135 @@ angular.module('lmisChromeApp')
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
-    stockCountFactory.get.userFacilities().then(function(data){
-      $scope.userRelatedFacilities = data;
-      if(data.length>0){
-        $scope.facilityUuid = $scope.facilityUuid === ''?$scope.userRelatedFacilities[0].uuid:$scope.facilityUuid;
-        $scope.userRelatedFacility =  $scope.facilityUuid;
-      }
-    });
-
-    $scope.getDaysInMonth = function (reportMonth, reportYear){
-
-      var now = new Date();
-      var year = (reportYear !== '')?reportYear: now.getFullYear();
-      var month = (reportMonth !== '')?reportMonth: now.getMonth() + 1;
-      var numberOfDays = new Date(year, month, 0).getDate();
-      var dayArray = [];
-      for(var i=0; i<numberOfDays; i++){
-        dayArray.push(i+1);
-      }
-      return dayArray;
-    };
-
-    function yearRange(){
-      var yearRangeArray = [];
-      var currentYear = new Date().getFullYear();
-      var rangeDiff = 3;
-      for(var i=currentYear-rangeDiff; i<currentYear+1; i++){
-        yearRangeArray.push(i);
-      }
-      return yearRangeArray;
-    }
     $scope.currentDay = day;
-    $scope.daysInMonth = $scope.getDaysInMonth($scope.reportMonth, $scope.reportYear);
-    $scope.yearRange = yearRange();
-  })
-/*
- * Landing page controller
- */
-  .controller('StockCountIndexCtrl', function ($scope, stockCountFactory) {
-    /*
-     * initialize some variables
-     */
-    //$scope.userRelatedFacility = ($scope.facilityUuid !== '') ? $scope.facilityUuid : $scope.facilityUuid;
-    $scope.StockCount = {};
-    $scope.WasteCount = {};
-    $scope.stockCountObject = {};
 
-    stockCountFactory.get.allStockCount()
-      .then(function(StockCount){
-        $scope.StockCount = StockCount;
-        $scope.stockCountObject = stockCountFactory.get.createStockObject(StockCount);
-      });
-    stockCountFactory.get.allWasteCount()
-      .then(function(WasteCount){
-        $scope.WasteCount = WasteCount;
-      });
-    $scope.subHeader = function (products){
-      var subHeaderVar = '<td>Days</td>';
+    $scope.wasteCount = {};
+    $scope.wasteCount.discarded = {};
+    $scope.wasteCount.reason = {};
 
-      for(var i=0; i<products.length; i++){
-        subHeaderVar += '<td>Opened</td><td>Unopened</td>';
-      }
-      return subHeaderVar;
+    $scope.wasteCount.countDate ='';
+
+    $scope.facilityProducts = stockCountFactory.facilityProducts(); // selected products for current facility
+    $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
+    $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+    for(var i=0; i<$scope.facilityProductsKeys.length; i++){
+      $scope.wasteCount.reason[$scope.facilityProductsKeys[i]]={};
+    }
+    for(var i in  $scope.discardedReasons){
+      $scope.wasteCount.reason[$scope.facilityProductsKeys[$scope.step]][i]={};
+    }
+    //set maximum steps
+    if($scope.facilityProductsKeys.length>0){
+      $scope.maxStep =  $scope.facilityProductsKeys.length-1;
+    }
+    else{
+      $scope.maxStep =0;
+    }
+
+    $scope.edit = function(index){
+      $scope.step = index;
+      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+      $scope.preview = false;
+      $scope.editOn = true;
     };
 
-    $scope.columnData =  stockCountFactory.get.stockCountColumnData;
+    $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
+    $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
+    $scope.redirect = true; //initialize redirect as true
+    $scope.wasteCount.isComplete = 1; //and stock count entry as completed
+    $scope.wasteCount.lastPosition = 0;
+    var timezone = stockCountFactory.get.timezone();
 
-    /*
-     * load some none standard fixtures
-     */
-    /*var file_url = 'scripts/fixtures/userRelatedFacilities.json';
-     $http.get(file_url).success(function (data) {
-     $scope.userRelatedFacilities = data;
-
-     });*/
-
-    $scope.addButton = true;
-
-    $scope.$watchCollection('[reportMonth, reportYear, userRelatedFacility]', function (newvalues) {
-
-      if (newvalues[0] === '' || newvalues[1] === '' || newvalues[2] === '') {
-        $scope.addButton = true;
-      }
-      else {
-        $scope.addButton = false;
-      }
-      $scope.daysInMonth = $scope.getDaysInMonth($scope.reportMonth, $scope.reportYear);
-
-    });
-
-    $scope.$watch('userRelatedFacility', function () {
-      if ($scope.userRelatedFacility !== '') {
-        stockCountFactory.get.locations().then(function(data){
-          for (var k in $scope.userRelatedFacilities) {
-            if ($scope.userRelatedFacilities[k].uuid === $scope.userRelatedFacility) {
-              $scope.ward = data[$scope.userRelatedFacilities[k].location].name;
-              $scope.lga = data[$scope.userRelatedFacilities[k].location].lga;
-              $scope.state = data[$scope.userRelatedFacilities[k].location].state;
-              break;
-            }
-          }
-        });
+    //load existing count for the day if any.
+    var date = $scope.reportYear+'-'+$scope.reportMonth+'-'+$scope.currentDay;
+    stockCountFactory.getWasteCountByDate(date).then(function(wasteCount){
+      if(wasteCount !== null){
+        $scope.wasteCount = wasteCount;
+        $scope.editOn = true; // enable edit mode
       }
     });
-  })
-
-/*
- * Wastage Count Controller
- */
-  .controller('WasteCountFormCtrl', function($scope, stockCountFactory, $state){
-    $scope.discardedReasons = stockCountFactory.discardedReasons;
-    $scope.wastageCount = {};
-    $scope.wastageCount.discarded = {};
-    $scope.wastageCount.month = $scope.reportMonth;
-    $scope.wastageCount.year = $scope.reportYear;
-    $scope.wastageCount.facility = $scope.facilityUuid;
-    $scope.wastageCount.wastageConfirmation = {};
-    $scope.wastageCount.reason = {};
-    $scope.wastageCount.day= $scope.currentDay;
-    for(var i=0; i<$scope.products.length; i++){
-      $scope.wastageCount.reason[i]={};
-    }
 
     $scope.save = function(){
-      stockCountFactory.save.wastage($scope.wastageCount)
-        .then(function(){
-          $state.go('stockCountIndex',
-            {
-              facility: $scope.facilityUuid,
-              reportMonth: $scope.reportMonth,
-              reportYear: $scope.reportYear
-            });
+      var dbName = 'wastecount';
+      $scope.wasteCount.facility = $scope.facilityUuid;
+      $scope.wasteCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.currentDay, timezone);
+
+      stockCountFactory.save.waste($scope.wasteCount)
+        .then(function() {
+          if($scope.redirect) {
+            $translate('stockCountSaved')
+              .then(function(stockCountSaved) {
+                alertsFactory.success(stockCountSaved);
+              })
+              .then(function() {
+                var db = pouchdb.create(name);
+                var obj = $scope.wasteCount;
+                obj._id = obj.uuid;
+                db.put(obj)
+                  .then(function() {
+                    var cb = {complete: function() {
+                      $translate('syncSuccess')
+                        .then(function(syncSuccess) {
+                          alertsFactory.success(syncSuccess);
+                        })
+                        .then(function() {
+                          if($scope.redirect) {
+                            var msg = [
+                              'You have completed waste count for',
+                              $scope.currentDay,
+                              $scope.monthList[$scope.reportMonth],
+                              $scope.reportYear
+                            ];
+                            alertsFactory.success(msg.join(' '));
+                            $scope.go('home.index.mainActivity', {
+                              'facility': $scope.facilityUuid,
+                              'reportMonth': $scope.reportMonth,
+                              'reportYear': $scope.reportYear,
+                              'stockResult': msg
+                            });
+                          }
+                        })
+                        .catch(function(reason) {
+                          $log.error(reason);
+                        });
+                    }};
+                    var db = pouchdb.create(name);
+                    db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
+                  })
+                  .catch(function(reason) {
+                    if(reason.message) {
+                      alertsFactory.danger(reason.message);
+                    }
+                    $log.error(reason);
+                  });
+              });
+          }
+          $scope.redirect = true; // always reset to true after every save
+          $scope.wasteCount.isComplete = 1;
         });
+    };
+
+
+    $scope.changeState = function(direction){
+      $scope.currentEntry = $scope.wasteCount.discarded[$scope.facilityProductsKeys[$scope.step]];
+      if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
+        alertsFactory.danger($scope.alertMsg);
+      }
+      else{
+        if(direction !== 2){
+          $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
+        }
+        else{
+          $scope.preview = true;
+        }
+        $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+        //TODO: this is best done with $timeout to auto save data when interface is idle for x mount of time
+        $scope.redirect = false;// we don't need to redirect when this fn calls save()
+        $scope.wasteCount.isComplete = 0;// when saved from this fn its not complete yet
+        $scope.save();
+      }
+      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
+      $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
     };
 
   })
@@ -335,9 +341,7 @@ angular.module('lmisChromeApp')
 
 
     $scope.stockCount = {};
-    $scope.stockCount.opened = {};
     $scope.stockCount.unopened = {};
-    $scope.stockCount.confirmation = {};
 
     $scope.stockCount.countDate = '';
     $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
