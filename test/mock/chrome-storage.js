@@ -2,7 +2,7 @@
 
 angular.module('chromeStorageMock', []).factory('$window', function(){
     var storageMock;
-    storageMock = {a:'b', c:'d'};
+    storageMock = {};
     return {
       _storageMock:storageMock,
       chrome: {
