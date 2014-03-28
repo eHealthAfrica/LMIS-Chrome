@@ -44,6 +44,7 @@ angular.module('lmisChromeApp')
       var bundleReceiptLines = 'bundle_receipt_lines';
       var locations = 'locations';
       var stockCount = 'stockCount';
+      var wasteCount = 'wasteCount';
 
 
 
@@ -416,7 +417,8 @@ angular.module('lmisChromeApp')
         BUNDLE_RECEIPT: bundleReceipt,
         BUNDLE_RECEIPT_LINES: bundleReceiptLines,
         LOCATIONS: locations,
-        STOCK_COUNT: stockCount
+        STOCK_COUNT: stockCount,
+        WASTE_COUNT: wasteCount
       };
 
     });
