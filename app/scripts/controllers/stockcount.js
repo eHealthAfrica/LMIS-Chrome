@@ -54,20 +54,20 @@ angular.module('lmisChromeApp')
           label: 'Sync stock count'
         },
         url: '/sync-stock-count',
+        resolve: {
+          localDocs: function(pouchdb) {
+            var db = pouchdb.create('stockcount');
+            // XXX: db#info returns incorrect doc_count, see item:333
+            return db.allDocs();
+          }
+        },
         views: {
           'stats': {
             templateUrl: 'views/stockcount/sync/stats.html',
-            resolve: {
-              localDBInfo: function(pouchdb) {
-                var db = pouchdb.create('stockcount');
-                // XXX: db#info returns incorrect doc_count, see item:333
-                return db.allDocs();
-              }
-            },
-            controller: function($log, $scope, $translate, config, pouchdb, localDBInfo, alertsFactory) {
+            controller: function($log, $scope, $translate, config, pouchdb, localDocs, alertsFactory) {
               $scope.local = {
                 // jshint camelcase: false
-                doc_count: localDBInfo.total_rows
+                doc_count: localDocs.total_rows
               };
 
               $scope.remoteSyncing = true;
@@ -101,7 +101,10 @@ angular.module('lmisChromeApp')
             }
           },
           'status': {
-            templateUrl: 'views/stockcount/sync/status.html'
+            templateUrl: 'views/stockcount/sync/status.html',
+            controller: function($scope, localDocs) {
+              $scope.localDocs = localDocs.rows;
+            }
           }
         }
       });
