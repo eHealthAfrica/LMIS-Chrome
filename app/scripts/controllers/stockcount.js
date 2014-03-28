@@ -58,32 +58,24 @@ angular.module('lmisChromeApp')
           'stats': {
             templateUrl: 'views/stockcount/sync/stats.html',
             resolve: {
-              stockCount: function(stockCountFactory) {
-                return stockCountFactory.get.allStockCount();
+              localDBInfo: function(pouchdb) {
+                var db = pouchdb.create('stockcount');
+                // XXX: db#info returns incorrect doc_count, see item:333
+                return db.allDocs();
               }
             },
-            controller: function($log, $scope, $translate, config, pouchdb, stockCount, alertsFactory) {
-              var dbName = 'stockcount',
-                  db = pouchdb.create(dbName),
-                  remote = config.apiBaseURI + '/' + dbName;
+            controller: function($log, $scope, $translate, config, pouchdb, localDBInfo, alertsFactory) {
+              $scope.local = {
+                // jshint camelcase: false
+                doc_count: localDBInfo.total_rows
+              };
 
-              // XXX: db#info returns incorrect doc_count, see item:333
-              db.allDocs()
-                .then(function(docs) {
-                  // jshint camelcase: false
-                  var info = {
-                    doc_count: docs.total_rows
-                  };
-                  $scope.local = info;
-                })
-                .then(function() {
-                  $scope.remoteSyncing = true;
-                  var remoteDB = pouchdb.create(remote);
-                  remoteDB.info()
-                    .then(function(info) {
-                      $scope.remote = info;
-                      $scope.remoteSyncing = false;
-                    });
+              $scope.remoteSyncing = true;
+              var remote = pouchdb.create(config.apiBaseURI + '/stockcount');
+              remote.info()
+                .then(function(info) {
+                  $scope.remote = info;
+                  $scope.remoteSyncing = false;
                 })
                 .catch(function(reason) {
                   $log.error(reason);
@@ -103,6 +95,7 @@ angular.module('lmisChromeApp')
                       $scope.syncing = false;
                     });
                 }};
+                var db = pouchdb.create('stockcount');
                 db.replicate.sync(remote, cb);
               };
             }
