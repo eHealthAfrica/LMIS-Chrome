@@ -121,7 +121,7 @@
   "appConfigFailedMsg": "Application configuration was failed, try again!",
   "appConfigSuccessMsg": "Application configuration was successful!!!",
   "appConfigWelcomeMsg": "Welcome to LoMIS! Please take a few minutes to tell us about your facility",
-  "compare": "Compare"
+  "compare": "Compare",
   "appConfigWelcomeMsg": "Welcome to LoMIS! Please take a few minutes to tell us about your facility",
   "selectedProductProfile": "Selected product profile",
   "selectStockCountInterval": "Select stock count interval",
