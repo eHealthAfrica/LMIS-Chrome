@@ -22,7 +22,7 @@ angular.module('lmisChromeApp')
           $state.go('appConfig');
           return;
         }
-        $scope.facility = appConfig.appFacility.name + ' ( )';
+        $scope.facility = appConfig.appFacility.name;
         $scope.hasPendingStockCount = (todayStockCount === null);
       }
     })
@@ -48,12 +48,19 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.mainActivity', {
-      url: '/main-activity?appConfigResult&stockResult',
+      url: '/main-activity?appConfigResult&stockResult&storageClear',
       templateUrl: 'views/home/main-activity.html',
       data: {
         label: 'Home'
       },
-      controller: function ($scope, $stateParams, $modal, $state, alertsFactory) {
+      controller: function ($scope, $stateParams, $modal, $state, $translate, alertsFactory) {
+        if ($stateParams.storageClear !== null) {
+          $translate('clearStorageMsg').then(function(msg){
+            alertsFactory.success(msg);
+          });
+          $stateParams.storageClear = null;
+        }
+
         if ($stateParams.appConfigResult !== null) {
           alertsFactory.success($stateParams.appConfigResult);
           $stateParams.appConfigResult = null;

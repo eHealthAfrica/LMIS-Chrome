@@ -123,5 +123,7 @@
   "appConfigWelcomeMsg": "Welcome to LoMIS! Please take a few minutes to tell us about your facility",
   "selectedProductProfile": "Selected product profile",
   "selectStockCountInterval": "Select stock count interval",
-  "selectFacility": "Select facility"
+  "selectFacility": "Select facility",
+  "clearStorage": "Clear storage",
+  "clearStorageMsg": "Storage cleared successfully!"
 }
