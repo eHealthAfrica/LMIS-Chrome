@@ -21,6 +21,7 @@
                     <select id="appFacility" class="form-control" ng-model="appConfig.facility" required>
                       <option value="">-- select facility --</option>
                       <option ng-repeat="facility in facilities" value="{{ facility }}"
+                              ng-selected="facility.uuid === (appConfig.appFacility).uuid"
                               ng-bind="facility.name" required>
                       </option>
                     </select>
@@ -34,6 +35,7 @@
                             required>
                       <option value="">-- select stock count interval --</option>
                       <option ng-repeat="interval in stockCountIntervals" value="{{ interval.value }}"
+                              ng-selected="interval.value === appConfig.stockCountInterval"
                               ng-bind="interval.name" required>
                       </option>
                     </select>

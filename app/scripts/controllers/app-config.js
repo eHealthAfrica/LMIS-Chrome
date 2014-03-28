@@ -40,6 +40,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    selectedProductProfiles: []
  };
 
+ function preLoadConfigForm(appConfig){
+   if(appConfig !== undefined){
+     $scope.appConfig.contactPerson = appConfig.contactPerson;
+     $scope.appConfig.stockCountInterval = parseInt(appConfig.stockCountInterval);
+     $scope.appConfig.facility = appConfig.facility;
+     $scope.appConfig.appFacility = appConfig.appFacility;
+   }
+ }
+ preLoadConfigForm(appConfig);//pre-load config form with previous saved values.
+
  function removeProductProfile(productProfile){
   $scope.appConfig.selectedProductProfiles = $scope.appConfig.selectedProductProfiles
     .filter(function (prodProf) {
