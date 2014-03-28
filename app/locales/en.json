@@ -112,7 +112,7 @@
   "remote": "Remote",
   "records": "Records",
   "counterSample": "Counter Sample",
-  "facilityContactPersonInfo": "Facility contact person info",
+  "contactPersonInfo": "Contact person info",
   "name": "Name",
   "phoneNo": "Phone no",
   "stockCountInterval": "Stock count Interval",
@@ -120,5 +120,8 @@
   "selectFacilityProductProfiles": "Select facility product profiles",
   "appConfigFailedMsg": "Application configuration was failed, try again!",
   "appConfigSuccessMsg": "Application configuration was successful!!!",
-  "appConfigWelcomeMsg": "Welcome to LoMIS! Please take a few minutes to tell us about your facility"
+  "appConfigWelcomeMsg": "Welcome to LoMIS! Please take a few minutes to tell us about your facility",
+  "selectedProductProfile": "Selected product profile",
+  "selectStockCountInterval": "Select stock count interval",
+  "selectFacility": "Select facility"
 }

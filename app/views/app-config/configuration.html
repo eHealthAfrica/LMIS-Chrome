@@ -24,7 +24,7 @@
                     <div class="form-group">
                       <label translate="facility"></label>
                       <select id="appFacility" class="form-control" ng-model="appConfig.facility" required>
-                        <option value="">-- select facility --</option>
+                        <option value="" translate="Select facility"></option>
                         <option ng-repeat="facility in facilities" value="{{ facility }}"
                                 ng-selected="facility.uuid === (appConfig.appFacility).uuid"
                                 ng-bind="facility.name" required>
@@ -38,7 +38,7 @@
                       <label for="stockCountInterval" translate="stockCountInterval"></label>
                       <select id="stockCountInterval" class="form-control" ng-model="appConfig.stockCountInterval"
                               required>
-                        <option value="">-- select stock count interval --</option>
+                        <option value="" translate="selectStockCountInterval"></option>
                         <option ng-repeat="interval in stockCountIntervals" value="{{ interval.value }}"
                                 ng-selected="interval.value === appConfig.stockCountInterval"
                                 ng-bind="interval.name" required>
@@ -55,7 +55,7 @@
           <div class="col-sm-12">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h4 class="panel-title">Contact person info.</h4>
+                <h4 class="panel-title" translate="contactPersonInfo"></h4>
               </div>
               <div class="panel-body">
                 <fieldset>
@@ -120,7 +120,7 @@
             <div class="col-sm-6">
               <div class="panel panel-default">
                 <div class="panel-heading">
-                  <h4 class="panel-title">Selected product profiles</h4>
+                  <h4 class="panel-title" translate="selectedProductProfile"></h4>
                 </div>
                 <div class="panel-body">
                   <fieldset>
