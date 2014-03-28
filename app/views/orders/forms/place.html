@@ -68,7 +68,7 @@
     <accordion close-others="true">
       <accordion-group ng-repeat="product in order.products" is-open="true">
         <accordion-heading>
-          <span i18n="productID" translate-value-id="{{product.id}}"></span>
+          <span i18n="productID"></span>
           <i ng-click="removeProduct(product)"
             ng-attr-title="{{'removeProductID' | i18n:'{id: product.id}'}}"
             class="pull-right text-muted fa fa-times fa-2x"></i>
@@ -78,8 +78,7 @@
     </accordion>
     <button name="addProduct" class="btn btn-default" ng-click="addProduct()">
       <span><i class="fa fa-plus"></i></span>
-      <span i18n="addProduct"
-        translate-value-determiner="{{determiner}}"></span>
+      <span i18n="addProduct"></span>
     </button>
   </div>
 

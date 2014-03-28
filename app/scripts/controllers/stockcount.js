@@ -64,7 +64,7 @@ angular.module('lmisChromeApp')
         views: {
           'stats': {
             templateUrl: 'views/stockcount/sync/stats.html',
-            controller: function($log, $scope, $translate, config, pouchdb, localDocs, alertsFactory) {
+            controller: function($log, $scope, i18n, config, pouchdb, localDocs, alertsFactory) {
               $scope.local = {
                 // jshint camelcase: false
                 doc_count: localDocs.total_rows
@@ -84,16 +84,7 @@ angular.module('lmisChromeApp')
               $scope.sync = function() {
                 $scope.syncing = true;
                 var cb = {complete: function() {
-                  $translate('syncSuccess')
-                    .then(function(syncSuccess) {
-                      alertsFactory.success(syncSuccess);
-                    })
-                    .catch(function(reason) {
-                      $log.error(reason);
-                    })
-                    .finally(function() {
-                      $scope.syncing = false;
-                    });
+                  alertsFactory.success(i18n('syncSuccess'));
                 }};
                 var db = pouchdb.create('stockcount');
                 db.replicate.sync(remote, cb);
@@ -309,7 +300,7 @@ angular.module('lmisChromeApp')
     };
 
   })
-  .controller('StockCountStepsFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, $translate, pouchdb, config){
+  .controller('StockCountStepsFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, i18n, pouchdb, config){
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
@@ -383,51 +374,38 @@ angular.module('lmisChromeApp')
       stockCountFactory.save.stock($scope.stockCount)
         .then(function() {
           if($scope.redirect) {
-            $translate('stockCountSaved')
-              .then(function(stockCountSaved) {
-                alertsFactory.success(stockCountSaved);
-              })
+            alertsFactory.success(i18n('stockCountSaved'));
+            var db = pouchdb.create(name);
+            var obj = $scope.stockCount;
+            obj._id = obj.uuid;
+            db.put(obj)
               .then(function() {
+                var cb = {complete: function() {
+                  alertsFactory.success(i18n('syncSuccess'));
+                  if($scope.redirect) {
+                    var msg = [
+                      'You have completed stock count for',
+                      $scope.currentDay,
+                      $scope.monthList[$scope.reportMonth],
+                      $scope.reportYear
+                    ].join(' ');
+                    alertsFactory.success(msg);
+                    $state.go('home.index.mainActivity', {
+                      'facility': $scope.facilityUuid,
+                      'reportMonth': $scope.reportMonth,
+                      'reportYear': $scope.reportYear,
+                      'stockResult': msg
+                    });
+                  }
+                }};
                 var db = pouchdb.create(name);
-                var obj = $scope.stockCount;
-                obj._id = obj.uuid;
-                db.put(obj)
-                  .then(function() {
-                    var cb = {complete: function() {
-                      $translate('syncSuccess')
-                        .then(function(syncSuccess) {
-                          alertsFactory.success(syncSuccess);
-                        })
-                        .then(function() {
-                          if($scope.redirect) {
-                            var msg = [
-                              'You have completed stock count for',
-                              $scope.currentDay,
-                              $scope.monthList[$scope.reportMonth],
-                              $scope.reportYear
-                            ].join(' ');
-                            alertsFactory.success(msg);
-                            $state.go('home.index.mainActivity', {
-                              'facility': $scope.facilityUuid,
-                              'reportMonth': $scope.reportMonth,
-                              'reportYear': $scope.reportYear,
-                              'stockResult': msg
-                            });
-                          }
-                        })
-                        .catch(function(reason) {
-                          $log.error(reason);
-                        });
-                    }};
-                    var db = pouchdb.create(name);
-                    db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
-                  })
-                  .catch(function(reason) {
-                    if(reason.message) {
-                      alertsFactory.danger(reason.message);
-                    }
-                    $log.error(reason);
-                  });
+                db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
+              })
+              .catch(function(reason) {
+                if(reason.message) {
+                  alertsFactory.danger(reason.message);
+                }
+                $log.error(reason);
               });
           }
           $scope.redirect = true; // always reset to true after every save

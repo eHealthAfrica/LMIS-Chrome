@@ -1,48 +1,31 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('dashboardfactory', function($q, $translate, inventoryRulesFactory) {
+  .factory('dashboardfactory', function($q, i18n, inventoryRulesFactory) {
     var keys = function() {
       var keys = [
         {
           key: 'below',
-          color: 'red'
+          color: 'red',
+          label: i18n('belowBuffer')
         },
         {
           key: 'buffer',
-          color: 'yellow'
+          color: 'yellow',
+          label: i18n('buffer')
         },
         {
           key: 'safety',
-          color: 'black'
+          color: 'black',
+          label: i18n('safetyStock')
         },
         {
           key: 'max',
-          color: 'grey'
+          color: 'grey',
+          label: i18n('max')
         }
       ];
-
-      var deferred = $q.defer();
-
-      var promises = [
-        $translate('belowBuffer'),
-        $translate('buffer'),
-        $translate('safetyStock'),
-        $translate('max')
-      ];
-
-      $q.all(promises)
-        .then(function(result) {
-          for(var i = result.length - 1; i >= 0; i--) {
-            keys[i].label = result[i];
-          }
-          deferred.resolve(keys);
-        })
-        .catch(function(reason) {
-          deferred.reject('Unable to translate chart keys, see: ' + reason);
-        });
-
-      return deferred.promise;
+      return keys;
     };
 
     // Transposes chart values into nvd3 chart values format (an array of

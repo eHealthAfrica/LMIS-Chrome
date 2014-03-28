@@ -5,7 +5,7 @@ describe('Service: dashboardfactory', function() {
   // load the service's module
   beforeEach(module('lmisChromeApp', 'seriesMocks'));
 
-  beforeEach(inject(function($templateCache, $httpBackend) {
+  beforeEach(inject(function($templateCache) {
     // Mock each template used by the state
     var templates = [
       'index',
@@ -19,8 +19,6 @@ describe('Service: dashboardfactory', function() {
       $templateCache.put('views/home/' + template + '.html', '');
     });
 
-    $httpBackend.whenGET('/locales/en.json').respond(200, {});
-    $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
   }));
 
   // instantiate service
