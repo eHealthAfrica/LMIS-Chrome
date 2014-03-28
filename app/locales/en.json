@@ -104,12 +104,21 @@
   "bufferStock": "Buffer Stock",
   "reorderPoint": "Reorder Point",
   "discrepancyThreshold": "Discrepancy Threshold",
-  "counterSample": "Counter Sample",
   "stockCountSaved": "Stock count saved. Syncronising with cloud backup…",
   "syncSuccess": "Successfully syncronised",
   "syncStockCount": "Sync stock count",
   "sync": "Sync",
   "local": "Local",
   "remote": "Remote",
-  "records": "Records"
+  "records": "Records",
+  "counterSample": "Counter Sample",
+  "facilityContactPersonInfo": "Facility contact person info",
+  "name": "Name",
+  "phoneNo": "Phone no",
+  "stockCountInterval": "Stock count Interval",
+  "email": "E-mail",
+  "selectFacilityProductProfiles": "Select facility product profiles",
+  "appConfigFailedMsg": "Application configuration was failed, try again!",
+  "appConfigSuccessMsg": "Application configuration was successful!!!",
+  "appConfigWelcomeMsg": "Welcome to LoMIS! Please take a few minutes to tell us about your facility"
 }
