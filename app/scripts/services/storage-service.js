@@ -232,9 +232,6 @@ angular.module('lmisChromeApp')
           bundleReceipt,
           locations
         ];
-        for (var i in database) {
-          loadData(database[i]);
-        }
         function loadData(db_name) {
           var test_data = [];
           getTable(db_name).then(function (data) {
@@ -257,6 +254,9 @@ angular.module('lmisChromeApp')
                 //console.log(reason);
               }
           );
+        };
+        for (var i in database) {
+          loadData(database[i]);
         }
       }
 
