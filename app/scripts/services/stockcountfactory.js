@@ -274,6 +274,24 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    var getWasteCountByDate = function (date) {
+      var deferred = $q.defer();
+      storageService.all(storageService.WASTE_COUNT).then(function (wasteCounts) {
+        var wasteCount = null;
+        for (var index in wasteCounts) {
+          var row = wasteCounts[index];
+          var wasteCountDate = $filter('date')(new Date(row.countDate), 'yyyy-MM-dd');
+          date = $filter('date')(new Date(date), 'yyyy-MM-dd');
+          if (date === wasteCountDate) {
+            wasteCount = row;
+            break;
+          }
+        }
+        deferred.resolve(wasteCount);
+      });
+      return deferred.promise;
+    };
+
     var load={
       /*
        *
@@ -291,7 +309,7 @@ angular.module('lmisChromeApp')
        */
       allWasteCount: function(){
         var deferred = $q.defer();
-        storageService.all('wastageCount')
+        storageService.all(storageService.WASTE_COUNT)
           .then(function(wastageCount){
             deferred.resolve(wastageCount);
           });
@@ -302,14 +320,7 @@ angular.module('lmisChromeApp')
        * @param {uuid} .
        * @return {Promise} return promise object
        */
-      wasteCountRow: function(uuid){
-        var deferred = $q.defer();
-        storageService.get('wastageCount', uuid)
-          .then(function(wastageCount){
-            deferred.resolve(wastageCount);
-          });
-        return deferred.promise;
-      },
+
        /*
        *
        */
