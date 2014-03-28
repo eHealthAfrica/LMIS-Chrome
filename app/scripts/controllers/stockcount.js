@@ -103,22 +103,18 @@ angular.module('lmisChromeApp')
           'status': {
             templateUrl: 'views/stockcount/sync/status.html',
             controller: function($log, $scope, localDocs, config, pouchdb) {
-              var collateIDs = function(rows) {
-                var ids = [];
-                for(var i = rows.length - 1; i >= 0; i--) {
-                  ids.push(rows[i].id);
-                }
-                return ids;
-              };
-
-              $scope.locals = collateIDs(localDocs.rows);
+              $scope.locals = localDocs.rows.map(function(local) {
+                return local.id;
+              });
 
               $scope.compare = function() {
                 $scope.syncing = true;
                 var remote = pouchdb.create(config.apiBaseURI + '/stockcount');
                 remote.allDocs()
                   .then(function(remotes) {
-                    remotes = collateIDs(remotes.rows);
+                    remotes = remotes.rows.map(function(remote) {
+                      return remote.id;
+                    });
                     $scope.synced = [];
                     $scope.unsynced = {
                       local: [],
