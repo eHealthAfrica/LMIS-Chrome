@@ -89,7 +89,8 @@
                         <input type="checkbox" ng-model="productProfileCheckBoxes[productProfile.uuid]"
                                ng-true-value="{{ productProfile }}"
                                ng-false-value="{{ {'uuid': productProfile.uuid, deSelected: true} }}"
-                               ng-change="handleSelectionEvent(productProfileCheckBoxes[productProfile.uuid])"/>
+                               ng-change="handleSelectionEvent(productProfileCheckBoxes[productProfile.uuid])"
+                               ng-checked="preSelectProductProfileCheckBox[productProfile.uuid]"/>
                         {{ productProfile.name }}
                       </label>
                     </div>
@@ -103,7 +104,8 @@
                   <legend>Selected product profiles</legend>
                   <div class="pre-scrollable">
                     <ul class="list-group">
-                      <li class="list-group-item" ng-repeat="productProfile in appConfig.selectedProductProfiles"
+                      <li class="list-group-item" ng-repeat="productProfile in appConfig.selectedProductProfiles
+                          track by $index"
                           ng-bind="productProfile.name">
                       </li>
                     </ul>
