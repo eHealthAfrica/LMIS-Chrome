@@ -5,6 +5,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     url: '/app-config',
     templateUrl: '/views/app-config/configuration.html',
     resolve: {
+      appConfig: function(appConfigService){
+        return appConfigService.load();
+      },
       facilities: function (facilityFactory) {
         return facilityFactory.getAll();
       },
@@ -18,7 +21,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     }
   })
 }).controller('AppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
-                                         $translate, $state) {
+                                         $translate, $state, appConfig) {
+
+ $scope.isFirstConfiguration = (appConfig === undefined)? true : false;
  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
  $scope.facilities = facilities;
  $scope.productProfiles = productProfiles;
