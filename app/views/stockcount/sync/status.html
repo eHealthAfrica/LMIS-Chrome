@@ -1,0 +1,13 @@
+<ul>
+  <li ng-repeat="doc in localStockDocs">
+    <span ng-bind="doc.id"></span>
+    <span ng-if="doc._synced">Yes</span>
+    <span ng-if="!doc._synced">No</span>
+  </li>
+</ul>
+
+<button
+  class="btn btn-default"
+  ng-click="compareDocs()"
+  translate="compare">
+</button>

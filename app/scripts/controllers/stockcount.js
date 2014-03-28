@@ -46,59 +46,70 @@ angular.module('lmisChromeApp')
         }
       })
       .state('syncStockCount', {
+        abstract: true,
+        templateUrl: 'views/stockcount/sync.html',
+      })
+      .state('syncStockCount.detail', {
         data: {
           label: 'Sync stock count'
         },
         url: '/sync-stock-count',
-        templateUrl: 'views/stockcount/sync.html',
-        resolve: {
-          stockCount: function(stockCountFactory) {
-            return stockCountFactory.get.allStockCount();
-          }
-        },
-        controller: function($log, $scope, $translate, config, pouchdb, stockCount, alertsFactory) {
-          var dbName = 'stockcount',
-              db = pouchdb.create(dbName),
-              remote = config.apiBaseURI + '/' + dbName;
+        views: {
+          'stats': {
+            templateUrl: 'views/stockcount/sync/stats.html',
+            resolve: {
+              stockCount: function(stockCountFactory) {
+                return stockCountFactory.get.allStockCount();
+              }
+            },
+            controller: function($log, $scope, $translate, config, pouchdb, stockCount, alertsFactory) {
+              var dbName = 'stockcount',
+                  db = pouchdb.create(dbName),
+                  remote = config.apiBaseURI + '/' + dbName;
 
-          // XXX: db#info returns incorrect doc_count, see item:333
-          db.allDocs()
-            .then(function(docs) {
-              // jshint camelcase: false
-              var info = {
-                doc_count: docs.total_rows
-              };
-              $scope.local = info;
-            })
-            .then(function() {
-              $scope.remoteSyncing = true;
-              var remoteDB = pouchdb.create(remote);
-              remoteDB.info()
-                .then(function(info) {
-                  $scope.remote = info;
-                  $scope.remoteSyncing = false;
-                });
-            })
-            .catch(function(reason) {
-              $log.error(reason);
-            });
-
-          $scope.sync = function() {
-            $scope.syncing = true;
-            var cb = {complete: function() {
-              $translate('syncSuccess')
-                .then(function(syncSuccess) {
-                  alertsFactory.success(syncSuccess);
+              // XXX: db#info returns incorrect doc_count, see item:333
+              db.allDocs()
+                .then(function(docs) {
+                  // jshint camelcase: false
+                  var info = {
+                    doc_count: docs.total_rows
+                  };
+                  $scope.local = info;
+                })
+                .then(function() {
+                  $scope.remoteSyncing = true;
+                  var remoteDB = pouchdb.create(remote);
+                  remoteDB.info()
+                    .then(function(info) {
+                      $scope.remote = info;
+                      $scope.remoteSyncing = false;
+                    });
                 })
                 .catch(function(reason) {
                   $log.error(reason);
-                })
-                .finally(function() {
-                  $scope.syncing = false;
                 });
-            }};
-            db.replicate.sync(remote, cb);
-          };
+
+              $scope.sync = function() {
+                $scope.syncing = true;
+                var cb = {complete: function() {
+                  $translate('syncSuccess')
+                    .then(function(syncSuccess) {
+                      alertsFactory.success(syncSuccess);
+                    })
+                    .catch(function(reason) {
+                      $log.error(reason);
+                    })
+                    .finally(function() {
+                      $scope.syncing = false;
+                    });
+                }};
+                db.replicate.sync(remote, cb);
+              };
+            }
+          },
+          'status': {
+            templateUrl: 'views/stockcount/sync/status.html'
+          }
         }
       });
   })
@@ -115,7 +126,7 @@ angular.module('lmisChromeApp')
     month = month < 10 ? '0' + month : month;
 
     $scope.products = stockCountFactory.programProducts;
-    $scope.productType = productType;
+    // $scope.productType = productType;
 
     $scope.step = 0;
     $scope.maxStep =  $scope.products.length>0?$scope.products.length - 1: 0;
