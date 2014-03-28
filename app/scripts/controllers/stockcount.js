@@ -61,8 +61,13 @@ angular.module('lmisChromeApp')
               db = pouchdb.create(dbName),
               remote = config.apiBaseURI + '/' + dbName;
 
-          db.info()
-            .then(function(info) {
+          // XXX: db#info returns incorrect doc_count, see item:333
+          db.allDocs()
+            .then(function(docs) {
+              // jshint camelcase: false
+              var info = {
+                doc_count: docs.total_rows
+              };
               $scope.local = info;
             })
             .then(function() {
