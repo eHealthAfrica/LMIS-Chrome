@@ -234,40 +234,13 @@ angular.module('lmisChromeApp')
        * @param {object} Stock wastage Data.
        * @return {Promise} return promise object
        */
-      wastage: function(object){
+      waste: function(object){
         var deferred = $q.defer();
 
         storageService.insert('wastageCount', object).then(function(uuid){
           deferred.resolve(uuid);
         });
         return deferred.promise;
-      }
-    };
-
-    var openedProductCount = function(StockObject, facility, year, month, _day, product){
-      var day = _day < 10 ? '0' + _day : _day;
-      var key = facility+year+month+day;
-      //return key;
-      var row = StockObject[key];
-      if(Object.prototype.toString.call(row) === '[object Object]'){
-        if(Object.keys(row).indexOf('opened') !== -1){
-          if(Object.keys(row['opened']).indexOf(product.toString()) !== -1){
-            return row['opened'][product.toString()];
-          }
-        }
-      }
-    };
-
-    var unOpenedProductCount = function(StockObject, facility, year, month, _day, product){
-      var day = _day < 10 ? '0' + _day : _day;
-      var key = facility+year+month+day;
-      var row = StockObject[key];
-      if(Object.prototype.toString.call(row) === '[object Object]'){
-        if(Object.keys(row).indexOf('unopened') !== -1){
-          if(Object.keys(row['unopened']).indexOf(product.toString()) !== -1){
-            return row['unopened'][product.toString()];
-          }
-        }
       }
     };
 
@@ -316,44 +289,6 @@ angular.module('lmisChromeApp')
        /*
        *
        */
-      createStockObject: function(stockCount){
-        var stockObject = {};
-        for(var i in stockCount){
-          var key = stockCount[i].facility+stockCount[i].year.toString()+stockCount[i].month.toString()+stockCount[i].day.toString();
-          stockObject[key] = stockCount[i];
-        }
-        return stockObject;
-      },
-       /*
-       *
-       */
-      stockCountColumnData: function(programProducts, StockObject, facility, year, month, day){
-
-        var html = '<td>'+day+'</td>';
-        for(var i=0; i<programProducts.length; i++){
-          var opened = openedProductCount(StockObject, facility, year, month, day, i);
-          var unopened = unOpenedProductCount(StockObject, facility, year, month, day, i);
-          opened = angular.isUndefined(opened)?'':opened;
-          unopened = angular.isUndefined(unopened)?'':unopened;
-          //html += '<td>'+opened+'</td>';
-          html += '<td>'+unopened+'</td>';
-        }
-        return html;
-      },
-       /*
-       *
-       */
-      stockCountRow: function(uuid){
-        var deferred = $q.defer();
-        storageService.get(storageService.STOCK_COUNT, uuid)
-          .then(function(stockCount){
-            deferred.resolve(stockCount);
-          });
-        return deferred.promise;
-      },
-       /*
-       *
-       */
       allWasteCount: function(){
         var deferred = $q.defer();
         storageService.all('wastageCount')
@@ -373,22 +308,6 @@ angular.module('lmisChromeApp')
           .then(function(wastageCount){
             deferred.resolve(wastageCount);
           });
-        return deferred.promise;
-      },
-       /*
-       *
-       */
-      userFacilities: function(){
-        /*
-         * load some none standard fixtures
-         * @param {void}.
-         * @return {Promise} return promise object
-         */
-        var deferred = $q.defer();
-        var fileUrl = 'scripts/fixtures/user_related_facilities.json';
-        $http.get(fileUrl).success(function (data) {
-          deferred.resolve(data);
-        });
         return deferred.promise;
       },
        /*
