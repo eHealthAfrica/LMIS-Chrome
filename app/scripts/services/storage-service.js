@@ -258,7 +258,6 @@ angular.module('lmisChromeApp')
         for (var i in database) {
           loadData(database[i]);
         }
-        $rootScope.$apply();
       }
 
       /**
