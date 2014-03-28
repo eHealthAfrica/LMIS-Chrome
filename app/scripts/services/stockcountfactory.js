@@ -380,6 +380,7 @@ angular.module('lmisChromeApp')
       save:addRecord,
       get:load,
       getStockCountByDate: getStockCountByDate,
+      getWasteCountByDate: getWasteCountByDate,
       validate: validate
     };
   });
