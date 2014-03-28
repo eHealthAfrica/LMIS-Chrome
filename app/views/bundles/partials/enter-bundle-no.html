@@ -2,7 +2,7 @@
   <br/>
 
   <div class="alert alert-danger">
-    <span translate="bundleNotFound" translate-value-id="{{$parent.showBundleNo}}"></span>
+    <span i18n="bundleNotFound" translate-value-id="{{$parent.showBundleNo}}"></span>
   </div>
 </div>
 
@@ -10,7 +10,7 @@
   <form ng-submit="showBundle()">
     <div class="row">
       <div class="col-sm-6 pull-left">
-        <label for="bundleNo" translate="bundleNo"></label>
+        <label for="bundleNo" i18n="bundleNo"></label>
       </div>
     </div>
     <div class="input-group">
@@ -19,7 +19,7 @@
              type="text" name="bundleNo" id="bundleNo" ng-model="$parent.showBundleNo"
              placeholder="scan or type bundle number" required/>
       <span class="input-group-btn">
-        <button class="btn btn-info" type="submit" translate="showBundle"></button>
+        <button class="btn btn-info" type="submit" i18n="showBundle"></button>
       </span>
     </div>
   </form>
@@ -35,7 +35,7 @@
   </div>
   <a ui-sref="addNewInventory({bundleNo: $parent.showBundleNo})" class="btn btn-success">
     <span><i class="fa fa-plus"></i></span>
-    <span translate="addNewInventory"></span>
+    <span i18n="addNewInventory"></span>
   </a>
 </div>
 

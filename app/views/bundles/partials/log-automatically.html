@@ -9,13 +9,13 @@
         <div class="panel-body">
           <div class="col-sm-12">
             <div class="col-sm-6">
-              <label for="receivingFacility" translate="receivingFacility"></label>
+              <label for="receivingFacility" i18n="receivingFacility"></label>
               <input class="form-control" ng-disabled="true" type="text" name="receivingFacility"
                      id="receivingFacility" ng-model="(bundle.receiving_facility).name"/>
             </div>
 
             <div class="col-sm-6">
-              <label for="parentFacility" translate="sendingFacility"></label>
+              <label for="parentFacility" i18n="sendingFacility"></label>
               <input class="form-control" ng-disabled="true" type="text" name="parentFacility" id="parentFacility"
                      ng-model="(bundle.parent).name"/>
             </div>
@@ -25,7 +25,7 @@
         <div class="panel-body">
           <div class="col-sm-12">
             <div class="col-sm-6">
-              <label for="bundleNumber" translate="bundleNo"></label>
+              <label for="bundleNumber" i18n="bundleNo"></label>
               <input ng-model="bundle.uuid" class="form-control" ng-disabled="true" type="text"
                      name="bundleNumber" id="bundleNumber"/>
             </div>
@@ -55,7 +55,7 @@
             </div>
             <div class="col-md-4 pull-right">
               <button type="submit" id="save" name="save" class="btn btn-success">
-                <span translate="save"></span>
+                <span i18n="save"></span>
                 <i class="fa fa-save"></i>
               </button>
             </div>

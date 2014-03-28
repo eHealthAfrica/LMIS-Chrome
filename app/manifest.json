@@ -27,5 +27,6 @@
         "scripts/chromereload.js"
       ]
     }
-  }
+  },
+  "default_locale": "en"
 }

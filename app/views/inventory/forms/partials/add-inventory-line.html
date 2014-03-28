@@ -9,10 +9,10 @@
   <div class="panel-body">
     <div class="col-sm-12">
       <div class="col-sm-4">
-        <label translate="productTypes"></label>
+        <label i18n="productTypes"></label>
         <select ng-model="inventoryLine.productType" class="form-control"
                 ng-change="loadProductTypeBatches(inventoryLine)">
-          <option value="" translate="selectProductType"></option>
+          <option value="" i18n="selectProductType"></option>
           <option ng-repeat="type in inventoryLine.productTypes" value="{{ type }}"
                   ng-selected="{{ (inventoryLine.productType).uuid === type.uuid}}"
                   ng-bind="type.name">
@@ -21,12 +21,12 @@
       </div>
 
       <div class="col-sm-4">
-        <label translate="batchNo"></label>
+        <label i18n="batchNo"></label>
         <select ng-show="(inventoryLine.productTypeBatches).length !== 0" ng-model="inventoryLine.selectedBatch"
                 class="form-control"
                 ng-change="updateBatchNo(inventoryLine)"
                 ng-disabled="inventoryLine.isDisabled">
-          <option value="" translate="selectBatch"></option>
+          <option value="" i18n="selectBatch"></option>
           <option ng-repeat="batch in inventoryLine.productTypeBatches" value="{{ batch.uuid }}"
                   ng-bind="batch.batch_no">
           </option>
@@ -37,9 +37,9 @@
       </div>
 
       <div class="col-sm-4">
-        <label translate="program"></label>
+        <label i18n="program"></label>
         <select ng-model="inventoryLine.program" class="form-control" ng-change="createProgramObj(inventoryLine)">
-          <option value="" translate="selectProgram"></option>
+          <option value="" i18n="selectProgram"></option>
           <option ng-repeat="program in programs" value="{{ program }}"
                   ng-selected="{{ (inventoryLine.program).uuid === program.uuid}}"
                   ng-bind="program.name"></option>
@@ -51,23 +51,23 @@
   <div class="panel-body">
     <div class="col-sm-12">
       <div class="col-sm-4">
-        <label translate="uom"></label>
+        <label i18n="uom"></label>
         <select class="form-control" ng-model="inventoryLine.uom" ng-change="createUOMObj(inventoryLine)" required>
-          <option value="" translate="selectUOM"></option>
+          <option value="" i18n="selectUOM"></option>
           <option ng-repeat="uom in uomList" value="{{ uom }}" ng-bind="uom.name"
                   ng-selected="{{ (inventoryLine.uom).uuid === uom.uuid }}"></option>
         </select>
       </div>
 
       <div class="col-sm-4">
-        <label translate="quantity"></label>
+        <label i18n="quantity"></label>
         <counter bind="inventoryLine.quantity"></counter>
       </div>
 
       <div class="col-sm-4">
-        <label translate="storageUnit"></label>
+        <label i18n="storageUnit"></label>
         <select class="form-control" ng-model="inventoryLine.storage_unit" ng-change="createStorageUnitObj(inventoryLine)">
-          <option value="" translate="addToStorageUnit"></option>
+          <option value="" i18n="addToStorageUnit"></option>
           <option ng-repeat="storageUnit in receivingFacilityStorageUnits"
                   value="{{ storageUnit }}"
                   ng-selected="{{ (inventoryLine.storageUnit).uuid === storageUnit.uuid }}"

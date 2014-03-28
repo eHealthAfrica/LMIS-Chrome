@@ -7,26 +7,15 @@ angular.module('lmisChromeApp', [
       'ui.bootstrap',
       'ui.router',
       'tv.breadcrumbs',
-      'pascalprecht.translate',
       'toggle-switch',
       'pouchdb',
       'config'
     ])
+
   // Disable ui-router auto scrolling
     .config(function ($uiViewScrollProvider, $anchorScrollProvider) {
       $uiViewScrollProvider.useAnchorScroll();
       $anchorScrollProvider.disableAutoScrolling();
-    })
-
-    .config(function ($translateProvider) {
-      $translateProvider
-          .preferredLanguage('en_GB')
-          .fallbackLanguage('en')
-          .useStaticFilesLoader({
-            prefix: '/locales/',
-            suffix: '.json'
-          })
-          .useCookieStorage();
     })
 
   // Central Variable for Watching Online/Offline Events
