@@ -417,8 +417,7 @@ angular.module('lmisChromeApp')
         BUNDLE_RECEIPT_LINES: bundleReceiptLines,
         LOCATIONS: locations,
         STOCK_COUNT: stockCount,
-        WASTE_COUNT: wasteCount
-        STOCK_COUNT: stockCount,
+        WASTE_COUNT: wasteCount,
         APP_CONFIG: appConfig
       };
 
