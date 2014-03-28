@@ -50,7 +50,7 @@ angular.module('lmisChromeApp')
       })
       .state('syncStockCount', {
         abstract: true,
-        templateUrl: 'views/stockcount/sync.html',
+        templateUrl: 'views/stockcount/sync.html'
       })
       .state('syncStockCount.detail', {
         data: {
@@ -162,7 +162,7 @@ angular.module('lmisChromeApp')
 /*
  * Wastage Count Controller
  */
-  .controller('WasteCountFormCtrl', function($scope, stockCountFactory, alertsFactory, $stateParams, currentFacility,$state, productType, $log, $translate, pouchdb, config){
+  .controller('WasteCountFormCtrl', function($scope, stockCountFactory, alertsFactory, $stateParams, appConfig, $state, productType, $log, $translate, pouchdb, config){
 
     var now = new Date();
     var day = now.getDate();
