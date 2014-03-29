@@ -17,7 +17,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       deferred.reject(reason);
     });
     return deferred.promise;
-  }
+  };
 
   /**
    * This function setups or configures the app, it checks if a configuration exist then over-writes it, else,

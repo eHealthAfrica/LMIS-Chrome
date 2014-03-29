@@ -1,4 +1,4 @@
-angular.module('lmisChromeApp').directive('counterdropdown', function () {
+angular.module('lmisChromeApp').directive('counterdropdown', function (notificationService) {
   return {
     restrict: 'E',
     template: '<div class="input-group">' +
@@ -32,7 +32,7 @@ angular.module('lmisChromeApp').directive('counterdropdown', function () {
       };
     }
   };
-}).directive('countertext', function () {
+}).directive('countertext', function (notificationService) {
   return {
     restrict: 'E',
     template: '<div class="input-group">' +
@@ -64,7 +64,7 @@ angular.module('lmisChromeApp').directive('counterdropdown', function () {
       };
     }
   };
-}).directive('counter', function () {
+}).directive('counter', function (notificationService) {
   return {
     restrict: 'E',
     template: '<div class="input-group">' +
@@ -89,10 +89,14 @@ angular.module('lmisChromeApp').directive('counterdropdown', function () {
       };
 
       scope._tapInputAdd = function (param) {
-        return isInvalid(param)? 1 : (parseInt(param) + 1);
+        notificationService.vibrate();
+        var count = isInvalid(param) ? 1 : (parseInt(param) + 1);
+        return count;
       };
       scope._tapInputSub = function (param) {
-        return isInvalid(param)? 0 : (parseInt(param) - 1);
+        var count = isInvalid(param) ? 0 : (parseInt(param) - 1);
+        notificationService.beep();
+        return count;
       };
     }
   };

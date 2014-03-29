@@ -53,7 +53,7 @@ angular.module('lmisChromeApp')
       data: {
         label: 'Home'
       },
-      controller: function ($scope, $stateParams, $modal, $state, $translate, alertsFactory) {
+      controller: function ($scope, $stateParams, $modal, $state, $translate, alertsFactory, notificationService) {
         if ($stateParams.storageClear !== null) {
           $translate('clearStorageMsg').then(function(msg){
             alertsFactory.success(msg);
@@ -70,6 +70,9 @@ angular.module('lmisChromeApp')
           alertsFactory.success($stateParams.stockResult);
           $stateParams.stockResult = null;
         }
+
+        notificationService.vibrate(1000);
+        notificationService.beep();
       }
     })
     .state('home.index.mainActivity.orderType', {
