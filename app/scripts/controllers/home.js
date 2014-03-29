@@ -70,9 +70,6 @@ angular.module('lmisChromeApp')
           alertsFactory.success($stateParams.stockResult);
           $stateParams.stockResult = null;
         }
-
-        notificationService.vibrate(1000);
-        notificationService.beep();
       }
     })
     .state('home.index.mainActivity.orderType', {
