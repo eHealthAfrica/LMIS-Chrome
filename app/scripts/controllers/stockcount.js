@@ -191,18 +191,13 @@ angular.module('lmisChromeApp')
 
     $scope.wasteCount.countDate ='';
 
-    $scope.facilityProducts = stockCountFactory.facilityProducts(); // selected products for current facility
+    $scope.facilityProducts = appConfig.selectedProductProfiles; // selected products for current facility
     $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
-    $scope.productKey = $scope.facilityProductsKeys[$scope.step];
-    for(var i=0; i<$scope.facilityProductsKeys.length; i++){
-      $scope.wasteCount.reason[$scope.facilityProductsKeys[i]]={};
-    }
-    for(var i in  $scope.discardedReasons){
-      $scope.wasteCount.reason[$scope.facilityProductsKeys[$scope.step]][i]={};
-    }
+    $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
+
     //set maximum steps
-    if($scope.facilityProductsKeys.length>0){
-      $scope.maxStep =  $scope.facilityProductsKeys.length-1;
+    if($scope.facilityProducts.length > 0){
+      $scope.maxStep =  $scope.facilityProducts.length-1;
     }
     else{
       $scope.maxStep =0;
@@ -210,7 +205,7 @@ angular.module('lmisChromeApp')
 
     $scope.edit = function(index){
       $scope.step = index;
-      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+      $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
       $scope.preview = false;
       $scope.editOn = true;
     };
@@ -293,7 +288,7 @@ angular.module('lmisChromeApp')
 
 
     $scope.changeState = function(direction){
-      $scope.currentEntry = $scope.wasteCount.discarded[$scope.facilityProductsKeys[$scope.step]];
+      $scope.currentEntry = $scope.wasteCount.discarded[$scope.facilityProducts[$scope.step].uuid];
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
         alertsFactory.danger($scope.alertMsg);
       }
@@ -304,8 +299,7 @@ angular.module('lmisChromeApp')
         else{
           $scope.preview = true;
         }
-        $scope.productKey = $scope.facilityProductsKeys[$scope.step];
-        //TODO: this is best done with $timeout to auto save data when interface is idle for x mount of time
+        $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
         $scope.redirect = false;// we don't need to redirect when this fn calls save()
         $scope.wasteCount.isComplete = 0;// when saved from this fn its not complete yet
         $scope.save();

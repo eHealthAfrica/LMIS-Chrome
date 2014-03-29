@@ -75,9 +75,9 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title" >
+    <h1 class="panel-title" >
       Stock Count for {{ facilityObject.name }} - {{ currentDay }} {{ monthList[reportMonth] }} {{ reportYear }}
-    </h3>
+    </h1>
   </div>
 
   <div class="panel-body">
@@ -88,7 +88,7 @@
             <div class="col-sm-12">
               <h3>{{ selectedFacility }}</h3>
               <h5>{{productTypeCode.code}}</h5>
-          </div>
+            </div>
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="row">
@@ -200,3 +200,6 @@
     </form>
   </div>
 </div>
+<pre>
+  {{ wasteCount }}
+</pre>

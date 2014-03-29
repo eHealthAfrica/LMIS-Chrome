@@ -343,8 +343,8 @@ angular.module('lmisChromeApp')
        *
        */
       currentProductObject: function(productObject, index){
-        var productUuidList = Object.keys(productObject);
-        return productObject[productUuidList[index]];
+
+        return productObject[[index]];
       },
        /*
        *
