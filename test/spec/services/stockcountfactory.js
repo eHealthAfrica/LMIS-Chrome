@@ -6,7 +6,7 @@ describe('Service stockCountFactory', function(){
   var stockCountFactory,
       stockCount,
       scope;
-  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q, $templateCache, $httpBackend){
+  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q){
     stockCountFactory = _stockCountFactory_;
     scope = $rootScope.$new();
     stockCount = stockData;
@@ -27,8 +27,6 @@ describe('Service stockCountFactory', function(){
       }
 
     });
-    $httpBackend.whenGET('/locales/en.json').respond(200, {});
-    $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
   }));
 
   it('should expose a load method aliased as "get"', function(){
