@@ -138,3 +138,14 @@ accordion .panel-heading:hover {
     padding-right: 0
   }
 }
+.counter-btn {
+   font-size: 25.5pt;
+   padding: 0.4em 0.8em;
+}
+.counter-input{
+  height: 4.3em;
+}
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

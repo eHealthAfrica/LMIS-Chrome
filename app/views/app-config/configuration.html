@@ -24,7 +24,7 @@
                     <div class="form-group">
                       <label i18n="facility"></label>
                       <select id="appFacility" class="form-control" ng-model="appConfig.facility" required>
-                        <option value="" i18n="Select facility"></option>
+                        <option value="" i18n="selectFacility"></option>
                         <option ng-repeat="facility in facilities" value="{{ facility }}"
                                 ng-selected="facility.uuid === (appConfig.appFacility).uuid"
                                 ng-bind="facility.name" required>
