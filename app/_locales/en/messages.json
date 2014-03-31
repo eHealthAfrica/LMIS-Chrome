@@ -379,5 +379,14 @@
   },
   "clearStorageMsg": {
     "message": "Storage cleared successfully!"
+  },
+  "continue": {
+    "message": "Continue"
+  },
+  "appConfigWelcomeMsg": {
+     "message": "Welcome to LoMIS!"
+  },
+  "welcomeMsgBody": {
+    "message": "Please, take a few minutes to tell us about your facility."
   }
 }
