@@ -19,7 +19,7 @@ angular.module('lmisChromeApp')
       },
       controller: function($scope, appConfig, todayStockCount, $state) {
         if(appConfig === undefined){
-          $state.go('appConfig');
+          $state.go('appConfigWelcome');
           return;
         }
         $scope.facility = appConfig.appFacility.name;

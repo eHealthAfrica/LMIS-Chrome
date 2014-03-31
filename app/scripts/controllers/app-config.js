@@ -1,21 +1,9 @@
 'use strict';
 
 angular.module('lmisChromeApp').config(function ($stateProvider) {
-  $stateProvider.state('appConfig', {
-    url: '/app-config',
-    templateUrl: '/views/app-config/configuration.html',
-    resolve: {
-      appConfig: function(appConfigService){
-        return appConfigService.load();
-      },
-      facilities: function (facilityFactory) {
-        return facilityFactory.getAll();
-      },
-      productProfiles: function(productProfileFactory){
-        return productProfileFactory.getAll();
-      }
-    },
-    controller: 'AppConfigCtrl',
+  $stateProvider.state('appConfigWelcome', {
+    url: '/app-config-welcome',
+    templateUrl: '/views/app-config/welcome-page.html',
     data: {
       label: 'App Configuration'
     }

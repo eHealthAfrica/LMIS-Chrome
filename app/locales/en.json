@@ -122,10 +122,11 @@
   "appConfigSuccessMsg": "Application configuration was successful!!!",
   "appConfigWelcomeMsg": "Welcome to LoMIS! Please take a few minutes to tell us about your facility",
   "compare": "Compare",
-  "appConfigWelcomeMsg": "Welcome to LoMIS! Please take a few minutes to tell us about your facility",
+  "appConfigWelcomeMsg": "Welcome to LoMIS!",
   "selectedProductProfile": "Selected product profile",
   "selectStockCountInterval": "Select stock count interval",
   "selectFacility": "Select facility",
   "clearStorage": "Clear storage",
-  "clearStorageMsg": "Storage cleared successfully!"
+  "clearStorageMsg": "Storage cleared successfully!",
+  "welcomeMsgBody": "Please, take a few minutes to tell us about your facility."
 }
