@@ -138,3 +138,14 @@ accordion .panel-heading:hover {
 .text-capitalize {
   text-transform: capitalize;
 }
+#wasteCountReason-1, #wasteCountReason-2{
+    top: 10px;
+}
+.custom-error{
+    background-color: #f2dede;
+    color: #a94442;
+    padding: 2px;
+    margin-top: 2px;
+    border: 1px solid #ebccd1;
+    border-radius: 4px;
+}
