@@ -42,7 +42,7 @@
   },
   "scripts": {
     "test": "grunt travis",
-    "test-watch": "./node_modules/.bin/karma start --autoWatch true --singleRun false"
+    "test-watch": "./node_modules/karma/bin/karma start --autoWatch true --singleRun false"
   },
   "description": "LMIS Chrome packaged app",
   "main": "Gruntfile.js",
