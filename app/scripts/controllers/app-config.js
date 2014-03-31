@@ -20,8 +20,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       label: 'App Configuration'
     }
   })
-}).controller('AppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
-                                         $translate, $state, appConfig) {
+}).controller('AppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log, i18n, $state, appConfig) {
 
  $scope.isFirstConfiguration = (appConfig === undefined)? true : false;
  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -80,14 +79,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         var msg = 'Application configuration was successful!!!';
         $state.go('home.index.mainActivity',{'appConfigResult': msg });
       } else {
-        $translate('appConfigFailedMsg').then(function (msg) {
-          alertsFactory.danger(msg);
-        });
+        alertsFactory.danger(i18n('appConfigFailedMsg'));
       }
    }, function (reason) {
-      $translate('appConfigFailedMsg').then(function(msg){
-        alertsFactory.danger(msg);
-      });
+      alertsFactory.danger(i18n('appConfigFailedMsg'));
       $log.error(reason);
    });
  };

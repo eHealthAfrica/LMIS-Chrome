@@ -15,10 +15,10 @@
                 <div class="col-sm-12">
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="sendingFacility" translate="sendingFacility"></label>
+                      <label for="sendingFacility" i18n="sendingFacility"></label>
                       <select id="sendingFacility" class="form-control" ng-model="inventory.sending_facility"
                               ng-change="createSendingFacilityObj(inventory)" required>
-                        <option value="" translate="selectSendingFacility"></option>
+                        <option value="" i18n="selectSendingFacility"></option>
                         <option ng-repeat="facility in facilities" value="{{ facility }}"
                                 ng-bind="facility.name"></option>
                       </select>
@@ -27,7 +27,7 @@
 
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="receivingFacility" translate="receivingFacility"></label>
+                      <label for="receivingFacility" i18n="receivingFacility"></label>
                       <input class="form-control" type="text" name="receivingFacility" id="receivingFacility"
                              ng-model="(inventory.receiving_facility).name" ng-disabled="true"/>
                     </div>
@@ -35,7 +35,7 @@
 
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="bundleNo" translate="bundleNo"></label>
+                      <label for="bundleNo" i18n="bundleNo"></label>
                       <input class="form-control" type="text" name="bundleNo" id="bundleNo"
                              ng-model="inventory.bundle_no" placeholder="e.g KNC-THF-01-9803" required/>
                     </div>
@@ -43,7 +43,7 @@
 
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="receiptDate" translate="dateReceived"></label>
+                      <label for="receiptDate" i18n="dateReceived"></label>
                       <input ng-model="inventory.date_receipt" class="form-control" type="date" name="receiptDate"
                              id="receiptDate" required/>
                     </div>
@@ -83,7 +83,7 @@
           <div class="col-md-4 pull-right">
             <button ng-click="inventory.showForm = false" type="button" id="save" name="save"
                     class="btn btn-success">
-              <span translate="save"></span>
+              <span i18n="save"></span>
               <i class="fa fa-save"></i>
             </button>
           </div>

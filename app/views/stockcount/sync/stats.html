@@ -1,13 +1,13 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title" translate="stockCount"></h3>
+    <h3 class="panel-title" i18n="stockCount"></h3>
   </div>
   <div class="panel-body">
-    <span translate="records"></span>
+    <span i18n="records"></span>
     <dl class="dl-horizontal">
-      <dt translate="local"></dt>
+      <dt i18n="local"></dt>
       <dd ng-bind="local.doc_count"></dd>
-      <dt translate="remote"></dt>
+      <dt i18n="remote"></dt>
       <dd>
         <span
           ng-show="!remoteSyncing"
@@ -26,7 +26,7 @@
         class="fa fa-refresh"
         ng-class="{'fa-spin': syncing}">
       </i>
-      <span translate="sync"></span>
+      <span i18n="sync"></span>
     </button>
 
   </div>
