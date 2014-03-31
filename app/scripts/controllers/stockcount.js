@@ -171,8 +171,9 @@ angular.module('lmisChromeApp')
     var month = now.getMonth() + 1;
     month = month < 10 ? '0' + month : month;
 
-    $scope.products = stockCountFactory.programProducts;
+    $scope.discardedReasons = stockCountFactory.discardedReasons;
     $scope.productType = productType;
+    $scope.reasonError = false;
 
     $scope.step = 0;
     $scope.monthList = stockCountFactory.monthList;
@@ -183,6 +184,7 @@ angular.module('lmisChromeApp')
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
+    $scope.wasteErrors = {};
     $scope.currentDay = day;
 
     $scope.wasteCount = {};
@@ -194,6 +196,8 @@ angular.module('lmisChromeApp')
     $scope.facilityProducts = appConfig.selectedProductProfiles; // selected products for current facility
     $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
     $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
+
+    $scope.wasteCount.reason[$scope.productKey] = {};
 
     //set maximum steps
     if($scope.facilityProducts.length > 0){
@@ -258,7 +262,7 @@ angular.module('lmisChromeApp')
                               $scope.reportYear
                             ];
                             alertsFactory.success(msg.join(' '));
-                            $scope.go('home.index.mainActivity', {
+                            $state.go('home.index.mainActivity', {
                               'facility': $scope.facilityUuid,
                               'reportMonth': $scope.reportMonth,
                               'reportYear': $scope.reportYear,
@@ -286,20 +290,39 @@ angular.module('lmisChromeApp')
         });
     };
 
+    $scope.$watch('wasteCount.discarded[productKey]', function(newvalue){
+      if(stockCountFactory.validate.invalid(newvalue)){
+        stockCountFactory.get.errorAlert($scope, 1);
+      }else{
+        stockCountFactory.get.errorAlert($scope, 0);
+      }
+    });
+
+    $scope.checkInput = function(index){
+      stockCountFactory.validate.waste.reason($scope, index);
+    }
+
+    $scope.finalSave = function(){
+      $scope.lastPosition = 0;
+      $scope.redirect = true;
+    };
 
     $scope.changeState = function(direction){
-      $scope.currentEntry = $scope.wasteCount.discarded[$scope.facilityProducts[$scope.step].uuid];
+      $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
+      $scope.wasteCount.reason[$scope.productKey] = {};
+      $scope.currentEntry = $scope.wasteCount.discarded[$scope.productKey];
+
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
-        alertsFactory.danger($scope.alertMsg);
+        stockCountFactory.get.errorAlert($scope, 1);
       }
       else{
+        stockCountFactory.get.errorAlert($scope, 0);
         if(direction !== 2){
           $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
         }
         else{
           $scope.preview = true;
         }
-        $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
         $scope.redirect = false;// we don't need to redirect when this fn calls save()
         $scope.wasteCount.isComplete = 0;// when saved from this fn its not complete yet
         $scope.save();
@@ -308,7 +331,9 @@ angular.module('lmisChromeApp')
       $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
     };
 
+
   })
+
   .controller('StockCountStepsFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, $translate, pouchdb, config){
     var now = new Date();
     var day = now.getDate();
@@ -339,13 +364,12 @@ angular.module('lmisChromeApp')
 
     $scope.stockCount.countDate = '';
     $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
-    $scope.facilityProducts = stockCountFactory.facilityProducts(); // selected products for current facility
-    $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
-    $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+    $scope.facilityProducts = appConfig.selectedProductProfiles; // selected products for current facility
+    $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
 
     //set maximum steps
-    if($scope.facilityProductsKeys.length>0){
-      $scope.maxStep =  $scope.facilityProductsKeys.length-1;
+    if($scope.facilityProducts.length>0){
+      $scope.maxStep =  $scope.facilityProducts.length-1;
     }
     else{
       $scope.maxStep =0;
@@ -353,7 +377,7 @@ angular.module('lmisChromeApp')
 
     $scope.edit = function(index){
       $scope.step = index;
-      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+      $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
       $scope.preview = false;
       $scope.editOn = true;
     };
@@ -434,18 +458,19 @@ angular.module('lmisChromeApp')
     };
 
     $scope.changeState = function(direction){
-      $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];
+      $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProducts[$scope.step].uuid];
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
-        alertsFactory.danger($scope.alertMsg);
+        stockCountFactory.get.errorAlert($scope, 1);
       }
       else{
+        stockCountFactory.get.errorAlert($scope, 0);
         if(direction !== 2){
           $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
         }
         else{
           $scope.preview = true;
         }
-        $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+        $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
         //TODO: this is best done with $timeout to auto save data when interface is idle for x mount of time
         $scope.redirect = false;// we don't need to redirect when this fn calls save()
         $scope.stockCount.isComplete = 0;// when saved from this fn its not complete yet
