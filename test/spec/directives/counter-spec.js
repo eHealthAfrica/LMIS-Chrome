@@ -4,7 +4,7 @@ describe('Tests Counter Directive', function () {
   // Load the LMIS module
   beforeEach(module('lmisChromeApp'));
 
-  beforeEach(inject(function ($compile, $rootScope, $templateCache, $httpBackend) {
+  beforeEach(inject(function ($compile, $rootScope, $templateCache) {
     // Mock each template used by the state
     var templates = [
       'index',
@@ -17,9 +17,6 @@ describe('Tests Counter Directive', function () {
     angular.forEach(templates, function (template) {
       $templateCache.put('views/home/' + template + '.html', '');
     });
-
-    $httpBackend.whenGET('/locales/en.json').respond(200, {});
-    $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
 
     //create a scope
     scope = $rootScope.$new();

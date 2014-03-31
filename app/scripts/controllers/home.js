@@ -53,11 +53,9 @@ angular.module('lmisChromeApp')
       data: {
         label: 'Home'
       },
-      controller: function ($scope, $stateParams, $modal, $state, $translate, alertsFactory, notificationService) {
+      controller: function ($scope, $stateParams, $modal, $state, i18n, alertsFactory) {
         if ($stateParams.storageClear !== null) {
-          $translate('clearStorageMsg').then(function(msg){
-            alertsFactory.success(msg);
-          });
+          alertsFactory.success(i18n('clearStorageMsg'));
           $stateParams.storageClear = null;
         }
 
@@ -116,7 +114,7 @@ angular.module('lmisChromeApp')
       url: '',
       resolve: {
         keys: function(dashboardfactory) {
-          return dashboardfactory.keys();
+          return dashboardfactory.keys;
         }
       },
       views: {
@@ -152,7 +150,7 @@ angular.module('lmisChromeApp')
           return settingsService.load();
         }
       },
-      controller: function($scope, settings, settingsService, alertsFactory, $translate) {
+      controller: function($scope, settings, settingsService, alertsFactory, i18n) {
         var fields = ['facility', 'inventory'];
         for(var i = fields.length - 1; i >= 0; i--) {
           if(!(fields[i] in settings)) {
@@ -164,14 +162,10 @@ angular.module('lmisChromeApp')
         $scope.save = function(settings) {
           settingsService.save(settings)
             .then(function() {
-              $translate('settingsSaved').then(function(settingsSaved) {
-                alertsFactory.success(settingsSaved);
-              });
+              alertsFactory.success(i18n('settingsSaved'));
             })
             .catch(function() {
-              $translate('settingsFailed').then(function(settingsFailed) {
-                alertsFactory.danger(settingsFailed);
-              });
+              alertsFactory.success(i18n('settingsFailed'));
             });
         };
       }

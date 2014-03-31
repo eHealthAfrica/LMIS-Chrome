@@ -1,49 +1,29 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('dashboardfactory', function($q, $translate, inventoryRulesFactory) {
-    var keys = function() {
-      var keys = [
-        {
-          key: 'below',
-          color: 'red'
-        },
-        {
-          key: 'buffer',
-          color: 'yellow'
-        },
-        {
-          key: 'safety',
-          color: 'black'
-        },
-        {
-          key: 'max',
-          color: 'grey'
-        }
-      ];
-
-      var deferred = $q.defer();
-
-      var promises = [
-        $translate('belowBuffer'),
-        $translate('buffer'),
-        $translate('safetyStock'),
-        $translate('max')
-      ];
-
-      $q.all(promises)
-        .then(function(result) {
-          for(var i = result.length - 1; i >= 0; i--) {
-            keys[i].label = result[i];
-          }
-          deferred.resolve(keys);
-        })
-        .catch(function(reason) {
-          deferred.reject('Unable to translate chart keys, see: ' + reason);
-        });
-
-      return deferred.promise;
-    };
+  .factory('dashboardfactory', function(i18n, inventoryRulesFactory) {
+    var keys = [
+      {
+        key: 'below',
+        color: 'red',
+        label: i18n('belowBuffer')
+      },
+      {
+        key: 'buffer',
+        color: 'yellow',
+        label: i18n('buffer')
+      },
+      {
+        key: 'safety',
+        color: 'black',
+        label: i18n('safetyStock')
+      },
+      {
+        key: 'max',
+        color: 'grey',
+        label: i18n('max')
+      }
+    ];
 
     // Transposes chart values into nvd3 chart values format (an array of
     // [x, y] data points).

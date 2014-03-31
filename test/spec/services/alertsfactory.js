@@ -29,13 +29,6 @@ describe('Service: alertsFactory', function() {
     });
   };
 
-  var loadMockedLocales = function($httpBackend) {
-    var locales = ['en', 'en_GB'];
-    locales.forEach(function(locale) {
-      $httpBackend.whenGET('/locales/' + locale + '.json').respond(200, {});
-    });
-  };
-
   it('should attach an alerts array to the root scope', function() {
     expect(scope.alerts).toBeDefined();
     expect(scope.alerts.length).toEqual(0);
@@ -91,9 +84,8 @@ describe('Service: alertsFactory', function() {
     var ma = 'home.index.mainActivity',
         dash = 'home.index.dashboard.chart';
 
-    inject(function($templateCache, $state, $httpBackend) {
+    inject(function($templateCache, $state) {
       loadMockedTemplates($templateCache);
-      loadMockedLocales($httpBackend);
 
       scope.$apply(function() {
         $state.go(ma);
@@ -109,9 +101,8 @@ describe('Service: alertsFactory', function() {
   });
 
   it('should remove alerts after five seconds', function() {
-    inject(function($timeout, $templateCache, $httpBackend) {
+    inject(function($timeout, $templateCache) {
       loadMockedTemplates($templateCache);
-      loadMockedLocales($httpBackend);
       alertsFactory.info('');
       expect(scope.alerts.length).toEqual(1);
       $timeout.flush();
