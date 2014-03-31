@@ -9,15 +9,20 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     }
   }).state('appConfigStepOne', {
     url: '/app-config-step1',
-    templateUrl: '/views/app-config/wizard/select-facility.html',
+    templateUrl: '/views/app-config/wizard/initial-config.html',
     resolve: {
       facilities: function(facilityFactory){
         return facilityFactory.getAll();
       }
     },
-    controller: function(facilities, $scope){
+    controller: function(facilities, $scope, appConfigService){
+      $scope.stockCountIntervals = appConfigService.stockCountIntervals;
+      $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3;
       $scope.facilities = facilities;
-      $scope.showContactPersonForm = false;
+      $scope.currentStep = $scope.STEP_ONE; //set initial step
+      $scope.moveTo = function(step){
+        $scope.currentStep = step;
+      };
     },
     data: {
       label: 'Select facility'
