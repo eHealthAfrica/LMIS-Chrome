@@ -134,11 +134,11 @@ accordion .panel-heading:hover {
   text-transform: capitalize;
 }
 .counter-btn {
-   font-size: 34px;
-   padding: 14px 24px;
+   font-size: 25.5pt;
+   padding: 0.4em 0.8em;
 }
 .counter-input{
-  margin-top: 14px;
+  height: 4.3em;
 }
 input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
