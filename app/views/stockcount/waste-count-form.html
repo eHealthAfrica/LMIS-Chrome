@@ -93,7 +93,7 @@
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="row">
                   <!-- start form previous button -->
-                  <div class="col-xs-12 col-sm-4 ">
+                  <div class="col-xs-12 col-sm-3 ">
                     <div class="btn-separator">
                       <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default col-sm-12 col-xs-12"
                           ng-click="changeState(0)">
@@ -102,34 +102,34 @@
                     </div>
                   </div>
                   <!-- start form counter input -->
-                  <div class="col-sm-4 col-xs-12">
+                  <div class="col-sm-3 col-xs-12">
                     <div class="btn-separator">
                       <counter bind="wasteCount.discarded[productKey]"></counter>
                     </div>
+                    <div ng-show="productError" class="custom-error text-center" >{{ productErrorMsg }}</div>
                   </div>
                   <!-- reasons for wastage -->
-                  <!--
                   <div class="col-sm-3 col-xs-12">
                     <div class="btn-separator">
-                      <div class="btn-group lmis-block" ng-class="{open: open}">
-                        <button type="button" ng-click="open=!open" class="btn btn-lg col-xs-9">Select Reason</button>
-                        <button type="button" class="btn btn-lg dropdown-toggle col-xs-3" ng-click="open=!open">
-                          <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu w-menu">
+                      <div ng-class="{open: open}">
+                        <div class="form-group has-feedback" ng-class="{'has-error': reasonError}">
+                          <button type="button" ng-click="open=!open" class="form-control input-lg">Select Reason</button>
+                          <span ng-hide="reasonError" id="wasteCountReason-1" class="fa fa-caret-down fa-lg form-control-feedback"></span>
+                          <span ng-show="reasonError" id="wasteCountReason-2" class="fa fa-times fa-lg form-control-feedback"></span>
+                        </div>
 
-                          <li ng-repeat="(key, value) in discardedReasons">
-                            {{ value }}  <input ng-true-value="{{ key }}"
-                                                ng-model="wastageCount.reason[productKey][key]
-                            " type="checkbox">
+                        <ul class="dropdown-menu w-menu">
+                          <li ng-repeat="reason in discardedReasons">
+                            <label for="wasteCount.reason[productKey][$index]">{{ reason }}</label><br>
+                            <input id="wasteCount.reason[productKey][$index]" ng-model="wasteCount.reason[productKey][$index]" ng-change="checkInput($index)" type="number">
                           </li>
                         </ul>
                         <div class="clearfix"></div>
                       </div>
                     </div>
-                  </div> -->
+                  </div>
                   <!-- start form next button -->
-                  <div class="col-sm-4 col-xs-12">
+                  <div class="col-sm-3 col-xs-12">
                     <div class="btn-separator">
                       <button type="button" ng-hide="step === maxStep"
                               class="btn btn-lg btn-success col-sm-12 col-xs-12"
@@ -139,7 +139,7 @@
                     </div>
                   </div>
                   <!-- this button is shown when we get tp the end of the list -->
-                  <div class="col-sm-4 col-xs-12">
+                  <div class="col-sm-3 col-xs-12">
                     <button type="button" ng-show="step === maxStep"
                             class="btn btn-lg btn-success col-sm-12 col-xs-12"
                             ng-click="changeState(2)">
@@ -171,8 +171,7 @@
                   <thead>
                   <tr>
                     <th>Stock Item</th>
-                    <th>Todays Count</th>
-                    <!--th>Confirm</th-->
+                    <th>Today's Count</th>
                   </tr>
                   </thead>
                   <tbody>
