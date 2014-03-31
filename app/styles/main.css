@@ -133,6 +133,11 @@ accordion .panel-heading:hover {
 .text-capitalize {
   text-transform: capitalize;
 }
+@media (min-width: 768px) {
+  .navbar-nav > li > a:last-child {
+    padding-right: 0
+  }
+}
 .counter-btn {
    font-size: 25.5pt;
    padding: 0.4em 0.8em;
