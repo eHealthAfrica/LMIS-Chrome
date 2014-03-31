@@ -2,21 +2,26 @@
 
 describe('Home controller', function () {
   // Load the controller's module
-  beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks'));
+  beforeEach(module('lmisChromeApp'));
 
   // Initialize the state
   beforeEach(inject(function($templateCache) {
     // Mock each template used by the state
     var templates = [
-      'index',
-      'nav',
-      'sidebar',
-      'control-panel',
-      'main-activity'
+      'index/index',
+      'index/header',
+      'index/breadcrumbs',
+      'index/alerts',
+      'index/footer',
+      'home/index',
+      'home/nav',
+      'home/sidebar',
+      'home/control-panel',
+      'home/main-activity'
     ];
 
     angular.forEach(templates, function(template) {
-      $templateCache.put('views/home/' + template + '.html', '');
+      $templateCache.put('views/' + template + '.html', '');
     });
   }));
 

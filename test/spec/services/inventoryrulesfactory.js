@@ -5,7 +5,6 @@ describe('Service: inventoryRulesFactory', function() {
   // load the service's module
   beforeEach(module(
     'lmisChromeApp',
-    'lmisChromeAppMocks',
     'ordersMocks',
     'facilitiesMocks',
     'settingsMocks',

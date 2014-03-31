@@ -3,7 +3,7 @@
 describe('Service: alertsFactory', function() {
 
   // load the service's module
-  beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks'));
+  beforeEach(module('lmisChromeApp'));
 
   // instantiate service
   var alertsFactory, scope;
@@ -14,18 +14,23 @@ describe('Service: alertsFactory', function() {
 
   var loadMockedTemplates = function($templateCache) {
     var templates = [
-      'index',
-      'nav',
-      'sidebar',
-      'control-panel',
-      'dashboard',
-      'dashboard/chart',
-      'dashboard/table',
-      'main-activity'
+      'index/index',
+      'index/header',
+      'index/breadcrumbs',
+      'index/alerts',
+      'index/footer',
+      'home/index',
+      'home/nav',
+      'home/sidebar',
+      'home/control-panel',
+      'home/dashboard',
+      'home/dashboard/chart',
+      'home/dashboard/table',
+      'home/main-activity'
     ];
 
     templates.forEach(function(template) {
-      $templateCache.put('views/home/' + template + '.html', '');
+      $templateCache.put('views/' + template + '.html', '');
     });
   };
 
