@@ -151,13 +151,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-/*
- * Landing page controller
- */
 
-  .controller('StockCountCtrl', function($scope, $stateParams, stockCountFactory, appConfig) {
-
-  })
 
 /*
  * Wastage Count Controller
