@@ -45,4 +45,20 @@ angular.module('seriesMocks', [])
       safety: 272,
       _max: 1200
     }
-  ]);
+  ])
+  .value('$window', {
+    chrome: {
+      storage: {
+        local: {
+          get: function() {},
+          set: function() {},
+          clear: function() {},
+          remove: function() {}
+        }
+      },
+      i18n: {
+        getMessage: function() {}
+      },
+    },
+    addEventListener: function() {}
+  });

@@ -5,7 +5,7 @@ describe('Service: dashboardfactory', function() {
   // load the service's module
   beforeEach(module('lmisChromeApp', 'seriesMocks'));
 
-  beforeEach(inject(function($templateCache, $httpBackend) {
+  beforeEach(inject(function($templateCache) {
     // Mock each template used by the state
     var templates = [
       'index',
@@ -19,8 +19,6 @@ describe('Service: dashboardfactory', function() {
       $templateCache.put('views/home/' + template + '.html', '');
     });
 
-    $httpBackend.whenGET('/locales/en.json').respond(200, {});
-    $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
   }));
 
   // instantiate service
@@ -34,20 +32,10 @@ describe('Service: dashboardfactory', function() {
   }));
 
   it('should plot the required keys', function() {
-    var required = ['below', 'buffer', 'safety', 'max'], keysMock = {};
-    required.forEach(function(key) {
-      keysMock[key] = {};
-    });
-
-    var deferred = $q.defer();
-    deferred.resolve(keysMock);
-    spyOn(dashboardfactory, 'keys').andReturn(deferred.promise);
-
-    $rootScope.$apply(function() {
-      dashboardfactory.keys().then(function(result) {
-        expect(result).toBe(keysMock);
-      });
-    });
+    var required = ['below', 'buffer', 'safety', 'max'];
+    var result = dashboardfactory.keys;
+    result = result.map(function(e) { return e.key; });
+    expect(result).toEqual(required);
   });
 
   it('should create an nvd3 formatted series object', function() {

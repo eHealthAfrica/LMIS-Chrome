@@ -3,12 +3,12 @@
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only" translate="toggleNavigation"></span>
+          <span class="sr-only" i18n="toggleNavigation"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a ui-sref="home.index.mainActivity" class="navbar-brand" translate="appName"></a>
+        <a ui-sref="home.index.mainActivity" class="navbar-brand" i18n="appName"></a>
       </div>
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
@@ -16,7 +16,7 @@
             <a>
               <span class="label"
                 ng-class="{'label-success': online, 'label-danger': !online}"
-                ng-bind="online ? ('online' | translate) : ('offline' | translate)">
+                ng-bind="online ? ('online' | i18n) : ('offline' | i18n)">
               </span>
             </a>
           </li>

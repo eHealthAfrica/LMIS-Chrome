@@ -14,28 +14,28 @@
                 <div class="col-sm-12">
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label translate="sendingFacility"></label>
+                      <label i18n="sendingFacility"></label>
                       <span class="new-line" ng-bind="(inventory.sendingFacilityObj).name"></span>
                     </div>
                   </div>
 
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label translate="receivingFacility"></label>
+                      <label i18n="receivingFacility"></label>
                       <span class="new-line" ng-bind="(inventory.receiving_facility).name"></span>
                     </div>
                   </div>
 
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label translate="bundleNo"></label>
+                      <label i18n="bundleNo"></label>
                       <span class="new-line" ng-bind="inventory.bundle_no"></span>
                     </div>
                   </div>
 
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label translate="dateReceived"></label>
+                      <label i18n="dateReceived"></label>
                       <span class="new-line" ng-bind="(inventory.date_receipt | date: 'dd MMMM, yyyy')"></span>
                     </div>
                   </div>
@@ -73,7 +73,7 @@
 
           <div class="col-md-4 pull-right">
             <button type="button" ng-click="confirm()" id="confirm" name="confirm" class="btn btn-success">
-              <span translate="confirm"></span>
+              <span i18n="confirm"></span>
             </button>
           </div>
         </div>

@@ -10,6 +10,9 @@ angular.module('lmisChromeAppMocks', [])
           clear: function() {},
           remove: function() {}
         }
+      },
+      i18n: {
+        getMessage: function() {}
       }
     },
     addEventListener: function() {}

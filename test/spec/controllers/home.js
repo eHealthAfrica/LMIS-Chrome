@@ -5,7 +5,7 @@ describe('Home controller', function () {
   beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks'));
 
   // Initialize the state
-  beforeEach(inject(function($templateCache, $httpBackend) {
+  beforeEach(inject(function($templateCache) {
     // Mock each template used by the state
     var templates = [
       'index',
@@ -18,9 +18,6 @@ describe('Home controller', function () {
     angular.forEach(templates, function(template) {
       $templateCache.put('views/home/' + template + '.html', '');
     });
-
-    $httpBackend.whenGET('/locales/en.json').respond(200, {});
-    $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
   }));
 
   var $rootScope, $state;
