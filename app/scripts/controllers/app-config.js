@@ -3,6 +3,7 @@
 angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider.state('appConfig', {
     url: '/app-config',
+    parent: 'root.index',
     templateUrl: '/views/app-config/configuration.html',
     resolve: {
       appConfig: function(appConfigService){
