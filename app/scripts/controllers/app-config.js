@@ -5,7 +5,22 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     url: '/app-config-welcome',
     templateUrl: '/views/app-config/welcome-page.html',
     data: {
-      label: 'App Configuration'
+      label: 'Welcome'
+    }
+  }).state('appConfigStepOne', {
+    url: '/app-config-step1',
+    templateUrl: '/views/app-config/wizard/select-facility.html',
+    resolve: {
+      facilities: function(facilityFactory){
+        return facilityFactory.getAll();
+      }
+    },
+    controller: function(facilities, $scope){
+      $scope.facilities = facilities;
+      $scope.showContactPersonForm = false;
+    },
+    data: {
+      label: 'Select facility'
     }
   })
 }).controller('AppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log, i18n, $state, appConfig) {

@@ -25,7 +25,8 @@
 <div ng-include="'views/partials/header.html'"></div>
 
 <section class="container">
-  <tv-breadcrumbs ng-hide="$state.includes('home') || $state.includes('appConfigWelcome')"
+  <tv-breadcrumbs ng-hide="$state.includes('home') || $state.includes('appConfigWelcome')
+    || $state.includes('appConfigStepOne')"
     home="home.index.mainActivity">
   </tv-breadcrumbs>
 

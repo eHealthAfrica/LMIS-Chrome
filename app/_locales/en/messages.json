@@ -388,5 +388,8 @@
   },
   "welcomeMsgBody": {
     "message": "Please, take a few minutes to tell us about your facility."
+  },
+  "facilityInfo": {
+    "message": "Facility info."
   }
 }
