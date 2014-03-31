@@ -25,7 +25,7 @@ describe('StockCountStepsFormCtrl', function(){
       $scope: scope,
       $state: state,
       stockCountFactory:_stockCountFactory_,
-      appConfig:_currentFacility_,
+      currentFacility:_currentFacility_,
       productType:_productType_
     });
   }));

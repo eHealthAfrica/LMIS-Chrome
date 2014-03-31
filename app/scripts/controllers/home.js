@@ -9,20 +9,20 @@ angular.module('lmisChromeApp')
       abstract: true,
       templateUrl: 'views/home/index.html',
       resolve: {
-        appConfig: function(appConfigService){
-          return appConfigService.load();
+        currentFacility: function (facilityFactory) {
+          return facilityFactory.getCurrentFacility();
+        },
+        facilityLocation: function (currentFacility, locationsFactory) {
+          return locationsFactory.get(currentFacility.location);
         },
         todayStockCount: function (stockCountFactory) {
           var today = new Date();
           return stockCountFactory.getStockCountByDate(today);
         }
       },
-      controller: function($scope, appConfig, todayStockCount, $state) {
-        if(appConfig === undefined){
-          $state.go('appConfig');
-          return;
-        }
-        $scope.facility = appConfig.appFacility.name;
+      controller: function($scope, currentFacility, facilityLocation, todayStockCount) {
+        $scope.facility = currentFacility.name + ' (' +
+          facilityLocation.name + ')';
         $scope.hasPendingStockCount = (todayStockCount === null);
       }
     })
@@ -48,22 +48,19 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.mainActivity', {
-      url: '/main-activity?appConfigResult&stockResult&storageClear',
+      url: '/main-activity?orderNo&stockResult',
       templateUrl: 'views/home/main-activity.html',
       data: {
         label: 'Home'
       },
       controller: function ($scope, $stateParams, $modal, $state, $translate, alertsFactory) {
-        if ($stateParams.storageClear !== null) {
-          $translate('clearStorageMsg').then(function(msg){
-            alertsFactory.success(msg);
-          });
-          $stateParams.storageClear = null;
-        }
 
-        if ($stateParams.appConfigResult !== null) {
-          alertsFactory.success($stateParams.appConfigResult);
-          $stateParams.appConfigResult = null;
+        if ($stateParams.orderNo !== null) {
+          $stateParams.orderNo = null;
+          $translate('orderPlacedSuccess', {orderNo: $stateParams.orderNo})
+            .then(function (msg) {
+              alertsFactory.success(msg);
+            });
         }
 
         if($stateParams.stockResult !== null){
@@ -91,9 +88,9 @@ angular.module('lmisChromeApp')
         settings: function(settingsService) {
           return settingsService.load();
         },
-        aggregatedInventory: function($q, $log, appConfig, inventoryFactory, dashboardfactory, settings) {
-          var currentFacility = appConfig.appFacility;
+        aggregatedInventory: function($q, $log, currentFacility, inventoryFactory, dashboardfactory, settings) {
           var deferred = $q.defer();
+
           inventoryFactory.getFacilityInventory(currentFacility.uuid)
             .then(function(inventory) {
               var values = dashboardfactory.aggregateInventory(inventory, settings);
@@ -187,8 +184,7 @@ angular.module('lmisChromeApp')
       url: '/inventory',
       templateUrl: 'views/home/settings/inventory.html',
       resolve: {
-        products: function(appConfig, inventoryFactory) {
-          var currentFacility = appConfig.appFacility;
+        products: function(currentFacility, inventoryFactory) {
           return inventoryFactory.getUniqueProducts(currentFacility.uuid);
         }
       },

@@ -44,7 +44,8 @@ angular.module('lmisChromeApp')
       var bundleReceiptLines = 'bundle_receipt_lines';
       var locations = 'locations';
       var stockCount = 'stockCount';
-      var appConfig = 'app_config';
+
+
 
       /**
        * Add new table to the chrome store.
@@ -415,8 +416,7 @@ angular.module('lmisChromeApp')
         BUNDLE_RECEIPT: bundleReceipt,
         BUNDLE_RECEIPT_LINES: bundleReceiptLines,
         LOCATIONS: locations,
-        STOCK_COUNT: stockCount,
-        APP_CONFIG: appConfig
+        STOCK_COUNT: stockCount
       };
 
     });

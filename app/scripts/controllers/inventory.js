@@ -8,8 +8,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       label: "Inventory List"
     },
     resolve: {
-      appConfig: function (appConfigService) {
-        return appConfigService.load();
+      currentFacility: function (facilityFactory) {
+        return facilityFactory.getCurrentFacility();
       }
     }
   })
@@ -33,8 +33,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           facilities: function (facilityFactory) {
             return facilityFactory.getAll();
           },
-          appConfig: function (appConfigService) {
-            return appConfigService.load();
+          currentFacility: function (facilityFactory) {
+            return facilityFactory.getCurrentFacility();
           },
           currentFacilityStorageUnits: function (storageUnitFactory) {
             return storageUnitFactory.getStorageUnitsByCurrentFacility();
@@ -45,13 +45,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 /**
  * Controller for showing inventory
  */
-    .controller('InventoryListCtrl', function ($rootScope, $stateParams, $scope, appConfig, inventoryFactory, $filter, ngTableParams, visualMarkerService) {
+    .controller('InventoryListCtrl', function ($rootScope, $stateParams, $scope, currentFacility, inventoryFactory, $filter, ngTableParams, visualMarkerService) {
 
       $scope.highlight = visualMarkerService.highlightByExpirationStatus;
-      $scope.currentFacility = appConfig.appFacility;
-      inventoryFactory.getFacilityInventory($scope.currentFacility.uuid).then(function (inventoryItems) {
+      $scope.currentFacility = currentFacility;
+      inventoryFactory.getFacilityInventory(currentFacility.uuid).then(function (inventoryItems) {
         $scope.totalItems = inventoryItems.length;
-        console.log('hey here -- ' + inventoryItems);
+        console.log('hey here -- '+inventoryItems);
 
         // Table defaults
         var params = {
@@ -89,14 +89,14 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return (toString.call(inventoryLine.batch) === '[object Object]')
             ? inventoryLine.batch.product : inventoryLine.product_type;
       }
-    }, function (error) {
+    }, function(error){
       console.log(error);
     })
 /**
  * addInventoryCtrl is the controller used to manually add bundles that don't exist already on the local storage
  * to the inventory upon arrival.
  */
-    .controller('AddNewInventoryCtrl', function ($q, $scope, $filter, $stateParams, appConfig, storageService, $state, inventoryFactory, productTypes, programs, uomList, facilities, batchFactory, currentFacilityStorageUnits, $translate) {
+    .controller('AddNewInventoryCtrl', function ($q, $scope, $filter, $stateParams, currentFacility, storageService, $state, inventoryFactory, productTypes, programs, uomList, facilities, batchFactory, currentFacilityStorageUnits, $translate) {
 
       //used to hold form data
       var id = 0;
@@ -113,7 +113,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.programs = programs;
       $scope.uomList = uomList;
       $scope.facilities = facilities;
-      $scope.inventory.receiving_facility = appConfig.appFacility;
+      $scope.inventory.receiving_facility = currentFacility;
       $scope.receivingFacilityStorageUnits = currentFacilityStorageUnits;
 
       $scope.loadProductTypeBatches = function (inventoryLine) {

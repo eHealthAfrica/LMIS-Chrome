@@ -12,7 +12,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           label: 'Place order'
         },
         resolve: {
-          appConfig: function (facilityFactory) {
+          currentFacility: function (facilityFactory) {
             return facilityFactory.getCurrentFacility();
           },
           uomList: function (storageService) {

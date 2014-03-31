@@ -143,7 +143,7 @@ module.exports = function(grunt) {
           'bower_components/moment/moment.js',
           'ng-table',
           'angularjs-nvd3-directives',
-          'bower_components/pouchdb/dist/pouchdb-nightly.js'
+          'bower_components/pouchdb/index.js'
         ]
       }
     },

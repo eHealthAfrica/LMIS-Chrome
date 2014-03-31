@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('facilityFactory', function ($q, $rootScope, storageService, appConfigService) {
+angular.module('lmisChromeApp').factory('facilityFactory', function ($q, $rootScope, storageService) {
 
   /**
    * This returns facility object of a given facility uuid.
@@ -49,9 +49,25 @@ angular.module('lmisChromeApp').factory('facilityFactory', function ($q, $rootSc
     return deferred.promise;
   };
 
+  /**
+   * This return facility facility of logged in user.
+   *
+   * @returns {promise|promise|*|Function|promise}
+   */
+  var getCurrentFacility = function () {
+    //TODO: replace with facility of current logged in user when we have the
+    //session and authentication working.
+    var deferred = $q.defer();
+    getByUUID('d48a39fb-6d37-4472-9983-bc0720403719').then(function (data) {
+      deferred.resolve(data);
+    });
+    return deferred.promise;
+  };
+
   // Public API here
   return {
     getAll: getAllFacilities,
-    get: getByUUID
+    get: getByUUID,
+    getCurrentFacility: getCurrentFacility
   };
 });

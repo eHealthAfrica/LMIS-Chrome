@@ -62,8 +62,8 @@ describe('storageService', function () {
     storageService.get('key').then(function(value){
       resolvedValue = value;
     });
-    //FIXME: this doesnt test if what storageService returns rootScope.$apply();
-    //expect(resolvedValue).toEqual('resolvedData');
+    rootScope.$apply();
+    expect(resolvedValue).toEqual('resolvedData');
   });
 
   it('should be able to get all data from the chrome storage', function(){
@@ -78,8 +78,8 @@ describe('storageService', function () {
     storageService.getAll().then(function(value){
       resolvedValue = value;
     });
-    //FIXME: this doesnt test if what storageService returns rootScope.$apply();
-    //expect(resolvedValue).toEqual('resolvedData');
+    rootScope.$apply();
+    expect(resolvedValue).toEqual('resolvedData');
   });
 
   it('should be able to remove table from the chrome storage', function(){

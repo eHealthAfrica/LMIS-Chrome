@@ -5,14 +5,15 @@ describe('chromeStorageApi', function () {
 
   beforeEach(module('lmisChromeApp', 'chromeStorageMock'));
 
-  beforeEach(function(){
-      $window._storageMock = {a:'b', c:'d'};
-  });
-
   beforeEach(inject(function (_chromeStorageApi_,_$window_) {
     chromeStorageApi = _chromeStorageApi_;
     $window = _$window_;
   }));
+
+  beforeEach(function(){
+      chromeStorageApi.set({a:'b', c:'d'});
+  });
+
 
   it('should be able to set data to the storage', function() {
       chromeStorageApi.set({e:'f'});

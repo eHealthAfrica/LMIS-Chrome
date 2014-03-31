@@ -405,7 +405,6 @@ angular.module('lmisChromeApp')
        /*
        *
        */
-      //TODO: use utility service function
       readableName: function(name) {
         return name.replace(/\-/g,' - ').replace(/([0-9])([a-zA-Z])/g,'$1 $2').replace(/([a-z][a-z])([A-Z])/g,'$1 $2');
       },
@@ -435,7 +434,6 @@ angular.module('lmisChromeApp')
        *
        */
       timezone: function(){
-        //FIXME: use utility service function
         //TODO: this needs to be a global function with better timezone calculation
         //TODO: ref https://bitbucket.org/pellepim/jstimezonedetect
         var tz = new Date().getTimezoneOffset()/60;
