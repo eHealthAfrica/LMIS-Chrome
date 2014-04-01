@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Service stockCountFactory', function(){
-  beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks', 'stockCountMocks'));
+  beforeEach(module('lmisChromeApp', 'stockCountMocks'));
 
   var stockCountFactory,
       stockCount,

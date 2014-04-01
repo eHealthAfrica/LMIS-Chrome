@@ -5,7 +5,7 @@ angular.module('lmisChromeApp')
     // Initial state
     $urlRouterProvider.otherwise('/main-activity');
     $stateProvider.state('home', {
-      url: '',
+      parent: 'root.index',
       abstract: true,
       templateUrl: 'views/home/index.html',
       resolve: {

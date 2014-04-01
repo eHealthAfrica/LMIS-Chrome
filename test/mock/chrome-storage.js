@@ -24,7 +24,6 @@ angular.module('chromeStorageMock', []).factory('$window', function(){
                     }
                 }
             }
-        },
-        addEventListener: function () { }
+        }
     };
 });
