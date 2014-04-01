@@ -133,64 +133,56 @@ angular.module('lmisChromeApp')
           return datetime;
         }
 
-      /**
-       * Get list of tables from the chrome storage.
-       *
-       * @return {array} array list of tables in local storage.
-       * @private
-       */
-        function getTables() {
+        /**
+         * Insert new database table row.
+         *
+         * @return {promise}
+         */
+        function insertTableData(table, data) {
           var deferred = $q.defer();
-          getAllFromStore().then(function (data) {
-            var tbl = Object.keys(data);
-            deferred.resolve(tbl);
-          });
+          var table_data = {};
+          data['uuid'] = uuidGenerator();
+          data['created'] = data['modified'] = getDateTime();
+          table_data[data['uuid']] = data;
+          addTable(table, table_data);
+          deferred.resolve(data.uuid);
+
           return deferred.promise;
         }
 
-      /**
-       * Add new or update database table row.
-       *
-       * @return {promise} promise to access data from local storage.
-       * @private
-       */
-        function insert(table, obj) {
+        /**
+         *  Update database table row.
+         *
+         * @return {promise}
+         */
+
+        function updateTableData(table, data) {
           var deferred = $q.defer();
-          //get list of existing tables in database. if table exist
-          getTables().then(function (tables) {
-            if (tables.indexOf(table) != -1) {
-              getTable(table).then(function (table_data) {
+          var table_data = {};
+          data['modified'] = getDateTime();
+          table_data[data['uuid']] = data;
+          addTable(table, table_data);
+          deferred.resolve(data.uuid);
 
-                if (Object.prototype.toString.call(table_data) == '[object Object]') {
-                  var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
-                  obj['created'] = (uuid_test) ? obj['created'] : getDateTime();
-                  obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00' : getDateTime();
-                  var uuid = (uuid_test) ? obj['uuid'] : uuid_generator();
-                  obj['uuid'] = uuid;
-                  table_data[uuid] = obj;
-                  addTable(table, table_data);
-                  deferred.resolve(uuid);
-                }
-                else {
-                  deferred.resolve(null);
-                  console.log(table_data);
-                }
-              });
-            }
-            else {
-
-              var table_data = {};
-              obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1) ? obj['uuid'] : uuid_generator();
-              obj['created'] = getDateTime();
-              obj['modified'] = '0000-00-00 00:00:00';
-              table_data[obj['uuid']] = obj;
-              addTable(table, table_data);
-              deferred.resolve(obj.uuid);
-              //console.log("new entry");
-            }
-          });
-          if (!$rootScope.$$phase) $rootScope.$apply();
           return deferred.promise;
+        }
+
+        /**
+         *  Encapsulates insert/update database table row operations.
+         *
+         * @return {promise}
+         */
+
+        function saveTableData(table, data) {
+          var promise = null;
+          if((typeof data === "object") && (data !== null)){
+            if(Object.keys(data).indexOf('uuid') !== -1){
+              promise = updateTableData(table, data);
+            } else {
+              promise = insertTableData(table, data);
+            }
+          }
+          return promise;
         }
 
       /**
@@ -296,7 +288,7 @@ angular.module('lmisChromeApp')
         return deferred.promise;
       }
 
-      function uuid_generator() {
+      function uuidGenerator() {
         var now = Date.now();
         var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
           var r = (now + Math.random() * 16) % 16 | 0;
@@ -351,7 +343,7 @@ angular.module('lmisChromeApp')
           for(var index in batches){
             var batch = batches[index];
             var hasUUID = batch.hasOwnProperty('uuid');
-            batch['uuid'] = hasUUID? batch['uuid'] : uuid_generator();
+            batch['uuid'] = hasUUID? batch['uuid'] : uuidGenerator();
             batch['created'] = hasUUID? batch['created'] : getDateTime();
             batch['modified'] = hasUUID? '0000-00-00 00:00:00' : getDateTime();
             tableData[batch.uuid] = batch;
@@ -377,10 +369,12 @@ angular.module('lmisChromeApp')
         getAll: getAllFromStore,
         remove: removeTable, // removeFromChrome,
         clear: clearFromStore, // clearChrome */
-        uuid: uuid_generator,
+        uuid: uuidGenerator,
         loadFixtures: loadFixtures,
         loadTableObject: loadRelatedObject,
-        insert: insert,
+        insert: insertTableData,
+        update: updateTableData,
+        save: saveTableData,
         find: getFromTableByKey,
         insertBatch: insertBatch,
         PRODUCT_TYPES: productTypes,

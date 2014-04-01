@@ -21,7 +21,7 @@ angular.module('lmisChromeApp')
 
     $scope.saveProgram = function() {
       if (Object.keys($scope.program).length > 0) {
-        storageService.insert(storageService.PROGRAM, $scope.program).then(
+        storageService.save(storageService.PROGRAM, $scope.program).then(
           function() {
             var msg = ($scope.uuid) ? {
               message: 'Program update was successful'
@@ -106,7 +106,7 @@ angular.module('lmisChromeApp')
 
     $scope.saveProgramProduct = function() {
       if (Object.keys($scope.program_product).length > 0) {
-        storageService.insert(storageService.PROGRAM_PRODUCTS, $scope.program_product)
+        storageService.save(storageService.PROGRAM_PRODUCTS, $scope.program_product)
           .then(function() {
             var msg = ($scope.uuid) ? {
               message: 'Program update was successful'
