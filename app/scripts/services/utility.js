@@ -20,4 +20,22 @@ angular.module('lmisChromeApp').service('utility', function ($q, storageService)
     var tz = new Date().getTimezoneOffset() / 60;
     return (tz < 0) ? parseInt('+' + Math.abs(tz)) : parseInt('-' + Math.abs(tz));
   }
+
+  /**
+   *
+   * @param array
+   * @param id will be the object key
+   * @returns {{}}
+   */
+
+  this.castArrayToObject = function(array, id){
+    var newObject = {};
+    if(toString.call(array) === '[object Array]'){
+
+      for(var i; i < array.length; i++){
+        newObject[array[i][id]] = array[i];
+      }
+    }
+    return newObject;
+  }
 });
