@@ -212,7 +212,7 @@ angular.module('lmisChromeApp')
        *
        */
       currentProductObject: function(productObject, index){
-        var productKey =  Object.keys(productObject)[index];
+        var productKey =  (Object.keys(productObject))[index];
         return productObject[productKey];
       },
        /*
