@@ -41,4 +41,5 @@ describe('StockCountStepsFormCtrl', function(){
     scope.edit(1);
     expect(scope.step).toEqual(1);
   });
+  */
 });
