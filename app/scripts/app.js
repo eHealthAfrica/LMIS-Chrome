@@ -1,9 +1,6 @@
 'use strict';
 
 angular.module('lmisChromeApp', [
-  'ngResource',
-  'ngSanitize',
-  'ngCookies',
   'ui.bootstrap',
   'ui.router',
   'tv.breadcrumbs',
