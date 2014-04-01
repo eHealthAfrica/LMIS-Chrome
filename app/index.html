@@ -21,24 +21,7 @@
   <!-- endbuild -->
 </head>
 <body>
-
 <div ui-view></div>
-
-<section class="container">
-  <tv-breadcrumbs ng-hide="$state.includes('home') || $state.includes('appConfigWelcome')
-    || $state.includes('appConfigWizard')"
-    home="home.index.mainActivity">
-  </tv-breadcrumbs>
-
-  <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">
-    <span ng-bind="alert.message"></span>
-  </alert>
-
-  <div ui-view></div>
-</section>
-
-<div ng-include="'views/partials/footer.html'"></div>
-
 <!-- build:js scripts/vendor.js -->
 <!-- bower:js -->
 <script src="bower_components/angular/angular.js"></script>
