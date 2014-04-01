@@ -10,7 +10,7 @@ describe('StockCountStepsFormCtrl', function(){
   var currentFacilityMock = {};
   var productTypeMock = {};
 
-  beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks', function($provide){
+  beforeEach(module('lmisChromeApp', 'stockCountMocks', function($provide){
     $provide.value('currentFacility', currentFacilityMock);
     $provide.value('productType', productTypeMock);
   }));

@@ -58,7 +58,6 @@ angular.module('seriesMocks', [])
       },
       i18n: {
         getMessage: function() {}
-      },
-    },
-    addEventListener: function() {}
+      }
+    }
   });

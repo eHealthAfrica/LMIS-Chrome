@@ -22,21 +22,7 @@
 </head>
 <body>
 
-<div ng-include="'views/partials/header.html'"></div>
-
-<section class="container">
-  <tv-breadcrumbs ng-hide="$state.includes('home')"
-    home="home.index.mainActivity">
-  </tv-breadcrumbs>
-
-  <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">
-    <span ng-bind="alert.message"></span>
-  </alert>
-
-  <div ui-view></div>
-</section>
-
-<div ng-include="'views/partials/footer.html'"></div>
+<div ui-view></div>
 
 <!-- build:js scripts/vendor.js -->
 <!-- bower:js -->
@@ -60,7 +46,6 @@
 <script src="scripts/app.js"></script>
 <script src="scripts/config.js"></script>
 <script src="scripts/controllers/home.js"></script>
-<script src="scripts/controllers/footer.js"></script>
 <script src="scripts/controllers/stockcount.js"></script>
 <script src="scripts/controllers/counter-sample.js"></script>
 <script src="scripts/controllers/app-config.js"></script>
@@ -72,6 +57,7 @@
 <script src="scripts/controllers/batches.js"></script>
 <script src="scripts/controllers/bundle.js"></script>
 <script src="scripts/controllers/clear-storage.js"></script>
+<script src="scripts/controllers/index.js"></script>
 <script src="scripts/services/notification-service.js"></script>
 <script src="scripts/services/chrome-storage-api.js"></script>
 <script src="scripts/services/storage-service.js"></script>
