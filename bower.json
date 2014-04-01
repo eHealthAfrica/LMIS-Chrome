@@ -29,8 +29,5 @@
     "africa"
   ],
   "license": "ISC",
-  "private": true,
-  "resolutions": {
-    "angular": "1.2.14"
-  }
+  "private": true
 }
