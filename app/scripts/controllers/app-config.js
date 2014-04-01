@@ -3,12 +3,14 @@
 angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider.state('appConfigWelcome', {
     url: '/app-config-welcome',
+    parent: 'root.index',
     templateUrl: '/views/app-config/welcome-page.html',
     data: {
       label: 'Welcome'
     }
   }).state('appConfigWizard', {
     url: '/app-config-wizard',
+    parent: 'root.index',
     templateUrl: '/views/app-config/wizard/initial-config.html',
     resolve: {
       facilities: function(facilityFactory){
@@ -24,6 +26,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     }
   }).state('editAppConfig', {
     url: '/edit-app-config',
+    parent: 'root.index',
     templateUrl: '/views/app-config/configuration.html',
     resolve: {
       facilities: function(facilityFactory){
