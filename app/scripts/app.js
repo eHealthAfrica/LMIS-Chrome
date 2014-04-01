@@ -7,7 +7,6 @@ angular.module('lmisChromeApp', [
   'ui.bootstrap',
   'ui.router',
   'tv.breadcrumbs',
-  'toggle-switch',
   'pouchdb',
   'config'
 ])

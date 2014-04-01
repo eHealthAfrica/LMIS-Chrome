@@ -12,7 +12,6 @@
     "angular-ui-router": "0.2.8-bowratic-tedium",
     "tv-breadcrumbs": "~0.1.1",
     "bootstrap-css-only": "~3.1.0",
-    "angular-toggle-switch": "~0.3.0",
     "d3": "~3.4.3",
     "nvd3": "~1.1.15-beta",
     "angularjs-nvd3-directives": "~0.0.5-beta",
