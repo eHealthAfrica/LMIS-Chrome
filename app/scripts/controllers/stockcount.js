@@ -3,19 +3,6 @@
 angular.module('lmisChromeApp')
   .config(function($stateProvider) {
     $stateProvider
-      .state('stockCountIndex', {
-        data:{
-          label:'Stock Count'
-        },
-        url:'/stockCountIndex?facility&reportMonth&reportYear',
-        templateUrl: 'views/stockcount/index.html',
-        controller:'StockCountCtrl',
-        resolve:{
-          appConfig: function(appConfigService){
-            return appConfigService.load();
-          }
-        }
-      })
       .state('stockCountStepForm', {
         parent: 'root.index',
         data:{
@@ -34,6 +21,7 @@ angular.module('lmisChromeApp')
         }
       })
       .state('wasteCountForm', {
+        parent: 'root.index',
         data:{
           label:'Waste Count Form'
         },
@@ -343,11 +331,12 @@ angular.module('lmisChromeApp')
     $scope.stockCount.countDate = '';
     $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
     $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
-    $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
+    $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
+    $scope.productKey = $scope.facilityProductsKeys[$scope.step];
 
     //set maximum steps
-    if($scope.facilityProducts.length>0){
-      $scope.maxStep =  $scope.facilityProducts.length-1;
+    if($scope.facilityProductsKeys.length>0){
+      $scope.maxStep =  $scope.facilityProductsKeys.length-1;
     }
     else{
       $scope.maxStep =0;
@@ -355,7 +344,7 @@ angular.module('lmisChromeApp')
 
     $scope.edit = function(index){
       $scope.step = index;
-      $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
+      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
       $scope.preview = false;
       $scope.editOn = true;
     };
@@ -423,7 +412,7 @@ angular.module('lmisChromeApp')
     };
 
     $scope.changeState = function(direction){
-      $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProducts[$scope.step].uuid];
+      $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
         stockCountFactory.get.errorAlert($scope, 1);
       }
@@ -435,7 +424,7 @@ angular.module('lmisChromeApp')
         else{
           $scope.preview = true;
         }
-        $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
+        $scope.productKey = $scope.facilityProductsKeys[$scope.step];
         //TODO: this is best done with $timeout to auto save data when interface is idle for x mount of time
         $scope.redirect = false;// we don't need to redirect when this fn calls save()
         $scope.stockCount.isComplete = 0;// when saved from this fn its not complete yet
