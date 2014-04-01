@@ -30,12 +30,13 @@ angular.module('lmisChromeApp').service('utility', function ($q, storageService)
 
   this.castArrayToObject = function(array, id){
     var newObject = {};
-    if(toString.call(array) === '[object Array]'){
 
-      for(var i; i < array.length; i++){
+    if(Object.prototype.toString.call(array) === '[object Array]'){
+      for(var i=0; i < array.length; i++){
         newObject[array[i][id]] = array[i];
       }
     }
+
     return newObject;
   }
 });
