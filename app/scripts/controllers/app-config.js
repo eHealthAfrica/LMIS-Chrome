@@ -7,8 +7,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     data: {
       label: 'Welcome'
     }
-  }).state('appConfigStepOne', {
-    url: '/app-config-step1',
+  }).state('appConfigWizard', {
+    url: '/app-config-wizard',
     templateUrl: '/views/app-config/wizard/initial-config.html',
     resolve: {
       facilities: function(facilityFactory){
@@ -22,7 +22,23 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     data: {
       label: 'Configuration wizard'
     }
+  }).state('editAppConfig', {
+    url: '/edit-app-config',
+    templateUrl: '/views/app-config/configuration.html',
+    resolve: {
+      facilities: function(facilityFactory){
+        return facilityFactory.getAll();
+      },
+      productProfiles: function(productProfileFactory){
+        return productProfileFactory.getAll();
+      },
+      appConfig: function(appConfigService){
+        return appConfigService.load();
+      }
+    },
+    controller: 'EditAppConfigCtrl'
   })
+
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state){
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
   $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3;
@@ -77,9 +93,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $log.error(reason);
    });
   };
-}).controller('AppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log, i18n, $state, appConfig) {
 
- $scope.isFirstConfiguration = (appConfig === undefined)? true : false;
+
+}).controller('EditAppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
+                                         i18n, $state, appConfig) {
  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
  $scope.facilities = facilities;
  $scope.productProfiles = productProfiles;
