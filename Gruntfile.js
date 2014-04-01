@@ -342,6 +342,21 @@ module.exports = function(grunt) {
           config: grunt.file.readJSON('config/production.json')
         }
       }
+    },
+
+    chromeManifest: {
+      dist: {
+        options: {
+          background: {
+            target: 'scripts/main.js',
+            exclude: [
+              'scripts/chromereload.js'
+            ]
+          }
+        },
+        src: '<%= yeoman.app %>',
+        dest: '<%= yeoman.dist %>'
+      }
     }
   });
 
@@ -383,6 +398,7 @@ module.exports = function(grunt) {
     'clean:dist',
     'bowerInstall',
     'ngconstant:production',
+    'chromeManifest:dist',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
