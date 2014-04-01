@@ -2,10 +2,10 @@
   "name": "lmis-chrome",
   "version": "0.5.0",
   "dependencies": {
-    "angular": "1.2.14",
+    "angular": "1.2.15",
     "angular-bootstrap": "0.10.0",
     "font-awesome": "https://github.com/FortAwesome/Font-Awesome.git#4.0.4-wip",
-    "angular-ui-router": "0.2.8-bowratic-tedium",
+    "angular-ui-router": "0.2.10",
     "tv-breadcrumbs": "~0.1.1",
     "bootstrap-css-only": "~3.1.0",
     "angular-pouchdb": "tlvince/angular-pouchdb",
@@ -29,5 +29,8 @@
     "africa"
   ],
   "license": "ISC",
-  "private": true
+  "private": true,
+  "resolutions": {
+    "angular": "1.2.15"
+  }
 }
