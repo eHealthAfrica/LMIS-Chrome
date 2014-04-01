@@ -12,10 +12,12 @@ angular.module('lmisChromeApp').service('notificationService', function ($window
  };
 
  this.beep = function(){
-   if ($window.Audio) {
-     var audio = new $window.Audio(this.BEEP_MEDIA_URL);
-     audio.play();
-   }
+   var sound = new Howl({urls: [this.BEEP_MEDIA_URL]}).play();
+
+//   if ($window.Audio) {
+//     var audio = new $window.Audio(this.BEEP_MEDIA_URL);
+//     audio.play();
+//   }
   };
 
 });
