@@ -187,15 +187,16 @@ angular.module('lmisChromeApp')
 
     $scope.wasteCount.countDate ='';
 
-    $scope.facilityProducts = appConfig.selectedProductProfiles; // selected products for current facility
+    $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
+
     $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
-    $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
+    $scope.productKey = $scope.facilityProductsKeys[$scope.step];
 
     $scope.wasteCount.reason[$scope.productKey] = {};
 
     //set maximum steps
-    if($scope.facilityProducts.length > 0){
-      $scope.maxStep =  $scope.facilityProducts.length-1;
+    if($scope.facilityProductsKeys.length > 0){
+      $scope.maxStep =  $scope.facilityProductsKeys.length-1;
     }
     else{
       $scope.maxStep =0;
@@ -203,16 +204,13 @@ angular.module('lmisChromeApp')
 
     $scope.edit = function(index){
       $scope.step = index;
-      $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
+      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
       $scope.preview = false;
       $scope.editOn = true;
     };
 
     $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
     $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
-    $scope.redirect = true; //initialize redirect as true
-    $scope.wasteCount.isComplete = 1; //and stock count entry as completed
-    $scope.wasteCount.lastPosition = 0;
     var timezone = stockCountFactory.get.timezone();
 
     //load existing count for the day if any.
@@ -220,7 +218,13 @@ angular.module('lmisChromeApp')
     stockCountFactory.getWasteCountByDate(date).then(function(wasteCount){
       if(wasteCount !== null){
         $scope.wasteCount = wasteCount;
+        if(angular.isDefined($scope.wasteCount.lastPosition)){
+          $scope.step = $scope.wasteCount.lastPosition;
+        }
         $scope.editOn = true; // enable edit mode
+        if(angular.isUndefined($scope.wasteCount.isComplete)){
+          $scope.wasteCount.isComplete = 0; //and stock count entry as completed
+        }
       }
     });
 
@@ -228,13 +232,12 @@ angular.module('lmisChromeApp')
       var dbName = 'wastecount';
       $scope.wasteCount.facility = $scope.facilityUuid;
       $scope.wasteCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.currentDay, timezone);
-
-      stockCountFactory.save.stock($scope.stockCount)
+      stockCountFactory.save.waste($scope.wasteCount)
       .then(function() {
         if($scope.redirect) {
           alertsFactory.success(i18n('stockCountSaved'));
           var db = pouchdb.create(name);
-          var obj = $scope.stockCount;
+          var obj = $scope.wasteCount;
           obj._id = obj.uuid;
           db.put(obj)
             .then(function() {
@@ -266,15 +269,16 @@ angular.module('lmisChromeApp')
               $log.error(reason);
             });
         }
-        $scope.redirect = true; // always reset to true after every save
-        $scope.stockCount.isComplete = 1;
       });
     };
 
     $scope.$watch('wasteCount.discarded[productKey]', function(newvalue){
       if(stockCountFactory.validate.invalid(newvalue)){
-        stockCountFactory.get.errorAlert($scope, 1);
+        //stockCountFactory.get.errorAlert($scope, 1);
       }else{
+        $scope.redirect = false;
+        $scope.lastPosition = $scope.step;
+        $scope.save();
         stockCountFactory.get.errorAlert($scope, 0);
       }
     });
@@ -284,15 +288,17 @@ angular.module('lmisChromeApp')
     }
 
     $scope.finalSave = function(){
-      $scope.lastPosition = 0;
+      $scope.wasteCount.lastPosition = 0;
       $scope.redirect = true;
+      $scope.wasteCount.isComplete = 1;
+      $scope.save();
     };
 
     $scope.changeState = function(direction){
-      $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
+
+      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
       $scope.wasteCount.reason[$scope.productKey] = {};
       $scope.currentEntry = $scope.wasteCount.discarded[$scope.productKey];
-
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
         stockCountFactory.get.errorAlert($scope, 1);
       }
@@ -304,10 +310,8 @@ angular.module('lmisChromeApp')
         else{
           $scope.preview = true;
         }
-        $scope.redirect = false;// we don't need to redirect when this fn calls save()
-        $scope.wasteCount.isComplete = 0;// when saved from this fn its not complete yet
-        $scope.save();
       }
+      $scope.wasteCount.lastPosition = $scope.step;
       $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
       $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
     };
@@ -345,7 +349,7 @@ angular.module('lmisChromeApp')
 
     $scope.stockCount.countDate = '';
     $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
-    $scope.facilityProducts = appConfig.selectedProductProfiles; // selected products for current facility
+    $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
     $scope.productKey = $scope.facilityProducts[$scope.step].uuid;
 
     //set maximum steps

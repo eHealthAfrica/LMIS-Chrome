@@ -116,6 +116,9 @@ angular.module('lmisChromeApp')
           }
           else{
             scope.reasonError = false;
+            scope.redirect = false;
+            scope.wasteCount.lastPosition = scope.step;
+            scope.save();
           }
         }
       }
@@ -209,14 +212,13 @@ angular.module('lmisChromeApp')
        *
        */
       currentProductObject: function(productObject, index){
-
-        return productObject[[index]];
+        var productKey =  Object.keys(productObject)[index];
+        return productObject[productKey];
       },
        /*
        *
        */
       productReadableName: function(productObject, index){
-
         var productName = this.currentProductObject(productObject, index).name;
         return this.readableName(productName);
       },
@@ -242,7 +244,16 @@ angular.module('lmisChromeApp')
           scope.productError = false;
           scope.productErrorMsg = '';
         }
+      },
+      /**
+       *
+       * @param array
+       * @returns {{}}
+       */
+      productObject: function(array){
+        return utility.castArrayToObject(array, 'uuid');
       }
+
     };
     return {
       monthList: months,
