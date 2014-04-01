@@ -262,7 +262,8 @@ module.exports = function(grunt) {
               'views/**/*.html',
               'images/{,*/}*.{webp}',
               '_locales/{,*/}*.json',
-              'media/*'
+              'media/*',
+              'scripts/fixtures/*.json'
             ]
           },
           {
