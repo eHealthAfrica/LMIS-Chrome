@@ -37,7 +37,9 @@
     "semver": "^2.2.1",
     "gift": "^0.3.0",
     "grunt-ng-constant": "^0.5.0",
-    "grunt-chrome-manifest": "^0.2.1"
+    "grunt-chrome-manifest": "^0.2.1",
+    "ngmin": "git+https://github.com/werk85/ngmin.git#2c3281b60a",
+    "astral-angular-annotate-ui-router": "git+https://github.com/werk85/astral-angular-annotate-ui-router.git#641c437ca8"
   },
   "engines": {
     "node": "0.10.x"
