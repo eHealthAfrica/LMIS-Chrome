@@ -419,10 +419,8 @@ module.exports = function(grunt) {
     'build'
   ]);
 
-  grunt.registerTask('travis', function() {
-    grunt.task.run([
-      'test',
-      'coveralls'
-    ]);
-  });
+  grunt.registerTask('travis', [
+    'test',
+    'coveralls'
+  ]);
 };
