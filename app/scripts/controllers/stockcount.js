@@ -50,7 +50,7 @@ angular.module('lmisChromeApp')
       })
       .state('syncStockCount', {
         abstract: true,
-        templateUrl: 'views/stockcount/sync.html'
+        templateUrl: 'views/stockcount/sync.html',
       })
       .state('syncStockCount.detail', {
         data: {
@@ -67,7 +67,7 @@ angular.module('lmisChromeApp')
         views: {
           'stats': {
             templateUrl: 'views/stockcount/sync/stats.html',
-            controller: function($log, $scope, $translate, config, pouchdb, localDocs, alertsFactory) {
+            controller: function($log, $scope, i18n, config, pouchdb, localDocs, alertsFactory) {
               $scope.local = {
                 // jshint camelcase: false
                 doc_count: localDocs.total_rows
@@ -87,16 +87,7 @@ angular.module('lmisChromeApp')
               $scope.sync = function() {
                 $scope.syncing = true;
                 var cb = {complete: function() {
-                  $translate('syncSuccess')
-                    .then(function(syncSuccess) {
-                      alertsFactory.success(syncSuccess);
-                    })
-                    .catch(function(reason) {
-                      $log.error(reason);
-                    })
-                    .finally(function() {
-                      $scope.syncing = false;
-                    });
+                  alertsFactory.success(i18n('syncSuccess'));
                 }};
                 var db = pouchdb.create('stockcount');
                 db.replicate.sync(remote, cb);
