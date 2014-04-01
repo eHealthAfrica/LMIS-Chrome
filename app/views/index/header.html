@@ -5,9 +5,13 @@
       <ul class="nav navbar-nav pull-right">
         <li>
           <a>
-            <span class="label"
-              ng-class="{'label-success': online, 'label-danger': !online}"
-              ng-bind="online ? ('online' | i18n) : ('offline' | i18n)">
+            <span
+              class="label"
+              ng-class="{
+                'label-success': status.online,
+                'label-danger': !status.online
+              }"
+              ng-bind="status.label">
             </span>
           </a>
         </li>
