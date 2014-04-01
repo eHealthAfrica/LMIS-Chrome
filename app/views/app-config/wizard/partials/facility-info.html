@@ -19,23 +19,24 @@
           </div>
         </div>
       </div>
-       <div class="col-sm-12">
+      <div class="col-sm-12">
         <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="stockCountInterval" i18n="stockCountInterval"></label>
-                      <select id="stockCountInterval" class="form-control" ng-model="appConfig.stockCountInterval"
-                              required>
-                        <option value="" i18n="selectStockCountInterval"></option>
-                        <option ng-repeat="interval in stockCountIntervals" value="{{ interval.value }}"
-                                ng-selected="interval.value === appConfig.stockCountInterval"
-                                ng-bind="interval.name" required>
-                        </option>
-                      </select>
-                    </div>
-                  </div>
+          <div class="form-group">
+            <label for="stockCountInterval" i18n="stockCountInterval"></label>
+            <select id="stockCountInterval" class="form-control" ng-model="appConfig.stockCountInterval"
+                    required>
+              <option value="" i18n="selectStockCountInterval"></option>
+              <option ng-repeat="interval in stockCountIntervals" value="{{ interval.value }}"
+                      ng-selected="interval.value === appConfig.stockCountInterval"
+                      ng-bind="interval.name" required>
+              </option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="panel-body"></div>
+    <div ng-include="'views/app-config/wizard/partials/sequence-map.html'"></div>
+    <div class="panel"></div>
     <div class="row">
       <div class="col-sm-12">
         <div class="col-xs-4">

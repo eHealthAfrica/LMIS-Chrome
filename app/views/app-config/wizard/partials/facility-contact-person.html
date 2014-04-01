@@ -34,11 +34,12 @@
         </fieldset>
       </div>
     </div>
-    <div class="panel-body"></div>
+    <div ng-include="'views/app-config/wizard/partials/sequence-map.html'"></div>
+    <div class="panel"></div>
     <div class="row">
       <div class="col-sm-12">
         <div class="col-xs-4">
-          <button type="button" class="btn btn-default" ng-click="moveTo(STEP_TWO)">
+          <button type="button" class="btn btn-default" ng-click="moveTo(STEP_ONE)">
             <span><i class="fa fa-arrow-left"></i></span>
             <span>Back</span>
           </button>
