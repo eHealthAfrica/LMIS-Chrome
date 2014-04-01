@@ -11,7 +11,7 @@ describe('StockCountStepsFormCtrl', function(){
   var productTypeMock = {};
 
   beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks', function($provide){
-    $provide.value('appConfig', appConfigMock);
+    $provide.value('currentFacility', currentFacilityMock);
     $provide.value('productType', productTypeMock);
   }));
 
@@ -40,5 +40,5 @@ describe('StockCountStepsFormCtrl', function(){
   it('should change step value equal parameter entered for edit()', function(){
     scope.edit(1);
     expect(scope.step).toEqual(1);
-  });*/
+  });
 });

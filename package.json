@@ -8,7 +8,7 @@
     "grunt-bower-install": "~1.4.0",
     "grunt-concurrent": "~0.5.0",
     "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-concat": "~0.4.0",
     "grunt-contrib-connect": "~0.7.1",
     "grunt-contrib-copy": "~0.5.0",
     "grunt-contrib-cssmin": "~0.9.0",
@@ -42,7 +42,7 @@
   },
   "scripts": {
     "test": "grunt travis",
-    "test-watch": "./node_modules/.bin/karma start --autoWatch true --singleRun false"
+    "test-watch": "./node_modules/karma/bin/karma start --autoWatch true --singleRun false"
   },
   "description": "LMIS Chrome packaged app",
   "main": "Gruntfile.js",

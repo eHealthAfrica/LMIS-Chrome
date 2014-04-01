@@ -17,6 +17,7 @@ angular.module('lmisChromeApp')
         }
       })
       .state('stockCountStepForm', {
+        parent: 'root.index',
         data:{
           label:'Stock Count Form'
         },
@@ -49,6 +50,7 @@ angular.module('lmisChromeApp')
         }
       })
       .state('syncStockCount', {
+        parent: 'root.index',
         abstract: true,
         templateUrl: 'views/stockcount/sync.html',
       })
