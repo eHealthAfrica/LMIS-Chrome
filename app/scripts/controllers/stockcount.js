@@ -298,9 +298,11 @@ angular.module('lmisChromeApp')
         stockCountFactory.get.errorAlert($scope, 0);
         if(direction !== 2){
           $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
+          $scope.open = false;
         }
         else{
           $scope.preview = true;
+           $scope.wasteCount.isComplete = 1;
         }
       }
       $scope.wasteCount.lastPosition = $scope.step;
