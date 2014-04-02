@@ -12,19 +12,30 @@ angular.module('lmisChromeApp')
       views: {
         'header': {
           templateUrl: 'views/index/header.html',
-          controller: function($scope, $window) {
-            $scope.online = $window.navigator.onLine;
+          controller: function($scope, $window, i18n) {
+            var states = {
+              online: i18n('online'),
+              offline: i18n('offline')
+            };
+
+            var online = $window.navigator.onLine;
+            $scope.status = {
+              online: online,
+              label: online ? states.online : states.offline
+            };
 
             var toggleOnline = function(event) {
               $window.addEventListener(event, function() {
-                $scope.online = !$scope.online;
+                $scope.status = {
+                  online: !$scope.status.online,
+                  label: states[event]
+                };
                 $scope.$digest();
               }, false);
             };
 
-            var states = ['online', 'offline'];
-            for(var i = 0, len = states.length; i < len; i++) {
-              toggleOnline(states[i]);
+            for(var state in states) {
+              toggleOnline(state);
             }
           }
         },
