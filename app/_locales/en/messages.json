@@ -359,9 +359,6 @@
   "appConfigSuccessMsg": {
     "message": "Application configuration was successful!!!"
   },
-  "appConfigWelcomeMsg": {
-    "message": "Welcome to LoMIS! Please take a few minutes to tell us about your facility"
-  },
   "compare": {
     "message": "Compare"
   },

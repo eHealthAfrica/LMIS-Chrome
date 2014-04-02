@@ -53,31 +53,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.currentStep = step;
   };
 
-  $scope.appConfig = {
-    facility: '',
-    stockCountInterval: '',
-    contactPerson: {
-      name: '',
-      email: '',
-      phoneNo: ''
-    },
-    selectedProductProfiles: []
+  $scope.appConfig = appConfigService.appConfigModel;
+
+  $scope.handleSelectionEvent = function(productProfile){
+   $scope.appConfig.selectedProductProfiles =
+       appConfigService.handleSelectionEvent(productProfile, $scope.appConfig.selectedProductProfiles);
   };
 
-  function removeSelectedProductProfile(productProfile) {
-    $scope.appConfig.selectedProductProfiles = $scope.appConfig.selectedProductProfiles.filter(function (prodProf) {
-      return prodProf.uuid !== productProfile.uuid;
-    });
-  };
-
-  $scope.handleSelectionEvent = function(selection){
-   var productProfile = JSON.parse(selection);
-   if(productProfile.deSelected === undefined){
-     $scope.appConfig.selectedProductProfiles.push(productProfile);
-     return;
-   }
-   removeSelectedProductProfile(productProfile);
-  };
   $scope.intervalError = 'select stock count interval.';
 
   $scope.save = function(){
@@ -106,16 +88,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
  $scope.preSelectProductProfileCheckBox = {};
  //used to hold config form data
- $scope.appConfig = {
-   facility: '',
-   stockCountInterval: '',
-   contactPerson: {
-     name: '',
-     email: '',
-     phoneNo: ''
-   },
-   selectedProductProfiles: []
- };
+ $scope.appConfig = appConfigService.appConfigModel;
 
  function preLoadConfigForm(appConfig){
    if (appConfig !== undefined) {
@@ -128,24 +101,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
        var selectedProductProfile = appConfig.selectedProductProfiles[index];
        $scope.preSelectProductProfileCheckBox[selectedProductProfile.uuid] = selectedProductProfile;
      }
+   }else{
+     //take to app welcome page.
+     $state.go('appConfigWelcome');
    }
  };
  preLoadConfigForm(appConfig);//pre-load config form with previous saved values.
 
- function removeSelectedProductProfile(productProfile){
-  $scope.appConfig.selectedProductProfiles = $scope.appConfig.selectedProductProfiles
-    .filter(function (prodProf) {
-      return prodProf.uuid !== productProfile.uuid;
-  });
- }
-
- $scope.handleSelectionEvent = function(selection){
-   var productProfile = JSON.parse(selection);
-   if(productProfile.deSelected === undefined){
-     $scope.appConfig.selectedProductProfiles.push(productProfile);
-     return;
-   }
-   removeSelectedProductProfile(productProfile);
+ $scope.handleSelectionEvent = function(productProfile){
+   $scope.appConfig.selectedProductProfiles =
+       appConfigService.handleSelectionEvent(productProfile, $scope.appConfig.selectedProductProfiles);
  };
 
  $scope.save = function(){
@@ -153,8 +118,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){
-        var msg = 'Application configuration was successful!!!';
-        $state.go('home.index.mainActivity',{'appConfigResult': msg });
+        $state.go('home.index.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
       } else {
         alertsFactory.danger(i18n('appConfigFailedMsg'));
       }
