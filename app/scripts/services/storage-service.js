@@ -172,7 +172,6 @@ angular.module('lmisChromeApp')
          *
          * @return {promise}
          */
-
         function saveTableData(table, data) {
           var promise = null;
           if((typeof data === "object") && (data !== null)){
