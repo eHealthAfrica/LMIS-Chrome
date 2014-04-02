@@ -175,7 +175,7 @@ angular.module('lmisChromeApp')
         function saveTableData(table, data) {
           var promise = null;
           if((typeof data === "object") && (data !== null)){
-            if(Object.keys(data).indexOf('uuid') !== -1){
+            if(Object.keys(data).indexOf('uuid') !== -1 && data.uuid.length > 0){
               promise = updateTableData(table, data);
             } else {
               promise = insertTableData(table, data);
