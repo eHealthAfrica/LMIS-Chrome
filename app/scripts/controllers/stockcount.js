@@ -132,8 +132,6 @@ angular.module('lmisChromeApp')
         }
       });
   })
-
-
 /*
  * Wastage Count Controller
  */
@@ -160,6 +158,7 @@ angular.module('lmisChromeApp')
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
     $scope.wasteErrors = {};
+    $scope.wasteErrorMsg = {};
     $scope.currentDay = day;
 
     $scope.wasteCount = {};
@@ -201,6 +200,7 @@ angular.module('lmisChromeApp')
         $scope.wasteCount = wasteCount;
         if(angular.isDefined($scope.wasteCount.lastPosition)){
           $scope.step = $scope.wasteCount.lastPosition;
+          $scope.productKey = $scope.facilityProductsKeys[$scope.step];
         }
         $scope.editOn = true; // enable edit mode
         if(angular.isUndefined($scope.wasteCount.isComplete)){
@@ -265,6 +265,12 @@ angular.module('lmisChromeApp')
     });
 
     $scope.checkInput = function(index){
+      if(angular.isUndefined($scope.wasteErrors[$scope.productKey])){
+        $scope.wasteErrors[$scope.productKey] = {};
+      }
+      if(angular.isUndefined($scope.wasteErrorMsg[$scope.productKey])){
+        $scope.wasteErrorMsg[$scope.productKey] = {};
+      }
       stockCountFactory.validate.waste.reason($scope, index);
     }
 
@@ -278,10 +284,15 @@ angular.module('lmisChromeApp')
     $scope.changeState = function(direction){
 
       $scope.productKey = $scope.facilityProductsKeys[$scope.step];
-      $scope.wasteCount.reason[$scope.productKey] = {};
+      if(angular.isUndefined($scope.wasteCount.reason[$scope.productKey])){
+        $scope.wasteCount.reason[$scope.productKey] = {};
+      }
       $scope.currentEntry = $scope.wasteCount.discarded[$scope.productKey];
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
         stockCountFactory.get.errorAlert($scope, 1);
+      }
+      else if ($scope.reasonError){
+        stockCountFactory.get.errorAlert($scope, 2);
       }
       else{
         stockCountFactory.get.errorAlert($scope, 0);
@@ -293,11 +304,10 @@ angular.module('lmisChromeApp')
         }
       }
       $scope.wasteCount.lastPosition = $scope.step;
+      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
       $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
       $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
     };
-
-
   })
 
   .controller('StockCountStepsFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, i18n, pouchdb, config){
