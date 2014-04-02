@@ -388,5 +388,20 @@
   },
   "facilityInfo": {
     "message": "Facility info."
+  },
+  "appConfigFacilityErrorMsg": {
+    "message": "select facility."
+  },
+  "appConfigStockCountErrorMsg": {
+    "message": "select facility stock count interval."
+  },
+  "contactPersonNameErrorMsg": {
+    "message": "enter contact person name."
+  },
+  "contactPersonPhoneNoErrorMsg": {
+    "message": "enter contact person's phone no."
+  },
+  "contactPersonEmailErrorMsg": {
+    "message": "enter valid email address."
   }
 }

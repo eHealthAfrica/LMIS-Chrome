@@ -18,6 +18,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       },
       productProfiles: function(productProfileFactory){
         return productProfileFactory.getAll();
+      },
+      save: function(){
+
       }
     },
     controller: 'AppConfigWizard',
@@ -39,7 +42,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return appConfigService.load();
       }
     },
-    controller: 'EditAppConfigCtrl'
+    controller: 'EditAppConfigCtrl',
+    data: {
+      label: 'Settings'
+    }
   })
 
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state){
@@ -79,7 +85,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    });
   };
 
-
 }).controller('EditAppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
                                          i18n, $state, appConfig) {
  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -87,6 +92,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  $scope.productProfiles = productProfiles;
  $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
  $scope.preSelectProductProfileCheckBox = {};
+ $scope.isSubmitted = false;
  //used to hold config form data
  $scope.appConfig = appConfigService.appConfigModel;
 
@@ -102,11 +108,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
        $scope.preSelectProductProfileCheckBox[selectedProductProfile.uuid] = selectedProductProfile;
      }
    }else{
-     //take to app welcome page.
+     //take to app welcome page for initial setup
      $state.go('appConfigWelcome');
    }
  };
- preLoadConfigForm(appConfig);//pre-load config form with previous saved values.
+ preLoadConfigForm(appConfig);//pre-load config form with existing app config.
 
  $scope.handleSelectionEvent = function(productProfile){
    $scope.appConfig.selectedProductProfiles =
