@@ -99,22 +99,62 @@ angular.module('lmisChromeApp')
         countExist: function(date){
           return getWasteCountByDate(date);
         },
+        /**
+         * this function validate reason and save the current value if no error
+         * @param scope
+         * @param index
+         */
         reason: function(scope, index){
-          if(angular.isUndefined(scope.wasteErrors[scope.productKey])){
-            scope.wasteErrors[scope.productKey] = {};
+
+          if(angular.isUndefined(scope.sumErrorIndex)){
+            scope.sumErrorIndex = {};
+            scope.sumErrorIndex[scope.productKey] = []
           }
-          scope.currentReason = scope.wasteCount.reason[scope.productKey][index];
-          if(validate.invalid(scope.currentReason)){
+
+          var reasonSum = load.sumReasonObject(scope.wasteCount.reason[scope.productKey]);
+          var wasteCountEntry = scope.wasteCount.discarded[scope.productKey];
+          var currentReason = scope.wasteCount.reason[scope.productKey][index];
+          if(validate.invalid(wasteCountEntry)){
+            wasteCountEntry = 0;
+          }
+          //compare the sum of all values entered for reason with total count, if -
+          //reason is greater, then throw error msg
+          var sumError = !!((reasonSum > wasteCountEntry));
+          var entryError = (validate.invalid(currentReason))?true:false;
+          var errorMsg = [];
+
+          if(sumError){
+            var diff = reasonSum - currentReason;// no need to throw error when the current entry has no impact on the total
+            if(diff < wasteCountEntry){
+              scope.sumErrorIndex[scope.productKey].push(index);
+              errorMsg.push("Please check entry: Reason figure can not be than waste count ");
+            }
+          }
+          else{
+            for(var i in scope.sumErrorIndex[scope.productKey]){
+              delete scope.wasteErrorMsg[scope.productKey][i];
+              delete scope.wasteErrors[scope.productKey][i];
+            }
+          }
+          if(entryError){
+            errorMsg.push("invalid entry");
+          }
+
+          if(errorMsg.length > 0){
             scope.wasteErrors[scope.productKey][index] = true;
+            scope.wasteErrorMsg[scope.productKey][index]= errorMsg.join('<br>');
           }
           else{
             delete scope.wasteErrors[scope.productKey][index];
+            delete scope.wasteErrorMsg[scope.productKey][index];
           }
-
+          //if any form field contain invalid data we need to indicate it indefinitely
           if(Object.keys(scope.wasteErrors[scope.productKey]).length > 0){
             scope.reasonError = true;
           }
           else{
+            delete scope.wasteErrors[scope.productKey];
+            delete scope.wasteErrorMsg[scope.productKey];
             scope.reasonError = false;
             scope.redirect = false;
             scope.wasteCount.lastPosition = scope.step;
@@ -162,8 +202,9 @@ angular.module('lmisChromeApp')
     };
 
     var load={
-      /*
+      /**
        *
+       * @returns {promise}
        */
       allStockCount: function(){
         var deferred = $q.defer();
@@ -184,11 +225,6 @@ angular.module('lmisChromeApp')
           });
         return deferred.promise;
       },
-      /*
-       * load a single row from waste count table
-       * @param {uuid} .
-       * @return {Promise} return promise object
-       */
 
        /*
        *
@@ -201,26 +237,25 @@ angular.module('lmisChromeApp')
         });
         return deferred.promise;
       },
-       /*
+      /**
        *
-       */
-      //TODO: use utility service function
-      readableName: function(name) {
-        return name.replace(/\-/g,' - ').replace(/([0-9])([a-zA-Z])/g,'$1 $2').replace(/([a-z][a-z])([A-Z])/g,'$1 $2');
-      },
-       /*
-       *
+       * @param productObject
+       * @param index
+       * @returns {object}
        */
       currentProductObject: function(productObject, index){
         var productKey =  (Object.keys(productObject))[index];
         return productObject[productKey];
       },
-       /*
+      /**
        *
+       * @param productObject
+       * @param index
+       * @returns {string}
        */
       productReadableName: function(productObject, index){
         var productName = this.currentProductObject(productObject, index).name;
-        return this.readableName(productName);
+        return utility.getReadableProfileName(productName);
       },
        /*
        *
@@ -235,6 +270,11 @@ angular.module('lmisChromeApp')
       timezone: function(){
         return utility.getTimeZone();
       },
+      /**
+       *
+       * @param scope
+       * @param error
+       */
       errorAlert: function(scope, error){
         if(error){
           scope.productError = true;
@@ -252,7 +292,22 @@ angular.module('lmisChromeApp')
        */
       productObject: function(array){
         return utility.castArrayToObject(array, 'uuid');
+      },
+      /**
+       *
+       * @param object
+       * @returns {number}
+       */
+      sumReasonObject: function (object){
+        var sum = 0;
+        for(var i in object){
+          if(object[i] != null && !isNaN(parseInt(object[i]))){
+             sum += parseInt(object[i]);
+          }
+        }
+        return sum;
       }
+
 
     };
     return {
