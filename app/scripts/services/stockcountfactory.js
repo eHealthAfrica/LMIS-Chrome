@@ -106,10 +106,7 @@ angular.module('lmisChromeApp')
          */
         reason: function(scope, index){
 
-          if(angular.isUndefined(scope.sumErrorIndex)){
-            scope.sumErrorIndex = {};
-            scope.sumErrorIndex[scope.productKey] = []
-          }
+
 
           var reasonSum = load.sumReasonObject(scope.wasteCount.reason[scope.productKey]);
           var wasteCountEntry = scope.wasteCount.discarded[scope.productKey];
@@ -120,21 +117,32 @@ angular.module('lmisChromeApp')
           //compare the sum of all values entered for reason with total count, if -
           //reason is greater, then throw error msg
           var sumError = !!((reasonSum > wasteCountEntry));
+
           var entryError = (validate.invalid(currentReason))?true:false;
           var errorMsg = [];
 
           if(sumError){
-            var diff = reasonSum - currentReason;// no need to throw error when the current entry has no impact on the total
-            if(diff < wasteCountEntry){
+
+            if(angular.isUndefined(scope.sumErrorIndex)){
+              scope.sumErrorIndex = {};
+              scope.sumErrorIndex[scope.productKey] = []
+            }
+            if(currentReason !== 0 && currentReason !== null){
               scope.sumErrorIndex[scope.productKey].push(index);
               errorMsg.push("Please check entry: Reason figure can not be than waste count ");
             }
+
           }
           else{
-            for(var i in scope.sumErrorIndex[scope.productKey]){
-              delete scope.wasteErrorMsg[scope.productKey][i];
-              delete scope.wasteErrors[scope.productKey][i];
+            if(angular.isDefined(scope.sumErrorIndex)){
+              if(angular.isDefined(scope.sumErrorIndex[scope.productKey])){
+                for(var i in scope.sumErrorIndex[scope.productKey]){
+                  delete scope.wasteErrorMsg[scope.productKey][i];
+                  delete scope.wasteErrors[scope.productKey][i];
+                }
+              }
             }
+
           }
           if(entryError){
             errorMsg.push("invalid entry");
