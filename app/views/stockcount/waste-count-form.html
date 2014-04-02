@@ -111,21 +111,23 @@
                   <!-- reasons for wastage -->
                   <div class="col-sm-3 col-xs-12">
                     <div class="btn-separator">
-                      <div ng-class="{open: open}">
-                        <div class="form-group has-feedback" ng-class="{'has-error': reasonError}">
-                          <button type="button" ng-click="open=!open" class="form-control input-lg">Select Reason</button>
-                          <span ng-hide="reasonError" id="wasteCountReason-1" class="fa fa-caret-down fa-lg form-control-feedback"></span>
-                          <span ng-show="reasonError" id="wasteCountReason-2" class="fa fa-times fa-lg form-control-feedback"></span>
-                        </div>
 
+                      <div class="form-group has-feedback" ng-class="{'has-error': reasonError, open: open}">
+                        <button type="button" ng-click="open=!open" class="form-control input-lg">Select Reason</button>
+                        <span ng-click="open=!open" ng-hide="reasonError" id="wasteCountReason-1" class="fa fa-caret-down fa-lg form-control-feedback"></span>
+                        <span ng-click="open=!open" ng-show="reasonError" id="wasteCountReason-2" class="fa fa-times fa-lg form-control-feedback"></span>
                         <ul class="dropdown-menu w-menu">
                           <li ng-repeat="reason in discardedReasons">
-                            <label for="wasteCount.reason[productKey][$index]">{{ reason }}</label><br>
-                            <input id="wasteCount.reason[productKey][$index]" ng-model="wasteCount.reason[productKey][$index]" ng-change="checkInput($index)" type="number">
+                            <div class="form-group">
+                              <label for="wasteCount.reason[productKey][$index]">{{ reason }}</label>
+                              <input class="form-control" id="wasteCount.reason[productKey][$index]" ng-init="wasteCount.reason[productKey][$index] = 0" ng-model="wasteCount.reason[productKey][$index]" ng-blur="checkInput($index)" type="number">
+                              <div ng-show="wasteErrors[productKey][$index]" class="custom-error text-center">{{ wasteErrorMsg[productKey][$index] }}</div>
+                            </div>
                           </li>
                         </ul>
                         <div class="clearfix"></div>
                       </div>
+
                     </div>
                   </div>
                   <!-- start form next button -->
@@ -150,7 +152,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" ng-show="editOn && step !== maxStep">
+            <div class="row" ng-show="editOn && step !== maxStep && wasteCount.isComplete">
               <div class="col-sm-6 data-row">
                 <div class="btn-separator">
                    <button type="button" class="btn btn-lg btn-warning col-sm-12 col-xs-12" ng-click="preview=!preview">
@@ -172,6 +174,7 @@
                   <tr>
                     <th>Stock Item</th>
                     <th>Today's Count</th>
+                    <th>Reason</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -179,6 +182,9 @@
                     <td class="form-label">{{ facilityProducts[key].name }}</td>
                     <td>
                       {{ wasteCount.discarded[key] }}
+                    </td>
+                    <td>
+                      <div ng-hide="reason === null " ng-repeat="(reasonKey, reason) in wasteCount.reason[key]"> {{ discardedReasons[reasonKey] }} = {{ reason }} </div>
                     </td>
                   </tr>
                   </tbody>
@@ -199,6 +205,3 @@
     </form>
   </div>
 </div>
-<pre>
-  {{ wasteCount }}
-</pre>
