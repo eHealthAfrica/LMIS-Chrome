@@ -1,0 +1,39 @@
+<fieldset>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group"
+           ng-class="{ 'has-error': (editAppConfigForm.appFacility).$invalid && isSubmitted }">
+        <label i18n="facility"></label>
+        <select id="appFacility" name="appFacility" class="form-control" ng-model="appConfig.facility"
+                required>
+          <option value="" i18n="selectFacility"></option>
+          <option ng-repeat="facility in facilities" value="{{ facility }}"
+                  ng-selected="facility.uuid === (appConfig.appFacility).uuid"
+                  ng-bind="facility.name" required>
+          </option>
+        </select>
+                  <span class="alert-danger form-control" i18n="appConfigFacilityErrorMsg"
+                        ng-show="(editAppConfigForm.appFacility).$invalid && isSubmitted">
+                  </span>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="form-group"
+           ng-class="{ 'has-error': (editAppConfigForm.stockCountInterval).$invalid && isSubmitted }">
+        <label for="stockCountInterval" i18n="stockCountInterval"></label>
+        <select id="stockCountInterval" class="form-control" ng-model="appConfig.stockCountInterval"
+                name="stockCountInterval" required>
+          <option value="" i18n="selectStockCountInterval"></option>
+          <option ng-repeat="interval in stockCountIntervals" value="{{ interval.value }}"
+                  ng-selected="interval.value === appConfig.stockCountInterval"
+                  ng-bind="interval.name" required>
+          </option>
+        </select>
+        <span class="alert-danger form-control" i18n="appConfigStockCountErrorMsg"
+              ng-show="(editAppConfigForm.stockCountInterval).$invalid && isSubmitted">
+        </span>
+      </div>
+    </div>
+  </div>
+</fieldset>
