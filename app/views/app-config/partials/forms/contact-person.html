@@ -17,7 +17,7 @@
         <label for="contactPhoneNo" i18n="phoneNo"></label>
         <input type="tel" class="form-control" ng-model="(appConfig.contactPerson).phoneNo"
                name="contactPhoneNo" id="contactPhoneNo" required/>
-                  <span class="alert-danger" i18n="contactPersonPhoneNoErrorMsg"
+                  <span class="alert-danger form-control" i18n="contactPersonPhoneNoErrorMsg"
                         ng-show="(editAppConfigForm.contactPhoneNo).$invalid && isSubmitted">
                   </span>
       </div>
@@ -29,7 +29,7 @@
         <label for="email" i18n="email"></label>
         <input type="email" class="form-control" ng-model="(appConfig.contactPerson).email" name="email"
                id="email" required/>
-                  <span class="alert-danger" i18n="contactPersonEmailErrorMsg"
+                  <span class="alert-danger form-control" i18n="contactPersonEmailErrorMsg"
                         ng-show="(editAppConfigForm.email).$invalid && isSubmitted">
                   </span>
       </div>
