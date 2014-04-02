@@ -18,7 +18,8 @@
     "angularjs-nvd3-directives": "~0.0.5-beta",
     "angular-pouchdb": "tlvince/angular-pouchdb",
     "pouchdb-nightly": "https://gist.githubusercontent.com/tlvince/9769464/raw/c83878e990ad8e85e8f6597edf4070e233176707/pouchdb-nightly.js",
-    "fastclick": "~1.0.0"
+    "fastclick": "~1.0.0",
+    "howler": "~1.1.18"
   },
   "devDependencies": {
     "angular-mocks": "1.2.14"

@@ -1,4 +1,5 @@
 <tv-breadcrumbs
-  ng-hide="state.includes('home')"
+  ng-hide="state.includes('home') || state.includes('appConfigWelcome')
+    || state.includes('appConfigWizard')"
   home="home.index.mainActivity">
 </tv-breadcrumbs>

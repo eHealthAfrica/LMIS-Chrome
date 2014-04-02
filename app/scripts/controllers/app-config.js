@@ -1,29 +1,105 @@
 'use strict';
 
 angular.module('lmisChromeApp').config(function ($stateProvider) {
-  $stateProvider.state('appConfig', {
-    url: '/app-config',
+  $stateProvider.state('appConfigWelcome', {
+    url: '/app-config-welcome',
     parent: 'root.index',
-    templateUrl: '/views/app-config/configuration.html',
+    templateUrl: '/views/app-config/welcome-page.html',
+    data: {
+      label: 'Welcome'
+    }
+  }).state('appConfigWizard', {
+    url: '/app-config-wizard',
+    parent: 'root.index',
+    templateUrl: '/views/app-config/wizard/initial-config.html',
     resolve: {
-      appConfig: function(appConfigService){
-        return appConfigService.load();
-      },
-      facilities: function (facilityFactory) {
+      facilities: function(facilityFactory){
         return facilityFactory.getAll();
       },
       productProfiles: function(productProfileFactory){
         return productProfileFactory.getAll();
       }
     },
-    controller: 'AppConfigCtrl',
+    controller: 'AppConfigWizard',
     data: {
-      label: 'App Configuration'
+      label: 'Configuration wizard'
     }
+  }).state('editAppConfig', {
+    url: '/edit-app-config',
+    parent: 'root.index',
+    templateUrl: '/views/app-config/configuration.html',
+    resolve: {
+      facilities: function(facilityFactory){
+        return facilityFactory.getAll();
+      },
+      productProfiles: function(productProfileFactory){
+        return productProfileFactory.getAll();
+      },
+      appConfig: function(appConfigService){
+        return appConfigService.load();
+      }
+    },
+    controller: 'EditAppConfigCtrl'
   })
-}).controller('AppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log, i18n, $state, appConfig) {
 
- $scope.isFirstConfiguration = (appConfig === undefined)? true : false;
+}).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state){
+  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
+  $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3;
+  $scope.facilities = facilities;
+  $scope.productProfiles = productProfiles;
+  $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
+  $scope.currentStep = $scope.STEP_ONE; //set initial step
+  $scope.moveTo = function(step){
+    $scope.currentStep = step;
+  };
+
+  $scope.appConfig = {
+    facility: '',
+    stockCountInterval: '',
+    contactPerson: {
+      name: '',
+      email: '',
+      phoneNo: ''
+    },
+    selectedProductProfiles: []
+  };
+
+  function removeSelectedProductProfile(productProfile) {
+    $scope.appConfig.selectedProductProfiles = $scope.appConfig.selectedProductProfiles.filter(function (prodProf) {
+      return prodProf.uuid !== productProfile.uuid;
+    });
+  };
+
+  $scope.handleSelectionEvent = function(selection){
+   var productProfile = JSON.parse(selection);
+   if(productProfile.deSelected === undefined){
+     $scope.appConfig.selectedProductProfiles.push(productProfile);
+     return;
+   }
+   removeSelectedProductProfile(productProfile);
+  };
+  $scope.intervalError = 'select stock count interval.';
+
+  $scope.save = function(){
+    //TODO: refactor this into common function that controllers can share. or call createApp config here.
+   $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility)
+   appConfigService.setup($scope.appConfig)
+    .then(function (result) {
+      if(result !== undefined){
+        var msg = 'Application configuration was successful!!!';
+        $state.go('home.index.mainActivity',{'appConfigResult': msg });
+      } else {
+        alertsFactory.danger(i18n('appConfigFailedMsg'));
+      }
+   }, function (reason) {
+      alertsFactory.danger(i18n('appConfigFailedMsg'));
+      $log.error(reason);
+   });
+  };
+
+
+}).controller('EditAppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
+                                         i18n, $state, appConfig) {
  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
  $scope.facilities = facilities;
  $scope.productProfiles = productProfiles;

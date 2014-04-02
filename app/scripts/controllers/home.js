@@ -19,7 +19,7 @@ angular.module('lmisChromeApp')
       },
       controller: function($scope, appConfig, todayStockCount, $state) {
         if(appConfig === undefined){
-          $state.go('appConfig');
+          $state.go('appConfigWelcome');
           return;
         }
         $scope.facility = appConfig.appFacility.name;
@@ -53,7 +53,7 @@ angular.module('lmisChromeApp')
       data: {
         label: 'Home'
       },
-      controller: function ($scope, $stateParams, $modal, $state, i18n, alertsFactory) {
+      controller: function ($scope, $stateParams, $state, i18n, alertsFactory) {
         if ($stateParams.storageClear !== null) {
           alertsFactory.success(i18n('clearStorageMsg'));
           $stateParams.storageClear = null;
@@ -68,17 +68,6 @@ angular.module('lmisChromeApp')
           alertsFactory.success($stateParams.stockResult);
           $stateParams.stockResult = null;
         }
-      }
-    })
-    .state('home.index.mainActivity.orderType', {
-      url: '/place-order',
-      controller: function ($state, $modal) {
-        var modal = $modal.open({
-          templateUrl: 'views/home/partials/order-type.html',
-        });
-        modal.result.catch(function () {
-          $state.go('home.index.mainActivity');
-        });
       }
     })
     .state('home.index.dashboard', {
