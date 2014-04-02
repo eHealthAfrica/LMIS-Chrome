@@ -1,0 +1,38 @@
+<fieldset>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group" ng-class="{ 'has-error': ((editAppConfigForm.contactPersonName).$error).required
+                      && isSubmitted }">
+        <label for="contactPerson" i18n="name"></label>
+        <input type="text" class="form-control" ng-model="(appConfig.contactPerson).name"
+               name="contactPersonName" id="contactPerson" required/>
+                      <span class="alert-danger form-control" i18n="contactPersonNameErrorMsg"
+                            ng-show="((editAppConfigForm.contactPersonName).$error).required && isSubmitted">
+                      </span>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group"
+           ng-class="{ 'has-error': (editAppConfigForm.contactPhoneNo).$invalid && isSubmitted }">
+        <label for="contactPhoneNo" i18n="phoneNo"></label>
+        <input type="tel" class="form-control" ng-model="(appConfig.contactPerson).phoneNo"
+               name="contactPhoneNo" id="contactPhoneNo" required/>
+                  <span class="alert-danger" i18n="contactPersonPhoneNoErrorMsg"
+                        ng-show="(editAppConfigForm.contactPhoneNo).$invalid && isSubmitted">
+                  </span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group" ng-class="{ 'has-error': (editAppConfigForm.email).$invalid && isSubmitted }">
+        <label for="email" i18n="email"></label>
+        <input type="email" class="form-control" ng-model="(appConfig.contactPerson).email" name="email"
+               id="email" required/>
+                  <span class="alert-danger" i18n="contactPersonEmailErrorMsg"
+                        ng-show="(editAppConfigForm.email).$invalid && isSubmitted">
+                  </span>
+      </div>
+    </div>
+  </div>
+</fieldset>
