@@ -153,6 +153,10 @@ angular.module('lmisChromeApp')
             scope.reasonError = true;
           }
           else{
+            if(!validate.invalid(wasteCountEntry)){
+              scope.productErrorMsg = '';
+              scope.productError = false;
+            }
             delete scope.wasteErrors[scope.productKey];
             delete scope.wasteErrorMsg[scope.productKey];
             scope.reasonError = false;
@@ -276,9 +280,13 @@ angular.module('lmisChromeApp')
        * @param error
        */
       errorAlert: function(scope, error){
-        if(error){
+        if(error === 1){
           scope.productError = true;
           scope.productErrorMsg = 'count value is invalid, at least enter Zero "0" to proceed';
+        }
+        else if (error === 2){
+          scope.productError = true;
+          scope.productErrorMsg = 'please fix errors in reason selection';
         }
         else{
           scope.productError = false;
