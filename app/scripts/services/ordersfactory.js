@@ -5,7 +5,7 @@ angular.module('lmisChromeApp').factory('ordersFactory', function (storageServic
   return {
     save: function (order) {
       var deferred = $q.defer();
-      storageService.insert(storageService.ORDERS, order).then(function (result) {
+      storageService.save(storageService.ORDERS, order).then(function (result) {
         if (result !== undefined) {
           deferred.resolve(result);
         } else {

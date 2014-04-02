@@ -128,10 +128,16 @@ describe('storageService', function () {
     expect(chromeStorageApi.get).toHaveBeenCalled();
   });
 
-  it('should be able to add new or update database table row and return promise', function () {
-    spyOn(chromeStorageApi, 'get').andReturn(deferred.promise);
-    storageService.insert('test', {'key': 'value'});
-    expect(chromeStorageApi.get).toHaveBeenCalled();
+  it('should be able to insert new database table row and return promise', function () {
+    spyOn(chromeStorageApi, 'set').andReturn(deferred.promise);
+    storageService.insert('test', {key: 'value'});
+    expect(chromeStorageApi.set).toHaveBeenCalled();
+  });
+
+  it('should be able to update database table row and return promise', function () {
+    spyOn(chromeStorageApi, 'set').andReturn(deferred.promise);
+    storageService.update('test', {key: 'value'});
+    expect(chromeStorageApi.set).toHaveBeenCalled();
   });
 
   it('should be able to get data from a table by key and return promise', function () {

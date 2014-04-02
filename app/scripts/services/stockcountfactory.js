@@ -222,7 +222,7 @@ angular.module('lmisChromeApp')
           if(stockCount !== null){
             object.uuid = stockCount.uuid;
           }
-          storageService.insert('stockCount', object).then(function(uuid){
+          storageService.save('stockCount', object).then(function(uuid){
             deferred.resolve(uuid);
           });
         });
@@ -237,7 +237,7 @@ angular.module('lmisChromeApp')
       wastage: function(object){
         var deferred = $q.defer();
 
-        storageService.insert('wastageCount', object).then(function(uuid){
+        storageService.save('wastageCount', object).then(function(uuid){
           deferred.resolve(uuid);
         });
         return deferred.promise;

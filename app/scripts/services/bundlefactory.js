@@ -5,7 +5,7 @@ angular.module('lmisChromeApp')
 
       function saveBundleReceipt(bundleReceipt) {
         var deferred = $q.defer(), batches = [];
-        storageService.insert(storageService.BUNDLE_RECEIPT, bundleReceipt).then(function (data) {
+        storageService.save(storageService.BUNDLE_RECEIPT, bundleReceipt).then(function (data) {
           if (data !== undefined) {
             angular.forEach(bundleReceipt.bundle_receipt_lines, function (receiptLine) {
               var newInventory = {
