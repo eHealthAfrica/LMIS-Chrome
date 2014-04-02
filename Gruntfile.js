@@ -45,10 +45,12 @@ module.exports = function(grunt) {
           livereload: '<%= connect.options.livereload %>'
         },
         files: [
-          '<%= yeoman.app %>/{,*/}*.html',
+          '<%= yeoman.app %>/*.html',
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.app %>/views/**/*.html'
+          '<%= yeoman.app %>/views/**/*.html',
+          '<%= yeoman.app %>/manifest.json',
+          '<%= yeoman.app %>/_locales/{,*/}*.json'
         ]
       }
     },
@@ -156,7 +158,9 @@ module.exports = function(grunt) {
             '<%= yeoman.dist %>/scripts/{,*/}*.js',
             '<%= yeoman.dist %>/styles/{,*/}*.css',
             '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/styles/fonts/*'
+            '<%= yeoman.dist %>/styles/fonts/*',
+            '!<%= yeoman.dist %>/scripts/main*.js',
+            '!<%= yeoman.dist %>/images/icon{,-*}.png'
           ]
         }
       }
@@ -174,7 +178,10 @@ module.exports = function(grunt) {
 
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
+      html: [
+        '<%= yeoman.dist %>/*.html',
+        '<%= yeoman.dist %>/views/**/*.html',
+      ],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
         assetsDirs: ['<%= yeoman.dist %>']
@@ -213,7 +220,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
-          src: ['*.html', 'views/{,*/}*.html'],
+          src: ['*.html', 'views/**/*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -232,36 +239,39 @@ module.exports = function(grunt) {
       }
     },
 
-    // Replace Google CDN references
-    cdnify: {
-      dist: {
-        html: ['<%= yeoman.dist %>/*.html']
-      }
-    },
-
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            '*.html',
-            'views/{,*/}*.html',
-            'bower_components/**/*',
-            'images/{,*/}*.{webp}',
-            'fonts/*'
-          ]
-        }, {
-          expand: true,
-          cwd: '.tmp/images',
-          dest: '<%= yeoman.dist %>/images',
-          src: ['generated/*']
-        }]
+        files: [
+          {
+            expand: true,
+            dot: true,
+            cwd: '<%= yeoman.app %>',
+            dest: '<%= yeoman.dist %>',
+            src: [
+              '*.{ico,png,txt}',
+              '.htaccess',
+              '*.html',
+              'views/**/*.html',
+              'images/{,*/}*.{webp}',
+              '_locales/{,*/}*.json',
+              'media/*',
+              'scripts/fixtures/*.json'
+            ]
+          },
+          {
+            expand: true,
+            cwd: '.tmp/images',
+            dest: '<%= yeoman.dist %>/images',
+            src: ['generated/*']
+          },
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components/font-awesome',
+            dest: '<%= yeoman.dist %>',
+            src: ['fonts/*']
+          }
+        ]
       },
       styles: {
         expand: true,
@@ -328,6 +338,21 @@ module.exports = function(grunt) {
           config: grunt.file.readJSON('config/production.json')
         }
       }
+    },
+
+    chromeManifest: {
+      dist: {
+        options: {
+          background: {
+            target: 'scripts/main.js',
+            exclude: [
+              'scripts/chromereload.js'
+            ]
+          }
+        },
+        src: '<%= yeoman.app %>',
+        dest: '<%= yeoman.dist %>'
+      }
     }
   });
 
@@ -369,13 +394,13 @@ module.exports = function(grunt) {
     'clean:dist',
     'bowerInstall',
     'ngconstant:production',
+    'chromeManifest:dist',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
     'concat',
     'ngmin',
     'copy:dist',
-    'cdnify',
     'cssmin',
     'uglify',
     'rev',
@@ -389,10 +414,8 @@ module.exports = function(grunt) {
     'build'
   ]);
 
-  grunt.registerTask('travis', function() {
-    grunt.task.run([
-      'test',
-      'coveralls'
-    ]);
-  });
+  grunt.registerTask('travis', [
+    'test',
+    'coveralls'
+  ]);
 };
