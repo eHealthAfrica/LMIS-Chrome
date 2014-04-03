@@ -9,7 +9,7 @@ angular.module('lmisChromeApp')
           label:'Stock Count Form'
         },
         url:'/stockCountStepForm?facility&reportMonth&reportYear',
-        templateUrl: 'views/stockcount/step_entry_form.html',
+        templateUrl: 'views/stockcount/stock-count-form.html',
         controller: 'StockCountStepsFormCtrl',
         resolve:{
           appConfig: function(appConfigService){
@@ -40,7 +40,7 @@ angular.module('lmisChromeApp')
       .state('syncStockCount', {
         parent: 'root.index',
         abstract: true,
-        templateUrl: 'views/stockcount/sync.html',
+        templateUrl: 'views/stockcount/sync.html'
       })
       .state('syncStockCount.detail', {
         data: {
