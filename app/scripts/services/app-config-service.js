@@ -69,19 +69,19 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     return deferred.promise;
   };
 
-  var removeSelectedProductProfile =  function(productProfile, selectedProductProfiles) {
+  var removeProductProfileFrom =  function(productProfile, selectedProductProfiles) {
     return selectedProductProfiles.filter(function (prodProf) {
       return prodProf.uuid !== productProfile.uuid;
     });
   };
 
-  this.handleSelectionEvent = function(selection, selectedProductProfiles){
+  this.addProductProfile = function(selection, selectedProductProfiles){
    var productProfile = JSON.parse(selection);
    if(productProfile.deSelected === undefined){
      selectedProductProfiles.push(productProfile);
      return selectedProductProfiles;
    }
-   return removeSelectedProductProfile(productProfile, selectedProductProfiles);
+   return removeProductProfileFrom(productProfile, selectedProductProfiles);
   };
 
 });

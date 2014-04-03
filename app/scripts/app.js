@@ -19,7 +19,7 @@ angular.module('lmisChromeApp', [
 
   // Load fixture data
   .run(function(storageService,  $rootScope, appConfigService, $state) {
-    storageService.loadFixtures();
+    storageService.loadFixtures().then(function(result){
       $rootScope.$on('$stateChangeStart', function (ev, to, toParams, from, fromParams) {
         appConfigService.load().then(function(appConfig){
           if(appConfig === undefined){
@@ -30,4 +30,6 @@ angular.module('lmisChromeApp', [
           }
         });
       });
+    });
+
   });

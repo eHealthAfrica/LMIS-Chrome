@@ -70,7 +70,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
   $scope.handleSelectionEvent = function(productProfile){
    $scope.appConfig.selectedProductProfiles =
-       appConfigService.handleSelectionEvent(productProfile, $scope.appConfig.selectedProductProfiles);
+       appConfigService.addProductProfile(productProfile, $scope.appConfig.selectedProductProfiles);
   };
 
   $scope.save = function(){
@@ -126,7 +126,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
  $scope.handleSelectionEvent = function(productProfile){
    $scope.appConfig.selectedProductProfiles =
-       appConfigService.handleSelectionEvent(productProfile, $scope.appConfig.selectedProductProfiles);
+       appConfigService.addProductProfile(productProfile, $scope.appConfig.selectedProductProfiles);
  };
 
  $scope.save = function(){
