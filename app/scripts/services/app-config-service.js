@@ -84,15 +84,4 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    return removeSelectedProductProfile(productProfile, selectedProductProfiles);
   };
 
-  this.appConfigModel = {
-    facility: '',
-    stockCountInterval: '',
-    contactPerson: {
-      name: '',
-      email: '',
-      phoneNo: ''
-    },
-    selectedProductProfiles: []
-  };
-
 });

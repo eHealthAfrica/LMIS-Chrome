@@ -60,7 +60,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.currentStep = step;
   };
 
-  $scope.appConfig = appConfigService.appConfigModel;
+  $scope.appConfig = {
+    facility: '',
+    stockCountInterval: '',
+    contactPerson: {
+      name: '',
+      email: '',
+      phoneNo: ''
+    },
+    selectedProductProfiles: []
+  };
 
   $scope.handleSelectionEvent = function(productProfile){
    $scope.appConfig.selectedProductProfiles =
@@ -95,7 +104,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  $scope.preSelectProductProfileCheckBox = {};
  $scope.isSubmitted = false;
  //used to hold config form data
- $scope.appConfig = appConfigService.appConfigModel;
+ $scope.appConfig = {
+    facility: '',
+    stockCountInterval: '',
+    contactPerson: {
+      name: '',
+      email: '',
+      phoneNo: ''
+    },
+    selectedProductProfiles: []
+  };
 
  function preLoadConfigForm(appConfig){
    if (appConfig !== undefined) {
