@@ -8,8 +8,7 @@
     "angular-ui-router": "0.2.10",
     "tv-breadcrumbs": "~0.1.1",
     "bootstrap-css-only": "~3.1.0",
-    "angular-pouchdb": "tlvince/angular-pouchdb",
-    "pouchdb-nightly": "https://gist.githubusercontent.com/tlvince/9769464/raw/c83878e990ad8e85e8f6597edf4070e233176707/pouchdb-nightly.js",
+    "angular-pouchdb": "tlvince/angular-pouchdb#0.1.1",
     "fastclick": "~1.0.0",
     "howler": "~1.1.18"
   },
