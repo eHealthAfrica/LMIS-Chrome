@@ -58,17 +58,29 @@ angular.module('lmisChromeApp')
       function setData(table, data) {
         var deferred = $q.defer();
         var obj = {};
-        if(Object.keys(data).indexOf('uuid') !== -1 && data.uuid.length > 0){
-          var table_data = {};
-          table_data[data.uuid] = data;
-          obj[table] = table_data;
-        } else {
-          obj[table] = data;
-        }
+        var table_data = {};
+        table_data[data.uuid] = data;
+        obj[table] = table_data;
         chromeStorageApi.set(obj);
         deferred.resolve(data.uuid);
         return deferred.promise;
       }
+
+      /**
+       * Load init table data to the chrome store.
+       *
+       * @param {string} table - Table name.
+       * @param {mixed} data - object of table rows
+       * @return {Promise} Promise object
+       * @private
+       */
+      function setTable(table, data) {
+        var obj = {};
+        obj[table] = data;
+        var promise = chromeStorageApi.set(obj);
+        return promise;
+      };
+
 
       /**
        * Get table data from the chrome store
@@ -228,7 +240,7 @@ angular.module('lmisChromeApp')
                 if (angular.isUndefined(data)) {
                   var file_url = 'scripts/fixtures/' + db_name + '.json';
                   $http.get(file_url).success(function (data) {
-                    setData(db_name, data);
+                      setTable(db_name, data);
                   }).error(function (err) {
                         console.log(err);
                   });
@@ -278,7 +290,7 @@ angular.module('lmisChromeApp')
               }
             }
             //store new object in local storage
-            setData(related_name, related_object);
+              setTable(related_name, related_object);
             deferred.resolve(related_object);
           }
         });
@@ -331,7 +343,6 @@ angular.module('lmisChromeApp')
       }
 
       function insertBatch(tableName, batchList){
-
         var deferred = $q.defer();
         getData(tableName).then(function(tableData){
           var batches = (angular.isArray(batchList))? batchList : [];
