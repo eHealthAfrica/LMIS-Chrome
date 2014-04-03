@@ -223,7 +223,7 @@ angular.module('lmisChromeApp')
           db.put(obj)
             .then(function() {
               var cb = {complete: function() {
-                alertsFactory.success(i18n('syncSuccess'));
+                alertsFactory.success(i18n('syncSuccess'), {persistent: true});
                 if($scope.redirect) {
                   var msg = [
                     'You have completed waste count for',
@@ -245,7 +245,7 @@ angular.module('lmisChromeApp')
             })
             .catch(function(reason) {
               if(reason.message) {
-                alertsFactory.danger(reason.message);
+                alertsFactory.danger(reason.message, {persistent: true});
               }
               $log.error(reason);
             });
@@ -272,7 +272,7 @@ angular.module('lmisChromeApp')
         $scope.wasteErrorMsg[$scope.productKey] = {};
       }
       stockCountFactory.validate.waste.reason($scope, index);
-    }
+    };
 
     $scope.finalSave = function(){
       $scope.wasteCount.lastPosition = 0;
@@ -302,7 +302,7 @@ angular.module('lmisChromeApp')
         }
         else{
           $scope.preview = true;
-           $scope.wasteCount.isComplete = 1;
+          $scope.wasteCount.isComplete = 1;
         }
       }
       $scope.wasteCount.lastPosition = $scope.step;
@@ -413,7 +413,7 @@ angular.module('lmisChromeApp')
             })
             .catch(function(reason) {
               if(reason.message) {
-                alertsFactory.danger(reason.message);
+                alertsFactory.danger(reason.message, {persistent: true});
               }
               $log.error(reason);
             });
