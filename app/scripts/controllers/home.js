@@ -18,12 +18,13 @@ angular.module('lmisChromeApp')
         }
       },
       controller: function($scope, appConfig, todayStockCount, $state) {
-        if(appConfig === undefined){
+        console.log('home controller');
+        if (appConfig === undefined) {
           $state.go('appConfigWelcome');
-          return;
+        } else {
+          $scope.facility = appConfig.appFacility.name;
+          $scope.hasPendingStockCount = (todayStockCount === null);
         }
-        $scope.facility = appConfig.appFacility.name;
-        $scope.hasPendingStockCount = (todayStockCount === null);
       }
     })
     .state('home.index', {

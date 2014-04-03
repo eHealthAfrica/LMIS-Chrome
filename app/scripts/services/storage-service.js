@@ -200,6 +200,7 @@ angular.module('lmisChromeApp')
        * @returns {void}
        */
       function loadFixtures() {
+        var deferred = $q.defer();
         var database = [
           productTypes,
           address,
@@ -259,6 +260,8 @@ angular.module('lmisChromeApp')
         for (var i in database) {
           loadData(database[i]);
         }
+        deferred.resolve(true);
+        return deferred.promise;
       }
 
       /**
