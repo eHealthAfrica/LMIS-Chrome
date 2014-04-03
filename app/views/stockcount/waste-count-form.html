@@ -1,20 +1,9 @@
-<div class="row" ng-hide="showHelp">
-  <div class="col-sm-12">
-    <div class="pull-right">
-      <span ng-click="showHelp=!showHelp">
-        <i class="green-icon fa fa-info-circle fa-2x"></i>
-      </span>
-    </div>
-    <div class="clearfix"></div>
-  </div>
-</div>
-
 <div class="panel panel-default" ng-show="showHelp">
   <div class="panel-body">
 
     <div class="col-sm-12">
       <div class="pull-right" ng-click="showHelp=!showHelp">
-        <i class="green-icon fa fa-info-circle fa-2x"></i>
+        <i class="text-danger fa fa-times"></i>
       </div>
       <div class="clearfix"></div>
     </div>
@@ -76,7 +65,13 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <h1 class="panel-title" >
-      Stock Count for {{ facilityObject.name }} - {{ currentDay }} {{ monthList[reportMonth] }} {{ reportYear }}
+      Waste Count for {{ facilityObject.name }} - {{ currentDay }} {{ monthList[reportMonth] }} {{ reportYear }}
+      <div class="pull-right">
+        <span ng-click="showHelp=!showHelp">
+          <i class="text-success fa fa-question-circle fa-2x"></i>
+        </span>
+      </div>
+      <div class="clearfix"></div>
     </h1>
   </div>
 
