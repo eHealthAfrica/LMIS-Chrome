@@ -77,7 +77,7 @@ angular.module('lmisChromeApp')
               $scope.sync = function() {
                 $scope.syncing = true;
                 var cb = {complete: function() {
-                  alertsFactory.success(i18n('syncSuccess'));
+                  alertsFactory.success(i18n('syncSuccess'), {persistent: true});
                 }};
                 var db = pouchdb.create('stockcount');
                 db.replicate.sync(remote, cb);
