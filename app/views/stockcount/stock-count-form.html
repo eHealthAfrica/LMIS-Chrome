@@ -1,16 +1,16 @@
-<div class="panel panel-default">
+<div class="panel panel-default" ng-show="showHelp">
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-12">
         <div class="pull-right">
           <span ng-click="showHelp=!showHelp">
-            <i class="green-icon fa fa-info-circle fa-2x"></i>
+            <i class="text-danger fa fa-times"></i>
           </span>
         </div>
         <div class="clearfix"></div>
       </div>
     </div>
-    <div class="row" ng-show="showHelp">
+    <div class="row">
       <div class="col-sm-12">
         <div class="row">
           <div class="col-sm-3">
@@ -68,18 +68,22 @@
 </div>
 
 <div class="panel panel-default">
-  <div class="panel-body">
+  <div class="panel-heading">
+    <h1 class="panel-title">
+      Stock Count for {{ facilityObject.name }} - {{ currentDay }} {{ monthList[reportMonth] }} {{ reportYear }}
+      <div class="pull-right">
+        <span ng-click="showHelp=!showHelp">
+          <i class="text-success fa fa-question-circle fa-2x"></i>
+        </span>
+      </div>
+      <div class="clearfix"></div>
+    </h1>
 
+  </div>
+
+  <div class="panel-body">
     <div>
       <div class="col-sm-12">
-        <div class="row">
-          <div class="col-sm-12">
-            <h3 >Stock Count for {{ facilityObject.name }} -
-
-              {{ currentDay }} {{ monthList[reportMonth] }} {{ reportYear }}
-            </h3>
-          </div>
-        </div>
         <form ng-submit="save()">
           <div class="row">
             <div class="col-sm-12" ng-hide="preview">
