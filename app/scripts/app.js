@@ -18,18 +18,6 @@ angular.module('lmisChromeApp', [
   })
 
   // Load fixture data
-  .run(function(storageService,  $rootScope, appConfigService, $state) {
-    storageService.loadFixtures().then(function(result){
-      $rootScope.$on('$stateChangeStart', function (ev, to, toParams, from, fromParams) {
-        appConfigService.load().then(function(appConfig){
-          if(appConfig === undefined){
-            if(from.name !== 'appConfigWelcome'){
-              //have not visited the welcome page, take to welcome page
-              $state.go('appConfigWelcome');
-            }
-          }
-        });
-      });
-    });
-
+  .run(function(storageService) {
+    storageService.loadFixtures();
   });
