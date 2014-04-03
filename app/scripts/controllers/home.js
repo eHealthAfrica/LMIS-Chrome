@@ -18,10 +18,6 @@ angular.module('lmisChromeApp')
         }
       },
       controller: function($scope, appConfig, todayStockCount, $state) {
-        if(appConfig === undefined){
-          $state.go('appConfigWelcome');
-          return;
-        }
         $scope.facility = appConfig.appFacility.name;
         $scope.hasPendingStockCount = (todayStockCount === null);
       }

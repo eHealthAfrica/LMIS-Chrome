@@ -18,9 +18,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       },
       productProfiles: function(productProfileFactory){
         return productProfileFactory.getAll();
-      },
-      save: function(){
-
       }
     },
     controller: 'AppConfigWizard',
@@ -76,10 +73,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
        appConfigService.handleSelectionEvent(productProfile, $scope.appConfig.selectedProductProfiles);
   };
 
-  $scope.intervalError = 'select stock count interval.';
-
   $scope.save = function(){
-    //TODO: refactor this into common function that controllers can share. or call createApp config here.
+    //TODO: refactor this into common function both controllers can share. or call createApp config here.
    $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility)
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
@@ -116,22 +111,18 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
  function preLoadConfigForm(appConfig){
-   if (appConfig !== undefined) {
-     $scope.appConfig.contactPerson = appConfig.contactPerson;
-     $scope.appConfig.stockCountInterval = parseInt(appConfig.stockCountInterval);
-     $scope.appConfig.facility = appConfig.facility;
-     $scope.appConfig.appFacility = appConfig.appFacility;
-     $scope.appConfig.selectedProductProfiles = appConfig.selectedProductProfiles;
-     for (var index in appConfig.selectedProductProfiles) {
-       var selectedProductProfile = appConfig.selectedProductProfiles[index];
-       $scope.preSelectProductProfileCheckBox[selectedProductProfile.uuid] = selectedProductProfile;
-     }
-   }else{
-     //take to app welcome page for initial setup
-     $state.go('appConfigWelcome');
+   $scope.appConfig.contactPerson = appConfig.contactPerson;
+   $scope.appConfig.stockCountInterval = parseInt(appConfig.stockCountInterval);
+   $scope.appConfig.facility = appConfig.facility;
+   $scope.appConfig.appFacility = appConfig.appFacility;
+   $scope.appConfig.selectedProductProfiles = appConfig.selectedProductProfiles;
+   for (var index in appConfig.selectedProductProfiles) {
+     var selectedProductProfile = appConfig.selectedProductProfiles[index];
+     $scope.preSelectProductProfileCheckBox[selectedProductProfile.uuid] = selectedProductProfile;
    }
  };
- preLoadConfigForm(appConfig);//pre-load config form with existing app config.
+ //pre-load config form with existing app config.
+ preLoadConfigForm(appConfig);
 
  $scope.handleSelectionEvent = function(productProfile){
    $scope.appConfig.selectedProductProfiles =
