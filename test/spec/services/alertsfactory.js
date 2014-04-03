@@ -115,6 +115,16 @@ describe('Service: alertsFactory', function() {
     });
   });
 
+  it('should be able to create persistent alerts', function() {
+    inject(function($timeout, $templateCache) {
+      loadMockedTemplates($templateCache);
+      alertsFactory.info('Test', {persistent: true});
+      expect(scope.alerts.length).toEqual(1);
+      $timeout.flush();
+      expect(scope.alerts.length).toEqual(1);
+    });
+  });
+
   describe('levels', function() {
     it('should expose alert levels', function() {
       var levels = ['success', 'info', 'warning', 'danger'];
