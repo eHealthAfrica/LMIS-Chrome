@@ -125,9 +125,11 @@ angular.module('lmisChromeApp')
 
             if(angular.isUndefined(scope.sumErrorIndex)){
               scope.sumErrorIndex = {};
-              scope.sumErrorIndex[scope.productKey] = []
             }
             if(currentReason !== 0 && currentReason !== null){
+              if(angular.isUndefined(scope.sumErrorIndex[scope.productKey])){
+                scope.sumErrorIndex[scope.productKey] = []
+              }
               scope.sumErrorIndex[scope.productKey].push(index);
               errorMsg.push("Please check entry: Reason figure can not be than waste count ");
             }

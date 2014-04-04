@@ -284,9 +284,6 @@ angular.module('lmisChromeApp')
     $scope.changeState = function(direction){
 
       $scope.productKey = $scope.facilityProductsKeys[$scope.step];
-      if(angular.isUndefined($scope.wasteCount.reason[$scope.productKey])){
-        $scope.wasteCount.reason[$scope.productKey] = {};
-      }
       $scope.currentEntry = $scope.wasteCount.discarded[$scope.productKey];
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
         stockCountFactory.get.errorAlert($scope, 1);
@@ -309,6 +306,9 @@ angular.module('lmisChromeApp')
       $scope.productKey = $scope.facilityProductsKeys[$scope.step];
       $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
       $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
+      if(angular.isUndefined($scope.wasteCount.reason[$scope.productKey])){
+        $scope.wasteCount.reason[$scope.productKey] = {};
+      }
     };
   })
 
