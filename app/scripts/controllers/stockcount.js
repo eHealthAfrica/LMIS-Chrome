@@ -388,54 +388,66 @@ angular.module('lmisChromeApp')
       }
     });
 
-    $scope.save = function(){
-      var dbName = 'stockcount';
+    $scope.save = function() {
+      var dbName = 'stockcount',
+          db = pouchdb.create(dbName);
+
       $scope.stockCount.facility = $scope.facilityUuid;
       $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.currentDay, timezone);
 
-      stockCountFactory.save.stock($scope.stockCount)
-      .then(function() {
-        if($scope.redirect) {
-          alertsFactory.success(i18n('stockCountSaved'));
-          var db = pouchdb.create(name);
-          var obj = $scope.stockCount;
-          obj._id = obj.uuid;
-          db.put(obj)
-            .then(function() {
-              var cb = {complete: function() {
-                alertsFactory.success(i18n('syncSuccess'));
-                if($scope.redirect) {
-                  var msg = [
-                    'You have completed stock count for',
-                    $scope.currentDay,
-                    $scope.monthList[$scope.reportMonth],
-                    $scope.reportYear
-                  ].join(' ');
-                  alertsFactory.success(msg);
-                  $state.go('home.index.mainActivity', {
-                    'facility': $scope.facilityUuid,
-                    'reportMonth': $scope.reportMonth,
-                    'reportYear': $scope.reportYear,
-                    'stockResult': msg
-                  });
-                }
-              }};
-              var db = pouchdb.create(name);
-              db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
-            })
-            .catch(function(reason) {
-              $state.go('home.index.mainActivity');
-              var message = '';
-              if(reason.message) {
-                message = reason.message + '. ';
+      var backupStock = function(doc) {
+        db.put(doc)
+          .then(function() {
+            var cb = {complete: function() {
+              alertsFactory.success(i18n('syncSuccess'));
+              if($scope.redirect) {
+                var msg = [
+                  'You have completed stock count for',
+                  $scope.currentDay,
+                  $scope.monthList[$scope.reportMonth],
+                  $scope.reportYear
+                ].join(' ');
+                alertsFactory.success(msg);
+                $state.go('home.index.mainActivity', {
+                  'facility': $scope.facilityUuid,
+                  'reportMonth': $scope.reportMonth,
+                  'reportYear': $scope.reportYear,
+                  'stockResult': msg
+                });
               }
-              message += i18n('syncLater');
-              alertsFactory.danger(message, {persistent: true});
-            });
-        }
-        $scope.redirect = true; // always reset to true after every save
-        $scope.stockCount.isComplete = 1;
-      });
+            }};
+            db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
+          })
+          .catch(function(reason) {
+            $state.go('home.index.mainActivity');
+            var message = '';
+            if(reason.message) {
+              message = reason.message + '. ';
+            }
+            message += i18n('syncLater');
+            alertsFactory.danger(message, {persistent: true});
+          });
+      };
+
+      stockCountFactory.save.stock($scope.stockCount)
+        .then(function() {
+          if($scope.redirect) {
+            alertsFactory.success(i18n('stockCountSaved'));
+            var obj = $scope.stockCount;
+            obj._id = obj.uuid;
+            db.get(obj._id)
+              .then(function(doc) {
+                if(doc._rev) {
+                  obj._rev = doc._rev;
+                }
+              })
+              .finally(function() {
+                backupStock(obj);
+              });
+          }
+          $scope.redirect = true; // always reset to true after every save
+          $scope.stockCount.isComplete = 1;
+        });
     };
 
     $scope.changeState = function(direction){
