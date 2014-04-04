@@ -1,0 +1,410 @@
+{
+  "appName": {
+    "message": "LMIS Chrome"
+  },
+  "appDescription": {
+    "message": "LMIS Chrome packaged app"
+  },
+  "appAuthor": {
+    "message": "eHealth Systems Africa Foundation"
+  },
+  "incoming": {
+    "message": "Incoming"
+  },
+  "incomingLog": {
+    "message": "Log an incoming bundle"
+  },
+  "incomingPlace": {
+    "message": "Place an order"
+  },
+  "incomingModify": {
+    "message": "Modify an order"
+  },
+  "incomingTrackPending": {
+    "message": "Track pending orders"
+  },
+  "incomingTrackIncoming": {
+    "message": "Track incoming orders"
+  },
+  "incomingOrders": {
+    "message": "View received orders"
+  },
+  "routine": {
+    "message": "Routine"
+  },
+  "sia": {
+    "message": "SIA"
+  },
+  "submit": {
+    "message": "Submit"
+  },
+  "receivingFacilityName": {
+    "message": "Receiving Facility Name"
+  },
+  "childFacilityCode": {
+    "message": "Child Facility Code"
+  },
+  "parentFacilityCode": {
+    "message": "Parent Facility Code"
+  },
+  "parentFacilityName": {
+    "message": "Parent Facility Name"
+  },
+  "userCode": {
+    "message": "User Code"
+  },
+  "orderNumber": {
+    "message": "Order Number"
+  },
+  "productCategory": {
+    "message": "Product Category"
+  },
+  "productProfile": {
+    "message": "Product Profile"
+  },
+  "quantity": {
+    "message": "Quantity"
+  },
+  "program": {
+    "message": "Program"
+  },
+  "numberOfDoses": {
+    "message": "Number of doses"
+  },
+  "supplementalImmunizationActivity": {
+    "message": "Supplemental Immunization Activity"
+  },
+  "ri": {
+    "message": "RI"
+  },
+  "routineImmunization": {
+    "message": "Routine Immunization"
+  },
+  "a": {
+    "message": "a"
+  },
+  "another": {
+    "message": "another"
+  },
+  "addOrderLine": {
+    "message": "Add {{determiner}} product"
+  },
+  "orderDate": {
+    "message": "Order Date"
+  },
+  "removeProductID": {
+    "message": "Remove product {{id}}"
+  },
+  "authorize": {
+    "message": "Authorize"
+  },
+  "manageInventory": {
+    "message": "Manage inventory"
+  },
+  "product": {
+    "message": "Product"
+  },
+  "viewBatch": {
+    "message": "View batch list"
+  },
+  "viewProductTypes": {
+    "message": "View product types"
+  },
+  "productID": {
+    "message": "Product {{id}}"
+  },
+  "sendingFacility": {
+    "message": "Sending Facility"
+  },
+  "selectSendingFacility": {
+    "message": "select sending facility"
+  },
+  "receivingFacility": {
+    "message": "Receiving Facility"
+  },
+  "selectReceivingFacility": {
+    "message": "select receiving facility"
+  },
+  "productTypes": {
+    "message": "Product Types"
+  },
+  "addProductType": {
+    "message": "Add Product Type"
+  },
+  "batches": {
+    "message": "Batches"
+  },
+  "batchNo": {
+    "message": "Batch No"
+  },
+  "storageUnit": {
+    "message": "Storage Unit"
+  },
+  "verify": {
+    "message": "Verify"
+  },
+  "bundleNo": {
+    "message": "Bundle No."
+  },
+  "dateReceived": {
+    "message": "Date Received"
+  },
+  "selectProductType": {
+    "message": "select product type"
+  },
+  "selectBatch": {
+    "message": "select batch"
+  },
+  "selectProgram": {
+    "message": "select program"
+  },
+  "uom": {
+    "message": "Unit of measurement"
+  },
+  "selectUOM": {
+    "message": "select unit of measurement"
+  },
+  "controlPanel": {
+    "message": "Control Panel"
+  },
+  "dashboard": {
+    "message": "Dashboard"
+  },
+  "toogleNav": {
+    "message": "Toggle Navigation"
+  },
+  "bundleNotFound": {
+    "message": "Bundle no: {{id}} not found, confirm that you entered the correct bundle number before using 'Add New Inventory' "
+  },
+  "addToStorageUnit": {
+    "message": "Add to Storage Unit"
+  },
+  "remove": {
+    "message": "Remove"
+  },
+  "addNewInventory": {
+    "message": "Add New Inventory"
+  },
+  "addInventorySuccessMessage": {
+    "message": "Inventory added successfully"
+  },
+  "stockCount": {
+    "message": "Stock Count"
+  },
+  "addStockCount": {
+    "message": "Add Stock Count"
+  },
+  "addWasteCount": {
+    "message": "Add Waste Count"
+  },
+  "orderPlacedSuccess": {
+    "message": "Order placed successfully"
+  },
+  "online": {
+    "message": "Online"
+  },
+  "offline": {
+    "message": "Offline"
+  },
+  "toggleNavigation": {
+    "message": "Toggle navigation"
+  },
+  "termsOfService": {
+    "message": "Terms of Service"
+  },
+  "privacyPolicy": {
+    "message": "Privacy Policy"
+  },
+  "contactUs": {
+    "message": "Contact us"
+  },
+  "processAnOrder": {
+    "message": "Process an order"
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "facility": {
+    "message": "Facility"
+  },
+  "inventory": {
+    "message": "Inventory"
+  },
+  "reset": {
+    "message": "Reset"
+  },
+  "minimum": {
+    "message": "Minimum"
+  },
+  "maximum": {
+    "message": "Maximum"
+  },
+  "forecastingInterval": {
+    "message": "Forecasting Interval"
+  },
+  "serviceLevel": {
+    "message": "Service Level"
+  },
+  "showBundle": {
+    "message": "Show Bundle"
+  },
+  "confirm": {
+    "message": "Confirm"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "settingsSaved": {
+    "message": "Settings saved"
+  },
+  "settingsFailed": {
+    "message": "Could not save settings"
+  },
+  "products": {
+    "message": "Products"
+  },
+  "productsUnset": {
+    "message": "Product settings are unset. Please define them in"
+  },
+  "inventorySettings": {
+    "message": "inventory settings"
+  },
+  "logIncomingSuccessMessage": {
+    "message": "Incoming Bundle was logged successfully !!!"
+  },
+  "belowBuffer": {
+    "message": "Below buffer"
+  },
+  "buffer": {
+    "message": "Buffer"
+  },
+  "safetyStock": {
+    "message": "Safety Stock"
+  },
+  "max": {
+    "message": "Max"
+  },
+  "actual": {
+    "message": "Actual"
+  },
+  "inventoryRules": {
+    "message": "Inventory Rules"
+  },
+  "setServiceLevel": {
+    "message": "Set Service Level"
+  },
+  "setMaximumLevel": {
+    "message": "Set Maximum Level"
+  },
+  "inventoryPerformance": {
+    "message": "Inventory Performance"
+  },
+  "leadTimeConsumption": {
+    "message": "Lead-time Consumption"
+  },
+  "bufferStock": {
+    "message": "Buffer Stock"
+  },
+  "reorderPoint": {
+    "message": "Reorder Point"
+  },
+  "discrepancyThreshold": {
+    "message": "Discrepancy Threshold"
+  },
+  "stockCountSaved": {
+    "message": "Stock count saved. Syncronising with cloud backup…"
+  },
+  "syncSuccess": {
+    "message": "Successfully syncronised"
+  },
+  "syncStockCount": {
+    "message": "Sync stock count"
+  },
+  "sync": {
+    "message": "Sync"
+  },
+  "local": {
+    "message": "Local"
+  },
+  "remote": {
+    "message": "Remote"
+  },
+  "records": {
+    "message": "Records"
+  },
+  "counterSample": {
+    "message": "Counter Sample"
+  },
+  "contactPersonInfo": {
+    "message": "Contact person info"
+  },
+  "name": {
+    "message": "Name"
+  },
+  "phoneNo": {
+    "message": "Phone no"
+  },
+  "stockCountInterval": {
+    "message": "Stock count Interval"
+  },
+  "email": {
+    "message": "E-mail"
+  },
+  "selectFacilityProductProfiles": {
+    "message": "Select facility product profiles"
+  },
+  "appConfigFailedMsg": {
+    "message": "Application configuration was failed, try again!"
+  },
+  "appConfigSuccessMsg": {
+    "message": "Application configuration was successful!!!"
+  },
+  "compare": {
+    "message": "Compare"
+  },
+  "selectedProductProfile": {
+    "message": "Selected product profile"
+  },
+  "selectStockCountInterval": {
+    "message": "Select stock count interval"
+  },
+  "selectFacility": {
+    "message": "Select facility"
+  },
+  "clearStorage": {
+    "message": "Clear storage"
+  },
+  "clearStorageMsg": {
+    "message": "Storage cleared successfully!"
+  },
+  "continue": {
+    "message": "Continue"
+  },
+  "appConfigWelcomeMsg": {
+     "message": "Welcome to LoMIS!"
+  },
+  "welcomeMsgBody": {
+    "message": "Please, take a few minutes to tell us about your facility."
+  },
+  "facilityInfo": {
+    "message": "Facility info."
+  },
+  "appConfigFacilityErrorMsg": {
+    "message": "select facility."
+  },
+  "appConfigStockCountErrorMsg": {
+    "message": "select facility stock count interval."
+  },
+  "contactPersonNameErrorMsg": {
+    "message": "enter contact person name."
+  },
+  "contactPersonPhoneNoErrorMsg": {
+    "message": "enter contact person's phone no."
+  },
+  "contactPersonEmailErrorMsg": {
+    "message": "enter valid email address."
+  },
+  "syncLater": {
+    "message": "Please try resyncing later."
+  }
+}

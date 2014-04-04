@@ -2,7 +2,7 @@
 
 describe('Inventory controller', function () {
   // Load the controller's module
-  beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks'));
+  beforeEach(module('lmisChromeApp'));
 
   var $state;
   beforeEach(inject(function(_$state_) {

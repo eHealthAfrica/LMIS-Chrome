@@ -3,7 +3,7 @@
 describe('Service: alertsFactory', function() {
 
   // load the service's module
-  beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks'));
+  beforeEach(module('lmisChromeApp'));
 
   // instantiate service
   var alertsFactory, scope;
@@ -14,25 +14,23 @@ describe('Service: alertsFactory', function() {
 
   var loadMockedTemplates = function($templateCache) {
     var templates = [
-      'index',
-      'nav',
-      'sidebar',
-      'control-panel',
-      'dashboard',
-      'dashboard/chart',
-      'dashboard/table',
-      'main-activity'
+      'index/index',
+      'index/header',
+      'index/breadcrumbs',
+      'index/alerts',
+      'index/footer',
+      'home/index',
+      'home/nav',
+      'home/sidebar',
+      'home/control-panel',
+      'home/dashboard',
+      'home/dashboard/chart',
+      'home/dashboard/table',
+      'home/main-activity'
     ];
 
     templates.forEach(function(template) {
-      $templateCache.put('views/home/' + template + '.html', '');
-    });
-  };
-
-  var loadMockedLocales = function($httpBackend) {
-    var locales = ['en', 'en_GB'];
-    locales.forEach(function(locale) {
-      $httpBackend.whenGET('/locales/' + locale + '.json').respond(200, {});
+      $templateCache.put('views/' + template + '.html', '');
     });
   };
 
@@ -91,9 +89,8 @@ describe('Service: alertsFactory', function() {
     var ma = 'home.index.mainActivity',
         dash = 'home.index.dashboard.chart';
 
-    inject(function($templateCache, $state, $httpBackend) {
+    inject(function($templateCache, $state) {
       loadMockedTemplates($templateCache);
-      loadMockedLocales($httpBackend);
 
       scope.$apply(function() {
         $state.go(ma);
@@ -109,13 +106,22 @@ describe('Service: alertsFactory', function() {
   });
 
   it('should remove alerts after five seconds', function() {
-    inject(function($timeout, $templateCache, $httpBackend) {
+    inject(function($timeout, $templateCache) {
       loadMockedTemplates($templateCache);
-      loadMockedLocales($httpBackend);
       alertsFactory.info('');
       expect(scope.alerts.length).toEqual(1);
       $timeout.flush();
       expect(scope.alerts.length).toEqual(0);
+    });
+  });
+
+  it('should be able to create persistent alerts', function() {
+    inject(function($timeout, $templateCache) {
+      loadMockedTemplates($templateCache);
+      alertsFactory.info('Test', {persistent: true});
+      expect(scope.alerts.length).toEqual(1);
+      $timeout.flush();
+      expect(scope.alerts.length).toEqual(1);
     });
   });
 

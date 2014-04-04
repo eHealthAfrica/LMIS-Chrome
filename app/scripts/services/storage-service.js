@@ -44,6 +44,7 @@ angular.module('lmisChromeApp')
       var bundleReceiptLines = 'bundle_receipt_lines';
       var locations = 'locations';
       var stockCount = 'stockCount';
+      var wasteCount = 'wasteCount';
       var appConfig = 'app_config';
 
       /**
@@ -199,6 +200,7 @@ angular.module('lmisChromeApp')
        * @returns {void}
        */
       function loadFixtures() {
+        var deferred = $q.defer();
         var database = [
           productTypes,
           address,
@@ -258,6 +260,8 @@ angular.module('lmisChromeApp')
         for (var i in database) {
           loadData(database[i]);
         }
+        deferred.resolve(true);
+        return deferred.promise;
       }
 
       /**
@@ -416,6 +420,7 @@ angular.module('lmisChromeApp')
         BUNDLE_RECEIPT_LINES: bundleReceiptLines,
         LOCATIONS: locations,
         STOCK_COUNT: stockCount,
+        WASTE_COUNT: wasteCount,
         APP_CONFIG: appConfig
       };
 

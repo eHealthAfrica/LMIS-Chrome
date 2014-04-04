@@ -1,12 +1,12 @@
 'use strict';
 
 describe('Service stockCountFactory', function(){
-  beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks', 'stockCountMocks'));
+  beforeEach(module('lmisChromeApp', 'stockCountMocks'));
 
   var stockCountFactory,
       stockCount,
       scope;
-  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q, $templateCache, $httpBackend){
+  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q){
     stockCountFactory = _stockCountFactory_;
     scope = $rootScope.$new();
     stockCount = stockData;
@@ -19,7 +19,7 @@ describe('Service stockCountFactory', function(){
         return $q.when(null);
       }
     });
-    spyOn(stockCountFactory.validate, 'countExist').andCallFake(function (date) {
+    spyOn(stockCountFactory.validate.stock, 'countExist').andCallFake(function (date) {
       if(date === '2014-03-25'){
         return $q.when({isComplete: true});
       }else{
@@ -27,8 +27,6 @@ describe('Service stockCountFactory', function(){
       }
 
     });
-    $httpBackend.whenGET('/locales/en.json').respond(200, {});
-    $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
   }));
 
   it('should expose a load method aliased as "get"', function(){
@@ -73,12 +71,12 @@ describe('Service stockCountFactory', function(){
 
   it('should not return if date exist', function(){
     var stockCount = null;
-    stockCountFactory.validate.countExist('2014-03-25').then(function(data){
+    stockCountFactory.validate.stock.countExist('2014-03-25').then(function(data){
       stockCount = data;
     });
     expect(stockCount).toBeNull();
     scope.$digest();
-    expect(stockCountFactory.validate.countExist).toHaveBeenCalled();
+    expect(stockCountFactory.validate.stock.countExist).toHaveBeenCalled();
     expect(stockCount).not.toBeNull();
   });
 

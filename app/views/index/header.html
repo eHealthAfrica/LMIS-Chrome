@@ -1,0 +1,21 @@
+<header>
+  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <a ui-sref="home.index.mainActivity" class="navbar-brand" i18n="appName"></a>
+      <ul class="nav navbar-nav pull-right">
+        <li>
+          <a>
+            <span
+              class="label"
+              ng-class="{
+                'label-success': status.online,
+                'label-danger': !status.online
+              }"
+              ng-bind="status.label">
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

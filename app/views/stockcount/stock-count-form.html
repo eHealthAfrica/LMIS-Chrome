@@ -1,16 +1,16 @@
-<div class="panel panel-default">
+<div class="panel panel-default" ng-show="showHelp">
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-12">
         <div class="pull-right">
           <span ng-click="showHelp=!showHelp">
-            <i class="green-icon fa fa-info-circle fa-2x"></i>
+            <i class="text-danger fa fa-times"></i>
           </span>
         </div>
         <div class="clearfix"></div>
       </div>
     </div>
-    <div class="row" ng-show="showHelp">
+    <div class="row">
       <div class="col-sm-12">
         <div class="row">
           <div class="col-sm-3">
@@ -68,18 +68,22 @@
 </div>
 
 <div class="panel panel-default">
-  <div class="panel-body">
+  <div class="panel-heading">
+    <h1 class="panel-title">
+      Stock Count for {{ facilityObject.name }} - {{ currentDay }} {{ monthList[reportMonth] }} {{ reportYear }}
+      <div class="pull-right">
+        <span ng-click="showHelp=!showHelp">
+          <i class="text-success fa fa-question-circle fa-2x"></i>
+        </span>
+      </div>
+      <div class="clearfix"></div>
+    </h1>
 
+  </div>
+
+  <div class="panel-body">
     <div>
       <div class="col-sm-12">
-        <div class="row">
-          <div class="col-sm-12">
-            <h3 >Stock Count for {{ facilityObject.name }} -
-
-              {{ currentDay }} {{ monthList[reportMonth] }} {{ reportYear }}
-            </h3>
-          </div>
-        </div>
         <form ng-submit="save()">
           <div class="row">
             <div class="col-sm-12" ng-hide="preview">
@@ -92,7 +96,7 @@
                 <div class="col-xs-12 col-sm-12 col-md-12">
                   <div class="row">
                     <!-- start form previous button -->
-                    <div class="col-xs-12 col-sm-4 ">
+                    <div class="col-xs-12 col-sm-4 hidden-xs">
                       <div class="btn-separator">
                         <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default col-sm-12 col-xs-12"
                             ng-click="changeState(0)">
@@ -107,7 +111,7 @@
                       </div>
                     </div>
                     <!-- start form next button -->
-                    <div class="col-sm-4 col-xs-12">
+                    <div class="col-sm-4 col-xs-12 hidden-xs">
                       <div class="btn-separator">
                         <button type="button" ng-hide="step === maxStep"
                                 class="btn btn-lg btn-success col-sm-12 col-xs-12"
@@ -117,7 +121,7 @@
                       </div>
                     </div>
                     <!-- this button is shown when we get tp the end of the list -->
-                    <div class="col-sm-4 col-xs-12">
+                    <div class="col-sm-4 col-xs-12 hidden-xs">
                       <button type="button" ng-show="step === maxStep"
                               class="btn btn-lg btn-success col-sm-12 col-xs-12"
                               ng-click="changeState(2)">
@@ -125,6 +129,46 @@
                       </button>
                     </div>
 
+                    <!-- this button is shown only in mobile mode -->
+                    <div class="col-xs-12 visible-xs">
+                      <div class="btn-separator" ng-hide="step === maxStep">
+                        <div class="btn-group btn-group-justified">
+                          <div class="btn-group">
+                            <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default"
+                                ng-click="changeState(0)">
+                              <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
+                            </button>
+                          </div>
+                          <div class="btn-group">
+                            <button type="button" ng-hide="step === maxStep"
+                                    class="btn btn-lg btn-success col-sm-12 col-xs-12"
+                                    ng-click="changeState(1)">
+                              Next <i class="fa fa-chevron-circle-right fa-lg"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-xs-12 visible-xs">
+                      <div class="btn-separator" ng-show="step === maxStep">
+                        <div class="btn-group btn-group-justified">
+                          <div class="btn-group">
+                            <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default"
+                                ng-click="changeState(0)">
+                              <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
+                            </button>
+                          </div>
+                          <div class="btn-group">
+                            <button type="button"
+                                    class="btn btn-lg btn-success"
+                                    ng-click="changeState(2)">
+                              Save <i class="fa fa-save fa-lg"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 </div>

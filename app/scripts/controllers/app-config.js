@@ -1,78 +1,80 @@
 'use strict';
 
 angular.module('lmisChromeApp').config(function ($stateProvider) {
-  $stateProvider.state('appConfig', {
-    url: '/app-config',
-    templateUrl: '/views/app-config/configuration.html',
+  $stateProvider.state('appConfigWelcome', {
+    url: '/app-config-welcome',
+    parent: 'root.index',
+    templateUrl: '/views/app-config/welcome-page.html',
+    data: {
+      label: 'Welcome'
+    }
+  }).state('appConfigWizard', {
+    url: '/app-config-wizard',
+    parent: 'root.index',
+    templateUrl: '/views/app-config/wizard/initial-config.html',
     resolve: {
-      appConfig: function(appConfigService){
-        return appConfigService.load();
-      },
-      facilities: function (facilityFactory) {
+      facilities: function(facilityFactory){
         return facilityFactory.getAll();
       },
       productProfiles: function(productProfileFactory){
         return productProfileFactory.getAll();
       }
     },
-    controller: 'AppConfigCtrl',
+    controller: 'AppConfigWizard',
     data: {
-      label: 'App Configuration'
+      label: 'Configuration wizard'
+    }
+  }).state('editAppConfig', {
+    url: '/edit-app-config',
+    parent: 'root.index',
+    templateUrl: '/views/app-config/configuration.html',
+    resolve: {
+      facilities: function(facilityFactory){
+        return facilityFactory.getAll();
+      },
+      productProfiles: function(productProfileFactory){
+        return productProfileFactory.getAll();
+      },
+      appConfig: function(appConfigService){
+        return appConfigService.load();
+      }
+    },
+    controller: 'EditAppConfigCtrl',
+    data: {
+      label: 'Settings'
     }
   })
-}).controller('AppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
-                                         $translate, $state, appConfig) {
 
- $scope.isFirstConfiguration = (appConfig === undefined)? true : false;
- $scope.stockCountIntervals = appConfigService.stockCountIntervals;
- $scope.facilities = facilities;
- $scope.productProfiles = productProfiles;
- $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
- $scope.preSelectProductProfileCheckBox = {};
- //used to hold config form data
- $scope.appConfig = {
-   facility: '',
-   stockCountInterval: '',
-   contactPerson: {
-     name: '',
-     email: '',
-     phoneNo: ''
-   },
-   selectedProductProfiles: []
- };
+}).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state){
+  $scope.isSubmitted = false;
+  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
+  $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3;
+  $scope.facilities = facilities;
+  $scope.productProfiles = productProfiles;
+  $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
+  $scope.currentStep = $scope.STEP_ONE; //set initial step
+  $scope.moveTo = function(step){
+    $scope.currentStep = step;
+  };
 
- function preLoadConfigForm(appConfig){
-   if (appConfig !== undefined) {
-     $scope.appConfig.contactPerson = appConfig.contactPerson;
-     $scope.appConfig.stockCountInterval = parseInt(appConfig.stockCountInterval);
-     $scope.appConfig.facility = appConfig.facility;
-     $scope.appConfig.appFacility = appConfig.appFacility;
-     $scope.appConfig.selectedProductProfiles = appConfig.selectedProductProfiles;
-     for (var index in appConfig.selectedProductProfiles) {
-       var selectedProductProfile = appConfig.selectedProductProfiles[index];
-       $scope.preSelectProductProfileCheckBox[selectedProductProfile.uuid] = selectedProductProfile;
-     }
-   }
- };
- preLoadConfigForm(appConfig);//pre-load config form with previous saved values.
+  $scope.appConfig = {
+    facility: '',
+    stockCountInterval: '',
+    contactPerson: {
+      name: '',
+      email: '',
+      phoneNo: ''
+    },
+    selectedProductProfiles: []
+  };
 
- function removeSelectedProductProfile(productProfile){
-  $scope.appConfig.selectedProductProfiles = $scope.appConfig.selectedProductProfiles
-    .filter(function (prodProf) {
-      return prodProf.uuid !== productProfile.uuid;
-  });
- }
+  $scope.handleSelectionEvent = function(productProfile){
+   $scope.appConfig.selectedProductProfiles =
+       appConfigService.addProductProfile(productProfile, $scope.appConfig.selectedProductProfiles);
+  };
 
- $scope.handleSelectionEvent = function(selection){
-   var productProfile = JSON.parse(selection);
-   if(productProfile.deSelected === undefined){
-     $scope.appConfig.selectedProductProfiles.push(productProfile);
-     return;
-   }
-   removeSelectedProductProfile(productProfile);
- };
-
- $scope.save = function(){
+  $scope.save = function(){
+    //TODO: refactor this into common function both controllers can share. or call createApp config here.
    $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility)
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
@@ -80,14 +82,64 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         var msg = 'Application configuration was successful!!!';
         $state.go('home.index.mainActivity',{'appConfigResult': msg });
       } else {
-        $translate('appConfigFailedMsg').then(function (msg) {
-          alertsFactory.danger(msg);
-        });
+        alertsFactory.danger(i18n('appConfigFailedMsg'));
       }
    }, function (reason) {
-      $translate('appConfigFailedMsg').then(function(msg){
-        alertsFactory.danger(msg);
-      });
+      alertsFactory.danger(i18n('appConfigFailedMsg'));
+      $log.error(reason);
+   });
+  };
+
+}).controller('EditAppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
+                                         i18n, $state, appConfig) {
+ $scope.stockCountIntervals = appConfigService.stockCountIntervals;
+ $scope.facilities = facilities;
+ $scope.productProfiles = productProfiles;
+ $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
+ $scope.preSelectProductProfileCheckBox = {};
+ $scope.isSubmitted = false;
+ //used to hold config form data
+ $scope.appConfig = {
+    facility: '',
+    stockCountInterval: '',
+    contactPerson: {
+      name: '',
+      email: '',
+      phoneNo: ''
+    },
+    selectedProductProfiles: []
+  };
+
+ function preLoadConfigForm(appConfig){
+   $scope.appConfig.contactPerson = appConfig.contactPerson;
+   $scope.appConfig.stockCountInterval = parseInt(appConfig.stockCountInterval);
+   $scope.appConfig.facility = appConfig.facility;
+   $scope.appConfig.appFacility = appConfig.appFacility;
+   $scope.appConfig.selectedProductProfiles = appConfig.selectedProductProfiles;
+   for (var index in appConfig.selectedProductProfiles) {
+     var selectedProductProfile = appConfig.selectedProductProfiles[index];
+     $scope.preSelectProductProfileCheckBox[selectedProductProfile.uuid] = selectedProductProfile;
+   }
+ };
+ //pre-load config form with existing app config.
+ preLoadConfigForm(appConfig);
+
+ $scope.handleSelectionEvent = function(productProfile){
+   $scope.appConfig.selectedProductProfiles =
+       appConfigService.addProductProfile(productProfile, $scope.appConfig.selectedProductProfiles);
+ };
+
+ $scope.save = function(){
+   $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility)
+   appConfigService.setup($scope.appConfig)
+    .then(function (result) {
+      if(result !== undefined){
+        $state.go('home.index.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
+      } else {
+        alertsFactory.danger(i18n('appConfigFailedMsg'));
+      }
+   }, function (reason) {
+      alertsFactory.danger(i18n('appConfigFailedMsg'));
       $log.error(reason);
    });
  };

@@ -2,17 +2,16 @@
 
 describe('storageService', function () {
 
-  var deferred, storageService, chromeStorageApi, rootScope, httpBackend, templateCache, resolvedValue;
+  var deferred, storageService, chromeStorageApi, rootScope, templateCache, resolvedValue;
 
   beforeEach(module('lmisChromeApp'));
 
-  beforeEach(inject(function (_storageService_, _$q_, _$rootScope_, _chromeStorageApi_, _$httpBackend_, _$templateCache_){
+  beforeEach(inject(function (_storageService_, _$q_, _$rootScope_, _chromeStorageApi_, _$templateCache_){
     storageService = _storageService_;
     deferred = _$q_.defer();
     rootScope = _$rootScope_;
     chromeStorageApi = _chromeStorageApi_;
 
-    httpBackend = _$httpBackend_;
     templateCache = _$templateCache_;
 
     var templates = [
@@ -26,9 +25,6 @@ describe('storageService', function () {
     angular.forEach(templates, function (template) {
       templateCache.put('views/home/' + template + '.html', '');
     });
-
-    httpBackend.whenGET('/locales/en.json').respond(200, {});
-    httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
 
 
   }));

@@ -1,7 +1,7 @@
 {
   "name": "LMIS Chrome",
   "description": "LMIS Chrome packaged app",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "manifest_version": 2,
   "permissions": [
     {
@@ -27,5 +27,6 @@
         "scripts/chromereload.js"
       ]
     }
-  }
+  },
+  "default_locale": "en"
 }
