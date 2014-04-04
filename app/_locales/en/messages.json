@@ -150,7 +150,7 @@
     "message": "Date Received"
   },
   "selectProductType": {
-    "message": "select product type"
+    "message": "Select product type"
   },
   "selectBatch": {
     "message": "select batch"
@@ -424,5 +424,8 @@
   },
   "stockOutBroadcastFailedMsg": {
     "message": "Stock out broadcast failed, try again!"
+  },
+  "send": {
+    "message": "Send"
   }
 }

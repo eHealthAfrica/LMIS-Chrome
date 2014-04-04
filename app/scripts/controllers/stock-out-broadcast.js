@@ -24,7 +24,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   //used to hold stock out form data
   $scope.stockOutForm = {
     productType: '',
-    quantityNeeded: null,
     facility: appConfig.appFacility,
     isSubmitted: false
   };
@@ -32,11 +31,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.productTypes = productTypes;
 
   $scope.save = function(){
-
     var stockOut = {
       productType: JSON.parse($scope.stockOutForm.productType),
-      quantityNeeded: $scope.stockOutForm.quantityNeeded,
-      facility: $scope.stockOutForm.facility,
+      facility: $scope.stockOutForm.facility
     };
 
     stockOutBroadcastFactory.save(stockOut).then(function(result){

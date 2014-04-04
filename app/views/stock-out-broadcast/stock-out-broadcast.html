@@ -8,41 +8,38 @@
         <form name="stockOutBroadcastForm" ng-submit="stockOutBroadcastForm.$valid && save()" novalidate>
           <fieldset>
             <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group" ng-class="{ 'has-error': ((stockOutBroadcastForm.productType).$error).required
+              <div class="col-sm-12">
+
+                <div class="col-sm-6 center-block">
+
+                  <div class="form-group" ng-class="{ 'has-error': ((stockOutBroadcastForm.productType).$error).required
                       && stockOutForm.isSubmitted }">
-                  <label for="productType" i18n="productType"></label>
-                  <select id="productType" name="productType" class="form-control" ng-model="stockOutForm.productType"
-                          required>
-                    <option value="" i18n="selectProductType"></option>
-                    <option ng-repeat="productType in productTypes" value="{{ productType }}"
-                            ng-bind="productType.name" required>
-                    </option>
-                  </select>
+                    <label for="productType" i18n="selectProductType"></label>
+                    <select id="productType" name="productType" class="form-control" ng-model="stockOutForm.productType"
+                            required>
+                      <option value="" i18n="selectProductType"></option>
+                      <option ng-repeat="productType in productTypes" value="{{ productType }}"
+                              ng-bind="productType.name" required>
+                      </option>
+                    </select>
                   <span class="alert-danger form-control" ng-show="((stockOutBroadcastForm.productType).$error).required
                       && stockOutForm.isSubmitted" i18n="selectProductType"></span>
+                  </div>
+                  <div class="row">
+                    <div class="panel-body"></div>
+                    <div class="col-md-4 center-block">
+                      <button type="submit" id="send" name="send" class="btn btn-lg btn-danger"
+                              ng-click="stockOutForm.isSubmitted = true">
+                        <span i18n="send"></span>
+                        <i class="fa fa-bullhorn"></i>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="qtyNeeded" i18n="quantityNeeded"></label>
-                  <input type="number" class="form-control" ng-model="stockOutForm.quantityNeeded" name="qtyNeeded"
-                         id="qtyNeeded"/>
-                </div>
-              </div>
+
             </div>
           </fieldset>
-          <div class="row">
-            <div class="panel-body"></div>
-            <div class="col-md-4 pull-left">
-              <button type="submit" id="save" name="save" class="btn btn-success" ng-click="stockOutForm.isSubmitted = true">
-                <span i18n="save"></span>
-                <i class="fa fa-save"></i>
-              </button>
-            </div>
-          </div>
         </form>
       </div>
     </div>
