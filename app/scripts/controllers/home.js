@@ -18,7 +18,6 @@ angular.module('lmisChromeApp')
         }
       },
       controller: function($scope, appConfig, todayStockCount, $state) {
-        console.log('home controller');
         if (appConfig === undefined) {
           $state.go('appConfigWelcome');
         } else {
@@ -49,7 +48,7 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.mainActivity', {
-      url: '/main-activity?appConfigResult&stockResult&storageClear',
+      url: '/main-activity?appConfigResult&stockResult&storageClear&stockOutBroadcastResult',
       templateUrl: 'views/home/main-activity.html',
       data: {
         label: 'Home'
@@ -58,6 +57,11 @@ angular.module('lmisChromeApp')
         if ($stateParams.storageClear !== null) {
           alertsFactory.success(i18n('clearStorageMsg'));
           $stateParams.storageClear = null;
+        }
+
+        if ($stateParams.stockOutBroadcastResult !== null) {
+          alertsFactory.success(i18n('stockOutBroadcastSuccessMsg'));
+          $stateParams.stockOutBroadcastResult = null;
         }
 
         if ($stateParams.appConfigResult !== null) {
