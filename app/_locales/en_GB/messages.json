@@ -11,9 +11,6 @@
   "stockCountSaved": {
     "message": "Stock count saved. Synchronising with cloud backup…"
   },
-  "syncSuccess": {
-    "message": "Successfully synchronised"
-  },
   "syncStockCount": {
     "message": "Synch stock count"
   },
