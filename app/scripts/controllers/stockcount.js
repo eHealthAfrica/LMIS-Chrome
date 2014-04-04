@@ -58,27 +58,39 @@ angular.module('lmisChromeApp')
           'stats': {
             templateUrl: 'views/stockcount/sync/stats.html',
             controller: function($log, $scope, i18n, config, pouchdb, localDocs, alertsFactory) {
-              $scope.local = {
-                // jshint camelcase: false
-                doc_count: localDocs.total_rows
+              var dbName = 'stockcount',
+                  remote = pouchdb.create(config.apiBaseURI + '/' + dbName);
+
+              var updateCounts = function() {
+                $scope.local = {
+                  // jshint camelcase: false
+                  doc_count: localDocs.total_rows
+                };
+
+                $scope.remoteSyncing = true;
+                remote.info()
+                  .then(function(info) {
+                    $scope.remote = info;
+                    $scope.remoteSyncing = false;
+                  })
+                  .catch(function(reason) {
+                    $log.error(reason);
+                  });
               };
 
-              $scope.remoteSyncing = true;
-              var remote = pouchdb.create(config.apiBaseURI + '/stockcount');
-              remote.info()
-                .then(function(info) {
-                  $scope.remote = info;
-                  $scope.remoteSyncing = false;
-                })
-                .catch(function(reason) {
-                  $log.error(reason);
-                });
+              updateCounts();
 
               $scope.sync = function() {
                 $scope.syncing = true;
-                var cb = {complete: function() {
-                  alertsFactory.success(i18n('syncSuccess'), {persistent: true});
-                }};
+                var cb = {
+                  complete: function() {
+                    $scope.syncing = false;
+                    alertsFactory.success(i18n('syncSuccess'), {
+                      persistent: true
+                    });
+                    updateCounts();
+                  }
+                };
                 var db = pouchdb.create('stockcount');
                 db.replicate.sync(remote, cb);
               };
