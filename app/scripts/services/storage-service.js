@@ -92,7 +92,7 @@ angular.module('lmisChromeApp')
        */
 
       function getData(key) {
-         var promise = chromeStorageApi.get(key, false);
+         var promise = chromeStorageApi.get(key);
          return promise;
         }
 
@@ -104,7 +104,7 @@ angular.module('lmisChromeApp')
        */
         // TODO - consider to deprecate
         function getAllFromStore() {
-          var promise = chromeStorageApi.get(null, true);
+          var promise = chromeStorageApi.get(null, {collection:true});
           return promise;
         }
 
