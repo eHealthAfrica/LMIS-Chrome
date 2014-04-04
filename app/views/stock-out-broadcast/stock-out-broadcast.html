@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title" i18n="stockOutBroadcast"></h4>
+      </div>
+      <div class="panel-body">
+        <form name="stockOutBroadcastForm" ng-submit="stockOutBroadcastForm.$valid && save()" novalidate>
+          <fieldset>
+            <div class="row">
+              <div class="col-sm-12">
+
+                <div class="col-sm-6 center-block">
+
+                  <div class="form-group" ng-class="{ 'has-error': ((stockOutBroadcastForm.productType).$error).required
+                      && stockOutForm.isSubmitted }">
+                    <label for="productType" i18n="selectProductType"></label>
+                    <select id="productType" name="productType" class="form-control" ng-model="stockOutForm.productType"
+                            required>
+                      <option value="" i18n="selectProductType"></option>
+                      <option ng-repeat="productType in productTypes" value="{{ productType }}"
+                              ng-bind="productType.name" required>
+                      </option>
+                    </select>
+                  <span class="alert-danger form-control" ng-show="((stockOutBroadcastForm.productType).$error).required
+                      && stockOutForm.isSubmitted" i18n="selectProductType"></span>
+                  </div>
+                  <div class="row">
+                    <div class="panel-body"></div>
+                    <div class="col-md-4 center-block">
+                      <button type="submit" id="send" name="send" class="btn btn-lg btn-danger"
+                              ng-click="stockOutForm.isSubmitted = true">
+                        <span i18n="send"></span>
+                        <i class="fa fa-bullhorn"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

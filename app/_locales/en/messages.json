@@ -150,7 +150,7 @@
     "message": "Date Received"
   },
   "selectProductType": {
-    "message": "select product type"
+    "message": "Select product type"
   },
   "selectBatch": {
     "message": "select batch"
@@ -406,5 +406,26 @@
   },
   "syncLater": {
     "message": "Please try resyncing later."
+  },
+  "appConfig": {
+    "message": "App Config"
+  },
+  "stockOutBroadcast":  {
+    "message": "Broadcast stock-out"
+  },
+  "quantityNeeded": {
+    "message": "Quantity needed"
+  },
+  "productType": {
+    "message": "Product type"
+  },
+  "stockOutBroadcastSuccessMsg": {
+    "message": "Stock out broadcast sent successfully!"
+  },
+  "stockOutBroadcastFailedMsg": {
+    "message": "Stock out broadcast failed, try again!"
+  },
+  "send": {
+    "message": "Send"
   }
 }

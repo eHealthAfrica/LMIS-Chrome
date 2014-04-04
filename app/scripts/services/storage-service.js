@@ -46,6 +46,7 @@ angular.module('lmisChromeApp')
       var stockCount = 'stockCount';
       var wasteCount = 'wasteCount';
       var appConfig = 'app_config';
+      var stockOut = 'stock_out';
 
       /**
        * Add new table data to the chrome store.
@@ -233,7 +234,8 @@ angular.module('lmisChromeApp')
           bundles,
           bundleLines,
           bundleReceipt,
-          locations
+          locations,
+          stockOut
         ];
         function loadData(db_name) {
           var test_data = [];
@@ -423,7 +425,8 @@ angular.module('lmisChromeApp')
         LOCATIONS: locations,
         STOCK_COUNT: stockCount,
         WASTE_COUNT: wasteCount,
-        APP_CONFIG: appConfig
+        APP_CONFIG: appConfig,
+        STOCK_OUT: stockOut
       };
 
     });
