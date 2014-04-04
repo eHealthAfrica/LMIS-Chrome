@@ -412,10 +412,13 @@ angular.module('lmisChromeApp')
               db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
             })
             .catch(function(reason) {
+              $state.go('home.index.mainActivity');
+              var message = '';
               if(reason.message) {
-                alertsFactory.danger(reason.message, {persistent: true});
+                message = reason.message + '. ';
               }
-              $log.error(reason);
+              message += i18n('syncLater');
+              alertsFactory.danger(message, {persistent: true});
             });
         }
         $scope.redirect = true; // always reset to true after every save
