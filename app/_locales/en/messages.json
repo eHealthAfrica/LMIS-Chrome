@@ -315,7 +315,13 @@
     "message": "Stock count saved. Syncronising with cloud backup…"
   },
   "syncSuccess": {
-    "message": "Successfully syncronised"
+    "message": "Successfully syncronised $source$",
+    "placeholders": {
+      "source": {
+        "content": "$1",
+        "example": "local"
+      }
+    }
   },
   "syncStockCount": {
     "message": "Sync stock count"
@@ -429,6 +435,12 @@
     "message": "Send"
   },
   "syncing": {
-    "message": "Syncronising…"
+    "message": "Syncronising from $source$…",
+    "placeholders": {
+      "source": {
+        "content": "$1",
+        "example": "local"
+      }
+    }
   }
 }

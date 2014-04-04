@@ -57,9 +57,9 @@ angular.module('lmisChromeApp')
         views: {
           'stats': {
             templateUrl: 'views/stockcount/sync/stats.html',
-            controller: function($log, $scope, i18n, config, pouchdb, localDocs, alertsFactory) {
+            controller: function($q, $log, $scope, i18n, config, pouchdb, localDocs, alertsFactory) {
               var dbName = 'stockcount',
-                  remote = pouchdb.create(config.apiBaseURI + '/' + dbName);
+                  remote = config.apiBaseURI + '/' + dbName;
 
               var updateCounts = function() {
                 $scope.local = {
@@ -68,7 +68,8 @@ angular.module('lmisChromeApp')
                 };
 
                 $scope.remoteSyncing = true;
-                remote.info()
+                var _remote = pouchdb.create(remote);
+                _remote.info()
                   .then(function(info) {
                     $scope.remote = info;
                     $scope.remoteSyncing = false;
@@ -80,20 +81,40 @@ angular.module('lmisChromeApp')
 
               updateCounts();
 
-              $scope.sync = function() {
+              var sync = function(source) {
+                var deferred = $q.defer();
+                alertsFactory.info(i18n('syncing', source.label));
                 $scope.syncing = true;
                 var cb = {
                   complete: function() {
                     $scope.syncing = false;
-                    alertsFactory.success(i18n('syncSuccess'), {
-                      persistent: true
-                    });
-                    updateCounts();
+                    alertsFactory.success(i18n('syncSuccess', source.label));
+                    deferred.resolve();
                   }
                 };
-                alertsFactory.info(i18n('syncing'));
-                var db = pouchdb.create('stockcount');
-                db.replicate.sync(remote, cb);
+                var db = pouchdb.create(source.from);
+                db.replicate.to(source.to, cb);
+                return deferred.promise;
+              };
+
+              $scope.sync = function() {
+                var promises = [
+                  sync({
+                    from: dbName,
+                    to: remote,
+                    label: i18n('local')
+                  }),
+                  sync({
+                    from: remote,
+                    to: dbName,
+                    label: i18n('remote')
+                  }),
+                ];
+
+                $q.all(promises)
+                  .then(function() {
+                    updateCounts();
+                  });
               };
             }
           },
