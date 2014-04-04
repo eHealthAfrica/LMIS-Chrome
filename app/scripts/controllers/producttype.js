@@ -78,7 +78,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.saveProduct = function () {
         //TODO: implement save of product here
         if (Object.keys($scope.product).length > 0) {
-          storageService.insert(storageService.PRODUCT_TYPES, $scope.product).then(function (bool) {
+          storageService.save(storageService.PRODUCT_TYPES, $scope.product).then(function (bool) {
             if (bool) {
               alertsFactory.success('Data saved');
               $location.path('/main/products');

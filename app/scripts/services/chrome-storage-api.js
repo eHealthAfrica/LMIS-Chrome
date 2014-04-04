@@ -16,12 +16,12 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
       if(chromeStorage){
         chromeStorage.set(obj, function(){
           if($window.chrome.runtime.lastError !== undefined) {
-            deferred.reject();
+            deferred.reject($window.chrome.runtime.lastError);
           }
-          deferred.resolve();
+          deferred.resolve(true);
         });
       } else {
-        deferred.reject();
+        deferred.reject("chrome.storage api is not available");
       }
 
       return deferred.promise;
@@ -35,13 +35,13 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
       if(chromeStorage){
         chromeStorage.get(item, function(data){
           if($window.chrome.runtime.lastError !== undefined) {
-            deferred.reject();
+            deferred.reject($window.chrome.runtime.lastError);
           }
           if(mode){ deferred.resolve(data);
           } else { deferred.resolve(data[item]); }
         });
       } else {
-        deferred.reject();
+        deferred.reject("chrome.storage api is not available");
       }
 
       return deferred.promise;
@@ -51,12 +51,12 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
       if(chromeStorage){
         chromeStorage.remove(items, function(){
           if($window.chrome.runtime.lastError !== undefined) {
-            return deferred.reject();
+            return deferred.reject($window.chrome.runtime.lastError);
           }
-          deferred.resolve();
+          deferred.resolve(true);
         });
       } else {
-        deferred.reject();
+        deferred.reject("chrome.storage api is not available");
       }
 
       return deferred.promise;
@@ -66,12 +66,12 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
       if(chromeStorage){
         chromeStorage.clear(function(){
           if($window.chrome.runtime.lastError !== undefined) {
-            return deferred.reject();
+            return deferred.reject($window.chrome.runtime.lastError);
           }
-          deferred.resolve();
+          deferred.resolve(true);
         });
       } else {
-        deferred.reject();
+        deferred.reject("chrome.storage api is not available");
       }
 
       return deferred.promise;

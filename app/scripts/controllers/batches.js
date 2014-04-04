@@ -116,7 +116,7 @@ angular.module('lmisChromeApp')
        * local storage.
        */
       $scope.save = function () {
-        storageService.insert(storageService.BATCH, $scope.productItem).then(function () {
+        storageService.save(storageService.BATCH, $scope.productItem).then(function () {
           $location.path('/batches/');
         });
       };

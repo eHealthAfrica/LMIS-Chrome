@@ -11,7 +11,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
   var createAppConfig = function (appConfig) {
     var deferred = $q.defer();
-    storageService.insert(storageService.APP_CONFIG, appConfig).then(function (insertionResult) {
+    storageService.save(storageService.APP_CONFIG, appConfig).then(function (insertionResult) {
       deferred.resolve(insertionResult);
     }, function (reason) {
       deferred.reject(reason);
