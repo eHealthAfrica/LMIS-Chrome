@@ -403,5 +403,23 @@
   },
   "contactPersonEmailErrorMsg": {
     "message": "enter valid email address."
+  },
+  "appConfig": {
+    "message": "App Config"
+  },
+  "stockOutBroadcast":  {
+    "message": "Broadcast stock-out"
+  },
+  "quantityNeeded": {
+    "message": "Quantity needed"
+  },
+  "productType": {
+    "message": "Product type"
+  },
+  "stockOutBroadcastSuccessMsg": {
+    "message": "Stock out broadcast sent successfully!"
+  },
+  "stockOutBroadcastFailedMsg": {
+    "message": "Stock out broadcast failed, try again!"
   }
 }
