@@ -403,5 +403,8 @@
   },
   "contactPersonEmailErrorMsg": {
     "message": "enter valid email address."
+  },
+  "syncLater": {
+    "message": "Please try resyncing later."
   }
 }
