@@ -19,5 +19,8 @@
   },
   "sync": {
     "message": "Synch"
+  },
+  "syncing": {
+    "message": "Synchronising…"
   }
 }

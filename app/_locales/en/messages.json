@@ -427,5 +427,8 @@
   },
   "send": {
     "message": "Send"
+  },
+  "syncing": {
+    "message": "Syncronising…"
   }
 }

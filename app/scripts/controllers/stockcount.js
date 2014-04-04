@@ -91,6 +91,7 @@ angular.module('lmisChromeApp')
                     updateCounts();
                   }
                 };
+                alertsFactory.info(i18n('syncing'));
                 var db = pouchdb.create('stockcount');
                 db.replicate.sync(remote, cb);
               };
