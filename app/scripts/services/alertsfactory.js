@@ -10,8 +10,11 @@ angular.module('lmisChromeApp')
     //
     // ... where type is a Bootstrap alert class, see:
     // http://getbootstrap.com/components/#alerts-examples
-    var add = function(alert) {
+    var add = function(alert, options) {
       $rootScope.alerts.push(alert);
+      if(options && options.persistent) {
+        return;
+      }
       $timeout(function() {
         var index = $rootScope.alerts.indexOf(alert);
         if(index !== -1) {
@@ -20,32 +23,32 @@ angular.module('lmisChromeApp')
       }, 5000);
     };
 
-    var success = function(message) {
+    var success = function(message, options) {
       add({
         type: 'success',
         message: message
-      });
+      }, options);
     };
 
-    var info = function(message) {
+    var info = function(message, options) {
       add({
         type: 'info',
         message: message
-      });
+      }, options);
     };
 
-    var warning = function(message) {
+    var warning = function(message, options) {
       add({
         type: 'warning',
         message: message
-      });
+      }, options);
     };
 
-    var danger = function(message) {
+    var danger = function(message, options) {
       add({
         type: 'danger',
         message: message
-      });
+      }, options);
     };
 
     var remove = function(index) {

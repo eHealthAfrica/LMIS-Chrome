@@ -11,13 +11,13 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
   var createAppConfig = function (appConfig) {
     var deferred = $q.defer();
-    storageService.insert(storageService.APP_CONFIG, appConfig).then(function (insertionResult) {
+    storageService.save(storageService.APP_CONFIG, appConfig).then(function (insertionResult) {
       deferred.resolve(insertionResult);
     }, function (reason) {
       deferred.reject(reason);
     });
     return deferred.promise;
-  }
+  };
 
   /**
    * This function setups or configures the app, it checks if a configuration exist then over-writes it, else,
@@ -67,6 +67,21 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       deferred.reject(error);
     });
     return deferred.promise;
+  };
+
+  var removeProductProfileFrom =  function(productProfile, selectedProductProfiles) {
+    return selectedProductProfiles.filter(function (prodProf) {
+      return prodProf.uuid !== productProfile.uuid;
+    });
+  };
+
+  this.addProductProfile = function(selection, selectedProductProfiles){
+   var productProfile = JSON.parse(selection);
+   if(productProfile.deSelected === undefined){
+     selectedProductProfiles.push(productProfile);
+     return selectedProductProfiles;
+   }
+   return removeProductProfileFrom(productProfile, selectedProductProfiles);
   };
 
 });

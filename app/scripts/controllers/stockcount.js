@@ -3,25 +3,13 @@
 angular.module('lmisChromeApp')
   .config(function($stateProvider) {
     $stateProvider
-      .state('stockCountIndex', {
-        data:{
-          label:'Stock Count'
-        },
-        url:'/stockCountIndex?facility&reportMonth&reportYear',
-        templateUrl: 'views/stockcount/index.html',
-        controller:'StockCountCtrl',
-        resolve:{
-          appConfig: function(appConfigService){
-            return appConfigService.load();
-          }
-        }
-      })
       .state('stockCountStepForm', {
+        parent: 'root.index',
         data:{
           label:'Stock Count Form'
         },
         url:'/stockCountStepForm?facility&reportMonth&reportYear',
-        templateUrl: 'views/stockcount/step_entry_form.html',
+        templateUrl: 'views/stockcount/stock-count-form.html',
         controller: 'StockCountStepsFormCtrl',
         resolve:{
           appConfig: function(appConfigService){
@@ -33,21 +21,26 @@ angular.module('lmisChromeApp')
         }
       })
       .state('wasteCountForm', {
+        parent: 'root.index',
         data:{
           label:'Waste Count Form'
         },
         url: '/wasteCountForm?facility&reportMonth&reportYear',
-        templateUrl: 'views/stockcount/daily_waste_count_form.html',
-        controller:'StockCountCtrl',
+        templateUrl: 'views/stockcount/waste-count-form.html',
+        controller:'WasteCountFormCtrl',
         resolve: {
           appConfig: function(appConfigService){
             return appConfigService.load();
+          },
+          productType: function(stockCountFactory){
+            return stockCountFactory.productType();
           }
         }
       })
       .state('syncStockCount', {
+        parent: 'root.index',
         abstract: true,
-        templateUrl: 'views/stockcount/sync.html',
+        templateUrl: 'views/stockcount/sync.html'
       })
       .state('syncStockCount.detail', {
         data: {
@@ -64,39 +57,64 @@ angular.module('lmisChromeApp')
         views: {
           'stats': {
             templateUrl: 'views/stockcount/sync/stats.html',
-            controller: function($log, $scope, $translate, config, pouchdb, localDocs, alertsFactory) {
-              $scope.local = {
-                // jshint camelcase: false
-                doc_count: localDocs.total_rows
+            controller: function($q, $log, $scope, i18n, config, pouchdb, localDocs, alertsFactory) {
+              var dbName = 'stockcount',
+                  remote = config.apiBaseURI + '/' + dbName;
+
+              var updateCounts = function() {
+                $scope.local = {
+                  // jshint camelcase: false
+                  doc_count: localDocs.total_rows
+                };
+
+                $scope.remoteSyncing = true;
+                var _remote = pouchdb.create(remote);
+                _remote.info()
+                  .then(function(info) {
+                    $scope.remote = info;
+                    $scope.remoteSyncing = false;
+                  })
+                  .catch(function(reason) {
+                    $log.error(reason);
+                  });
               };
 
-              $scope.remoteSyncing = true;
-              var remote = pouchdb.create(config.apiBaseURI + '/stockcount');
-              remote.info()
-                .then(function(info) {
-                  $scope.remote = info;
-                  $scope.remoteSyncing = false;
-                })
-                .catch(function(reason) {
-                  $log.error(reason);
-                });
+              updateCounts();
+
+              var sync = function(source) {
+                var deferred = $q.defer();
+                alertsFactory.info(i18n('syncing', source.label));
+                $scope.syncing = true;
+                var cb = {
+                  complete: function() {
+                    $scope.syncing = false;
+                    alertsFactory.success(i18n('syncSuccess', source.label));
+                    deferred.resolve();
+                  }
+                };
+                var db = pouchdb.create(source.from);
+                db.replicate.to(source.to, cb);
+                return deferred.promise;
+              };
 
               $scope.sync = function() {
-                $scope.syncing = true;
-                var cb = {complete: function() {
-                  $translate('syncSuccess')
-                    .then(function(syncSuccess) {
-                      alertsFactory.success(syncSuccess);
-                    })
-                    .catch(function(reason) {
-                      $log.error(reason);
-                    })
-                    .finally(function() {
-                      $scope.syncing = false;
-                    });
-                }};
-                var db = pouchdb.create('stockcount');
-                db.replicate.sync(remote, cb);
+                var promises = [
+                  sync({
+                    from: dbName,
+                    to: remote,
+                    label: i18n('local')
+                  }),
+                  sync({
+                    from: remote,
+                    to: dbName,
+                    label: i18n('remote')
+                  }),
+                ];
+
+                $q.all(promises)
+                  .then(function() {
+                    updateCounts();
+                  });
               };
             }
           },
@@ -149,9 +167,9 @@ angular.module('lmisChromeApp')
       });
   })
 /*
- * Base Controller
+ * Wastage Count Controller
  */
-  .controller('StockCountCtrl', function($scope, $stateParams, stockCountFactory, appConfig) {
+  .controller('WasteCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, i18n, pouchdb, config){
 
     var now = new Date();
     var day = now.getDate();
@@ -160,13 +178,12 @@ angular.module('lmisChromeApp')
     var month = now.getMonth() + 1;
     month = month < 10 ? '0' + month : month;
 
-    $scope.products = stockCountFactory.programProducts;
-    // $scope.productType = productType;
+    $scope.discardedReasons = stockCountFactory.discardedReasons;
+    $scope.productType = productType;
+    $scope.reasonError = false;
 
     $scope.step = 0;
-    $scope.maxStep =  $scope.products.length>0?$scope.products.length - 1: 0;
     $scope.monthList = stockCountFactory.monthList;
-
     /*
      * get url parameters
      */
@@ -174,142 +191,162 @@ angular.module('lmisChromeApp')
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
-    stockCountFactory.get.userFacilities().then(function(data){
-      $scope.userRelatedFacilities = data;
-      if(data.length>0){
-        $scope.facilityUuid = $scope.facilityUuid === ''?$scope.userRelatedFacilities[0].uuid:$scope.facilityUuid;
-        $scope.userRelatedFacility =  $scope.facilityUuid;
-      }
-    });
-
-    $scope.getDaysInMonth = function (reportMonth, reportYear){
-
-      var now = new Date();
-      var year = (reportYear !== '')?reportYear: now.getFullYear();
-      var month = (reportMonth !== '')?reportMonth: now.getMonth() + 1;
-      var numberOfDays = new Date(year, month, 0).getDate();
-      var dayArray = [];
-      for(var i=0; i<numberOfDays; i++){
-        dayArray.push(i+1);
-      }
-      return dayArray;
-    };
-
-    function yearRange(){
-      var yearRangeArray = [];
-      var currentYear = new Date().getFullYear();
-      var rangeDiff = 3;
-      for(var i=currentYear-rangeDiff; i<currentYear+1; i++){
-        yearRangeArray.push(i);
-      }
-      return yearRangeArray;
-    }
+    $scope.wasteErrors = {};
+    $scope.wasteErrorMsg = {};
     $scope.currentDay = day;
-    $scope.daysInMonth = $scope.getDaysInMonth($scope.reportMonth, $scope.reportYear);
-    $scope.yearRange = yearRange();
-  })
-/*
- * Landing page controller
- */
-  .controller('StockCountIndexCtrl', function ($scope, stockCountFactory) {
-    /*
-     * initialize some variables
-     */
-    //$scope.userRelatedFacility = ($scope.facilityUuid !== '') ? $scope.facilityUuid : $scope.facilityUuid;
-    $scope.StockCount = {};
-    $scope.WasteCount = {};
-    $scope.stockCountObject = {};
 
-    stockCountFactory.get.allStockCount()
-      .then(function(StockCount){
-        $scope.StockCount = StockCount;
-        $scope.stockCountObject = stockCountFactory.get.createStockObject(StockCount);
-      });
-    stockCountFactory.get.allWasteCount()
-      .then(function(WasteCount){
-        $scope.WasteCount = WasteCount;
-      });
-    $scope.subHeader = function (products){
-      var subHeaderVar = '<td>Days</td>';
+    $scope.wasteCount = {};
+    $scope.wasteCount.discarded = {};
+    $scope.wasteCount.reason = {};
 
-      for(var i=0; i<products.length; i++){
-        subHeaderVar += '<td>Opened</td><td>Unopened</td>';
-      }
-      return subHeaderVar;
+    $scope.wasteCount.countDate ='';
+
+    $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
+
+    $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
+    $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+
+    $scope.wasteCount.reason[$scope.productKey] = {};
+
+    //set maximum steps
+    if($scope.facilityProductsKeys.length > 0){
+      $scope.maxStep =  $scope.facilityProductsKeys.length-1;
+    }
+    else{
+      $scope.maxStep =0;
+    }
+
+    $scope.edit = function(index){
+      $scope.step = index;
+      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+      $scope.preview = false;
+      $scope.editOn = true;
     };
 
-    $scope.columnData =  stockCountFactory.get.stockCountColumnData;
+    $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
+    $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
+    var timezone = stockCountFactory.get.timezone();
 
-    /*
-     * load some none standard fixtures
-     */
-    /*var file_url = 'scripts/fixtures/userRelatedFacilities.json';
-     $http.get(file_url).success(function (data) {
-     $scope.userRelatedFacilities = data;
-
-     });*/
-
-    $scope.addButton = true;
-
-    $scope.$watchCollection('[reportMonth, reportYear, userRelatedFacility]', function (newvalues) {
-
-      if (newvalues[0] === '' || newvalues[1] === '' || newvalues[2] === '') {
-        $scope.addButton = true;
-      }
-      else {
-        $scope.addButton = false;
-      }
-      $scope.daysInMonth = $scope.getDaysInMonth($scope.reportMonth, $scope.reportYear);
-
-    });
-
-    $scope.$watch('userRelatedFacility', function () {
-      if ($scope.userRelatedFacility !== '') {
-        stockCountFactory.get.locations().then(function(data){
-          for (var k in $scope.userRelatedFacilities) {
-            if ($scope.userRelatedFacilities[k].uuid === $scope.userRelatedFacility) {
-              $scope.ward = data[$scope.userRelatedFacilities[k].location].name;
-              $scope.lga = data[$scope.userRelatedFacilities[k].location].lga;
-              $scope.state = data[$scope.userRelatedFacilities[k].location].state;
-              break;
-            }
-          }
-        });
+    //load existing count for the day if any.
+    var date = $scope.reportYear+'-'+$scope.reportMonth+'-'+$scope.currentDay;
+    stockCountFactory.getWasteCountByDate(date).then(function(wasteCount){
+      if(wasteCount !== null){
+        $scope.wasteCount = wasteCount;
+        if(angular.isDefined($scope.wasteCount.lastPosition)){
+          $scope.step = $scope.wasteCount.lastPosition;
+          $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+        }
+        $scope.editOn = true; // enable edit mode
+        if(angular.isUndefined($scope.wasteCount.isComplete)){
+          $scope.wasteCount.isComplete = 0; //and stock count entry as completed
+        }
       }
     });
-  })
-
-/*
- * Wastage Count Controller
- */
-  .controller('WasteCountFormCtrl', function($scope, stockCountFactory, $state){
-    $scope.discardedReasons = stockCountFactory.discardedReasons;
-    $scope.wastageCount = {};
-    $scope.wastageCount.discarded = {};
-    $scope.wastageCount.month = $scope.reportMonth;
-    $scope.wastageCount.year = $scope.reportYear;
-    $scope.wastageCount.facility = $scope.facilityUuid;
-    $scope.wastageCount.wastageConfirmation = {};
-    $scope.wastageCount.reason = {};
-    $scope.wastageCount.day= $scope.currentDay;
-    for(var i=0; i<$scope.products.length; i++){
-      $scope.wastageCount.reason[i]={};
-    }
 
     $scope.save = function(){
-      stockCountFactory.save.wastage($scope.wastageCount)
-        .then(function(){
-          $state.go('stockCountIndex',
-            {
-              facility: $scope.facilityUuid,
-              reportMonth: $scope.reportMonth,
-              reportYear: $scope.reportYear
+      var dbName = 'wastecount';
+      $scope.wasteCount.facility = $scope.facilityUuid;
+      $scope.wasteCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.currentDay, timezone);
+      stockCountFactory.save.waste($scope.wasteCount)
+      .then(function() {
+        if($scope.redirect) {
+          alertsFactory.success(i18n('stockCountSaved'));
+          var db = pouchdb.create(name);
+          var obj = $scope.wasteCount;
+          obj._id = obj.uuid;
+          db.put(obj)
+            .then(function() {
+              var cb = {complete: function() {
+                alertsFactory.success(i18n('syncSuccess'), {persistent: true});
+                if($scope.redirect) {
+                  var msg = [
+                    'You have completed waste count for',
+                    $scope.currentDay,
+                    $scope.monthList[$scope.reportMonth],
+                    $scope.reportYear
+                  ].join(' ');
+                  alertsFactory.success(msg);
+                  $state.go('home.index.mainActivity', {
+                    'facility': $scope.facilityUuid,
+                    'reportMonth': $scope.reportMonth,
+                    'reportYear': $scope.reportYear,
+                    'stockResult': msg
+                  });
+                }
+              }};
+              var db = pouchdb.create(name);
+              db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
+            })
+            .catch(function(reason) {
+              if(reason.message) {
+                alertsFactory.danger(reason.message, {persistent: true});
+              }
+              $log.error(reason);
             });
-        });
+        }
+      });
     };
 
+    $scope.$watch('wasteCount.discarded[productKey]', function(newvalue){
+      if(stockCountFactory.validate.invalid(newvalue)){
+        //stockCountFactory.get.errorAlert($scope, 1);
+      }else{
+        $scope.redirect = false;
+        $scope.lastPosition = $scope.step;
+        $scope.save();
+        stockCountFactory.get.errorAlert($scope, 0);
+      }
+    });
+
+    $scope.checkInput = function(index){
+      if(angular.isUndefined($scope.wasteErrors[$scope.productKey])){
+        $scope.wasteErrors[$scope.productKey] = {};
+      }
+      if(angular.isUndefined($scope.wasteErrorMsg[$scope.productKey])){
+        $scope.wasteErrorMsg[$scope.productKey] = {};
+      }
+      stockCountFactory.validate.waste.reason($scope, index);
+    };
+
+    $scope.finalSave = function(){
+      $scope.wasteCount.lastPosition = 0;
+      $scope.redirect = true;
+      $scope.wasteCount.isComplete = 1;
+      $scope.save();
+    };
+
+    $scope.changeState = function(direction){
+
+      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+      $scope.currentEntry = $scope.wasteCount.discarded[$scope.productKey];
+      if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
+        stockCountFactory.get.errorAlert($scope, 1);
+      }
+      else if ($scope.reasonError){
+        stockCountFactory.get.errorAlert($scope, 2);
+      }
+      else{
+        stockCountFactory.get.errorAlert($scope, 0);
+        if(direction !== 2){
+          $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
+          $scope.open = false;
+        }
+        else{
+          $scope.preview = true;
+          $scope.wasteCount.isComplete = 1;
+        }
+      }
+      $scope.wasteCount.lastPosition = $scope.step;
+      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
+      $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
+      if(angular.isUndefined($scope.wasteCount.reason[$scope.productKey])){
+        $scope.wasteCount.reason[$scope.productKey] = {};
+      }
+    };
   })
-  .controller('StockCountStepsFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, $translate, pouchdb, config){
+
+  .controller('StockCountStepsFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, i18n, pouchdb, config){
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
@@ -335,13 +372,11 @@ angular.module('lmisChromeApp')
 
 
     $scope.stockCount = {};
-    $scope.stockCount.opened = {};
     $scope.stockCount.unopened = {};
-    $scope.stockCount.confirmation = {};
 
     $scope.stockCount.countDate = '';
     $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
-    $scope.facilityProducts = stockCountFactory.facilityProducts(); // selected products for current facility
+    $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
     $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
     $scope.productKey = $scope.facilityProductsKeys[$scope.step];
 
@@ -375,59 +410,61 @@ angular.module('lmisChromeApp')
       }
     });
 
-    $scope.save = function(){
-      var dbName = 'stockcount';
+    $scope.save = function() {
+      var dbName = 'stockcount',
+          db = pouchdb.create(dbName);
+
       $scope.stockCount.facility = $scope.facilityUuid;
       $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.currentDay, timezone);
+
+      var backupStock = function(doc) {
+        db.put(doc)
+          .then(function() {
+            var cb = {complete: function() {
+              alertsFactory.success(i18n('syncSuccess'));
+              if($scope.redirect) {
+                var msg = [
+                  'You have completed stock count for',
+                  $scope.currentDay,
+                  $scope.monthList[$scope.reportMonth],
+                  $scope.reportYear
+                ].join(' ');
+                alertsFactory.success(msg);
+                $state.go('home.index.mainActivity', {
+                  'facility': $scope.facilityUuid,
+                  'reportMonth': $scope.reportMonth,
+                  'reportYear': $scope.reportYear,
+                  'stockResult': msg
+                });
+              }
+            }};
+            db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
+          })
+          .catch(function(reason) {
+            $state.go('home.index.mainActivity');
+            var message = '';
+            if(reason.message) {
+              message = reason.message + '. ';
+            }
+            message += i18n('syncLater');
+            alertsFactory.danger(message, {persistent: true});
+          });
+      };
 
       stockCountFactory.save.stock($scope.stockCount)
         .then(function() {
           if($scope.redirect) {
-            $translate('stockCountSaved')
-              .then(function(stockCountSaved) {
-                alertsFactory.success(stockCountSaved);
+            alertsFactory.success(i18n('stockCountSaved'));
+            var obj = $scope.stockCount;
+            obj._id = obj.uuid;
+            db.get(obj._id)
+              .then(function(doc) {
+                if(doc._rev) {
+                  obj._rev = doc._rev;
+                }
               })
-              .then(function() {
-                var db = pouchdb.create(name);
-                var obj = $scope.stockCount;
-                obj._id = obj.uuid;
-                db.put(obj)
-                  .then(function() {
-                    var cb = {complete: function() {
-                      $translate('syncSuccess')
-                        .then(function(syncSuccess) {
-                          alertsFactory.success(syncSuccess);
-                        })
-                        .then(function() {
-                          if($scope.redirect) {
-                            var msg = [
-                              'You have completed stock count for',
-                              $scope.currentDay,
-                              $scope.monthList[$scope.reportMonth],
-                              $scope.reportYear
-                            ].join(' ');
-                            alertsFactory.success(msg);
-                            $state.go('home.index.mainActivity', {
-                              'facility': $scope.facilityUuid,
-                              'reportMonth': $scope.reportMonth,
-                              'reportYear': $scope.reportYear,
-                              'stockResult': msg
-                            });
-                          }
-                        })
-                        .catch(function(reason) {
-                          $log.error(reason);
-                        });
-                    }};
-                    var db = pouchdb.create(name);
-                    db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
-                  })
-                  .catch(function(reason) {
-                    if(reason.message) {
-                      alertsFactory.danger(reason.message);
-                    }
-                    $log.error(reason);
-                  });
+              .finally(function() {
+                backupStock(obj);
               });
           }
           $scope.redirect = true; // always reset to true after every save
@@ -438,9 +475,10 @@ angular.module('lmisChromeApp')
     $scope.changeState = function(direction){
       $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
-        alertsFactory.danger($scope.alertMsg);
+        stockCountFactory.get.errorAlert($scope, 1);
       }
       else{
+        stockCountFactory.get.errorAlert($scope, 0);
         if(direction !== 2){
           $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
         }

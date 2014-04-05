@@ -103,6 +103,7 @@ footer {
 }
 .w-menu{
     padding: 10px;
+    position: relative;
 }
 .w-menu li{
     padding: 4px 0px;
@@ -130,6 +131,38 @@ accordion .panel-heading:hover {
 .fa-5-3x {
   font-size: 5.3em;
 }
+.lmis-block{
+    width: 100%;
+    display: block;
+}
 .text-capitalize {
   text-transform: capitalize;
 }
+@media (min-width: 768px) {
+  .navbar-nav > li > a:last-child {
+    padding-right: 0
+  }
+}
+.counter-btn {
+   font-size: 25.5pt;
+   padding: 0.4em 0.8em;
+}
+.counter-input{
+  height: 4.3em;
+}
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#wasteCountReason-1, #wasteCountReason-2{
+    top: 10px;
+}
+.custom-error{
+    background-color: #f2dede;
+    color: #a94442;
+    padding: 2px;
+    margin-top: 2px;
+    border: 1px solid #ebccd1;
+    border-radius: 4px;
+}
+.center-block {float: none !important}

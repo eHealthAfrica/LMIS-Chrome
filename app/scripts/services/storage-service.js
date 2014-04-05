@@ -44,10 +44,12 @@ angular.module('lmisChromeApp')
       var bundleReceiptLines = 'bundle_receipt_lines';
       var locations = 'locations';
       var stockCount = 'stockCount';
+      var wasteCount = 'wasteCount';
       var appConfig = 'app_config';
+      var stockOut = 'stock_out';
 
       /**
-       * Add new table to the chrome store.
+       * Add new table data to the chrome store.
        *
        * @param {string} key - Table name.
        * @param {mixed} value - rows of the table (all values are stored as JSON.)
@@ -55,12 +57,32 @@ angular.module('lmisChromeApp')
        * @private
        */
 
-      function addTable(key, value) {
+      function setData(table, data) {
+        var deferred = $q.defer();
         var obj = {};
-        obj[key] = value;
+        var table_data = {};
+        table_data[data.uuid] = data;
+        obj[table] = table_data;
+        chromeStorageApi.set(obj);
+        deferred.resolve(data.uuid);
+        return deferred.promise;
+      }
+
+      /**
+       * Load init table data to the chrome store.
+       *
+       * @param {string} table - Table name.
+       * @param {mixed} data - object of table rows
+       * @return {Promise} Promise object
+       * @private
+       */
+      function setTable(table, data) {
+        var obj = {};
+        obj[table] = data;
         var promise = chromeStorageApi.set(obj);
         return promise;
-      }
+      };
+
 
       /**
        * Get table data from the chrome store
@@ -70,8 +92,8 @@ angular.module('lmisChromeApp')
        * @private
        */
 
-      function getTable(key) {
-         var promise = chromeStorageApi.get(key, false);
+      function getData(key) {
+         var promise = chromeStorageApi.get(key);
          return promise;
         }
 
@@ -83,7 +105,7 @@ angular.module('lmisChromeApp')
        */
         // TODO - consider to deprecate
         function getAllFromStore() {
-          var promise = chromeStorageApi.get(null, true);
+          var promise = chromeStorageApi.get(null, {collection:true});
           return promise;
         }
 
@@ -95,7 +117,7 @@ angular.module('lmisChromeApp')
        * @private
        */
 
-        function removeTable(key) {
+        function removeData(key) {
           var promise = chromeStorageApi.remove(key);
           return promise;
         }
@@ -106,7 +128,7 @@ angular.module('lmisChromeApp')
        * @return {Promise} Promise to be resolved with the settings object
        * @private
        */
-        function clearFromStore() {
+        function clearStorage() {
           var promise = chromeStorageApi.clear();
           return promise;
         }
@@ -133,64 +155,45 @@ angular.module('lmisChromeApp')
           return datetime;
         }
 
-      /**
-       * Get list of tables from the chrome storage.
-       *
-       * @return {array} array list of tables in local storage.
-       * @private
-       */
-        function getTables() {
-          var deferred = $q.defer();
-          getAllFromStore().then(function (data) {
-            var tbl = Object.keys(data);
-            deferred.resolve(tbl);
-          });
-          return deferred.promise;
+        /**
+         * Insert new database table row.
+         *
+         * @return {promise}
+         */
+        function insertData(table, data) {
+          data['uuid'] = uuidGenerator();
+          data['created'] = data['modified'] = getDateTime();
+          var promise = setData(table, data);
+          return promise;
         }
 
-      /**
-       * Add new or update database table row.
-       *
-       * @return {promise} promise to access data from local storage.
-       * @private
-       */
-        function insert(table, obj) {
-          var deferred = $q.defer();
-          //get list of existing tables in database. if table exist
-          getTables().then(function (tables) {
-            if (tables.indexOf(table) != -1) {
-              getTable(table).then(function (table_data) {
+        /**
+         *  Update database table row.
+         *
+         * @return {promise}
+         */
 
-                if (Object.prototype.toString.call(table_data) == '[object Object]') {
-                  var uuid_test = (Object.keys(obj)).indexOf('uuid') != -1 ? true : false;
-                  obj['created'] = (uuid_test) ? obj['created'] : getDateTime();
-                  obj['modified'] = (uuid_test) ? '0000-00-00 00:00:00' : getDateTime();
-                  var uuid = (uuid_test) ? obj['uuid'] : uuid_generator();
-                  obj['uuid'] = uuid;
-                  table_data[uuid] = obj;
-                  addTable(table, table_data);
-                  deferred.resolve(uuid);
-                }
-                else {
-                  deferred.resolve(null);
-                  console.log(table_data);
-                }
-              });
-            }
-            else {
+        function updateData(table, data) {
+          data['modified'] = getDateTime();
+          var promise = setData(table, data);
+          return promise;
+        }
 
-              var table_data = {};
-              obj['uuid'] = (Object.keys(obj).indexOf('uuid') != -1) ? obj['uuid'] : uuid_generator();
-              obj['created'] = getDateTime();
-              obj['modified'] = '0000-00-00 00:00:00';
-              table_data[obj['uuid']] = obj;
-              addTable(table, table_data);
-              deferred.resolve(obj.uuid);
-              //console.log("new entry");
+        /**
+         *  Encapsulates insert/update database table row operations.
+         *
+         * @return {promise}
+         */
+        function saveData(table, data) {
+          var promise = null;
+          if((typeof data === "object") && (data !== null)){
+            if(Object.keys(data).indexOf('uuid') !== -1 && data.uuid.length > 0){
+              promise = updateData(table, data);
+            } else {
+              promise = insertData(table, data);
             }
-          });
-          if (!$rootScope.$$phase) $rootScope.$apply();
-          return deferred.promise;
+          }
+          return promise;
         }
 
       /**
@@ -199,6 +202,7 @@ angular.module('lmisChromeApp')
        * @returns {void}
        */
       function loadFixtures() {
+        var deferred = $q.defer();
         var database = [
           productTypes,
           address,
@@ -230,16 +234,17 @@ angular.module('lmisChromeApp')
           bundles,
           bundleLines,
           bundleReceipt,
-          locations
+          locations,
+          stockOut
         ];
         function loadData(db_name) {
           var test_data = [];
-          getTable(db_name).then(function (data) {
+          getData(db_name).then(function (data) {
                 test_data = data;
                 if (angular.isUndefined(data)) {
                   var file_url = 'scripts/fixtures/' + db_name + '.json';
                   $http.get(file_url).success(function (data) {
-                    addTable(db_name, data);
+                      setTable(db_name, data);
                   }).error(function (err) {
                         console.log(err);
                   });
@@ -258,6 +263,8 @@ angular.module('lmisChromeApp')
         for (var i in database) {
           loadData(database[i]);
         }
+        deferred.resolve(true);
+        return deferred.promise;
       }
 
       /**
@@ -271,7 +278,7 @@ angular.module('lmisChromeApp')
         //create a new table name by prefixing the original with 're'
         var related_name = 're_' + db_name;
         //when called get data from storage and create an object using uuid as key
-        getTable(db_name).then(function (data) {
+        getData(db_name).then(function (data) {
           if (data.length != 0 && data.length != undefined) {
             //load table data into object
             var related_object = {};
@@ -289,14 +296,14 @@ angular.module('lmisChromeApp')
               }
             }
             //store new object in local storage
-            addTable(related_name, related_object);
+              setTable(related_name, related_object);
             deferred.resolve(related_object);
           }
         });
         return deferred.promise;
       }
 
-      function uuid_generator() {
+      function uuidGenerator() {
         var now = Date.now();
         var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
           var r = (now + Math.random() * 16) % 16 | 0;
@@ -311,7 +318,7 @@ angular.module('lmisChromeApp')
         var result = null;
         var key = String(key);//force conversion to string
         try {
-          getTable(tableName).then(function (data) {
+          getData(tableName).then(function (data) {
             result = data[key];
             deferred.resolve(result);
             if (!$rootScope.$$phase) $rootScope.$apply();
@@ -326,11 +333,11 @@ angular.module('lmisChromeApp')
 
       /**
        * This returns an array or collection of rows in the given table name, this collection can not be
-       * indexed via key, to get table rows that can be accessed via keys use all() or getTable()
+       * indexed via key, to get table rows that can be accessed via keys use all() or getData()
        */
       function getAllFromTable(tableName) {
         var deferred = $q.defer();
-        getTable(tableName).then(function (data) {
+        getData(tableName).then(function (data) {
           var rows = [];
           for (var key in data) {
             rows.push(data[key]);
@@ -342,20 +349,19 @@ angular.module('lmisChromeApp')
       }
 
       function insertBatch(tableName, batchList){
-
         var deferred = $q.defer();
-        getTable(tableName).then(function(tableData){
+        getData(tableName).then(function(tableData){
           var batches = (angular.isArray(batchList))? batchList : [];
           var results = [];
           console.log(tableName+" "+tableData);
           for(var index in batches){
             var batch = batches[index];
             var hasUUID = batch.hasOwnProperty('uuid');
-            batch['uuid'] = hasUUID? batch['uuid'] : uuid_generator();
+            batch['uuid'] = hasUUID? batch['uuid'] : uuidGenerator();
             batch['created'] = hasUUID? batch['created'] : getDateTime();
             batch['modified'] = hasUUID? '0000-00-00 00:00:00' : getDateTime();
             tableData[batch.uuid] = batch;
-            results.push(addTable(tableName, tableData).then(function(result){
+            results.push(setData(tableName, tableData).then(function(result){
               return batch['uuid'];
             }, function(error){
               console.log(error);
@@ -372,15 +378,17 @@ angular.module('lmisChromeApp')
 
       return {
         all: getAllFromTable,
-        add: addTable,
-        get: getTable,
+        add: setData,
+        get: getData,
         getAll: getAllFromStore,
-        remove: removeTable, // removeFromChrome,
-        clear: clearFromStore, // clearChrome */
-        uuid: uuid_generator,
+        remove: removeData, // removeFromChrome,
+        clear: clearStorage, // clearChrome */
+        uuid: uuidGenerator,
         loadFixtures: loadFixtures,
         loadTableObject: loadRelatedObject,
-        insert: insert,
+        insert: insertData,
+        update: updateData,
+        save: saveData,
         find: getFromTableByKey,
         insertBatch: insertBatch,
         PRODUCT_TYPES: productTypes,
@@ -416,7 +424,9 @@ angular.module('lmisChromeApp')
         BUNDLE_RECEIPT_LINES: bundleReceiptLines,
         LOCATIONS: locations,
         STOCK_COUNT: stockCount,
-        APP_CONFIG: appConfig
+        WASTE_COUNT: wasteCount,
+        APP_CONFIG: appConfig,
+        STOCK_OUT: stockOut
       };
 
     });

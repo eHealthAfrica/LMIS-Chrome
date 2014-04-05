@@ -1,0 +1,20 @@
+{
+  "authorize": {
+    "message": "Authorise"
+  },
+  "supplementalImmunizationActivity": {
+    "message": "Supplemental Immunisation Activity"
+  },
+  "routineImmunization": {
+    "message": "Routine Immunisation"
+  },
+  "stockCountSaved": {
+    "message": "Stock count saved. Synchronising with cloud backup…"
+  },
+  "syncStockCount": {
+    "message": "Synch stock count"
+  },
+  "sync": {
+    "message": "Synch"
+  }
+}

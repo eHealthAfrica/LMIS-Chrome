@@ -4,7 +4,7 @@ describe('Tests Counter Directive', function () {
   // Load the LMIS module
   beforeEach(module('lmisChromeApp'));
 
-  beforeEach(inject(function ($compile, $rootScope, $templateCache, $httpBackend) {
+  beforeEach(inject(function ($compile, $rootScope, $templateCache) {
     // Mock each template used by the state
     var templates = [
       'index',
@@ -17,9 +17,6 @@ describe('Tests Counter Directive', function () {
     angular.forEach(templates, function (template) {
       $templateCache.put('views/home/' + template + '.html', '');
     });
-
-    $httpBackend.whenGET('/locales/en.json').respond(200, {});
-    $httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
 
     //create a scope
     scope = $rootScope.$new();
@@ -39,8 +36,13 @@ describe('Tests Counter Directive', function () {
     expect(counter.find('button').length).toBe(2);
   });
 
-  it('as a user, i want counter to have have select/drop down field', function(){
-    expect(counter.find('select').length).toBe(1);
+  it('as a user, i want counter to have have one text input ', function(){
+    expect(counter.find('input').length).toBe(1);
+  });
+
+  it('as a user, i want counter text input field to be of type "number" ', function(){
+    var counterInputField = counter.find('input').eq(0);
+    expect(counterInputField.attr('type')).toBe('number');
   });
 
   it('i want counter buttons to be accessible via unique ids ', function(){

@@ -16,32 +16,36 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
       if(chromeStorage){
         chromeStorage.set(obj, function(){
           if($window.chrome.runtime.lastError !== undefined) {
-            deferred.reject();
+            deferred.reject($window.chrome.runtime.lastError);
           }
-          deferred.resolve();
+          deferred.resolve(true);
         });
       } else {
-        deferred.reject();
+        deferred.reject("chrome.storage api is not available");
       }
 
       return deferred.promise;
     },
     /*
      * Get method should work for both cases returning particular item or entire collection.
-     * @param {boolean} mode - whether return data of particular item (false) or entire collection (true).
+     * @param {Object} options - if undefined, default value is return data of a particular item
+     * or entire collection (if set to {collection:true})
      */
-    get: function (item, mode) {
+    get: function (item, options) {
       var deferred = $q.defer();
       if(chromeStorage){
         chromeStorage.get(item, function(data){
           if($window.chrome.runtime.lastError !== undefined) {
-            deferred.reject();
+            deferred.reject($window.chrome.runtime.lastError);
           }
-          if(mode){ deferred.resolve(data);
-          } else { deferred.resolve(data[item]); }
+          if(options && options.collection) {
+              deferred.resolve(data);
+          } else {
+              deferred.resolve(data[item]);
+          }
         });
       } else {
-        deferred.reject();
+        deferred.reject("chrome.storage api is not available");
       }
 
       return deferred.promise;
@@ -51,12 +55,12 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
       if(chromeStorage){
         chromeStorage.remove(items, function(){
           if($window.chrome.runtime.lastError !== undefined) {
-            return deferred.reject();
+            return deferred.reject($window.chrome.runtime.lastError);
           }
-          deferred.resolve();
+          deferred.resolve(true);
         });
       } else {
-        deferred.reject();
+        deferred.reject("chrome.storage api is not available");
       }
 
       return deferred.promise;
@@ -66,12 +70,12 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
       if(chromeStorage){
         chromeStorage.clear(function(){
           if($window.chrome.runtime.lastError !== undefined) {
-            return deferred.reject();
+            return deferred.reject($window.chrome.runtime.lastError);
           }
-          deferred.resolve();
+          deferred.resolve(true);
         });
       } else {
-        deferred.reject();
+        deferred.reject("chrome.storage api is not available");
       }
 
       return deferred.promise;

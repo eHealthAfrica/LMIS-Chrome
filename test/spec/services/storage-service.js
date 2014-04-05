@@ -2,17 +2,16 @@
 
 describe('storageService', function () {
 
-  var deferred, storageService, chromeStorageApi, rootScope, httpBackend, templateCache, resolvedValue;
+  var deferred, storageService, chromeStorageApi, rootScope, templateCache, resolvedValue;
 
   beforeEach(module('lmisChromeApp'));
 
-  beforeEach(inject(function (_storageService_, _$q_, _$rootScope_, _chromeStorageApi_, _$httpBackend_, _$templateCache_){
+  beforeEach(inject(function (_storageService_, _$q_, _$rootScope_, _chromeStorageApi_, _$templateCache_){
     storageService = _storageService_;
     deferred = _$q_.defer();
     rootScope = _$rootScope_;
     chromeStorageApi = _chromeStorageApi_;
 
-    httpBackend = _$httpBackend_;
     templateCache = _$templateCache_;
 
     var templates = [
@@ -27,26 +26,13 @@ describe('storageService', function () {
       templateCache.put('views/home/' + template + '.html', '');
     });
 
-    httpBackend.whenGET('/locales/en.json').respond(200, {});
-    httpBackend.whenGET('/locales/en_GB.json').respond(200, {});
-
 
   }));
 
   it('should be able to add new table to the chrome storage', function(){
     spyOn(chromeStorageApi, 'set').andReturn(deferred.promise);
-    storageService.add('key', 'value');
+    storageService.add('table', {key:'value'});
     expect(chromeStorageApi.set).toHaveBeenCalled();
-  });
-
-  it('should be able to resolve promise when adding new table', function(){
-    deferred.resolve('resolved');
-    spyOn(chromeStorageApi, 'set').andReturn(deferred.promise);
-    storageService.add('key', 'value').then(function(value){
-      resolvedValue = value;
-    });
-    rootScope.$apply();
-    expect(resolvedValue).toEqual('resolved');
   });
 
   it('should be able to get data from the table in the chrome storage', function(){
@@ -132,10 +118,16 @@ describe('storageService', function () {
     expect(chromeStorageApi.get).toHaveBeenCalled();
   });
 
-  it('should be able to add new or update database table row and return promise', function () {
-    spyOn(chromeStorageApi, 'get').andReturn(deferred.promise);
-    storageService.insert('test', {'key': 'value'});
-    expect(chromeStorageApi.get).toHaveBeenCalled();
+  it('should be able to insert new database table row and return promise only if there is no row', function () {
+    spyOn(chromeStorageApi, 'set').andReturn(deferred.promise);
+    storageService.insert('test', {uuid: '123456789'});
+    expect(chromeStorageApi.set).toHaveBeenCalled();
+  });
+
+  it('should be able to update database table row and return promise', function () {
+    spyOn(chromeStorageApi, 'set').andReturn(deferred.promise);
+    storageService.update('test', {key: 'value'});
+    expect(chromeStorageApi.set).toHaveBeenCalled();
   });
 
   it('should be able to get data from a table by key and return promise', function () {
