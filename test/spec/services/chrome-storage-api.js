@@ -21,13 +21,14 @@ describe('chromeStorageApi', function () {
     });
 
     it('should be able to get an item from the storage', function() {
-        chromeStorageApi.get('a', false);
-        expect($window.chrome.storage.local.get('a', false)).toEqual('b');
+        chromeStorageApi.get('a');
+        expect($window.chrome.storage.local.get('a')).toEqual('b');
     });
 
     it('should be able to get entire collection from the storage', function() {
-        chromeStorageApi.get(null, true);
-        expect($window.chrome.storage.local.get(null, true)).toEqual({a:'b', c:'d'});
+        var options = {collection:true};
+        chromeStorageApi.get(null, options);
+        expect($window.chrome.storage.local.get(null, options)).toEqual({a:'b', c:'d'});
     });
 
     it('should be able to remove an item from the storage', function() {
