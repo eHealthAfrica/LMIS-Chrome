@@ -1,7 +1,7 @@
 {
   "name": "LMIS Chrome",
   "description": "LMIS Chrome packaged app",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "manifest_version": 2,
   "permissions": [
     {
