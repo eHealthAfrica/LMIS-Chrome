@@ -59,7 +59,7 @@ angular.module('lmisChromeApp')
             templateUrl: 'views/stockcount/sync/stats.html',
             controller: function($q, $log, $scope, i18n, config, pouchdb, localDocs, alertsFactory) {
               var dbName = 'stockcount',
-                  remote = config.apiBaseURI + '/' + dbName;
+                  remote = config.api.url + '/' + dbName;
 
               var updateCounts = function() {
                 $scope.local = {
@@ -127,7 +127,7 @@ angular.module('lmisChromeApp')
 
               $scope.compare = function() {
                 $scope.syncing = true;
-                var remote = pouchdb.create(config.apiBaseURI + '/stockcount');
+                var remote = pouchdb.create(config.api.url + '/stockcount');
                 remote.allDocs()
                   .then(function(remotes) {
                     remotes = remotes.rows.map(function(remote) {
@@ -275,7 +275,7 @@ angular.module('lmisChromeApp')
                 }
               }};
               var db = pouchdb.create(name);
-              db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
+              db.replicate.to(config.api.url + '/' + dbName, cb);
             })
             .catch(function(reason) {
               if(reason.message) {
@@ -438,7 +438,7 @@ angular.module('lmisChromeApp')
                 });
               }
             }};
-            db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
+            db.replicate.to(config.api.url + '/' + dbName, cb);
           })
           .catch(function(reason) {
             $state.go('home.index.mainActivity');
