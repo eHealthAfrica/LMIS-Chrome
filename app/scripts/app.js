@@ -8,8 +8,6 @@ angular.module('lmisChromeApp', [
   'config'
 ])
   // Load fixture data
-  .run(function(storageService, syncService) {
+  .run(function(storageService) {
     storageService.loadFixtures();
-
-    syncService.sync(storageService.APP_CONFIG);
   });

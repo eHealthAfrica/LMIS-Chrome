@@ -45,7 +45,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     }
   })
 
-}).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state){
+}).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
+        syncService){
   $scope.isSubmitted = false;
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
   $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3;
@@ -79,6 +80,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){
+        appConfigService.load().then(function(data){
+          syncService.syncItem(appConfigService.APP_CONFIG, data)
+            .then(function(syncResult){
+              console.log('sync was successful ' +JSON.stringify(syncResult));
+            }, function(syncError){
+                console.log(syncError);
+            });
+        });
+
         var msg = 'Application configuration was successful!!!';
         $state.go('home.index.mainActivity',{'appConfigResult': msg });
       } else {
@@ -111,6 +121,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
  function preLoadConfigForm(appConfig){
+   if(appConfig === undefined) {
+     return;
+   }
    $scope.appConfig.contactPerson = appConfig.contactPerson;
    $scope.appConfig.stockCountInterval = parseInt(appConfig.stockCountInterval);
    $scope.appConfig.facility = appConfig.facility;
