@@ -467,11 +467,25 @@ angular.module('lmisChromeApp')
                 backupStock(obj);
               });
           }
-          $scope.redirect = true; // always reset to true after every save
-          $scope.stockCount.isComplete = 1;
         });
     };
 
+    $scope.$watch('stockCount.unopened[productKey]', function(newvalue){
+      if(stockCountFactory.validate.invalid(newvalue)){
+        //stockCountFactory.get.errorAlert($scope, 1);
+      }else{
+        $scope.redirect = false;
+        $scope.lastPosition = $scope.step;
+        $scope.save();
+        stockCountFactory.get.errorAlert($scope, 0);
+      }
+    });
+    $scope.finalSave = function(){
+      $scope.wasteCount.lastPosition = 0;
+      $scope.redirect = true;
+      $scope.wasteCount.isComplete = 1;
+      $scope.save();
+    };
     $scope.changeState = function(direction){
       $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
@@ -486,10 +500,6 @@ angular.module('lmisChromeApp')
           $scope.preview = true;
         }
         $scope.productKey = $scope.facilityProductsKeys[$scope.step];
-        //TODO: this is best done with $timeout to auto save data when interface is idle for x mount of time
-        $scope.redirect = false;// we don't need to redirect when this fn calls save()
-        $scope.stockCount.isComplete = 0;// when saved from this fn its not complete yet
-        $scope.save();
       }
       $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
       $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);

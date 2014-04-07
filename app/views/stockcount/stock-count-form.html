@@ -84,7 +84,7 @@
   <div class="panel-body">
     <div>
       <div class="col-sm-12">
-        <form ng-submit="save()">
+        <form ng-submit="finalSave()">
           <div class="row">
             <div class="col-sm-12" ng-hide="preview">
               <div class="row">
@@ -108,6 +108,7 @@
                     <div class="col-sm-4 col-xs-12">
                       <div class="btn-separator">
                         <counter bind="stockCount.unopened[productKey]"></counter>
+                        <div ng-show="productError" class="custom-error text-center" >{{ productErrorMsg }}</div>
                       </div>
                     </div>
                     <!-- start form next button -->
