@@ -481,9 +481,11 @@ angular.module('lmisChromeApp')
       }
     });
     $scope.finalSave = function(){
-      $scope.wasteCount.lastPosition = 0;
+      if('wasteCount' in $scope) {
+        $scope.wasteCount.lastPosition = 0;
+        $scope.wasteCount.isComplete = 1;
+      }
       $scope.redirect = true;
-      $scope.wasteCount.isComplete = 1;
       $scope.save();
     };
     $scope.changeState = function(direction){
