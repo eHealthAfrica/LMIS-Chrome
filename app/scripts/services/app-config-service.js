@@ -1,9 +1,9 @@
 'use strict'
 
-angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService) {
+angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
-  this.APP_FACILITY_PROFILE = 'app_facility_profile';
+  var FACILITY_PROFILE_DB = 'app_facility_profile';
 
   this.stockCountIntervals = [
     {name: 'Daily', value: 1},
@@ -86,5 +86,28 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    }
    return removeProductProfileFrom(productProfile, selectedProductProfiles);
   };
+
+  this.getAppFacilityProfileByEmail = function(email){
+    var deferred = $q.defer();
+    var REMOTE = config.api.url + '/' + FACILITY_PROFILE_DB;
+    var remoteDB = pouchdb.create(REMOTE);
+    remoteDB.info()
+      .then(function(result){
+        console.log(result);
+        remoteDB.get('national_store@gmail.com')
+        .then(function(appFacilityProfile){
+          deferred.resolve(appFacilityProfile);
+          console.log('found');
+        }, function(reason){
+          console.log('not found');
+          deferred.reject(reason);
+        });
+      }, function(reason){
+          console.log('error here');
+        deferred.reject(reason);
+      });
+    return deferred.promise;
+  };
+
 
 });
