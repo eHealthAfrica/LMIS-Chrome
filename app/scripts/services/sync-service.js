@@ -1,70 +1,82 @@
 'use strict'
 
-angular.module('lmisChromeApp').service('syncService', function ($q, $log, storageService, pouchdb, config) {
+angular.module('lmisChromeApp').service('syncService', function ($q, $log, $rootScope, storageService, pouchdb, config) {
 
-  var getDB = function(dbUrl){
-    var db  = pouchdb.create(dbUrl);
-    return db;
+  var isSyncing = false;
+
+  var getLocalDB = function(dbUrl){
+    return pouchdb.create(dbUrl);
   };
 
-  var getRemote = function(dbName){
-    var REMOTE = config.apiBaseURI + '/' + dbName;
+  var getRemoteDB = function(dbName){
+    var REMOTE = config.api.url + '/' + dbName;
     return pouchdb.create(REMOTE);
   };
 
-  this.syncItem = function(dbName, item){
-    var defer = $q.defer();
-    var remoteDB = getRemote(dbName);
-    var localDB = getDB(dbName);
+  var insertItem = function(db, item){
+    var deferred = $q.defer();
+    db.put(item, item.uuid)
+      .then(function (result) {
+        deferred.resolve(result);
+      }, function (error) {
+        deferred.reject(error);
+      });
+    return  deferred.promise;
+  };
 
-    var onComplete = function(){
-      console.log('syncing completed');
-    };
+  var updatePouchDBWithItem = function(db, item){
+    var deferred = $q.defer();
+    db.get(item.uuid).then(function (response) {
+      item._id = response._id;
+      item._rev = response._rev;
+      insertItem(db, item)
+        .then(function(result){
+          deferred.resolve(result);
+      }, function(error){
+          $log.error(error);
+          deferred.reject(error);
+      });
 
-    //console.log(remoteDB.replicate.to);
+    }, function (error) {
+      insertItem(db, item)
+        .then(function(result){
+          deferred.resolve(result);
+      }, function(error){
+        $log.error(error);
+        deferred.reject(error);
+      });
 
-    remoteDB.info().then(function(response){
-      console.log(response);
-//      localDB.replicate.to(remoteDB, {complete: onComplete}).then(function(result){
-//        console.log('Result = '+result);
-//      }, function(reason){
-//        console.log('Reason' + reason);
-//      });
-    }, function(error){
-      console.log('error '+error);
     });
+    return deferred.promise;
+  };
 
-//    localDB.get(item.uuid).then(function(response){
-//      localDB.put(response, response._id, response._rev)
-//        .then(function(result){
-//            console.log(result);
-//            console.log(response);
-//        }, function(reason){
-//            console.log(reason);
-//      });
-//      defer.resolve(response);
-//    }, function(error){
-//      defer.reject(error);
-//    });
+  this.syncItem = function(dbName, item){
+    var deferred = $q.defer();
+    if (isSyncing) {
+      deferred.reject('Syncing is already in progress');
+    }else{
+      var remoteDB = getRemoteDB(dbName);
+      var localDB = getLocalDB(dbName);
+      isSyncing = true;
 
-//    localDB.put(item, item.uuid).then(function(response){
-//      defer.resolve(response);
-//      console.log(response);
-//    }, function(error){
-//      defer.reject(error);
-//      console.log(error);
-//    });
+      var onSyncComplete = function (deferred) {
+        isSyncing = false;
+        deferred.resolve(true);
+      };
 
-
-//    item._id = item.uuid;
-//    remoteDB.put(item).then (function(response) {
-//      defer.resolve(response);
-//      console.log(response);
-//    }, function(error){
-//      defer.reject(error);
-//      console.log(error);
-//    });
-    return defer.promise;
+      updatePouchDBWithItem(localDB, item).then(function (result) {
+        remoteDB.info().then(function (response) {
+          localDB.replicate.to(remoteDB, {complete: onSyncComplete(deferred) });
+        }, function (error) {
+          deferred.reject(error);
+          isSyncing =  false;
+        });
+      }, function (error) {
+        deferred.reject(error);
+        isSyncing = false;
+      });
+    }
+    return deferred.promise;
   };
 
 });

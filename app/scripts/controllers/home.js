@@ -21,7 +21,6 @@ angular.module('lmisChromeApp')
         if (appConfig === undefined) {
           $state.go('appConfigWelcome');
         } else {
-          syncService.syncItem(appConfigService.APP_CONFIG, appConfig);
           $scope.facility = appConfig.appFacility.name;
           $scope.hasPendingStockCount = (todayStockCount === null);
         }

@@ -1,0 +1,56 @@
+{
+  "kano_store@gmail.com": {
+    "uuid": "kano_store@gmail.com",
+    "appFacility":  "d48a39fb-6d37-4472-9983-bc0720403719",
+    "contactPerson": {
+      "name": "Aminu Garki",
+      "phoneNo": "08062514986"
+    },
+    "created": "2014-01-20T10:37:21.143Z",
+    "modified": "2014-01-20T15:07:09.860Z",
+    "stockCountInterval": 7,
+    "selectedProductProfiles": ["075bd789-4b29-4033-80b6-4f834e602628", "87115282-6a35-42fb-ae2b-860e510b592f",
+        "f97be2aa-d5b6-4560-8f31-5a559fb80567", "abf5f2fc-056a-45cc-b7b7-553a09c927d7",
+      "dfe5b135-12b8-4da0-ad39-b54e864f5663"]
+  },
+  "national_store@gmail.com": {
+    "uuid": "national_store@gmail.com",
+    "appFacility":  "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
+    "contactPerson": {
+      "name": "Bashir Lawal",
+      "phoneNo": "08062510987"
+    },
+    "created": "2014-01-20T10:37:21.143Z",
+    "modified": "2014-01-20T15:07:09.860Z",
+    "stockCountInterval": 14,
+    "selectedProductProfiles": ["075bd789-4b29-4033-80b6-4f834e602628", "87115282-6a35-42fb-ae2b-860e510b592f",
+        "f97be2aa-d5b6-4560-8f31-5a559fb80567"]
+  },
+  "north_west_store@gmail.com": {
+    "uuid": "national_store@gmail.com",
+    "appFacility":  "902aef31-051d-4a83-9017-6ac9710b5bb5",
+    "contactPerson": {
+      "name": "Sani Ahmed",
+      "phoneNo": "080908360987"
+    },
+    "created": "2014-01-20T10:37:21.143Z",
+    "modified": "2014-01-20T15:07:09.860Z",
+    "stockCountInterval": 14,
+    "selectedProductProfiles": ["075bd789-4b29-4033-80b6-4f834e602628", "87115282-6a35-42fb-ae2b-860e510b592f",
+        "f97be2aa-d5b6-4560-8f31-5a559fb80567"]
+  },
+  "test_health_facility@gmail.com": {
+    "uuid": "test_health_facility@gmail.com",
+    "appFacility":  "fa3fdb8e-24bb-4ba6-b598-050c6285d08e",
+    "contactPerson": {
+      "name": "Tunji Yemisi",
+      "phoneNo": "080990872542"
+    },
+    "created": "2014-01-20T10:37:21.143Z",
+    "modified": "2014-01-20T15:07:09.860Z",
+    "stockCountInterval": 30,
+    "selectedProductProfiles": ["075bd789-4b29-4033-80b6-4f834e602628", "87115282-6a35-42fb-ae2b-860e510b592f",
+        "f97be2aa-d5b6-4560-8f31-5a559fb80567"]
+  }
+
+}
