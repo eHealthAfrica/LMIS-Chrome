@@ -3,6 +3,7 @@
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
+  this.APP_FACILITY_PROFILE = 'app_facility_profile';
 
   this.stockCountIntervals = [
     {name: 'Daily', value: 1},
