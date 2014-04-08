@@ -13,36 +13,23 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
     return pouchdb.create(REMOTE);
   };
 
-  var insertItem = function(db, item){
-    var deferred = $q.defer();
-    db.put(item, item.uuid)
-      .then(function (result) {
-        deferred.resolve(result);
-      }, function (error) {
-        deferred.reject(error);
-      });
-    return  deferred.promise;
-  };
-
   var updatePouchDBWithItem = function(db, item){
     var deferred = $q.defer();
     db.get(item.uuid).then(function (response) {
       item._id = response._id;
       item._rev = response._rev;
-      insertItem(db, item)
-        .then(function(result){
-          deferred.resolve(result);
-      }, function(error){
-          $log.error(error);
-          deferred.reject(error);
+      db.put(item, response._id, response._rev)
+      .then(function (result) {
+        deferred.resolve(result);
+      }, function (error) {
+        deferred.reject(error);
       });
 
     }, function (error) {
-      insertItem(db, item)
-        .then(function(result){
-          deferred.resolve(result);
-      }, function(error){
-        $log.error(error);
+      db.put(item, item.uuid)
+      .then(function (result) {
+        deferred.resolve(result);
+      }, function (error) {
         deferred.reject(error);
       });
 
@@ -77,6 +64,10 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
       });
     }
     return deferred.promise;
+  };
+
+  this.clearPouchDB = function(dbName){
+    return getLocalDB(dbName).destroy();
   };
 
 });
