@@ -26,25 +26,28 @@ angular.module('lmisChromeApp').factory('facilityFactory', function ($q, $rootSc
    * @returns {promise|promise|*|Function|promise}
    */
   var getAllFacilities = function () {
-    var deferred = $q.defer(),
-        facilities = [];
+    var deferred = $q.defer();
+    //var facilities = [];
 
-    storageService.all(storageService.FACILITY).then(function (data) {
-      angular.forEach(data, function (datum) {
-        if (datum !== undefined) {
-          facilities.push(getByUUID(datum.uuid).then(function (facility) {
-            deferred.notify(datum);
-            return facility;
-          }));
-        }
-      });
-
-      $q.all(facilities).then(function (results) {
-        deferred.resolve(results);
-        if (!$rootScope.$$phase) {
-          $rootScope.$apply();
-        }
-      });
+    storageService.all(storageService.FACILITY).then(function (facilities) {
+      deferred.resolve(facilities);
+//      angular.forEach(data, function (datum) {
+//        if (datum !== undefined) {
+//          facilities.push(getByUUID(datum.uuid).then(function (facility) {
+//            deferred.notify(datum);
+//            return facility;
+//          }));
+//        }
+//      });
+//
+//      $q.all(facilities).then(function (results) {
+//        deferred.resolve(results);
+//        if (!$rootScope.$$phase) {
+//          $rootScope.$apply();
+//        }
+//      });
+    }, function(error){
+      deferred.reject(error);
     });
     return deferred.promise;
   };
