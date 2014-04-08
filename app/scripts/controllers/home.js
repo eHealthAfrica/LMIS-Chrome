@@ -53,7 +53,7 @@ angular.module('lmisChromeApp')
       data: {
         label: 'Home'
       },
-      controller: function ($scope, $stateParams, $state, appConfig, i18n, alertsFactory, syncService, appConfigService) {
+      controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, alertsFactory, syncService, appConfigService) {
         if ($stateParams.storageClear !== null) {
           alertsFactory.success(i18n('clearStorageMsg'));
           $stateParams.storageClear = null;
@@ -68,11 +68,10 @@ angular.module('lmisChromeApp')
           alertsFactory.success($stateParams.appConfigResult);
           syncService.syncItem(appConfigService.APP_CONFIG, appConfig)
             .then(function(syncResult){
-              console.log('sync was successful ' +JSON.stringify(syncResult));
+              $log.info('sync was successful ' +JSON.stringify(syncResult));
             }, function(syncError){
                 console.log(syncError);
             });
-
           $stateParams.appConfigResult = null;
         }
 

@@ -93,17 +93,13 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     var remoteDB = pouchdb.create(REMOTE);
     remoteDB.info()
       .then(function(result){
-        console.log(result);
-        remoteDB.get('national_store@gmail.com')
+        remoteDB.get(email)
         .then(function(appFacilityProfile){
           deferred.resolve(appFacilityProfile);
-          console.log('found');
         }, function(reason){
-          console.log('not found');
           deferred.reject(reason);
         });
       }, function(reason){
-          console.log('error here');
         deferred.reject(reason);
       });
     return deferred.promise;
