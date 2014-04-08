@@ -53,7 +53,7 @@ angular.module('lmisChromeApp')
           if(stockCount !== null){
             object.uuid = stockCount.uuid;
           }
-          storageService.insert(storageService.STOCK_COUNT, object).then(function(uuid){
+          storageService.save(storageService.STOCK_COUNT, object).then(function(uuid){
             deferred.resolve(uuid);
           });
         });
@@ -74,7 +74,7 @@ angular.module('lmisChromeApp')
           if(wasteCount !== null){
             object.uuid = wasteCount.uuid;
           }
-          storageService.insert(storageService.WASTE_COUNT, object).then(function(uuid){
+          storageService.save(storageService.WASTE_COUNT, object).then(function(uuid){
             deferred.resolve(uuid);
           });
 
