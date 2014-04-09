@@ -1,9 +1,16 @@
+<div class="row" ng-show="profileNotFound">
+  <div class="col-sm-12">
+    <div class="alert alert-danger">
+      <span>Profile does not exist, make sure you entered the correct email address</span>
+      <span><i class="fa fa-exclamation"></i></span>
+    </div>
+  </div>
+</div>
 <div class="panel panel-default">
   <div class="panel-heading">
     <h4 class="panel-title" i18n="emailConfiguration"></h4>
   </div>
   <div class="panel-body">
-
     <form name="editAppConfigForm"
           ng-submit="editAppConfigForm.$valid && loadAppFacilityProfile(STEP_TWO, (editAppConfigForm.email).$valid)"
           novalidate>

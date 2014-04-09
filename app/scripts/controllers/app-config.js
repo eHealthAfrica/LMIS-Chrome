@@ -65,11 +65,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       .then(function(result){
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
+        $scope.profileNotFound = false;
         $scope.moveTo(nextStep);
         console.log(result);
       }, function(error){
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
+        $scope.profileNotFound = true;
         console.log(error);
       });
   }
