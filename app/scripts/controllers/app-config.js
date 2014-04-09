@@ -11,7 +11,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   }).state('appConfigWizard', {
     url: '/app-config-wizard',
     parent: 'root.index',
-    templateUrl: '/views/app-config/wizard/initial-config.html',
+    templateUrl: '/views/app-config/wizard.html',
     resolve: {
       facilities: function(facilityFactory){
         return facilityFactory.getAll();
@@ -27,7 +27,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   }).state('editAppConfig', {
     url: '/edit-app-config',
     parent: 'root.index',
-    templateUrl: '/views/app-config/configuration.html',
+    templateUrl: '/views/app-config/edit-configuration.html',
     resolve: {
       facilities: function(facilityFactory){
         return facilityFactory.getAll();

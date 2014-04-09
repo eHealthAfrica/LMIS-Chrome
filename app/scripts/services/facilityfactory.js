@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('facilityFactory', function ($q, $rootScope, storageService, appConfigService) {
+angular.module('lmisChromeApp').factory('facilityFactory', function ($q, $rootScope, storageService) {
 
   /**
    * This returns facility object of a given facility uuid.
