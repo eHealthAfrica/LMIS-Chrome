@@ -66,7 +66,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.loadAppFacilityProfile = function(nextStep, isEmailValid){
     $scope.isSubmitted = true;
     $scope.disableBtn = isEmailValid;
-    appConfigService.getAppFacilityProfileByEmail($scope.appConfig.email)
+    appConfigService.getAppFacilityProfileByEmail($scope.appConfig.uuid)
       .then(function(result){
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
@@ -104,7 +104,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
   $scope.save = function(){
-   $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility)
+   $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility);
+
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){

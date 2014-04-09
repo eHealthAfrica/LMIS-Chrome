@@ -64,6 +64,7 @@ angular.module('lmisChromeApp')
           $stateParams.stockOutBroadcastResult = null;
         }
 
+
         if ($stateParams.appConfigResult !== null) {
           alertsFactory.success($stateParams.appConfigResult);
           syncService.syncItem(appConfigService.APP_CONFIG, appConfig)
