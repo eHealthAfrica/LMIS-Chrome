@@ -11,7 +11,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   }).state('appConfigWizard', {
     url: '/app-config-wizard',
     parent: 'root.index',
-    templateUrl: '/views/app-config/wizard/initial-config.html',
+    templateUrl: '/views/app-config/wizard.html',
     resolve: {
       facilities: function(facilityFactory){
         return facilityFactory.getAll();
@@ -27,7 +27,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   }).state('editAppConfig', {
     url: '/edit-app-config',
     parent: 'root.index',
-    templateUrl: '/views/app-config/configuration.html',
+    templateUrl: '/views/app-config/edit-configuration.html',
     resolve: {
       facilities: function(facilityFactory){
         return facilityFactory.getAll();
@@ -48,8 +48,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
         i18n){
   $scope.isSubmitted = false;
+  $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
-  $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3;
+  $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3, $scope.STEP_FOUR = 4;
   $scope.facilities = facilities;
   $scope.productProfiles = productProfiles;
   $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
@@ -58,12 +59,36 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.currentStep = step;
   };
 
+  $scope.loadAppFacilityProfile = function(nextStep, isEmailValid){
+    $scope.isSubmitted = true;
+    $scope.disableBtn = isEmailValid;
+    appConfigService.getAppFacilityProfileByEmail($scope.appConfig.email)
+      .then(function(result){
+        $scope.disableBtn = false;
+        $scope.isSubmitted = false;
+        $scope.profileNotFound = false;
+        $scope.appConfig.stockCountInterval = result.stockCountInterval;
+        $scope.appConfig.contactPerson = result.contactPerson;
+        $scope.appConfig.facility = JSON.stringify(result.appFacility);//used to pre-select facility drop down
+        $scope.appConfig.selectedProductProfiles = result.selectedProductProfiles;
+        $scope.preSelectProductProfileCheckBox =
+            appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles);
+
+        $scope.moveTo(nextStep);
+
+      }, function(error){
+        $scope.disableBtn = false;
+        $scope.isSubmitted = false;
+        $scope.profileNotFound = true;
+        console.log(error);
+      });
+  }
+
   $scope.appConfig = {
     facility: '',
     stockCountInterval: '',
     contactPerson: {
       name: '',
-      email: '',
       phoneNo: ''
     },
     selectedProductProfiles: []
@@ -75,7 +100,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
   $scope.save = function(){
-    //TODO: refactor this into common function both controllers can share. or call createApp config here.
    $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility)
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
@@ -104,7 +128,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     stockCountInterval: '',
     contactPerson: {
       name: '',
-      email: '',
       phoneNo: ''
     },
     selectedProductProfiles: []
@@ -119,12 +142,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    $scope.appConfig.facility = appConfig.facility;
    $scope.appConfig.appFacility = appConfig.appFacility;
    $scope.appConfig.selectedProductProfiles = appConfig.selectedProductProfiles;
-   for (var index in appConfig.selectedProductProfiles) {
-     var selectedProductProfile = appConfig.selectedProductProfiles[index];
-     $scope.preSelectProductProfileCheckBox[selectedProductProfile.uuid] = selectedProductProfile;
-   }
+   $scope.preSelectProductProfileCheckBox =
+            appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles);
  };
- //pre-load config form with existing app config.
+
+ //pre-load edit app facility profile config form with existing config.
  preLoadConfigForm(appConfig);
 
  $scope.handleSelectionEvent = function(productProfile){
