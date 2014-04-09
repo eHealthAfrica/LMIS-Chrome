@@ -448,5 +448,8 @@
   },
   "loadingProfileMsg": {
     "message": "loading profile ..."
+  },
+  "profileLoadingErrorMsg": {
+    "message": "Profile does not exist, make sure you entered the correct email address and also check you internet connection!"
   }
 }
