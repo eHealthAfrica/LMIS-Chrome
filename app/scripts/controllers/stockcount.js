@@ -3,14 +3,54 @@
 angular.module('lmisChromeApp')
   .config(function($stateProvider) {
     $stateProvider
-      .state('stockCountStepForm', {
+      .state('stockCountHome', {
+        parent: 'root.index',
+        url: '/stockCountHome',
+        data: {
+          label: 'Stock Count Home'
+        },
+        templateUrl: 'views/stockcount/index.html',
+        resolve: {
+          stockCountList: function(stockCountFactory){
+            return stockCountFactory.get.allStockCount();
+          }
+        },
+        controller: function($scope, stockCountFactory, stockCountList){
+          $scope.stockCountList = stockCountList;
+          var now = new Date();
+          $scope.currentDay = now.getDate();
+          $scope.day = $scope.currentDay;
+          $scope.currentMonth = (now.getMonth()+1) < 10 ? "0"+(now.getMonth()+1) : now.getMonth()+1;
+          $scope.month = $scope.currentMonth;
+          $scope.currentYear = now.getFullYear();
+          $scope.year = $scope.currentYear;
+          $scope.monthList = stockCountFactory.monthList;
+          $scope.productQty = function(object){
+            var objectCount = 0;
+            if(Object.prototype.toString.call(object) === '[object Object]'){
+              objectCount = (Object.keys(object)).length;
+            }
+            return objectCount;
+          }
+
+          $scope.dayInMonth = stockCountFactory.get.daysInMonth($scope.month, $scope.year);
+          $scope.yearRange = stockCountFactory.get.yearRange();
+
+          $scope.$watchCollection('[month, year]', function(){
+            $scope.dayInMonth = stockCountFactory.get.daysInMonth($scope.month, $scope.year);
+          });
+
+
+        }
+      })
+      .state('stockCountForm', {
         parent: 'root.index',
         data:{
           label:'Stock Count Form'
         },
-        url:'/stockCountStepForm?facility&reportMonth&reportYear',
+        url:'/stockCountStepForm?facility&reportMonth&reportYear&reportDay',
         templateUrl: 'views/stockcount/stock-count-form.html',
-        controller: 'StockCountStepsFormCtrl',
+        controller: 'StockCountFormCtrl',
         resolve:{
           appConfig: function(appConfigService){
             return appConfigService.load();
@@ -346,7 +386,7 @@ angular.module('lmisChromeApp')
     };
   })
 
-  .controller('StockCountStepsFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, i18n, pouchdb, config){
+  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, i18n, pouchdb, config){
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
@@ -362,10 +402,9 @@ angular.module('lmisChromeApp')
      */
     $scope.facilityObject = appConfig.appFacility;
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
+    $scope.reportDay = ($stateParams.reportDay !== null)?$stateParams.reportDay: day;
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
-
-    $scope.currentDay = day;
 
     $scope.preview = false;
     $scope.editOn = false;
@@ -402,7 +441,7 @@ angular.module('lmisChromeApp')
     var timezone = stockCountFactory.get.timezone();
 
     //load existing count for the day if any.
-    var date = $scope.reportYear+'-'+$scope.reportMonth+'-'+$scope.currentDay;
+    var date = $scope.reportYear+'-'+$scope.reportMonth+'-'+$scope.reportDay;
     stockCountFactory.getStockCountByDate(date).then(function(stockCount){
       if(stockCount !== null){
         $scope.stockCount = stockCount;
@@ -415,7 +454,7 @@ angular.module('lmisChromeApp')
           db = pouchdb.create(dbName);
 
       $scope.stockCount.facility = $scope.facilityUuid;
-      $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.currentDay, timezone);
+      $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.reportDay, timezone);
 
       var backupStock = function(doc) {
         db.put(doc)
@@ -425,7 +464,7 @@ angular.module('lmisChromeApp')
               if($scope.redirect) {
                 var msg = [
                   'You have completed stock count for',
-                  $scope.currentDay,
+                  $scope.reportDay,
                   $scope.monthList[$scope.reportMonth],
                   $scope.reportYear
                 ].join(' ');
