@@ -324,6 +324,27 @@ angular.module('lmisChromeApp')
           }
         }
         return sum;
+      },
+
+      daysInMonth: function (_month, _year){
+        var now = new Date();
+        var year = (_year !== '')?_year: now.getFullYear();
+        var month = (_month !== '')?_month: now.getMonth() + 1;
+        var numberOfDays = new Date(year, month, 0).getDate();
+        var dayArray = [];
+        for(var i=0; i<numberOfDays; i++){
+          dayArray.push(i+1);
+        }
+        return dayArray;
+      },
+      yearRange: function(){
+        var yearRangeArray = [];
+        var currentYear = new Date().getFullYear();
+        var rangeDiff = 3;
+        for(var i=currentYear-rangeDiff; i<currentYear+1; i++){
+          yearRangeArray.push(i);
+        }
+        return yearRangeArray;
       }
 
 
