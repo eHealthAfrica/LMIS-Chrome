@@ -9,7 +9,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         var deferred = $q.defer();
         storageService.clear().then(function(clearResult){
           var promises = [];
-          promises.push(syncService.clearPouchDB(appConfigService.APP_CONFIG));
           promises.push(storageService.loadFixtures());
 
           $q.all(promises).then(function(results) {
