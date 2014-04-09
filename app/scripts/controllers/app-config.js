@@ -46,7 +46,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   })
 
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
-        i18n, facilityFactory, productProfileFactory){
+        i18n){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -67,28 +67,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
         $scope.profileNotFound = false;
-        $scope.appConfig.contactPerson = result.contactPerson;
-        //TODO: move transformation of remote app facility profile into complete object to app-config-service
-        facilityFactory.get(result.appFacility).then(function(facility){
-          $scope.appConfig.facility = JSON.stringify(facility);
-        }, function(reason){
-          //TODO: think of what to do if loading facility failed.
-          console.error(reason);
-        });
-        productProfileFactory.getBatch(result.selectedProductProfiles)
-          .then(function(productProfiles){
-            $scope.appConfig.selectedProductProfiles = productProfiles;
-            //TODO: refactor the line below to app-config-service so that appConfigWizard and editAppConfig can use it.
-            for (var index in $scope.appConfig.selectedProductProfiles) {
-              var selectedProductProfile = $scope.appConfig.selectedProductProfiles[index];
-              $scope.preSelectProductProfileCheckBox[selectedProductProfile.uuid] = selectedProductProfile;
-            }
-          }, function(error){
-            //TODO: think of what to do if loading product profiles failed.
-            console.log(error);
-        });
-        console.log(result.selectedProductProfiles);
         $scope.appConfig.stockCountInterval = result.stockCountInterval;
+        $scope.appConfig.contactPerson = result.contactPerson;
+        $scope.appConfig.facility = JSON.stringify(result.appFacility);//used to pre-select facility drop down
+        $scope.appConfig.selectedProductProfiles = result.selectedProductProfiles;
+        $scope.preSelectProductProfileCheckBox =
+            appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles);
+
         $scope.moveTo(nextStep);
 
       }, function(error){
@@ -115,7 +100,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
   $scope.save = function(){
-    //TODO: refactor this into common function both controllers can share. or call createApp config here.
    $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility)
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
@@ -158,12 +142,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    $scope.appConfig.facility = appConfig.facility;
    $scope.appConfig.appFacility = appConfig.appFacility;
    $scope.appConfig.selectedProductProfiles = appConfig.selectedProductProfiles;
-   for (var index in appConfig.selectedProductProfiles) {
-     var selectedProductProfile = appConfig.selectedProductProfiles[index];
-     $scope.preSelectProductProfileCheckBox[selectedProductProfile.uuid] = selectedProductProfile;
-   }
+   $scope.preSelectProductProfileCheckBox =
+            appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles);
  };
- //pre-load config form with existing app config.
+
+ //pre-load edit app facility profile config form with existing config.
  preLoadConfigForm(appConfig);
 
  $scope.handleSelectionEvent = function(productProfile){
