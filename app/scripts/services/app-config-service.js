@@ -13,17 +13,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     {name: 'Monthly', value: 30}
   ];
 
-  var createAppConfig = function (appConfig) {
-    //TODO: remove this code, it is unnecessary
-    var deferred = $q.defer();
-    storageService.save(storageService.APP_CONFIG, appConfig).then(function (insertionResult) {
-      deferred.resolve(insertionResult);
-    }, function (reason) {
-      deferred.reject(reason);
-    });
-    return deferred.promise;
-  };
-
   /**
    * This function setups or configures the app, it checks if a configuration exist then over-writes it, else,
    * it creates a new configuration.
@@ -34,23 +23,18 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   this.setup = function (appConfig) {
     var deferred = $q.defer();
     this.load().then(function (result) {
+      var promises = [];
       if (result === undefined) {
-        //app config does not exist already
-        createAppConfig(appConfig).then(function (result) {
-          deferred.resolve(result);
-        }, function (reason) {
-          deferred.reject(reason);
-        });
-
+        promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
       } else {
         //over-write appConfig by using existing appConfig uuid for the new appConfig.
         appConfig['uuid'] = result.uuid;
-        createAppConfig(appConfig).then(function (result) {
-          deferred.resolve(result);
-        }, function (reason) {
-          deferred.reject(reason);
-        });
+        promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
       }
+
+       $q.all(promises).then(function(results) {
+        deferred.resolve(results);
+       });
     });
     return deferred.promise;
   };
