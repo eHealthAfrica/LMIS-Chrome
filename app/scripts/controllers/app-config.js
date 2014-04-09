@@ -66,8 +66,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
         $scope.profileNotFound = false;
+        $scope.appConfig.contactPerson = result.contactPerson;
         $scope.moveTo(nextStep);
-        console.log(result);
       }, function(error){
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
@@ -81,7 +81,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     stockCountInterval: '',
     contactPerson: {
       name: '',
-      email: '',
       phoneNo: ''
     },
     selectedProductProfiles: []
@@ -122,7 +121,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     stockCountInterval: '',
     contactPerson: {
       name: '',
-      email: '',
       phoneNo: ''
     },
     selectedProductProfiles: []
