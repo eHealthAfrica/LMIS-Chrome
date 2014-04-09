@@ -46,8 +46,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   })
 
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
-        i18n){
+        i18n, facilityFactory, productProfileFactory){
   $scope.isSubmitted = false;
+  $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
   $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3, $scope.STEP_FOUR = 4;
   $scope.facilities = facilities;
@@ -67,7 +68,29 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.isSubmitted = false;
         $scope.profileNotFound = false;
         $scope.appConfig.contactPerson = result.contactPerson;
+        //TODO: move transformation of remote app facility profile into complete object to app-config-service
+        facilityFactory.get(result.appFacility).then(function(facility){
+          $scope.appConfig.facility = JSON.stringify(facility);
+        }, function(reason){
+          //TODO: think of what to do if loading facility failed.
+          console.error(reason);
+        });
+        productProfileFactory.getBatch(result.selectedProductProfiles)
+          .then(function(productProfiles){
+            $scope.appConfig.selectedProductProfiles = productProfiles;
+            //TODO: refactor the line below to app-config-service so that appConfigWizard and editAppConfig can use it.
+            for (var index in $scope.appConfig.selectedProductProfiles) {
+              var selectedProductProfile = $scope.appConfig.selectedProductProfiles[index];
+              $scope.preSelectProductProfileCheckBox[selectedProductProfile.uuid] = selectedProductProfile;
+            }
+          }, function(error){
+            //TODO: think of what to do if loading product profiles failed.
+            console.log(error);
+        });
+        console.log(result.selectedProductProfiles);
+        $scope.appConfig.stockCountInterval = result.stockCountInterval;
         $scope.moveTo(nextStep);
+
       }, function(error){
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
