@@ -1,103 +1,58 @@
-<div ng-controller="StockCountIndexCtrl">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="row">
-        <div class="col-sm-6">
-          <form class="form-inline form-horizontal">
-
-            <label class="inline-label" for="facility">Health Facility:</label>
-            <select name="facility" id="facility"  ng-model="userRelatedFacility" class="form-control" >
-              <option value="">-- select facility --</option>
-              <option ng-selected="{{ facility.uuid === userRelatedFacility }}" ng-repeat="facility in userRelatedFacilities" value="{{ facility.uuid }}">{{ facility.name }}</option>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-6">
+        <a class="btn btn-default" ui-sref="stockCountForm({reportYear: year, reportMonth: month, reportDay: day})">Add Stock Count</a>
+      </div>
+      <div class="col-sm-6">
+        <form class="form-horizontal">
+          <div class="btn-group pull-right">
+            <select class="btn btn-default" ng-model="day" >
+              <option value="">Day</option>
+              <option ng-disabled="_day > currentDay && year === currentYear && month === currentMonth" ng-selected="day === _day" value="{{ _day }}" ng-repeat="_day in dayInMonth">{{ _day }}</option>
             </select>
+            <select class="btn btn-default" ng-model="month" >
+              <option value="">Month</option>
+              <option ng-disabled="key > currentMonth && year === currentYear" ng-selected="month === key" ng-repeat="(key, value) in monthList" value="{{ key }}">{{ value }} </option>
+            </select>
+            <select ng-model="year" class="btn btn-default" >
+              <option>Year</option>
+              <option ng-selected="year === _year" value="{{ _year }}" ng-repeat="_year in yearRange">{{ _year }}</option>
+            </select>
+          </div>
 
-          </form>
-        </div>
-        <div class="col-sm-2">
-          Ward: {{ ward }}
-        </div>
-        <div class="col-sm-2">
-          LGA: {{ lga }}
-        </div>
-        <div class="col-sm-2">
-          State: {{ state }}
-        </div>
-      </div>
-      <div class="row">
-
-
+          <div class="clearfix"></div>
+        </form>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm-6">
-      <a
-          ui-sref="stockCountForm({facility: userRelatedFacility,reportYear: reportYear, reportMonth: reportMonth})"
-          ng-disabled="addButton"
-          class="btn btn-default">
-        <i class="fa fa-plus-circle"></i> Add Stock Count
-      </a>
-
-      <a
-          ui-sref="wasteCountForm({facility: userRelatedFacility,reportYear: reportYear, reportMonth: reportMonth})"
-          ng-disabled="addButton"
-          class="btn btn-default">
-        <i class="fa fa-plus-circle"></i> Add Wastage Count
-      </a>
-      <a
-          ui-sref="stockCountStepForm({facility: userRelatedFacility,reportYear: reportYear, reportMonth: reportMonth})"
-          ng-disabled="add_button"
-          class="btn btn-default">
-        <i class="fa fa-plus-circle"></i>
-        Stock Count in Steps
-      </a>
-    </div>
-    <div class="col-sm-3 col-sm-offset-3">
-      <form class="form-inline">
-        <div class="form-group">
-          <label class="sr-only" for="reportMonth">Month</label>
-           <select placeholder="Month" id="reportMonth" ng-model="reportMonth" class="form-control" >
-            <option value="">Month</option>
-            <option ng-selected="{{ reportMonth === key }}" ng-repeat="(key, value) in monthList"
-                    value="{{ key }}">{{ value }}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="sr-only" for="reportYear">Year</label>
-          <select id="reportYear" ng-model="reportYear" class="form-control">
-            <option value="">Year</option>
-            <option ng-selected="{{ reportYear === year }}" ng-repeat="year in yearRange" value="{{ year }}">{{ year }}</option>
-          </select>
-        </div>
-
-      </form>
-    </div>
 </div>
-  <div class="row" ng-hide="addButton">
-    <div class="col-sm-12">
-      <div class="panel panel-default">
-        <div class="scrollable-container">
-          <table class="table table-bordered oversize-table" id="vm1-table">
-            <thead>
+<div class="panel panel-default">
+  <div class="panel-heading"></div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table table-bordered table-condensed">
+          <thead>
             <tr>
-              <th></th>
-              <th ng-repeat="product in products">{{ product }}</th>
+              <th>#</th>
+              <th>Date</th>
+              <th>Synced</th>
+              <th>Status</th>
             </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="row in daysInMonth" ng-bind-html="columnData(products, stockCountObject, userRelatedFacility, reportYear, reportMonth, row)">
+          </thead>
+          <tbody>
+            <tr ng-repeat="row in stockCountList">
+              <td> {{ $index + 1 }} </td>
+              <td> {{row.countDate}} </td>
+              <td> {{ productQty(row.unopened) }} </td>
+              <td class="text-center">
+                <i class="fa " ng-class="{'fa-check-circle text-success': row.isComplete, 'fa-times-circle text-danger': !row.isComplete}"></i>
+              </td>
             </tr>
-            </tbody>
-          </table>
-        </div>
+          </tbody>
+        </table>
       </div>
-    </div>
-  </div>
-  <div class="row" ng-show="addButton">
-    <div class="col-sm-12 text-center">
-      <h3 class="label label-default">
-        <span >Select Facility and Month to show Stock Report</span>
-      </h3>
     </div>
   </div>
 </div>
