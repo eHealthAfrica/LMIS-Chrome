@@ -17,7 +17,7 @@ angular.module('lmisChromeApp')
           return stockCountFactory.getStockCountByDate(today);
         }
       },
-      controller: function($scope, appConfig, todayStockCount, $state, syncService, appConfigService) {
+      controller: function($scope, appConfig, todayStockCount, $state) {
         if (appConfig === undefined) {
           $state.go('appConfigWelcome');
         } else {

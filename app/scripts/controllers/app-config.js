@@ -1,14 +1,18 @@
 'use strict';
 
 angular.module('lmisChromeApp').config(function ($stateProvider) {
-  $stateProvider.state('appConfigWelcome', {
+  $stateProvider.state('appConfig', {
+    parent: 'root.index',
+    abstract: true,
+    templateUrl: 'views/home/index.html'
+  }).state('appConfigWelcome', {
     url: '/app-config-welcome',
     parent: 'root.index',
     templateUrl: '/views/app-config/welcome-page.html',
     data: {
       label: 'Welcome'
     }
-  }).state('appConfigWizard', {
+  }).state('appConfig.wizard', {
     url: '/app-config-wizard',
     parent: 'root.index',
     templateUrl: '/views/app-config/wizard.html',
@@ -24,7 +28,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     data: {
       label: 'Configuration wizard'
     }
-  }).state('editAppConfig', {
+  }).state('appConfig.edit', {
     url: '/edit-app-config',
     parent: 'root.index',
     templateUrl: '/views/app-config/edit-configuration.html',
