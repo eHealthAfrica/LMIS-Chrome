@@ -99,7 +99,7 @@ angular.module('lmisChromeApp')
             templateUrl: 'views/stockcount/sync/stats.html',
             controller: function($q, $log, $scope, i18n, config, pouchdb, localDocs, alertsFactory) {
               var dbName = 'stockcount',
-                  remote = config.apiBaseURI + '/' + dbName;
+                  remote = config.api.url + '/' + dbName;
 
               var updateCounts = function() {
                 $scope.local = {
@@ -167,7 +167,7 @@ angular.module('lmisChromeApp')
 
               $scope.compare = function() {
                 $scope.syncing = true;
-                var remote = pouchdb.create(config.apiBaseURI + '/stockcount');
+                var remote = pouchdb.create(config.api.url + '/stockcount');
                 remote.allDocs()
                   .then(function(remotes) {
                     remotes = remotes.rows.map(function(remote) {
@@ -315,7 +315,7 @@ angular.module('lmisChromeApp')
                 }
               }};
               var db = pouchdb.create(name);
-              db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
+              db.replicate.to(config.api.url + '/' + dbName, cb);
             })
             .catch(function(reason) {
               if(reason.message) {
@@ -477,7 +477,7 @@ angular.module('lmisChromeApp')
                 });
               }
             }};
-            db.replicate.to(config.apiBaseURI + '/' + dbName, cb);
+            db.replicate.to(config.api.url + '/' + dbName, cb);
           })
           .catch(function(reason) {
             $state.go('home.index.mainActivity');
@@ -506,11 +506,27 @@ angular.module('lmisChromeApp')
                 backupStock(obj);
               });
           }
-          $scope.redirect = true; // always reset to true after every save
-          $scope.stockCount.isComplete = 1;
         });
     };
 
+    $scope.$watch('stockCount.unopened[productKey]', function(newvalue){
+      if(stockCountFactory.validate.invalid(newvalue)){
+        //stockCountFactory.get.errorAlert($scope, 1);
+      }else{
+        $scope.redirect = false;
+        $scope.lastPosition = $scope.step;
+        $scope.save();
+        stockCountFactory.get.errorAlert($scope, 0);
+      }
+    });
+    $scope.finalSave = function(){
+      if('wasteCount' in $scope) {
+        $scope.wasteCount.lastPosition = 0;
+        $scope.wasteCount.isComplete = 1;
+      }
+      $scope.redirect = true;
+      $scope.save();
+    };
     $scope.changeState = function(direction){
       $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
@@ -525,10 +541,6 @@ angular.module('lmisChromeApp')
           $scope.preview = true;
         }
         $scope.productKey = $scope.facilityProductsKeys[$scope.step];
-        //TODO: this is best done with $timeout to auto save data when interface is idle for x mount of time
-        $scope.redirect = false;// we don't need to redirect when this fn calls save()
-        $scope.stockCount.isComplete = 0;// when saved from this fn its not complete yet
-        $scope.save();
       }
       $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
       $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
