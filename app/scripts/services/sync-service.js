@@ -50,8 +50,8 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
             isSyncing = false;
             deferred.resolve(response);
           }, function(saveError){
-            deferred.reject(saveError);
             isSyncing = false;
+            deferred.reject(saveError);
           });
         }, function(dbConError){
           isSyncing = false;

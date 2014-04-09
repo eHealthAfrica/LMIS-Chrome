@@ -19,7 +19,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     }
   })
 }).controller('stockOutBroadcastCtrl', function($scope, productTypes, appConfig, $log, stockOutBroadcastFactory, $state,
-        alertsFactory){
+        alertsFactory, $modal){
 
   //used to hold stock out form data
   $scope.stockOutForm = {
@@ -31,6 +31,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.productTypes = productTypes;
 
   $scope.save = function(){
+    console.log($modal.open());
+    return;
     var stockOut = {
       productType: JSON.parse($scope.stockOutForm.productType),
       facility: $scope.stockOutForm.facility
