@@ -442,5 +442,11 @@
         "example": "local"
       }
     }
+  },
+  "emailConfiguration": {
+    "message": "Email Configuration"
+  },
+  "loadingProfileMsg": {
+    "message": "loading profile ..."
   }
 }

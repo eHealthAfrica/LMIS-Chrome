@@ -49,7 +49,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         i18n){
   $scope.isSubmitted = false;
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
-  $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3;
+  $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3, $scope.STEP_FOUR = 4;
   $scope.facilities = facilities;
   $scope.productProfiles = productProfiles;
   $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
@@ -57,6 +57,22 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.moveTo = function(step){
     $scope.currentStep = step;
   };
+
+  $scope.loadAppFacilityProfile = function(nextStep, isEmailValid){
+    $scope.isSubmitted = true;
+    $scope.disableBtn = isEmailValid;
+    appConfigService.getAppFacilityProfileByEmail($scope.appConfig.email)
+      .then(function(result){
+        $scope.disableBtn = false;
+        $scope.isSubmitted = false;
+        $scope.moveTo(nextStep);
+        console.log(result);
+      }, function(error){
+        $scope.disableBtn = false;
+        $scope.isSubmitted = false;
+        console.log(error);
+      });
+  }
 
   $scope.appConfig = {
     facility: '',
