@@ -104,6 +104,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){
+        $scope.appConfig.uuid = result;
+        appConfigService.cache.put(appConfigService.APP_CONFIG, $scope.appConfig);
         $state.go('home.index.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
       } else {
         alertsFactory.danger(i18n('appConfigFailedMsg'));
@@ -159,6 +161,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){
+        appConfigService.cache.put(appConfigService.APP_CONFIG, $scope.appConfig)
         $state.go('home.index.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
       } else {
         alertsFactory.danger(i18n('appConfigFailedMsg'));
