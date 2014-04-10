@@ -1,9 +1,11 @@
 'use strict'
 
-angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config,
-                                                                      productProfileFactory, facilityFactory) {
+angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, cacheConfig,
+                                                                      productProfileFactory, facilityFactory,
+                                                                      $cacheFactory) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
+  this.cache = $cacheFactory(cacheConfig.id);
   var FACILITY_PROFILE_DB = 'app_facility_profile';
 
   this.stockCountIntervals = [
@@ -113,9 +115,37 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     for (var index in source) {
      var object = source[index];
      target[object.uuid] = object;
-   }
-   return target;
+    }
+    return target;
   };
 
+  /**
+   * This returns current app config from cache, if not available, it loads from storageService
+   * @returns {promise|promise|*|promise|promise}
+   */
+  this.getCurrentAppConfig = function(){
+    var deferred = $q.defer();
+    var appConfig = this.cache.get(storageService.APP_CONFIG);
+    console.log('app config'+JSON.stringify(appConfig));
+    if(appConfig !== undefined){
+      deferred.resolve(appConfig);
+      console.log('pulled from cache');
+    }else{
+      console.log('pulled from storage service');
+      storageService.get(storageService.APP_CONFIG).then(function (data) {
+        if (data === undefined) {
+          deferred.resolve(data);
+        }else if (Object.keys(data).length === 1) {
+          var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
+          deferred.resolve(data[appConfigUUID ]);
+        } else {
+          throw 'there are more than one app config on this app.';
+        }
+      }, function (error) {
+        deferred.reject(error);
+      });
+    }
+    return deferred.promise
+  };
 
 });
