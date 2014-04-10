@@ -49,7 +49,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         }
       },
       controller: function($scope, $state, $modalInstance, i18n, productType){
-        console.log(productType);
         $scope.headerMessage = i18n('confirmStockOutHeader', productType.code);
         $scope.bodyMessage = i18n('confirmStockOutBodyMsg');
         $scope.confirmBtnMsg = i18n('yes');
@@ -70,8 +69,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     modal.result.then(function (result) {
       if(result === true){
         stockOutBroadcastFactory.save(stockOut).then(function (result) {
-          //TODO: send SMS or Online broadcast here.
+          //TODO: send SMS if offline
           if (result !== undefined) {
+            stockOut.uuid = result;
+            stockOutBroadcastFactory.broadcast(stockOut)
+              .then(function(result){
+                $log.info('stock-out broad-casted');
+              }, function(reason){
+                $log.error(reason);
+            })
             $state.go('home.index.mainActivity', {'stockOutBroadcastResult': true });
           }
         }, function (reason) {

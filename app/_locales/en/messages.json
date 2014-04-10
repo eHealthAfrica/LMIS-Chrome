@@ -468,5 +468,11 @@
   },
   "no": {
     "message": "No"
+  },
+  "more": {
+    "message": "More"
+  },
+  "mainActivities": {
+    "message": "Main Activities"
   }
 }
