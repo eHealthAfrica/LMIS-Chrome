@@ -14,7 +14,8 @@
     "fullscreen",
     "geolocation",
     "storage",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "http://*.lomis.ehealth.org.ng"
   ],
   "icons": {
     "16": "images/icon-16.png",
