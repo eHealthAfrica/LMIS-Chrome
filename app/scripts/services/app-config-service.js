@@ -1,9 +1,10 @@
 'use strict'
 
-angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService) {
+angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config,
+                                                                      productProfileFactory, facilityFactory) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
-  this.APP_FACILITY_PROFILE = 'app_facility_profile';
+  var FACILITY_PROFILE_DB = 'app_facility_profile';
 
   this.stockCountIntervals = [
     {name: 'Daily', value: 1},
@@ -13,6 +14,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   ];
 
   var createAppConfig = function (appConfig) {
+    //TODO: remove this code, it is unnecessary
     var deferred = $q.defer();
     storageService.save(storageService.APP_CONFIG, appConfig).then(function (insertionResult) {
       deferred.resolve(insertionResult);
@@ -86,5 +88,50 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    }
    return removeProductProfileFrom(productProfile, selectedProductProfiles);
   };
+
+  this.getAppFacilityProfileByEmail = function(email){
+    var deferred = $q.defer();
+    var REMOTE = config.api.url + '/' + FACILITY_PROFILE_DB;
+    var remoteDB = pouchdb.create(REMOTE);
+    remoteDB.info()
+      .then(function(result){
+        remoteDB.get(email)
+        .then(function(appFacilityProfile){
+
+          var promises = {
+              appFacility: facilityFactory.get(appFacilityProfile.appFacility),
+              selectedProductProfiles: productProfileFactory.getBatch(appFacilityProfile.selectedProductProfiles)
+          };
+
+          $q.all(promises).then(function(result) {
+            for(var key in result) {
+              appFacilityProfile[key] = result[key];
+            }
+            deferred.resolve(appFacilityProfile);
+          });
+
+        }, function(reason){
+          deferred.reject(reason);
+        })
+      }, function(reason){
+        deferred.reject(reason);
+      });
+    return deferred.promise;
+  };
+
+    /**
+   * copies an source array to target associate array(object array or key-pair )
+   * @param source
+   * @param target
+   */
+  this.generateAssociativeArray =  function(source){
+    var target = {};
+    for (var index in source) {
+     var object = source[index];
+     target[object.uuid] = object;
+   }
+   return target;
+  };
+
 
 });

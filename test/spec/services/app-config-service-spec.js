@@ -21,4 +21,8 @@ describe('Service: appConfigService ', function() {
     expect(appConfigService.stockCountIntervals.length).toBe(4);
   });
 
+  it('as a user, i expect appConfigService to have function for loading app facility profile from remote DB', function(){
+    expect(appConfigService.getAppFacilityProfileByEmail).toBeDefined();
+  });
+
 });
