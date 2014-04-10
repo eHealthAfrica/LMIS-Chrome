@@ -60,11 +60,18 @@ angular.module('lmisChromeApp')
       function setData(table, data) {
         var deferred = $q.defer();
         var obj = {};
-        var table_data = {};
-        table_data[data.uuid] = data;
-        obj[table] = table_data;
-        chromeStorageApi.set(obj);
-        deferred.resolve(data.uuid);
+        getData(table).then(function(tableData){
+          if(angular.isUndefined(tableData)){
+            var tableData = {};
+            tableData[data.uuid] = data;
+            obj[table] = tableData;
+          }else{
+            tableData[data.uuid] = data;
+            obj[table] = tableData;
+          }
+          chromeStorageApi.set(obj);
+          deferred.resolve(data.uuid);
+        });
         return deferred.promise;
       }
 

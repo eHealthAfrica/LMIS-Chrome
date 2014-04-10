@@ -14,7 +14,8 @@
     "fullscreen",
     "geolocation",
     "storage",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "http://79.125.119.180:5984/*"
   ],
   "icons": {
     "16": "images/icon-16.png",
@@ -28,5 +29,7 @@
       ]
     }
   },
-  "default_locale": "en"
+  "default_locale": "en",
+  "packageId": "org.ehealthafrica.lmis.android",
+  "author": "eHealth Africa <http://ehealthafrica.org>"
 }
