@@ -4,33 +4,42 @@
       <span><i class="fa fa-user"></i></span>
       <span i18n="mainActivities"></span>
     </accordion-heading>
-    <div class="btn-group btn-group-sm">
+    <div class="col-md-12">
 
-      <a ui-sref="stockCountStepForm" class="btn btn-default">
-        <img src="images/dashboard-icons/add-stock-count.png" class="img-rounded">
-        <span i18n="addStockCount"></span>
-      </a>
+      <div class="col-md-3 btn">
+        <a ui-sref="stockCountStepForm">
+          <img src="images/dashboard-icons/add-stock-count.png" class="img-rounded">
+          <span i18n="addStockCount" class="main-activity-link"></span>
+        </a>
+      </div>
 
-      <a ui-sref="wasteCountForm" class="btn btn-default">
-        <img src="images/dashboard-icons/add-waste-count.png" class="img-rounded">
-        <span i18n="addWasteCount"></span>
-      </a>
+      <div class="col-md-3 btn">
+        <a ui-sref="wasteCountForm">
+          <img src="images/dashboard-icons/add-waste-count.png" class="img-rounded">
+          <span i18n="addWasteCount" class="main-activity-link"></span>
+        </a>
+      </div>
 
-      <a ui-sref="broadcastStockOut" class="btn btn-default">
+      <div class="col-md-3 btn">
+        <a ui-sref="broadcastStockOut">
         <span>
           <i class="fa fa-exclamation-circle fa-5-3x alert-danger" style="background-color: transparent"></i>
         </span>
-        <span i18n="stockOutBroadcast"></span>
-      </a>
+          <span i18n="stockOutBroadcast" class="main-activity-link"></span>
+        </a>
+      </div>
 
-      <a ui-sref="syncStockCount.detail" class="btn btn-default">
+      <div class="col-md-3 btn">
+        <a ui-sref="syncStockCount.detail">
         <span>
           <i class="fa fa-cloud fa-5-3x"></i>
         </span>
-        <span i18n="syncStockCount"></span>
-      </a>
+          <span i18n="syncStockCount" class="main-activity-link"></span>
+        </a>
+      </div>
 
     </div>
+
   </accordion-group>
 
   <accordion-group>
@@ -38,22 +47,31 @@
       <span><i class="fa fa-tasks"></i></span>
       <span i18n="more"></span>
     </accordion-heading>
-    <div class="btn-group btn-group-sm">
-      <a ui-sref="appConfig.edit" class="btn btn-default">
-        <img src="images/dashboard-icons/app-config.png" class="img-rounded">
-        <span i18n="appConfig"></span>
-      </a>
+    <div class="col-md-12">
 
-      <a ui-sref="counterSamples" class="btn btn-default">
-        <img src="images/dashboard-icons/counter-samples.png" class="img-rounded">
-        <span i18n="counterSample"></span>
-      </a>
+      <div class="col-md-3 btn">
+        <a ui-sref="appConfig.edit">
+          <img src="images/dashboard-icons/app-config.png" class="img-rounded">
+          <span i18n="appConfig" class="main-activity-link"></span>
+        </a>
+      </div>
 
-      <a ui-sref="clearStorage" class="btn btn-danger" href="#">
-        <i class="fa fa-trash-o fa-5-3x"></i>
-        <span i18n="clearStorage"></span>
-      </a>
+      <div class="col-md-3 btn">
+        <a ui-sref="counterSamples">
+          <img src="images/dashboard-icons/counter-samples.png" class="img-rounded">
+          <span i18n="counterSample" class="main-activity-link"></span>
+        </a>
+      </div>
+
+      <div class="col-md-3 btn">
+        <a ui-sref="clearStorage">
+          <i class="fa fa-trash-o fa-5-3x btn-danger"></i>
+          <span i18n="clearStorage" class="main-activity-link"></span>
+        </a>
+      </div>
+
     </div>
+
   </accordion-group>
 
 </accordion>

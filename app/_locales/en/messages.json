@@ -477,5 +477,8 @@
   },
   "saving": {
     "message": "Saving..."
+  },
+  "stockCountReminderMsg": {
+    "message": "Complete today's stock count!"
   }
 }
