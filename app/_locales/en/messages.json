@@ -474,5 +474,11 @@
   },
   "mainActivities": {
     "message": "Main Activities"
+  },
+  "saving": {
+    "message": "Saving..."
+  },
+  "stockCountReminderMsg": {
+    "message": "Complete today's stock count!"
   }
 }
