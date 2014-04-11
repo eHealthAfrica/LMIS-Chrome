@@ -1,14 +1,18 @@
 'use strict';
 
 angular.module('lmisChromeApp').config(function ($stateProvider) {
-  $stateProvider.state('appConfigWelcome', {
+  $stateProvider.state('appConfig', {
+    parent: 'root.index',
+    abstract: true,
+    templateUrl: 'views/home/index.html'
+  }).state('appConfigWelcome', {
     url: '/app-config-welcome',
     parent: 'root.index',
     templateUrl: '/views/app-config/welcome-page.html',
     data: {
       label: 'Welcome'
     }
-  }).state('appConfigWizard', {
+  }).state('appConfig.wizard', {
     url: '/app-config-wizard',
     parent: 'root.index',
     templateUrl: '/views/app-config/wizard.html',
@@ -24,7 +28,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     data: {
       label: 'Configuration wizard'
     }
-  }).state('editAppConfig', {
+  }).state('appConfig.edit', {
     url: '/edit-app-config',
     parent: 'root.index',
     templateUrl: '/views/app-config/edit-configuration.html',
@@ -62,7 +66,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.loadAppFacilityProfile = function(nextStep, isEmailValid){
     $scope.isSubmitted = true;
     $scope.disableBtn = isEmailValid;
-    appConfigService.getAppFacilityProfileByEmail($scope.appConfig.email)
+    appConfigService.getAppFacilityProfileByEmail($scope.appConfig.uuid)
       .then(function(result){
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
@@ -100,10 +104,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
   $scope.save = function(){
-   $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility)
+   $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility);
+
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){
+        $scope.appConfig.uuid = result;
+        appConfigService.cache.put(appConfigService.APP_CONFIG, $scope.appConfig);
         $state.go('home.index.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
       } else {
         alertsFactory.danger(i18n('appConfigFailedMsg'));
@@ -159,6 +166,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){
+        appConfigService.cache.put(appConfigService.APP_CONFIG, $scope.appConfig)
         $state.go('home.index.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
       } else {
         alertsFactory.danger(i18n('appConfigFailedMsg'));

@@ -2,7 +2,7 @@
   <accordion-group is-open="true">
     <accordion-heading>
       <span><i class="fa fa-user"></i></span>
-      <span>Main Activities</span>
+      <span i18n="mainActivities"></span>
     </accordion-heading>
     <div class="btn-group btn-group-sm">
 
@@ -17,7 +17,9 @@
       </a>
 
       <a ui-sref="broadcastStockOut" class="btn btn-default">
-        <img src="images/dashboard-icons/stock-out-broadcast.png" class="img-rounded">
+        <span>
+          <i class="fa fa-exclamation-circle fa-5-3x alert-danger" style="background-color: transparent"></i>
+        </span>
         <span i18n="stockOutBroadcast"></span>
       </a>
 
@@ -34,10 +36,10 @@
   <accordion-group>
     <accordion-heading>
       <span><i class="fa fa-tasks"></i></span>
-      <span>More</span>
+      <span i18n="more"></span>
     </accordion-heading>
     <div class="btn-group btn-group-sm">
-      <a ui-sref="editAppConfig" class="btn btn-default">
+      <a ui-sref="appConfig.edit" class="btn btn-default">
         <img src="images/dashboard-icons/app-config.png" class="img-rounded">
         <span i18n="appConfig"></span>
       </a>

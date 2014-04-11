@@ -450,6 +450,29 @@
     "message": "loading profile ..."
   },
   "profileLoadingErrorMsg": {
-    "message": "Profile does not exist, make sure you entered the correct email address and also check you internet connection!"
+    "message": "Profile does not exist, make sure you entered the correct email address and also check your internet connection!"
+  },
+  "confirmStockOutHeader": {
+    "message": "Confirm '$productType$' stock-out broadcast",
+    "placeholders": {
+      "productType": {
+        "content": "$1"
+      }
+    }
+  },
+  "confirmStockOutBodyMsg": {
+    "message": "Are you sure?"
+  },
+  "yes": {
+    "message": "Yes"
+  },
+  "no": {
+    "message": "No"
+  },
+  "more": {
+    "message": "More"
+  },
+  "mainActivities": {
+    "message": "Main Activities"
   }
 }
