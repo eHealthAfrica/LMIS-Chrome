@@ -37,14 +37,10 @@ angular.module('lmisChromeApp')
           $scope.year = $scope.currentYear;
           $scope.monthList = stockCountFactory.monthList;
 
-          $scope.dayInMonth = stockCountFactory.get.daysInMonth($scope.month, $scope.year);
-          $scope.daysInMonthRange = $scope.dayInMonth.splice(0, $scope.currentDay);
+          $scope.dayInMonth = stockCountFactory.get.daysInMonth($scope.month, $scope.year).splice(0, $scope.currentDay).reverse();
+          $scope.daysInMonthRange = $scope.dayInMonth.splice(0, 10);
 
-          $scope.yearRange = stockCountFactory.get.yearRange();
 
-          $scope.$watchCollection('[month, year]', function(){
-            $scope.dayInMonth = stockCountFactory.get.daysInMonth($scope.month, $scope.year);
-          });
 
           $scope.showDetail = function(countDate){
             stockCountFactory.getStockCountByDate(countDate).then(function(stockCount){
@@ -449,8 +445,7 @@ angular.module('lmisChromeApp')
 
     $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
     $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
-    $scope.redirect = true; //initialize redirect as true
-    $scope.stockCount.isComplete = 1; //and stock count entry as completed
+
     var timezone = stockCountFactory.get.timezone();
 
     //load existing count for the day if any.
@@ -535,6 +530,9 @@ angular.module('lmisChromeApp')
       }else{
         $scope.redirect = false;
         $scope.stockCount.lastPosition = $scope.step;
+        if(angular.isUndefined($scope.stockCount['isComplete'])){
+          $scope.stockCount.isComplete = 0;
+        }
         $scope.save();
         stockCountFactory.get.errorAlert($scope, 0);
       }

@@ -30,7 +30,9 @@
 </div>
 -->
 <div class="panel panel-default">
-  <div class="panel-heading"></div>
+  <div class="panel-heading">
+    <h1 class="panel-title">Stock Count for the month of {{ monthList[currentMonth] }} {{ currentYear }}</h1>
+  </div>
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-12">
@@ -47,7 +49,7 @@
           <tbody>
             <tr ng-repeat="row in daysInMonthRange">
               <td> {{ $index + 1 }} </td>
-              <td><span class="text-info" ng-click="showDetail(year+'-'+month+'-'+row)"> {{ stockCountByDate[year+'-'+month+'-'+row].countDate }} </span></td>
+              <td><span class="text-info" ng-click="showDetail(year+'-'+month+'-'+row)"> {{ year+'-'+month+'-'+row | date:'MMM dd, yyyy' }} </span></td>
               <td> {{ stockCountByDate[year+'-'+month+'-'+row].synced  }} </td>
               <td class="text-center">
                 <i class="fa " ng-class="{'fa-check-circle text-success': stockCountByDate[year+'-'+month+'-'+row].isComplete, 'fa-times-circle text-danger': !stockCountByDate[year+'-'+month+'-'+row].isComplete}"></i>
@@ -82,6 +84,3 @@
     </div>
   </div>
 </div>
-<pre>
-  {{ stockCountByDate | json }}
-</pre>
