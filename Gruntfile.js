@@ -412,4 +412,5 @@ module.exports = function(grunt) {
     'test',
     'coveralls'
   ]);
-};
+
+}
