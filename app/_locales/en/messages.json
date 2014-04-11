@@ -192,10 +192,10 @@
     "message": "Stock Count"
   },
   "addStockCount": {
-    "message": "Add Stock Count"
+    "message": "Stock Count"
   },
   "addWasteCount": {
-    "message": "Add Waste Count"
+    "message": "Waste Count"
   },
   "orderPlacedSuccess": {
     "message": "Order placed successfully"
@@ -324,7 +324,7 @@
     }
   },
   "syncStockCount": {
-    "message": "Sync stock count"
+    "message": "Sync"
   },
   "sync": {
     "message": "Sync"
@@ -417,7 +417,7 @@
     "message": "App Config"
   },
   "stockOutBroadcast":  {
-    "message": "Broadcast stock-out"
+    "message": "StockOut Alert"
   },
   "quantityNeeded": {
     "message": "Quantity needed"

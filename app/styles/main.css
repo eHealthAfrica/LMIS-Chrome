@@ -178,5 +178,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     cursor: pointer;
 }
 .main-activity-link{
-    display: block
+    display: block;
+    word-wrap: break-word;
 }
