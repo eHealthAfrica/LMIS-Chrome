@@ -11,12 +11,23 @@ angular.module('lmisChromeApp')
         },
         templateUrl: 'views/stockcount/index.html',
         resolve: {
+          appConfig: function(appConfigService){
+            return appConfigService.load();
+          },
           stockCountList: function(stockCountFactory){
             return stockCountFactory.get.allStockCount();
+          },
+          productProfiles: function(stockCountFactory){
+            return stockCountFactory.get.productProfile();
           }
         },
-        controller: function($scope, stockCountFactory, stockCountList){
+        controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles){
+          $scope.productProfiles = productProfiles;
           $scope.stockCountList = stockCountList;
+          $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
+
+
+
           var now = new Date();
           $scope.currentDay = now.getDate();
           $scope.day = $scope.currentDay;
@@ -25,21 +36,23 @@ angular.module('lmisChromeApp')
           $scope.currentYear = now.getFullYear();
           $scope.year = $scope.currentYear;
           $scope.monthList = stockCountFactory.monthList;
-          $scope.productQty = function(object){
-            var objectCount = 0;
-            if(Object.prototype.toString.call(object) === '[object Object]'){
-              objectCount = (Object.keys(object)).length;
-            }
-            return objectCount;
-          }
 
           $scope.dayInMonth = stockCountFactory.get.daysInMonth($scope.month, $scope.year);
+          $scope.daysInMonthRange = $scope.dayInMonth.splice(0, $scope.currentDay);
+
           $scope.yearRange = stockCountFactory.get.yearRange();
 
           $scope.$watchCollection('[month, year]', function(){
             $scope.dayInMonth = stockCountFactory.get.daysInMonth($scope.month, $scope.year);
           });
 
+          $scope.showDetail = function(countDate){
+            stockCountFactory.getStockCountByDate(countDate).then(function(stockCount){
+              $scope.stockCount = stockCount;
+              $scope.detailView = true;
+
+            });
+          }
 
         }
       })
@@ -48,7 +61,7 @@ angular.module('lmisChromeApp')
         data:{
           label:'Stock Count Form'
         },
-        url:'/stockCountStepForm?facility&reportMonth&reportYear&reportDay',
+        url:'/stockCountForm?facility&reportMonth&reportYear&reportDay&countDate',
         templateUrl: 'views/stockcount/stock-count-form.html',
         controller: 'StockCountFormCtrl',
         resolve:{
@@ -65,7 +78,7 @@ angular.module('lmisChromeApp')
         data:{
           label:'Waste Count Form'
         },
-        url: '/wasteCountForm?facility&reportMonth&reportYear',
+        url: '/wasteCountForm?facility&reportMonth&reportYear&reportDay&countDate',
         templateUrl: 'views/stockcount/waste-count-form.html',
         controller:'WasteCountFormCtrl',
         resolve: {
@@ -442,10 +455,17 @@ angular.module('lmisChromeApp')
 
     //load existing count for the day if any.
     var date = $scope.reportYear+'-'+$scope.reportMonth+'-'+$scope.reportDay;
+    if($stateParams.countDate){
+      date = $stateParams.countDate;
+      $scope.reportDay = new Date(Date.parse(date)).getDate();
+    }
     stockCountFactory.getStockCountByDate(date).then(function(stockCount){
       if(stockCount !== null){
         $scope.stockCount = stockCount;
         $scope.editOn = true; // enable edit mode
+        if(angular.isUndefined($scope.stockCount['lastPosition'])){
+          $scope.stockCount['lastPosition'] = 0;
+        }
       }
     });
 
@@ -514,15 +534,15 @@ angular.module('lmisChromeApp')
         //stockCountFactory.get.errorAlert($scope, 1);
       }else{
         $scope.redirect = false;
-        $scope.lastPosition = $scope.step;
+        $scope.stockCount.lastPosition = $scope.step;
         $scope.save();
         stockCountFactory.get.errorAlert($scope, 0);
       }
     });
     $scope.finalSave = function(){
-      if('wasteCount' in $scope) {
-        $scope.wasteCount.lastPosition = 0;
-        $scope.wasteCount.isComplete = 1;
+      if('stockCount' in $scope) {
+        $scope.stockCount.lastPosition = 0;
+        $scope.stockCount.isComplete = 1;
       }
       $scope.redirect = true;
       $scope.save();
