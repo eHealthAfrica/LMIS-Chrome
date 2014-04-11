@@ -53,7 +53,7 @@ angular.module('lmisChromeApp')
           if(stockCount !== null){
             object.uuid = stockCount.uuid;
           }
-          storageService.insert(storageService.STOCK_COUNT, object).then(function(uuid){
+          storageService.save(storageService.STOCK_COUNT, object).then(function(uuid){
             deferred.resolve(uuid);
           });
         });
@@ -74,7 +74,7 @@ angular.module('lmisChromeApp')
           if(wasteCount !== null){
             object.uuid = wasteCount.uuid;
           }
-          storageService.insert(storageService.WASTE_COUNT, object).then(function(uuid){
+          storageService.save(storageService.WASTE_COUNT, object).then(function(uuid){
             deferred.resolve(uuid);
           });
 
@@ -324,9 +324,42 @@ angular.module('lmisChromeApp')
           }
         }
         return sum;
+      },
+
+      daysInMonth: function (_month, _year){
+        var now = new Date();
+        var year = (_year !== '')?_year: now.getFullYear();
+        var month = (_month !== '')?_month: now.getMonth() + 1;
+        var numberOfDays = new Date(year, month, 0).getDate();
+        var dayArray = [];
+        for(var i=0; i<numberOfDays; i++){
+          var day = i+1;
+          day = day < 10 ? "0"+day : day;
+          dayArray.push(day);
+        }
+        return dayArray;
+      },
+      yearRange: function(){
+        var yearRangeArray = [];
+        var currentYear = new Date().getFullYear();
+        var rangeDiff = 3;
+        for(var i=currentYear-rangeDiff; i<currentYear+1; i++){
+          yearRangeArray.push(i);
+        }
+        return yearRangeArray;
+      },
+      productProfile: function(){
+        return storageService.get(storageService.PRODUCT_PROFILE);
+      },
+      stockCountListByDate: function(stockCountList){
+        console.log(stockCountList);
+        var obj = {};
+        for(var i=0; i < stockCountList.length; i++){
+          var date = $filter('date')(stockCountList[i]['countDate'], 'yyyy-MM-dd');
+          obj[date] = stockCountList[i];
+        }
+        return obj;
       }
-
-
     };
     return {
       monthList: months,
