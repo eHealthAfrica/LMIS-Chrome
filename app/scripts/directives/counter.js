@@ -97,8 +97,8 @@ angular.module('lmisChromeApp').directive('counterdropdown', function (notificat
         return count;
       };
       scope._tapInputSub = function (param) {
-        var repeat = 1;
-        notificationService.beep(repeat);
+        var NUMBER_OF_REPEATS = 1;
+        notificationService.beep(NUMBER_OF_REPEATS);
         var count = isInvalid(param) ? 0 : (parseInt(param) - 1);
         return count;
       };
