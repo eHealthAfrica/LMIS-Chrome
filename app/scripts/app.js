@@ -16,7 +16,15 @@ angular.module('lmisChromeApp', [
             console.log("finished loading: "+Object.keys(data));
           });
         });
-      });
+    });
+    try {
+      window.addEventListener('load', function () {
+        FastClick.attach(document.body);
+        console.log('fast click activated');
+      }, false);
+    } catch (err) {
+      console.log('Fast click activation failed '+err);
+    }
   }).constant('cacheConfig', {
       "id": "lmisChromeAppCache"
     });
