@@ -15,7 +15,7 @@
     "geolocation",
     "storage",
     "unlimitedStorage",
-    "http://79.125.119.180:5984/*"
+    "http://*.lomis.ehealth.org.ng"
   ],
   "icons": {
     "16": "images/icon-16.png",
