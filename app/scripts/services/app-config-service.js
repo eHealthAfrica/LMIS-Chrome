@@ -2,7 +2,7 @@
 
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, cacheConfig,
                                                                       productProfileFactory, facilityFactory,
-                                                                      $cacheFactory) {
+                                                                      $cacheFactory, syncService) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   this.cache = $cacheFactory(cacheConfig.id);
@@ -27,15 +27,20 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     this.load().then(function (result) {
       var promises = [];
       if (result === undefined) {
-        promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
+        promises.push(storageService.save(storageService.APP_CONFIG, appConfig)); //TODO: should apply changes to appConfig after save
       } else {
         //over-write appConfig by using existing appConfig uuid for the new appConfig.
+        //2014-04-11 - it would be more readable for this to apply individual properties to result rather than uuid to appConfig, that ties storage logic to this 
         appConfig['uuid'] = result.uuid;
         promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
       }
 
        $q.all(promises).then(function(results) {
-        deferred.resolve(results);
+        console.log("config setup sync: "+results)
+         syncService.syncItem(storageService.APP_CONFIG, appConfig)
+            .then(function(syncResult){
+              deferred.resolve(results);
+          })
        });
     });
     return deferred.promise;

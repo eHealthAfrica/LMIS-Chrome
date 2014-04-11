@@ -9,7 +9,14 @@ angular.module('lmisChromeApp', [
 ])
   // Load fixture data
   .run(function(storageService) {
-    storageService.loadFixtures();
+    storageService.getAll().then(function(data){
+      if(typeof data === 'undefined' || Object.keys(data).length == 0) 
+        storageService.loadFixtures().then(function(result){
+          storageService.getAll().then(function(data){
+            console.log("finished loading: "+Object.keys(data));
+          });
+        });
+      });
   }).constant('cacheConfig', {
       "id": "lmisChromeAppCache"
     });

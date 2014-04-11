@@ -67,15 +67,6 @@ angular.module('lmisChromeApp')
 
         if ($stateParams.appConfigResult !== null) {
           alertsFactory.success($stateParams.appConfigResult);
-          syncService.syncItem(appConfigService.APP_CONFIG, appConfig)
-            .then(function(syncResult){
-                appConfigService.getCurrentAppConfig().then(function(result){
-        console.log(result);
-      });
-              $log.info('sync was successful ==> ' +syncResult);
-            }, function(syncError){
-              $log.error(syncError);
-            });
           $stateParams.appConfigResult = null;
         }
 

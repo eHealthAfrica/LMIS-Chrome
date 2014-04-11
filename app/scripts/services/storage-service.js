@@ -244,32 +244,51 @@ angular.module('lmisChromeApp')
           locations,
           stockOut
         ];
+        var isLoading = false;
         function loadData(db_name) {
           var test_data = [];
           getData(db_name).then(function (data) {
-                test_data = data;
+
                 if (angular.isUndefined(data)) {
+                  console.log('loading '+db_name);
                   var file_url = 'scripts/fixtures/' + db_name + '.json';
                   $http.get(file_url).success(function (data) {
-                      setTable(db_name, data);
+                      setTable(db_name, data).then(function(res){isLoading=false;},function(err){isLoading=false;});
                   }).error(function (err) {
                         console.log(err);
+                        isLoading=false;
                   });
                 }
                 else {
-                  //console.log(db_name + " is loaded with " + JSON.stringify(test_data));
+                  isLoading=false;
+                  console.log(db_name + " is already loaded: " + Object.keys(data).length);
                   //loadRelatedObject(db_name);
                 }
 
               },
               function (reason) {
-                //console.log(reason);
+                console.log('error loading '+db_name+' '+reason);
               }
           );
         };
-        for (var i in database) {
-          loadData(database[i]);
-        }
+        var loadNext = function(i)
+        {
+          if(!isLoading)
+          {
+            console.log('calling load '+(i-1));
+            isLoading=true;
+            loadData(database[--i]);
+          } else {
+            console.log('still loading '+i)
+          }
+          if(i > 0)
+            setTimeout(function() { loadNext(i) }, 10);
+          else
+          {
+            //this is when the app is actually ready
+          }
+        };
+        loadNext(database.length);
         deferred.resolve(true);
         return deferred.promise;
       }
