@@ -333,7 +333,9 @@ angular.module('lmisChromeApp')
         var numberOfDays = new Date(year, month, 0).getDate();
         var dayArray = [];
         for(var i=0; i<numberOfDays; i++){
-          dayArray.push(i+1);
+          var day = i+1;
+          day = day < 10 ? "0"+day : day;
+          dayArray.push(day);
         }
         return dayArray;
       },
@@ -345,9 +347,19 @@ angular.module('lmisChromeApp')
           yearRangeArray.push(i);
         }
         return yearRangeArray;
+      },
+      productProfile: function(){
+        return storageService.get(storageService.PRODUCT_PROFILE);
+      },
+      stockCountListByDate: function(stockCountList){
+        console.log(stockCountList);
+        var obj = {};
+        for(var i=0; i < stockCountList.length; i++){
+          var date = $filter('date')(stockCountList[i]['countDate'], 'yyyy-MM-dd');
+          obj[date] = stockCountList[i];
+        }
+        return obj;
       }
-
-
     };
     return {
       monthList: months,
