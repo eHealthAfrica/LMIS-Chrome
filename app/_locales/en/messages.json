@@ -1,9 +1,9 @@
 {
   "appName": {
-    "message": "LMIS Chrome"
+    "message": "LoMIS"
   },
   "appDescription": {
-    "message": "LMIS Chrome packaged app"
+    "message": "LoMIS"
   },
   "appAuthor": {
     "message": "eHealth Systems Africa Foundation"
@@ -123,7 +123,7 @@
     "message": "Receiving Facility"
   },
   "selectReceivingFacility": {
-    "message": "select receiving facility"
+    "message": "Select receiving facility"
   },
   "productTypes": {
     "message": "Product Types"
@@ -258,19 +258,19 @@
     "message": "Settings saved"
   },
   "settingsFailed": {
-    "message": "Could not save settings"
+    "message": "Could not save settings, please contact support"
   },
   "products": {
     "message": "Products"
   },
   "productsUnset": {
-    "message": "Product settings are unset. Please define them in"
+    "message": "Product settings are unset, please define them"
   },
   "inventorySettings": {
     "message": "inventory settings"
   },
   "logIncomingSuccessMessage": {
-    "message": "Incoming Bundle was logged successfully !!!"
+    "message": "Incoming bundle logged"
   },
   "belowBuffer": {
     "message": "Below buffer"
@@ -312,7 +312,7 @@
     "message": "Discrepancy Threshold"
   },
   "stockCountSaved": {
-    "message": "Stock count saved. Syncronising with cloud backup…"
+    "message": "Stock count saved"
   },
   "syncSuccess": {
     "message": "Successfully syncronised $source$",
@@ -351,7 +351,7 @@
     "message": "Phone no"
   },
   "stockCountInterval": {
-    "message": "Stock count Interval"
+    "message": "Stock count interval"
   },
   "email": {
     "message": "E-mail"
@@ -360,10 +360,10 @@
     "message": "Select facility product profiles"
   },
   "appConfigFailedMsg": {
-    "message": "Application configuration was failed, try again!"
+    "message": "Application configuration failed, please contact support"
   },
   "appConfigSuccessMsg": {
-    "message": "Application configuration was successful!!!"
+    "message": "Application configuration saved"
   },
   "compare": {
     "message": "Compare"
@@ -381,37 +381,37 @@
     "message": "Clear storage"
   },
   "clearStorageMsg": {
-    "message": "Storage cleared successfully!"
+    "message": "Storage cleared successfully"
   },
   "continue": {
     "message": "Continue"
   },
   "appConfigWelcomeMsg": {
-     "message": "Welcome to LoMIS!"
+     "message": "Welcome to LoMIS"
   },
   "welcomeMsgBody": {
-    "message": "Please, take a few minutes to tell us about your facility."
+    "message": "Please take a few minutes to tell us about your facility."
   },
   "facilityInfo": {
-    "message": "Facility info."
+    "message": "Facility info"
   },
   "appConfigFacilityErrorMsg": {
-    "message": "select facility."
+    "message": "Please select facility"
   },
   "appConfigStockCountErrorMsg": {
-    "message": "select facility stock count interval."
+    "message": "Please select facility stock count interval"
   },
   "contactPersonNameErrorMsg": {
-    "message": "enter contact person name."
+    "message": "Please enter contact person name"
   },
   "contactPersonPhoneNoErrorMsg": {
-    "message": "enter contact person's phone no."
+    "message": "Please enter contact person's phone no"
   },
   "contactPersonEmailErrorMsg": {
-    "message": "enter valid email address."
+    "message": "Please enter valid email address"
   },
   "syncLater": {
-    "message": "Please try resyncing later."
+    "message": "Please try resyncing later. If problem persists contact support."
   },
   "appConfig": {
     "message": "App Config"
@@ -426,10 +426,10 @@
     "message": "Product type"
   },
   "stockOutBroadcastSuccessMsg": {
-    "message": "Stock out broadcast sent successfully!"
+    "message": "Stock-out notification sent successfully!"
   },
   "stockOutBroadcastFailedMsg": {
-    "message": "Stock out broadcast failed, try again!"
+    "message": "Stock-out notification failed, please contact support"
   },
   "send": {
     "message": "Send"
@@ -450,7 +450,7 @@
     "message": "loading profile ..."
   },
   "profileLoadingErrorMsg": {
-    "message": "Profile does not exist, make sure you entered the correct email address and also check your internet connection!"
+    "message": "Profile does not exist, please make sure you entered the correct email address and check your internet connection"
   },
   "confirmStockOutHeader": {
     "message": "Confirm '$productType$' stock-out broadcast",
@@ -479,6 +479,6 @@
     "message": "Saving..."
   },
   "stockCountReminderMsg": {
-    "message": "Complete today's stock count!"
+    "message": "A stock count is due today!"
   }
 }
