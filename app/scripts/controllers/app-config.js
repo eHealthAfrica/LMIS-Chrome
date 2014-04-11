@@ -166,16 +166,20 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  };
 
  $scope.save = function(){
-   $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility)
+   $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility);
+   $scope.isSaving = true;
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){
-        appConfigService.cache.put(appConfigService.APP_CONFIG, $scope.appConfig)
+        appConfigService.cache.put(appConfigService.APP_CONFIG, $scope.appConfig);
+        $scope.isSaving = false;
         $state.go('home.index.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
       } else {
+        $scope.isSaving = false;
         alertsFactory.danger(i18n('appConfigFailedMsg'));
       }
    }, function (reason) {
+      $scope.isSaving = false;
       alertsFactory.danger(i18n('appConfigFailedMsg'));
       $log.error(reason);
    });

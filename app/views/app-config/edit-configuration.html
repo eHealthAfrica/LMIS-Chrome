@@ -31,9 +31,12 @@
       <div class="panel-body"></div>
       <div class="col-sm-12">
         <div class="col-md-4 pull-left">
-          <button type="submit" id="save" name="save" class="btn btn-success btn-lg" ng-click="isSubmitted = true">
-            <span i18n="save"></span>
-            <i class="fa fa-save"></i>
+          <button type="submit" id="save" name="save" class="btn btn-success btn-lg" ng-click="isSubmitted = true"
+                  ng-disabled="isSaving">
+            <span ng-show="!isSaving" i18n="save"></span>
+            <span ng-show="!isSaving"><i class="fa fa-floppy-o"></i></i></span>
+            <span ng-show="isSaving" i18n="saving"></span>
+            <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
           </button>
         </div>
       </div>
