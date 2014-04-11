@@ -181,6 +181,7 @@ angular.module('lmisChromeApp')
          */
 
         function updateData(table, data) {
+          //todo: refactor to dateModified
           data['modified'] = getDateTime();
           var promise = setData(table, data);
           return promise;

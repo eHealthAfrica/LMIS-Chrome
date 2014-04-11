@@ -475,6 +475,9 @@ angular.module('lmisChromeApp')
       $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.reportDay, timezone);
 
       var backupStock = function(doc) {
+        //TODO: remove controller-specific db syncs, do in background 
+        //using sync-service
+
         db.put(doc)
           .then(function() {
             var cb = {complete: function() {
@@ -508,6 +511,9 @@ angular.module('lmisChromeApp')
           });
       };
 
+      //hack: dateSynced should be set and saved AFTER backup so we know it actually happened.
+      //this is managed in sync-service but stockcount uses its own syncing. FIX
+      $scope.stockCount.dateSynced = new Date().toJSON();
       stockCountFactory.save.stock($scope.stockCount)
         .then(function() {
           if($scope.redirect) {

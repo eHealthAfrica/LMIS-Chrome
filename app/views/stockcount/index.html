@@ -49,7 +49,7 @@
             <tr ng-repeat="row in daysInMonthRange" class="pointer" ng-click="takeActon(year+'-'+month+'-'+row)">
               <td> {{ $index + 1 }} </td>
               <td><span class="text-info"> {{ year+'-'+month+'-'+row | date:'MMM dd, yyyy' }} </span></td>
-              <td> {{ stockCountByDate[year+'-'+month+'-'+row].synced  }} </td>
+              <td class="text-center"> <i class="fa " ng-class="{'fa-check-circle text-success': stockCountByDate[year+'-'+month+'-'+row].synced, 'fa-times-circle text-danger': !stockCountByDate[year+'-'+month+'-'+row].synced}"></i> </td>
               <td class="text-center">
                 <i class="fa " ng-class="{'fa-check-circle text-success': stockCountByDate[year+'-'+month+'-'+row].isComplete, 'fa-times-circle text-danger': !stockCountByDate[year+'-'+month+'-'+row].isComplete}"></i>
               </td>
