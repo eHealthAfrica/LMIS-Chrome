@@ -17,7 +17,7 @@ angular.module('lmisChromeApp')
           return stockCountFactory.getStockCountByDate(today);
         }
       },
-      controller: function($scope, appConfig, todayStockCount, $state, syncService, appConfigService) {
+      controller: function($scope, appConfig, todayStockCount, $state) {
         if (appConfig === undefined) {
           $state.go('appConfigWelcome');
         } else {
@@ -64,10 +64,14 @@ angular.module('lmisChromeApp')
           $stateParams.stockOutBroadcastResult = null;
         }
 
+
         if ($stateParams.appConfigResult !== null) {
           alertsFactory.success($stateParams.appConfigResult);
           syncService.syncItem(appConfigService.APP_CONFIG, appConfig)
             .then(function(syncResult){
+                appConfigService.getCurrentAppConfig().then(function(result){
+        console.log(result);
+      });
               $log.info('sync was successful ==> ' +syncResult);
             }, function(syncError){
               $log.error(syncError);

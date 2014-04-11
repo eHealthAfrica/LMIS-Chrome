@@ -13,7 +13,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
     return pouchdb.create(REMOTE);
   };
 
-  var updatePouchDBWithItem = function(db, item){
+  var saveItem = function(db, item){
     var deferred = $q.defer();
     db.get(item.uuid).then(function (response) {
       item._id = response._id;
@@ -42,25 +42,20 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
     if (isSyncing) {
       deferred.reject('Syncing is already in progress');
     }else{
-      var remoteDB = getRemoteDB(dbName);
-      var localDB = getLocalDB(dbName);
       isSyncing = true;
-
-      var onSyncComplete = function (deferred) {
-        isSyncing = false;
-        deferred.resolve(true);
-      };
-
-      updatePouchDBWithItem(localDB, item).then(function (result) {
-        remoteDB.info().then(function (response) {
-          localDB.replicate.to(remoteDB, {complete: onSyncComplete(deferred) });
-        }, function (error) {
-          deferred.reject(error);
-          isSyncing =  false;
-        });
-      }, function (error) {
-        deferred.reject(error);
-        isSyncing = false;
+      var remoteDB = getRemoteDB(dbName);
+      remoteDB.info()
+        .then(function(dbInfo){
+          saveItem(remoteDB, item).then(function(response){
+            isSyncing = false;
+            deferred.resolve(response);
+          }, function(saveError){
+            isSyncing = false;
+            deferred.reject(saveError);
+          });
+        }, function(dbConError){
+          isSyncing = false;
+          deferred.reject(dbConError);
       });
     }
     return deferred.promise;

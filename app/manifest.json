@@ -30,6 +30,5 @@
     }
   },
   "default_locale": "en",
-  "packageId": "org.ehealthafrica.lmis.android",
-  "author": "eHealth Africa <http://ehealthafrica.org>"
+  "packageId": "org.ehealthafrica.lmis.android"
 }

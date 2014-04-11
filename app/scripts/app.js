@@ -10,4 +10,6 @@ angular.module('lmisChromeApp', [
   // Load fixture data
   .run(function(storageService) {
     storageService.loadFixtures();
-  });
+  }).constant('cacheConfig', {
+      "id": "lmisChromeAppCache"
+    });

@@ -18,7 +18,7 @@
         <div class="col-sm-6">
           <div class="form-group" ng-class="{ 'has-error': (editAppConfigForm.email).$invalid && isSubmitted }">
             <label for="email" i18n="email"></label>
-            <input type="email" class="form-control" ng-model="appConfig.email" name="email"
+            <input type="email" class="form-control" ng-model="appConfig.uuid" name="email"
                    id="email" required/>
             <span class="alert-danger form-control" i18n="contactPersonEmailErrorMsg"
                         ng-show="(editAppConfigForm.email).$invalid && isSubmitted">

@@ -1,9 +1,11 @@
 'use strict'
 
-angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config,
-                                                                      productProfileFactory, facilityFactory) {
+angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, cacheConfig,
+                                                                      productProfileFactory, facilityFactory,
+                                                                      $cacheFactory) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
+  this.cache = $cacheFactory(cacheConfig.id);
   var FACILITY_PROFILE_DB = 'app_facility_profile';
 
   this.stockCountIntervals = [
@@ -12,17 +14,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     {name: 'Bi-Weekly', value: 14},
     {name: 'Monthly', value: 30}
   ];
-
-  var createAppConfig = function (appConfig) {
-    //TODO: remove this code, it is unnecessary
-    var deferred = $q.defer();
-    storageService.save(storageService.APP_CONFIG, appConfig).then(function (insertionResult) {
-      deferred.resolve(insertionResult);
-    }, function (reason) {
-      deferred.reject(reason);
-    });
-    return deferred.promise;
-  };
 
   /**
    * This function setups or configures the app, it checks if a configuration exist then over-writes it, else,
@@ -34,23 +25,18 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   this.setup = function (appConfig) {
     var deferred = $q.defer();
     this.load().then(function (result) {
+      var promises = [];
       if (result === undefined) {
-        //app config does not exist already
-        createAppConfig(appConfig).then(function (result) {
-          deferred.resolve(result);
-        }, function (reason) {
-          deferred.reject(reason);
-        });
-
+        promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
       } else {
         //over-write appConfig by using existing appConfig uuid for the new appConfig.
         appConfig['uuid'] = result.uuid;
-        createAppConfig(appConfig).then(function (result) {
-          deferred.resolve(result);
-        }, function (reason) {
-          deferred.reject(reason);
-        });
+        promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
       }
+
+       $q.all(promises).then(function(results) {
+        deferred.resolve(results);
+       });
     });
     return deferred.promise;
   };
@@ -129,9 +115,37 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     for (var index in source) {
      var object = source[index];
      target[object.uuid] = object;
-   }
-   return target;
+    }
+    return target;
   };
 
+  /**
+   * This returns current app config from cache, if not available, it loads from storageService
+   * @returns {promise|promise|*|promise|promise}
+   */
+  this.getCurrentAppConfig = function(){
+    var deferred = $q.defer();
+    var appConfig = this.cache.get(storageService.APP_CONFIG);
+    console.log('app config'+JSON.stringify(appConfig));
+    if(appConfig !== undefined){
+      deferred.resolve(appConfig);
+      console.log('pulled from cache');
+    }else{
+      console.log('pulled from storage service');
+      storageService.get(storageService.APP_CONFIG).then(function (data) {
+        if (data === undefined) {
+          deferred.resolve(data);
+        }else if (Object.keys(data).length === 1) {
+          var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
+          deferred.resolve(data[appConfigUUID ]);
+        } else {
+          throw 'there are more than one app config on this app.';
+        }
+      }, function (error) {
+        deferred.reject(error);
+      });
+    }
+    return deferred.promise
+  };
 
 });
