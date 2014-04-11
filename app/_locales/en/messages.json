@@ -192,10 +192,10 @@
     "message": "Stock Count"
   },
   "addStockCount": {
-    "message": "Add Stock Count"
+    "message": "Stock Count"
   },
   "addWasteCount": {
-    "message": "Add Waste Count"
+    "message": "Waste Count"
   },
   "orderPlacedSuccess": {
     "message": "Order placed successfully"
@@ -417,7 +417,7 @@
     "message": "App Config"
   },
   "stockOutBroadcast":  {
-    "message": "Broadcast stock-out"
+    "message": "Send StockOut"
   },
   "quantityNeeded": {
     "message": "Quantity needed"
