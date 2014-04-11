@@ -173,7 +173,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
   .pull-right-xs{
     float: none !important;
   }
-}.center-block {float: none !important}
+}
 .main-activity-link{
     display: block
 }
