@@ -5,7 +5,8 @@ angular.module('lmisChromeApp', [
   'ui.router',
   'tv.breadcrumbs',
   'pouchdb',
-  'config'
+  'config',
+  'nvd3ChartDirectives'
 ])
   // Load fixture data
   .run(function(storageService, $rootScope, $state) {

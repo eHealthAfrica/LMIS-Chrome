@@ -460,7 +460,7 @@ angular.module('lmisChromeApp')
       $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.reportDay, timezone);
 
       var backupStock = function(doc) {
-        //TODO: remove controller-specific db syncs, do in background 
+        //TODO: remove controller-specific db syncs, do in background
         //using sync-service
 
         db.put(doc)
