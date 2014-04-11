@@ -181,3 +181,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     display: block;
     word-wrap: break-word;
 }
+a.accordion-toggle{
+  display: block;
+}
