@@ -1,12 +1,13 @@
+<!--
 <div class="panel panel-default">
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-6">
         <a class="btn btn-default" ui-sref="stockCountForm({reportYear: year, reportMonth: month, reportDay: day})">Add Stock Count</a>
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-12">
         <form class="form-horizontal">
-          <div class="btn-group pull-right">
+          <div class="btn-group pull-right-xs">
             <select class="btn btn-default" ng-model="day" >
               <option value="">Day</option>
               <option ng-disabled="_day > currentDay && year === currentYear && month === currentMonth" ng-selected="day === _day" value="{{ _day }}" ng-repeat="_day in dayInMonth">{{ _day }}</option>
@@ -27,32 +28,60 @@
     </div>
   </div>
 </div>
+-->
 <div class="panel panel-default">
   <div class="panel-heading"></div>
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-12">
-        <table class="table table-bordered table-condensed">
+        <table class="table table-bordered table-condensed" ng-hide="detailView">
           <thead>
             <tr>
               <th>#</th>
               <th>Date</th>
               <th>Synced</th>
               <th>Status</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="row in stockCountList">
+            <tr ng-repeat="row in daysInMonthRange">
               <td> {{ $index + 1 }} </td>
-              <td> {{row.countDate}} </td>
-              <td> {{ productQty(row.unopened) }} </td>
+              <td><span class="text-info" ng-click="showDetail(year+'-'+month+'-'+row)"> {{ stockCountByDate[year+'-'+month+'-'+row].countDate }} </span></td>
+              <td> {{ stockCountByDate[year+'-'+month+'-'+row].synced  }} </td>
               <td class="text-center">
-                <i class="fa " ng-class="{'fa-check-circle text-success': row.isComplete, 'fa-times-circle text-danger': !row.isComplete}"></i>
+                <i class="fa " ng-class="{'fa-check-circle text-success': stockCountByDate[year+'-'+month+'-'+row].isComplete, 'fa-times-circle text-danger': !stockCountByDate[year+'-'+month+'-'+row].isComplete}"></i>
+              </td>
+              <td>
+                <a class="btn btn-default" ui-sref="stockCountForm({countDate:year+'-'+month+'-'+row})">
+                  <i class="fa fa-edit"></i> Edit
+                </a>
               </td>
             </tr>
+          </tbody>
+        </table>
+        <button ng-show="detailView" class="btn btn-default" ng-click="detailView=!detailView">Back to List</button>
+        <table class="table table-bordered" ng-show="detailView">
+          <thead>
+          <tr>
+            <th>Stock Item</th>
+            <th>Count</th>
+            <!--th>Confirm</th-->
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="(product, count) in stockCount.unopened" ng-click="edit($index)">
+            <td>{{ productProfiles[product].name }}</td>
+            <td>
+              {{ count }}
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
+<pre>
+  {{ stockCountByDate | json }}
+</pre>
