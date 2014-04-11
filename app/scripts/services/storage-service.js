@@ -282,7 +282,7 @@ angular.module('lmisChromeApp')
             console.log('still loading '+i)
           }
           if(i > 0)
-            setTimeout(function() { loadNext(i) }, 10);
+            setTimeout(function() { loadNext(i) }, 1);
           else
           {
             //this is when the app is actually ready

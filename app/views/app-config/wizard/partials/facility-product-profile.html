@@ -16,9 +16,11 @@
           </button>
         </div>
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-success btn-lg" ng-click="save()">
-            <span i18n="save"></span>
-            <span><i class="fa fa-arrow-right"></i></span>
+          <button type="submit" class="btn btn-success btn-lg" ng-click="save()" ng-disabled="isSaving">
+            <span ng-show="!isSaving" i18n="save"></span>
+            <span ng-show="!isSaving"><i class="fa fa-arrow-right"></i></span>
+            <span ng-show="isSaving" i18n="saving"></span>
+            <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
           </button>
         </div>
       </div>

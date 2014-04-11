@@ -474,5 +474,8 @@
   },
   "mainActivities": {
     "message": "Main Activities"
+  },
+  "saving": {
+    "message": "Saving..."
   }
 }
