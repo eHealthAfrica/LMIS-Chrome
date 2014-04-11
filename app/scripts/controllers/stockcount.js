@@ -21,7 +21,7 @@ angular.module('lmisChromeApp')
             return stockCountFactory.get.productProfile();
           }
         },
-        controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles){
+        controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state){
           $scope.productProfiles = productProfiles;
           $scope.stockCountList = stockCountList;
           $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
@@ -41,15 +41,18 @@ angular.module('lmisChromeApp')
           $scope.daysInMonthRange = $scope.dayInMonth.splice(0, 10);
 
 
-
-          $scope.showDetail = function(countDate){
-            stockCountFactory.getStockCountByDate(countDate).then(function(stockCount){
-              $scope.stockCount = stockCount;
-              $scope.detailView = true;
+          $scope.takeActon = function(date){
+            stockCountFactory.getStockCountByDate(date).then(function(stockCount){
+              if(stockCount != null){
+                $scope.stockCount = stockCount;
+                $scope.detailView = true;
+              }
+              else{
+                $state.go('stockCountForm', {countDate: date});
+              }
 
             });
           }
-
         }
       })
       .state('stockCountForm', {
