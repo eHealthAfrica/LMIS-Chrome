@@ -8,14 +8,14 @@
     <div ng-include="'views/app-config/wizard/partials/sequence-map.html'"></div>
     <div class="panel"></div>
     <div class="row">
-      <div class="col-sm-12">
-        <div class="col-xs-4">
+      <div class="col-md-12">
+        <div class="col-md-4">
           <button type="button" class="btn btn-default btn-lg" ng-click="moveTo(STEP_THREE)">
             <span><i class="fa fa-arrow-left"></i></span>
             <span>Back</span>
           </button>
         </div>
-        <div class="col-xs-4">
+        <div class="col-md-4">
           <button type="submit" class="btn btn-success btn-lg" ng-click="save()" ng-disabled="isSaving">
             <span ng-show="!isSaving" i18n="save"></span>
             <span ng-show="!isSaving"><i class="fa fa-floppy-o"></i></i></span>
