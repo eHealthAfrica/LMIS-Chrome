@@ -1,6 +1,26 @@
 <div class="col-sm-6">
   <div class="panel panel-default">
     <div class="panel-heading">
+      <h4 class="panel-title" i18n="selectedProductProfile"></h4>
+    </div>
+    <div class="panel-body">
+      <fieldset>
+        <div class="pre-scrollable">
+          <ul class="list-group">
+            <li class="list-group-item" ng-repeat="productProfile in appConfig.selectedProductProfiles
+                          track by $index"
+                ng-bind="productProfile.name">
+            </li>
+          </ul>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6">
+  <div class="panel panel-default">
+    <div class="panel-heading">
       <h4 class="panel-title" i18n="selectFacilityProductProfiles"></h4>
     </div>
     <div class="panel-body">
@@ -20,26 +40,6 @@
             </label>
           </div>
           <br/>
-        </div>
-      </fieldset>
-    </div>
-  </div>
-</div>
-
-<div class="col-sm-6">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title" i18n="selectedProductProfile"></h4>
-    </div>
-    <div class="panel-body">
-      <fieldset>
-        <div class="pre-scrollable">
-          <ul class="list-group">
-            <li class="list-group-item" ng-repeat="productProfile in appConfig.selectedProductProfiles
-                          track by $index"
-                ng-bind="productProfile.name">
-            </li>
-          </ul>
         </div>
       </fieldset>
     </div>
