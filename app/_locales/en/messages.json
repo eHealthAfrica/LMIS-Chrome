@@ -417,7 +417,7 @@
     "message": "App Config"
   },
   "stockOutBroadcast":  {
-    "message": "Send StockOut"
+    "message": "StockOut Alert"
   },
   "quantityNeeded": {
     "message": "Quantity needed"
