@@ -324,7 +324,7 @@
     }
   },
   "syncStockCount": {
-    "message": "Sync stock count"
+    "message": "Sync"
   },
   "sync": {
     "message": "Sync"
