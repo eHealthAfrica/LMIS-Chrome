@@ -1,6 +1,6 @@
 {
   "name": "lmis-chrome",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "dependencies": {
     "angular": "1.2.15",
     "angular-bootstrap": "0.10.0",
