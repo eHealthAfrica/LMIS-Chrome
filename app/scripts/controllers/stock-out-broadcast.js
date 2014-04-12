@@ -19,7 +19,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     }
   })
 }).controller('StockOutBroadcastCtrl', function($scope, productTypes, appConfig, $log, stockOutBroadcastFactory, $state,
-        alertsFactory, $modal){
+        alertsFactory, $modal, i18n){
 
   $scope.productTypes = productTypes;
 
@@ -37,12 +37,42 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       facility: $scope.stockOutForm.facility
     };
 
+    var saveAndBroadcastStockOut = function(stockOut){
+      stockOutBroadcastFactory.save(stockOut).then(function (result) {
+          //TODO: send SMS if offline
+          if (result !== undefined) {
+            stockOut.uuid = result;
+            stockOutBroadcastFactory.broadcast(stockOut)
+            .then(function (result) {
+                  $log.info('stock-out broad-casted');
+                }, function (reason) {
+                  $log.error(reason);
+                })
+              $state.go('home.index.mainActivity', {'stockOutBroadcastResult': true });
+            }
+          }, function (reason) {
+            alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+            $log.error(reason);
+          });
+    };
+
+    //TODO: move confirm dialogs to a service/factory.
     if(navigator.notification){
-      console.log('confirm from phonegap');
-       navigator.notification.confirm('Are you sure?', function(){
-         console.log('phone gap - stock out alert confirm');
-       }, 'Broadcast Stock-out Alert', 'Yes,No');
+
+      var buttonLabels = i18n('yes')+','+i18n('no');
+      var confirmationTitle = i18n('confirmStockOutHeader', stockOut.productType.code);
+      var confirmationQuestion = i18n('confirmStockOutBodyMsg');
+
+      navigator.notification.confirm(confirmationQuestion, function(index){
+        var YES_INDEX = 1; //position in buttonLabels text + 1.
+        if(index === 1){
+          saveAndBroadcastStockOut(stockOut);
+        }
+      },
+      confirmationTitle, buttonLabels);
+
     }else{
+      //confirm dialog for chrome app version.
       var modal = $modal.open({
         templateUrl: 'views/stock-out-broadcast/partials/confirm-stock-out-broadcast.html',
         backdrop: 'static',
@@ -74,22 +104,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       modal.result.then(function (result) {
         if (result === true) {
-          stockOutBroadcastFactory.save(stockOut).then(function (result) {
-            //TODO: send SMS if offline
-            if (result !== undefined) {
-              stockOut.uuid = result;
-              stockOutBroadcastFactory.broadcast(stockOut)
-                .then(function (result) {
-                  $log.info('stock-out broad-casted');
-                }, function (reason) {
-                  $log.error(reason);
-              })
-              $state.go('home.index.mainActivity', {'stockOutBroadcastResult': true });
-            }
-          }, function (reason) {
-            alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-            $log.error(reason);
-          });
+          saveAndBroadcastStockOut(stockOut);
         }
       }, function (reason) {
         $log.info(reason);
