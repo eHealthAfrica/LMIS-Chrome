@@ -16,6 +16,44 @@ angular.module('lmisChromeApp')
       return Math.floor(Math.random()*(max-min+1)+min);
     };
 
+  /**
+   * This function returns the current amount of productType at facility
+   *
+   * @param facility 
+   * @param productType
+   * @returns {promise|promise|*|Function|promise}
+   */  
+  var getStockLevel = function(facility, productType)
+  {
+    var deferred = $q.defer();
+    var fUuid = typeof facility === 'string' ? facility : facility.uuid;
+    var ptUuid = typeof productType === 'string' ? productType : productType.uuid;
+    var profileIds = [];
+    presentationFactory.getAll().then(
+      function(profiles)
+      {
+        profilesIds = profiles.filter(function(p) { return p.product == ptUuid })
+          .map(function(pp){ return pp.uuid });
+          //TODo: should use stockcountfactory, i suppose
+        storageService.where(storageService.STOCK_COUNT, 
+          function(e) { 
+            return e.facility == fUuid 
+            && e.unopened.some(function(p){ profileIds.indexOf(pUuid) != -1 })
+          })
+          .then(
+            function(stockCounts) { 
+              var count = 0;
+              if(typeof stockCounts !== 'undefined' && stockCounts.length > 0)
+                count = stockCounts.sort(function(sc) {return new Date(sc.countDate)})[0].unopened;
+              deferred.resolve(count);
+            }, 
+            function(err) { deferred.reject(err); }
+          );
+      });
+    
+    return deferred.promise;
+  };
+
     /**
      * Order lead time.
      *

@@ -359,6 +359,33 @@ angular.module('lmisChromeApp')
       }
 
       /**
+      * TODO: there must be a better framework way of doing this
+      */
+
+      function getFromTableByLambda(tableName, fn)
+      {
+        var deferred = $q.defer();
+        var results = [];
+        try {
+
+          getData(tableName).then(function (data) {
+            for(d in data)
+            {
+              if(fn(data[d]))
+                results.push(data[d]);
+            }
+            deferred.resolve(results);
+            if (!$rootScope.$$phase) $rootScope.$apply();
+          });
+        } catch (e) {
+          deferred.resolve(results);
+          if (!$rootScope.$$phase) $rootScope.$apply();
+        } finally {
+          return deferred.promise;
+        }
+      }
+
+      /**
        * This returns an array or collection of rows in the given table name, this collection can not be
        * indexed via key, to get table rows that can be accessed via keys use all() or getData()
        */
@@ -416,6 +443,7 @@ angular.module('lmisChromeApp')
         insert: insertData,
         update: updateData,
         save: saveData,
+        where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,
         PRODUCT_TYPES: productTypes,
