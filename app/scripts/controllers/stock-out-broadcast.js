@@ -59,6 +59,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     //TODO: move confirm dialogs to a service/factory.
     if(navigator.notification){
 
+      //FIXME: refactor mobile dialog and chrome dialog to use same variable for label name, title, etc.
       var buttonLabels = i18n('yes')+','+i18n('no');
       var confirmationTitle = i18n('confirmStockOutHeader', stockOut.productType.code);
       var confirmationQuestion = i18n('confirmStockOutBodyMsg');
