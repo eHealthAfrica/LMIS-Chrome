@@ -75,11 +75,26 @@ angular.module('lmisChromeApp')
     * @param {String} uuid of product type for which to get lead time data
     * @return {Number} average lead time for product type in days
     */
-    var getLeadTimeAvg = function (productTypeUuid)
+    var leadTimeAvgByProductType = function (productTypeUuid)
     {
       var avgLeadTimeMocks = {
-
+        '00f987e4-54e1-46f0-820b-b249a6d38759': 13.8,
+        '0930b906-4802-4a65-8516-057bd839db3e':  11.13,
+        '111fbb51-0c5a-492a-97f6-2c7664e23d01':  11.13,
+        '1203c362-b7a8-499a-b7ba-b842bace7920':  11.13,
+        '19e16c20-04b7-4e06-a679-7f7b60d976be':  13.8,
+        '251fc8c2-0273-423f-a519-4ea20fc74832':  11.27,
+        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f':  11.27,
+        '367f3f7f-a1cc-4266-8a0a-020722576cc9':  11,
+        '401f8608-e232-4c5a-b32d-032d632abf88':  11,
+        '939d5e05-2aa4-4883-9246-35c60dfa06a5':  11.13,
+        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  13.8,
+        'db513859-4491-4db7-9343-4980a16c8b04':  13.8,
+        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  13.8,
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  11.27,
+        'f96946be-7dac-438e-9220-efc386276481':  11.27
       };
+
       return avgLeadTimeMocks[productTypeUuid];
     }
 
@@ -89,10 +104,24 @@ angular.module('lmisChromeApp')
     * @param {String} uuid of product type for which to get lead time data
     * @return {Number} standard deviation of lead times for product type in days
     */
-    var getLeadTimeStd = function (productTypeUuid)
+    var leadTimeStdByProductType = function (productTypeUuid)
     {
       var stdLeadTimeMocks = {
-
+        '00f987e4-54e1-46f0-820b-b249a6d38759':  2.83,
+        '0930b906-4802-4a65-8516-057bd839db3e':  2.68,
+        '111fbb51-0c5a-492a-97f6-2c7664e23d01':  2.68,
+        '1203c362-b7a8-499a-b7ba-b842bace7920':  2.68,
+        '19e16c20-04b7-4e06-a679-7f7b60d976be':  2.83,
+        '251fc8c2-0273-423f-a519-4ea20fc74832':  2.64,
+        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f':  2.64,
+        '367f3f7f-a1cc-4266-8a0a-020722576cc9':  2,
+        '401f8608-e232-4c5a-b32d-032d632abf88':  2,
+        '939d5e05-2aa4-4883-9246-35c60dfa06a5':  2.68,
+        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  2.83,
+        'db513859-4491-4db7-9343-4980a16c8b04':  2.83,
+        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  2.83,
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  2.64,
+        'f96946be-7dac-438e-9220-efc386276481':  2.64
       };
       return stdLeadTimeMocks[productTypeUuid];
     }
@@ -103,10 +132,24 @@ angular.module('lmisChromeApp')
     * @param {String} uuid of product type for which to get consumption data
     * @return {Number} consumption average in standard units for product type / day
     */
-    var getConsumptionAvg = function (productTypeUuid)
+    var consumptionAvgByProductType = function (productTypeUuid)
     {
       var avgConsumptionMocks = {
-
+        '00f987e4-54e1-46f0-820b-b249a6d38759':  20.29,
+        '0930b906-4802-4a65-8516-057bd839db3e':  20.39,
+        '111fbb51-0c5a-492a-97f6-2c7664e23d01':  20.29,
+        '1203c362-b7a8-499a-b7ba-b842bace7920':  20.39,
+        '19e16c20-04b7-4e06-a679-7f7b60d976be':  20.29,
+        '251fc8c2-0273-423f-a519-4ea20fc74832':  100,
+        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f':  25.1,
+        '367f3f7f-a1cc-4266-8a0a-020722576cc9':  10,
+        '401f8608-e232-4c5a-b32d-032d632abf88':  100,
+        '939d5e05-2aa4-4883-9246-35c60dfa06a5':  25.1,
+        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  20.39,
+        'db513859-4491-4db7-9343-4980a16c8b04':  20.39,
+        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  20.39,
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  20.29,
+        'f96946be-7dac-438e-9220-efc386276481':  20.29
       };
       return avgConsumptionMocks[productTypeUuid];
     }
@@ -117,12 +160,48 @@ angular.module('lmisChromeApp')
     * @param {String} uuid of product type for which to get consumption data
     * @return {Number} consumption standard deviation in standard units for product type / day
     */
-    var getConsumptionStd = function (productTypeUuid)
+    var consumptionStdByProductType = function (productTypeUuid)
     {
       var stdConsumptionMocks = {
-
+        '00f987e4-54e1-46f0-820b-b249a6d38759':  10,
+        '0930b906-4802-4a65-8516-057bd839db3e':  15.09,
+        '111fbb51-0c5a-492a-97f6-2c7664e23d01':  10,
+        '1203c362-b7a8-499a-b7ba-b842bace7920':  15.09,
+        '19e16c20-04b7-4e06-a679-7f7b60d976be':  10,
+        '251fc8c2-0273-423f-a519-4ea20fc74832':  50,
+        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f':  13.68,
+        '367f3f7f-a1cc-4266-8a0a-020722576cc9':  5,
+        '401f8608-e232-4c5a-b32d-032d632abf88':  50,
+        '939d5e05-2aa4-4883-9246-35c60dfa06a5':  13.68,
+        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  15.09,
+        'db513859-4491-4db7-9343-4980a16c8b04':  15.09,
+        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  15.09,
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  10,
+        'f96946be-7dac-438e-9220-efc386276481':  10
       };
       return stdConsumptionMocks[productTypeUuid];
+    }
+
+    var leadTimeConsumptionByProductType = function(productTypeUuid)
+    {
+      return leadTimeAvgByProductType(productTypeUuid) * consumptionAvgByProductType(productTypeUuid);
+    }
+
+    var bufferByProductType = function(productTypeUuid)
+    {
+      return serviceFactor() * Math.sqrt(
+        leadTimeAvgByProductType(productTypeUuid) * Math.pow(leadTimeStdByProductType(productTypeUuid),2.0)
+        + Math.pow(consumptionAvgByProductType(productTypeUuid),2.0) * Math.pow(leadTimeStdByProductType(productTypeUuid), 2.0));
+    }
+
+    var reorderPointByProductType = function(productTypeUuid)
+    {
+      return bufferByProductType(productTypeUuid) + leadTimeConsumptionByProductType(productTypeUuid);
+    }
+
+    var daysToReorderPoint = function(facility, productTypeUuid)
+    {
+      return (getStockLevel(facility, productTypeUuid) - reorderPointByProductType(productTypeUuid)) / consumptionAvgByProductType(productTypeUuid); 
     }
 
     /**

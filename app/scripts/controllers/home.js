@@ -60,36 +60,38 @@ angular.module('lmisChromeApp')
         {
           var currentFacility = appConfig.appFacility;
           var deferred = $q.defer();
-          var productTypes = [];
+          var productTypeInfo = {};
           var promises = [];
           //TODO what a pain can't we have config service return real objects? thing is that creates an added dependency..
           promises.push(appConfigService.getProductTypes());
           promises.push(productTypeFactory.getAll());
           $q.all(promises)
-          .then(            
+            .then(            
             function (res) {
               var typeIds = res[0];
               var actualTypes = res[1];
               var types = actualTypes.filter(function (t) { return typeIds.indexOf(t.uuid) !== -1; });  
               var innerPromises = [];
-              for(var i in types)
-              {
-                (function(i) { 
-                  innerPromises.push(inventoryRulesFactory.getStockLevel(currentFacility, types[i])
-                    .then(
-                      function (stockLevel){
-                        productTypes.push({ name: types[i].name, count: stockLevel});
-                      },
-                      function (err) { deferred.reject(err); }));
-                })(i);
-              }
-              $q.all(innerPromises).then(function(res) { deferred.resolve(productTypes); });
+              // for(var i in types)
+              // {
+              //   productTypeInfo[types[i].uuid] = { name: types[i].name };
+              //   (function(i) {
+              //     innerPromises.push(inventoryRulesFactory.getStockLevel(currentFacility, types[i])
+              //       .then(
+              //         function (stockLevel){ productTypes[types[i].uuid].count = stockLevel; },
+              //         function (err) { deferred.reject(err); } );
+              //     );
+              //     innerPromises.push(inventoryRulesFactory.daysToReorderPoint(currentFacility, types[i])
+              //       .then(
+              //         function (daysToReorder){ productTypes[types[i].uuid].daysToReorder = daysToReorder; },
+              //         function (err) { deferred.reject(err); })
+              //     );                   
+              //   })(i);
+              // }
+              $q.all(innerPromises).then(function (res) { deferred.resolve(productTypes); });
             },
             function(err) { deferred.reject(err); })
-            .catch( function (reason)  {
-              $log.error(reason); 
-              deferred.reject(reason)
-            });
+            .catch(function (reason) { $log.error(reason); deferred.reject(reason); });
           return deferred.promise;
         }
 
