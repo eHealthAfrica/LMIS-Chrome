@@ -69,6 +69,7 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    //TODO move these into a stat class like stats(productype).leadtime.avg() etc
     /** 
     * Average lead time for a given product type
     * Should be calculated from past lead times of orders for given product type
@@ -181,12 +182,18 @@ angular.module('lmisChromeApp')
       };
       return stdConsumptionMocks[productTypeUuid];
     }
-
+     
+    /**
+    * Temporary version of per-producttype LTC
+    */
     var leadTimeConsumptionByProductType = function(productTypeUuid)
     {
       return leadTimeAvgByProductType(productTypeUuid) * consumptionAvgByProductType(productTypeUuid);
     }
 
+    /**
+    * Temporary version of per-producttype buffer stock
+    */
     var bufferByProductType = function(productTypeUuid)
     {
       return serviceFactor() * Math.sqrt(
@@ -194,14 +201,28 @@ angular.module('lmisChromeApp')
         + Math.pow(consumptionAvgByProductType(productTypeUuid),2.0) * Math.pow(leadTimeStdByProductType(productTypeUuid), 2.0));
     }
 
+    /**
+    * Temporary version of per-producttype rop
+    */
     var reorderPointByProductType = function(productTypeUuid)
     {
       return bufferByProductType(productTypeUuid) + leadTimeConsumptionByProductType(productTypeUuid);
     }
 
+    /**
+    * Temporary version of days to reorder point per product (stock - rop) / consumption
+    * @returns {promise|promise|*|Function|promise}
+    */
     var daysToReorderPoint = function(facility, productTypeUuid)
     {
-      return (getStockLevel(facility, productTypeUuid) - reorderPointByProductType(productTypeUuid)) / consumptionAvgByProductType(productTypeUuid); 
+      var deferred = $q.defer();
+      getStockLevel(facility, productTypeUuid).then(function (stockLevel) {
+          var days = (stockLevel - reorderPointByProductType(productTypeUuid)) / consumptionAvgByProductType(productTypeUuid); 
+          deferred.resolve(Math.ceil(days));
+        }, 
+        function (err) { deferred.reject(err); } 
+        );
+      return deferred.promise;
     }
 
     /**
@@ -333,6 +354,7 @@ angular.module('lmisChromeApp')
       serviceFactor: serviceFactor,
       bufferStock: bufferStock,
       reorderPoint: reorderPoint,
-      getStockLevel: getStockLevel
+      getStockLevel: getStockLevel,
+      daysToReorderPoint: daysToReorderPoint
     };
   });

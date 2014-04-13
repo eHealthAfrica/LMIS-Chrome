@@ -71,24 +71,25 @@ angular.module('lmisChromeApp')
               var typeIds = res[0];
               var actualTypes = res[1];
               var types = actualTypes.filter(function (t) { return typeIds.indexOf(t.uuid) !== -1; });  
+              var productTypeInfo = [];
               var innerPromises = [];
-              // for(var i in types)
-              // {
-              //   productTypeInfo[types[i].uuid] = { name: types[i].name };
-              //   (function(i) {
-              //     innerPromises.push(inventoryRulesFactory.getStockLevel(currentFacility, types[i])
-              //       .then(
-              //         function (stockLevel){ productTypes[types[i].uuid].count = stockLevel; },
-              //         function (err) { deferred.reject(err); } );
-              //     );
-              //     innerPromises.push(inventoryRulesFactory.daysToReorderPoint(currentFacility, types[i])
-              //       .then(
-              //         function (daysToReorder){ productTypes[types[i].uuid].daysToReorder = daysToReorder; },
-              //         function (err) { deferred.reject(err); })
-              //     );                   
-              //   })(i);
-              // }
-              $q.all(innerPromises).then(function (res) { deferred.resolve(productTypes); });
+              for(var i in types)
+              {
+                productTypeInfo[types[i].uuid] = { name: types[i].name };
+                (function(i) {
+                  innerPromises.push(inventoryRulesFactory.getStockLevel(currentFacility, types[i].uuid)
+                    .then(
+                      function (stockLevel){ productTypeInfo[types[i].uuid].count = stockLevel; },
+                      function (err) { deferred.reject(err); } )  
+                  );
+                  innerPromises.push(inventoryRulesFactory.daysToReorderPoint(currentFacility, types[i].uuid)
+                    .then(
+                      function (daysToReorder){ productTypeInfo[types[i].uuid].daysToReorder = daysToReorder; },
+                      function (err) { deferred.reject(err); } )
+                  );                   
+                })(i);
+              }
+              $q.all(innerPromises).then(function (res) { deferred.resolve(productTypeInfo); });
             },
             function(err) { deferred.reject(err); })
             .catch(function (reason) { $log.error(reason); deferred.reject(reason); });
@@ -119,7 +120,7 @@ angular.module('lmisChromeApp')
           $stateParams.stockResult = null;
         }
 
-        $scope.productTypes = productTypeCounts;
+        $scope.productTypes = Object.keys(productTypeCounts).map( function(k) { return productTypeCounts[k]; });
         
       }
     })
