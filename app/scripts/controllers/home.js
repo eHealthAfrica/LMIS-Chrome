@@ -54,6 +54,8 @@ angular.module('lmisChromeApp')
         label: 'Home'
       },
       resolve: {
+        /** Returns an array of {name: product type name, count: total number in facility (as of last stock count)}
+        */
         productTypeCounts: function($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService)
         {
           var currentFacility = appConfig.appFacility;

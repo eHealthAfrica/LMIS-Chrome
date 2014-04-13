@@ -19,8 +19,8 @@ angular.module('lmisChromeApp')
     /**
      * This function returns the current amount of productType at facility
      * maaaaan this would be a lot easier with a relational datasource or ORM
-     * TODO: this has no concept of unit - dose/vial
-     * also don't know how to deal with opened vials
+     * TODO: this has no concept of unit - dose/vial, also don't know how to deal with opened vials
+     * TODO: very big, could be broken up
      * @param facility 
      * @param productType
      * @returns {promise|promise|*|Function|promise}
@@ -42,7 +42,6 @@ angular.module('lmisChromeApp')
           //find the most recent stockCount mentioning ANY of the above profileIds. 
           if(typeof stockCounts !== 'undefined')
           {
-            //stockcounts having some producttype, sorted by date
             var stockCounts = stockCounts.filter(function(stockCount) {
                 return Object.keys(stockCount.unopened)
                   .some(function (ppid) { return profileIds.indexOf(ppid) != -1 });
@@ -69,6 +68,62 @@ angular.module('lmisChromeApp')
       
       return deferred.promise;
     };
+
+    /** 
+    * Average lead time for a given product type
+    * Should be calculated from past lead times of orders for given product type
+    * @param {String} uuid of product type for which to get lead time data
+    * @return {Number} average lead time for product type in days
+    */
+    var getLeadTimeAvg = function (productTypeUuid)
+    {
+      var avgLeadTimeMocks = {
+
+      };
+      return avgLeadTimeMocks[productTypeUuid];
+    }
+
+    /** 
+    * Standard deviation of lead time for given product type
+    * Should be calculated from past lead times of orders for given product type
+    * @param {String} uuid of product type for which to get lead time data
+    * @return {Number} standard deviation of lead times for product type in days
+    */
+    var getLeadTimeStd = function (productTypeUuid)
+    {
+      var stdLeadTimeMocks = {
+
+      };
+      return stdLeadTimeMocks[productTypeUuid];
+    }
+
+    /** 
+    * Average consumption for given product type
+    * Should be calculated from past consumption of given product type
+    * @param {String} uuid of product type for which to get consumption data
+    * @return {Number} consumption average in standard units for product type / day
+    */
+    var getConsumptionAvg = function (productTypeUuid)
+    {
+      var avgConsumptionMocks = {
+
+      };
+      return avgConsumptionMocks[productTypeUuid];
+    }
+
+    /** 
+    * Standard deviation of consumption for given product type
+    * Should be calculated from past consumption of given product type
+    * @param {String} uuid of product type for which to get consumption data
+    * @return {Number} consumption standard deviation in standard units for product type / day
+    */
+    var getConsumptionStd = function (productTypeUuid)
+    {
+      var stdConsumptionMocks = {
+
+      };
+      return stdConsumptionMocks[productTypeUuid];
+    }
 
     /**
      * Order lead time.
