@@ -235,7 +235,7 @@ angular.module('lmisChromeApp')
      * @return {Number} the lead time in ms
      * @throws error on an invalid date field
      */
-     var leadTime = function(order) {
+    var leadTime = function(order) {
       var isValidDate = function isValidDate(date) {
         if(Object.prototype.toString.call(date) !== '[object Date]') {
           return false;
@@ -297,7 +297,7 @@ angular.module('lmisChromeApp')
      * @param {Number} serviceLevel A facility's desired service level.
      * @return {Number} the service factor as a decimal
      */
-     var serviceFactor = function(serviceLevel) {
+    var serviceFactor = function(serviceLevel) {
       var serviceFactor = serviceLevel;
       // TODO: bring in actual normsinv function (JStat?)
       serviceFactor = 1.28;
@@ -315,7 +315,7 @@ angular.module('lmisChromeApp')
      * @param {Number} serviceFactor The facility's service factor
      * @return {Number[]} the buffer levels for each product
      */
-     var bufferStock = function(inventories, serviceFactor, consumption) {
+    var bufferStock = function(inventories, serviceFactor, consumption) {
       // var leadTimes = [];
       // inventories.forEach(function(inventory) {
       //   leadTimes.push(leadTime(inventory));
@@ -342,7 +342,7 @@ angular.module('lmisChromeApp')
      * @param {Object} inventories The facility's inventory
      * @return {Object} the facility's inventory
      */
-     var reorderPoint = function(inventory) {
+    var reorderPoint = function(inventory) {
       inventory.min = inventory.buffer + 10;
       return inventory;
     };
