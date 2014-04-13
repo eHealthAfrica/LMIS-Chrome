@@ -359,21 +359,17 @@ angular.module('lmisChromeApp')
       }
 
       /**
-      * TODO: there must be a better framework way of doing this
+      * TODO: there must be a better framework way of doing this.
+      * this is basically just filter() but the idea is that there are probably ways to pass this
+      * to the storage layer to get the filtering done in the db, so make it a separae fn and figure that out later
       */
-
       function getFromTableByLambda(tableName, fn)
       {
         var deferred = $q.defer();
         var results = [];
         try {
-
           getData(tableName).then(function (data) {
-            for(d in data)
-            {
-              if(fn(data[d]))
-                results.push(data[d]);
-            }
+            results = data.filter(fn);
             deferred.resolve(results);
             if (!$rootScope.$$phase) $rootScope.$apply();
           });

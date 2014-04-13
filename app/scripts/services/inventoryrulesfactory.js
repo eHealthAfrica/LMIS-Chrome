@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('inventoryRulesFactory', function() {
+  .factory('inventoryRulesFactory', function ($q, $rootScope, storageService, productProfileFactory, stockCountFactory) {
 
     // Returns the average of a list of numbers
     var average = function(things) {
@@ -16,43 +16,59 @@ angular.module('lmisChromeApp')
       return Math.floor(Math.random()*(max-min+1)+min);
     };
 
-  /**
-   * This function returns the current amount of productType at facility
-   *
-   * @param facility 
-   * @param productType
-   * @returns {promise|promise|*|Function|promise}
-   */  
-  var getStockLevel = function(facility, productType)
-  {
-    var deferred = $q.defer();
-    var fUuid = typeof facility === 'string' ? facility : facility.uuid;
-    var ptUuid = typeof productType === 'string' ? productType : productType.uuid;
-    var profileIds = [];
-    presentationFactory.getAll().then(
-      function(profiles)
-      {
-        profilesIds = profiles.filter(function(p) { return p.product == ptUuid })
-          .map(function(pp){ return pp.uuid });
-          //TODo: should use stockcountfactory, i suppose
-        storageService.where(storageService.STOCK_COUNT, 
-          function(e) { 
-            return e.facility == fUuid 
-            && e.unopened.some(function(p){ profileIds.indexOf(pUuid) != -1 })
-          })
-          .then(
-            function(stockCounts) { 
-              var count = 0;
-              if(typeof stockCounts !== 'undefined' && stockCounts.length > 0)
-                count = stockCounts.sort(function(sc) {return new Date(sc.countDate)})[0].unopened;
-              deferred.resolve(count);
-            }, 
-            function(err) { deferred.reject(err); }
-          );
-      });
-    
-    return deferred.promise;
-  };
+    /**
+     * This function returns the current amount of productType at facility
+     * maaaaan this would be a lot easier with a relational datasource or ORM
+     * TODO: this has no concept of unit - dose/vial
+     * also don't know how to deal with opened vials
+     * @param facility 
+     * @param productType
+     * @returns {promise|promise|*|Function|promise}
+     */  
+    var getStockLevel = function(facility, productType)
+    {
+      var deferred = $q.defer();
+      var profileIds = [];
+      var promises = [];
+      promises.push(stockCountFactory.get.byFacility(facility));
+      promises.push(productProfileFactory.getByProductType(productType));
+      $q.all(promises).then(
+        function(res){
+          var stockCounts = res[0];
+          var profiles = res[1];
+          var profileIds = profiles.map(function(pp){ return pp.uuid });
+          console.log(profileIds);
+          var count = 0;
+          //find the most recent stockCount mentioning ANY of the above profileIds. 
+          if(typeof stockCounts !== 'undefined')
+          {
+            //stockcounts having some producttype, sorted by date
+            var stockCounts = stockCounts.filter(function(stockCount) {
+                return Object.keys(stockCount.unopened)
+                  .some(function (ppid) { return profileIds.indexOf(ppid) != -1 });
+            });
+            if(stockCounts.length > 0)
+            {
+              stockCounts = stockCounts
+                .sort(function(stockCount) { return new Date(stockCount.countDate); });
+              var mostRecent = stockCounts[0];
+              var profileCounts = [];
+              if(typeof mostRecent !== 'undefined')
+              {
+                count = Object.keys(mostRecent.unopened)
+                  .filter(function (ppid) { return profileIds.indexOf(ppid) != -1; })
+                  .map( function (ppid) { return mostRecent.unopened[ppid]; })
+                  .reduce( function (total, current) { return total + current; });
+              }
+            }
+          }
+          deferred.resolve(count);
+        }, 
+        function(err) { deferred.reject(err); }
+      );
+      
+      return deferred.promise;
+    };
 
     /**
      * Order lead time.
@@ -64,7 +80,7 @@ angular.module('lmisChromeApp')
      * @return {Number} the lead time in ms
      * @throws error on an invalid date field
      */
-    var leadTime = function(order) {
+     var leadTime = function(order) {
       var isValidDate = function isValidDate(date) {
         if(Object.prototype.toString.call(date) !== '[object Date]') {
           return false;
@@ -110,9 +126,9 @@ angular.module('lmisChromeApp')
      * @param {Object} consumptions An array of consumption levels
      * @return {Number} average LTC in ms
      */
-    var leadTimeConsumption = function(leadTimes, consumptions) {
+     var leadTimeConsumption = function(leadTimes, consumptions) {
       var leadAvg = average(leadTimes),
-          consAvg = average(consumptions);
+      consAvg = average(consumptions);
 
       return leadAvg * consAvg;
     };
@@ -126,7 +142,7 @@ angular.module('lmisChromeApp')
      * @param {Number} serviceLevel A facility's desired service level.
      * @return {Number} the service factor as a decimal
      */
-    var serviceFactor = function(serviceLevel) {
+     var serviceFactor = function(serviceLevel) {
       var serviceFactor = serviceLevel;
       // TODO: bring in actual normsinv function (JStat?)
       serviceFactor = 1.28;
@@ -144,7 +160,7 @@ angular.module('lmisChromeApp')
      * @param {Number} serviceFactor The facility's service factor
      * @return {Number[]} the buffer levels for each product
      */
-    var bufferStock = function(inventories, serviceFactor, consumption) {
+     var bufferStock = function(inventories, serviceFactor, consumption) {
       // var leadTimes = [];
       // inventories.forEach(function(inventory) {
       //   leadTimes.push(leadTime(inventory));
@@ -171,7 +187,7 @@ angular.module('lmisChromeApp')
      * @param {Object} inventories The facility's inventory
      * @return {Object} the facility's inventory
      */
-    var reorderPoint = function(inventory) {
+     var reorderPoint = function(inventory) {
       inventory.min = inventory.buffer + 10;
       return inventory;
     };
@@ -182,6 +198,7 @@ angular.module('lmisChromeApp')
       leadTimeConsumption: leadTimeConsumption,
       serviceFactor: serviceFactor,
       bufferStock: bufferStock,
-      reorderPoint: reorderPoint
+      reorderPoint: reorderPoint,
+      getStockLevel: getStockLevel
     };
   });

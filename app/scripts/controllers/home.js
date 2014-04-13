@@ -53,7 +53,47 @@ angular.module('lmisChromeApp')
       data: {
         label: 'Home'
       },
-      controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, alertsFactory, syncService, appConfigService) {
+      resolve: {
+        productTypeCounts: function($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService)
+        {
+          var currentFacility = appConfig.appFacility;
+          var deferred = $q.defer();
+          var productTypes = [];
+          var promises = [];
+          //TODO what a pain can't we have config service return real objects? thing is that creates an added dependency..
+          promises.push(appConfigService.getProductTypes());
+          promises.push(productTypeFactory.getAll());
+          $q.all(promises)
+          .then(            
+            function (res) {
+              var typeIds = res[0];
+              var actualTypes = res[1];
+              var types = actualTypes.filter(function (t) { return typeIds.indexOf(t.uuid) !== -1; });  
+              var innerPromises = [];
+              for(var i in types)
+              {
+                (function(i) { 
+                  innerPromises.push(inventoryRulesFactory.getStockLevel(currentFacility, types[i])
+                    .then(
+                      function (stockLevel){
+                        productTypes.push({ name: types[i].name, count: stockLevel});
+                      },
+                      function (err) { deferred.reject(err); }));
+                })(i);
+              }
+              $q.all(innerPromises).then(function(res) { deferred.resolve(productTypes); });
+            },
+            function(err) { deferred.reject(err); })
+            .catch( function (reason)  {
+              $log.error(reason); 
+              deferred.reject(reason)
+            });
+          return deferred.promise;
+        }
+
+      },
+      controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, 
+          alertsFactory, syncService, appConfigService, productTypeCounts) {
         if ($stateParams.storageClear !== null) {
           alertsFactory.success(i18n('clearStorageMsg'));
           $stateParams.storageClear = null;
@@ -74,6 +114,9 @@ angular.module('lmisChromeApp')
           alertsFactory.success($stateParams.stockResult);
           $stateParams.stockResult = null;
         }
+
+        $scope.productTypes = productTypeCounts;
+        
       }
     })
     .state('home.index.dashboard', {
@@ -84,15 +127,16 @@ angular.module('lmisChromeApp')
         settings: function(settingsService) {
           return settingsService.load();
         },
-        aggregatedInventory: function($q, $log, appConfig, inventoryFactory, dashboardfactory, settings) {
+        aggregatedInventory: function($q, $log, appConfig, inventoryFactory, dashboardfactory, settings, productTypeFactory) {
           var currentFacility = appConfig.appFacility;
           var deferred = $q.defer();
+
           inventoryFactory.getFacilityInventory(currentFacility.uuid)
-            .then(function(inventory) {
+            .then(function (inventory) {
               var values = dashboardfactory.aggregateInventory(inventory, settings);
               deferred.resolve(values);
             })
-            .catch(function(reason) {
+            .catch(function (reason) {
               $log.error(reason);
             });
 

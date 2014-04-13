@@ -6,6 +6,17 @@
     </accordion-heading>
 
     <div class="container-fluid">
+    <div class="row">
+    <table class="table table-condensed">
+      <th>Product Type</th><th>Count</th>
+      <tbody>
+        <tr ng-repeat="typeCount in productTypes">
+          <td>{{ typeCount.name }}</td>
+          <td>{{ typeCount.count }}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
       <div class="row">
         <div class="col-md-3 btn">
           <a ui-sref="stockCountHome">
