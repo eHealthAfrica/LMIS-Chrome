@@ -1,23 +1,20 @@
-'use strict'
+'use strict';
 
-angular.module('lmisChromeApp').service('notificationService', function () {
+angular.module('lmisChromeApp')
+  .service('notificationService', function($window) {
 
- this.BEEP_MEDIA_URL = 'media/beep.wav';
+    this.BEEP_MEDIA_URL = 'media/beep.wav';
 
- this.vibrate = function(duration){
-   try {
-     navigator.notification.vibrate(duration);
-   } catch (e) {
-     console.log(e);
-   }
- };
+    this.vibrate = function(duration) {
+      if('notification' in $window.navigator) {
+        $window.navigator.notification.vibrate(duration);
+      }
+    };
 
- this.beep = function(repeat){
-   try {
-     navigator.notification.beep(repeat);
-   } catch (e) {
-     console.log(e);
-   }
-  };
+    this.beep = function(repeat) {
+      if('notification' in $window.navigator) {
+        $window.navigator.notification.beep(repeat);
+      }
+    };
 
-});
+  });
