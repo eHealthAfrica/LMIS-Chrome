@@ -26,6 +26,24 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    /**
+     * This function returns product profiles for a given product type
+     *
+     * @param productType
+     * @returns {promise|promise|*|Function|promise}
+     */
+    var getByProductType = function(productType) {
+      var deferred = $q.defer();
+      var ptUuid = typeof productType === 'string' ? productType : productType.uuid;
+      getAll().then(function(profiles){
+        profiles = profiles.filter(function(p) { return p.product === ptUuid });
+        deferred.resolve(profiles);
+      }, function(err) {
+        deferred.reject(err);
+      });
+       return deferred.promise;
+    };
+
     var getProductProfileBatch = function(uuidList){
       if(!Array.isArray(uuidList)){
         throw 'expected argument to be an array., not array argument passed';
@@ -48,6 +66,7 @@ angular.module('lmisChromeApp')
     return {
       get: get,
       getAll: getAll,
+      getByProductType: getByProductType,
       getBatch: getProductProfileBatch
     };
   });
