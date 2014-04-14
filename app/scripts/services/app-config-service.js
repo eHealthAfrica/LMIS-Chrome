@@ -2,7 +2,7 @@
 
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, cacheConfig,
                                                                       productProfileFactory, facilityFactory,
-                                                                      $cacheFactory, syncService) {
+                                                                      $cacheFactory, syncService, utility) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   this.cache = $cacheFactory(cacheConfig.id);
@@ -14,6 +14,33 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     {name: 'Bi-Weekly', value: 14},
     {name: 'Monthly', value: 30}
   ];
+
+  this.weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  this.isStockCountDue = function(appConfig){
+    var deferred = $q.defer();
+    var today = new Date();
+    console.log(today);
+    var currentWeekDateInfo = utility.getWeekRangeByDate(today, appConfig.reminderDay);
+    console.log(currentWeekDateInfo);
+    storageService.all(storageService.STOCK_COUNT)
+      .then(function (results) {
+        //get stock-counts within current and week date range
+        var stockCountsWithInRange = results.filter(function (stockCount) {
+          console.log(stockCount);
+        var stockCountDate = new Date(stockCount.countDate);
+          return (currentWeekDateInfo.first.getTime() <= stockCountDate.getTime()
+                && stockCountDate.getTime() <= currentWeekDateInfo.last.getTime())
+        });
+        var isStockCountReminderDue = (stockCountsWithInRange.length === 0) &&
+            (today.getTime() >= currentWeekDateInfo.reminderDate.getTime());
+
+        deferred.resolve(isStockCountReminderDue);
+      }, function (reason) {
+        return deferred.resolve(true);
+    });
+    return deferred.promise;
+  };
 
   /**
    * This function setups or configures the app, it checks if a configuration exist then over-writes it, else,
@@ -112,7 +139,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       .then(function(result){
         remoteDB.get(email)
         .then(function(appFacilityProfile){
-
           var promises = {
               appFacility: facilityFactory.get(appFacilityProfile.appFacility),
               selectedProductProfiles: productProfileFactory.getBatch(appFacilityProfile.selectedProductProfiles)

@@ -71,6 +71,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
         $scope.profileNotFound = false;
+        $scope.appConfig.reminderDay = result.reminderDay;
         $scope.appConfig.stockCountInterval = result.stockCountInterval;
         $scope.appConfig.contactPerson = result.contactPerson;
         $scope.appConfig.facility = JSON.stringify(result.appFacility);//used to pre-select facility drop down
@@ -91,6 +92,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.appConfig = {
     facility: '',
     stockCountInterval: '',
+    reminderDay: '',
     contactPerson: {
       name: '',
       phoneNo: ''
@@ -137,6 +139,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  $scope.appConfig = {
     facility: '',
     stockCountInterval: '',
+    reminderDay: '',
     contactPerson: {
       name: '',
       phoneNo: ''
@@ -149,6 +152,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
      return;
    }
    $scope.appConfig.contactPerson = appConfig.contactPerson;
+   $scope.appConfig.reminderDay = appConfig.reminderDay;
    $scope.appConfig.stockCountInterval = parseInt(appConfig.stockCountInterval);
    $scope.appConfig.facility = appConfig.facility;
    $scope.appConfig.appFacility = appConfig.appFacility;
