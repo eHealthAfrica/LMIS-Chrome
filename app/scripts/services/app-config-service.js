@@ -15,6 +15,26 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     {name: 'Monthly', value: 30}
   ];
 
+  this.weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  this.isStockCountDue = function(appConfig, stockCounts){
+    var currentDate = new Date();
+    // First day of current week is assumed to be Sunday, if current date is 19-12-2014, which is Thursday = 4,
+    //then date of first day of current week = 19 - 4 = 15-12-2014 which is Sunday
+    var firstDayOfCurrentWeek = currentDate.getDate() - currentDate.getDay();
+    var lastDayOfCurrentWeek = this.weekDays.length - 1;
+    var firstDayDateOfCurrentWeek = new Date(currentDate.setDate(firstDayOfCurrentWeek)).toUTCString();
+    var lastDayDateOfCurrentWeek = new Date(currentDate.setDate(lastDayOfCurrentWeek)).toUTCString();
+
+    console.log(firstDayDateOfCurrentWeek);
+    console.log(lastDayDateOfCurrentWeek);
+    return;
+
+    if(appConfig.reminderDay){
+
+    }
+  };
+
   /**
    * This function setups or configures the app, it checks if a configuration exist then over-writes it, else,
    * it creates a new configuration.

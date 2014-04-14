@@ -39,4 +39,5 @@ angular.module('lmisChromeApp').service('utility', function ($q, storageService)
 
     return newObject;
   }
+  
 });
