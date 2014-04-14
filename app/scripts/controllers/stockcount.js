@@ -296,6 +296,7 @@ angular.module('lmisChromeApp')
       if(angular.isUndefined($scope.wasteCount.discarded[$scope.productKey])){
         $scope.wasteCount.discarded[$scope.productKey] = 0;
       }
+      $scope.wasteCountByType = stockCountFactory.get.wasteCountByType(wasteCount);
     });
 
     $scope.save = function(){
@@ -350,6 +351,7 @@ angular.module('lmisChromeApp')
         $scope.wasteErrorMsg[$scope.productKey] = {};
       }
       stockCountFactory.validate.waste.reason($scope, index);
+      $scope.wasteCountByType = stockCountFactory.get.wasteCountByType($scope.wasteCount);
     };
 
     $scope.finalSave = function(){
@@ -358,9 +360,19 @@ angular.module('lmisChromeApp')
       $scope.wasteCount.isComplete = 1;
       $scope.save();
     };
-
+    $scope.getName = function(row){
+      var name = row.key;
+      if(row.header){
+        name = $scope.facilityProducts[row.key].name;
+      }
+      else{
+        name = $scope.discardedReasons[row.key];
+      }
+      return name;
+    }
     $scope.changeState = function(direction){
       stockCountFactory.validate.waste.changeState($scope, direction);
+      $scope.wasteCountByType = stockCountFactory.get.wasteCountByType($scope.wasteCount);
     };
   })
 
