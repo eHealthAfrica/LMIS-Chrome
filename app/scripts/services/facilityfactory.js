@@ -20,6 +20,11 @@ angular.module('lmisChromeApp').factory('facilityFactory', function ($q, $rootSc
     return deferred.promise;
   };
 
+  var decorate = function(facility)
+  {
+    facility.stockCounts = stockCountFactory.getByFacilityUUID(facility.uuid);
+  }
+
   /**
    * This function returns a collection of facility objects.
    *

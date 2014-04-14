@@ -219,15 +219,18 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
-    var addSyncStatus= function(stockCount)
+    var addSyncStatus= function(stockCounts)
     {
-      return stockCount.map(function (sc) {
-        
-        console.log(sc.dateSynced +' '+ sc.modified);
-        sc.synced = isSynced(sc);
-        return sc;
-      });
-    };
+      if(stockCounts !== 'undefined')
+      {
+        stockCounts = stockCounts.map(function (sc) { 
+          if(sc !== 'undefined')
+            sc.synced = isSynced(sc); 
+          return sc;
+        });
+      }
+      return stockCounts;
+    }
 
     var isSynced = function(sc)
     {
@@ -408,9 +411,28 @@ angular.module('lmisChromeApp')
             }
           }
         }
-        console.log(arr);
         return arr;
+      },
+      /**
+     * This function returns stock counts by the given facility
+     *
+     * @param facility 
+     * @param productType
+     * @returns {promise|promise|*|Function|promise}
+     */
+      byFacility: function(facility)
+      {
+        var deferred = $q.defer();
+        var fUuid = typeof facility === 'string' ? facility : facility.uuid;
+        this.allStockCount().then(function(res){
+          var res = res.filter( function(e) { return e !== 'undefined' && e.facility == fUuid } );
+          deferred.resolve(res);
+        }, function(err) {
+          deferred.reject(err);
+        })
+        return deferred.promise;
       }
+
     };
     return {
       monthList: months,

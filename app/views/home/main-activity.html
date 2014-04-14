@@ -6,28 +6,38 @@
     </accordion-heading>
 
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-3 btn">
-          <a ui-sref="stockCountHome">
-            <img src="images/dashboard-icons/stock-count.png" class="img-rounded">
-            <span i18n="stockCount" class="main-activity-link"></span>
-          </a>
-        </div>
+    <div class="row">
+    <table class="table table-condensed">
+      <th>Product Type</th><th>Count</th><th>Days Left</th>
+      <tbody>
+        <tr ng-repeat="typeCount in productTypes">
+          <td>{{ typeCount.name }}</td>
+          <td>{{ typeCount.count }}</td>
+          <td>{{ typeCount.daysToReorder }}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
 
-        <div class="col-md-3 btn">
-          <a ui-sref="wasteCountForm">
-            <img src="images/dashboard-icons/add-waste-count.png" class="img-rounded">
-            <span i18n="addWasteCount" class="main-activity-link"></span>
-          </a>
-        </div>
+    <div class="col-md-3 col-xs-6 btn">
+      <a ui-sref="stockCountHome">
+        <img src="images/dashboard-icons/stock-count.png" class="img-rounded">
+        <span i18n="stockCount" class="main-activity-link"></span>
+      </a>
+    </div>
 
-        <div class="col-md-3 btn">
-          <a ui-sref="broadcastStockOut">
-            <img src="images/dashboard-icons/stock-out-broadcast.png" class="img-rounded">
-            <span i18n="stockOutBroadcast" class="main-activity-link"></span>
-          </a>
-        </div>
-      </div>
+    <div class="col-md-3 col-xs-6 btn">
+      <a ui-sref="wasteCountForm">
+        <img src="images/dashboard-icons/add-waste-count.png" class="img-rounded">
+        <span i18n="addWasteCount" class="main-activity-link"></span>
+      </a>
+    </div>
+
+    <div class="col-md-3 col-xs-6 btn">
+      <a ui-sref="broadcastStockOut">
+        <img src="images/dashboard-icons/stock-out-broadcast.png" class="img-rounded">
+        <span i18n="stockOutBroadcast" class="main-activity-link"></span>
+      </a>
     </div>
 
   </accordion-group>
@@ -37,33 +47,28 @@
       <span><i class="fa fa-tasks"></i></span>
       <span i18n="more"></span>
     </accordion-heading>
-    <div class="container-fluid">
-      <div class="row">
 
-        <div class="col-md-3 btn">
-          <a ui-sref="appConfig.edit">
-            <img src="images/dashboard-icons/app-config.png" class="img-rounded">
-            <span i18n="appConfig" class="main-activity-link"></span>
-          </a>
-        </div>
+    <div class="col-md-3 col-xs-6 btn">
+      <a ui-sref="appConfig.edit">
+        <img src="images/dashboard-icons/app-config.png" class="img-rounded">
+        <span i18n="appConfig" class="main-activity-link"></span>
+      </a>
+    </div>
 
-        <div class="col-md-3 btn">
-          <a ui-sref="syncStockCount.detail">
+    <div class="col-md-3 col-xs-6 btn">
+      <a ui-sref="syncStockCount.detail">
         <span>
           <i class="fa fa-cloud fa-4x"></i>
         </span>
-            <span i18n="syncStockCount" class="main-activity-link"></span>
-          </a>
-        </div>
+        <span i18n="syncStockCount" class="main-activity-link"></span>
+      </a>
+    </div>
 
-        <div class="col-md-3 btn">
-          <a ui-sref="clearStorage">
-            <i class="fa fa-trash-o fa-4x btn-danger"></i>
-            <span i18n="clearStorage" class="main-activity-link"></span>
-          </a>
-        </div>
-
-      </div>
+    <div class="col-md-3 col-xs-6 btn">
+      <a ui-sref="clearStorage">
+        <i class="fa fa-trash-o fa-4x btn-danger"></i>
+        <span i18n="clearStorage" class="main-activity-link"></span>
+      </a>
     </div>
 
   </accordion-group>
