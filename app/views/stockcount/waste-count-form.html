@@ -81,15 +81,13 @@
         <div class="col-sm-12" ng-hide="preview">
           <div class="row">
             <div class="col-sm-12">
-              <h3 class="text-center">{{ selectedFacilityProduct }}</h3>
+              <h6 class="text-center">{{selectedFacilityProduct}}</h6>
+              <h3 class="text-center">Discarded {{ productTypeCode.code }}</h3>
+              <h2 class="text-center">{{ wasteCount.discarded[productKey] }}</h2>
             </div>
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="row">
-                  <div class="col-sm-12">
-                    <h3 class="text-center">Total Discarded = {{ wasteCount.discarded[productKey] }}</h3>
-                  </div>
-
                   <!-- start form previous button -->
                   <div class="col-xs-12 col-sm-4 hidden-xs">
                     <div class="btn-separator">
@@ -154,7 +152,7 @@
                     </div>
                   </div>
 
-                   <div class="col-xs-12 visible-xs">
+                  <div class="col-xs-12 visible-xs">
                     <div class="btn-separator" ng-show="step === maxStep">
                       <div class="btn-group btn-group-justified">
                         <div class="btn-group">
@@ -206,13 +204,12 @@
                 <table class="table table-bordered">
                   <thead>
                   <tr>
-                    <th>Stock Item</th>
+                    <th>Item</th>
                     <th>Today's Count</th>
-                    <th>Reason</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr ng-repeat="key in facilityProductsKeys" ng-click="edit($index)">
+                  <!--tr ng-repeat="key in facilityProductsKeys" ng-click="edit($index)">
                     <td class="form-label">{{ facilityProducts[key].name }}</td>
                     <td>
                       {{ wasteCount.discarded[key] }}
@@ -220,6 +217,12 @@
                     <td>
                       <div ng-hide="reason === null " ng-repeat="(reasonKey, reason) in wasteCount.reason[key]"> {{ discardedReasons[reasonKey] }} = {{ reason }} </div>
                     </td>
+                  </tr-->
+                  <tr ng-repeat="row in wasteCountByType" ng-class="{'td-header': row.header}">
+                    <td>
+                      <div ng-class="{'child-margin': !row.header}">{{ getName(row) }}</div>
+                    </td>
+                    <td>{{ row.value }}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -227,11 +230,32 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-12 date-row">
-              <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
-                  <i class="fa fa-chevron-circle-left"></i> Back to form
-              </button>
-              <button class="btn btn-success btn-lg">Confirm and Save <i class="fa fa-save"></i></button>
+            <div class="col-sm-12 hidden-xs">
+              <div class="btn-separator">
+                <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
+                    <i class="fa fa-chevron-circle-left"></i> Back to form
+                </button>
+                <button class="btn btn-success btn-lg">
+                  Confirm and Save <i class="fa fa-save"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="col-xs-12 visible-xs">
+              <div class="btn-separator">
+                <div class="btn-group btn-group-justified">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
+                        <i class="fa fa-chevron-circle-left"></i> Back to form
+                    </button>
+                  </div>
+                  <div class="btn-group">
+                    <button class="btn btn-success btn-lg">
+                      Confirm and Save <i class="fa fa-save"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
