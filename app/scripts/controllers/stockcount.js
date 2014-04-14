@@ -31,7 +31,7 @@ angular.module('lmisChromeApp')
           var now = new Date();
           $scope.currentDay = now.getDate();
           $scope.day = $scope.currentDay;
-          $scope.currentMonth = (now.getMonth()+1) < 10 ? "0"+(now.getMonth()+1) : now.getMonth()+1;
+          $scope.currentMonth = (now.getMonth()+1) < 10 ? '0'+(now.getMonth()+1) : now.getMonth()+1;
           $scope.month = $scope.currentMonth;
           $scope.currentYear = now.getFullYear();
           $scope.year = $scope.currentYear;
@@ -43,7 +43,7 @@ angular.module('lmisChromeApp')
 
           $scope.takeActon = function(date){
             stockCountFactory.getStockCountByDate(date).then(function(stockCount){
-              if(stockCount != null){
+              if(stockCount !== null){
                 $scope.stockCount = stockCount;
                 $scope.detailView = true;
               }
@@ -52,7 +52,7 @@ angular.module('lmisChromeApp')
               }
 
             });
-          }
+          };
         }
       })
       .state('stockCountForm', {
@@ -275,7 +275,7 @@ angular.module('lmisChromeApp')
       $scope.editOn = true;
     };
 
-    $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
+    $scope.selectedFacilityProduct = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
     $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
     var timezone = stockCountFactory.get.timezone();
 
@@ -292,6 +292,9 @@ angular.module('lmisChromeApp')
         if(angular.isUndefined($scope.wasteCount.isComplete)){
           $scope.wasteCount.isComplete = 0; //and stock count entry as completed
         }
+      }
+      if(angular.isUndefined($scope.wasteCount.discarded[$scope.productKey])){
+        $scope.wasteCount.discarded[$scope.productKey] = 0;
       }
     });
 
@@ -339,17 +342,6 @@ angular.module('lmisChromeApp')
       });
     };
 
-    $scope.$watch('wasteCount.discarded[productKey]', function(newvalue){
-      if(stockCountFactory.validate.invalid(newvalue)){
-        //stockCountFactory.get.errorAlert($scope, 1);
-      }else{
-        $scope.redirect = false;
-        $scope.lastPosition = $scope.step;
-        $scope.save();
-        stockCountFactory.get.errorAlert($scope, 0);
-      }
-    });
-
     $scope.checkInput = function(index){
       if(angular.isUndefined($scope.wasteErrors[$scope.productKey])){
         $scope.wasteErrors[$scope.productKey] = {};
@@ -368,33 +360,7 @@ angular.module('lmisChromeApp')
     };
 
     $scope.changeState = function(direction){
-
-      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
-      $scope.currentEntry = $scope.wasteCount.discarded[$scope.productKey];
-      if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
-        stockCountFactory.get.errorAlert($scope, 1);
-      }
-      else if ($scope.reasonError){
-        stockCountFactory.get.errorAlert($scope, 2);
-      }
-      else{
-        stockCountFactory.get.errorAlert($scope, 0);
-        if(direction !== 2){
-          $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
-          $scope.open = false;
-        }
-        else{
-          $scope.preview = true;
-          $scope.wasteCount.isComplete = 1;
-        }
-      }
-      $scope.wasteCount.lastPosition = $scope.step;
-      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
-      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
-      $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
-      if(angular.isUndefined($scope.wasteCount.reason[$scope.productKey])){
-        $scope.wasteCount.reason[$scope.productKey] = {};
-      }
+      stockCountFactory.validate.waste.changeState($scope, direction);
     };
   })
 
