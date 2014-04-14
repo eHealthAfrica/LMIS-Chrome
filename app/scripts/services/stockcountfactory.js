@@ -107,47 +107,14 @@ angular.module('lmisChromeApp')
         reason: function(scope, index){
 
 
-
-          var reasonSum = load.sumReasonObject(scope.wasteCount.reason[scope.productKey]);
-          var wasteCountEntry = scope.wasteCount.discarded[scope.productKey];
           var currentReason = scope.wasteCount.reason[scope.productKey][index];
-          if(validate.invalid(wasteCountEntry)){
-            wasteCountEntry = 0;
-          }
-          //compare the sum of all values entered for reason with total count, if -
-          //reason is greater, then throw error msg
-          var sumError = !!((reasonSum > wasteCountEntry));
 
           var entryError = (validate.invalid(currentReason))?true:false;
           var errorMsg = [];
 
-          if(sumError){
 
-            if(angular.isUndefined(scope.sumErrorIndex)){
-              scope.sumErrorIndex = {};
-            }
-            if(currentReason !== 0 && currentReason !== null){
-              if(angular.isUndefined(scope.sumErrorIndex[scope.productKey])){
-                scope.sumErrorIndex[scope.productKey] = []
-              }
-              scope.sumErrorIndex[scope.productKey].push(index);
-              errorMsg.push("Please check entry: Reason figure can not be than waste count ");
-            }
-
-          }
-          else{
-            if(angular.isDefined(scope.sumErrorIndex)){
-              if(angular.isDefined(scope.sumErrorIndex[scope.productKey])){
-                for(var i in scope.sumErrorIndex[scope.productKey]){
-                  delete scope.wasteErrorMsg[scope.productKey][i];
-                  delete scope.wasteErrors[scope.productKey][i];
-                }
-              }
-            }
-
-          }
           if(entryError){
-            errorMsg.push("invalid entry");
+            errorMsg.push('invalid entry');
           }
 
           if(errorMsg.length > 0){
@@ -163,16 +130,53 @@ angular.module('lmisChromeApp')
             scope.reasonError = true;
           }
           else{
-            if(!validate.invalid(wasteCountEntry)){
-              scope.productErrorMsg = '';
-              scope.productError = false;
-            }
+
             delete scope.wasteErrors[scope.productKey];
             delete scope.wasteErrorMsg[scope.productKey];
             scope.reasonError = false;
             scope.redirect = false;
             scope.wasteCount.lastPosition = scope.step;
+            scope.wasteCount.discarded[scope.productKey] =  load.sumReasonObject(scope.wasteCount.reason[scope.productKey]);
+            if(scope.wasteCount.reason[scope.productKey][index] === null){
+              scope.wasteCount.reason[scope.productKey][index] = 0;
+            }
             scope.save();
+          }
+        },
+        changeState: function(scope, direction){
+          scope.productKey = scope.facilityProductsKeys[scope.step];
+          scope.currentEntry = scope.wasteCount.discarded[scope.productKey];
+          if(validate.invalid(scope.currentEntry) && direction !== 0){
+            load.errorAlert(scope, 1);
+          }
+          else if (scope.reasonError){
+            load.errorAlert(scope, 2);
+          }
+          else{
+            load.errorAlert(scope, 0);
+            if(direction !== 2){
+              scope.step = direction === 0? scope.step-1 : scope.step + 1;
+              scope.open = false;
+            }
+            else{
+              scope.preview = true;
+              scope.wasteCount.isComplete = 1;
+            }
+          }
+          scope.wasteCount.lastPosition = scope.step;
+          scope.productKey = scope.facilityProductsKeys[scope.step];
+          scope.selectedFacility = load.productReadableName(scope.facilityProducts, scope.step);
+          scope.productTypeCode = load.productTypeCode(scope.facilityProducts, scope.step, scope.productType);
+          if(angular.isUndefined(scope.wasteCount.reason[scope.productKey])){
+            scope.wasteCount.reason[scope.productKey] = {};
+          }
+          for(var i in scope.discardedReasons){
+            if(angular.isUndefined(scope.wasteCount.reason[scope.productKey][i])){
+              scope.wasteCount.reason[scope.productKey][i] = 0;
+            }
+          }
+          if(angular.isUndefined(scope.wasteCount.discarded[scope.productKey])){
+            scope.wasteCount.discarded[scope.productKey] = 0;
           }
         }
       }
@@ -229,13 +233,13 @@ angular.module('lmisChromeApp')
     }
 
     var isSynced = function(sc)
-    { 
+    {
       /* TODO: decide on the best way of determining this. If dateSynced is set in the db
         we can be pretty sure it's accurate but right now there's no db feedback being saved
-        localy */
-      return (sc.dateSynced && sc.modified && 
+        locally */
+      return (sc.dateSynced && sc.modified &&
           new Date(sc.dateSynced) >= new Date(sc.modified));
-    }
+    };
 
     var load={
       /**
@@ -342,8 +346,8 @@ angular.module('lmisChromeApp')
       sumReasonObject: function (object){
         var sum = 0;
         for(var i in object){
-          if(object[i] != null && !isNaN(parseInt(object[i]))){
-             sum += parseInt(object[i]);
+          if(object[i] !== null && !isNaN(parseInt(object[i]))){
+            sum += parseInt(object[i]);
           }
         }
         return sum;
@@ -357,7 +361,7 @@ angular.module('lmisChromeApp')
         var dayArray = [];
         for(var i=0; i<numberOfDays; i++){
           var day = i+1;
-          day = day < 10 ? "0"+day : day;
+          day = day < 10 ? '0'+day : day;
           dayArray.push(day);
         }
         return dayArray;
@@ -382,6 +386,32 @@ angular.module('lmisChromeApp')
           obj[date] = stockCountList[i];
         }
         return obj;
+      },
+      wasteCountByType: function(wasteCount){
+        var arr = [];
+        if(toString.call(wasteCount) === '[object Object]'){
+          for(var i in wasteCount['discarded']){
+            arr.push({
+              header: true,
+              value: wasteCount['discarded'][i],
+              key: i
+            });
+            if((Object.keys(wasteCount['reason'][i])).length > 0){
+              for(var j in wasteCount['reason'][i]){
+                if(wasteCount['reason'][i][j] !== 0){
+                  arr.push(
+                    {
+                      header: false,
+                      value: wasteCount['reason'][i][j],
+                      key: j
+                    }
+                  );
+                }
+              }
+            }
+          }
+        }
+        return arr;
       },
       /**
      * This function returns stock counts by the given facility

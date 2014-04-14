@@ -184,3 +184,12 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 a.accordion-toggle{
   display: block;
 }
+td div.child-margin{
+    margin-left: 30px;
+}
+tr.td-header{
+    background: #F9F9F9;
+}
+h1.discarded-figure{
+    font-size: 5em;
+}
