@@ -81,9 +81,8 @@
         <div class="col-sm-12" ng-hide="preview">
           <div class="row">
             <div class="col-sm-12">
-              <h6 class="text-center">{{selectedFacilityProduct}}</h6>
-              <h3 class="text-center">Discarded {{ productTypeCode.code }}</h3>
-              <h2 class="text-center">{{ wasteCount.discarded[productKey] }}</h2>
+              <h5 class="text-center">Discarded {{selectedFacilityProduct}}</h5>
+              <h1 class="text-center discarded-figure">{{ wasteCount.discarded[productKey] }}</h1>
             </div>
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12">
@@ -113,7 +112,7 @@
                           <div ng-repeat="reason in discardedReasons">
                             <div class="form-group">
                               <label for="wasteCount.reason[productKey][$index]">{{ reason }}</label>
-                              <input class="form-control" id="wasteCount.reason[productKey][$index]" ng-init="wasteCount.reason[productKey][$index] = 0" ng-model="wasteCount.reason[productKey][$index]" ng-blur="checkInput($index)" type="number">
+                              <input class="form-control" id="wasteCount.reason[productKey][$index]" ng-init="wasteCount.reason[productKey][$index] = 0" ng-model="wasteCount.reason[productKey][$index]" ng-change="checkInput($index)" type="number">
                               <div ng-show="wasteErrors[productKey][$index]" class="custom-error text-center">{{ wasteErrorMsg[productKey][$index] }}</div>
                             </div>
                           </div>
