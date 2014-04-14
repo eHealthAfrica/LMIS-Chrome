@@ -53,7 +53,7 @@ angular.module('lmisChromeApp')
       data: {
         label: 'Home'
       },
-      controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, alertsFactory, syncService, appConfigService) {
+      controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, alertsFactory) {
         if ($stateParams.storageClear !== null) {
           alertsFactory.success(i18n('clearStorageMsg'));
           $stateParams.storageClear = null;
