@@ -383,6 +383,33 @@ angular.module('lmisChromeApp')
           obj[date] = stockCountList[i];
         }
         return obj;
+      },
+      wasteCountByType: function(wasteCount){
+        var arr = [];
+        if(toString.call(wasteCount) === '[object Object]'){
+          for(var i in wasteCount['discarded']){
+            arr.push({
+              header: true,
+              value: wasteCount['discarded'][i],
+              key: i
+            });
+            if((Object.keys(wasteCount['reason'][i])).length > 0){
+              for(var j in wasteCount['reason'][i]){
+                if(wasteCount['reason'][i][j] !== 0){
+                  arr.push(
+                    {
+                      header: false,
+                      value: wasteCount['reason'][i][j],
+                      key: j
+                    }
+                  );
+                }
+              }
+            }
+          }
+        }
+        console.log(arr);
+        return arr;
       }
     };
     return {
