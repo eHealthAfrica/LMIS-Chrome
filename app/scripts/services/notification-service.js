@@ -5,18 +5,14 @@ angular.module('lmisChromeApp').service('notificationService', function () {
  this.BEEP_MEDIA_URL = 'media/beep.wav';
 
  this.vibrate = function(duration){
-   try {
+   if(navigator.notification) {
      navigator.notification.vibrate(duration);
-   } catch (e) {
-     console.log(e);
    }
  };
 
  this.beep = function(repeat){
-   try {
+   if(navigator.notification){
      navigator.notification.beep(repeat);
-   } catch (e) {
-     console.log(e);
    }
   };
 
