@@ -97,8 +97,7 @@ angular.module('lmisChromeApp')
         }
 
       },
-      controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, 
-          alertsFactory, syncService, appConfigService, productTypeCounts) {
+      controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, alertsFactory, productTypeCounts) {
         if ($stateParams.storageClear !== null) {
           alertsFactory.success(i18n('clearStorageMsg'));
           $stateParams.storageClear = null;

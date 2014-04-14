@@ -91,16 +91,15 @@ angular.module('lmisChromeApp').directive('counterdropdown', function (notificat
       };
 
       scope._tapInputAdd = function (param) {
-        return isInvalid(param) ? 1 : (parseInt(param) + 1);
-        var DURATION_MILLI_SECONDS = 250;
+        var DURATION_MILLI_SECONDS = 50;
         notificationService.vibrate(DURATION_MILLI_SECONDS);
-        return count;
+        return isInvalid(param) ? 1 : (parseInt(param) + 1);
       };
+
       scope._tapInputSub = function (param) {
         var NUMBER_OF_REPEATS = 1;
         notificationService.beep(NUMBER_OF_REPEATS);
-        var count = isInvalid(param) ? 0 : (parseInt(param) - 1);
-        return count;
+        return isInvalid(param) ? 0 : (parseInt(param) - 1);
       };
     }
   };
