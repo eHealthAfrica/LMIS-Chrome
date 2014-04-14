@@ -19,6 +19,7 @@ module.exports = function(config) {
       'app/bower_components/angular-ui-router/release/angular-ui-router.min.js',
       'app/bower_components/tv-breadcrumbs/dist/tv-breadcrumbs.min.js',
       'app/bower_components/angular-pouchdb/angular-pouchdb.js',
+      'app/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.min.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'

@@ -217,20 +217,20 @@ angular.module('lmisChromeApp')
 
     var addSyncStatus= function(stockCount)
     {
-      return stockCount.map(function (sc) { 
-        
+      return stockCount.map(function (sc) {
+
         console.log(sc.dateSynced +' '+ sc.modified);
-        sc.synced = isSynced(sc); 
-        return sc; 
+        sc.synced = isSynced(sc);
+        return sc;
       });
     }
 
     var isSynced = function(sc)
-    { 
+    {
       /* TODO: decide on the best way of determining this. If dateSynced is set in the db
         we can be pretty sure it's accurate but right now there's no db feedback being saved
         localy */
-      return (sc.dateSynced && sc.modified && 
+      return (sc.dateSynced && sc.modified &&
           new Date(sc.dateSynced) >= new Date(sc.modified));
     }
 
