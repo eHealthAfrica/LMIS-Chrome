@@ -56,9 +56,15 @@ angular.module('lmisChromeApp')
         */
         productTypeCounts: function($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService)
         {
-          var currentFacility = appConfig.appFacility;
           var deferred = $q.defer();
           var productTypeInfo = {};
+          if(typeof appConfig === 'undefined'){
+            deferred.resolve(productTypeInfo);
+            return deferred.promise;
+          }
+          var currentFacility = appConfig.appFacility;
+
+
           var promises = [];
           //TODO what a pain can't we have config service return real objects? thing is that creates an added dependency..
           promises.push(appConfigService.getProductTypes());
