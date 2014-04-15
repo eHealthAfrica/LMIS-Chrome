@@ -19,7 +19,8 @@ ddescribe('DeviceInfoService service', function () {
           return deviceInfoService.getDeviceInfo();
         },
         function checkExpectations(result) {
-          expect(result).toBe('cordova not supported!');
+          expect(result).toBe(deviceInfoService.NOT_SUPPORTED_MSG);
+          expect(result).not.toBe('just a check to make sure it test promise');
         }
     );
   });
