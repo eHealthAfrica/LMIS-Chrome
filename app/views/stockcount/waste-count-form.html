@@ -81,14 +81,14 @@
         <div class="col-sm-12" ng-hide="preview">
           <div class="row">
             <div class="col-sm-12">
-              <h3>{{ selectedFacility }}</h3>
-              <h5>{{productTypeCode.code}}</h5>
+              <h5 class="text-center">Discarded {{selectedFacilityProduct}}</h5>
+              <h1 class="text-center discarded-figure">{{ wasteCount.discarded[productKey] }}</h1>
             </div>
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="row">
                   <!-- start form previous button -->
-                  <div class="col-xs-12 col-sm-3 hidden-xs">
+                  <div class="col-xs-12 col-sm-4 hidden-xs">
                     <div class="btn-separator">
                       <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default col-sm-12 col-xs-12"
                           ng-click="changeState(0)">
@@ -97,36 +97,31 @@
                     </div>
                   </div>
                   <!-- start form counter input -->
+                  <!-- counter form not needed for now or maybe forever
                   <div class="col-sm-3 col-xs-12">
                     <div class="btn-separator">
                       <counter bind="wasteCount.discarded[productKey]"></counter>
                     </div>
                     <div ng-show="productError" class="custom-error text-center" >{{ productErrorMsg }}</div>
                   </div>
+                  -->
                   <!-- reasons for wastage -->
-                  <div class="col-sm-3 col-xs-12">
+                  <div class="col-sm-4 col-xs-12">
                     <div class="btn-separator">
-
-                      <div class="form-group has-feedback" ng-class="{'has-error': reasonError, open: open}">
-                        <button type="button" ng-click="open=!open" class="form-control input-lg">Select Reason</button>
-                        <span ng-click="open=!open" ng-hide="reasonError" id="wasteCountReason-1" class="fa fa-caret-down fa-lg form-control-feedback"></span>
-                        <span ng-click="open=!open" ng-show="reasonError" id="wasteCountReason-2" class="fa fa-times fa-lg form-control-feedback"></span>
-                        <ul class="dropdown-menu w-menu">
-                          <li ng-repeat="reason in discardedReasons">
+                      <div class="form-group has-feedback" ng-class="{'has-error': reasonError}">
+                          <div ng-repeat="reason in discardedReasons">
                             <div class="form-group">
                               <label for="wasteCount.reason[productKey][$index]">{{ reason }}</label>
-                              <input class="form-control" id="wasteCount.reason[productKey][$index]" ng-init="wasteCount.reason[productKey][$index] = 0" ng-model="wasteCount.reason[productKey][$index]" ng-blur="checkInput($index)" type="number">
+                              <input class="form-control" id="wasteCount.reason[productKey][$index]" ng-init="wasteCount.reason[productKey][$index] = 0" ng-model="wasteCount.reason[productKey][$index]" ng-change="checkInput($index)" type="number">
                               <div ng-show="wasteErrors[productKey][$index]" class="custom-error text-center">{{ wasteErrorMsg[productKey][$index] }}</div>
                             </div>
-                          </li>
-                        </ul>
+                          </div>
                         <div class="clearfix"></div>
                       </div>
-
                     </div>
                   </div>
                   <!-- start form next button -->
-                  <div class="col-sm-3 col-xs-12 hidden-xs">
+                  <div class="col-sm-4 col-xs-12 hidden-xs">
                     <div class="btn-separator">
                       <button type="button" ng-hide="step === maxStep"
                               class="btn btn-lg btn-success col-sm-12 col-xs-12"
@@ -156,7 +151,7 @@
                     </div>
                   </div>
 
-                   <div class="col-xs-12 visible-xs">
+                  <div class="col-xs-12 visible-xs">
                     <div class="btn-separator" ng-show="step === maxStep">
                       <div class="btn-group btn-group-justified">
                         <div class="btn-group">
@@ -208,13 +203,12 @@
                 <table class="table table-bordered">
                   <thead>
                   <tr>
-                    <th>Stock Item</th>
+                    <th>Item</th>
                     <th>Today's Count</th>
-                    <th>Reason</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr ng-repeat="key in facilityProductsKeys" ng-click="edit($index)">
+                  <!--tr ng-repeat="key in facilityProductsKeys" ng-click="edit($index)">
                     <td class="form-label">{{ facilityProducts[key].name }}</td>
                     <td>
                       {{ wasteCount.discarded[key] }}
@@ -222,6 +216,12 @@
                     <td>
                       <div ng-hide="reason === null " ng-repeat="(reasonKey, reason) in wasteCount.reason[key]"> {{ discardedReasons[reasonKey] }} = {{ reason }} </div>
                     </td>
+                  </tr-->
+                  <tr ng-repeat="row in wasteCountByType" ng-class="{'td-header': row.header}">
+                    <td>
+                      <div ng-class="{'child-margin': !row.header}">{{ getName(row) }}</div>
+                    </td>
+                    <td>{{ row.value }}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -229,11 +229,32 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-12 date-row">
-              <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
-                  <i class="fa fa-chevron-circle-left"></i> Back to form
-              </button>
-              <button class="btn btn-success btn-lg">Confirm and Save <i class="fa fa-save"></i></button>
+            <div class="col-sm-12 hidden-xs">
+              <div class="btn-separator">
+                <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
+                    <i class="fa fa-chevron-circle-left"></i> Back to form
+                </button>
+                <button class="btn btn-success btn-lg">
+                  Confirm and Save <i class="fa fa-save"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="col-xs-12 visible-xs">
+              <div class="btn-separator">
+                <div class="btn-group btn-group-justified">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
+                        <i class="fa fa-chevron-circle-left"></i> Back to form
+                    </button>
+                  </div>
+                  <div class="btn-group">
+                    <button class="btn btn-success btn-lg">
+                      Confirm and Save <i class="fa fa-save"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

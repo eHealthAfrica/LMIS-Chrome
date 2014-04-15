@@ -366,6 +366,29 @@ angular.module('lmisChromeApp')
       }
 
       /**
+      * TODO: there must be a better framework way of doing this.
+      * this is basically just filter() but the idea is that there are probably ways to pass this
+      * to the storage layer to get the filtering done in the db, so make it a separae fn and figure that out later
+      */
+      function getFromTableByLambda(tableName, fn)
+      {
+        var deferred = $q.defer();
+        var results = [];
+        try {
+          getData(tableName).then(function (data) {
+            results = data.filter(fn);
+            deferred.resolve(results);
+            if (!$rootScope.$$phase) $rootScope.$apply();
+          });
+        } catch (e) {
+          deferred.resolve(results);
+          if (!$rootScope.$$phase) $rootScope.$apply();
+        } finally {
+          return deferred.promise;
+        }
+      }
+
+      /**
        * This returns an array or collection of rows in the given table name, this collection can not be
        * indexed via key, to get table rows that can be accessed via keys use all() or getData()
        */
@@ -423,6 +446,7 @@ angular.module('lmisChromeApp')
         insert: insertData,
         update: updateData,
         save: saveData,
+        where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,
         PRODUCT_TYPES: productTypes,

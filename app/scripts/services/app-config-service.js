@@ -92,7 +92,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       }
       if (Object.keys(data).length === 1) {
         var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
-        deferred.resolve(data[appConfigUUID ]);
+        deferred.resolve(data[appConfigUUID]);
       } else {
         throw 'there are more than one app config on this app.';
       }
@@ -115,6 +115,30 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
      return selectedProductProfiles;
    }
    return removeProductProfileFrom(productProfile, selectedProductProfiles);
+  };
+
+  /**
+  */
+  this.getProductTypes = function()
+  {
+    var deferred = $q.defer();
+    this.load().then(
+      function(profile)
+      {
+        var types = [];
+        for(var i in profile.selectedProductProfiles)
+        {
+          if(types.indexOf(profile.selectedProductProfiles[i].product) === -1)
+            types.push(profile.selectedProductProfiles[i].product);
+        }
+        deferred.resolve(types);
+      },
+      function(err)
+      {
+        deferred.reject(err);
+      }
+      );
+    return deferred.promise;
   };
 
   this.getAppFacilityProfileByEmail = function(email){
@@ -164,7 +188,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * This returns current app config from cache, if not available, it loads from storageService
    * @returns {promise|promise|*|promise|promise}
    */
-  this.getCurrentAppConfig = function(){
+  this.getCurrentAppConfig = function() {
     var deferred = $q.defer();
     var appConfig = this.cache.get(storageService.APP_CONFIG);
     console.log('app config'+JSON.stringify(appConfig));

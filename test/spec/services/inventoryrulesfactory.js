@@ -21,6 +21,23 @@ describe('Service: inventoryRulesFactory', function() {
     inventory = inventoriesMock;
   }));
 
+  describe('stock level by type', function() {
+    it('should return a stock level for each product type for a facility', function()
+    {
+
+    });
+    it('should return 0 for a product type the facility does not have', function() {
+
+    });
+    it('should return the most recent stock count', function (){
+
+    });
+    it('should return a stock count for all the presentations of a product', function (){
+
+    });
+  });
+
+
   describe('lead time', function() {
     it('should calculate the lead time for an order in ms', function() {
       var leadTime = inventoryRulesFactory.leadTime(orders[0]);
