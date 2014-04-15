@@ -21,7 +21,7 @@ angular.module('lmisChromeApp')
             return stockCountFactory.get.productProfile();
           }
         },
-        controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state){
+        controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state, $filter){
           $scope.productProfiles = productProfiles;
           $scope.stockCountList = stockCountList;
           $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
@@ -40,14 +40,28 @@ angular.module('lmisChromeApp')
           $scope.dayInMonth = stockCountFactory.get.daysInMonth($scope.month, $scope.year).splice(0, $scope.currentDay).reverse();
           $scope.daysInMonthRange = $scope.dayInMonth.splice(0, 10);
 
+          $scope.missedEntry = function(date){
+            if(angular.isUndefined($scope.stockCountByDate[date])){
+              if($filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
+                  return false;
+               }
+                else{
+                 return true;
+               }
+            }
+            else{
+              return false;
+            }
+          };
 
           $scope.takeActon = function(date){
+            var missed = $scope.missedEntry(date);
             stockCountFactory.getStockCountByDate(date).then(function(stockCount){
               if(stockCount !== null){
                 $scope.stockCount = stockCount;
                 $scope.detailView = true;
               }
-              else{
+              else if(!missed){
                 $state.go('stockCountForm', {countDate: date});
               }
 
