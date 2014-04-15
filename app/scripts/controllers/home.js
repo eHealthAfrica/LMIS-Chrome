@@ -136,7 +136,34 @@ angular.module('lmisChromeApp')
               return deferred.promise;
             }
           },
-          controller: function($scope, productTypeCounts) {
+          controller: function($scope, i18n, productTypeCounts, dashboardfactory) {
+            console.log(productTypeCounts);
+
+            var keys = [
+              {
+                key: 'count',
+                label: i18n('count')
+              },
+              {
+                key: 'daysToReorder',
+                label: i18n('daysLeft')
+              }
+            ];
+
+            var values = [], product = {};
+            for(var uuid in productTypeCounts) {
+              product = productTypeCounts[uuid];
+              values.push({
+                label: product.name,
+                count: product.count,
+                daysToReorder: product.daysToReorder
+              });
+            }
+
+            console.log(values);
+
+            $scope.productTypesChart = dashboardfactory.chart(keys, values);
+
             $scope.productTypes = Object.keys(productTypeCounts)
               .map(function(k) {
                 return productTypeCounts[k];

@@ -1,14 +1,15 @@
 <div class="container-fluid">
   <div class="row">
-    <table class="table table-condensed">
-      <th>Product Type</th><th>Count</th><th>Days Left</th>
-      <tbody>
-        <tr ng-repeat="typeCount in productTypes">
-          <td>{{ typeCount.name }}</td>
-          <td>{{ typeCount.count }}</td>
-          <td>{{ typeCount.daysToReorder }}</td>
-        </tr>
-      </tbody>
-    </table>
+
+    <nvd3-multi-bar-horizontal-chart
+      data="productTypesChart"
+      id="product-types-chart"
+      tooltips="true"
+      showValues="true"
+      showControls="true"
+      showLegend="true"
+      stacked="true">
+    </nvd3-multi-bar-horizontal-chart>
+
   </div>
 </div>
