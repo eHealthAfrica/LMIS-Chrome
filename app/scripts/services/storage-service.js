@@ -248,7 +248,6 @@ angular.module('lmisChromeApp')
         ];
         var isLoading = false;
         function loadData(db_name) {
-          var test_data = [];
           getData(db_name).then(function (data) {
                 if (angular.isUndefined(data)) {
                   console.log('loading ' + db_name);
@@ -260,9 +259,9 @@ angular.module('lmisChromeApp')
                       isLoading = false;
                     });
                   }).error(function (err) {
-                        console.log(err);
-                        isLoading = false;
-                      });
+                    console.log(err);
+                    isLoading = false;
+                  });
                 }
                 else {
                   isLoading = false;
@@ -277,6 +276,7 @@ angular.module('lmisChromeApp')
               }
           );
         };
+
         var loadNext = function(i)
         {
           if(!isLoading)
@@ -290,7 +290,7 @@ angular.module('lmisChromeApp')
           }
           if(i > 0){
 
-            setTimeout(function() { loadNext(i) }, 50);
+            setTimeout(function() { loadNext(i) }, 10);
           }else{
             //this is when the app is actually ready
            $rootScope.$emit('LOADING_COMPLETED', {completed: true});
