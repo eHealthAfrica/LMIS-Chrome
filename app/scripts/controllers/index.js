@@ -60,7 +60,9 @@ angular.module('lmisChromeApp')
       }
     })
     .state('loadingFixture', {
-      parent: 'root.index',
-      templateUrl: 'views/index/loading-fixture-screen.html'
+      templateUrl: 'views/index/loading-fixture-screen.html',
+      controller: function(){
+        console.log('loading screen controller');
+      }
     });
   });

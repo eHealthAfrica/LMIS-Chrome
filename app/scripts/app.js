@@ -11,7 +11,7 @@ angular.module('lmisChromeApp', [
   .run(function(storageService, $rootScope, $state) {
 
     $rootScope.$on('LOADING_COMPLETED', function(event, args){
-       $state.go('home.index.mainActivity');
+      $state.go('home.index.mainActivity');
     });
 
     $rootScope.$on('START_LOADING', function(event, args){
@@ -24,8 +24,6 @@ angular.module('lmisChromeApp', [
     }catch(e){
       console.log(e);
     }
-
-    //storageService.clear();
 
     //load fixtures if not loaded yet.
     storageService.loadFixtures().then(function(result){

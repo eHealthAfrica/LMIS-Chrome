@@ -210,6 +210,7 @@ angular.module('lmisChromeApp')
        * @returns {void}
        */
       function loadFixtures() {
+
         var deferred = $q.defer();
         var database = [
           productTypes,
@@ -280,22 +281,22 @@ angular.module('lmisChromeApp')
         {
           if(!isLoading)
           {
+            $rootScope.$emit('START_LOADING', {started: true});
             console.log('calling load '+(i-1));
             isLoading=true;
             loadData(database[--i]);
           } else {
             console.log('still loading '+i)
           }
-          if(i > 0)
-            setTimeout(function() { loadNext(i) }, 1);
-          else
-          {
+          if(i > 0){
+
+            setTimeout(function() { loadNext(i) }, 50);
+          }else{
             //this is when the app is actually ready
-             $rootScope.$emit('LOADING_COMPLETED');
+           $rootScope.$emit('LOADING_COMPLETED', {completed: true});
           }
         };
         loadNext(database.length);
-        $rootScope.$emit('START_LOADING', {started: true});
         deferred.resolve(true);
         return deferred.promise;
       }
