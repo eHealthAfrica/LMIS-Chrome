@@ -5,21 +5,6 @@
       <span i18n="mainActivities"></span>
     </accordion-heading>
 
-    <div class="container-fluid">
-      <div class="row">
-        <table class="table table-condensed">
-          <th>Product Type</th><th>Count</th><th>Days Left</th>
-          <tbody>
-            <tr ng-repeat="typeCount in productTypes">
-              <td>{{ typeCount.name }}</td>
-              <td>{{ typeCount.count }}</td>
-              <td>{{ typeCount.daysToReorder }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
     <div class="col-md-3 col-xs-6 btn">
       <a ui-sref="stockCountHome">
         <img src="images/dashboard-icons/stock-count.png" class="img-rounded">
@@ -38,13 +23,6 @@
       <a ui-sref="broadcastStockOut">
         <img src="images/dashboard-icons/stock-out-broadcast.png" class="img-rounded">
         <span i18n="stockOutBroadcast" class="main-activity-link"></span>
-      </a>
-    </div>
-
-    <div class="col-md-3 col-xs-6 btn">
-      <a ui-sref="dashboard">
-        <i class="fa fa-bar-chart-o fa-5-3x"></i>
-        <span i18n="dashboard" class="main-activity-link"></span>
       </a>
     </div>
 

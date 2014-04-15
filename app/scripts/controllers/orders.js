@@ -74,7 +74,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             $scope.order['receiving_facility'] = $scope.storage.receiving_facility.uuid;
             ordersFactory.save($scope.order).then(function (result) {
               if (result !== undefined) {
-                $state.go('home.index.mainActivity', {orderNo: $scope.order.order_no});
+                $state.go('home.index.home.mainActivity', {orderNo: $scope.order.order_no});
               }
             });
           }

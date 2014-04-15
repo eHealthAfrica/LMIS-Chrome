@@ -183,7 +183,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           console.log("add inventory result " + result.length);
           if (result.length !== 0) {
             //FIXME: This does not redirect to dashboard. 'home.index.dashboard
-            $state.go('home.index.mainActivity', {
+            $state.go('home.index.home.mainActivity', {
               logIncomingMsg: i18n('logIncomingSuccessMessage')
             });
           }
