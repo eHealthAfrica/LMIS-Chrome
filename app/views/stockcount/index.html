@@ -36,7 +36,7 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-12">
-        <table class="table table-bordered table-condensed" ng-hide="detailView">
+        <table class="table table-bordered" ng-hide="detailView">
           <thead>
             <tr>
               <th>#</th>
@@ -46,7 +46,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="row in daysInMonthRange" class="pointer" ng-click="takeActon(year+'-'+month+'-'+row)">
+            <tr ng-repeat="row in daysInMonthRange" ng-class="{'pointer':!missedEntry(year+'-'+month+'-'+row), 'disabled':missedEntry(year+'-'+month+'-'+row) }" ng-click="takeActon(year+'-'+month+'-'+row)">
               <td> {{ $index + 1 }} </td>
               <td><span class="text-info"> {{ year+'-'+month+'-'+row | date:'MMM dd, yyyy' }} </span></td>
               <td class="text-center"> <i class="fa " ng-class="{'fa-check-circle text-success': stockCountByDate[year+'-'+month+'-'+row].synced, 'fa-times-circle text-danger': !stockCountByDate[year+'-'+month+'-'+row].synced}"></i> </td>
