@@ -25,8 +25,10 @@ angular.module('lmisChromeApp')
           $scope.productProfiles = productProfiles;
           $scope.stockCountList = stockCountList;
           $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
+          $scope.facilityObject = appConfig.appFacility;
+          $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
 
-
+          $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
 
           var now = new Date();
           $scope.currentDay = now.getDate();
@@ -50,21 +52,29 @@ angular.module('lmisChromeApp')
                }
             }
             else{
-              return false;
+              if($scope.stockCountByDate[date].isComplete){
+                return false;
+              }
+              return true;
             }
           };
+          $scope.edit = function(stockCount, productKey){
 
+          }
           $scope.takeActon = function(date){
             var missed = $scope.missedEntry(date);
             stockCountFactory.getStockCountByDate(date).then(function(stockCount){
               if(stockCount !== null){
                 $scope.stockCount = stockCount;
                 $scope.detailView = true;
+                if($filter('date')(new Date(), 'yyyy-MM-dd') !== $filter('date')(stockCount.countDate, 'yyyy-MM-dd')){
+                  $scope.editOff = true;
+                }
               }
               else if(!missed){
                 $state.go('stockCountForm', {countDate: date});
               }
-
+              $scope.mergedList = stockCountFactory.get.mergedStockCount(stockCount.unopened, $scope.facilityProductsKeys);
             });
           };
         }
@@ -74,7 +84,7 @@ angular.module('lmisChromeApp')
         data:{
           label:'Stock Count Form'
         },
-        url:'/stockCountForm?facility&reportMonth&reportYear&reportDay&countDate',
+        url:'/stockCountForm?facility&reportMonth&reportYear&reportDay&countDate&productKey',
         templateUrl: 'views/stockcount/stock-count-form.html',
         controller: 'StockCountFormCtrl',
         resolve:{
@@ -416,7 +426,6 @@ angular.module('lmisChromeApp')
 
     $scope.stockCount = {};
     $scope.stockCount.unopened = {};
-
     $scope.stockCount.countDate = '';
     $scope.alertMsg = 'stock count value is invalid, at least enter Zero "0" to proceed';
     $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility

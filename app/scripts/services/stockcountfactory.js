@@ -379,7 +379,6 @@ angular.module('lmisChromeApp')
         return storageService.get(storageService.PRODUCT_PROFILE);
       },
       stockCountListByDate: function(stockCountList){
-        console.log(stockCountList);
         var obj = {};
         for(var i=0; i < stockCountList.length; i++){
           var date = $filter('date')(stockCountList[i]['countDate'], 'yyyy-MM-dd');
@@ -412,6 +411,17 @@ angular.module('lmisChromeApp')
           }
         }
         return arr;
+      },
+      mergedStockCount: function(fromDB, fromFacilitySelected){
+        var db = Object.keys(fromDB);
+        var db_arr = Object.keys(fromDB);
+        for(var i in fromFacilitySelected){
+          if(fromFacilitySelected[i] in fromDB){
+            var index = db.indexOf(fromFacilitySelected[i]);
+            db_arr.pop(index);
+          }
+        }
+        return fromFacilitySelected.concat(db_arr);
       },
       /**
      * This function returns stock counts by the given facility

@@ -57,7 +57,7 @@
           </tbody>
         </table>
         <button ng-show="detailView" class="btn btn-default" ng-click="detailView=!detailView">Back to List</button>
-        <a class="btn btn-default" ui-sref="stockCountForm({countDate: stockCount.countDate})" ng-show="detailView">
+        <a class="btn btn-default" ui-sref="stockCountForm({countDate: stockCount.countDate})" ng-show="detailView && !editOff">
           <i class="fa fa-edit"></i> Edit
         </a>
         <table class="table table-bordered" ng-show="detailView">
@@ -68,10 +68,10 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="(product, count) in stockCount.unopened" ng-click="edit($index)">
+          <tr ng-repeat="product in mergedList" ng-click="edit(stockCount, product)">
             <td>{{ productProfiles[product].name }}</td>
             <td>
-              {{ count }}
+              {{ stockCount.unopened[product]  }}
             </td>
           </tr>
           </tbody>
