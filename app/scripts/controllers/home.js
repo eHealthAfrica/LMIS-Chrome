@@ -46,10 +46,14 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.home', {
-      templateUrl: 'views/home/home.html',
+      abstract: true,
+      templateUrl: 'views/home/home.html'
     })
     .state('home.index.home.mainActivity', {
       url: '/main-activity?appConfigResult&stockResult&storageClear&stockOutBroadcastResult',
+      data: {
+        label: 'Home'
+      },
       views: {
         'activities': {
           templateUrl: 'views/home/main-activity.html',
@@ -137,8 +141,6 @@ angular.module('lmisChromeApp')
             }
           },
           controller: function($scope, i18n, productTypeCounts, dashboardfactory) {
-            console.log(productTypeCounts);
-
             var keys = [
               {
                 key: 'count',
@@ -150,6 +152,7 @@ angular.module('lmisChromeApp')
               }
             ];
 
+            // TODO: unnecessary transposition
             var values = [], product = {};
             for(var uuid in productTypeCounts) {
               product = productTypeCounts[uuid];
@@ -160,14 +163,7 @@ angular.module('lmisChromeApp')
               });
             }
 
-            console.log(values);
-
             $scope.productTypesChart = dashboardfactory.chart(keys, values);
-
-            $scope.productTypes = Object.keys(productTypeCounts)
-              .map(function(k) {
-                return productTypeCounts[k];
-              });
           }
         }
       }
