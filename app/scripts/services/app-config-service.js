@@ -17,6 +17,15 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
   this.weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+  /**
+   * This function uses appConfig reminderDay for stockCount to check if stock count has been carried out within the
+   * current date week. it will return TRUE if
+   * 1) current date is greater than reminderDay of current week and
+   * 2) current date is less than last day of the week and
+   * 3) stock count does not exist for the week or has not been completed.
+   * @param appConfig
+   * @returns {promise|promise|*|promise|promise}
+   */
   this.isStockCountDue = function(appConfig){
     var deferred = $q.defer();
     var today = new Date();
@@ -29,7 +38,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         var stockCountsWithInRange = results.filter(function (stockCount) {
         var stockCountDate = new Date(stockCount.countDate);
           return (currentWeekDateInfo.first.getTime() <= stockCountDate.getTime()
-                && stockCountDate.getTime() <= currentWeekDateInfo.last.getTime())
+                && stockCountDate.getTime() <= currentWeekDateInfo.last.getTime()
+                && stockCount.isComplete === 1)
         });
         //TODO: check if stock count has been completed.
         var isStockCountReminderDue = (stockCountsWithInRange.length === 0) &&
