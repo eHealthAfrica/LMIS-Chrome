@@ -43,24 +43,8 @@ angular.module('lmisChromeApp')
           $scope.daysInMonthRange = $scope.dayInMonth.splice(0, 10);
 
           $scope.missedEntry = function(date){
-            if(angular.isUndefined($scope.stockCountByDate[date])){
-              if($filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
-                  return false;
-               }
-                else{
-                 return true;
-               }
-            }
-            else{
-              if($scope.stockCountByDate[date].isComplete){
-                return false;
-              }
-              return true;
-            }
+           return stockCountFactory.get.missingEntry(date, $scope.stockCountByDate);
           };
-          $scope.edit = function(stockCount, productKey){
-
-          }
           $scope.takeActon = function(date){
             var missed = $scope.missedEntry(date);
             stockCountFactory.getStockCountByDate(date).then(function(stockCount){
@@ -70,11 +54,11 @@ angular.module('lmisChromeApp')
                 if($filter('date')(new Date(), 'yyyy-MM-dd') !== $filter('date')(stockCount.countDate, 'yyyy-MM-dd')){
                   $scope.editOff = true;
                 }
+                $scope.mergedList = stockCountFactory.get.mergedStockCount(stockCount.unopened, $scope.facilityProductsKeys);
               }
               else if(!missed){
                 $state.go('stockCountForm', {countDate: date});
               }
-              $scope.mergedList = stockCountFactory.get.mergedStockCount(stockCount.unopened, $scope.facilityProductsKeys);
             });
           };
         }

@@ -423,6 +423,22 @@ angular.module('lmisChromeApp')
         }
         return fromFacilitySelected.concat(db_arr);
       },
+      missingEntry: function(date, stockCountByDate){
+        if(angular.isUndefined(stockCountByDate[date])){
+          if($filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
+              return false;
+           }
+            else{
+             return true;
+           }
+        }
+        else{
+          if(stockCountByDate[date].isComplete){
+            return false;
+          }
+          return true;
+        }
+      },
       /**
      * This function returns stock counts by the given facility
      *
