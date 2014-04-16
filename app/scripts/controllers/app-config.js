@@ -117,7 +117,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.save = function(){
    $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility);
    $scope.isSaving = true;
-   $scope.appConfig.dateActivated = new Date().toJSON();
 
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
