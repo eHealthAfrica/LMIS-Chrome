@@ -193,3 +193,6 @@ tr.td-header{
 h1.discarded-figure{
     font-size: 5em;
 }
+tr.disabled, tr.disabled span.text-info{
+    color: #ccc;
+}
