@@ -193,3 +193,7 @@ tr.td-header{
 h1.discarded-figure{
     font-size: 5em;
 }
+.splash-img{
+  max-width:  50%;
+  max-height: 50%;
+}
