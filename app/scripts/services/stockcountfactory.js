@@ -433,7 +433,7 @@ angular.module('lmisChromeApp')
            }
         }
         else{
-          if(stockCountByDate[date].isComplete){
+          if(stockCountByDate[date].isComplete || $filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
             return false;
           }
           return true;
