@@ -26,8 +26,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       deviceInfo: function(deviceInfoService){
         return deviceInfoService.getDeviceInfo();
       },
-      surveyQuestions: function(){
-
+      surveyQuestions: function(surveyFactory){
+        return surveyFactory.getSetupSurvey();
       }
     },
     controller: 'AppConfigWizard',
@@ -56,7 +56,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   })
 
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
-        i18n, deviceInfo){
+        i18n, deviceInfo, surveyQuestions){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -68,7 +68,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.moveTo = function(step){
     $scope.currentStep = step;
   };
-  $scope.questions = ['']
+  $scope.questions = surveyQuestions;
 
   $scope.loadAppFacilityProfile = function(nextStep, isEmailValid){
     $scope.isSubmitted = true;
