@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe('DeviceInfoService service', function () {
+describe('DeviceInfoService service', function () {
   // Load the controller's module
   beforeEach(module('lmisChromeApp'));
 
