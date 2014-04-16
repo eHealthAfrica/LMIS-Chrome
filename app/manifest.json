@@ -1,8 +1,8 @@
 {
-  "name": "LMIS Chrome",
-  "description": "LMIS Chrome packaged app",
+  "name": "LoMIS",
+  "description": "Mobile supply and logistics for health facilities",
   "version": "0.7.0",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "permissions": [
     {
       "fileSystem": [
@@ -15,7 +15,8 @@
     "geolocation",
     "storage",
     "unlimitedStorage",
-    "http://*.lomis.ehealth.org.ng"
+    "http://lomis.ehealth.org.ng/*",
+    "http://dev.lomis.ehealth.org.ng/*"
   ],
   "icons": {
     "16": "images/icon-16.png",
@@ -30,6 +31,6 @@
     }
   },
   "default_locale": "en",
-  "packageId": "org.ehealthafrica.lmis.android",
+  "packageId": "com.ehealthafrica.lomis",
   "author": "eHealth Africa"
 }
