@@ -19,13 +19,15 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
   this.isStockCountDue = function(appConfig){
     var deferred = $q.defer();
-    var today = new Date('2014-04-17');
+    var today = new Date();
+    console.log(today);
     var currentWeekDateInfo = utility.getWeekRangeByDate(today, appConfig.reminderDay);
     console.log(currentWeekDateInfo);
     storageService.all(storageService.STOCK_COUNT)
       .then(function (results) {
         //get stock-counts within current and week date range
         var stockCountsWithInRange = results.filter(function (stockCount) {
+          console.log(stockCount);
         var stockCountDate = new Date(stockCount.countDate);
           return (currentWeekDateInfo.first.getTime() <= stockCountDate.getTime()
                 && stockCountDate.getTime() <= currentWeekDateInfo.last.getTime())
@@ -33,35 +35,10 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         var isStockCountReminderDue = (stockCountsWithInRange.length === 0) &&
             (today.getTime() >= currentWeekDateInfo.reminderDate.getTime());
 
-        deferred.resolve(stockCountsWithInRange.length === 0 && today.getTime() >= currentWeekDateInfo.);
+        deferred.resolve(isStockCountReminderDue);
       }, function (reason) {
         return deferred.resolve(true);
     });
-
-//    if(appConfig.reminderDay === today.getDay()){
-//      //is stock count day, check if it has been done else set a reminder.
-//      storageService.all(storageService.STOCK_COUNT)
-//        .then(function(results){
-//          //get stock-counts within current and week date range
-//          var stockCountsWithInRange = results.filter(function(stockCount){
-//            var stockCountDate = new Date(stockCount.countDate);
-//            console.log(stockCountDate.getTime());
-//            return (currentWeekDateInfo.first.getTime() <= stockCountDate.getTime()
-//                && stockCountDate.getTime() <= currentWeekDateInfo.last.getTime())
-//          });
-//
-//          var isStockCountReminderDue = stockCountsWithInRange.length === 0
-//              && today.getTime() >= currentWeekDateInfo.reminderDate.getTime();
-//
-//          deferred.resolve(isStockCountReminderDue);
-//
-//        }, function(reason){
-//            return deferred.resolve(true);
-//        });
-//    }else{
-//      //TODO: confirm what to do if it is not reminder day should we still check if stock count should be done.
-//      deferred.resolve(false);
-//    }
     return deferred.promise;
   };
 

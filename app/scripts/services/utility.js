@@ -61,7 +61,7 @@ angular.module('lmisChromeApp').service('utility', function ($q, storageService)
     return {
       'first': firstDayDateOfCurrentWeek,
       'last': lastDayDateOfCurrentWeek,
-      'reminder': reminderDate
+      'reminderDate': reminderDate
     }
 
   };
