@@ -25,6 +25,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       },
       deviceInfo: function(deviceInfoService){
         return deviceInfoService.getDeviceInfo();
+      },
+      surveyQuestions: function(){
+
       }
     },
     controller: 'AppConfigWizard',
@@ -65,6 +68,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.moveTo = function(step){
     $scope.currentStep = step;
   };
+  $scope.questions = ['']
 
   $scope.loadAppFacilityProfile = function(nextStep, isEmailValid){
     $scope.isSubmitted = true;
