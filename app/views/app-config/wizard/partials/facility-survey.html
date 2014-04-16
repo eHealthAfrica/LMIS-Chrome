@@ -1,0 +1,44 @@
+<form name="editAppConfigForm" ng-submit="editAppConfigForm.$valid" novalidate>
+<div class="col-md-15">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title" i18n="facilitySurvey"></h4>
+      </div>
+
+      <div class="list-group pre-scrollable">
+        <li class="list-group-item" ng-repeat="productProfile in appConfig.selectedProductProfiles
+                          track by $index"
+            ng-bind="productProfile.name">
+        </li>
+      </div>
+    </div>
+  </div>
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+      <div ng-include="'views/app-config/wizard/partials/sequence-map.html'"></div>
+      <div class="panel"></div>
+    <div class="col-md-3 col-xs-6">
+      <div class="btn-group">
+        <div class="col-md-4">
+          <button type="button" class="btn btn-default btn-lg" ng-click="moveTo(STEP_FOUR)">
+            <span><i class="fa fa-arrow-circle-left"></i></span>
+            <span i18n="back"></span>
+          </button>
+        </div>
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-success btn-lg" ng-click="save()" ng-disabled="isSaving">
+            <span ng-show="!isSaving" i18n="save"></span>
+            <span ng-show="!isSaving"><i class="fa fa-floppy-o"></i></i></span>
+            <span ng-show="isSaving" i18n="saving"></span>
+            <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
+          </button>
+        </div>
+      </div>
+
+  </div>
+</div></div>
+
+  </form>
+

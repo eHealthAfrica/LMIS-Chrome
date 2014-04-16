@@ -57,7 +57,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
-  $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3, $scope.STEP_FOUR = 4;
+  $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3, $scope.STEP_FOUR = 4, $scope.STEP_FIVE = 5;
   $scope.facilities = facilities;
   $scope.productProfiles = productProfiles;
   $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
