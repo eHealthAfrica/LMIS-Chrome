@@ -271,13 +271,13 @@ angular.module('lmisChromeApp')
 
               },
               function (reason) {
+                isLoading = false;
                 console.log('error loading ' + db_name + ' ' + reason);
               }
           );
         };
         var loadNext = function(i)
         {
-          $rootScope.$emit('LOADING_FIXTURE', {completed: false} );
           if(!isLoading)
           {
             console.log('calling load '+(i-1));
@@ -291,15 +291,11 @@ angular.module('lmisChromeApp')
           else
           {
             //this is when the app is actually ready
-            setTimeout(function(){
-              console.log('is loading : '+isLoading);
-              if(isLoading){
-                $rootScope.$emit('LOADING_FIXTURE', {completed: true} );
-              }
-            }, 1)
+             $rootScope.$emit('LOADING_COMPLETED');
           }
         };
         loadNext(database.length);
+        $rootScope.$emit('START_LOADING', {started: true});
         deferred.resolve(true);
         return deferred.promise;
       }

@@ -58,5 +58,9 @@ angular.module('lmisChromeApp')
           }
         }
       }
+    })
+    .state('loadingFixture', {
+      parent: 'root.index',
+      templateUrl: 'views/index/loading-fixture-screen.html'
     });
   });

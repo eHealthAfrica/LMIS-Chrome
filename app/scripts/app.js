@@ -8,31 +8,14 @@ angular.module('lmisChromeApp', [
   'config'
 ])
   // Load fixture data
-  .run(function(storageService, $rootScope, $modal) {
-    $modal.open({
-          templateUrl: 'views/index/loading-fixture-screen.html',
-          backdrop: 'static',
-          keyboard: false,
-          controller: function ($modalInstance) {
-            $rootScope.$modalInstance = $modalInstance;
-          }
-        });
+  .run(function(storageService, $rootScope, $state) {
 
-    $rootScope.$on('LOADING_FIXTURE', function(event, args){
-      if(args.completed){
-        if($rootScope.$modalInstance){
-          $rootScope.$modalInstance.close(true);
-        }
-      }else{
-        $modal.open({
-          templateUrl: 'views/index/loading-fixture-screen.html',
-          backdrop: 'static',
-          keyboard: false,
-          controller: function ($modalInstance) {
-            $rootScope.$modalInstance = $modalInstance;
-          }
-        });
-      }
+    $rootScope.$on('LOADING_COMPLETED', function(event, args){
+       $state.go('home.index.mainActivity');
+    });
+
+    $rootScope.$on('START_LOADING', function(event, args){
+       $state.go('loadingFixture');
     });
 
 
