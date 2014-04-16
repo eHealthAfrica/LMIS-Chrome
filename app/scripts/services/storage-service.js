@@ -249,31 +249,35 @@ angular.module('lmisChromeApp')
         function loadData(db_name) {
           var test_data = [];
           getData(db_name).then(function (data) {
-
                 if (angular.isUndefined(data)) {
-                  console.log('loading '+db_name);
+                  console.log('loading ' + db_name);
                   var file_url = 'scripts/fixtures/' + db_name + '.json';
                   $http.get(file_url).success(function (data) {
-                      setTable(db_name, data).then(function(res){isLoading=false;},function(err){isLoading=false;});
+                    setTable(db_name, data).then(function (res) {
+                      isLoading = false;
+                    }, function (err) {
+                      isLoading = false;
+                    });
                   }).error(function (err) {
                         console.log(err);
-                        isLoading=false;
-                  });
+                        isLoading = false;
+                      });
                 }
                 else {
-                  isLoading=false;
+                  isLoading = false;
                   console.log(db_name + " is already loaded: " + Object.keys(data).length);
                   //loadRelatedObject(db_name);
                 }
 
               },
               function (reason) {
-                console.log('error loading '+db_name+' '+reason);
+                console.log('error loading ' + db_name + ' ' + reason);
               }
           );
         };
         var loadNext = function(i)
         {
+          $rootScope.$emit('LOADING_FIXTURE', {completed: false} );
           if(!isLoading)
           {
             console.log('calling load '+(i-1));
@@ -283,10 +287,16 @@ angular.module('lmisChromeApp')
             console.log('still loading '+i)
           }
           if(i > 0)
-            setTimeout(function() { loadNext(i) }, 1);
+            setTimeout(function() { loadNext(i) }, 1000);
           else
           {
             //this is when the app is actually ready
+            setTimeout(function(){
+              console.log('is loading : '+isLoading);
+              if(isLoading){
+                $rootScope.$emit('LOADING_FIXTURE', {completed: true} );
+              }
+            }, 1)
           }
         };
         loadNext(database.length);
