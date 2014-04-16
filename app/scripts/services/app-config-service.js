@@ -62,6 +62,9 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   this.setup = function (appConfig) {
     var deferred = $q.defer();
     this.load().then(function (result) {
+      if(typeof appConfig.dateActivated === 'undefined'){
+        appConfig.dateActivated = new Date().toJSON();
+      }
       var promises = [];
       if (result === undefined) {
         promises.push(storageService.save(storageService.APP_CONFIG, appConfig)); //TODO: should apply changes to appConfig after save
