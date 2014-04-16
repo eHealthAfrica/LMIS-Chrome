@@ -29,11 +29,11 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   this.isStockCountDue = function(appConfig){
     var deferred = $q.defer();
     var today = new Date();
-    console.log(today);
     var currentWeekDateInfo = utility.getWeekRangeByDate(today, appConfig.reminderDay);
-    console.log(currentWeekDateInfo);
+
     storageService.all(storageService.STOCK_COUNT)
       .then(function (results) {
+
         //get stock-counts within current and week date range
         var stockCountsWithInRange = results.filter(function (stockCount) {
         var stockCountDate = new Date(stockCount.countDate);
@@ -41,6 +41,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
                 && stockCountDate.getTime() <= currentWeekDateInfo.last.getTime()
                 && stockCount.isComplete === 1)
         });
+        //TODO: check if stock count has been completed.
         var isStockCountReminderDue = (stockCountsWithInRange.length === 0) &&
             (today.getTime() >= currentWeekDateInfo.reminderDate.getTime());
 

@@ -446,8 +446,8 @@
   "emailConfiguration": {
     "message": "Email Configuration"
   },
-  "loadingProfileMsg": {
-    "message": "loading profile ..."
+  "loading": {
+    "message": "loading..."
   },
   "profileLoadingErrorMsg": {
     "message": "Profile does not exist, please make sure you entered the correct email address and check your internet connection"

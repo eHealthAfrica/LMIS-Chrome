@@ -210,6 +210,7 @@ angular.module('lmisChromeApp')
        * @returns {void}
        */
       function loadFixtures() {
+
         var deferred = $q.defer();
         var database = [
           productTypes,
@@ -247,46 +248,52 @@ angular.module('lmisChromeApp')
         ];
         var isLoading = false;
         function loadData(db_name) {
-          var test_data = [];
           getData(db_name).then(function (data) {
-
                 if (angular.isUndefined(data)) {
-                  console.log('loading '+db_name);
+                  console.log('loading ' + db_name);
                   var file_url = 'scripts/fixtures/' + db_name + '.json';
                   $http.get(file_url).success(function (data) {
-                      setTable(db_name, data).then(function(res){isLoading=false;},function(err){isLoading=false;});
+                    setTable(db_name, data).then(function (res) {
+                      isLoading = false;
+                    }, function (err) {
+                      isLoading = false;
+                    });
                   }).error(function (err) {
-                        console.log(err);
-                        isLoading=false;
+                    console.log(err);
+                    isLoading = false;
                   });
                 }
                 else {
-                  isLoading=false;
+                  isLoading = false;
                   console.log(db_name + " is already loaded: " + Object.keys(data).length);
                   //loadRelatedObject(db_name);
                 }
 
               },
               function (reason) {
-                console.log('error loading '+db_name+' '+reason);
+                isLoading = false;
+                console.log('error loading ' + db_name + ' ' + reason);
               }
           );
         };
+
         var loadNext = function(i)
         {
           if(!isLoading)
           {
+            $rootScope.$emit('START_LOADING', {started: true});
             console.log('calling load '+(i-1));
             isLoading=true;
             loadData(database[--i]);
           } else {
             console.log('still loading '+i)
           }
-          if(i > 0)
-            setTimeout(function() { loadNext(i) }, 1);
-          else
-          {
+          if(i > 0){
+
+            setTimeout(function() { loadNext(i) }, 10);
+          }else{
             //this is when the app is actually ready
+           $rootScope.$emit('LOADING_COMPLETED', {completed: true});
           }
         };
         loadNext(database.length);

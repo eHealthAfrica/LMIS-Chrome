@@ -8,20 +8,29 @@ angular.module('lmisChromeApp', [
   'config'
 ])
   // Load fixture data
-  .run(function(storageService) {
-     //attach fast-click to UI to remove 300ms tap delay on mobile version
+  .run(function(storageService, $rootScope, $state) {
+
+    $rootScope.$on('LOADING_COMPLETED', function(event, args){
+      //TODO: if args.completed !== true not all fixtures were loaded or an error occurred while loading fixture,
+      // do something.
+      console.log('finished loading fixture');
+      $state.go('home.index.mainActivity');
+    });
+
+    $rootScope.$on('START_LOADING', function(event, args){
+       console.log('started loading fixture');
+       $state.go('loadingFixture');
+    });
+
     if(typeof FastClick !== 'undefined'){
       FastClick.attach(document.body);
     }
 
     //load fixtures if not loaded yet.
-    storageService.getAll().then(function(data){
-      if(typeof data === 'undefined' || Object.keys(data).length == 0) 
-        storageService.loadFixtures().then(function(result){
-          storageService.getAll().then(function(data){
-            console.log("finished loading: "+Object.keys(data));
-          });
-        });
+    storageService.loadFixtures().then(function(result){
+      storageService.getAll().then(function(data){
+        console.log("finished loading: "+Object.keys(data));
+      });
     });
 
   }).constant('cacheConfig', {
