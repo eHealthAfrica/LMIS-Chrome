@@ -18,7 +18,6 @@ angular.module('lmisChromeApp', [
        $state.go('loadingFixture');
     });
 
-
     //attach fast-click to UI to remove 300ms tap delay on mobile version
     try{
       FastClick.attach(document.body);
@@ -26,15 +25,14 @@ angular.module('lmisChromeApp', [
       console.log(e);
     }
 
+    //storageService.clear();
+
     //load fixtures if not loaded yet.
-    storageService.getAll().then(function(data){
-      if(typeof data === 'undefined' || Object.keys(data).length == 0)
-        storageService.loadFixtures().then(function(result){
+    storageService.loadFixtures().then(function(result){
           storageService.getAll().then(function(data){
             console.log("finished loading: "+Object.keys(data));
           });
         });
-    });
 
   }).constant('cacheConfig', {
       "id": "lmisChromeAppCache"
