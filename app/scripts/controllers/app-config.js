@@ -22,6 +22,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       },
       productProfiles: function(productProfileFactory){
         return productProfileFactory.getAll();
+      },
+      deviceInfo: function(deviceInfoService){
+        return deviceInfoService.getDeviceInfo();
       }
     },
     controller: 'AppConfigWizard',
@@ -50,7 +53,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   })
 
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
-        i18n){
+        i18n, deviceInfo){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -89,7 +92,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       });
   }
 
+  var deviceEmail = '';
+  if(typeof deviceInfo === 'object'){
+    deviceEmail = deviceInfo.mainAccount;
+  }
+
   $scope.appConfig = {
+    uuid: deviceEmail,
     facility: '',
     stockCountInterval: '',
     reminderDay: '',
