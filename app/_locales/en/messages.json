@@ -446,7 +446,7 @@
   "emailConfiguration": {
     "message": "Email Configuration"
   },
-  "loadingProfileMsg": {
+  "loading": {
     "message": "loading..."
   },
   "profileLoadingErrorMsg": {
