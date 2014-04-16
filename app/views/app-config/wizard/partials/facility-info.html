@@ -10,14 +10,14 @@
       </div>
       <div ng-include="'views/app-config/wizard/partials/sequence-map.html'"></div>
       <div class="panel"></div>
-      <div class="btn-group">
-          <div class="col-md-4">
+      <div class="btn-group btn-group-justified">
+          <div class="btn-group">
             <button type="button" class="btn btn-default btn-lg" ng-click="moveTo(STEP_ONE)">
               <span><i class="fa fa-arrow-circle-left"></i></span>
               <span i18n="back"></span>
             </button>
           </div>
-          <div class="col-md-4">
+          <div class="btn-group">
             <button type="submit" class="btn btn-success btn-lg" ng-click="isSubmitted = true">
               <span i18n="continue"></span>
               <span><i class="fa fa-arrow-circle-right"></i></span>

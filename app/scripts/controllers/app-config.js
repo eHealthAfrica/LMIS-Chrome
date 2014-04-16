@@ -25,6 +25,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       },
       deviceInfo: function(deviceInfoService){
         return deviceInfoService.getDeviceInfo();
+      },
+      surveyQuestions: function(surveyFactory){
+        return surveyFactory.getSetupSurvey();
       }
     },
     controller: 'AppConfigWizard',
@@ -53,11 +56,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   })
 
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
-        i18n, deviceInfo){
+        i18n, deviceInfo, surveyQuestions){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
-  $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3, $scope.STEP_FOUR = 4;
+  $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3, $scope.STEP_FOUR = 4, $scope.STEP_FIVE = 5;
   $scope.facilities = facilities;
   $scope.productProfiles = productProfiles;
   $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
@@ -65,6 +68,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.moveTo = function(step){
     $scope.currentStep = step;
   };
+  $scope.questions = surveyQuestions;
 
   $scope.loadAppFacilityProfile = function(nextStep, isEmailValid){
     $scope.isSubmitted = true;
