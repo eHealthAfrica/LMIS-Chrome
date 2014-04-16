@@ -40,7 +40,7 @@ angular.module('lmisChromeApp').service('utility', function ($q, storageService)
     return newObject;
   }
 
-  this.getWeekRangeByDate = function(date){
+  this.getWeekRangeByDate = function(date, reminderDay){
     //TODO: adapt to work for leap year
     var currentDate = date;
     // First day of current week is assumed to be Sunday, if current date is 19-12-2014, which is Thursday = 4,
@@ -55,9 +55,13 @@ angular.module('lmisChromeApp').service('utility', function ($q, storageService)
     var lastDayDateOfCurrentWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(),
         lastDayOfCurrentWeek, 0, 0, 0);
 
+    var reminderDate = new Date(currentDate.getFullYear(), currentDate.getMonth(),
+        firstDayOfCurrentWeek + reminderDay, 0, 0, 0);
+
     return {
       'first': firstDayDateOfCurrentWeek,
-      'last': lastDayDateOfCurrentWeek
+      'last': lastDayDateOfCurrentWeek,
+      'reminder': reminderDate
     }
 
   };
