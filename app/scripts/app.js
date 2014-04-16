@@ -8,9 +8,14 @@ angular.module('lmisChromeApp', [
   'config'
 ])
   // Load fixture data
-  .run(function(storageService, appConfigService) {
-    //attach fast-click to UI to remove 300ms tap delay on mobile version
-    FastClick.attach(document.body);
+  .run(function(storageService) {
+     //attach fast-click to UI to remove 300ms tap delay on mobile version
+    try{
+      FastClick.attach(document.body);
+    }catch(e){
+      console.log(e);
+    }
+
 
     //load fixtures if not loaded yet.
     storageService.getAll().then(function(data){
