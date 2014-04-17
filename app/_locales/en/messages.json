@@ -509,5 +509,8 @@
   },
   "incompleteSurveyErrorMsg": {
     "message": "complete survey before saving!"
+  },
+  "surveyNotFound": {
+    "message": "Survey not found!"
   }
 }

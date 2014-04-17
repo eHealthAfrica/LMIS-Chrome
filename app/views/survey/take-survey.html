@@ -7,13 +7,16 @@
 
       <div class="list-group">
         <div class="list-group-item" ng-repeat="question in survey.questions track by $index">
-          <span ng-bind="question.text"></span>
-
+          <div class="col-md-15">
+            <span ng-bind="question.text"></span>
+          </div>
+          <div class="row col-md-12 pull-right">
+            <label class="input-control"><input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}"
+                          ng-value="true"/> Yes</label>
+            <label class="input-control"><input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}"
+                          ng-value="false"> No</label>
+          </div>
           <div class="panel-body"></div>
-          <label><input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}"
-                        ng-value="true"/> Yes</label>
-          <label><input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}"
-                        ng-value="false"> No</label>
         </div>
       </div>
 

@@ -28,14 +28,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           if(result){
             $scope.survey = result;
           }else{
-            alertsFactory.danger('Survey not found', {persistent: true});
+            alertsFactory.danger(i18n('surveyNotFound'), {persistent: true});
           }
         }, function(reason){
           console.error(reason);
-          alertsFactory.danger('Survey not found', {persistent: true});
+          alertsFactory.danger(i18n('surveyNotFound'), {persistent: true});
       });
 
     $scope.save = function(){
+      $scope.isSaving = true;
       //TODO: see if you can abstract creation of surveyResponse from survey form to so you can reuse it.
       var responses = [];
       for (var index in $scope.surveyResponse) {
@@ -51,6 +52,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       if(surveyResponse.isComplete === false){
+        $scope.isSaving = false;
         alertsFactory.danger(i18n('incompleteSurveyErrorMsg'));
         return;
       }
@@ -58,12 +60,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       surveyFactory.saveSurveyResponse(surveyResponse)
         .then(function(result){
           if(result){
+            $scope.isSaving = false;
             var successMsg = i18n('surveySuccessMsg', $scope.survey.name);
             $state.go('home.index.home.mainActivity', {surveySuccessMsg: successMsg});
           }else{
+            $scope.isSaving = false;
             alertsFactory.danger(i18n('surveyFailedMsg'));
           }
       }, function(reason){
+          $scope.isSaving = false;
           alertsFactory.danger(i18n('surveyFailedMsg'));
       });
     };
