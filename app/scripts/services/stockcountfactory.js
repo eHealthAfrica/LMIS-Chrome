@@ -440,6 +440,28 @@ angular.module('lmisChromeApp')
         }
       },
       /**
+       *
+       * @param scope
+       */
+      stockCountByIntervals: function(scope){
+
+        var dates = [];
+        var interval = 1000 * 60 * 60 * 24 * scope.countInterval;
+        var current = scope.startDate;
+        if(current.getDay() !== scope.reminderDay){
+          var dayDifference = 1000 * 60 * 60 * 24 * (Math.abs(current.getDay() - scope.reminderDay))
+          current = new Date(current.getTime() + (dayDifference));
+        }
+
+        while(dates.length < scope.maxList){
+          dates.push(current);
+
+          console.log(current.getDay() +" "+current.toJSON());
+          current = new Date(current.getTime() - interval);
+        }
+        return dates;
+      },
+      /**
      * This function returns stock counts by the given facility
      *
      * @param facility 
