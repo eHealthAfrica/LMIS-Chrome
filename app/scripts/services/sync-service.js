@@ -15,7 +15,6 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
 
   var saveItem = function(db, item){
     var deferred = $q.defer();
-    console.log('saving '+JSON.stringify(item));
     db.get(item.uuid).then(function (response) {
       item._id = response._id;
       item._rev = response._rev;
@@ -23,7 +22,6 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
       db.put(item, response._id, response._rev)
       .then(function (result) {
         deferred.resolve(result);
-        console.log('saved '+JSON.stringify(item));
       }, function (error) {
         deferred.reject(error);
       });

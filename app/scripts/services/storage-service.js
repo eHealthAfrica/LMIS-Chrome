@@ -47,6 +47,7 @@ angular.module('lmisChromeApp')
       var wasteCount = 'wasteCount';
       var appConfig = 'app_config';
       var stockOut = 'stock_out';
+      var surveyResponse = 'survey_response';
 
       /**
        * Add new table data to the chrome store.
@@ -484,7 +485,8 @@ angular.module('lmisChromeApp')
         STOCK_COUNT: stockCount,
         WASTE_COUNT: wasteCount,
         APP_CONFIG: appConfig,
-        STOCK_OUT: stockOut
+        STOCK_OUT: stockOut,
+        SURVEY_RESPONSE: surveyResponse
       };
 
     });

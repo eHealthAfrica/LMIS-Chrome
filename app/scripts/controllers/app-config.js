@@ -56,7 +56,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   })
 
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
-        i18n, deviceInfo, surveyQuestions){
+        i18n, deviceInfo, surveyQuestions, surveyFactory){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -113,14 +113,30 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     selectedProductProfiles: []
   };
 
+  $scope.surveyResponse = [];
+
   $scope.handleSelectionEvent = function(productProfile){
    $scope.appConfig.selectedProductProfiles =
        appConfigService.addProductProfile(productProfile, $scope.appConfig.selectedProductProfiles);
   };
 
   $scope.save = function(){
+
    $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility);
    $scope.isSaving = true;
+
+   //prepare survey response and save.
+   var responses = [];
+   for(var index in $scope.surveyResponse){
+     var response = {question: index, answer: $scope.surveyResponse[index]}
+     responses.push(response);
+   }
+   var surveyResponse = {
+     facility: $scope.appConfig.appFacility.uuid,
+     respondent: $scope.appConfig.contactPerson,
+     responses: responses,
+     isComplete: surveyQuestions.length === responses.length
+   };
 
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
@@ -129,6 +145,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.isSaving = false;
         appConfigService.cache.put(appConfigService.APP_CONFIG, $scope.appConfig);
         $state.go('home.index.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
+        surveyFactory.saveSurveyResponse(surveyResponse)
+          .then(function(result){
+            if(typeof result === 'undefined'){
+              alertsFactory.danger('Saving of survey response failed');
+            }
+          }, function(reason){
+            console.log(reason);
+            alertsFactory.danger('Saving of survey response failed');
+          });
+
       } else {
         $scope.isSaving = false;
         alertsFactory.danger(i18n('appConfigFailedMsg'));
