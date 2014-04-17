@@ -14,8 +14,8 @@
           <div class="info-box">
             <div class="info-box-number one">1</div>
             <div class="info-box-text">
-              Count the number of vials
-              discarded today.
+              Count the number of items
+              discarded.
             </div>
             <div class="clearfix"></div>
           </div>
@@ -25,9 +25,8 @@
           <div class="info-box">
             <div class="info-box-number two">2</div>
             <div class="info-box-text">
-              Enter the TOTAL quantity
-              of each product type in
-              the appropriate row.
+              Enter the amount discarded
+              for each reason.
             </div>
             <div class="clearfix"></div>
           </div>
@@ -36,10 +35,8 @@
           <div class="info-box">
             <div class="info-box-number three">3</div>
             <div class="info-box-text">
-              Provide the reason or
-              reasons for why vials of
-              that product type was
-              discarded.
+              Press Next to move to the next
+              product.
             </div>
             <div class="clearfix"></div>
           </div>
@@ -49,10 +46,10 @@
           <div class="info-box">
             <div class="info-box-number four">4</div>
             <div class="info-box-text">
-              When finished with each
-              product, submit your
-              form by clicking the
-              Submit button below!
+              When finished, press Save,
+              check your counts and press
+              Confirm to finalize your
+              count.
             </div>
             <div class="clearfix"></div>
           </div>
@@ -65,7 +62,7 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <h1 class="panel-title" >
-      Waste Count for {{ facilityObject.name }} - {{ currentDay }} {{ monthList[reportMonth] }} {{ reportYear }}
+      Discard Count for {{ facilityObject.name }} - {{ currentDay }} {{ monthList[reportMonth] }} {{ reportYear }}
       <div class="pull-right">
         <span ng-click="showHelp=!showHelp">
           <i class="text-success fa fa-question-circle fa-2x"></i>
