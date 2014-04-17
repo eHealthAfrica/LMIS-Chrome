@@ -103,11 +103,13 @@ angular.module('lmisChromeApp')
             var keys = [
               {
                 key: 'daysOfStock',
+                color: "#000000",
                 label: i18n('daysStock')
               },
               {
                 key: 'daysToReorder',
-                label: i18n('daysLeft')
+                label: i18n('daysLeft'),
+                color:  "#FEFB00"
               }
             ];
 
@@ -135,7 +137,7 @@ angular.module('lmisChromeApp')
                   // jshint loopfunc: true
                   for(var i in types) {
                     productTypeInfo[types[i].uuid] = {
-                      name: types[i].name
+                      name: types[i].code
                     };
                     (function (i) {
                       innerPromises.push(inventoryRulesFactory.daysOfStock(currentFacility, types[i].uuid)

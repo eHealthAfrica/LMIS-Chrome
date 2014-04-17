@@ -218,7 +218,7 @@ angular.module('lmisChromeApp')
       var deferred = $q.defer();
       getStockLevel(facility, productTypeUuid).then(function (stockLevel) {
           var days = (stockLevel - reorderPointByProductType(productTypeUuid)) / consumptionAvgByProductType(productTypeUuid); 
-          deferred.resolve(Math.ceil(days));
+          deferred.resolve(Math.floor(days));
         }, 
         function (err) { deferred.reject(err); } 
         );
