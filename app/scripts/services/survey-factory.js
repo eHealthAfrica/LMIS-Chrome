@@ -3,7 +3,7 @@
 angular.module('lmisChromeApp')
   .factory('surveyFactory', function ($q, storageService, syncService) {
     var QUESTION_TYPES = {YES_NO: 0};
-    var INTERVALS = {ONCE: 0, DAILY: 1, BIWEEKLY: 14, WEEKLY: 30};
+    var INTERVALS = {ONCE: 0, DAILY: 1, WEEKLY: 7, BIWEEKLY: 14, MONTHLY: 30};
     var SURVEYS = {
       "0987-0987-82763-34562-123": {
         uuid: "0987-0987-82763-34562-123",
@@ -33,6 +33,24 @@ angular.module('lmisChromeApp')
             {
               uuid: "99388281-9920292-12388292-0901",
               text: 'Was the RI service provider trained?',
+              type: QUESTION_TYPES.YES_NO
+            }
+          ],
+          facilities: [
+            "fa3fdb8e-24bb-4ba6-b598-050c6285d08e",
+            "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
+            "902aef31-051d-4a83-9017-6ac9710b5bb5",
+            "d48a39fb-6d37-4472-9983-bc0720403719"
+          ]
+        },
+        "123456-0987809-897625-0987856": {
+        uuid: "123456-0987809-897625-0987856",
+        name: "Catchment area meeting survey",
+        interval: INTERVALS.MONTHLY,
+        questions: [
+            {
+              uuid: "0987856-897625-095623-abr67",
+              text: 'Is there immunization schedule session plan for RI?',
               type: QUESTION_TYPES.YES_NO
             }
           ],
