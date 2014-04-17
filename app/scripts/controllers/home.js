@@ -13,13 +13,17 @@ angular.module('lmisChromeApp')
           return appConfigService.load();
         }
       },
-      controller: function($scope, appConfig, appConfigService, $state) {
+      controller: function($scope, appConfig, appConfigService, $state, surveyFactory) {
         if (appConfig === undefined) {
           $state.go('appConfigWelcome');
         } else {
           $scope.facility = appConfig.appFacility.name;
           appConfigService.isStockCountDue(appConfig).then(function(result){
             $scope.hasPendingStockCount = result;
+          });
+          surveyFactory.getPendingSurveys(appConfig.appFacility.uuid)
+            .then(function(pendingSurveys){
+             $scope.pendingSurveys = pendingSurveys;
           });
         }
       }
@@ -46,7 +50,7 @@ angular.module('lmisChromeApp')
       }
     })
     .state('home.index.mainActivity', {
-      url: '/main-activity?appConfigResult&stockResult&storageClear&stockOutBroadcastResult',
+      url: '/main-activity?appConfigResult&stockResult&storageClear&stockOutBroadcastResult&surveySuccessMsg',
       templateUrl: 'views/home/main-activity.html',
       data: {
         label: 'Home'
@@ -105,6 +109,11 @@ angular.module('lmisChromeApp')
         if ($stateParams.storageClear !== null) {
           alertsFactory.success(i18n('clearStorageMsg'));
           $stateParams.storageClear = null;
+        }
+
+        if($stateParams.surveySuccessMsg !== null){
+          alertsFactory.success('survey was submitted successfully!');
+          $stateParams.surveySuccessMsg = null;
         }
 
         if ($stateParams.stockOutBroadcastResult !== null) {

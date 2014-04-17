@@ -147,20 +147,7 @@ angular.module('lmisChromeApp')
        */
 
         function getDateTime() {
-          var now = new Date();
-          var day = now.getDate();
-          day = day < 10 ? '0' + day : day;
-          var month = now.getMonth() + 1;
-          month = month < 10 ? '0' + month : month;
-          var year = now.getFullYear();
-          var hour = now.getHours();
-          hour = hour < 10 ? '0' + hour : hour;
-          var minutes = now.getMinutes();
-          minutes = minutes < 10 ? '0' + minutes : minutes;
-          var seconds = now.getSeconds();
-          seconds = seconds < 10 ? '0' + seconds : seconds;
-          var datetime = year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':' + seconds;
-          return datetime;
+          return new Date().toJSON();
         }
 
         /**

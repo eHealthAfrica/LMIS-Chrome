@@ -26,7 +26,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       deviceInfo: function(deviceInfoService){
         return deviceInfoService.getDeviceInfo();
       },
-      surveyQuestions: function(surveyFactory){
+      setupSurvey: function(surveyFactory){
         return surveyFactory.getSetupSurvey();
       }
     },
@@ -56,7 +56,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   })
 
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
-        i18n, deviceInfo, surveyQuestions, surveyFactory){
+        i18n, deviceInfo, setupSurvey, surveyFactory){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -68,7 +68,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.moveTo = function(step){
     $scope.currentStep = step;
   };
-  $scope.questions = surveyQuestions;
+  $scope.questions = setupSurvey.questions;
 
   $scope.loadAppFacilityProfile = function(nextStep, isEmailValid){
     $scope.isSubmitted = true;
@@ -132,10 +132,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
      responses.push(response);
    }
    var surveyResponse = {
+     survey: setupSurvey.uuid,
      facility: $scope.appConfig.appFacility.uuid,
      respondent: $scope.appConfig.contactPerson,
      responses: responses,
-     isComplete: surveyQuestions.length === responses.length
+     isComplete: setupSurvey.questions.length === responses.length
    };
 
    appConfigService.setup($scope.appConfig)
@@ -152,7 +153,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             }
           }, function(reason){
             console.log(reason);
-            alertsFactory.danger('Saving of survey response failed');
           });
 
       } else {
