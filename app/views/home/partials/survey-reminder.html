@@ -1,0 +1,8 @@
+<div ng-show="pendingSurveys.length !== 0" ng-repeat="survey in pendingSurveys">
+  <a ui-sref="takeSurvey({surveyUUID: survey.uuid})" style="display: block">
+    <div class="col-md-12 alert alert-warning">
+      <i class="fa fa-exclamation-circle"></i>
+      <strong><span ng-bind="survey.name"></span></strong>
+    </div>
+  </a>
+</div>

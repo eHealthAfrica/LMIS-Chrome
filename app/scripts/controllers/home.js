@@ -13,13 +13,17 @@ angular.module('lmisChromeApp')
           return appConfigService.load();
         }
       },
-      controller: function($scope, appConfig, appConfigService, $state) {
+      controller: function($scope, appConfig, appConfigService, $state, surveyFactory) {
         if (appConfig === undefined) {
           $state.go('appConfigWelcome');
         } else {
           $scope.facility = appConfig.appFacility.name;
           appConfigService.isStockCountDue(appConfig).then(function(result){
             $scope.hasPendingStockCount = result;
+          });
+          surveyFactory.getPendingSurveys(appConfig.appFacility.uuid)
+            .then(function(pendingSurveys){
+             $scope.pendingSurveys = pendingSurveys;
           });
         }
       }
@@ -50,7 +54,7 @@ angular.module('lmisChromeApp')
       templateUrl: 'views/home/home.html'
     })
     .state('home.index.home.mainActivity', {
-      url: '/main-activity?appConfigResult&stockResult&storageClear&stockOutBroadcastResult',
+      url: '/main-activity?appConfigResult&stockResult&storageClear&stockOutBroadcastResult&surveySuccessMsg',
       data: {
         label: 'Home'
       },
@@ -78,6 +82,12 @@ angular.module('lmisChromeApp')
               alertsFactory.success($stateParams.stockResult);
               $stateParams.stockResult = null;
             }
+
+            if ($stateParams.surveySuccessMsg !== null) {
+              alertsFactory.success($stateParams.surveySuccessMsg);
+              $stateParams.surveySuccessMsg = null;
+            }
+
           }
         },
         'charts': {
