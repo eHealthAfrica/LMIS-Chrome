@@ -195,7 +195,7 @@
     "message": "Stock Count"
   },
   "addWasteCount": {
-    "message": "Waste Count"
+    "message": "Discard Count"
   },
   "orderPlacedSuccess": {
     "message": "Order placed successfully"
