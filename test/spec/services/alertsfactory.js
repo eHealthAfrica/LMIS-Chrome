@@ -86,7 +86,7 @@ describe('Service: alertsFactory', function() {
   });
 
   it('should clear alerts when moving between states', function() {
-    var ma = 'home.index.mainActivity',
+    var ma = 'home.index.home.mainActivity',
         dash = 'home.index.dashboard.chart';
 
     inject(function($templateCache, $state) {

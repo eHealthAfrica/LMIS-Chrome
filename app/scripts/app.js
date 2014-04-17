@@ -15,7 +15,7 @@ angular.module('lmisChromeApp', [
       //TODO: if args.completed !== true not all fixtures were loaded or an error occurred while loading fixture,
       // do something.
       console.log('finished loading fixture');
-      $state.go('home.index.mainActivity');
+      $state.go('home.index.home.mainActivity');
     });
 
     $rootScope.$on('START_LOADING', function(event, args){
