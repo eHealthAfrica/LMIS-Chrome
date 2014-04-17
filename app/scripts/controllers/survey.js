@@ -13,7 +13,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           return appConfigService.load();
       }
     },
-    controller: function ($stateParams, $state, $scope, surveyFactory, alertsFactory, appConfig) {
+    controller: function ($stateParams, $state, $scope, surveyFactory, alertsFactory, appConfig, i18n) {
       if(!$stateParams.surveyUUID){
         $state.go('home.index.home.mainActivity');
         return;
@@ -25,12 +25,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       surveyFactory.get($stateParams.surveyUUID)
         .then(function(result){
-            console.log(result);
           if(result){
             $scope.survey = result;
           }else{
             alertsFactory.danger('Survey not found', {persistent: true});
-            return;
           }
         }, function(reason){
           console.error(reason);
@@ -53,19 +51,20 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
 
       if(surveyResponse.isComplete === false){
-        alertsFactory.danger('complete survey before saving!');
+        alertsFactory.danger(i18n('incompleteSurveyErrorMsg'));
         return;
       }
 
       surveyFactory.saveSurveyResponse(surveyResponse)
         .then(function(result){
           if(result){
-            $state.go('home.index.home.mainActivity', {surveySuccessMsg: 'Survey was saved successfully!'});
+            var successMsg = i18n('surveySuccessMsg', $scope.survey.name);
+            $state.go('home.index.home.mainActivity', {surveySuccessMsg: successMsg});
           }else{
-            alertsFactory.danger('survey not saved!');
+            alertsFactory.danger(i18n('surveyFailedMsg'));
           }
       }, function(reason){
-          alertsFactory.danger('survey not saved!');
+          alertsFactory.danger(i18n('surveyFailedMsg'));
       });
     };
 

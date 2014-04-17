@@ -495,5 +495,19 @@
   },
   "daysLeft": {
     "message": "Days left"
+  },
+  "surveySuccessMsg": {
+    "message": "$surveyName$ was submitted successfully!",
+    "placeholders": {
+      "surveyName": {
+        "content": "$1"
+      }
+    }
+  },
+  "surveyFailedMsg": {
+    "message": "Survey not saved, try again!"
+  },
+  "incompleteSurveyErrorMsg": {
+    "message": "complete survey before saving!"
   }
 }

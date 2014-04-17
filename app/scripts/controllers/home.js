@@ -84,7 +84,7 @@ angular.module('lmisChromeApp')
             }
 
             if ($stateParams.surveySuccessMsg !== null) {
-              alertsFactory.success('survey was submitted successfully!');
+              alertsFactory.success($stateParams.surveySuccessMsg);
               $stateParams.surveySuccessMsg = null;
             }
 
