@@ -79,21 +79,21 @@ angular.module('lmisChromeApp')
     var leadTimeAvgByProductType = function (productTypeUuid)
     {
       var avgLeadTimeMocks = {
-        '00f987e4-54e1-46f0-820b-b249a6d38759': 13.8,
-        '0930b906-4802-4a65-8516-057bd839db3e':  11.13,
-        '111fbb51-0c5a-492a-97f6-2c7664e23d01':  11.13,
-        '1203c362-b7a8-499a-b7ba-b842bace7920':  11.13,
-        '19e16c20-04b7-4e06-a679-7f7b60d976be':  13.8,
-        '251fc8c2-0273-423f-a519-4ea20fc74832':  11.27,
-        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f':  11.27,
-        '367f3f7f-a1cc-4266-8a0a-020722576cc9':  11,
-        '401f8608-e232-4c5a-b32d-032d632abf88':  11,
-        '939d5e05-2aa4-4883-9246-35c60dfa06a5':  11.13,
-        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  13.8,
-        'db513859-4491-4db7-9343-4980a16c8b04':  13.8,
-        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  13.8,
-        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  11.27,
-        'f96946be-7dac-438e-9220-efc386276481':  11.27
+        '00f987e4-54e1-46f0-820b-b249a6d38759': 6.8,
+        '0930b906-4802-4a65-8516-057bd839db3e':  5.13,
+        '111fbb51-0c5a-492a-97f6-2c7664e23d01':  5.13,
+        '1203c362-b7a8-499a-b7ba-b842bace7920':  5.13,
+        '19e16c20-04b7-4e06-a679-7f7b60d976be':  6.8,
+        '251fc8c2-0273-423f-a519-4ea20fc74832':  5.27,
+        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f':  5.27,
+        '367f3f7f-a1cc-4266-8a0a-020722576cc9':  5,
+        '401f8608-e232-4c5a-b32d-032d632abf88':  5,
+        '939d5e05-2aa4-4883-9246-35c60dfa06a5':  5.13,
+        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  6.8,
+        'db513859-4491-4db7-9343-4980a16c8b04':  6.8,
+        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  6.8,
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  5.27,
+        'f96946be-7dac-438e-9220-efc386276481':  5.27
       };
 
       return avgLeadTimeMocks[productTypeUuid];
@@ -218,10 +218,22 @@ angular.module('lmisChromeApp')
       var deferred = $q.defer();
       getStockLevel(facility, productTypeUuid).then(function (stockLevel) {
           var days = (stockLevel - reorderPointByProductType(productTypeUuid)) / consumptionAvgByProductType(productTypeUuid); 
-          deferred.resolve(Math.ceil(days));
+          deferred.resolve(Math.floor(days));
         }, 
         function (err) { deferred.reject(err); } 
         );
+      return deferred.promise;
+    }
+
+    var daysOfStock= function(facility, productTypeUuid)
+    {
+      var deferred = $q.defer();
+      getStockLevel(facility, productTypeUuid).then(function (stockLevel) {
+        var days = stockLevel / consumptionAvgByProductType(productTypeUuid);
+        deferred.resolve(days);
+      }, function(err) {
+        deferred.reject(err);
+      });
       return deferred.promise;
     }
 
@@ -355,6 +367,7 @@ angular.module('lmisChromeApp')
       bufferStock: bufferStock,
       reorderPoint: reorderPoint,
       getStockLevel: getStockLevel,
-      daysToReorderPoint: daysToReorderPoint
+      daysToReorderPoint: daysToReorderPoint,
+      daysOfStock: daysOfStock
     };
   });
