@@ -92,8 +92,8 @@ angular.module('lmisChromeApp')
           controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
             var keys = [
               {
-                key: 'count',
-                label: i18n('count')
+                key: 'daysOfStock',
+                label: i18n('daysStock')
               },
               {
                 key: 'daysToReorder',
@@ -128,10 +128,10 @@ angular.module('lmisChromeApp')
                       name: types[i].name
                     };
                     (function (i) {
-                      innerPromises.push(inventoryRulesFactory.getStockLevel(currentFacility, types[i].uuid)
+                      innerPromises.push(inventoryRulesFactory.daysOfStock(currentFacility, types[i].uuid)
                         .then(
                           function (stockLevel) {
-                            productTypeInfo[types[i].uuid].count = stockLevel;
+                            productTypeInfo[types[i].uuid].daysOfStock = stockLevel;
                           },
                           function (err) {
                             deferred.reject(err);
@@ -167,18 +167,14 @@ angular.module('lmisChromeApp')
                 product = productTypeCounts[uuid];
                 values.push({
                   label: product.name,
-                  count: product.count,
-                  daysToReorder: product.daysToReorder
+                  daysOfStock: Math.floor(product.daysOfStock),
+                  daysToReorder: Math.floor(product.daysToReorder)
                 });
               }
-
               $scope.productTypesChart = dashboardfactory.chart(keys, values);
             }, function(err) {
 
-            });
-
-           
-            
+            });  
           }
         }
       }

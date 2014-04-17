@@ -490,10 +490,10 @@
   "facilitySurvey": {
     "message": "Facility survey"
   },
-  "count": {
-    "message": "Count"
+  "daysStock": {
+    "message": "Days of stock"
   },
   "daysLeft": {
-    "message": "Days left"
+    "message": "Days to reorder"
   }
 }
