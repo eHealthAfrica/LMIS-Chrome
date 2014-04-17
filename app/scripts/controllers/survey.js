@@ -15,7 +15,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     },
     controller: function ($stateParams, $state, $scope, surveyFactory, alertsFactory, appConfig) {
       if(!$stateParams.surveyUUID){
-        $state.go('home.index.mainActivity');
+        $state.go('home.index.home.mainActivity');
         return;
       }
 
@@ -60,7 +60,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       surveyFactory.saveSurveyResponse(surveyResponse)
         .then(function(result){
           if(result){
-            $state.go('home.index.mainActivity', {surveySuccessMsg: 'Survey was saved successfully!'});
+            $state.go('home.index.home.mainActivity', {surveySuccessMsg: 'Survey was saved successfully!'});
           }else{
             alertsFactory.danger('survey not saved!');
           }
