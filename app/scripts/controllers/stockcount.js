@@ -337,7 +337,7 @@ angular.module('lmisChromeApp')
                     $scope.reportYear
                   ].join(' ');
                   alertsFactory.success(msg);
-                  $state.go('home.index.mainActivity', {
+                  $state.go('home.index.home.mainActivity', {
                     'facility': $scope.facilityUuid,
                     'reportMonth': $scope.reportMonth,
                     'reportYear': $scope.reportYear,
@@ -467,7 +467,7 @@ angular.module('lmisChromeApp')
       $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.reportDay, timezone);
 
       var backupStock = function(doc) {
-        //TODO: remove controller-specific db syncs, do in background 
+        //TODO: remove controller-specific db syncs, do in background
         //using sync-service
 
         db.put(doc)
@@ -482,7 +482,7 @@ angular.module('lmisChromeApp')
                   $scope.reportYear
                 ].join(' ');
                 alertsFactory.success(msg);
-                $state.go('home.index.mainActivity', {
+                $state.go('home.index.home.mainActivity', {
                   'facility': $scope.facilityUuid,
                   'reportMonth': $scope.reportMonth,
                   'reportYear': $scope.reportYear,
@@ -493,7 +493,7 @@ angular.module('lmisChromeApp')
             db.replicate.to(config.api.url + '/' + dbName, cb);
           })
           .catch(function(reason) {
-            $state.go('home.index.mainActivity');
+            $state.go('home.index.home.mainActivity');
             var message = '';
             if(reason.message) {
               message = reason.message + '. ';

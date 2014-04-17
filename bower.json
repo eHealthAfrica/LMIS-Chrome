@@ -11,7 +11,8 @@
     "angular-pouchdb": "tlvince/angular-pouchdb#0.1.1",
     "fastclick": "~1.0.0",
     "howler": "~1.1.18",
-    "bootstrap-theme-cosmo": "~3.1.1"
+    "bootstrap-theme-cosmo": "~3.1.1",
+    "angularjs-nvd3-directives": "~0.0.7"
   },
   "devDependencies": {
     "angular-mocks": "1.2.14",
@@ -32,6 +33,7 @@
   "license": "ISC",
   "private": true,
   "resolutions": {
-    "angular": "1.2.15"
+    "angular": "1.2.15",
+    "d3": "~3.4.1"
   }
 }
