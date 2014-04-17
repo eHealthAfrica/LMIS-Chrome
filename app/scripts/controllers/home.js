@@ -87,7 +87,21 @@ angular.module('lmisChromeApp')
              * Returns an array of {name: product type name, count: total number
              * in facility (as of last stock count)}
              */
-            productTypeCounts: function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
+            
+          },
+          controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
+            var keys = [
+              {
+                key: 'daysOfStock',
+                label: i18n('daysStock')
+              },
+              {
+                key: 'daysToReorder',
+                label: i18n('daysLeft')
+              }
+            ];
+
+            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
               var deferred = $q.defer();
               var productTypeInfo = {};
               if(typeof appConfig === 'undefined'){
@@ -114,10 +128,10 @@ angular.module('lmisChromeApp')
                       name: types[i].name
                     };
                     (function (i) {
-                      innerPromises.push(inventoryRulesFactory.getStockLevel(currentFacility, types[i].uuid)
+                      innerPromises.push(inventoryRulesFactory.daysOfStock(currentFacility, types[i].uuid)
                         .then(
                           function (stockLevel) {
-                            productTypeInfo[types[i].uuid].count = stockLevel;
+                            productTypeInfo[types[i].uuid].daysOfStock = stockLevel;
                           },
                           function (err) {
                             deferred.reject(err);
@@ -144,31 +158,23 @@ angular.module('lmisChromeApp')
                 });
               return deferred.promise;
             }
-          },
-          controller: function($scope, i18n, productTypeCounts, dashboardfactory) {
-            var keys = [
-              {
-                key: 'count',
-                label: i18n('count')
-              },
-              {
-                key: 'daysToReorder',
-                label: i18n('daysLeft')
+
+            getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService).then(
+              function(productTypeCounts) {
+              var values = [], product = {}; 
+              // TODO: unnecessary transposition
+              for(var uuid in productTypeCounts) {
+                product = productTypeCounts[uuid];
+                values.push({
+                  label: product.name,
+                  daysOfStock: Math.floor(product.daysOfStock),
+                  daysToReorder: Math.floor(product.daysToReorder)
+                });
               }
-            ];
+              $scope.productTypesChart = dashboardfactory.chart(keys, values);
+            }, function(err) {
 
-            // TODO: unnecessary transposition
-            var values = [], product = {};
-            for(var uuid in productTypeCounts) {
-              product = productTypeCounts[uuid];
-              values.push({
-                label: product.name,
-                count: product.count,
-                daysToReorder: product.daysToReorder
-              });
-            }
-
-            $scope.productTypesChart = dashboardfactory.chart(keys, values);
+            });  
           }
         }
       }
