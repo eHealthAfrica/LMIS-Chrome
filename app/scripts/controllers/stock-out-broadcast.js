@@ -41,6 +41,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       stockOutBroadcastFactory.save(stockOut).then(function (result) {
           //TODO: send SMS if offline
           if (result !== undefined) {
+            $state.go('home.index.mainActivity', {'stockOutBroadcastResult': true });
             stockOut.uuid = result;
             stockOutBroadcastFactory.broadcast(stockOut)
             .then(function (result) {
@@ -48,16 +49,17 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
                 }, function (reason) {
                   $log.error(reason);
                 })
-              $state.go('home.index.mainActivity', {'stockOutBroadcastResult': true });
-            }
-          }, function (reason) {
+          }else{
+            alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+          }
+      }, function (reason) {
             alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
             $log.error(reason);
           });
     };
 
     //TODO: move confirm dialogs to a service/factory.
-    if(navigator.notification){
+    if('confirm' in navigator.notification){
 
       //FIXME: refactor mobile dialog and chrome dialog to use same variable for label name, title, etc.
       var buttonLabels = i18n('yes')+','+i18n('no');
