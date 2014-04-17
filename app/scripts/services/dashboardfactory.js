@@ -42,9 +42,11 @@ angular.module('lmisChromeApp')
     var series = function(key, values) {
       var series = {
         key: key.label,
-        color: key.color,
         values: transposeValues(key.key, values)
       };
+      if('color' in key) {
+        series.color = key.color;
+      }
       return series;
     };
 

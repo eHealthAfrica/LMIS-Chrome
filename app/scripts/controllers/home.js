@@ -45,86 +45,132 @@ angular.module('lmisChromeApp')
         label: 'Home'
       }
     })
-    .state('home.index.mainActivity', {
+    .state('home.index.home', {
+      abstract: true,
+      templateUrl: 'views/home/home.html'
+    })
+    .state('home.index.home.mainActivity', {
       url: '/main-activity?appConfigResult&stockResult&storageClear&stockOutBroadcastResult',
-      templateUrl: 'views/home/main-activity.html',
       data: {
         label: 'Home'
       },
-      resolve: {
-        /** Returns an array of {name: product type name, count: total number in facility (as of last stock count)}
-        */
-        productTypeCounts: function($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService)
-        {
-          var deferred = $q.defer();
-          var productTypeInfo = {};
-          if(typeof appConfig === 'undefined'){
-            deferred.resolve(productTypeInfo);
-            return deferred.promise;
+      views: {
+        'activities': {
+          templateUrl: 'views/home/main-activity.html',
+          controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, alertsFactory) {
+            if ($stateParams.storageClear !== null) {
+              alertsFactory.success(i18n('clearStorageMsg'));
+              $stateParams.storageClear = null;
+            }
+
+            if ($stateParams.stockOutBroadcastResult !== null) {
+              alertsFactory.success(i18n('stockOutBroadcastSuccessMsg'));
+              $stateParams.stockOutBroadcastResult = null;
+            }
+
+
+            if ($stateParams.appConfigResult !== null) {
+              alertsFactory.success($stateParams.appConfigResult);
+              $stateParams.appConfigResult = null;
+            }
+
+            if($stateParams.stockResult !== null){
+              alertsFactory.success($stateParams.stockResult);
+              $stateParams.stockResult = null;
+            }
           }
-          var currentFacility = appConfig.appFacility;
-
-
-          var promises = [];
-          //TODO what a pain can't we have config service return real objects? thing is that creates an added dependency..
-          promises.push(appConfigService.getProductTypes());
-          promises.push(productTypeFactory.getAll());
-          $q.all(promises)
-            .then(            
-            function (res) {
-              var typeIds = res[0];
-              var actualTypes = res[1];
-              var types = actualTypes.filter(function (t) { return typeIds.indexOf(t.uuid) !== -1; });  
-              var productTypeInfo = [];
-              var innerPromises = [];
-              for(var i in types)
-              {
-                productTypeInfo[types[i].uuid] = { name: types[i].name };
-                (function(i) {
-                  innerPromises.push(inventoryRulesFactory.getStockLevel(currentFacility, types[i].uuid)
-                    .then(
-                      function (stockLevel){ productTypeInfo[types[i].uuid].count = stockLevel; },
-                      function (err) { deferred.reject(err); } )  
-                  );
-                  innerPromises.push(inventoryRulesFactory.daysToReorderPoint(currentFacility, types[i].uuid)
-                    .then(
-                      function (daysToReorder){ productTypeInfo[types[i].uuid].daysToReorder = daysToReorder; },
-                      function (err) { deferred.reject(err); } )
-                  );                   
-                })(i);
+        },
+        'charts': {
+          templateUrl: 'views/dashboard/dashboard.html',
+          resolve: {
+            /**
+             * Returns an array of {name: product type name, count: total number
+             * in facility (as of last stock count)}
+             */
+            productTypeCounts: function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
+              var deferred = $q.defer();
+              var productTypeInfo = {};
+              if(typeof appConfig === 'undefined'){
+                deferred.resolve(productTypeInfo);
+                return deferred.promise;
               }
-              $q.all(innerPromises).then(function (res) { deferred.resolve(productTypeInfo); });
-            },
-            function(err) { deferred.reject(err); })
-            .catch(function (reason) { $log.error(reason); deferred.reject(reason); });
-          return deferred.promise;
+              var currentFacility = appConfig.appFacility;
+              var promises = [];
+              //TODO what a pain can't we have config service return real objects? thing is that creates an added dependency..
+              promises.push(appConfigService.getProductTypes());
+              promises.push(productTypeFactory.getAll());
+              $q.all(promises)
+                .then(function(res) {
+                  var typeIds = res[0];
+                  var actualTypes = res[1];
+                  var types = actualTypes.filter(function (t) {
+                    return typeIds.indexOf(t.uuid) !== -1;
+                  });
+                  var productTypeInfo = [];
+                  var innerPromises = [];
+                  // jshint loopfunc: true
+                  for(var i in types) {
+                    productTypeInfo[types[i].uuid] = {
+                      name: types[i].name
+                    };
+                    (function (i) {
+                      innerPromises.push(inventoryRulesFactory.getStockLevel(currentFacility, types[i].uuid)
+                        .then(
+                          function (stockLevel) {
+                            productTypeInfo[types[i].uuid].count = stockLevel;
+                          },
+                          function (err) {
+                            deferred.reject(err);
+                          })
+                      );
+                      innerPromises.push(inventoryRulesFactory.daysToReorderPoint(currentFacility, types[i].uuid)
+                        .then(
+                          function (daysToReorder) {
+                            productTypeInfo[types[i].uuid].daysToReorder = daysToReorder;
+                          },
+                          function (err) {
+                            deferred.reject(err);
+                          })
+                      );
+                    })(i);
+                  }
+                  $q.all(innerPromises).then(function() {
+                    deferred.resolve(productTypeInfo);
+                  });
+                })
+                .catch(function (reason) {
+                  $log.error(reason);
+                  deferred.reject(reason);
+                });
+              return deferred.promise;
+            }
+          },
+          controller: function($scope, i18n, productTypeCounts, dashboardfactory) {
+            var keys = [
+              {
+                key: 'count',
+                label: i18n('count')
+              },
+              {
+                key: 'daysToReorder',
+                label: i18n('daysLeft')
+              }
+            ];
+
+            // TODO: unnecessary transposition
+            var values = [], product = {};
+            for(var uuid in productTypeCounts) {
+              product = productTypeCounts[uuid];
+              values.push({
+                label: product.name,
+                count: product.count,
+                daysToReorder: product.daysToReorder
+              });
+            }
+
+            $scope.productTypesChart = dashboardfactory.chart(keys, values);
+          }
         }
-
-      },
-      controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, alertsFactory, productTypeCounts) {
-        if ($stateParams.storageClear !== null) {
-          alertsFactory.success(i18n('clearStorageMsg'));
-          $stateParams.storageClear = null;
-        }
-
-        if ($stateParams.stockOutBroadcastResult !== null) {
-          alertsFactory.success(i18n('stockOutBroadcastSuccessMsg'));
-          $stateParams.stockOutBroadcastResult = null;
-        }
-
-
-        if ($stateParams.appConfigResult !== null) {
-          alertsFactory.success($stateParams.appConfigResult);
-          $stateParams.appConfigResult = null;
-        }
-
-        if($stateParams.stockResult !== null){
-          alertsFactory.success($stateParams.stockResult);
-          $stateParams.stockResult = null;
-        }
-
-        $scope.productTypes = Object.keys(productTypeCounts).map( function(k) { return productTypeCounts[k]; });
-        
       }
     })
     .state('home.index.dashboard', {
@@ -135,7 +181,7 @@ angular.module('lmisChromeApp')
         settings: function(settingsService) {
           return settingsService.load();
         },
-        aggregatedInventory: function($q, $log, appConfig, inventoryFactory, dashboardfactory, settings, productTypeFactory) {
+        aggregatedInventory: function($q, $log, appConfig, inventoryFactory, dashboardfactory, settings) {
           var currentFacility = appConfig.appFacility;
           var deferred = $q.defer();
 

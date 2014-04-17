@@ -144,7 +144,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.appConfig.uuid = result;
         $scope.isSaving = false;
         appConfigService.cache.put(appConfigService.APP_CONFIG, $scope.appConfig);
-        $state.go('home.index.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
+        $state.go('home.index.home.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
         surveyFactory.saveSurveyResponse(surveyResponse)
           .then(function(result){
             if(typeof result === 'undefined'){
@@ -216,7 +216,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       if(result !== undefined){
         appConfigService.cache.put(appConfigService.APP_CONFIG, $scope.appConfig);
         $scope.isSaving = false;
-        $state.go('home.index.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
+        $state.go('home.index.home.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
       } else {
         $scope.isSaving = false;
         alertsFactory.danger(i18n('appConfigFailedMsg'));
