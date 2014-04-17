@@ -79,7 +79,7 @@
           <div class="row">
             <div class="col-sm-12">
               <h5 class="text-center">Discarded {{selectedFacilityProduct}}</h5>
-              <h1 class="text-center discarded-figure">{{ DiscardCount.discarded[productKey] }}</h1>
+              <h1 class="text-center discarded-figure">{{ wasteCount.discarded[productKey] }}</h1>
             </div>
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12">
@@ -97,7 +97,7 @@
                   <!-- counter form not needed for now or maybe forever
                   <div class="col-sm-3 col-xs-12">
                     <div class="btn-separator">
-                      <counter bind="DiscardCount.discarded[productKey]"></counter>
+                      <counter bind="wasteCount.discarded[productKey]"></counter>
                     </div>
                     <div ng-show="productError" class="custom-error text-center" >{{ productErrorMsg }}</div>
                   </div>
@@ -108,8 +108,8 @@
                       <div class="form-group has-feedback" ng-class="{'has-error': reasonError}">
                           <div ng-repeat="reason in discardedReasons">
                             <div class="form-group">
-                              <label for="DiscardCount.reason[productKey][$index]">{{ reason }}</label>
-                              <input class="form-control" id="DiscardCount.reason[productKey][$index]" ng-init="DiscardCount.reason[productKey][$index] = 0" ng-model="DiscardCount.reason[productKey][$index]" ng-change="checkInput($index)" type="number">
+                              <label for="wasteCount.reason[productKey][$index]">{{ reason }}</label>
+                              <input class="form-control" id="wasteCount.reason[productKey][$index]" ng-init="wasteCount.reason[productKey][$index] = 0" ng-model="wasteCount.reason[productKey][$index]" ng-change="checkInput($index)" type="number">
                               <div ng-show="DiscardErrors[productKey][$index]" class="custom-error text-center">{{ DiscardErrorMsg[productKey][$index] }}</div>
                             </div>
                           </div>
@@ -180,7 +180,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" ng-show="editOn && step !== maxStep && DiscardCount.isComplete">
+            <div class="row" ng-show="editOn && step !== maxStep && wasteCount.isComplete">
               <div class="col-sm-6 data-row">
                 <div class="btn-separator">
                    <button type="button" class="btn btn-lg btn-warning col-sm-12 col-xs-12" ng-click="preview=!preview">
@@ -208,13 +208,13 @@
                   <!--tr ng-repeat="key in facilityProductsKeys" ng-click="edit($index)">
                     <td class="form-label">{{ facilityProducts[key].name }}</td>
                     <td>
-                      {{ DiscardCount.discarded[key] }}
+                      {{ wasteCount.discarded[key] }}
                     </td>
                     <td>
-                      <div ng-hide="reason === null " ng-repeat="(reasonKey, reason) in DiscardCount.reason[key]"> {{ discardedReasons[reasonKey] }} = {{ reason }} </div>
+                      <div ng-hide="reason === null " ng-repeat="(reasonKey, reason) in wasteCount.reason[key]"> {{ discardedReasons[reasonKey] }} = {{ reason }} </div>
                     </td>
                   </tr-->
-                  <tr ng-repeat="row in DiscardCountByType" ng-class="{'td-header': row.header}">
+                  <tr ng-repeat="row in wasteCountByType" ng-class="{'td-header': row.header}">
                     <td>
                       <div ng-class="{'child-margin': !row.header}">{{ getName(row) }}</div>
                     </td>
