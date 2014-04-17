@@ -50,7 +50,7 @@ angular.module('lmisChromeApp')
         questions: [
             {
               uuid: "0987856-897625-095623-abr67",
-              text: 'Is there immunization schedule session plan for RI?',
+              text: 'Was catchment area meeting conducted in the last month for this health facility?',
               type: QUESTION_TYPES.YES_NO
             }
           ],
@@ -70,12 +70,12 @@ angular.module('lmisChromeApp')
     };
 
     var getPendingSurveys = function(facilityUUID){
+      //TODO: make reminder to work by interval
       var deferred = $q.defer();
-
-      //TODO: add check for re-occurring surveys via interval
       storageService.all(storageService.SURVEY_RESPONSE)
         .then(function(surveyResponses){
           var pendingSurveys = [];
+          var today = new Date();
           for(var key in SURVEYS){
             var survey = SURVEYS[key];
             if(survey.facilities.indexOf(facilityUUID) > -1){
