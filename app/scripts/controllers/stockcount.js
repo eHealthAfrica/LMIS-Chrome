@@ -38,7 +38,14 @@ angular.module('lmisChromeApp')
           $scope.currentYear = now.getFullYear();
           $scope.year = $scope.currentYear;
           $scope.monthList = stockCountFactory.monthList;
+          $scope.startDate = new Date();
 
+          $scope.activatedDate = '2014-04-14';
+          $scope.countInterval = appConfig.stockCountInterval;
+          $scope.reminderDay= appConfig.reminderDay;
+          $scope.maxList = 10;
+
+          $scope.dateList = stockCountFactory.get.stockCountByIntervals($scope);
           $scope.dayInMonth = stockCountFactory.get.daysInMonth($scope.month, $scope.year).splice(0, $scope.currentDay).reverse();
           $scope.daysInMonthRange = $scope.dayInMonth.splice(0, 10);
 
