@@ -223,9 +223,9 @@ angular.module('lmisChromeApp')
     {
       if(stockCounts !== 'undefined')
       {
-        stockCounts = stockCounts.map(function (sc) { 
+        stockCounts = stockCounts.map(function (sc) {
           if(sc !== 'undefined')
-            sc.synced = isSynced(sc); 
+            sc.synced = isSynced(sc);
           return sc;
         });
       }
@@ -442,7 +442,7 @@ angular.module('lmisChromeApp')
       /**
      * This function returns stock counts by the given facility
      *
-     * @param facility 
+     * @param facility
      * @param productType
      * @returns {promise|promise|*|Function|promise}
      */
