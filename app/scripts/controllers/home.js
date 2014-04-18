@@ -63,28 +63,28 @@ angular.module('lmisChromeApp')
           templateUrl: 'views/home/main-activity.html',
           controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, alertsFactory) {
             if ($stateParams.storageClear !== null) {
-              alertsFactory.success(i18n('clearStorageMsg'));
+              alertsFactory.success(i18n('clearStorageMsg'), {persistent: true});
               $stateParams.storageClear = null;
             }
 
             if ($stateParams.stockOutBroadcastResult !== null) {
-              alertsFactory.success(i18n('stockOutBroadcastSuccessMsg'));
+              alertsFactory.success(i18n('stockOutBroadcastSuccessMsg'), {persistent: true});
               $stateParams.stockOutBroadcastResult = null;
             }
 
 
             if ($stateParams.appConfigResult !== null) {
-              alertsFactory.success($stateParams.appConfigResult);
+              alertsFactory.success($stateParams.appConfigResult, {persistent: true});
               $stateParams.appConfigResult = null;
             }
 
             if($stateParams.stockResult !== null){
-              alertsFactory.success($stateParams.stockResult);
+              alertsFactory.success($stateParams.stockResult, {persistent: true});
               $stateParams.stockResult = null;
             }
 
             if ($stateParams.surveySuccessMsg !== null) {
-              alertsFactory.success($stateParams.surveySuccessMsg);
+              alertsFactory.success($stateParams.surveySuccessMsg, {persistent: true});
               $stateParams.surveySuccessMsg = null;
             }
 
