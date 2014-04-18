@@ -2,7 +2,7 @@
 
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, cacheConfig,
                                                                       productProfileFactory, facilityFactory,
-                                                                      $cacheFactory, syncService) {
+                                                                      $cacheFactory, syncService, utility) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   this.cache = $cacheFactory(cacheConfig.id);
@@ -17,22 +17,33 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
   this.weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-  this.isStockCountDue = function(appConfig, stockCounts){
-    var currentDate = new Date();
-    // First day of current week is assumed to be Sunday, if current date is 19-12-2014, which is Thursday = 4,
-    //then date of first day of current week = 19 - 4 = 15-12-2014 which is Sunday
-    var firstDayOfCurrentWeek = currentDate.getDate() - currentDate.getDay();
-    var lastDayOfCurrentWeek = this.weekDays.length - 1;
-    var firstDayDateOfCurrentWeek = new Date(currentDate.setDate(firstDayOfCurrentWeek)).toUTCString();
-    var lastDayDateOfCurrentWeek = new Date(currentDate.setDate(lastDayOfCurrentWeek)).toUTCString();
-
-    console.log(firstDayDateOfCurrentWeek);
-    console.log(lastDayDateOfCurrentWeek);
-    return;
-
-    if(appConfig.reminderDay){
-
+  this.isStockCountDue = function(appConfig){
+    var deferred = $q.defer();
+    var today = new Date();
+    var currentWeekDateRange = utility.getWeekRangeByDate(today);
+    console.log(currentWeekDateRange);
+    console.log(appConfig.reminderDay);
+    console.log(today);
+    if(appConfig.reminderDay === today.getDay()){
+      //is stock count day, check if it has been done else set a reminder.
+      storageService.all(storageService.STOCK_COUNT)
+        .then(function(results){
+          //get stock-counts within current and week date range
+          var stockCountsWithInRange = results.filter(function(stockCount){
+            var stockCountDate = new Date(stockCount.countDate);
+            console.log(stockCountDate.getTime());
+            return (currentWeekDateRange.first.getTime() <= stockCountDate.getTime()
+                && stockCountDate.getTime() <= currentWeekDateRange.last.getTime())
+          });
+          deferred.resolve(stockCountsWithInRange.length === 0);
+        }, function(reason){
+            return deferred.resolve(true);
+        });
+    }else{
+      //TODO: confirm what to do if it is not reminder day should we still check if stock count should be done.
+      deferred.resolve(false);
     }
+    return deferred.promise;
   };
 
   /**
@@ -108,7 +119,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       .then(function(result){
         remoteDB.get(email)
         .then(function(appFacilityProfile){
-
           var promises = {
               appFacility: facilityFactory.get(appFacilityProfile.appFacility),
               selectedProductProfiles: productProfileFactory.getBatch(appFacilityProfile.selectedProductProfiles)

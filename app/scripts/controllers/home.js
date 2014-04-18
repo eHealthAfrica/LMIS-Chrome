@@ -11,18 +11,16 @@ angular.module('lmisChromeApp')
       resolve: {
         appConfig: function(appConfigService){
           return appConfigService.load();
-        },
-        todayStockCount: function (stockCountFactory) {
-          var today = new Date();
-          return stockCountFactory.getStockCountByDate(today);
         }
       },
-      controller: function($scope, appConfig, todayStockCount, $state) {
+      controller: function($scope, appConfig, appConfigService, $state) {
         if (appConfig === undefined) {
           $state.go('appConfigWelcome');
         } else {
           $scope.facility = appConfig.appFacility.name;
-          $scope.hasPendingStockCount = (todayStockCount === null);
+          appConfigService.isStockCountDue(appConfig).then(function(result){
+            $scope.hasPendingStockCount = result;
+          });
         }
       }
     })
