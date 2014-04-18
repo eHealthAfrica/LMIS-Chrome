@@ -37,11 +37,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       facility: $scope.stockOutForm.facility
     };
 
-    $scope.saveAndBroadcastStockOut = function(stockOut){
+    var saveAndBroadcastStockOut = function(stockOut){
       stockOutBroadcastFactory.save(stockOut).then(function (result) {
           //TODO: send SMS if offline
           if (typeof result !== 'undefined' || result !== null) {
-            $state.go('home.index.home.mainActivity', {'stockOutBroadcastResult': true });
+            $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
             stockOut.uuid = result;
             stockOutBroadcastFactory.broadcast(stockOut)
             .then(function (result) {
@@ -69,25 +69,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       navigator.notification.confirm(confirmationQuestion, function(index){
         var YES_INDEX = 1; //position in buttonLabels text + 1.
         if(index === YES_INDEX){
-          stockOutBroadcastFactory.save(stockOut).then(function (result) {
-          //TODO: send SMS if offline
-          if (typeof result !== 'undefined' || result !== null) {
-            navigator.notification.alert(result);
-            $state.go('home.index.home.mainActivity', {'stockOutBroadcastResult': true });
-            stockOut.uuid = result;
-            stockOutBroadcastFactory.broadcast(stockOut)
-            .then(function (result) {
-                  $log.info('stock-out broad-casted');
-                }, function (reason) {
-                  $log.error(reason);
-                })
-          }else{
-            alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-          }
-      }, function (reason) {
-            alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-            $log.error(reason);
-          });
+          saveAndBroadcastStockOut(stockOut);
         }
       },
       confirmationTitle, buttonLabels);
@@ -125,7 +107,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       modal.result.then(function (result) {
         if (result === true) {
-          $scope.saveAndBroadcastStockOut(stockOut);
+          saveAndBroadcastStockOut(stockOut);
         }
       }, function (reason) {
         $log.info(reason);
