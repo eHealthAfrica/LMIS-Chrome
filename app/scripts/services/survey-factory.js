@@ -74,6 +74,7 @@ angular.module('lmisChromeApp')
       var deferred = $q.defer();
       storageService.all(storageService.SURVEY_RESPONSE)
         .then(function(surveyResponses){
+          console.log(surveyResponses);
           var pendingSurveys = [];
           var today = new Date();
           for(var key in SURVEYS){
@@ -130,6 +131,7 @@ angular.module('lmisChromeApp')
     return {
       types: QUESTION_TYPES,
       intervals: INTERVALS,
+      surveys: SURVEYS,
       getSetupSurvey: getFacilitySetupSurvey,
       saveSurveyResponse: saveSurveyResponse,
       getPendingSurveys: getPendingSurveys,
