@@ -2,7 +2,7 @@
   "name": "LoMIS",
   "description": "Mobile supply and logistics for health facilities",
   "version": "0.7.1",
-  "manifest_version": 3,
+  "manifest_version": 2,
   "permissions": [
     {
       "fileSystem": [
@@ -31,6 +31,5 @@
     }
   },
   "default_locale": "en",
-  "packageId": "com.ehealthafrica.lomis",
   "author": "eHealth Africa"
 }
