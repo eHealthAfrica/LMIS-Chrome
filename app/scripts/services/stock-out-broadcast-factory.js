@@ -4,7 +4,7 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function(sto
 
   var saveStockOut = function(stockOut){
     var deferred = $q.defer();
-    storageService.insert(storageService.STOCK_OUT, stockOut).then(function(result){
+    storageService.save(storageService.STOCK_OUT, stockOut).then(function(result){
       deferred.resolve(result);
     }, function(reason){
       deferred.reject(reason);
