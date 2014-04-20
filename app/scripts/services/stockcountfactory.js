@@ -439,6 +439,9 @@ angular.module('lmisChromeApp')
           if($filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
               return false;
            }
+          else if (getWeek(new Date(date)) === getWeek(new Date())){
+            return false;
+          }
             else{
              return true;
            }
@@ -469,14 +472,12 @@ angular.module('lmisChromeApp')
         if( appDate === today || adjustedDate > today ){
           var lastCountDate = new Date(current-interval);
           if(getWeek(lastCountDate) === getWeek(new Date())){
-            dates.push(lastCountDate);
+            dates.push($filter('date')(lastCountDate.toJSON(), 'yyyy-MM-dd'));
           }
           return dates;
         }
         while(dates.length < scope.maxList){
-          dates.push(current);
-
-          console.log(current.getDay() +" "+current.toJSON());
+          dates.push($filter('date')(current.toJSON(), 'yyyy-MM-dd'));
           current = new Date(current.getTime() - interval);
         }
         return dates;
