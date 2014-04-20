@@ -1,0 +1,36 @@
+<form name="surveyForm" ng-submit="surveyForm.$valid" novalidate>
+  <div class="col-md-15">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title" ng-bind="survey.name"></h4>
+      </div>
+
+      <div class="list-group">
+        <div class="list-group-item" ng-repeat="question in survey.questions track by $index">
+          <div class="col-md-15">
+            <span ng-bind="question.text"></span>
+          </div>
+          <div class="row col-md-12 pull-right">
+            <label class="input-control"><input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}"
+                          ng-value="true"/> Yes</label>
+            <label class="input-control"><input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}"
+                          ng-value="false"> No</label>
+          </div>
+          <div class="panel-body"></div>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-success btn-lg" ng-click="save()" ng-disabled="isSaving">
+            <span ng-show="!isSaving" i18n="save"></span>
+            <span ng-show="!isSaving"><i class="fa fa-floppy-o"></i></i></span>
+            <span ng-show="isSaving" i18n="saving"></span>
+            <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
