@@ -15,25 +15,18 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     },
     controller: function ($stateParams, $state, $scope, surveyFactory, alertsFactory, appConfig, i18n) {
       if(!$stateParams.surveyUUID){
-        $state.go('home.index.home.mainActivity');
+        alertsFactory.danger(i18n('surveyNotFound'), {persistent: true});
         return;
       }
 
       //load survey
-      $scope.survey = {};
+      $scope.survey = surveyFactory.surveys[$stateParams.surveyUUID];
       $scope.surveyResponse = [];
 
-      surveyFactory.get($stateParams.surveyUUID)
-        .then(function(result){
-          if(result){
-            $scope.survey = result;
-          }else{
-            alertsFactory.danger(i18n('surveyNotFound'), {persistent: true});
-          }
-        }, function(reason){
-          console.error(reason);
-          alertsFactory.danger(i18n('surveyNotFound'), {persistent: true});
-      });
+      if(typeof $scope.survey === 'undefined'){
+        alertsFactory.danger(i18n('surveyNotFound'), {persistent: true});
+        return;
+      }
 
     $scope.save = function(){
       $scope.isSaving = true;
@@ -47,15 +40,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         survey: $scope.survey.uuid,
         facility: appConfig.appFacility.uuid,
         respondent: appConfig.contactPerson,
-        responses: responses,
-        isComplete: $scope.survey.questions.length === responses.length
-      }
+        responses: responses
+      };
 
-      if(surveyResponse.isComplete === false){
+      if($scope.survey.questions.length !== responses.length){
         $scope.isSaving = false;
         alertsFactory.danger(i18n('incompleteSurveyErrorMsg'));
         return;
       }
+      //flag survey response as completed
+      surveyResponse.isComplete = true;
 
       surveyFactory.saveSurveyResponse(surveyResponse)
         .then(function(result){
