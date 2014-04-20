@@ -39,8 +39,9 @@ angular.module('lmisChromeApp')
           $scope.year = $scope.currentYear;
           $scope.monthList = stockCountFactory.monthList;
           $scope.startDate = new Date();
+          $scope.appConfig = appConfig;
 
-          $scope.activatedDate = '2014-04-14';
+          $scope.dateActivated = appConfig.dateActivated;
           $scope.countInterval = appConfig.stockCountInterval;
           $scope.reminderDay= appConfig.reminderDay;
           $scope.maxList = 10;
