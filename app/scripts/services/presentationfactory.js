@@ -9,6 +9,9 @@ angular.module('lmisChromeApp')
           var productPresentation = data;
           productPresentation.uom = data.uom;
           if (productPresentation !== undefined) {
+            var promises = {};
+
+
             uomFactory.get(productPresentation.uom).then(function (data) {
               productPresentation.uom = data;
               deferred.notify(productPresentation.uom);
