@@ -51,7 +51,7 @@ angular.module('lmisChromeApp')
           $scope.daysInMonthRange = $scope.dayInMonth.splice(0, 10);
 
           $scope.missedEntry = function(date){
-           return stockCountFactory.get.missingEntry(date, $scope.stockCountByDate);
+           return stockCountFactory.get.missingEntry(date, $scope);
           };
           $scope.takeActon = function(date){
             var missed = $scope.missedEntry(date);
