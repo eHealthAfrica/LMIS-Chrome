@@ -460,6 +460,17 @@ angular.module('lmisChromeApp')
       }
 
     };
+    var watchDiscardedEntries = function(scope){
+      scope.$watchCollection('wasteCount.reason[productKey]', function(newValues, oldValues){
+        if((Object.keys(newValues)).length > 0){
+          for(var i in newValues){
+            if(newValues[i] !== oldValues[i]){
+              scope.checkInput(i);
+            }
+          }
+        }
+      });
+    }
     return {
       monthList: months,
       productType: productType,
@@ -468,6 +479,7 @@ angular.module('lmisChromeApp')
       get:load,
       getStockCountByDate: getStockCountByDate,
       getWasteCountByDate: getWasteCountByDate,
-      validate: validate
+      validate: validate,
+      watchDiscarded: watchDiscardedEntries
     };
   });
