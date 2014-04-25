@@ -481,6 +481,9 @@
   "stockCountReminderMsg": {
     "message": "A stock count is due today!"
   },
+  "discardCountReminderMsg": {
+    "message": "Discard count is due today!"
+  },
   "back": {
     "message": "Back"
   },
