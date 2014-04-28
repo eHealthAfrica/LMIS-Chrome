@@ -22,6 +22,9 @@ angular.module('lmisChromeApp')
           appConfigService.isStockCountDue(appConfig).then(function(result){
             $scope.hasPendingStockCount = result;
           });
+          appConfigService.isDiscardCountDue(appConfig).then(function(result){
+            $scope.hasPendingDiscardCount = result;
+          });
           surveyFactory.getPendingSurveys(appConfig.appFacility.uuid)
             .then(function(pendingSurveys){
              $scope.pendingSurveys = pendingSurveys;

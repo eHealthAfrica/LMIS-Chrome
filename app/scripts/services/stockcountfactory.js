@@ -36,6 +36,47 @@ angular.module('lmisChromeApp')
       });
       return deferred.promise;
     };
+
+    /**
+     * https://github.com/angular/angular.js/blob/master/src/ng/filter/filters.js#L238
+     * @param year
+     * @returns {Date}
+     */
+    function getFirstThursdayOfYear(year) {
+        // 0 = index of January
+        var dayOfWeekOnFirst = (new Date(year, 0, 1)).getDay();
+        // 4 = index of Thursday (+1 to account for 1st = 5)
+        // 11 = index of *next* Thursday (+1 account for 1st = 12)
+        return new Date(year, 0, ((dayOfWeekOnFirst <= 4) ? 5 : 12) - dayOfWeekOnFirst);
+    }
+
+    /**
+     * https://github.com/angular/angular.js/blob/master/src/ng/filter/filters.js#L246
+     * @param datetime
+     * @returns {Date}
+     */
+    function getThursdayThisWeek(datetime) {
+        return new Date(datetime.getFullYear(), datetime.getMonth(),
+        // 4 = index of Thursday
+        datetime.getDate() + (4 - datetime.getDay()));
+    }
+
+    /**
+     * https://github.com/angular/angular.js/blob/master/src/ng/filter/filters.js#L252
+     * @param date
+     * @returns {number}
+     */
+    function getWeekNumber(date) {
+       var firstThurs = getFirstThursdayOfYear(date.getFullYear()),
+       thisThurs = getThursdayThisWeek(date);
+
+       var diff = +thisThurs - +firstThurs,
+       result = 1 + Math.round(diff / 6.048e8); // 6.048e8 ms per week
+
+       return result;
+    }
+
+
     var addRecord={
       /**
        * Add/Update Stock count
@@ -423,27 +464,73 @@ angular.module('lmisChromeApp')
         }
         return fromFacilitySelected.concat(db_arr);
       },
-      missingEntry: function(date, stockCountByDate){
-        if(angular.isUndefined(stockCountByDate[date])){
+      missingEntry: function(date, scope){
+        var current = scope.startDate;
+        var dayDifference = 1000 * 60 * 60 * 24 * (Math.abs(parseInt(scope.reminderDay) - current.getDay()));
+        if(angular.isUndefined(scope.stockCountByDate[date])){
           if($filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
               return false;
            }
+          else if (dayDifference < (1000 * 60 * 60 * 24 *4)){
+            return false;
+          }
             else{
              return true;
-           }
+          }
         }
         else{
-          if(stockCountByDate[date].isComplete || $filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
+          if(scope.stockCountByDate[date].isComplete || $filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
             return false;
           }
           return true;
         }
       },
       /**
+       *
+       * @param scope
+       */
+      stockCountByIntervals: function(scope){
+
+        var dates = [];
+        var interval = 1000 * 60 * 60 * 24 * parseInt(scope.countInterval);
+
+        var current = scope.startDate;
+        // making sure reminder dates falls within reminder Day
+        // if the current day is not the same as selected reminder day, we adjust the date to match the next reminder
+        // day and use the date as the first day.
+        // we also check to see intervals is not set to daily
+
+        //get the difference from the current day of week to preset count day and add to/ minus from the current date to get a new date
+        var dayDifference = 1000 * 60 * 60 * 24 * (Math.abs(parseInt(scope.reminderDay) - current.getDay()));
+        if(current.getDay() !== parseInt(scope.reminderDay) && parseInt(scope.countInterval) !== 1){
+          current = current.getDay() > scope.reminderDay? new Date(current.getTime() - dayDifference) : current = new Date(current.getTime() + (dayDifference));
+        }
+
+        var today = $filter('date')(new Date().toJSON(), 'yyyy-MM-dd');
+        var appDate = $filter('date')(scope.dateActivated, 'yyyy-MM-dd');
+        var adjustedDate = $filter('date')(current.toJSON(), 'yyyy-MM-dd');
+        if( (appDate === today || adjustedDate > today) && parseInt(scope.countInterval) !== 1 ){
+          var lastCountDate = new Date(current-interval);
+          // if reminder day is less than four days from today lets enable last count date
+          if(dayDifference < (1000 * 60 * 60 * 24 *4)){
+            dates.push($filter('date')(lastCountDate.toJSON(), 'yyyy-MM-dd'));
+          }
+          return dates;
+        }
+
+        while(dates.length < scope.maxList){
+          if($filter('date')(current.toJSON(), 'yyyy-MM-dd') < appDate){
+            break;
+          }
+          dates.push($filter('date')(current.toJSON(), 'yyyy-MM-dd'));
+          current = new Date(current.getTime() - interval);
+        }
+        return dates;
+      },
+      /**
      * This function returns stock counts by the given facility
      *
      * @param facility
-     * @param productType
      * @returns {promise|promise|*|Function|promise}
      */
       byFacility: function(facility)
@@ -455,11 +542,22 @@ angular.module('lmisChromeApp')
           deferred.resolve(res);
         }, function(err) {
           deferred.reject(err);
-        })
+        });
         return deferred.promise;
       }
 
     };
+    var watchDiscardedEntries = function(scope){
+      scope.$watchCollection('wasteCount.reason[productKey]', function(newValues, oldValues){
+        if((Object.keys(newValues)).length > 0){
+          for(var i in newValues){
+            if(newValues[i] !== oldValues[i]){
+              scope.checkInput(i);
+            }
+          }
+        }
+      });
+    }
     return {
       monthList: months,
       productType: productType,
@@ -468,6 +566,7 @@ angular.module('lmisChromeApp')
       get:load,
       getStockCountByDate: getStockCountByDate,
       getWasteCountByDate: getWasteCountByDate,
-      validate: validate
+      validate: validate,
+      watchDiscarded: watchDiscardedEntries
     };
   });
