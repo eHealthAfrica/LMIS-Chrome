@@ -17,7 +17,10 @@ angular.module('lmisChromeApp')
                 productPresentation[key] = result[key];
               }
               deferred.resolve(productPresentation);
-            });
+            })
+            .catch(function(err){
+              deferred.reject(err);
+             });
           }else{
             deferred.resolve();
           }
