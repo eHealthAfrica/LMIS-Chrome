@@ -38,12 +38,20 @@ angular.module('lmisChromeApp')
           $scope.currentYear = now.getFullYear();
           $scope.year = $scope.currentYear;
           $scope.monthList = stockCountFactory.monthList;
+          $scope.startDate = new Date();
+          $scope.appConfig = appConfig;
 
+          $scope.dateActivated = appConfig.dateActivated;
+          $scope.countInterval = appConfig.stockCountInterval;
+          $scope.reminderDay= appConfig.reminderDay;
+          $scope.maxList = 10;
+
+          $scope.dateList = stockCountFactory.get.stockCountByIntervals($scope);
           $scope.dayInMonth = stockCountFactory.get.daysInMonth($scope.month, $scope.year).splice(0, $scope.currentDay).reverse();
           $scope.daysInMonthRange = $scope.dayInMonth.splice(0, 10);
 
           $scope.missedEntry = function(date){
-           return stockCountFactory.get.missingEntry(date, $scope.stockCountByDate);
+           return stockCountFactory.get.missingEntry(date, $scope);
           };
           $scope.takeActon = function(date){
             var missed = $scope.missedEntry(date);
