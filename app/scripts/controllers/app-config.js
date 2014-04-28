@@ -135,8 +135,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
      survey: setupSurvey.uuid,
      facility: $scope.appConfig.appFacility.uuid,
      respondent: $scope.appConfig.contactPerson,
-     responses: responses,
-     isComplete: setupSurvey.questions.length === responses.length
+     responses: responses
    };
 
    appConfigService.setup($scope.appConfig)
@@ -146,15 +145,18 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.isSaving = false;
         appConfigService.cache.put(appConfigService.APP_CONFIG, $scope.appConfig);
         $state.go('home.index.home.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
-        surveyFactory.saveSurveyResponse(surveyResponse)
-          .then(function(result){
-            if(typeof result === 'undefined'){
-              alertsFactory.danger('Saving of survey response failed');
-            }
-          }, function(reason){
-            console.log(reason);
-          });
 
+        if(setupSurvey.questions.length === responses.length){
+          surveyResponse.isComplete = true;
+          surveyFactory.saveSurveyResponse(surveyResponse)
+              .then(function (result) {
+                if (typeof result === 'undefined') {
+                  alertsFactory.danger('Saving of survey response failed');
+                }
+              }, function (reason) {
+                console.log(reason);
+              });
+        }
       } else {
         $scope.isSaving = false;
         alertsFactory.danger(i18n('appConfigFailedMsg'));
