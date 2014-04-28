@@ -279,7 +279,7 @@ angular.module('lmisChromeApp')
         we can be pretty sure it's accurate but right now there's no db feedback being saved
         locally */
       return (sc.dateSynced && sc.modified &&
-          new Date(sc.dateSynced) >= new Date(sc.modified));
+         $filter('date')(sc.dateSynced, 'yyyy-MM-dd') >= $filter('date')(sc.modified, 'yyyy-MM-dd'));
     };
 
     var load={
@@ -495,14 +495,14 @@ angular.module('lmisChromeApp')
         var interval = 1000 * 60 * 60 * 24 * parseInt(scope.countInterval);
 
         var reminderDate = utility.getWeekRangeByDate(new Date(), scope.reminderDay);
-        var current = reminderDate.reminderDate;
+        var currentReminderDate = reminderDate.reminderDate;
 
         while(dates.length < scope.maxList){
-          if($filter('date')(current.toJSON(), 'yyyy-MM-dd') < $filter('date')(new Date(), 'yyyy-MM-dd')){
-            dates.push($filter('date')(current.toJSON(), 'yyyy-MM-dd'));
+          if($filter('date')(currentReminderDate.toJSON(), 'yyyy-MM-dd') <= $filter('date')(new Date(), 'yyyy-MM-dd')){
+            dates.push($filter('date')(currentReminderDate.toJSON(), 'yyyy-MM-dd'));
           }
-          current = new Date(current.getTime() - interval);
-          if($filter('date')(current.toJSON(), 'yyyy-MM-dd') <= $filter('date')(scope.dateActivated, 'yyyy-MM-dd')){
+          currentReminderDate = new Date(currentReminderDate.getTime() - interval);
+          if($filter('date')(currentReminderDate.toJSON(), 'yyyy-MM-dd') < $filter('date')(scope.dateActivated, 'yyyy-MM-dd')){
             break;
           }
         }
@@ -525,6 +525,20 @@ angular.module('lmisChromeApp')
           deferred.reject(err);
         });
         return deferred.promise;
+      },
+      reminderDayFromDate: function(dayFromUrlParams, appConfig){
+        if(dayFromUrlParams === null){
+          var interval = 1000 * 60 * 60 * 24 * parseInt(appConfig.stockCountInterval);
+          var reminderDate = utility.getWeekRangeByDate(new Date(), appConfig.reminderDay);
+          if($filter('date')(new Date().toJSON(), 'yyyy-MM-dd') < $filter('date')(reminderDate.reminderDate.toJSON(), 'yyyy-MM-dd')){
+            var newDate = new Date(reminderDate.reminderDate.getTime() - interval);
+            return $filter('date')(newDate.toJSON(), 'dd');
+          }
+          else{
+            return $filter('date')(reminderDate.reminderDate.toJSON(), 'dd');
+          }
+        }
+        return dayFromUrlParams;
       }
 
     };

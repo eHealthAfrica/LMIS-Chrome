@@ -22,7 +22,7 @@ angular.module('lmisChromeApp')
           }
         },
         controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state, $filter){
-          console.log(appConfig);
+
           $scope.productProfiles = productProfiles;
           $scope.stockCountList = stockCountList;
           $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
@@ -410,7 +410,7 @@ angular.module('lmisChromeApp')
      */
     $scope.facilityObject = appConfig.appFacility;
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
-    $scope.reportDay = ($stateParams.reportDay !== null)?$stateParams.reportDay: day;
+    $scope.reportDay = stockCountFactory.get.reminderDayFromDate($stateParams.reportDay, appConfig);
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
 
