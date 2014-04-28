@@ -127,6 +127,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
               var appConfig = data[appConfigUUID];
               cache.put(storageService.APP_CONFIG, appConfig);
               deferred.resolve(appConfig);
+              console.log('load: '+JSON.stringify(appConfig));
             } else {
               throw 'there are more than one app config on this device.';
             }
