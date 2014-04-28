@@ -5,7 +5,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
                                                                       $cacheFactory, syncService, utility) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
-  this.cache = $cacheFactory(cacheConfig.id);
+  var cache = $cacheFactory(cacheConfig.id);
+  this.cache = cache;
   var FACILITY_PROFILE_DB = 'app_facility_profile';
 
   this.stockCountIntervals = [
@@ -102,11 +103,15 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       }
 
        $q.all(promises).then(function(results) {
+         cache.put(storageService.APP_CONFIG, results);
         console.log("config setup sync: "+results)
          syncService.syncItem(storageService.APP_CONFIG, appConfig)
             .then(function(syncResult){
               deferred.resolve(results);
           })
+         .catch(function(error){
+            deferred.reject(error);
+         });
        });
     });
     return deferred.promise;
@@ -114,20 +119,24 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
   this.load = function () {
     var deferred = $q.defer();
-    storageService.get(storageService.APP_CONFIG).then(function (data) {
-      if (data === undefined) {
-        deferred.resolve(data);
-        return;
-      }
-      if (Object.keys(data).length === 1) {
-        var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
-        deferred.resolve(data[appConfigUUID]);
-      } else {
-        throw 'there are more than one app config on this app.';
-      }
-    }, function (error) {
-      deferred.reject(error);
-    });
+    storageService.get(storageService.APP_CONFIG)
+      .then(function(data){
+          if(typeof data !== 'undefined'){
+            if (Object.keys(data).length === 1) {
+              var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
+              var appConfig = data[appConfigUUID];
+              cache.put(storageService.APP_CONFIG, appConfig);
+              deferred.resolve(appConfig);
+            } else {
+              throw 'there are more than one app config on this device.';
+            }
+          }else{
+            deferred.resolve(data);
+          }
+        })
+      .catch(function(err){
+        deferred.reject(err);
+      });
     return deferred.promise;
   };
 
@@ -220,23 +229,15 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   this.getCurrentAppConfig = function() {
     var deferred = $q.defer();
     var appConfig = this.cache.get(storageService.APP_CONFIG);
-    console.log('app config'+JSON.stringify(appConfig));
+
     if(appConfig !== undefined){
       deferred.resolve(appConfig);
-      console.log('pulled from cache');
     }else{
-      console.log('pulled from storage service');
-      storageService.get(storageService.APP_CONFIG).then(function (data) {
-        if (data === undefined) {
-          deferred.resolve(data);
-        }else if (Object.keys(data).length === 1) {
-          var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
-          deferred.resolve(data[appConfigUUID ]);
-        } else {
-          throw 'there are more than one app config on this app.';
-        }
-      }, function (error) {
-        deferred.reject(error);
+      this.load().then(function(result){
+        deferred.resolve(result);
+      })
+      .catch(function(err){
+        deferred.reject(err);
       });
     }
     return deferred.promise
