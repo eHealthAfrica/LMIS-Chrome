@@ -75,6 +75,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.disableBtn = isEmailValid;
     appConfigService.getAppFacilityProfileByEmail($scope.appConfig.uuid)
       .then(function(result){
+          console.log(result);
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
         $scope.profileNotFound = false;
@@ -110,7 +111,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       name: '',
       phoneNo: ''
     },
-    selectedProductProfiles: []
+    selectedProductProfiles: [],
+    dateAdded: undefined
   };
 
   $scope.surveyResponse = [];
@@ -176,16 +178,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  $scope.preSelectProductProfileCheckBox = {};
  $scope.isSubmitted = false;
  //used to hold config form data
- $scope.appConfig = {
-    facility: '',
-    stockCountInterval: '',
-    reminderDay: '',
-    contactPerson: {
-      name: '',
-      phoneNo: ''
-    },
-    selectedProductProfiles: []
-  };
+ $scope.appConfig = appConfig;
 
  function preLoadConfigForm(appConfig){
    if(appConfig === undefined) {
@@ -212,6 +205,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  $scope.save = function(){
    $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility);
    $scope.isSaving = true;
+
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){

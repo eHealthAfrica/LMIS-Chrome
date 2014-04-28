@@ -5,7 +5,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
                                                                       $cacheFactory, syncService, utility) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
-  this.cache = $cacheFactory(cacheConfig.id);
+  var cache = $cacheFactory(cacheConfig.id);
+  this.cache = cache;
   var FACILITY_PROFILE_DB = 'app_facility_profile';
 
   this.stockCountIntervals = [
@@ -76,6 +77,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       }
 
        $q.all(promises).then(function(results) {
+         cache.put(storageService.APP_CONFIG, results);
         console.log("config setup sync: "+results)
          syncService.syncItem(storageService.APP_CONFIG, appConfig)
             .then(function(syncResult){
@@ -97,6 +99,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
             if (Object.keys(data).length === 1) {
               var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
               var appConfig = data[appConfigUUID];
+              cache.put(storageService.APP_CONFIG, appConfig);
               deferred.resolve(appConfig);
             } else {
               throw 'there are more than one app config on this device.';

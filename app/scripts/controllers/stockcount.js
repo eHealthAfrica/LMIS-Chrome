@@ -12,7 +12,7 @@ angular.module('lmisChromeApp')
         templateUrl: 'views/stockcount/index.html',
         resolve: {
           appConfig: function(appConfigService){
-            return appConfigService.load();
+            return appConfigService.getCurrentAppConfig();
           },
           stockCountList: function(stockCountFactory){
             return stockCountFactory.get.allStockCount();

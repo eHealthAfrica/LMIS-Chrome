@@ -61,7 +61,7 @@ angular.module('lmisChromeApp')
     var getByProductType = function(productType) {
       var deferred = $q.defer();
       var ptUuid = typeof productType === 'string' ? productType : productType.uuid;
-      getAll().then(function(profiles){
+      storageService.all(storageService.PRODUCT_PROFILE).then(function(profiles){
         profiles = profiles.filter(function(p) { return p.product === ptUuid });
         deferred.resolve(profiles);
       }, function(err) {
@@ -75,7 +75,7 @@ angular.module('lmisChromeApp')
         throw 'expected argument to be an array., not array argument passed';
       }
       var deferred = $q.defer();
-      getAll().then(function(productProfiles){
+      storageService.all(storageService.PRODUCT_PROFILE).then(function(productProfiles){
         var result = productProfiles.filter(function (productProfile) {
           var NOT_FOUND = -1; //-1 value returned by indexOf if not found.
           return uuidList.indexOf(productProfile.uuid) > NOT_FOUND;
