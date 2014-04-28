@@ -1,12 +1,26 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('productProfileFactory', function ($q, storageService) {
+  .factory('productProfileFactory', function ($q, storageService, presentationFactory) {
     var get = function(uuid) {
       var deferred = $q.defer();
       storageService.find(storageService.PRODUCT_PROFILE, uuid)
         .then(function(productProfile) {
-          deferred.resolve(productProfile);
+            if (typeof productProfile !== 'undefined') {
+              var promises = {
+                presentation: presentationFactory.get(productProfile.presentation)
+              };
+              $q.all(promises).then(function (results) {
+                for (var key in results) {
+                  productProfile[key] = results[key];
+                }
+                deferred.resolve(productProfile);
+              });
+            } else {
+              deferred.resolve();
+            }
+        }, function(err){
+          deferred.reject(err);
         })
         .catch(function(reason) {
           deferred.reject(reason);
@@ -18,7 +32,19 @@ angular.module('lmisChromeApp')
       var deferred = $q.defer();
       storageService.all(storageService.PRODUCT_PROFILE)
         .then(function(productProfiles) {
-          deferred.resolve(productProfiles);
+          var promises = [];
+          //attach complete nested object such as presentation to each product profile
+          for(var index in productProfiles){
+            var productProfile = productProfiles[index];
+            promises.push(get(productProfile.uuid));
+          }
+
+          $q.all(promises).then(function(productProfiles){
+            deferred.resolve(productProfiles);
+          })
+          .catch(function(reason){
+            deferred.reject(reason);
+          });
         })
         .catch(function(reason) {
           deferred.reject(reason);
@@ -49,17 +75,16 @@ angular.module('lmisChromeApp')
         throw 'expected argument to be an array., not array argument passed';
       }
       var deferred = $q.defer();
-      storageService.all(storageService.PRODUCT_PROFILE)
-          .then(function (productProfiles) {
-            var result = productProfiles.filter(function (productProfile) {
-              var NOT_FOUND = -1; //-1 value returned by indexOf if not found.
-              return uuidList.indexOf(productProfile.uuid) > NOT_FOUND;
-            });
-            deferred.resolve(result);
-          })
-          .catch(function (reason) {
-            deferred.reject(reason);
-          });
+      getAll().then(function(productProfiles){
+        var result = productProfiles.filter(function (productProfile) {
+          var NOT_FOUND = -1; //-1 value returned by indexOf if not found.
+          return uuidList.indexOf(productProfile.uuid) > NOT_FOUND;
+        });
+        deferred.resolve(result);
+      })
+      .catch(function (reason) {
+        deferred.reject(reason);
+      });
       return deferred.promise;
     }
 

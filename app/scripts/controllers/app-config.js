@@ -46,7 +46,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return productProfileFactory.getAll();
       },
       appConfig: function(appConfigService){
-        return appConfigService.load();
+        return appConfigService.getCurrentAppConfig();
       }
     },
     controller: 'EditAppConfigCtrl',
@@ -143,7 +143,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       if(result !== undefined){
         $scope.appConfig.uuid = result;
         $scope.isSaving = false;
-        appConfigService.cache.put(appConfigService.APP_CONFIG, $scope.appConfig);
         $state.go('home.index.home.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
 
         if(setupSurvey.questions.length === responses.length){
@@ -216,7 +215,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){
-        appConfigService.cache.put(appConfigService.APP_CONFIG, $scope.appConfig);
         $scope.isSaving = false;
         $state.go('home.index.home.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
       } else {

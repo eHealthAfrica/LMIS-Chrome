@@ -7,17 +7,22 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         storageService.find(storageService.PRODUCT_PRESENTATION, uuid).then(function (data) {
           var productPresentation = data;
-          productPresentation.uom = data.uom;
           if (productPresentation !== undefined) {
-            var promises = {};
+            var promises = {
+              uom: uomFactory.get(productPresentation.uom)
+            };
 
-
-            uomFactory.get(productPresentation.uom).then(function (data) {
-              productPresentation.uom = data;
-              deferred.notify(productPresentation.uom);
+            $q.all(promises).then(function(result) {
+              for(var key in result) {
+                productPresentation[key] = result[key];
+              }
               deferred.resolve(productPresentation);
             });
+          }else{
+            deferred.resolve();
           }
+        }, function(err){
+          deferred.reject(err);
         });
         return deferred.promise;
       }
@@ -37,6 +42,8 @@ angular.module('lmisChromeApp')
               });
             }
             deferred.resolve(presentations);
+          }, function(err){
+            deferred.reject(err);
           });
           return deferred.promise;
         },

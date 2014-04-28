@@ -22,6 +22,7 @@ angular.module('lmisChromeApp')
           }
         },
         controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state, $filter){
+          console.log(appConfig);
           $scope.productProfiles = productProfiles;
           $scope.stockCountList = stockCountList;
           $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
@@ -555,6 +556,7 @@ angular.module('lmisChromeApp')
         $scope.productKey = $scope.facilityProductsKeys[$scope.step];
       }
       $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
+
       $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
     };
   });
