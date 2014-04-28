@@ -462,12 +462,11 @@ angular.module('lmisChromeApp')
             dbArr.pop(index);
           }
         }
-        return fromFacilitySelected.concat(db_arr);
+        return fromFacilitySelected.concat(dbArr);
       },
       missingEntry: function(date, scope){
         var reminderDate = utility.getWeekRangeByDate(new Date(date), scope.reminderDay);
         var lastDay = reminderDate.last;
-        console.log(reminderDate);
         if(angular.isUndefined(scope.stockCountByDate[date])){
           if($filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
               return false;
