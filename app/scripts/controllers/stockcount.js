@@ -390,6 +390,7 @@ angular.module('lmisChromeApp')
       stockCountFactory.validate.waste.changeState($scope, direction);
       $scope.wasteCountByType = stockCountFactory.get.wasteCountByType($scope.wasteCount);
     };
+    stockCountFactory.watchDiscarded($scope);
   })
 
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, i18n, pouchdb, config){
