@@ -79,7 +79,9 @@
           <div class="row">
             <div class="col-sm-12">
               <h5 class="text-center">Discarded {{selectedFacilityProduct}}</h5>
-              <h1 class="text-center discarded-figure">{{ wasteCount.discarded[productKey] }}</h1>
+              <h1 class="text-center discarded-figure">{{ wasteCount.discarded[productKey] }}
+                {{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}
+              </h1>
             </div>
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12">
