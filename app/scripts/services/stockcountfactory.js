@@ -455,23 +455,24 @@ angular.module('lmisChromeApp')
       },
       mergedStockCount: function(fromDB, fromFacilitySelected){
         var db = Object.keys(fromDB);
-        var db_arr = Object.keys(fromDB);
+        var dbArr = Object.keys(fromDB);
         for(var i in fromFacilitySelected){
           if(fromFacilitySelected[i] in fromDB){
             var index = db.indexOf(fromFacilitySelected[i]);
-            db_arr.pop(index);
+            dbArr.pop(index);
           }
         }
         return fromFacilitySelected.concat(db_arr);
       },
       missingEntry: function(date, scope){
-        var current = scope.startDate;
-        var dayDifference = 1000 * 60 * 60 * 24 * (Math.abs(parseInt(scope.reminderDay) - current.getDay()));
+        var reminderDate = utility.getWeekRangeByDate(new Date(date), scope.reminderDay);
+        var lastDay = reminderDate.last;
+        console.log(reminderDate);
         if(angular.isUndefined(scope.stockCountByDate[date])){
           if($filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
               return false;
            }
-          else if (dayDifference < (1000 * 60 * 60 * 24 *4)){
+          else if ($filter('date')(lastDay.toJSON(), 'yyyy-MM-dd') >= $filter('date')(new Date().toJSON(),'yyyy-MM-dd')){
             return false;
           }
             else{
@@ -494,36 +495,17 @@ angular.module('lmisChromeApp')
         var dates = [];
         var interval = 1000 * 60 * 60 * 24 * parseInt(scope.countInterval);
 
-        var current = scope.startDate;
-        // making sure reminder dates falls within reminder Day
-        // if the current day is not the same as selected reminder day, we adjust the date to match the next reminder
-        // day and use the date as the first day.
-        // we also check to see intervals is not set to daily
-
-        //get the difference from the current day of week to preset count day and add to/ minus from the current date to get a new date
-        var dayDifference = 1000 * 60 * 60 * 24 * (Math.abs(parseInt(scope.reminderDay) - current.getDay()));
-        if(current.getDay() !== parseInt(scope.reminderDay) && parseInt(scope.countInterval) !== 1){
-          current = current.getDay() > scope.reminderDay? new Date(current.getTime() - dayDifference) : current = new Date(current.getTime() + (dayDifference));
-        }
-
-        var today = $filter('date')(new Date().toJSON(), 'yyyy-MM-dd');
-        var appDate = $filter('date')(scope.dateActivated, 'yyyy-MM-dd');
-        var adjustedDate = $filter('date')(current.toJSON(), 'yyyy-MM-dd');
-        if( (appDate === today || adjustedDate > today) && parseInt(scope.countInterval) !== 1 ){
-          var lastCountDate = new Date(current-interval);
-          // if reminder day is less than four days from today lets enable last count date
-          if(dayDifference < (1000 * 60 * 60 * 24 *4)){
-            dates.push($filter('date')(lastCountDate.toJSON(), 'yyyy-MM-dd'));
-          }
-          return dates;
-        }
+        var reminderDate = utility.getWeekRangeByDate(new Date(), scope.reminderDay);
+        var current = reminderDate.reminderDate;
 
         while(dates.length < scope.maxList){
-          if($filter('date')(current.toJSON(), 'yyyy-MM-dd') < appDate){
+          if($filter('date')(current.toJSON(), 'yyyy-MM-dd') < $filter('date')(new Date(), 'yyyy-MM-dd')){
+            dates.push($filter('date')(current.toJSON(), 'yyyy-MM-dd'));
+          }
+          current = new Date(current.getTime() - interval);
+          if($filter('date')(current.toJSON(), 'yyyy-MM-dd') <= $filter('date')(scope.dateActivated, 'yyyy-MM-dd')){
             break;
           }
-          dates.push($filter('date')(current.toJSON(), 'yyyy-MM-dd'));
-          current = new Date(current.getTime() - interval);
         }
         return dates;
       },
