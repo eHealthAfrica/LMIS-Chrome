@@ -89,7 +89,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
         $scope.moveTo(nextStep);
 
-      }, function(error){
+      })
+      .catch(function(error){
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
         $scope.profileNotFound = true;
@@ -152,10 +153,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           surveyFactory.saveSurveyResponse(surveyResponse)
               .then(function (result) {
                 if (typeof result === 'undefined') {
-                  alertsFactory.danger('Saving of survey response failed');
+                  alertsFactory.danger(i18n('surveyFailedMsg'));
                 }
-              }, function (reason) {
-                console.log(reason);
+              })
+              .catch(function(){
+                alertsFactory.danger(i18n('surveyFailedMsg'));
               });
         }
       } else {
