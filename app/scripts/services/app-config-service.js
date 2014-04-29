@@ -94,16 +94,16 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       }
       var promises = [];
       if (result === undefined) {
-        promises.push(storageService.save(storageService.APP_CONFIG, appConfig)); //TODO: should apply changes to appConfig after save
+        promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
       } else {
         //over-write appConfig by using existing appConfig uuid for the new appConfig.
-        //2014-04-11 - it would be more readable for this to apply individual properties to result rather than uuid to appConfig, that ties storage logic to this 
+        //2014-04-11 - it would be more readable for this to apply individual properties to result rather than uuid to appConfig, that ties storage logic to this
         appConfig['uuid'] = result.uuid;
         promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
       }
 
        $q.all(promises).then(function(results) {
-         cache.put(storageService.APP_CONFIG, results);
+         cache.put(storageService.APP_CONFIG, appConfig);
 
          syncService.syncItem(storageService.APP_CONFIG, appConfig)
             .then(function(syncResult){
@@ -252,7 +252,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     var deferred = $q.defer();
     var appConfig = this.cache.get(storageService.APP_CONFIG);
 
-    if(appConfig !== undefined){
+    if(typeof appConfig !== 'undefined'){
       deferred.resolve(appConfig);
     }else{
       this.load().then(function(result){
@@ -263,6 +263,10 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       });
     }
     return deferred.promise
+  };
+
+  this.clearCache = function(){
+    cache.removeAll();
   };
 
 });
