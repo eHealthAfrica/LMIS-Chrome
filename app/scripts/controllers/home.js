@@ -18,7 +18,7 @@ angular.module('lmisChromeApp')
         if (appConfig === undefined) {
           $state.go('appConfigWelcome');
         } else {
-          console.log('Home app config '+JSON.stringify(appConfig.selectedProductProfiles));
+
           $scope.facility = appConfig.appFacility.name;
           appConfigService.isStockCountDue(appConfig).then(function(result){
             $scope.hasPendingStockCount = result;
