@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('deviceInfoService', function($q, $rootScope) {
+  .service('deviceInfoService', function($q) {
 
     this.NOT_SUPPORTED_MSG = 'cordova not supported on this device!';
 
