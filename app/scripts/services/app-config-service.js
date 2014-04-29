@@ -93,7 +93,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         appConfig.dateActivated = new Date().toJSON();
       }
       var promises = [];
-      if (result === undefined) {
+      if (typeof result === 'undefined') {
         promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
       } else {
         //over-write appConfig by using existing appConfig uuid for the new appConfig.

@@ -75,7 +75,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.disableBtn = isEmailValid;
     appConfigService.getAppFacilityProfileByEmail($scope.appConfig.uuid)
       .then(function(result){
-          console.log(result);
+
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
         $scope.profileNotFound = false;
