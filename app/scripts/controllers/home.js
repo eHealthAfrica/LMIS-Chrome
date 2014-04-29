@@ -10,7 +10,7 @@ angular.module('lmisChromeApp')
       templateUrl: 'views/home/index.html',
       resolve: {
         appConfig: function(appConfigService){
-          return appConfigService.load();
+          return appConfigService.getCurrentAppConfig();
         }
       },
       controller: function($scope, appConfig, appConfigService, $state, surveyFactory) {
