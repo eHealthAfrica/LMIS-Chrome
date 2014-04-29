@@ -526,10 +526,18 @@ angular.module('lmisChromeApp')
         });
         return deferred.promise;
       },
+      /**
+       * this return default day if none was provided via url
+       * @param dayFromUrlParams
+       * @param appConfig
+       * @returns {number}
+       */
       reminderDayFromDate: function(dayFromUrlParams, appConfig){
         if(dayFromUrlParams === null){
-          var interval = 1000 * 60 * 60 * 24 * parseInt(appConfig.stockCountInterval);
+          var interval = 1000 * 60 * 60 * 24 * parseInt(appConfig.stockCountInterval); //convert interval to day
           var reminderDate = utility.getWeekRangeByDate(new Date(), appConfig.reminderDay);
+          // if the selected stock count date is not equals to today, then check if the last day of the
+          // week the date fell is less than today and the count interval must not be daily
           if($filter('date')(new Date().toJSON(), 'yyyy-MM-dd') < $filter('date')(reminderDate.reminderDate.toJSON(), 'yyyy-MM-dd')){
             var newDate = new Date(reminderDate.reminderDate.getTime() - interval);
             return $filter('date')(newDate.toJSON(), 'dd');
@@ -541,6 +549,28 @@ angular.module('lmisChromeApp')
         return dayFromUrlParams;
       }
 
+    };
+    var setter= {
+      stock: {
+        /**
+         * this function sets the edit status for selected stock count detail
+         * @param scope
+         */
+        editStatus: function(scope){
+          // if the selected stock count date is not equals to today, then check if the last day of the
+          // week the date fell is less than today and the count interval must not be daily
+          if($filter('date')(new Date(), 'yyyy-MM-dd') !== $filter('date')(scope.stockCount.countDate, 'yyyy-MM-dd')){
+            var reminderDate = utility.getWeekRangeByDate(new Date(scope.stockCount.countDate), scope.reminderDay);
+            var lastDay = reminderDate.last;
+            if (($filter('date')(lastDay.toJSON(), 'yyyy-MM-dd') >= $filter('date')(new Date().toJSON(),'yyyy-MM-dd')) && parseInt(scope.countInterval) !== 1){
+              scope.editOff = false;
+            }
+            else{
+              scope.editOff = true;
+            }
+          }
+        }
+      }
     };
     var watchDiscardedEntries = function(scope){
       scope.$watchCollection('wasteCount.reason[productKey]', function(newValues, oldValues){
@@ -559,6 +589,7 @@ angular.module('lmisChromeApp')
       discardedReasons: discardedReasons,
       save:addRecord,
       get:load,
+      set: setter,
       getStockCountByDate: getStockCountByDate,
       getWasteCountByDate: getWasteCountByDate,
       validate: validate,

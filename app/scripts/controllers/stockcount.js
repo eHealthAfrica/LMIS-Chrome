@@ -21,16 +21,14 @@ angular.module('lmisChromeApp')
             return stockCountFactory.get.productProfile();
           }
         },
-        controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state, $filter){
+        controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state){
 
           $scope.productProfiles = productProfiles;
           $scope.stockCountList = stockCountList;
           $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
           $scope.facilityObject = appConfig.appFacility;
           $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
-
           $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
-
           var now = new Date();
           $scope.currentDay = now.getDate();
           $scope.day = $scope.currentDay;
@@ -39,9 +37,6 @@ angular.module('lmisChromeApp')
           $scope.currentYear = now.getFullYear();
           $scope.year = $scope.currentYear;
           $scope.monthList = stockCountFactory.monthList;
-          $scope.startDate = new Date();
-          $scope.appConfig = appConfig;
-
           $scope.dateActivated = appConfig.dateActivated;
           $scope.countInterval = appConfig.stockCountInterval;
           $scope.reminderDay= appConfig.reminderDay;
@@ -60,9 +55,7 @@ angular.module('lmisChromeApp')
               if(stockCount !== null){
                 $scope.stockCount = stockCount;
                 $scope.detailView = true;
-                if($filter('date')(new Date(), 'yyyy-MM-dd') !== $filter('date')(stockCount.countDate, 'yyyy-MM-dd')){
-                  $scope.editOff = true;
-                }
+                stockCountFactory.set.stock.editStatus($scope);
                 $scope.mergedList = stockCountFactory.get.mergedStockCount(stockCount.unopened, $scope.facilityProductsKeys);
               }
               else if(!missed){
