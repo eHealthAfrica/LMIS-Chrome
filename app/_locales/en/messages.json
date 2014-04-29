@@ -515,5 +515,8 @@
   },
   "surveyNotFound": {
     "message": "Survey not found!"
+  },
+  "sending": {
+    "message": "Sending ..."
   }
 }

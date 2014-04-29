@@ -6,7 +6,8 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function(sto
     var deferred = $q.defer();
     storageService.save(storageService.STOCK_OUT, stockOut).then(function(result){
       deferred.resolve(result);
-    }, function(reason){
+    })
+    .catch(function(reason){
       deferred.reject(reason);
     });
     return deferred.promise;
@@ -20,15 +21,21 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function(sto
       productType: stockOut.productType.uuid,
       created: stockOut.created,
       modified: stockOut.modified
-    }
+    };
+
     try{
       if($window.navigator.onLine){
         syncService.syncItem(storageService.STOCK_OUT, stockOutModel)
-            .then(function (result) {
-              deferred.resolve(result);
-            }, function (reason) {
-              deferred.reject(reason);
-            });
+          .then(function (result) {
+            deferred.resolve(result);
+          })
+          .catch(function (reason) {
+            deferred.reject(reason);
+          });
+
+      }else{
+        //TODO: send SMS if offline
+        deferred.reject('system is offline, send SMS!');
       }
     }catch(e){
       deferred.reject(e);
