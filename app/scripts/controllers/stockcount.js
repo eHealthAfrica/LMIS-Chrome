@@ -325,8 +325,6 @@ angular.module('lmisChromeApp')
         $scope.wasteCount.uuid = result;
 
         if($scope.redirect) {
-          //if final save, redirect, clear previous product type info cache
-
           var msg = [
             'You have completed waste count for',
             $scope.currentDay,
@@ -468,7 +466,9 @@ angular.module('lmisChromeApp')
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(result){
             if (typeof result !== 'undefined') {
+              //clear data used to plot product-type-info graph
                cacheService.remove(cacheService.PRODUCT_TYPE_INFO);
+
               //if final save, redirect to home page.
               if ($scope.redirect) {
                 var msg = [

@@ -115,6 +115,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
        $q.all(promises).then(function(results) {
          cache.put(storageService.APP_CONFIG, appConfig);
+         //clear data used to plot product-type-info graph
+         cache.remove(cacheService.PRODUCT_TYPE_INFO);
 
          syncService.syncItem(storageService.APP_CONFIG, appConfig)
             .then(function(syncResult){

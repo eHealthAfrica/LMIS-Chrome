@@ -19,6 +19,10 @@ angular.module('lmisChromeApp').service('cacheService', function ($q, $cacheFact
     return _cache.put(key, value);
   };
 
+  this.remove = function(key){
+    return _cache.remove(key);
+  };
+
   this.clearCache = function(){
     return _cache.removeAll();
   };
