@@ -21,7 +21,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return facilityFactory.getAll();
       },
       productProfiles: function(productProfileFactory){
-        return productProfileFactory.getAll();
+        return productProfileFactory.getAllWithoutNestedObject();
       },
       deviceInfo: function(deviceInfoService){
         return deviceInfoService.getDeviceInfo();
@@ -43,7 +43,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return facilityFactory.getAll();
       },
       productProfiles: function(productProfileFactory){
-        return productProfileFactory.getAll();
+        return productProfileFactory.getAllWithoutNestedObject();
       },
       appConfig: function(appConfigService){
         return appConfigService.getCurrentAppConfig();
@@ -211,15 +211,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){
-        $scope.isSaving = false;
         $state.go('home.index.home.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
-      } else {
         $scope.isSaving = false;
+      } else {
         alertsFactory.danger(i18n('appConfigFailedMsg'));
+        $scope.isSaving = false;
       }
    }, function (reason) {
-      $scope.isSaving = false;
       alertsFactory.danger(i18n('appConfigFailedMsg'));
+      $scope.isSaving = false;
       $log.error(reason);
    });
  };
