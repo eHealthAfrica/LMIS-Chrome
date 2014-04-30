@@ -200,3 +200,9 @@ tr.disabled, tr.disabled span.text-info{
   max-width:  50%;
   max-height: 50%;
 }
+.btn-right{
+  padding-left: 0.5em;
+}
+.btn-left{
+   padding-right: 0.5em;
+}
