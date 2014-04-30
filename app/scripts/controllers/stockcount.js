@@ -325,7 +325,8 @@ angular.module('lmisChromeApp')
         $scope.wasteCount.uuid = result;
 
         if($scope.redirect) {
-          //if final save, redirect
+          //if final save, redirect, clear previous product type info cache
+
           var msg = [
             'You have completed waste count for',
             $scope.currentDay,
@@ -391,7 +392,7 @@ angular.module('lmisChromeApp')
     stockCountFactory.watchDiscarded($scope);
   })
 
-  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, i18n, pouchdb, config, syncService){
+  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, i18n, pouchdb, config, syncService, cacheService){
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
@@ -467,6 +468,7 @@ angular.module('lmisChromeApp')
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(result){
             if (typeof result !== 'undefined') {
+               cacheService.remove(cacheService.PRODUCT_TYPE_INFO);
               //if final save, redirect to home page.
               if ($scope.redirect) {
                 var msg = [
