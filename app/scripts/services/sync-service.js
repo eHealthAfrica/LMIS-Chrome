@@ -39,6 +39,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
   };
 
   this.syncItem = function(dbName, item){
+    //TODO: check if device is online before trying to sync else reject with message while syncing is not possible.
     var deferred = $q.defer();
     if (isSyncing) {
       deferred.reject('Syncing is already in progress');
