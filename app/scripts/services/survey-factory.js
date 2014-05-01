@@ -89,8 +89,10 @@ angular.module('lmisChromeApp')
               }
             }
           }
+          console.log(pendingSurveys);
           deferred.resolve(pendingSurveys);
-        }, function(reason){
+        })
+        .catch(function(reason){
           deferred.reject(reason)
           console.log('Error trying to get surveys '+reason);
       });
