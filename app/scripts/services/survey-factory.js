@@ -89,7 +89,6 @@ angular.module('lmisChromeApp')
               }
             }
           }
-          console.log(pendingSurveys);
           deferred.resolve(pendingSurveys);
         })
         .catch(function(reason){
