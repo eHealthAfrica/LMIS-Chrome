@@ -104,7 +104,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
        $q.all(promises).then(function(results) {
          cache.put(storageService.APP_CONFIG, results);
-        console.log("config setup sync: "+results)
+
          syncService.syncItem(storageService.APP_CONFIG, appConfig)
             .then(function(syncResult){
               deferred.resolve(results);
@@ -125,6 +125,28 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
             if (Object.keys(data).length === 1) {
               var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
               var appConfig = data[appConfigUUID];
+
+              var selectedProductProfileUuids = [];
+              for(var index in appConfig.selectedProductProfiles){
+                var productProfile = appConfig.selectedProductProfiles[index];
+                selectedProductProfileUuids.push(productProfile.uuid);
+              }
+
+              var promise = {
+                selectedProductProfiles: productProfileFactory.getBatch(selectedProductProfileUuids)
+              };
+
+              $q.all(promise)
+                .then(function(result){
+                  for(var key in result){
+                    appConfig[key] = result[key]
+                  }
+                  deferred.resolve(appConfig);
+                })
+                .catch(function(reason){
+                  deferred.reject(reason);
+              })
+
               cache.put(storageService.APP_CONFIG, appConfig);
               deferred.resolve(appConfig);
             } else {
