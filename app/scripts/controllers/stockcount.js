@@ -22,7 +22,6 @@ angular.module('lmisChromeApp')
           }
         },
         controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state, $filter){
-          console.log(appConfig);
           $scope.productProfiles = productProfiles;
           $scope.stockCountList = stockCountList;
           $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
@@ -229,9 +228,8 @@ angular.module('lmisChromeApp')
 
     $scope.step = 0;
     $scope.monthList = stockCountFactory.monthList;
-    /*
-     * get url parameters
-     */
+
+    // get url parameters
     $scope.facilityObject = appConfig.appFacility;
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
     $scope.reportDay = ($stateParams.reportDay !== null)?$stateParams.reportDay: day;
@@ -287,21 +285,16 @@ angular.module('lmisChromeApp')
     });
 
     $scope.save = function() {
-      var dbName = 'stockcount',
-          db = pouchdb.create(dbName);
+      var DB_NAME = 'stockcount';
 
       $scope.stockCount.facility = $scope.facilityUuid;
       $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.reportDay, timezone);
-
-      var backupStock = function(doc) {
-        //TODO: remove controller-specific db syncs, do in background
-        //using sync-service
-
-        db.put(doc)
-          .then(function() {
-            var cb = {complete: function() {
-              alertsFactory.success(i18n('syncSuccess'));
-              if($scope.redirect) {
+      $scope.stockCount.dateSynced = new Date().toJSON(); //FIXME: update this after syncing successfully.
+      stockCountFactory.save.stock($scope.stockCount)
+        .then(function(result){
+            if (typeof result !== 'undefined') {
+              //if final save, redirect to home page.
+              if ($scope.redirect) {
                 var msg = [
                   'You have completed stock count for',
                   $scope.reportDay,
@@ -316,39 +309,21 @@ angular.module('lmisChromeApp')
                   'stockResult': msg
                 });
               }
-            }};
-            db.replicate.to(config.api.url + '/' + dbName, cb);
-          })
-          .catch(function(reason) {
-            $state.go('home.index.home.mainActivity');
-            var message = '';
-            if(reason.message) {
-              message = reason.message + '. ';
-            }
-            message += i18n('syncLater');
-            alertsFactory.danger(message, {persistent: true});
-          });
-      };
 
-      //hack: dateSynced should be set and saved AFTER backup so we know it actually happened.
-      //this is managed in sync-service but stockcount uses its own syncing. FIX
-      $scope.stockCount.dateSynced = new Date().toJSON();
-      stockCountFactory.save.stock($scope.stockCount)
-        .then(function() {
-          if($scope.redirect) {
-            alertsFactory.success(i18n('stockCountSaved'));
-            var obj = $scope.stockCount;
-            obj._id = obj.uuid;
-            db.get(obj._id)
-              .then(function(doc) {
-                if(doc._rev) {
-                  obj._rev = doc._rev;
-                }
-              })
-              .finally(function() {
-                backupStock(obj);
-              });
-          }
+              //then sync after every save. whether final or backup.
+              $scope.stockCount.uuid = result;
+              syncService.syncItem(DB_NAME, $scope.stockCount)
+                  .then(function (syncResult) {
+                    console.info('stock count sync success: ' + syncResult);
+                  })
+                  .catch(function (reason) {
+                    console.log(reason);
+                  });
+            }
+        })
+        .catch(function(reason){
+          alertsFactory.danger(reason, {persistent: true});
+          console.log('stock count save failed'+reason);
         });
     };
 
@@ -365,6 +340,7 @@ angular.module('lmisChromeApp')
         stockCountFactory.get.errorAlert($scope, 0);
       }
     });
+
     $scope.finalSave = function(){
       if('stockCount' in $scope) {
         $scope.stockCount.lastPosition = 0;

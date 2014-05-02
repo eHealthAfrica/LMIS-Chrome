@@ -75,7 +75,7 @@ angular.module('lmisChromeApp')
         throw 'expected argument to be an array., not array argument passed';
       }
       var deferred = $q.defer();
-      storageService.all(storageService.PRODUCT_PROFILE).then(function(productProfiles){
+      getAll().then(function(productProfiles){
         var result = productProfiles.filter(function (productProfile) {
           var NOT_FOUND = -1; //-1 value returned by indexOf if not found.
           return uuidList.indexOf(productProfile.uuid) > NOT_FOUND;
