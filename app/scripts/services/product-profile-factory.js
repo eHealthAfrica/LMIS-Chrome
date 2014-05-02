@@ -101,7 +101,6 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
-
     return {
       get: get,
       getAll: getAll,
