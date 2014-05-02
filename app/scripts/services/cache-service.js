@@ -6,6 +6,7 @@ angular.module('lmisChromeApp').service('cacheService', function ($q, $cacheFact
   var _cache = $cacheFactory(_cacheId);
 
   this.PRODUCT_TYPE_INFO = 'productTypesInfo';
+  this.STOCK_COUNT_REMINDER = 'stockCountReminder';
 
   this.getCache =  function(){
     return _cache;

@@ -54,7 +54,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
             (today.getTime() >= currentWeekDateInfo.reminderDate.getTime());
 
           //cache the calculation
-          cache.put(STOCK_OUT_REMINDER, isStockCountReminderDue);
+          cache.put(cacheService.STOCK_COUNT_REMINDER, isStockCountReminderDue);
 
         deferred.resolve(isStockCountReminderDue);
       })
