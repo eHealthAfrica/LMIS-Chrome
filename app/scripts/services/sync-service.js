@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('lmisChromeApp').service('syncService', function ($q, $log, $rootScope, storageService, pouchdb, config) {
+angular.module('lmisChromeApp').service('syncService', function ($q, $log, $rootScope, storageService, pouchdb, config, $window) {
 
   var isSyncing = false;
 
@@ -39,10 +39,11 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
   };
 
   this.syncItem = function(dbName, item){
-    //TODO: check if device is online before trying to sync else reject with message while syncing is not possible.
     var deferred = $q.defer();
     if (isSyncing) {
       deferred.reject('Syncing is already in progress');
+    }else  if(!$window.navigator.onLine){
+      deferred.reject('device is not online, check your internet connection settings.');
     }else{
       isSyncing = true;
       var remoteDB = getRemoteDB(dbName);
