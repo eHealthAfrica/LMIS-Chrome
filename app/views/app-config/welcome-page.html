@@ -11,9 +11,12 @@
     <div class="panel-body"></div>
     <div class="row">
       <div class="col-xs-4">
-        <a ui-sref="appConfig.wizard" class="btn btn-success btn-lg">
-          <span i18n="continue"></span>
-          <span><i class="fa fa-arrow-circle-right"></i></span>
+        <a ui-sref="appConfig.wizard" class="btn btn-success btn-lg" ng-click="loadingDeviceInfo = true"
+           ng-disabled="loadingDeviceInfo">
+          <span ng-show="!loadingDeviceInfo" i18n="continue"></span>
+          <span ng-show="!loadingDeviceInfo"><i class="fa fa-arrow-circle-right"></i></span>
+          <span ng-show="loadingDeviceInfo" i18n="loading"></span>
+          <span ng-show="loadingDeviceInfo"><i class="fa fa-spinner fa-spin"></i></span>
         </a>
       </div>
     </div>
