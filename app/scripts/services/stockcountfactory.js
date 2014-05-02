@@ -2,17 +2,10 @@
 
 angular.module('lmisChromeApp')
   .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility) {
-
-    var discardedReasons = [
-      'VVM Stage 3',
-      'Broken Vial',
-      'Label Missing',
-      'Unopened Expiry',
-      'Opened Expiry',
-      'Suspected Freezing',
-      'Other'
-    ];
-
+      /**
+       *
+       * @type {{}}
+       */
     var months = {
       '01': 'January',
       '02': 'February',
@@ -27,7 +20,10 @@ angular.module('lmisChromeApp')
       '11': 'November',
       '12': 'December'
     };
-
+      /**
+       *
+       * @returns {promise}
+       */
     var productType = function(){
       var deferred = $q.defer();
       storageService.get(storageService.PRODUCT_TYPES).then(function(productTypes){
@@ -36,46 +32,6 @@ angular.module('lmisChromeApp')
       });
       return deferred.promise;
     };
-
-    /**
-     * https://github.com/angular/angular.js/blob/master/src/ng/filter/filters.js#L238
-     * @param year
-     * @returns {Date}
-     */
-    function getFirstThursdayOfYear(year) {
-        // 0 = index of January
-        var dayOfWeekOnFirst = (new Date(year, 0, 1)).getDay();
-        // 4 = index of Thursday (+1 to account for 1st = 5)
-        // 11 = index of *next* Thursday (+1 account for 1st = 12)
-        return new Date(year, 0, ((dayOfWeekOnFirst <= 4) ? 5 : 12) - dayOfWeekOnFirst);
-    }
-
-    /**
-     * https://github.com/angular/angular.js/blob/master/src/ng/filter/filters.js#L246
-     * @param datetime
-     * @returns {Date}
-     */
-    function getThursdayThisWeek(datetime) {
-        return new Date(datetime.getFullYear(), datetime.getMonth(),
-        // 4 = index of Thursday
-        datetime.getDate() + (4 - datetime.getDay()));
-    }
-
-    /**
-     * https://github.com/angular/angular.js/blob/master/src/ng/filter/filters.js#L252
-     * @param date
-     * @returns {number}
-     */
-    function getWeekNumber(date) {
-       var firstThurs = getFirstThursdayOfYear(date.getFullYear()),
-       thisThurs = getThursdayThisWeek(date);
-
-       var diff = +thisThurs - +firstThurs,
-       result = 1 + Math.round(diff / 6.048e8); // 6.048e8 ms per week
-
-       return result;
-    }
-
 
     var addRecord={
       /**
@@ -99,28 +55,6 @@ angular.module('lmisChromeApp')
           });
         });
         return deferred.promise;
-      },
-      /**
-       * Add/Update Stock wastage count
-       *
-       * @param {object} Stock wastage Data.
-       * @return {Promise} return promise object
-       */
-      waste: function(object){
-        var deferred = $q.defer();
-        if(object.countDate instanceof Date){
-          object.countDate = object.countDate.toJSON();
-        }
-        validate.waste.countExist().then(function(wasteCount){
-          if(wasteCount !== null){
-            object.uuid = wasteCount.uuid;
-          }
-          storageService.save(storageService.WASTE_COUNT, object).then(function(uuid){
-            deferred.resolve(uuid);
-          });
-
-        });
-        return deferred.promise;
       }
     };
 
@@ -135,95 +69,14 @@ angular.module('lmisChromeApp')
         countExist: function(date){
           return getStockCountByDate(date);
         }
-      },
-      waste: {
-        countExist: function(date){
-          return getWasteCountByDate(date);
-        },
-        /**
-         * this function validate reason and save the current value if no error
-         * @param scope
-         * @param index
-         */
-        reason: function(scope, index){
-
-
-          var currentReason = scope.wasteCount.reason[scope.productKey][index];
-
-          var entryError = (validate.invalid(currentReason))?true:false;
-          var errorMsg = [];
-
-
-          if(entryError){
-            errorMsg.push('invalid entry');
-          }
-
-          if(errorMsg.length > 0){
-            scope.wasteErrors[scope.productKey][index] = true;
-            scope.wasteErrorMsg[scope.productKey][index]= errorMsg.join('<br>');
-          }
-          else{
-            delete scope.wasteErrors[scope.productKey][index];
-            delete scope.wasteErrorMsg[scope.productKey][index];
-          }
-          //if any form field contain invalid data we need to indicate it indefinitely
-          if(Object.keys(scope.wasteErrors[scope.productKey]).length > 0){
-            scope.reasonError = true;
-          }
-          else{
-
-            delete scope.wasteErrors[scope.productKey];
-            delete scope.wasteErrorMsg[scope.productKey];
-            scope.reasonError = false;
-            scope.redirect = false;
-            scope.wasteCount.lastPosition = scope.step;
-            scope.wasteCount.discarded[scope.productKey] =  load.sumReasonObject(scope.wasteCount.reason[scope.productKey]);
-            if(scope.wasteCount.reason[scope.productKey][index] === null){
-              scope.wasteCount.reason[scope.productKey][index] = 0;
-            }
-            scope.save();
-          }
-        },
-        changeState: function(scope, direction){
-          scope.productKey = scope.facilityProductsKeys[scope.step];
-          scope.currentEntry = scope.wasteCount.discarded[scope.productKey];
-          if(validate.invalid(scope.currentEntry) && direction !== 0){
-            load.errorAlert(scope, 1);
-          }
-          else if (scope.reasonError){
-            load.errorAlert(scope, 2);
-          }
-          else{
-            load.errorAlert(scope, 0);
-            if(direction !== 2){
-              scope.step = direction === 0? scope.step-1 : scope.step + 1;
-              scope.open = false;
-            }
-            else{
-              scope.preview = true;
-              scope.wasteCount.isComplete = 1;
-            }
-          }
-          scope.wasteCount.lastPosition = scope.step;
-          scope.productKey = scope.facilityProductsKeys[scope.step];
-          scope.selectedFacility = load.productReadableName(scope.facilityProducts, scope.step);
-          scope.productTypeCode = load.productTypeCode(scope.facilityProducts, scope.step, scope.productType);
-          if(angular.isUndefined(scope.wasteCount.reason[scope.productKey])){
-            scope.wasteCount.reason[scope.productKey] = {};
-          }
-          for(var i in scope.discardedReasons){
-            if(angular.isUndefined(scope.wasteCount.reason[scope.productKey][i])){
-              scope.wasteCount.reason[scope.productKey][i] = 0;
-            }
-          }
-          if(angular.isUndefined(scope.wasteCount.discarded[scope.productKey])){
-            scope.wasteCount.discarded[scope.productKey] = 0;
-          }
-        }
       }
 
     };
-
+      /**
+       *
+       * @param date
+       * @returns {promise}
+       */
     var getStockCountByDate = function (date) {
       var deferred = $q.defer();
       storageService.all(storageService.STOCK_COUNT).then(function (stockCounts) {
@@ -238,24 +91,6 @@ angular.module('lmisChromeApp')
           }
         }
         deferred.resolve(stockCount);
-      });
-      return deferred.promise;
-    };
-
-    var getWasteCountByDate = function (date) {
-      var deferred = $q.defer();
-      storageService.all(storageService.WASTE_COUNT).then(function (wasteCounts) {
-        var wasteCount = null;
-        for (var index in wasteCounts) {
-          var row = wasteCounts[index];
-          var wasteCountDate = $filter('date')(new Date(row.countDate), 'yyyy-MM-dd');
-          date = $filter('date')(new Date(date), 'yyyy-MM-dd');
-          if (date === wasteCountDate) {
-            wasteCount = row;
-            break;
-          }
-        }
-        deferred.resolve(wasteCount);
       });
       return deferred.promise;
     };
@@ -296,18 +131,6 @@ angular.module('lmisChromeApp')
           });
         return deferred.promise;
       },
-       /*
-       *
-       */
-      allWasteCount: function(){
-        var deferred = $q.defer();
-        storageService.all(storageService.WASTE_COUNT)
-          .then(function(wastageCount){
-            deferred.resolve(wastageCount);
-          });
-        return deferred.promise;
-      },
-
        /*
        *
        */
@@ -381,19 +204,10 @@ angular.module('lmisChromeApp')
       },
       /**
        *
-       * @param object
-       * @returns {number}
+       * @param _month
+       * @param _year
+       * @returns {Array}
        */
-      sumReasonObject: function (object){
-        var sum = 0;
-        for(var i in object){
-          if(object[i] !== null && !isNaN(parseInt(object[i]))){
-            sum += parseInt(object[i]);
-          }
-        }
-        return sum;
-      },
-
       daysInMonth: function (_month, _year){
         var now = new Date();
         var year = (_year !== '')?_year: now.getFullYear();
@@ -407,6 +221,10 @@ angular.module('lmisChromeApp')
         }
         return dayArray;
       },
+      /**
+       *
+       * @returns {Array}
+       */
       yearRange: function(){
         var yearRangeArray = [];
         var currentYear = new Date().getFullYear();
@@ -416,9 +234,17 @@ angular.module('lmisChromeApp')
         }
         return yearRangeArray;
       },
+      /**
+      *
+       */
       productProfile: function(){
         return storageService.get(storageService.PRODUCT_PROFILE);
       },
+      /**
+       *
+       * @param stockCountList
+       * @returns {{}}
+       */
       stockCountListByDate: function(stockCountList){
         var obj = {};
         for(var i=0; i < stockCountList.length; i++){
@@ -427,32 +253,12 @@ angular.module('lmisChromeApp')
         }
         return obj;
       },
-      wasteCountByType: function(wasteCount){
-        var arr = [];
-        if(toString.call(wasteCount) === '[object Object]'){
-          for(var i in wasteCount['discarded']){
-            arr.push({
-              header: true,
-              value: wasteCount['discarded'][i],
-              key: i
-            });
-            if((Object.keys(wasteCount['reason'][i])).length > 0){
-              for(var j in wasteCount['reason'][i]){
-                if(wasteCount['reason'][i][j] !== 0){
-                  arr.push(
-                    {
-                      header: false,
-                      value: wasteCount['reason'][i][j],
-                      key: j
-                    }
-                  );
-                }
-              }
-            }
-          }
-        }
-        return arr;
-      },
+      /**
+       *
+       * @param fromDB
+       * @param fromFacilitySelected
+       * @returns {Array}
+       */
       mergedStockCount: function(fromDB, fromFacilitySelected){
         var db = Object.keys(fromDB);
         var dbArr = Object.keys(fromDB);
@@ -464,6 +270,12 @@ angular.module('lmisChromeApp')
         }
         return fromFacilitySelected.concat(dbArr);
       },
+      /**
+       *
+       * @param date
+       * @param scope
+       * @returns {boolean}
+       */
       missingEntry: function(date, scope){
         var reminderDate = utility.getWeekRangeByDate(new Date(date), scope.reminderDay);
         var lastDay = reminderDate.last;
@@ -583,16 +395,14 @@ angular.module('lmisChromeApp')
         }
       });
     }
+
     return {
       monthList: months,
       productType: productType,
-      discardedReasons: discardedReasons,
       save:addRecord,
       get:load,
       set: setter,
       getStockCountByDate: getStockCountByDate,
-      getWasteCountByDate: getWasteCountByDate,
-      validate: validate,
-      watchDiscarded: watchDiscardedEntries
+      validate: validate
     };
   });
