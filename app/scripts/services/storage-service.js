@@ -44,7 +44,7 @@ angular.module('lmisChromeApp')
       var bundleReceiptLines = 'bundle_receipt_lines';
       var locations = 'locations';
       var stockCount = 'stockCount';
-      var wasteCount = 'wasteCount';
+      var discardCount = 'discardCount';
       var appConfig = 'app_config';
       var stockOut = 'stock_out';
       var surveyResponse = 'survey_response';
@@ -470,7 +470,7 @@ angular.module('lmisChromeApp')
         BUNDLE_RECEIPT_LINES: bundleReceiptLines,
         LOCATIONS: locations,
         STOCK_COUNT: stockCount,
-        WASTE_COUNT: wasteCount,
+        DISCARD_COUNT: discardCount,
         APP_CONFIG: appConfig,
         STOCK_OUT: stockOut,
         SURVEY_RESPONSE: surveyResponse

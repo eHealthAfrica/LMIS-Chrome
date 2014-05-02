@@ -54,7 +54,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
             (today.getTime() >= currentWeekDateInfo.reminderDate.getTime());
 
           //cache the calculation
-          cache.put(STOCK_OUT_REMINDER, isStockCountReminderDue);
+          //cache.put(STOCK_OUT_REMINDER, isStockCountReminderDue);
 
         deferred.resolve(isStockCountReminderDue);
       })
@@ -69,7 +69,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     var today = new Date();
     var currentWeekDateInfo = utility.getWeekRangeByDate(today, appConfig.reminderDay);
 
-    storageService.all(storageService.WASTE_COUNT)
+    storageService.all(storageService.DISCARD_COUNT)
       .then(function (results) {
 
         //get discard-counts within current and week date range

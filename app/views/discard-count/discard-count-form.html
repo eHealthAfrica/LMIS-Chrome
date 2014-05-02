@@ -79,7 +79,7 @@
           <div class="row">
             <div class="col-sm-12">
               <h5 class="text-center">Discarded {{selectedFacilityProduct}}</h5>
-              <h1 class="text-center discarded-figure">{{ wasteCount.discarded[productKey] }}
+              <h1 class="text-center discarded-figure">{{ discardCount.discarded[productKey] }}
                 {{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}
               </h1>
             </div>
@@ -103,8 +103,8 @@
                           <div ng-repeat="reason in discardedReasons">
                             <div class="form-group">
                               <label >{{ reason }}</label>
-                              <counter bind="wasteCount.reason[productKey][$index]"></counter>
-                              <div ng-show="wasteErrors[productKey][$index]" class="custom-error text-center">{{ wasteErrorMsg[productKey][$index] }}</div>
+                              <counter bind="discardCount.reason[productKey][$index]"></counter>
+                              <div ng-show="discardErrors[productKey][$index]" class="custom-error text-center">{{ discardErrorMsg[productKey][$index] }}</div>
                             </div>
                           </div>
                         <div class="clearfix"></div>
@@ -174,7 +174,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" ng-show="editOn && step !== maxStep && wasteCount.isComplete">
+            <div class="row" ng-show="editOn && step !== maxStep && discardCount.isComplete">
               <div class="col-sm-6 data-row">
                 <div class="btn-separator">
                    <button type="button" class="btn btn-lg btn-warning col-sm-12 col-xs-12" ng-click="preview=!preview">
@@ -199,16 +199,8 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <!--tr ng-repeat="key in facilityProductsKeys" ng-click="edit($index)">
-                    <td class="form-label">{{ facilityProducts[key].name }}</td>
-                    <td>
-                      {{ wasteCount.discarded[key] }}
-                    </td>
-                    <td>
-                      <div ng-hide="reason === null " ng-repeat="(reasonKey, reason) in wasteCount.reason[key]"> {{ discardedReasons[reasonKey] }} = {{ reason }} </div>
-                    </td>
-                  </tr-->
-                  <tr ng-repeat="row in wasteCountByType" ng-class="{'td-header': row.header}">
+
+                  <tr ng-repeat="row in discardCountByType" ng-class="{'td-header': row.header}">
                     <td>
                       <div ng-class="{'child-margin': !row.header}">{{ getName(row) }}</div>
                     </td>
@@ -230,23 +222,6 @@
                 </button>
               </div>
             </div>
-
-            <!--div class="row">
-              <div class="col-xs-12">
-                <div class="btn-separator">
-                  <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
-                    <i class="fa fa-chevron-circle-left"></i> Back to form
-                  </button>
-                </div>
-              </div>
-              <div class="col-xs-12">
-                <div class="btn-separator">
-                  <button class="btn btn-success btn-lg">
-                    Confirm and Save <i class="fa fa-save"></i>
-                  </button>
-                </div>
-              </div>
-            </div-->
 
             <div class="col-xs-12 visible-xs">
               <div class="btn-separator">
