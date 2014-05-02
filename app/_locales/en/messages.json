@@ -518,5 +518,8 @@
   },
   "sending": {
     "message": "Sending ..."
+  },
+  "clear": {
+    "message": "Clear"
   }
 }
