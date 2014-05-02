@@ -57,7 +57,7 @@ angular.module('lmisChromeApp')
               scope.reportYear
             ].join(' ');
             alertsFactory.success(msg);
-            state.go('discardCountHome', {
+            state.go('home.index.home.mainActivity', {
               'facility': scope.facilityUuid,
               'reportMonth': scope.reportMonth,
               'reportYear': scope.reportYear,
