@@ -10,18 +10,18 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       label: 'Broadcast stock-out'
     },
     resolve: {
-      productTypes: function(productTypeFactory){
-        return productTypeFactory.getAll();
-      },
       appConfig: function(appConfigService){
-        return appConfigService.load();
+        return appConfigService.getCurrentAppConfig();
+      },
+      facilityStockListProductTypes: function(appConfigService){
+        return appConfigService.getFacilityStockListProductTypes();
       }
     }
   })
-}).controller('StockOutBroadcastCtrl', function($scope, productTypes, appConfig, $log, stockOutBroadcastFactory, $state,
-        alertsFactory, $modal, i18n){
+}).controller('StockOutBroadcastCtrl', function($scope,appConfig, $log, stockOutBroadcastFactory, $state, alertsFactory,
+                                                $modal, i18n, facilityStockListProductTypes){
 
-  $scope.productTypes = productTypes;
+  $scope.productTypes = facilityStockListProductTypes;
 
   //used to hold stock out form data
   $scope.stockOutForm = {

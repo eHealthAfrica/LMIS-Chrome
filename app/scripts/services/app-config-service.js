@@ -276,4 +276,28 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     return deferred.promise
   };
 
+  this.getFacilityStockListProductTypes = function(){
+    var deferred = $q.defer();
+    var facilityStockListProductTypes = [];
+    this.getCurrentAppConfig()
+      .then(function(appConfig){
+        var facilityStockListProductTypes = [];
+        var uuidListOfProductTypesAlreadyRecorded = [];
+        var DOES_NOT_EXIST = -1;
+        for(var index in appConfig.selectedProductProfiles){
+          var productType = appConfig.selectedProductProfiles[index].product;
+          if(uuidListOfProductTypesAlreadyRecorded.indexOf(productType.uuid) === DOES_NOT_EXIST ){
+            uuidListOfProductTypesAlreadyRecorded.push(productType.uuid);
+            facilityStockListProductTypes.push(productType);
+          }
+        }
+        deferred.resolve(facilityStockListProductTypes);
+      })
+      .catch(function(reason){
+        console.log(reason);
+        deferred.resolve(facilityStockListProductTypes);//resolves empty facilityStockListProductTypes
+      });
+    return deferred.promise;
+  };
+
 });
