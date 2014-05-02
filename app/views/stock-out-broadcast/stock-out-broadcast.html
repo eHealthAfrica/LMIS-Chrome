@@ -29,9 +29,11 @@
                     <div class="panel-body"></div>
                     <div class="col-md-4 center-block">
                       <button type="submit" id="send" name="send" class="btn btn-lg btn-danger"
-                              ng-click="stockOutForm.isSubmitted = true">
-                        <span i18n="send"></span>
-                        <span><i class="fa fa-bullhorn"></i></span>
+                              ng-click="stockOutForm.isSubmitted = true" ng-disabled="isSaving">
+                        <span ng-show="!isSaving" i18n="send"></span>
+                        <span ng-show="!isSaving"><i class="fa fa-bullhorn"></i></span>
+                        <span ng-show="isSaving" i18n="sending"></span>
+                        <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
                       </button>
                     </div>
                   </div>

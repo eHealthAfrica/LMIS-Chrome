@@ -417,7 +417,7 @@
     "message": "App Config"
   },
   "stockOutBroadcast":  {
-    "message": "StockOut Alert"
+    "message": "Stock-out Alert"
   },
   "quantityNeeded": {
     "message": "Quantity needed"
@@ -447,7 +447,7 @@
     "message": "Email Configuration"
   },
   "loading": {
-    "message": "loading..."
+    "message": "Loading..."
   },
   "profileLoadingErrorMsg": {
     "message": "Profile does not exist, please make sure you entered the correct email address and check your internet connection"
@@ -515,5 +515,11 @@
   },
   "surveyNotFound": {
     "message": "Survey not found!"
+  },
+  "sending": {
+    "message": "Sending ..."
+  },
+  "clear": {
+    "message": "Clear"
   }
 }

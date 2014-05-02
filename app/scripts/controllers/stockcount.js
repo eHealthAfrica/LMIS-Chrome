@@ -286,6 +286,9 @@ angular.module('lmisChromeApp')
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(result){
             if (typeof result !== 'undefined') {
+              //clear data used to plot product-type-info graph
+               cacheService.remove(cacheService.PRODUCT_TYPE_INFO);
+
               //if final save, redirect to home page.
               if ($scope.redirect) {
                 var msg = [

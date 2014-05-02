@@ -10,18 +10,18 @@ angular.module('lmisChromeApp')
       templateUrl: 'views/home/index.html',
       resolve: {
         appConfig: function(appConfigService){
-          return appConfigService.load();
+          return appConfigService.getCurrentAppConfig();
         }
       },
       controller: function($scope, appConfig, appConfigService, $state, surveyFactory) {
 
-        if (appConfig === undefined) {
+        if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
         } else {
-
           $scope.facility = appConfig.appFacility.name;
-          appConfigService.isStockCountDue(appConfig).then(function(result){
-            $scope.hasPendingStockCount = result;
+          appConfigService.isStockCountDue(appConfig.reminderDay)
+            .then(function(result){
+              $scope.hasPendingStockCount = result;
           });
           appConfigService.isDiscardCountDue(appConfig).then(function(result){
             $scope.hasPendingDiscardCount = result;
@@ -67,6 +67,7 @@ angular.module('lmisChromeApp')
         'activities': {
           templateUrl: 'views/home/main-activity.html',
           controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, alertsFactory) {
+
             if ($stateParams.storageClear !== null) {
               alertsFactory.success(i18n('clearStorageMsg'));
               $stateParams.storageClear = null;
@@ -104,7 +105,7 @@ angular.module('lmisChromeApp')
              */
             
           },
-          controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
+          controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService) {
             var keys = [
               {
                 key: 'daysOfStock',
@@ -118,8 +119,17 @@ angular.module('lmisChromeApp')
               }
             ];
 
-            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
+            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService) {
               var deferred = $q.defer();
+
+              var cacheProductTypes = cacheService.get(cacheService.PRODUCT_TYPE_INFO);
+              if(typeof cacheProductTypes !== 'undefined'){
+                deferred.resolve(cacheProductTypes);
+                return deferred.promise;
+              }
+
+
+
               var productTypeInfo = {};
               if(typeof appConfig === 'undefined'){
                 deferred.resolve(productTypeInfo);
@@ -166,6 +176,8 @@ angular.module('lmisChromeApp')
                     })(i);
                   }
                   $q.all(innerPromises).then(function() {
+                    //cache the result
+                    cacheService.put(cacheService.PRODUCT_TYPE_INFO, productTypeInfo);
                     deferred.resolve(productTypeInfo);
                   });
                 })
@@ -176,7 +188,7 @@ angular.module('lmisChromeApp')
               return deferred.promise;
             }
 
-            getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService).then(
+            getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService).then(
               function(productTypeCounts) {
               var values = [], product = {}; 
               // TODO: unnecessary transposition
@@ -190,7 +202,7 @@ angular.module('lmisChromeApp')
               }
               $scope.productTypesChart = dashboardfactory.chart(keys, values);
             }, function(err) {
-
+              console.log('getProductTypeCounts Error: '+err);
             });  
           }
         }

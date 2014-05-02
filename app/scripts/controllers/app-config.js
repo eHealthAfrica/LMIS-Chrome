@@ -21,7 +21,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return facilityFactory.getAll();
       },
       productProfiles: function(productProfileFactory){
-        return productProfileFactory.getAll();
+        return productProfileFactory.getAllWithoutNestedObject();
       },
       deviceInfo: function(deviceInfoService){
         return deviceInfoService.getDeviceInfo();
@@ -43,7 +43,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return facilityFactory.getAll();
       },
       productProfiles: function(productProfileFactory){
-        return productProfileFactory.getAll();
+        return productProfileFactory.getAllWithoutNestedObject();
       },
       appConfig: function(appConfigService){
         return appConfigService.getCurrentAppConfig();
@@ -75,7 +75,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.disableBtn = isEmailValid;
     appConfigService.getAppFacilityProfileByEmail($scope.appConfig.uuid)
       .then(function(result){
-          console.log(result);
+
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
         $scope.profileNotFound = false;
@@ -89,7 +89,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
         $scope.moveTo(nextStep);
 
-      }, function(error){
+      })
+      .catch(function(error){
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
         $scope.profileNotFound = true;
@@ -152,10 +153,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           surveyFactory.saveSurveyResponse(surveyResponse)
               .then(function (result) {
                 if (typeof result === 'undefined') {
-                  alertsFactory.danger('Saving of survey response failed');
+                  alertsFactory.danger(i18n('surveyFailedMsg'));
                 }
-              }, function (reason) {
-                console.log(reason);
+              })
+              .catch(function(){
+                alertsFactory.danger(i18n('surveyFailedMsg'));
               });
         }
       } else {
@@ -209,15 +211,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){
-        $scope.isSaving = false;
         $state.go('home.index.home.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
-      } else {
         $scope.isSaving = false;
+      } else {
         alertsFactory.danger(i18n('appConfigFailedMsg'));
+        $scope.isSaving = false;
       }
    }, function (reason) {
-      $scope.isSaving = false;
       alertsFactory.danger(i18n('appConfigFailedMsg'));
+      $scope.isSaving = false;
       $log.error(reason);
    });
  };
