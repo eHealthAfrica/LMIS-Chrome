@@ -85,8 +85,16 @@
             <div class="col-sm-12" ng-hide="preview">
               <div class="row">
                 <div class="col-sm-12">
-                  <h3>{{ selectedFacility }}</h3>
-                  <h4>{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}</h4>
+                  <h3 class="center-text">{{ selectedFacility }}</h3>
+
+                  <h3 class="center-text">
+                    <ng-pluralize count="stockCount.unopened[productKey]"
+                      when="
+                      {
+                      '1': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}',
+                      'other': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}s'}">
+                    </ng-pluralize>
+                  </h3>
               </div>
               <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12">
