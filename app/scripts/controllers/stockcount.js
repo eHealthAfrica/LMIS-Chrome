@@ -210,7 +210,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, $log, i18n, pouchdb, config){
+  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, cacheService, syncService){
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
