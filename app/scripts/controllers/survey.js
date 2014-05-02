@@ -34,6 +34,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.responses[questionId] = newValue;
       };
 
+      $scope.clear = function(){
+        $scope.responses = {};
+        $scope.surveyResponse = [];
+      };
+
       $scope.save = function () {
 
         $scope.isSaving = true;
@@ -42,7 +47,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           survey: $scope.survey.uuid,
           facility: appConfig.appFacility.uuid,
           respondent: appConfig.contactPerson,
-          responses: $scope.responses
+          responses: $scope.responses,
+          isComplete: false
         };
 
         //set survey completed flag

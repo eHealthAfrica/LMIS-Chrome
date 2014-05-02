@@ -10,15 +10,15 @@
           <div class="col-md-15">
             <span ng-bind="question.text"></span>
           </div>
-          <div class="row col-md-12 pull-right">
+          <div class="row col-md-15 pull-right">
             <label class="input-control">
               <input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}" ng-value="true"
-                ng-change="newValue(question.uuid, true)"/>
+                     ng-change="newValue(question.uuid, true)"/>
               <span>Yes</span>
             </label>
             <label class="input-control">
               <input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}" ng-value="false"
-                ng-change='newValue(question.uuid, false)'>
+                     ng-change='newValue(question.uuid, false)'>
               <span>No</span>
             </label>
           </div>
@@ -27,13 +27,21 @@
       </div>
 
       <div class="panel-body">
-        <div class="col-md-4">
-          <button type="submit" class="btn btn-success btn-lg" ng-click="save()" ng-disabled="isSaving">
-            <span ng-show="!isSaving" i18n="save"></span>
-            <span ng-show="!isSaving"><i class="fa fa-floppy-o"></i></i></span>
-            <span ng-show="isSaving" i18n="saving"></span>
-            <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
-          </button>
+        <div class="btn-group btn-group-justified">
+          <div class="btn-group">
+            <button type="button" class="btn btn-default btn-lg" ng-click="clear()" ng-disabled="isSaving">
+              <span>Clear</span>
+              <span><i class="fa fa-refresh"></i></span>
+            </button>
+          </div>
+          <div class="btn-group">
+            <button type="submit" class="btn btn-success btn-lg" ng-click="save()" ng-disabled="isSaving">
+              <span ng-show="!isSaving" i18n="save"></span>
+              <span ng-show="!isSaving"><i class="fa fa-floppy-o"></i></i></span>
+              <span ng-show="isSaving" i18n="saving"></span>
+              <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
