@@ -64,7 +64,8 @@ angular.module('lmisChromeApp')
       storageService.all(storageService.PRODUCT_PROFILE).then(function(profiles){
         profiles = profiles.filter(function(p) { return p.product === ptUuid });
         deferred.resolve(profiles);
-      }, function(err) {
+      })
+      .catch(function(err) {
         deferred.reject(err);
       });
        return deferred.promise;
@@ -86,12 +87,26 @@ angular.module('lmisChromeApp')
         deferred.reject(reason);
       });
       return deferred.promise;
-    }
+    };
+
+    var getAllWithoutNestedObject = function(){
+      var deferred = $q.defer();
+      storageService.all(storageService.PRODUCT_PROFILE)
+        .then(function(result){
+            deferred.resolve(result);
+        })
+        .catch(function(reason){
+          deferred.reject(reason);
+        });
+      return deferred.promise;
+    };
+
 
     return {
       get: get,
       getAll: getAll,
       getByProductType: getByProductType,
-      getBatch: getProductProfileBatch
+      getBatch: getProductProfileBatch,
+      getAllWithoutNestedObject: getAllWithoutNestedObject
     };
   });

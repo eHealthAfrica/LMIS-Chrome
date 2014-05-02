@@ -1,13 +1,13 @@
 'use strict'
 
-angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, cacheConfig,
-                                                                      productProfileFactory, facilityFactory,
-                                                                      $cacheFactory, syncService, utility) {
+angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, syncService,
+                                                                      productProfileFactory, facilityFactory, utility,
+                                                                      cacheService) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
-  var cache = $cacheFactory(cacheConfig.id);
-  this.cache = cache;
+  var cache = cacheService.getCache();
   var FACILITY_PROFILE_DB = 'app_facility_profile';
+  var STOCK_OUT_REMINDER = 'STOCK_COUNT_REMINDER';
 
   this.stockCountIntervals = [
     {name: 'Daily', value: 1},
@@ -24,14 +24,22 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * 1) current date is greater than reminderDay of current week and
    * 2) current date is less than last day of the week and
    * 3) stock count does not exist for the week or has not been completed.
-   * @param appConfig
+   * @param reminderDay
    * @returns {promise|promise|*|promise|promise}
    */
-  this.isStockCountDue = function(appConfig){
+  this.isStockCountDue = function(reminderDay){
     var deferred = $q.defer();
     var today = new Date();
-    var currentWeekDateInfo = utility.getWeekRangeByDate(today, appConfig.reminderDay);
+    var currentWeekDateInfo = utility.getWeekRangeByDate(today, reminderDay);
 
+    //get from cache
+    var isStockCountReminderDue = cache.get(STOCK_OUT_REMINDER);
+    if(angular.isDefined(isStockCountReminderDue)){
+      deferred.resolve(isStockCountReminderDue);
+      return deferred.promise;
+    }
+
+    //if not available on cache recalculate and cache the result.
     storageService.all(storageService.STOCK_COUNT)
       .then(function (results) {
 
@@ -42,14 +50,17 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
                 && stockCountDate.getTime() <= currentWeekDateInfo.last.getTime()
                 && stockCount.isComplete === 1)
         });
-        //TODO: check if stock count has been completed.
         var isStockCountReminderDue = (stockCountsWithInRange.length === 0) &&
             (today.getTime() >= currentWeekDateInfo.reminderDate.getTime());
 
+          //cache the calculation
+          cache.put(STOCK_OUT_REMINDER, isStockCountReminderDue);
+
         deferred.resolve(isStockCountReminderDue);
-      }, function (reason) {
-        return deferred.resolve(true);
-    });
+      })
+      .catch(function(reason){
+        deferred.resolve(true);
+      });
     return deferred.promise;
   };
 
@@ -93,17 +104,19 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         appConfig.dateActivated = new Date().toJSON();
       }
       var promises = [];
-      if (result === undefined) {
-        promises.push(storageService.save(storageService.APP_CONFIG, appConfig)); //TODO: should apply changes to appConfig after save
+      if (typeof result === 'undefined') {
+        promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
       } else {
         //over-write appConfig by using existing appConfig uuid for the new appConfig.
-        //2014-04-11 - it would be more readable for this to apply individual properties to result rather than uuid to appConfig, that ties storage logic to this 
+        //2014-04-11 - it would be more readable for this to apply individual properties to result rather than uuid to appConfig, that ties storage logic to this
         appConfig['uuid'] = result.uuid;
         promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
       }
 
        $q.all(promises).then(function(results) {
-         cache.put(storageService.APP_CONFIG, results);
+         cache.put(storageService.APP_CONFIG, appConfig);
+         //clear data used to plot product-type-info graph
+         cache.remove(cacheService.PRODUCT_TYPE_INFO);
 
          syncService.syncItem(storageService.APP_CONFIG, appConfig)
             .then(function(syncResult){
@@ -183,21 +196,18 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   {
     var deferred = $q.defer();
     this.load().then(
-      function(profile)
-      {
-        var types = [];
-        for(var i in profile.selectedProductProfiles)
-        {
-          if(types.indexOf(profile.selectedProductProfiles[i].product) === -1)
-            types.push(profile.selectedProductProfiles[i].product);
+        function (profile) {
+          var types = [];
+          for (var i in profile.selectedProductProfiles) {
+            if (types.indexOf(profile.selectedProductProfiles[i].product) === -1)
+              types.push(profile.selectedProductProfiles[i].product);
+          }
+          deferred.resolve(types);
+        },
+        function (err) {
+          deferred.reject(err);
         }
-        deferred.resolve(types);
-      },
-      function(err)
-      {
-        deferred.reject(err);
-      }
-      );
+    );
     return deferred.promise;
   };
 
@@ -224,7 +234,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         }, function(reason){
           deferred.reject(reason);
         })
-      }, function(reason){
+      })
+      .catch(function(reason){
         deferred.reject(reason);
       });
     return deferred.promise;
@@ -250,9 +261,9 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    */
   this.getCurrentAppConfig = function() {
     var deferred = $q.defer();
-    var appConfig = this.cache.get(storageService.APP_CONFIG);
+    var appConfig = cache.get(storageService.APP_CONFIG);
 
-    if(appConfig !== undefined){
+    if(typeof appConfig !== 'undefined'){
       deferred.resolve(appConfig);
     }else{
       this.load().then(function(result){

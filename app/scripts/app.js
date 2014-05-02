@@ -34,6 +34,4 @@ angular.module('lmisChromeApp', [
       });
     });
 
-  }).constant('cacheConfig', {
-      "id": "lmisChromeAppCache"
-    });
+  });

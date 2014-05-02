@@ -30,7 +30,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     isSubmitted: false
   };
 
+  $scope.isSaving = false;
+
   $scope.save = function(){
+    $scope.isSaving = true;
 
     var stockOut = {
       productType: JSON.parse($scope.stockOutForm.productType),
@@ -39,9 +42,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
     var saveAndBroadcastStockOut = function(stockOut){
       stockOutBroadcastFactory.save(stockOut).then(function (result) {
-          //TODO: send SMS if offline
           if (typeof result !== 'undefined' || result !== null) {
             $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
+            $scope.isSaving = false;
             stockOut.uuid = result;
             stockOutBroadcastFactory.broadcast(stockOut)
             .then(function (result) {
@@ -51,11 +54,14 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
                 })
           }else{
             alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+            $scope.isSaving = false;
           }
-      }, function (reason) {
-            alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-            $log.error(reason);
-          });
+      })
+      .catch(function(reason){
+        alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+        $scope.isSaving = false;
+        $log.error(reason);
+      });
     };
 
     //TODO: move confirm dialogs to a service/factory.
@@ -70,6 +76,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         var YES_INDEX = 1; //position in buttonLabels text + 1.
         if(index === YES_INDEX){
           saveAndBroadcastStockOut(stockOut);
+        }else{
+          $scope.isSaving = false;
         }
       },
       confirmationTitle, buttonLabels);
@@ -109,8 +117,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         if (result === true) {
           saveAndBroadcastStockOut(stockOut);
         }
+        $scope.isSaving = false;
       }, function (reason) {
         $log.info(reason);
+        $scope.isSaving = false;
       });
 
     }
