@@ -55,7 +55,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         surveyResponse.isComplete = $scope.survey.questions.length === Object.keys($scope.responses).length;
 
         if (!surveyResponse.isComplete) {
-          console.log('incomplete survey');
           $scope.isSaving = false;
           alertsFactory.danger(i18n('incompleteSurveyErrorMsg'));
           return;
