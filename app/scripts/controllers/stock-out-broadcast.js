@@ -14,7 +14,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return appConfigService.getCurrentAppConfig();
       },
       facilityStockListProductTypes: function(appConfigService){
-        return appConfigService.getFacilityStockListProductTypes();
+        return appConfigService.getProductTypes();
       }
     }
   })

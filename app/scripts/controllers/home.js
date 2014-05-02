@@ -125,30 +125,25 @@ angular.module('lmisChromeApp')
             var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService) {
               var deferred = $q.defer();
 
-              var cacheProductTypes = cacheService.get(cacheService.PRODUCT_TYPE_INFO);
-              console.log(cacheProductTypes);
-              if(typeof cacheProductTypes !== 'undefined'){
-                deferred.resolve(cacheProductTypes);
-                return deferred.promise;
-              }
-
               var productTypeInfo = {};
               if(typeof appConfig === 'undefined'){
                 deferred.resolve(productTypeInfo);
                 return deferred.promise;
               }
+
+              var cacheProductTypes = cacheService.get(cacheService.PRODUCT_TYPE_INFO);
+              if(typeof cacheProductTypes !== 'undefined'){
+                deferred.resolve(cacheProductTypes);
+                return deferred.promise;
+              }
+
               var currentFacility = appConfig.appFacility;
               var promises = [];
-              //TODO what a pain can't we have config service return real objects? thing is that creates an added dependency..
               promises.push(appConfigService.getProductTypes());
-              promises.push(productTypeFactory.getAll());
               $q.all(promises)
                 .then(function(res) {
-                  var typeIds = res[0];
-                  var actualTypes = res[1];
-                  var types = actualTypes.filter(function (t) {
-                    return typeIds.indexOf(t.uuid) !== -1;
-                  });
+                  var types =  res[0];
+                  console.log(types);
                   var productTypeInfo = [];
                   var innerPromises = [];
                   // jshint loopfunc: true
@@ -195,7 +190,10 @@ angular.module('lmisChromeApp')
               var values = [], product = {}; 
               // TODO: unnecessary transposition
               for(var uuid in productTypeCounts) {
+                console.log('typeCount')
+                console.log(productTypeCounts);
                 product = productTypeCounts[uuid];
+                console.log(product);
                 values.push({
                   label: product.name,
                   daysOfStock: Math.floor(product.daysOfStock),
