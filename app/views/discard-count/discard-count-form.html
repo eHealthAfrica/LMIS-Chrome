@@ -78,11 +78,11 @@
         <div class="col-sm-12" ng-hide="preview">
           <div class="row">
             <div class="col-sm-12">
-              <h1 class="text-center">{{facilityProducts[facilityProductsKeys[step]].name }}</h1>
+              <h1 class="text-center discarded-figure">{{selectedFacilityProduct}}</h1>
 
               <h1 class="text-center discarded-figure">{{ discardCount.discarded[productKey] }}
 
-                <ng-pluralize count="discardCount.discarded[productKey]"
+                <ng-pluralize count=" discardCount.discarded[productKey]"
                               when="{
                     '1': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}',
                     'other': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}s'}">

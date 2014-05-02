@@ -57,7 +57,7 @@ angular.module('lmisChromeApp')
               scope.reportYear
             ].join(' ');
             alertsFactory.success(msg);
-            state.go('discardCountHome', {
+            state.go('home.index.home.mainActivity', {
               'facility': scope.facilityUuid,
               'reportMonth': scope.reportMonth,
               'reportYear': scope.reportYear,
@@ -164,7 +164,7 @@ angular.module('lmisChromeApp')
           }
           scope.discardCount.lastPosition = scope.step;
           scope.productKey = scope.facilityProductsKeys[scope.step];
-          scope.selectedFacility = load.productReadableName(scope.facilityProducts, scope.step);
+          scope.selectedFacilityProduct = load.productReadableName(scope.facilityProducts, scope.step);
           scope.productTypeCode = load.productTypeCode(scope.facilityProducts, scope.step, scope.productType);
           if(angular.isUndefined(scope.discardCount.reason[scope.productKey])){
             scope.discardCount.reason[scope.productKey] = {};
