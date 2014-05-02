@@ -1,0 +1,51 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h1 class="panel-title">Discard Count <!--for the month of {{ monthList[currentMonth] }} {{ currentYear }} --></h1>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table table-bordered" ng-hide="detailView">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Synced</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="date in dateList" ng-class="{'pointer':!missedEntry(date), 'disabled':missedEntry(date) }" ng-click="takeActon(date)">
+              <td> {{ $index + 1 }} </td>
+              <td><span class="text-info"> {{ date | date:'MMM dd, yyyy' }} </span></td>
+              <td class="text-center"> <i class="fa " ng-class="{'fa-check-circle text-success': discardCountByDate[date].synced, 'fa-times-circle text-danger': !discardCountByDate[date].synced}"></i> </td>
+              <td class="text-center">
+                <i class="fa " ng-class="{'fa-check-circle text-success': discardCountByDate[date].isComplete, 'fa-times-circle text-danger': !discardCountByDate[date].isComplete}"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button ng-show="detailView" class="btn btn-default" ng-click="detailView=!detailView">Back to List</button>
+        <a class="btn btn-default" ui-sref="discardCountForm({countDate: discardCount.countDate})" ng-show="detailView && !editOff">
+          <i class="fa fa-edit"></i> Edit
+        </a>
+        <table class="table table-bordered" ng-show="detailView">
+          <thead>
+          <tr>
+            <th>Item</th>
+            <th>Today's Count</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="row in discardCountByType" ng-class="{'td-header': row.header}">
+            <td>
+              <div ng-class="{'child-margin': !row.header}">{{ getName(row) }}</div>
+            </td>
+            <td>{{ row.value }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
