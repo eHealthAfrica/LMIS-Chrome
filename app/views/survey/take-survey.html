@@ -11,10 +11,16 @@
             <span ng-bind="question.text"></span>
           </div>
           <div class="row col-md-12 pull-right">
-            <label class="input-control"><input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}"
-                          ng-value="true"/> Yes</label>
-            <label class="input-control"><input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}"
-                          ng-value="false"> No</label>
+            <label class="input-control">
+              <input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}" ng-value="true"
+                ng-change="newValue(question.uuid, true)"/>
+              <span>Yes</span>
+            </label>
+            <label class="input-control">
+              <input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}" ng-value="false"
+                ng-change='newValue(question.uuid, false)'>
+              <span>No</span>
+            </label>
           </div>
           <div class="panel-body"></div>
         </div>
