@@ -199,8 +199,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         function (profile) {
           var types = [];
           for (var i in profile.selectedProductProfiles) {
-            if (types.indexOf(profile.selectedProductProfiles[i].product) === -1)
-              types.push(profile.selectedProductProfiles[i].product);
+            if (types.indexOf(profile.selectedProductProfiles[i].product.uuid) === -1)
+              types.push(profile.selectedProductProfiles[i].product.uuid);
           }
           deferred.resolve(types);
         },

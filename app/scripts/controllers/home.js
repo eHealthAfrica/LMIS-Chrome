@@ -26,10 +26,13 @@ angular.module('lmisChromeApp')
           appConfigService.isDiscardCountDue(appConfig).then(function(result){
             $scope.hasPendingDiscardCount = result;
           });
+
+          /*
+          //TODO: re-activate this later for survey reminders
           surveyFactory.getPendingSurveys(appConfig.appFacility.uuid)
             .then(function(pendingSurveys){
              $scope.pendingSurveys = pendingSurveys;
-          });
+          });*/
         }
       }
     })
@@ -123,12 +126,11 @@ angular.module('lmisChromeApp')
               var deferred = $q.defer();
 
               var cacheProductTypes = cacheService.get(cacheService.PRODUCT_TYPE_INFO);
+              console.log(cacheProductTypes);
               if(typeof cacheProductTypes !== 'undefined'){
                 deferred.resolve(cacheProductTypes);
                 return deferred.promise;
               }
-
-
 
               var productTypeInfo = {};
               if(typeof appConfig === 'undefined'){
