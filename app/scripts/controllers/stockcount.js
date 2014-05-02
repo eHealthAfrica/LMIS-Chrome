@@ -27,9 +27,7 @@ angular.module('lmisChromeApp')
           $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
           $scope.facilityObject = appConfig.appFacility;
           $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
-
           $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
-
           var now = new Date();
           $scope.currentDay = now.getDate();
           $scope.day = $scope.currentDay;
@@ -38,9 +36,6 @@ angular.module('lmisChromeApp')
           $scope.currentYear = now.getFullYear();
           $scope.year = $scope.currentYear;
           $scope.monthList = stockCountFactory.monthList;
-          $scope.startDate = new Date();
-          $scope.appConfig = appConfig;
-
           $scope.dateActivated = appConfig.dateActivated;
           $scope.countInterval = appConfig.stockCountInterval;
           $scope.reminderDay= appConfig.reminderDay;
@@ -59,9 +54,7 @@ angular.module('lmisChromeApp')
               if(stockCount !== null){
                 $scope.stockCount = stockCount;
                 $scope.detailView = true;
-                if($filter('date')(new Date(), 'yyyy-MM-dd') !== $filter('date')(stockCount.countDate, 'yyyy-MM-dd')){
-                  $scope.editOff = true;
-                }
+                stockCountFactory.set.stock.editStatus($scope);
                 $scope.mergedList = stockCountFactory.get.mergedStockCount(stockCount.unopened, $scope.facilityProductsKeys);
               }
               else if(!missed){
@@ -406,7 +399,7 @@ angular.module('lmisChromeApp')
     // get url parameters
     $scope.facilityObject = appConfig.appFacility;
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
-    $scope.reportDay = ($stateParams.reportDay !== null)?$stateParams.reportDay: day;
+    $scope.reportDay = stockCountFactory.get.reminderDayFromDate($stateParams.reportDay, appConfig);
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
 
