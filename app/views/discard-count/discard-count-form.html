@@ -61,7 +61,7 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h1 class="panel-title" >
+    <h1 class="panel-title">
       Discard Count for {{ facilityObject.name }} - {{ currentDay }} {{ monthList[reportMonth] }} {{ reportYear }}
       <div class="pull-right">
         <span ng-click="showHelp=!showHelp">
@@ -79,9 +79,16 @@
           <div class="row">
             <div class="col-sm-12">
               <h5 class="text-center">Discarded {{selectedFacilityProduct}}</h5>
-              <h1 class="text-center discarded-figure">{{ discardCount.discarded[productKey] }}
-                {{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}
+
+              <h1 class="text-center discarded-figure">{{ wasteCount.discarded[productKey] }}
+
+                <ng-pluralize count=" discardCount.discarded[productKey]"
+                              when="{
+                    '1': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}',
+                    'other': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}s'}">
+                </ng-pluralize>
               </h1>
+
             </div>
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12">
@@ -90,7 +97,7 @@
                   <div class="col-xs-12 col-sm-4 hidden-xs">
                     <div class="btn-separator">
                       <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default col-sm-12 col-xs-12"
-                          ng-click="changeState(0)">
+                              ng-click="changeState(0)">
                         <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
                       </button>
                     </div>
@@ -100,13 +107,15 @@
                   <div class="col-sm-4 col-xs-12">
                     <div class="btn-separator">
                       <div class="form-group has-feedback" ng-class="{'has-error': reasonError}">
-                          <div ng-repeat="reason in discardedReasons">
-                            <div class="form-group">
-                              <label >{{ reason }}</label>
-                              <counter bind="discardCount.reason[productKey][$index]"></counter>
-                              <div ng-show="discardErrors[productKey][$index]" class="custom-error text-center">{{ discardErrorMsg[productKey][$index] }}</div>
+                        <div ng-repeat="reason in discardedReasons">
+                          <div class="form-group">
+                            <label>{{ reason }}</label>
+                            <counter bind="discardCount.reason[productKey][$index]"></counter>
+                            <div ng-show="discardErrors[productKey][$index]" class="custom-error text-center">{{
+                              discardErrorMsg[productKey][$index] }}
                             </div>
                           </div>
+                        </div>
                         <div class="clearfix"></div>
                       </div>
                     </div>
@@ -127,7 +136,7 @@
                       <div class="btn-group btn-group-justified">
                         <div class="btn-group">
                           <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default"
-                              ng-click="changeState(0)">
+                                  ng-click="changeState(0)">
                             <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
                           </button>
                         </div>
@@ -147,7 +156,7 @@
                       <div class="btn-group btn-group-justified">
                         <div class="btn-group">
                           <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default"
-                              ng-click="changeState(0)">
+                                  ng-click="changeState(0)">
                             <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
                           </button>
                         </div>
@@ -177,9 +186,9 @@
             <div class="row" ng-show="editOn && step !== maxStep && discardCount.isComplete">
               <div class="col-sm-6 data-row">
                 <div class="btn-separator">
-                   <button type="button" class="btn btn-lg btn-warning col-sm-12 col-xs-12" ng-click="preview=!preview">
-                      Save <i class="fa fa-save fa-lg"></i>
-                   </button>
+                  <button type="button" class="btn btn-lg btn-warning col-sm-12 col-xs-12" ng-click="preview=!preview">
+                    Save <i class="fa fa-save fa-lg"></i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -215,7 +224,7 @@
             <div class="col-sm-12 hidden-xs">
               <div class="btn-separator">
                 <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
-                    <i class="fa fa-chevron-circle-left"></i> Back to form
+                  <i class="fa fa-chevron-circle-left"></i> Back to form
                 </button>
                 <button class="btn btn-success btn-lg">
                   Save <i class="fa fa-save"></i>
@@ -228,7 +237,7 @@
                 <div class="btn-group btn-group-justified">
                   <div class="btn-group">
                     <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
-                        <i class="fa fa-chevron-circle-left"></i> Back
+                      <i class="fa fa-chevron-circle-left"></i> Back
                     </button>
                   </div>
                   <div class="btn-group">
