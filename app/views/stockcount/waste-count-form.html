@@ -83,10 +83,9 @@
         <h1 class="text-center discarded-figure">{{ wasteCount.discarded[productKey] }}
 
           <ng-pluralize count="wasteCount.discarded[productKey]"
-                        when="
-                      {
-                      '1': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}',
-                      'other': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}s'}">
+            when="{
+                    '1': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}',
+                    'other': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}s'}">
           </ng-pluralize>
         </h1>
 
@@ -240,23 +239,6 @@
           </button>
         </div>
       </div>
-
-      <!--div class="row">
-        <div class="col-xs-12">
-          <div class="btn-separator">
-            <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
-              <i class="fa fa-chevron-circle-left"></i> Back to form
-            </button>
-          </div>
-        </div>
-        <div class="col-xs-12">
-          <div class="btn-separator">
-            <button class="btn btn-success btn-lg">
-              Confirm and Save <i class="fa fa-save"></i>
-            </button>
-          </div>
-        </div>
-      </div-->
 
       <div class="col-xs-12 visible-xs">
         <div class="btn-separator">
