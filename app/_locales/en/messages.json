@@ -357,7 +357,7 @@
     "message": "E-mail"
   },
   "selectFacilityProductProfiles": {
-    "message": "Select facility product profiles"
+    "message": "Select facility stock list"
   },
   "appConfigFailedMsg": {
     "message": "Application configuration failed, please contact support"
@@ -369,7 +369,7 @@
     "message": "Compare"
   },
   "selectedProductProfile": {
-    "message": "Selected product profile"
+    "message": "Selected facility stock list"
   },
   "selectStockCountInterval": {
     "message": "Select stock count interval"
