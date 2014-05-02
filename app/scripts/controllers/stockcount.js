@@ -288,6 +288,7 @@ angular.module('lmisChromeApp')
             if (typeof result !== 'undefined') {
               //clear data used to plot product-type-info graph
                cacheService.remove(cacheService.PRODUCT_TYPE_INFO);
+               cacheService.remove(cacheService.STOCK_COUNT_REMINDER);
 
               //if final save, redirect to home page.
               if ($scope.redirect) {
