@@ -187,27 +187,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    return removeProductProfileFrom(productProfile, selectedProductProfiles);
   };
 
-  /**
-  */
-//  this.getProductTypes = function()
-//  {
-//    var deferred = $q.defer();
-//    this.load().then(
-//        function (profile) {
-//          var types = [];
-//          for (var i in profile.selectedProductProfiles) {
-//            if (types.indexOf(profile.selectedProductProfiles[i].product.uuid) === -1)
-//              types.push(profile.selectedProductProfiles[i].product.uuid);
-//          }
-//          deferred.resolve(types);
-//        },
-//        function (err) {
-//          deferred.reject(err);
-//        }
-//    );
-//    return deferred.promise;
-//  };
-
   this.getAppFacilityProfileByEmail = function(email){
     var deferred = $q.defer();
     var REMOTE = config.api.url + '/' + FACILITY_PROFILE_DB;
