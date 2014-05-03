@@ -4,7 +4,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider.state('appConfig', {
     parent: 'root.index',
     abstract: true,
-    templateUrl: 'views/home/index.html'
+    templateUrl: 'views/home/index.html',
   }).state('appConfigWelcome', {
     url: '/app-config-welcome',
     parent: 'root.index',
@@ -47,6 +47,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       },
       appConfig: function(appConfigService){
         return appConfigService.getCurrentAppConfig();
+      },
+      ccuList: function(ccuFactory){
+        return ccuFactory.getCurrentFacilityCcuList();
       }
     },
     controller: 'EditAppConfigCtrl',
@@ -144,7 +147,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
 }).controller('EditAppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
-                                         i18n, $state, appConfig) {
+                                         i18n, $state, appConfig, ccuList) {
+
+ console.log(ccuList);
 
  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
  $scope.weekDays = appConfigService.weekDays;

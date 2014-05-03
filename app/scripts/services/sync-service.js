@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 angular.module('lmisChromeApp').service('syncService', function ($q, $log, $rootScope, storageService, pouchdb, config, $window) {
 
@@ -47,7 +47,6 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
     }else{
       isSyncing = true;
       var remoteDB = getRemoteDB(dbName);
-      console.log('syncing...')
       remoteDB.info()
         .then(function(dbInfo){
           saveItem(remoteDB, item).then(function(response){
@@ -60,7 +59,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
         }, function(dbConError){
           isSyncing = false;
           deferred.reject(dbConError);
-      });
+        });
     }
     return deferred.promise;
   };

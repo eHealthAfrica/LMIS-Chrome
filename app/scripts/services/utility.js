@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-angular.module('lmisChromeApp').service('utility', function ($q, storageService) {
+angular.module('lmisChromeApp').service('utility', function () {
 
   /**
    * This spaces out string concatenated by -
@@ -9,7 +9,7 @@ angular.module('lmisChromeApp').service('utility', function ($q, storageService)
    */
   this.getReadableProfileName = function(name){
     return name.replace(/\-/g,' - ').replace(/([0-9])([a-zA-Z])/g,'$1 $2').replace(/([a-z][a-z])([A-Z])/g,'$1 $2');
-  }
+  };
 
   /**
    * this returns the local time-zone difference from GMT.
@@ -19,7 +19,7 @@ angular.module('lmisChromeApp').service('utility', function ($q, storageService)
     //TODO: ref https://bitbucket.org/pellepim/jstimezonedetect
     var tz = new Date().getTimezoneOffset() / 60;
     return (tz < 0) ? parseInt('+' + Math.abs(tz)) : parseInt('-' + Math.abs(tz));
-  }
+  };
 
   /**
    *
@@ -38,7 +38,7 @@ angular.module('lmisChromeApp').service('utility', function ($q, storageService)
     }
 
     return newObject;
-  }
+  };
 
   this.getWeekRangeByDate = function(date, reminderDay){
     //TODO: adapt to work for leap year
@@ -62,7 +62,7 @@ angular.module('lmisChromeApp').service('utility', function ($q, storageService)
       'first': firstDayDateOfCurrentWeek,
       'last': lastDayDateOfCurrentWeek,
       'reminderDate': reminderDate
-    }
+    };
 
   };
   

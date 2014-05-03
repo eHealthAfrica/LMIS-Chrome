@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, syncService,
                                                                       productProfileFactory, facilityFactory, utility,
@@ -45,10 +45,9 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
         //get stock-counts within current and week date range
         var stockCountsWithInRange = results.filter(function (stockCount) {
-        var stockCountDate = new Date(stockCount.countDate);
-          return (currentWeekDateInfo.first.getTime() <= stockCountDate.getTime()
-                && stockCountDate.getTime() <= currentWeekDateInfo.last.getTime()
-                && stockCount.isComplete === 1)
+          var stockCountDate = new Date(stockCount.countDate);
+          return ((currentWeekDateInfo.first.getTime() <= stockCountDate.getTime()) &&
+              (stockCountDate.getTime() <= currentWeekDateInfo.last.getTime()) && stockCount.isComplete === 1)
         });
         var isStockCountReminderDue = (stockCountsWithInRange.length === 0) &&
             (today.getTime() >= currentWeekDateInfo.reminderDate.getTime());

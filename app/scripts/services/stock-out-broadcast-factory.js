@@ -41,7 +41,7 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function(sto
       deferred.reject(e);
     }
     return deferred.promise;
-  }
+  };
 
   return {
     save: saveStockOut,
