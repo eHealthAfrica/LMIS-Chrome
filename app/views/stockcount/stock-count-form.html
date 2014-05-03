@@ -89,104 +89,106 @@
 
                   <h3 class="center-text">
                     <ng-pluralize count="stockCount.unopened[productKey]"
-                      when="
+                                  when="
                       {
                       '1': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}',
                       'other': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}s'}">
                     </ng-pluralize>
                   </h3>
-              </div>
-              <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                  <div class="row">
-                    <!-- start form previous button -->
-                    <div class="col-xs-12 col-sm-4 hidden-xs">
-                      <div class="btn-separator">
-                        <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default col-sm-12 col-xs-12"
-                            ng-click="changeState(0)">
-                          <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
-                        </button>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="row">
+                      <!-- start form previous button -->
+                      <div class="col-xs-12 col-sm-4 hidden-xs">
+                        <div class="btn-separator">
+                          <button type="button" ng-disabled="step === 0"
+                                  class="btn btn-lg btn-default col-sm-12 col-xs-12"
+                                  ng-click="changeState(0)">
+                            <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                    <!-- start form counter input -->
-                    <div class="col-sm-4 col-xs-12">
-                      <div class="btn-separator">
-                        <counter bind="stockCount.unopened[productKey]"></counter>
-                        <div ng-show="productError" class="custom-error text-center" >{{ productErrorMsg }}</div>
+                      <!-- start form counter input -->
+                      <div class="col-sm-4 col-xs-12">
+                        <div class="btn-separator">
+                          <counter bind="stockCount.unopened[productKey]"></counter>
+                          <div ng-show="productError" class="custom-error text-center">{{ productErrorMsg }}</div>
+                        </div>
                       </div>
-                    </div>
-                    <!-- start form next button -->
-                    <div class="col-sm-4 col-xs-12 hidden-xs">
-                      <div class="btn-separator">
-                        <button type="button" ng-hide="step === maxStep"
+                      <!-- start form next button -->
+                      <div class="col-sm-4 col-xs-12 hidden-xs">
+                        <div class="btn-separator">
+                          <button type="button" ng-hide="step === maxStep"
+                                  class="btn btn-lg btn-success col-sm-12 col-xs-12"
+                                  ng-click="changeState(1)">
+                            Next <i class="fa fa-chevron-circle-right fa-lg"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <!-- this button is shown when we get tp the end of the list -->
+                      <div class="col-sm-4 col-xs-12 hidden-xs">
+                        <button type="button" ng-show="step === maxStep"
                                 class="btn btn-lg btn-success col-sm-12 col-xs-12"
-                                ng-click="changeState(1)">
-                          Next <i class="fa fa-chevron-circle-right fa-lg"></i>
+                                ng-click="changeState(2)">
+                          Save <i class="fa fa-save fa-lg"></i>
                         </button>
                       </div>
-                    </div>
-                    <!-- this button is shown when we get tp the end of the list -->
-                    <div class="col-sm-4 col-xs-12 hidden-xs">
-                      <button type="button" ng-show="step === maxStep"
-                              class="btn btn-lg btn-success col-sm-12 col-xs-12"
-                              ng-click="changeState(2)">
-                        Save <i class="fa fa-save fa-lg"></i>
-                      </button>
-                    </div>
 
-                    <!-- this button is shown only in mobile mode -->
-                    <div class="col-xs-12 visible-xs">
-                      <div class="btn-separator" ng-hide="step === maxStep">
-                        <div class="btn-group btn-group-justified">
-                          <div class="btn-group">
-                            <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default"
-                                ng-click="changeState(0)">
-                              <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
-                            </button>
-                          </div>
-                          <div class="btn-group">
-                            <button type="button" ng-hide="step === maxStep"
-                                    class="btn btn-lg btn-success col-sm-12 col-xs-12"
-                                    ng-click="changeState(1)">
-                              Next <i class="fa fa-chevron-circle-right fa-lg"></i>
-                            </button>
+                      <!-- this button is shown only in mobile mode -->
+                      <div class="col-xs-12 visible-xs">
+                        <div class="btn-separator" ng-hide="step === maxStep">
+                          <div class="btn-group btn-group-justified">
+                            <div class="btn-group">
+                              <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default"
+                                      ng-click="changeState(0)">
+                                <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
+                              </button>
+                            </div>
+                            <div class="btn-group">
+                              <button type="button" ng-hide="step === maxStep"
+                                      class="btn btn-lg btn-success col-sm-12 col-xs-12"
+                                      ng-click="changeState(1)">
+                                Next <i class="fa fa-chevron-circle-right fa-lg"></i>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div class="col-xs-12 visible-xs">
-                      <div class="btn-separator" ng-show="step === maxStep">
-                        <div class="btn-group btn-group-justified">
-                          <div class="btn-group">
-                            <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default"
-                                ng-click="changeState(0)">
-                              <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
-                            </button>
-                          </div>
-                          <div class="btn-group">
-                            <button type="button"
-                                    class="btn btn-lg btn-success"
-                                    ng-click="changeState(2)">
-                              Save <i class="fa fa-save fa-lg"></i>
-                            </button>
+                      <div class="col-xs-12 visible-xs">
+                        <div class="btn-separator" ng-show="step === maxStep">
+                          <div class="btn-group btn-group-justified">
+                            <div class="btn-group">
+                              <button type="button" ng-disabled="step === 0" class="btn btn-lg btn-default"
+                                      ng-click="changeState(0)">
+                                <i class="fa fa-chevron-circle-left fa-lg"></i> Prev
+                              </button>
+                            </div>
+                            <div class="btn-group">
+                              <button type="button"
+                                      class="btn btn-lg btn-success"
+                                      ng-click="changeState(2)">
+                                Save <i class="fa fa-save fa-lg"></i>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
                 </div>
                 <div class="row" ng-show="editOn && step !== maxStep && stockCount.isComplete">
                   <div class="col-sm-6 data-row">
                     <div class="btn-separator">
-                       <button type="button" class="btn btn-lg btn-warning col-sm-12 col-xs-12" ng-click="preview=!preview">
-                          Save <i class="fa fa-save fa-lg"></i>
-                       </button>
+                      <button type="button" class="btn btn-lg btn-warning col-sm-12 col-xs-12"
+                              ng-click="preview=!preview">
+                        Save <i class="fa fa-save fa-lg"></i>
+                      </button>
                     </div>
                   </div>
                 </div>
-            </div>
+              </div>
             </div>
             <div class="row" ng-show="preview">
               <div class="col-sm-12">
@@ -196,18 +198,26 @@
                       <table class="table table-bordered">
                         <thead>
                         <tr>
-                          <th>Stock Item</th>
-                          <th>Todays Count</th>
-                          <!--th>Confirm</th-->
+                          <th i18n="stockItem"></th>
+                          <th i18n="count"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="key in facilityProductsKeys" ng-click="edit($index)">
-                          <td class="form-label">{{ facilityProducts[key].name }}</td>
+                        <tr ng-repeat="productProfile in selectedProductProfiles" ng-click="edit(productProfile.uuid)">
+                          <td ng-bind="productProfile.name"></td>
                           <td>
-                            {{ stockCount.unopened[key] }}
+                            <span ng-bind="stockCount.unopened[productProfile.uuid]"></span>
+              <span>
+                <ng-pluralize count="stockCount.unopened[productProfile.uuid]"
+                              when="
+                      {
+                      '1': '{{ ((productProfile.presentation).uom).name }}',
+                      'other': '{{ ((productProfile.presentation).uom).name }}s'}">
+                </ng-pluralize>
+              </span>
                           </td>
                         </tr>
+
                         </tbody>
                       </table>
                     </div>
@@ -216,9 +226,12 @@
                 <div class="row">
                   <div class="col-sm-12 date-row">
                     <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
-                        <i class="fa fa-chevron-circle-left"></i> Back to form
+                      <i class="fa fa-chevron-circle-left"></i> Back to form
                     </button>
-                    <button class="btn btn-success btn-lg">Confirm and Save <i class="fa fa-save"></i></button>
+                    <button class="btn btn-success btn-lg">
+                      <span i18n="confirm"></span>
+                      <span><i class="fa fa-save"></i></span>
+                    </button>
                   </div>
                 </div>
               </div>
