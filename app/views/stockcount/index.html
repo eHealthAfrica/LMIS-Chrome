@@ -10,8 +10,8 @@
           <tr>
             <th>#</th>
             <th>Date</th>
+            <th>Done</th>
             <th>Synced</th>
-            <th>Status</th>
           </tr>
           </thead>
           <tbody>
@@ -19,12 +19,12 @@
               ng-click="takeActon(date)">
             <td> {{ $index + 1 }}</td>
             <td><span class="text-info"> {{ date | date:'MMM dd, yyyy' }} </span></td>
-            <td class="text-center"><i class="fa "
-                                       ng-class="{'fa-check-circle text-success': stockCountByDate[date].synced, 'fa-times-circle text-danger': !stockCountByDate[date].synced}"></i>
-            </td>
             <td class="text-center">
               <i class="fa "
                  ng-class="{'fa-check-circle text-success': stockCountByDate[date].isComplete, 'fa-times-circle text-danger': !stockCountByDate[date].isComplete}"></i>
+            </td>
+            <td class="text-center"><i class="fa "
+                                       ng-class="{'fa-check-circle text-success': stockCountByDate[date].synced, 'fa-times-circle text-danger': !stockCountByDate[date].synced}"></i>
             </td>
           </tr>
           </tbody>
