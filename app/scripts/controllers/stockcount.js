@@ -21,7 +21,8 @@ angular.module('lmisChromeApp')
             return stockCountFactory.get.productProfile();
           }
         },
-        controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state, $filter){
+        controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state){
+          $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
           $scope.productProfiles = productProfiles;
           $scope.stockCountList = stockCountList;
           $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
@@ -74,7 +75,7 @@ angular.module('lmisChromeApp')
         controller: 'StockCountFormCtrl',
         resolve:{
           appConfig: function(appConfigService){
-            return appConfigService.load();
+            return appConfigService.getCurrentAppConfig();
           },
           productType: function(stockCountFactory){
             return stockCountFactory.productType();

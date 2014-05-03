@@ -7,40 +7,55 @@
       <div class="col-sm-12">
         <table class="table table-bordered" ng-hide="detailView">
           <thead>
-            <tr>
-              <th>#</th>
-              <th>Date</th>
-              <th>Synced</th>
-              <th>Status</th>
-            </tr>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Synced</th>
+            <th>Status</th>
+          </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="date in dateList" ng-class="{'pointer':!missedEntry(date), 'disabled':missedEntry(date) }" ng-click="takeActon(date)">
-              <td> {{ $index + 1 }} </td>
-              <td><span class="text-info"> {{ date | date:'MMM dd, yyyy' }} </span></td>
-              <td class="text-center"> <i class="fa " ng-class="{'fa-check-circle text-success': stockCountByDate[date].synced, 'fa-times-circle text-danger': !stockCountByDate[date].synced}"></i> </td>
-              <td class="text-center">
-                <i class="fa " ng-class="{'fa-check-circle text-success': stockCountByDate[date].isComplete, 'fa-times-circle text-danger': !stockCountByDate[date].isComplete}"></i>
-              </td>
-            </tr>
+          <tr ng-repeat="date in dateList" ng-class="{'pointer':!missedEntry(date), 'disabled':missedEntry(date) }"
+              ng-click="takeActon(date)">
+            <td> {{ $index + 1 }}</td>
+            <td><span class="text-info"> {{ date | date:'MMM dd, yyyy' }} </span></td>
+            <td class="text-center"><i class="fa "
+                                       ng-class="{'fa-check-circle text-success': stockCountByDate[date].synced, 'fa-times-circle text-danger': !stockCountByDate[date].synced}"></i>
+            </td>
+            <td class="text-center">
+              <i class="fa "
+                 ng-class="{'fa-check-circle text-success': stockCountByDate[date].isComplete, 'fa-times-circle text-danger': !stockCountByDate[date].isComplete}"></i>
+            </td>
+          </tr>
           </tbody>
         </table>
-        <button ng-show="detailView" class="btn btn-default" ng-click="detailView=!detailView">Back to List</button>
-        <a class="btn btn-default" ui-sref="stockCountForm({countDate: stockCount.countDate})" ng-show="detailView && !editOff">
-          <i class="fa fa-edit"></i> Edit
+        <button ng-show="detailView" class="btn btn-default" ng-click="detailView=!detailView" i18n="backToList">
+        </button>
+          <a class="btn btn-default" ui-sref="stockCountForm({countDate: stockCount.countDate})"
+           ng-show="detailView && !editOff">
+          <span><i class="fa fa-edit"></i></span>
+          <span i18n="edit"></span>
         </a>
         <table class="table table-bordered" ng-show="detailView">
           <thead>
           <tr>
-            <th>Stock Item</th>
-            <th>Count</th>
+            <th i18n="stockItem"></th>
+            <th i18n="count"></th>
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="product in mergedList" ng-click="edit(stockCount, product)">
-            <td>{{ productProfiles[product].name }}</td>
+          <tr ng-repeat="productProfile in selectedProductProfiles">
+            <td ng-bind="productProfile.name"></td>
             <td>
-              {{ stockCount.unopened[product]  }}
+              <span ng-bind="stockCount.unopened[productProfile.uuid]"></span>
+              <span>
+                <ng-pluralize count="stockCount.unopened[productProfile.uuid]"
+                              when="
+                      {
+                      '1': '{{ ((productProfile.presentation).uom).name }}',
+                      'other': '{{ ((productProfile.presentation).uom).name }}s'}">
+                </ng-pluralize>
+              </span>
             </td>
           </tr>
           </tbody>

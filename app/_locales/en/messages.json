@@ -530,5 +530,17 @@
   },
   "appConfigReminderDayErrorMsg": {
     "message": "select stock count reminder day"
+  },
+  "count": {
+    "message": "Count"
+  },
+  "stockItem": {
+    "message": "Stock Item"
+  },
+  "edit": {
+    "message": "Edit"
+  },
+  "backToList": {
+    "message": "Back to List"
   }
 }
