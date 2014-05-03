@@ -117,14 +117,11 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
          cache.put(storageService.APP_CONFIG, appConfig);
          //clear data used to plot product-type-info graph
          cache.remove(cacheService.PRODUCT_TYPE_INFO);
-
-         syncService.syncItem(storageService.APP_CONFIG, appConfig)
-            .then(function(syncResult){
-              deferred.resolve(results);
-          })
-         .catch(function(error){
-            deferred.reject(error);
-         });
+         deferred.resolve(appConfig['uuid']);
+       })
+       .catch(function(reason){
+          console.log(reason);
+          deferred.resolve();
        });
     });
     return deferred.promise;
@@ -190,27 +187,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    return removeProductProfileFrom(productProfile, selectedProductProfiles);
   };
 
-  /**
-  */
-  this.getProductTypes = function()
-  {
-    var deferred = $q.defer();
-    this.load().then(
-        function (profile) {
-          var types = [];
-          for (var i in profile.selectedProductProfiles) {
-            if (types.indexOf(profile.selectedProductProfiles[i].product) === -1)
-              types.push(profile.selectedProductProfiles[i].product);
-          }
-          deferred.resolve(types);
-        },
-        function (err) {
-          deferred.reject(err);
-        }
-    );
-    return deferred.promise;
-  };
-
   this.getAppFacilityProfileByEmail = function(email){
     var deferred = $q.defer();
     var REMOTE = config.api.url + '/' + FACILITY_PROFILE_DB;
@@ -274,6 +250,28 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       });
     }
     return deferred.promise
+  };
+
+  this.getProductTypes = function(){
+    var deferred = $q.defer();
+    this.getCurrentAppConfig()
+      .then(function(appConfig){
+        var facilityStockListProductTypes = [];
+        var uuidListOfProductTypesAlreadyRecorded = [];
+        var DOES_NOT_EXIST = -1;
+        for(var index in appConfig.selectedProductProfiles){
+          var productType = appConfig.selectedProductProfiles[index].product;
+          if(uuidListOfProductTypesAlreadyRecorded.indexOf(productType.uuid) === DOES_NOT_EXIST ){
+            uuidListOfProductTypesAlreadyRecorded.push(productType.uuid);
+            facilityStockListProductTypes.push(productType);
+          }
+        }
+        deferred.resolve(facilityStockListProductTypes);
+      })
+      .catch(function(reason){
+        deferred.reject(reason);//resolves empty facilityStockListProductTypes
+      });
+    return deferred.promise;
   };
 
 });

@@ -18,8 +18,8 @@
                     <select id="productType" name="productType" class="form-control" ng-model="stockOutForm.productType"
                             required>
                       <option value="" i18n="selectProductType"></option>
-                      <option ng-repeat="productType in productTypes" value="{{ productType }}"
-                              ng-bind="productType.name" required>
+                      <option ng-repeat="productType in productTypes" value="{{ productType }}" required>
+                        {{ productType.code }} - {{ productType.name }}
                       </option>
                     </select>
                   <span class="alert-danger form-control" ng-show="((stockOutBroadcastForm.productType).$error).required

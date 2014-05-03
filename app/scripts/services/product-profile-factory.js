@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('productProfileFactory', function ($q, storageService, presentationFactory) {
+  .factory('productProfileFactory', function ($q, storageService, presentationFactory, productTypeFactory) {
     var get = function(uuid) {
       var deferred = $q.defer();
       storageService.find(storageService.PRODUCT_PROFILE, uuid)
         .then(function(productProfile) {
             if (typeof productProfile !== 'undefined') {
               var promises = {
-                presentation: presentationFactory.get(productProfile.presentation)
+                presentation: presentationFactory.get(productProfile.presentation),
+                product: productTypeFactory.get(productProfile.product)
               };
               $q.all(promises).then(function (results) {
                 for (var key in results) {
@@ -100,7 +101,6 @@ angular.module('lmisChromeApp')
         });
       return deferred.promise;
     };
-
 
     return {
       get: get,

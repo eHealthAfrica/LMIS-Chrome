@@ -21,7 +21,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return facilityFactory.getAll();
       },
       productProfiles: function(productProfileFactory){
-        return productProfileFactory.getAllWithoutNestedObject();
+        return productProfileFactory.getAll();
       },
       deviceInfo: function(deviceInfoService){
         return deviceInfoService.getDeviceInfo();
@@ -43,7 +43,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return facilityFactory.getAll();
       },
       productProfiles: function(productProfileFactory){
-        return productProfileFactory.getAllWithoutNestedObject();
+        return productProfileFactory.getAll();
       },
       appConfig: function(appConfigService){
         return appConfigService.getCurrentAppConfig();
@@ -56,7 +56,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   })
 
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
-        i18n, deviceInfo, setupSurvey, surveyFactory){
+        i18n, deviceInfo, setupSurvey, surveyFactory, syncService){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -94,7 +94,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.disableBtn = false;
         $scope.isSubmitted = false;
         $scope.profileNotFound = true;
-        console.log(error);
       });
   }
 
@@ -128,38 +127,22 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility);
    $scope.isSaving = true;
 
-   //prepare survey response and save.
-   var responses = [];
-   for(var index in $scope.surveyResponse){
-     var response = {question: index, answer: $scope.surveyResponse[index]}
-     responses.push(response);
-   }
-   var surveyResponse = {
-     survey: setupSurvey.uuid,
-     facility: $scope.appConfig.appFacility.uuid,
-     respondent: $scope.appConfig.contactPerson,
-     responses: responses
-   };
-
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
       if(result !== undefined){
         $scope.appConfig.uuid = result;
-        $scope.isSaving = false;
         $state.go('home.index.home.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
+        $scope.isSaving = false;
 
-        if(setupSurvey.questions.length === responses.length){
-          surveyResponse.isComplete = true;
-          surveyFactory.saveSurveyResponse(surveyResponse)
-              .then(function (result) {
-                if (typeof result === 'undefined') {
-                  alertsFactory.danger(i18n('surveyFailedMsg'));
-                }
-              })
-              .catch(function(){
-                alertsFactory.danger(i18n('surveyFailedMsg'));
-              });
-        }
+        //sync app config in the back-ground
+        syncService.syncItem(appConfigService.APP_CONFIG, $scope.appConfig)
+            .then(function(syncResult){
+              console.log('app config sync result '+syncResult);
+          })
+         .catch(function(error){
+           console.log('app config error: '+error);
+         });
+
       } else {
         $scope.isSaving = false;
         alertsFactory.danger(i18n('appConfigFailedMsg'));
@@ -172,7 +155,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
 }).controller('EditAppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
-                                         i18n, $state, appConfig) {
+                                         i18n, $state, appConfig, syncService) {
  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
  $scope.facilities = facilities;
  $scope.productProfiles = productProfiles;
@@ -210,9 +193,20 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
+
       if(result !== undefined){
+        $scope.appConfig.uuid = result;
+        syncService.syncItem(appConfigService.APP_CONFIG, $scope.appConfig)
+            .then(function(syncResult){
+              console.log('app config sync result '+syncResult);
+          })
+         .catch(function(error){
+           console.log('app config error: '+error);
+         });
+
         $state.go('home.index.home.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
         $scope.isSaving = false;
+
       } else {
         alertsFactory.danger(i18n('appConfigFailedMsg'));
         $scope.isSaving = false;
