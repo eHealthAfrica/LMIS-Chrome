@@ -21,7 +21,8 @@ angular.module('lmisChromeApp')
             return stockCountFactory.get.productProfile();
           }
         },
-        controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state, $filter){
+        controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state){
+          $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
           $scope.productProfiles = productProfiles;
           $scope.stockCountList = stockCountList;
           $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
@@ -74,7 +75,7 @@ angular.module('lmisChromeApp')
         controller: 'StockCountFormCtrl',
         resolve:{
           appConfig: function(appConfigService){
-            return appConfigService.load();
+            return appConfigService.getCurrentAppConfig();
           },
           productType: function(stockCountFactory){
             return stockCountFactory.productType();
@@ -224,6 +225,7 @@ angular.module('lmisChromeApp')
 
     // get url parameters
     $scope.facilityObject = appConfig.appFacility;
+    $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
     $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
     $scope.reportDay = stockCountFactory.get.reminderDayFromDate($stateParams.reportDay, appConfig);
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
@@ -249,9 +251,9 @@ angular.module('lmisChromeApp')
       $scope.maxStep =0;
     }
 
-    $scope.edit = function(index){
-      $scope.step = index;
-      $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+    $scope.edit = function(key){
+      $scope.step = $scope.facilityProductsKeys.indexOf(key);
+      $scope.productKey = key;
       $scope.preview = false;
       $scope.editOn = true;
     };

@@ -399,7 +399,7 @@
     "message": "Please select facility"
   },
   "appConfigStockCountErrorMsg": {
-    "message": "Please select facility stock count interval"
+    "message": "select facility stock count interval"
   },
   "contactPersonNameErrorMsg": {
     "message": "Please enter contact person name"
@@ -521,5 +521,26 @@
   },
   "clear": {
     "message": "Clear"
+  },
+  "selectStockCountReminderDay": {
+    "message": "Select stock reminder day"
+  },
+  "stockCountReminderDay": {
+    "message": "Stock count reminder day"
+  },
+  "appConfigReminderDayErrorMsg": {
+    "message": "select stock count reminder day"
+  },
+  "count": {
+    "message": "Count"
+  },
+  "stockItem": {
+    "message": "Stock Item"
+  },
+  "edit": {
+    "message": "Edit"
+  },
+  "backToList": {
+    "message": "Back to List"
   }
 }

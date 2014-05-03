@@ -56,10 +56,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   })
 
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
-        i18n, deviceInfo, setupSurvey, surveyFactory, syncService){
+        i18n, deviceInfo, setupSurvey){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
+  $scope.weekDays = appConfigService.weekDays;
   $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3, $scope.STEP_FOUR = 4, $scope.STEP_FIVE = 5;
   $scope.facilities = facilities;
   $scope.productProfiles = productProfiles;
@@ -115,8 +116,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     dateAdded: undefined
   };
 
-  $scope.surveyResponse = [];
-
   $scope.handleSelectionEvent = function(productProfile){
    $scope.appConfig.selectedProductProfiles =
        appConfigService.addProductProfile(productProfile, $scope.appConfig.selectedProductProfiles);
@@ -129,20 +128,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
-      if(result !== undefined){
+      if(typeof result !== 'undefined'){
         $scope.appConfig.uuid = result;
         $state.go('home.index.home.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
         $scope.isSaving = false;
-
-        //sync app config in the back-ground
-        syncService.syncItem(appConfigService.APP_CONFIG, $scope.appConfig)
-            .then(function(syncResult){
-              console.log('app config sync result '+syncResult);
-          })
-         .catch(function(error){
-           console.log('app config error: '+error);
-         });
-
       } else {
         $scope.isSaving = false;
         alertsFactory.danger(i18n('appConfigFailedMsg'));
@@ -155,8 +144,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
 }).controller('EditAppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
-                                         i18n, $state, appConfig, syncService) {
+                                         i18n, $state, appConfig) {
+
  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
+ $scope.weekDays = appConfigService.weekDays;
  $scope.facilities = facilities;
  $scope.productProfiles = productProfiles;
  $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
@@ -194,16 +185,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
 
-      if(result !== undefined){
+      if(typeof result !== 'undefined'){
         $scope.appConfig.uuid = result;
-        syncService.syncItem(appConfigService.APP_CONFIG, $scope.appConfig)
-            .then(function(syncResult){
-              console.log('app config sync result '+syncResult);
-          })
-         .catch(function(error){
-           console.log('app config error: '+error);
-         });
-
         $state.go('home.index.home.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
         $scope.isSaving = false;
 

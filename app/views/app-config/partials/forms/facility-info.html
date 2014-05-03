@@ -35,5 +35,23 @@
         </span>
       </div>
     </div>
+
+    <div class="col-sm-6">
+      <div class="form-group"
+           ng-class="{ 'has-error': (editAppConfigForm.stockCountReminderDay).$invalid && isSubmitted }">
+        <label for="stockCountReminderDay" i18n="stockCountReminderDay"></label>
+        <select id="stockCountReminderDay" class="form-control" ng-model="appConfig.reminderDay"
+                name="stockCountReminderDay" required>
+          <option value="" i18n="selectStockCountReminderDay"></option>
+          <option ng-repeat="day in weekDays" value="{{ $index }}"
+                  ng-selected="$index === appConfig.reminderDay"
+                  ng-bind="day" required>
+          </option>
+        </select>
+        <span class="alert-danger form-control" i18n="appConfigReminderDayErrorMsg"
+              ng-show="(editAppConfigForm.stockCountReminderDay).$invalid && isSubmitted">
+        </span>
+      </div>
+    </div>
   </div>
 </fieldset>
