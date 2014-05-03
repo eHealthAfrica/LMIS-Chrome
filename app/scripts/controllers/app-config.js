@@ -116,8 +116,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     dateAdded: undefined
   };
 
-  $scope.surveyResponse = [];
-
   $scope.handleSelectionEvent = function(productProfile){
    $scope.appConfig.selectedProductProfiles =
        appConfigService.addProductProfile(productProfile, $scope.appConfig.selectedProductProfiles);
@@ -128,13 +126,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility);
    $scope.isSaving = true;
 
-    console.log($scope.appConfig);
-
-
-
    appConfigService.setup($scope.appConfig)
     .then(function (result) {
-      if(result !== undefined){
+      if(typeof result !== 'undefined'){
         $scope.appConfig.uuid = result;
         $state.go('home.index.home.mainActivity',{'appConfigResult': i18n('appConfigSuccessMsg') });
         $scope.isSaving = false;
