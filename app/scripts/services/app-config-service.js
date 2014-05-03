@@ -99,6 +99,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    */
   this.setup = function (appConfig) {
     var deferred = $q.defer();
+    appConfig.reminderDay = parseInt(appConfig.reminderDay); //cast to integer incase it is a string
     this.load().then(function (result) {
       if(typeof appConfig.dateActivated === 'undefined'){
         appConfig.dateActivated = new Date().toJSON();
@@ -118,6 +119,14 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
          //clear data used to plot product-type-info graph
          cache.remove(cacheService.PRODUCT_TYPE_INFO);
          deferred.resolve(appConfig['uuid']);
+          //sync app config in the back-ground
+         syncService.syncItem(storageService.APP_CONFIG, appConfig)
+             .then(function (syncResult) {
+               console.log('app config sync result ' + syncResult);
+             })
+             .catch(function (error) {
+               console.log('app config error: ' + error);
+             });
        })
        .catch(function(reason){
           console.log(reason);
