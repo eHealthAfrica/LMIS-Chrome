@@ -115,10 +115,16 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       }
 
        $q.all(promises).then(function(results) {
+         //cache app config
          cache.put(storageService.APP_CONFIG, appConfig);
-         //clear data used to plot product-type-info graph
+
+         //clear data used to plot product-type-info graph and stock count reminder
          cache.remove(cacheService.PRODUCT_TYPE_INFO);
+         cache.remove(cacheService.STOCK_COUNT_REMINDER);
+
+         //ensure that promise is resolved as soon as save has been completed and do sync in background.
          deferred.resolve(appConfig['uuid']);
+
           //sync app config in the back-ground
          syncService.syncItem(storageService.APP_CONFIG, appConfig)
              .then(function (syncResult) {
