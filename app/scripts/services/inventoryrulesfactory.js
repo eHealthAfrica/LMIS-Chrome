@@ -37,7 +37,6 @@ angular.module('lmisChromeApp')
           var stockCounts = res[0];
           var profiles = res[1];
           var profileIds = profiles.map(function(pp){ return pp.uuid });
-          console.log(profileIds);
           var count = 0;
           //find the most recent stockCount mentioning ANY of the above profileIds. 
           if(typeof stockCounts !== 'undefined')
@@ -227,7 +226,6 @@ angular.module('lmisChromeApp')
 
     var daysOfStock= function(facility, productTypeUuid)
     {
-      console.log(productTypeUuid);
       var deferred = $q.defer();
       getStockLevel(facility, productTypeUuid).then(function (stockLevel) {
         var days = stockLevel / consumptionAvgByProductType(productTypeUuid);
