@@ -86,13 +86,15 @@
               <div class="row">
                 <div class="col-sm-12">
                   <h3 class="center-text">{{ selectedFacility }}</h3>
-
-                  <h3 class="center-text">
+                  <h3 class="center-text" ng-show="stockCount.unopened[productKey] === undefined">
+                    {{ productProfileUom }}s
+                  </h3>
+                  <h3 class="center-text" ng-show="stockCount.unopened[productKey] >= 0">
                     <ng-pluralize count="stockCount.unopened[productKey]"
                                   when="
                       {
-                      '1': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}',
-                      'other': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}s'}">
+                      '1': '{{ productProfileUom }}',
+                      'other': '{{ productProfileUom }}s'}">
                     </ng-pluralize>
                   </h3>
                 </div>

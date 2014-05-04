@@ -259,6 +259,7 @@ angular.module('lmisChromeApp')
     };
 
     $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
+    $scope.productProfileUom = $scope.facilityProducts[$scope.facilityProductsKeys[$scope.step]].presentation.uom.name;
     $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
 
     var timezone = stockCountFactory.get.timezone();
