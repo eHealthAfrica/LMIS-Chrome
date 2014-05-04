@@ -69,23 +69,19 @@ angular.module('lmisChromeApp')
       views: {
         'activities': {
           templateUrl: 'views/home/main-activity.html',
-          controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, alertsFactory, utility) {
+          controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, alertsFactory) {
 
             if ($stateParams.storageClear !== null) {
-              utility.scrollToTop();
               alertsFactory.success(i18n('clearStorageMsg'));
               $stateParams.storageClear = null;
             }
 
             if ($stateParams.stockOutBroadcastResult !== null) {
-              utility.scrollToTop();
               alertsFactory.success(i18n('stockOutBroadcastSuccessMsg'));
               $stateParams.stockOutBroadcastResult = null;
             }
 
-
             if ($stateParams.appConfigResult !== null) {
-              utility.scrollToTop();
               alertsFactory.success($stateParams.appConfigResult);
               $stateParams.appConfigResult = null;
             }
@@ -96,7 +92,6 @@ angular.module('lmisChromeApp')
             }
 
             if ($stateParams.surveySuccessMsg !== null) {
-              utility.scrollToTop();
               alertsFactory.success($stateParams.surveySuccessMsg);
               $stateParams.surveySuccessMsg = null;
             }
