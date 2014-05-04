@@ -94,7 +94,7 @@ angular.module('lmisChromeApp')
 /*
  * Discard Count Controller
  */
-  .controller('discardCountFormCtrl', function($scope, discardCountFactory, $state, alertsFactory, $stateParams, appConfig, productType){
+  .controller('discardCountFormCtrl', function($scope, discardCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, utility){
 
     var now = new Date();
     var day = now.getDate();
@@ -190,6 +190,7 @@ angular.module('lmisChromeApp')
     $scope.changeState = function(direction){
       discardCountFactory.validate.discard.changeState($scope, direction);
       $scope.discardCountByType = discardCountFactory.get.discardCountByType($scope.discardCount);
+      utility.scrollToTop();
     };
 
     discardCountFactory.watchDiscarded($scope);
