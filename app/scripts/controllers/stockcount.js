@@ -211,7 +211,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, cacheService, syncService, $anchorScroll, $location){
+  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, cacheService, syncService, utility){
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
@@ -364,8 +364,7 @@ angular.module('lmisChromeApp')
         }
         $scope.productKey = $scope.facilityProductsKeys[$scope.step];
       }
-      $location.hash('top');
-      $anchorScroll();
+      utility.scrollToTop();
       $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
       $scope.productProfileUom = $scope.facilityProducts[$scope.facilityProductsKeys[$scope.step]].presentation.uom.name;
       $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
