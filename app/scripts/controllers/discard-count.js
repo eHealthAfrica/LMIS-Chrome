@@ -83,7 +83,7 @@ angular.module('lmisChromeApp')
         controller:'discardCountFormCtrl',
         resolve: {
           appConfig: function(appConfigService){
-            return appConfigService.load();
+            return appConfigService.getCurrentAppConfig();
           },
           productType: function(stockCountFactory){
             return stockCountFactory.productType();
