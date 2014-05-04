@@ -143,7 +143,6 @@ angular.module('lmisChromeApp')
               $q.all(promises)
                 .then(function(res) {
                   var types =  res[0];
-                  console.log(types);
                   var productTypeInfo = [];
                   var innerPromises = [];
                   // jshint loopfunc: true
@@ -190,10 +189,7 @@ angular.module('lmisChromeApp')
               var values = [], product = {}; 
               // TODO: unnecessary transposition
               for(var uuid in productTypeCounts) {
-                console.log('typeCount')
-                console.log(productTypeCounts);
                 product = productTypeCounts[uuid];
-                console.log(product);
                 values.push({
                   label: product.name,
                   daysOfStock: Math.floor(product.daysOfStock),

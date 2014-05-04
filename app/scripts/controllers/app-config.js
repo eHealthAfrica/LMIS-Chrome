@@ -21,7 +21,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return facilityFactory.getAll();
       },
       productProfiles: function(productProfileFactory){
-        return productProfileFactory.getAll();
+        return productProfileFactory.getAllWithoutNestedObject();
       },
       deviceInfo: function(deviceInfoService){
         return deviceInfoService.getDeviceInfo();
@@ -43,7 +43,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return facilityFactory.getAll();
       },
       productProfiles: function(productProfileFactory){
-        return productProfileFactory.getAll();
+        return productProfileFactory.getAllWithoutNestedObject();
       },
       appConfig: function(appConfigService){
         return appConfigService.getCurrentAppConfig();
@@ -56,7 +56,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   })
 
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
-        i18n, deviceInfo, setupSurvey){
+        i18n, deviceInfo, setupSurvey, $log){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
