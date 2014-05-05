@@ -542,5 +542,11 @@
   },
   "backToList": {
     "message": "Back to List"
+  },
+  "facilityCcuProfile": {
+    "message": "Facility cold chain units"
+  },
+  "selectFacilityCcuProfile": {
+    "message": "Select facility cold chain units"
   }
 }

@@ -123,9 +123,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     dateAdded: undefined
   };
 
-  $scope.handleSelectionEvent = function(productProfile){
+  $scope.onProductProfileSelection = function(productProfile){
    $scope.appConfig.selectedProductProfiles =
-       appConfigService.addProductProfile(productProfile, $scope.appConfig.selectedProductProfiles);
+       appConfigService.addObjectToCollection(productProfile, $scope.appConfig.selectedProductProfiles, 'uuid');
   };
 
   $scope.save = function(){
@@ -151,14 +151,18 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
 }).controller('EditAppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
-                                         i18n, $state, appConfig, ccuProfiles) {
- console.log(ccuProfiles);
+                                         i18n, $state, appConfig, ccuProfiles, utility) {
 
  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
  $scope.weekDays = appConfigService.weekDays;
  $scope.facilities = facilities;
  $scope.productProfiles = productProfiles;
- $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
+ $scope.ccuProfiles = ccuProfiles;
+
+ //used to hold check box selection for both ccu and product profile
+ $scope.productProfileCheckBoxes = [];
+ $scope.ccuProfileCheckBoxes = [];
+
  $scope.preSelectProductProfileCheckBox = {};
  $scope.isSubmitted = false;
  //used to hold config form data
@@ -173,17 +177,24 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
    $scope.appConfig.stockCountInterval = parseInt(appConfig.stockCountInterval);
    $scope.appConfig.facility = appConfig.facility;
    $scope.appConfig.appFacility = appConfig.appFacility;
-   $scope.appConfig.selectedProductProfiles = appConfig.selectedProductProfiles;
+   $scope.appConfig.selectedProductProfiles = appConfig.selectedProductProfiles || [];
+   $scope.appConfig.selectedCcuProfiles = appConfig.selectedCcuProfiles || [];
+   $scope.preSelectCcuProfiles = appConfigService.generateAssociativeArray(appConfig.selectedCcuProfiles, 'dhis2_modelid');
    $scope.preSelectProductProfileCheckBox =
-            appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles);
+            appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles, 'uuid');
  };
 
  //pre-load edit app facility profile config form with existing config.
  preLoadConfigForm(appConfig);
 
- $scope.handleSelectionEvent = function(productProfile){
+ $scope.onCcuSelection = function(ccuProfile){
+   $scope.appConfig.selectedCcuProfiles =
+       appConfigService.addObjectToCollection(ccuProfile, $scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
+ };
+
+ $scope.onProductProfileSelection = function(productProfile){
    $scope.appConfig.selectedProductProfiles =
-       appConfigService.addProductProfile(productProfile, $scope.appConfig.selectedProductProfiles);
+       appConfigService.addObjectToCollection(productProfile, $scope.appConfig.selectedProductProfiles, 'uuid');
  };
 
  $scope.save = function(){
