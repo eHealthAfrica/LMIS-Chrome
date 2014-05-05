@@ -26,6 +26,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       deviceInfo: function(deviceInfoService){
         return deviceInfoService.getDeviceInfo();
       },
+      ccuProfiles: function(ccuProfileFactory){
+        return ccuProfileFactory.getAll();
+      },
       setupSurvey: function(surveyFactory){
         return surveyFactory.getSetupSurvey();
       }
@@ -47,6 +50,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       },
       appConfig: function(appConfigService){
         return appConfigService.getCurrentAppConfig();
+      },
+      ccuProfiles: function(ccuProfileFactory){
+        return ccuProfileFactory.getAll();
       }
     },
     controller: 'EditAppConfigCtrl',
@@ -56,7 +62,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   })
 
 }).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
-        i18n, deviceInfo, setupSurvey, $log){
+        i18n, deviceInfo, setupSurvey, $log, ccuProfiles){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -64,6 +70,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.STEP_ONE = 1, $scope.STEP_TWO = 2, $scope.STEP_THREE = 3, $scope.STEP_FOUR = 4, $scope.STEP_FIVE = 5;
   $scope.facilities = facilities;
   $scope.productProfiles = productProfiles;
+  $scope.ccuProfiles = ccuProfiles;
   $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
   $scope.currentStep = $scope.STEP_ONE; //set initial step
   $scope.moveTo = function(step){
@@ -144,7 +151,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
 }).controller('EditAppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
-                                         i18n, $state, appConfig) {
+                                         i18n, $state, appConfig, ccuProfiles) {
+ console.log(ccuProfiles);
 
  $scope.stockCountIntervals = appConfigService.stockCountIntervals;
  $scope.weekDays = appConfigService.weekDays;
