@@ -315,14 +315,16 @@ angular.module('lmisChromeApp')
       productProfile: function(){
         return storageService.get(storageService.PRODUCT_PROFILE);
       },
-      discardCountByType: function(discardCount){
+      discardCountByType: function(discardCount, facilityProductProfiles){
         var arr = [];
         if(Object.prototype.toString.call(discardCount) === '[object Object]'){
           for(var i in discardCount.discarded){
+            var uom = facilityProductProfiles[i].presentation.uom.name;
             arr.push({
               header: true,
               value: discardCount.discarded[i],
-              key: i
+              key: i,
+              uom: uom
             });
             if((Object.keys(discardCount.reason[i])).length > 0){
               for(var j in discardCount.reason[i]){
@@ -331,7 +333,8 @@ angular.module('lmisChromeApp')
                     {
                       header: false,
                       value: discardCount.reason[i][j],
-                      key: j
+                      key: j,
+                      uom: uom
                     }
                   );
                 }
@@ -457,7 +460,7 @@ angular.module('lmisChromeApp')
         scope.discardErrorMsg[scope.productKey] = {};
       }
       validate.discard.reason(scope, index);
-      scope.discardCountByType = load.discardCountByType(scope.discardCount);
+      scope.discardCountByType = load.discardCountByType(scope.discardCount, scope.facilityProducts);
     };
 
     return {

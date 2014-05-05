@@ -7,26 +7,31 @@
       <div class="col-sm-12">
         <table class="table table-bordered" ng-hide="detailView">
           <thead>
-            <tr>
-              <th>#</th>
-              <th>Date</th>
-              <th>Done</th>
-              <th>Synced</th>
-            </tr>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Done</th>
+            <th>Synced</th>
+          </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="date in dateList" ng-class="{'pointer':!missedEntry(date), 'disabled':missedEntry(date) }" ng-click="takeAction(date)">
-              <td> {{ $index + 1 }} </td>
-              <td><span class="text-info"> {{ date | date:'MMM dd, yyyy' }} </span></td>
-               <td class="text-center">
-                <i class="fa " ng-class="{'fa-check-circle text-success': discardCountByDate[date].isComplete, 'fa-times-circle text-danger': !discardCountByDate[date].isComplete}"></i>
-              </td>
-              <td class="text-center"> <i class="fa " ng-class="{'fa-check-circle text-success': discardCountByDate[date].synced, 'fa-times-circle text-danger': !discardCountByDate[date].synced}"></i> </td>
-            </tr>
+          <tr ng-repeat="date in dateList" ng-class="{'pointer':!missedEntry(date), 'disabled':missedEntry(date) }"
+              ng-click="takeActon(date)">
+            <td> {{ $index + 1 }}</td>
+            <td><span class="text-info"> {{ date | date:'MMM dd, yyyy' }} </span></td>
+            <td class="text-center">
+              <i class="fa "
+                 ng-class="{'fa-check-circle text-success': discardCountByDate[date].isComplete, 'fa-times-circle text-danger': !discardCountByDate[date].isComplete}"></i>
+            </td>
+            <td class="text-center"><i class="fa "
+                                       ng-class="{'fa-check-circle text-success': discardCountByDate[date].synced, 'fa-times-circle text-danger': !discardCountByDate[date].synced}"></i>
+            </td>
+          </tr>
           </tbody>
         </table>
         <button ng-show="detailView" class="btn btn-default" ng-click="detailView=!detailView">Back to List</button>
-        <a class="btn btn-default" ui-sref="discardCountForm({countDate: discardCount.countDate})" ng-show="detailView && !editOff">
+        <a class="btn btn-default" ui-sref="discardCountForm({countDate: discardCount.countDate})"
+           ng-show="detailView && !editOff">
           <i class="fa fa-edit"></i> Edit
         </a>
         <table class="table table-bordered" ng-show="detailView">
@@ -41,7 +46,17 @@
             <td>
               <div ng-class="{'child-margin': !row.header}">{{ getName(row) }}</div>
             </td>
-            <td>{{ row.value }}</td>
+            <td>
+              <span>{{ row.value }}</span>
+                      <span><ng-pluralize count="row.value"
+                                          when="
+                      {
+                      '1': '{{ row.uom }}',
+                      'other': '{{ row.uom }}s'}">
+                      </ng-pluralize>
+
+                    </span>
+            </td>
           </tr>
           </tbody>
         </table>
