@@ -100,49 +100,70 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   this.setup = function (appConfig) {
     var deferred = $q.defer();
     appConfig.reminderDay = parseInt(appConfig.reminderDay); //cast to integer incase it is a string
-    this.load().then(function (result) {
+    load().then(function (existingAppConfig) {
       if(typeof appConfig.dateActivated === 'undefined'){
         appConfig.dateActivated = new Date().toJSON();
       }
-      var promises = [];
-      if (typeof result === 'undefined') {
-        promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
-      } else {
-        //over-write appConfig by using existing appConfig uuid for the new appConfig.
-        //2014-04-11 - it would be more readable for this to apply individual properties to result rather than uuid to appConfig, that ties storage logic to this
-        appConfig['uuid'] = result.uuid;
-        promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
+
+      var selectedProductProfileUuids = [];
+      for (var index in appConfig.selectedProductProfiles) {
+        var productProfile = appConfig.selectedProductProfiles[index];
+        selectedProductProfileUuids.push(productProfile.uuid);
       }
 
-       $q.all(promises).then(function(results) {
-         //cache app config
-         cache.put(storageService.APP_CONFIG, appConfig);
+      var promise = {
+        selectedProductProfiles: productProfileFactory.getBatch(selectedProductProfileUuids)
+      };
 
-         //clear data used to plot product-type-info graph and stock count reminder
-         cache.remove(cacheService.PRODUCT_TYPE_INFO);
-         cache.remove(cacheService.STOCK_COUNT_REMINDER);
+      $q.all(promise)
+          .then(function (result) {
+            for (var key in result) {
+              appConfig[key] = result[key]
+            }
 
-         //ensure that promise is resolved as soon as save has been completed and do sync in background.
-         deferred.resolve(appConfig['uuid']);
+            var promises = [];
+            if (typeof existingAppConfig === 'undefined') {
+              promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
+            } else {
+              //over-write appConfig by using existing appConfig uuid for the new appConfig.
+              //2014-04-11 - it would be more readable for this to apply individual properties to result rather than uuid to appConfig, that ties storage logic to this
+              appConfig['uuid'] = existingAppConfig.uuid;
+              promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
+            }
 
-          //sync app config in the back-ground
-         syncService.syncItem(storageService.APP_CONFIG, appConfig)
-             .then(function (syncResult) {
-               console.log('app config sync result ' + syncResult);
-             })
-             .catch(function (error) {
-               console.log('app config error: ' + error);
-             });
-       })
-       .catch(function(reason){
-          console.log(reason);
-          deferred.resolve();
-       });
+            $q.all(promises)
+                .then(function (result) {
+                  //cache app config
+                  cache.put(storageService.APP_CONFIG, appConfig);
+                  //clear data used to plot product-type-info graph and stock count reminder
+                  cache.remove(cacheService.PRODUCT_TYPE_INFO);
+                  cache.remove(cacheService.STOCK_COUNT_REMINDER);
+                  deferred.resolve(result[0]);
+                  //sync app config in the back-ground
+                  syncService.syncItem(storageService.APP_CONFIG, appConfig)
+                      .then(function (syncResult) {
+                        console.log('app config sync result ' + syncResult);
+                      })
+                      .catch(function (error) {
+                        console.log('app config error: ' + error);
+                      });
+                })
+                .catch(function (reason) {
+                  console.log(reason);
+                  deferred.reject(reason);
+                });
+          })
+          .catch(function (reason) {
+            deferred.reject(reason);
+          });
+    })
+    .catch(function(reason){
+      deferred.reject(reason);
     });
     return deferred.promise;
   };
 
-  this.load = function () {
+  var load = function () {
     var deferred = $q.defer();
     storageService.get(storageService.APP_CONFIG)
       .then(function(data){
@@ -150,27 +171,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
             if (Object.keys(data).length === 1) {
               var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
               var appConfig = data[appConfigUUID];
-
-              var selectedProductProfileUuids = [];
-              for(var index in appConfig.selectedProductProfiles){
-                var productProfile = appConfig.selectedProductProfiles[index];
-                selectedProductProfileUuids.push(productProfile.uuid);
-              }
-
-              var promise = {
-                selectedProductProfiles: productProfileFactory.getBatch(selectedProductProfileUuids)
-              };
-
-              $q.all(promise)
-                .then(function(result){
-                  for(var key in result){
-                    appConfig[key] = result[key]
-                  }
-                  deferred.resolve(appConfig);
-                })
-                .catch(function(reason){
-                  deferred.reject(reason);
-              })
 
               cache.put(storageService.APP_CONFIG, appConfig);
               deferred.resolve(appConfig);
@@ -257,7 +257,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     if(typeof appConfig !== 'undefined'){
       deferred.resolve(appConfig);
     }else{
-      this.load().then(function(result){
+      load().then(function(result){
         deferred.resolve(result);
       })
       .catch(function(err){

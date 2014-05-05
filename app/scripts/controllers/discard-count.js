@@ -59,7 +59,7 @@ angular.module('lmisChromeApp')
                   $scope.editOff = true;
                 }
                 //$scope.mergedList = discardCountFactory.get.mergedDiscardCount(discardCount.unopened, $scope.facilityProductsKeys);
-                $scope.discardCountByType = discardCountFactory.get.discardCountByType(discardCount);
+                $scope.discardCountByType = discardCountFactory.get.discardCountByType(discardCount, $scope.facilityProducts);
               }
               else if(!missed){
                 $state.go('discardCountForm', {countDate: date});
@@ -83,7 +83,7 @@ angular.module('lmisChromeApp')
         controller:'discardCountFormCtrl',
         resolve: {
           appConfig: function(appConfigService){
-            return appConfigService.load();
+            return appConfigService.getCurrentAppConfig();
           },
           productType: function(stockCountFactory){
             return stockCountFactory.productType();
@@ -94,7 +94,7 @@ angular.module('lmisChromeApp')
 /*
  * Discard Count Controller
  */
-  .controller('discardCountFormCtrl', function($scope, discardCountFactory, $state, alertsFactory, $stateParams, appConfig, productType){
+  .controller('discardCountFormCtrl', function($scope, discardCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, utility){
 
     var now = new Date();
     var day = now.getDate();
@@ -169,7 +169,7 @@ angular.module('lmisChromeApp')
       if(angular.isUndefined($scope.discardCount.discarded[$scope.productKey])){
         $scope.discardCount.discarded[$scope.productKey] = 0;
       }
-      $scope.discardCountByType = discardCountFactory.get.discardCountByType(discardCount);
+      $scope.discardCountByType = discardCountFactory.get.discardCountByType(discardCount, $scope.facilityProducts);
     });
 
     $scope.save = function(){
@@ -189,7 +189,8 @@ angular.module('lmisChromeApp')
 
     $scope.changeState = function(direction){
       discardCountFactory.validate.discard.changeState($scope, direction);
-      $scope.discardCountByType = discardCountFactory.get.discardCountByType($scope.discardCount);
+      $scope.discardCountByType = discardCountFactory.get.discardCountByType($scope.discardCount, $scope.facilityProducts);
+      utility.scrollToTop();
     };
 
     discardCountFactory.watchDiscarded($scope);

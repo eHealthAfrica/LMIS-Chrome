@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('lmisChromeApp').service('utility', function ($q, storageService) {
+angular.module('lmisChromeApp').service('utility', function ($location, $anchorScroll) {
 
   /**
    * This spaces out string concatenated by -
@@ -64,6 +64,16 @@ angular.module('lmisChromeApp').service('utility', function ($q, storageService)
       'reminderDate': reminderDate
     }
 
+  };
+
+  /**
+   * This function scrolls to top of the page where it was called,
+   *
+   * #see 'top' is the id of a href element defined in views/index/index.html
+   */
+  this.scrollToTop = function(){
+    $location.hash('top');
+    $anchorScroll();
   };
   
 });

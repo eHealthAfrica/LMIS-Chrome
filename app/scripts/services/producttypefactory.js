@@ -1,52 +1,65 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('productTypeFactory', function ($rootScope, $q, storageService, uomFactory) {
+    .factory('productTypeFactory', function ($q, storageService, uomFactory) {
 
-      function getByUUID(uuid) {
+      var getByUuid = function(uuid) {
         var deferred = $q.defer();
-        storageService.find(storageService.PRODUCT_TYPES, uuid).then(function (uom) {
-          if (uom !== undefined) {
-            uomFactory.get(uom.base_uom).then(function (data) {
-              uom.base_uom = data;
-            });
-          }
-          deferred.resolve(uom);
-          if (!$rootScope.$$phase) {
-            $rootScope.$apply();
-          }
-        });
-        return deferred.promise;
-      }
+        storageService.find(storageService.PRODUCT_TYPES, uuid)
+            .then(function (productType) {
+              if (productType !== undefined) {
+                var promises = {
+                  base_uom: uomFactory.get(productType.base_uom)
+                };
 
-
-      // Public API here
-      return {
-        /**
-         * returns json object of product types each nested attribute is returned as a JSON,
-         * e.g ProductType.UOM will be returned as a JSON of UOM. similar to ORM format.
-         */
-        getAll: function () {
-          var deferred = $q.defer(), productTypes = [];
-
-          storageService.all(storageService.PRODUCT_TYPES).then(function (data) {
-            angular.forEach(data, function (datum) {
-              productTypes.push(getByUUID(datum.uuid).then(function (productType) {
-                deferred.notify(datum);
-                return productType;
-              }));
-            });
-
-            $q.all(productTypes).then(function (results) {
-              deferred.resolve(results);
-              if (!$rootScope.$$phase) {
-                $rootScope.$apply();
+                $q.all(promises)
+                    .then(function(result){
+                      for(var key in result) {
+                        productType[key] = result[key];
+                      }
+                      deferred.resolve(productType);
+                    })
+                    .catch(function(reason){
+                      deferred.reject(reason);
+                    });
+              } else {
+                deferred.resolve(productType);
               }
+            })
+            .catch(function (reason) {
+              deferred.reject(reason);
             });
-          });
-          return deferred.promise;
-        },
-
-        get: getByUUID
+        return deferred.promise;
       };
+
+      var getProductTypeList = function(){
+        var deferred = $q.defer();
+
+        storageService.all(storageService.PRODUCT_TYPES)
+            .then(function (data) {
+              var promises = []
+              for(var index in data){
+                var productType = data[index];
+                promises.push(getByUuid(productType.uuid));
+              }
+
+              $q.all(promises)
+                  .then(function(results){
+                    deferred.resolve(results);
+                  })
+                  .catch(function(reason){
+                    deferred.reject(reason);
+                  });
+            })
+            .catch(function(reason){
+              deferred.reject(reason);
+            });
+        return deferred.promise;
+      };
+
+      return {
+        getAll: getProductTypeList,
+        get: getByUuid
+      };
+
     });

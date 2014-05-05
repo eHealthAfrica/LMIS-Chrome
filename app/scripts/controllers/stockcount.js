@@ -211,7 +211,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, cacheService, syncService){
+  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, cacheService, syncService, utility){
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
@@ -251,15 +251,21 @@ angular.module('lmisChromeApp')
       $scope.maxStep =0;
     }
 
+    var updateUIModel = function(){
+      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
+      $scope.productProfileUom = $scope.facilityProducts[$scope.facilityProductsKeys[$scope.step]].presentation.uom.name;
+      $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
+    };
+
     $scope.edit = function(key){
       $scope.step = $scope.facilityProductsKeys.indexOf(key);
       $scope.productKey = key;
       $scope.preview = false;
       $scope.editOn = true;
+      updateUIModel();
     };
 
-    $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
-    $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
+    updateUIModel();
 
     var timezone = stockCountFactory.get.timezone();
 
@@ -363,8 +369,7 @@ angular.module('lmisChromeApp')
         }
         $scope.productKey = $scope.facilityProductsKeys[$scope.step];
       }
-      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
-
-      $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
+      updateUIModel();
+      utility.scrollToTop();
     };
   });
