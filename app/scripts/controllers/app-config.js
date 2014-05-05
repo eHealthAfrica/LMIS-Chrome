@@ -28,9 +28,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       },
       ccuProfiles: function(ccuProfileFactory){
         return ccuProfileFactory.getAll();
-      },
-      setupSurvey: function(surveyFactory){
-        return surveyFactory.getSetupSurvey();
       }
     },
     controller: 'AppConfigWizard',
