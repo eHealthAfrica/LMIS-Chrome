@@ -6,8 +6,8 @@
       </div>
 
       <div class="list-group pre-scrollable">
-        <li class="list-group-item" ng-repeat="ccuProfile in appConfig.selectedCcuProfiles track by $index"
-            ng-bind="ccuProfile.name">
+        <li class="list-group-item" ng-repeat="ccuProfile in appConfig.selectedCcuProfiles track by $index">
+          {{ ccuProfile.Manufacturer }} {{ ccuProfile.ModelName }}
         </li>
       </div>
     </div>
@@ -29,7 +29,7 @@
                  ng-false-value="{{ {'dhis2_modelid': ccuProfile.dhis2_modelid, deSelected: true} }}"
                  ng-change="onCcuSelection(ccuProfileCheckBoxes[ccuProfile.dhis2_modelid])"
                  ng-checked="preSelectCcuProfiles[ccuProfile.dhis2_modelid]"/>
-          {{ ccuProfile.name }}
+          {{ ccuProfile.Manufacturer }} {{ ccuProfile.ModelName }}
         </span>
         </div>
       </div>
