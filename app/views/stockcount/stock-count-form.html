@@ -91,6 +91,7 @@
                     <ng-pluralize count="stockCount.unopened[productKey]"
                                   when="
                       {
+                      '0': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}',
                       '1': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}',
                       'other': '{{ ((facilityProducts[facilityProductsKeys[step]].presentation).uom).name }}s'}">
                     </ng-pluralize>
@@ -211,6 +212,7 @@
                 <ng-pluralize count="stockCount.unopened[productProfile.uuid]"
                               when="
                       {
+                      '0': '{{ ((productProfile.presentation).uom).name }}',
                       '1': '{{ ((productProfile.presentation).uom).name }}',
                       'other': '{{ ((productProfile.presentation).uom).name }}s'}">
                 </ng-pluralize>
