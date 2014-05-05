@@ -15,7 +15,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="date in dateList" ng-class="{'pointer':!missedEntry(date), 'disabled':missedEntry(date) }" ng-click="takeActon(date)">
+            <tr ng-repeat="date in dateList" ng-class="{'pointer':!missedEntry(date), 'disabled':missedEntry(date) }" ng-click="takeAction(date)">
               <td> {{ $index + 1 }} </td>
               <td><span class="text-info"> {{ date | date:'MMM dd, yyyy' }} </span></td>
                <td class="text-center">

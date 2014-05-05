@@ -49,7 +49,7 @@ angular.module('lmisChromeApp')
           $scope.missedEntry = function(date){
            return stockCountFactory.get.missingEntry(date, $scope);
           };
-          $scope.takeActon = function(date){
+          $scope.takeAction = function(date){
             var missed = $scope.missedEntry(date);
             stockCountFactory.getStockCountByDate(date).then(function(stockCount){
               if(stockCount !== null){

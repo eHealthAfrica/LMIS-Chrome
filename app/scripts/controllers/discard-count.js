@@ -49,7 +49,7 @@ angular.module('lmisChromeApp')
           $scope.missedEntry = function(date){
            return discardCountFactory.get.missingEntry(date, $scope);
           };
-          $scope.takeActon = function(date){
+          $scope.takeAction = function(date){
             var missed = $scope.missedEntry(date);
             discardCountFactory.getDiscardCountByDate(date).then(function(discardCount){
               if(discardCount !== null){
