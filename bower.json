@@ -4,7 +4,7 @@
   "dependencies": {
     "angular": "1.2.15",
     "angular-bootstrap": "0.10.0",
-    "font-awesome": "https://github.com/FortAwesome/Font-Awesome.git#4.0.4-wip",
+    "font-awesome": "https://github.com/FortAwesome/Font-Awesome.git",
     "angular-ui-router": "0.2.10",
     "tv-breadcrumbs": "~0.1.1",
     "bootstrap-css-only": "~3.1.0",
