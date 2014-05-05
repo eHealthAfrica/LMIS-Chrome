@@ -28,7 +28,7 @@
           <input type="checkbox" ng-model="productProfileCheckBoxes[productProfile.uuid]"
                  ng-true-value="{{ productProfile }}"
                  ng-false-value="{{ {'uuid': productProfile.uuid, deSelected: true} }}"
-                 ng-change="handleSelectionEvent(productProfileCheckBoxes[productProfile.uuid])"
+                 ng-change="onProductProfileSelection(productProfileCheckBoxes[productProfile.uuid])"
                  ng-checked="preSelectProductProfileCheckBox[productProfile.uuid]"/>
           {{ productProfile.name }}
         </span>

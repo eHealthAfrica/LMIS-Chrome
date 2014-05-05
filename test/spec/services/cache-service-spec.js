@@ -26,7 +26,7 @@ describe('Service: cacheService ', function() {
   });
 
   it('as a user, i expect cacheService.getCache to return a cache ', function(){
-    expect(angular.isFunction(cacheService.getCache)).toBeTruthy()
+    expect(angular.isFunction(cacheService.getCache)).toBeTruthy();
 
     var cache = cacheService.getCache();
     var testCache = $cacheFactory('testCache');
@@ -51,7 +51,7 @@ describe('Service: cacheService ', function() {
     //clear storage
     cacheService.clearCache();
     expect(cache.info().size).toEqual(0);
-  })
+  });
 
   it('as a user i want to clear a value from cache by the key', function(){
     cacheService.put(key, value);
