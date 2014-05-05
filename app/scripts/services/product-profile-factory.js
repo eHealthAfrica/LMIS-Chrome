@@ -2,7 +2,7 @@
 
 angular.module('lmisChromeApp')
   .factory('productProfileFactory', function ($q, storageService, presentationFactory, productTypeFactory) {
-    var get = function(uuid) {
+    var getByUuid = function(uuid) {
       var deferred = $q.defer();
       storageService.find(storageService.PRODUCT_PROFILE, uuid)
         .then(function(productProfile) {
@@ -37,7 +37,7 @@ angular.module('lmisChromeApp')
           //attach complete nested object such as presentation to each product profile
           for(var index in productProfiles){
             var productProfile = productProfiles[index];
-            promises.push(get(productProfile.uuid));
+            promises.push(getByUuid(productProfile.uuid));
           }
 
           $q.all(promises).then(function(productProfiles){
@@ -74,19 +74,20 @@ angular.module('lmisChromeApp')
 
     var getProductProfileBatch = function(uuidList){
       if(!Array.isArray(uuidList)){
-        throw 'expected argument to be an array., not array argument passed';
+        throw 'expected argument to be an array. not array argument passed';
       }
-      var deferred = $q.defer();
-      getAll().then(function(productProfiles){
-        var result = productProfiles.filter(function (productProfile) {
-          var NOT_FOUND = -1; //-1 value returned by indexOf if not found.
-          return uuidList.indexOf(productProfile.uuid) > NOT_FOUND;
-        });
-        deferred.resolve(result);
-      })
-      .catch(function (reason) {
-        deferred.reject(reason);
-      });
+      var deferred = $q.defer(), batchPromises = [];
+      for(var index in uuidList){
+        batchPromises.push(getByUuid(uuidList[index]));
+      }
+
+      $q.all(batchPromises)
+          .then(function(result){
+            deferred.resolve(result);
+          })
+          .catch(function(reason){
+            deferred.reject(reason);
+          });
       return deferred.promise;
     };
 
@@ -103,7 +104,7 @@ angular.module('lmisChromeApp')
     };
 
     return {
-      get: get,
+      get: getByUuid,
       getAll: getAll,
       getByProductType: getByProductType,
       getBatch: getProductProfileBatch,

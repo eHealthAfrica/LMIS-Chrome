@@ -10,7 +10,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     },
     resolve: {
       appConfig: function(appConfigService){
-          return appConfigService.load();
+          return appConfigService.getCurrentAppConfig();
       }
     },
     controller: function ($stateParams, $state, $scope, surveyFactory, alertsFactory, appConfig, i18n) {

@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Tests Counter Directive', function () {
   var scope, html, counter, counterIsolatedScope;
 
@@ -47,7 +49,7 @@ describe('Tests Counter Directive', function () {
 
   it('i want counter buttons to be accessible via unique ids ', function(){
     var minusBtn = counter.find('button').eq(0);
-    var plusBtn = counter.find('button').eq(1)
+    var plusBtn = counter.find('button').eq(1);
     expect(minusBtn.attr('id')).toBe('_$counterMinusBtn');
     expect(plusBtn.attr('id')).toBe('_$counterAddBtn');
   });

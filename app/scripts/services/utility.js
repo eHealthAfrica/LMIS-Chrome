@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-angular.module('lmisChromeApp').service('utility', function () {
+angular.module('lmisChromeApp').service('utility', function ($location, $anchorScroll) {
 
   /**
    * This spaces out string concatenated by -
@@ -9,7 +9,7 @@ angular.module('lmisChromeApp').service('utility', function () {
    */
   this.getReadableProfileName = function(name){
     return name.replace(/\-/g,' - ').replace(/([0-9])([a-zA-Z])/g,'$1 $2').replace(/([a-z][a-z])([A-Z])/g,'$1 $2');
-  };
+  }
 
   /**
    * this returns the local time-zone difference from GMT.
@@ -19,7 +19,7 @@ angular.module('lmisChromeApp').service('utility', function () {
     //TODO: ref https://bitbucket.org/pellepim/jstimezonedetect
     var tz = new Date().getTimezoneOffset() / 60;
     return (tz < 0) ? parseInt('+' + Math.abs(tz)) : parseInt('-' + Math.abs(tz));
-  };
+  }
 
   /**
    *
@@ -38,10 +38,9 @@ angular.module('lmisChromeApp').service('utility', function () {
     }
 
     return newObject;
-  };
+  }
 
   this.getWeekRangeByDate = function(date, reminderDay){
-    //TODO: adapt to work for leap year
     var currentDate = date;
     // First day of current week is assumed to be Sunday, if current date is 19-12-2014, which is Thursday = 4,
     //then date of first day of current week = 19 - 4 = 15-12-2014 which is Sunday
@@ -62,8 +61,18 @@ angular.module('lmisChromeApp').service('utility', function () {
       'first': firstDayDateOfCurrentWeek,
       'last': lastDayDateOfCurrentWeek,
       'reminderDate': reminderDate
-    };
+    }
 
+  };
+
+  /**
+   * This function scrolls to top of the page where it was called,
+   *
+   * #see 'top' is the id of a href element defined in views/index/index.html
+   */
+  this.scrollToTop = function(){
+    $location.hash('top');
+    $anchorScroll();
   };
   
 });

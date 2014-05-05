@@ -45,9 +45,9 @@ describe('Service: utility ', function() {
     ];
 
     expect(angular.isArray(students)).toBeTruthy();
-    var students = utility.castArrayToObject(students);
-    expect(typeof students).toEqual('object');
-   expect(angular.isArray(students)).toBeFalsy();
+    var studentList = utility.castArrayToObject(students);
+    expect(typeof studentList).toEqual('object');
+    expect(angular.isArray(studentList)).toBeFalsy();
 
   });
 

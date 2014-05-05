@@ -1,45 +1,43 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('uomFactory', function ($q, $rootScope, uomCategoryFactory, storageService) {
+    .factory('uomFactory', function ($q, storageService) {
 
-      function getByUUID(uuid) {
+      var getByUuid = function(uuid) {
         var deferred = $q.defer();
-        storageService.find(storageService.UOM, uuid).then(function (data) {
-          var uom = data;
-          if (uom !== undefined) {
-            uomCategoryFactory.get(uom.uom_category).then(function (data) {
-              uom.uom_category = data;
+        //TODO: attach nested objects
+        storageService.find(storageService.UOM, uuid)
+            .then(function (data) {
+              deferred.resolve(data);
+            })
+            .catch(function(reason){
+              deferred.reject(reason);
             });
+        return deferred.promise;
+      }
+
+      var getAllUom = function () {
+        var deferred = $q.defer(), uomList = [];
+        storageService.all(storageService.UOM).then(function (data) {
+          for(var index in data){
+            var uom = data[index];
+            uomList.push(getByUuid(uom.uuid));
           }
-          deferred.resolve(uom);
+
+          $q.all(uomList)
+              .then(function (results) {
+                deferred.resolve(results);
+              }).catch(function (reason) {
+                deferred.reject(reason);
+              });
         });
         return deferred.promise;
       }
 
       // Public API here
       return {
-        getAll: function () {
-          var deferred = $q.defer(), uomList = [];
-          storageService.all(storageService.UOM).then(function (data) {
-            angular.forEach(data, function (datum) {
-              uomList.push(getByUUID(datum.uuid).then(function (uom) {
-                deferred.notify(datum);
-                return uom;
-              }));
-            });
-
-            $q.all(uomList).then(function (results) {
-              deferred.resolve(results);
-              if (!$rootScope.$$phase){
-                $rootScope.$apply();
-              }
-            });
-          });
-          return deferred.promise;
-        },
-
-        get: getByUUID
+        getAll: getAllUom,
+        get: getByUuid
       };
 
     });
