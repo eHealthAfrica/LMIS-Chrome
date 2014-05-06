@@ -1,0 +1,19 @@
+<div class="modal-header alert-danger">
+  <span ng-bind="headerMessage"></span>
+  <span class="pull-right" ng-click="cancel(dismissMessage)">
+    <i class="fa fa-times"></i>
+  </span>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-6">
+      <span ng-bind="bodyMessage"></span>
+      <button class="btn btn-success" ng-click="confirm(true)">
+        <span ng-bind="confirmBtnMsg"></span>
+      </button>
+      <button class="btn btn-default" ng-click="cancel(dismissMessage)">
+        <span ng-bind="cancelBtnMsg"></span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -426,10 +426,10 @@
     "message": "Product type"
   },
   "stockOutBroadcastSuccessMsg": {
-    "message": "Stock-out notification sent successfully!"
+    "message": "Stock-out alert sent successfully!"
   },
   "stockOutBroadcastFailedMsg": {
-    "message": "Stock-out notification failed, please contact support"
+    "message": "Stock-out alert failed, please contact support"
   },
   "send": {
     "message": "Send"
@@ -459,9 +459,6 @@
         "content": "$1"
       }
     }
-  },
-  "confirmStockOutBodyMsg": {
-    "message": "Are you sure?"
   },
   "yes": {
     "message": "Yes"
@@ -542,5 +539,40 @@
   },
   "backToList": {
     "message": "Back to List"
+  },
+  "facilityCcuProfile": {
+    "message": "Facility cold chain units"
+  },
+  "selectFacilityCcuProfile": {
+    "message": "Select facility cold chain units"
+  },
+  "reportCcuBreakdown": {
+    "message": "Report CCU breakdown"
+  },
+  "ccuBreakdown": {
+    "message": "CCU Breakdown"
+  },
+  "selectFacultyCcu": {
+    "message": "Select faulty CCU"
+  },
+  "selectCcu": {
+    "message": "Select CCU"
+  },
+  "confirmCcuBreakdownReportHeader": {
+    "message": "Confirm '$ccuIdentifier$' breakdown report",
+    "placeholders": {
+      "ccuIdentifier": {
+        "content": "$1"
+      }
+    }
+  },
+  "dialogConfirmationQuestion": {
+    "message": "are you sure?"
+  },
+  "ccuBreakdownReportSuccessMsg": {
+    "message": "CCU breakdown report sent successfully!"
+  },
+  "ccuBreakdownReportFailedMsg": {
+    "message":  "CCU breakdown report failed, please contact support"
   }
 }

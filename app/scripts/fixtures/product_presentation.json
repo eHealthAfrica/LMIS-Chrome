@@ -7,7 +7,7 @@
     "code": "PFS",
     "name": "Pre-Filled Syringes",
     "value": 1,
-    "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
+    "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
     "description": "pre-filled vaccine syringes"
   },
   "f10d21be-6d62-42a8-b5f8-63984b1f4916": {
@@ -29,7 +29,7 @@
     "code": "Uniject",
     "name": "Uniject",
     "value": 1,
-    "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
+    "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
     "description": "uniject vaccine product presentation"
   },
   "299939e1-94d7-4e8e-bfb7-c008af1692af": {

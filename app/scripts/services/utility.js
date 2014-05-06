@@ -41,7 +41,6 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
   }
 
   this.getWeekRangeByDate = function(date, reminderDay){
-    //TODO: adapt to work for leap year
     var currentDate = date;
     // First day of current week is assumed to be Sunday, if current date is 19-12-2014, which is Thursday = 4,
     //then date of first day of current week = 19 - 4 = 15-12-2014 which is Sunday

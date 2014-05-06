@@ -62,7 +62,7 @@ angular.module('lmisChromeApp')
       templateUrl: 'views/home/home.html'
     })
     .state('home.index.home.mainActivity', {
-      url: '/main-activity?appConfigResult&stockResult&storageClear&stockOutBroadcastResult&surveySuccessMsg',
+      url: '/main-activity?appConfigResult&stockResult&storageClear&stockOutBroadcastResult&surveySuccessMsg&ccuBreakdownReportResult',
       data: {
         label: 'Home'
       },
@@ -74,6 +74,11 @@ angular.module('lmisChromeApp')
             if ($stateParams.storageClear !== null) {
               alertsFactory.success(i18n('clearStorageMsg'));
               $stateParams.storageClear = null;
+            }
+
+            if ($stateParams.ccuBreakdownReportResult !== null) {
+              alertsFactory.success(i18n('ccuBreakdownReportSuccessMsg'));
+              $stateParams.ccuBreakdownReportResult = null;
             }
 
             if ($stateParams.stockOutBroadcastResult !== null) {

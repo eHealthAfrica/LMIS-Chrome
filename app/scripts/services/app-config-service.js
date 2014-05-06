@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, syncService,
                                                                       productProfileFactory, facilityFactory, utility,
@@ -45,10 +45,9 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
         //get stock-counts within current and week date range
         var stockCountsWithInRange = results.filter(function (stockCount) {
-        var stockCountDate = new Date(stockCount.countDate);
-          return (currentWeekDateInfo.first.getTime() <= stockCountDate.getTime()
-                && stockCountDate.getTime() <= currentWeekDateInfo.last.getTime()
-                && stockCount.isComplete === 1)
+          var stockCountDate = new Date(stockCount.countDate);
+          return ((currentWeekDateInfo.first.getTime() <= stockCountDate.getTime()) &&
+              (stockCountDate.getTime() <= currentWeekDateInfo.last.getTime()) && stockCount.isComplete === 1)
         });
         var isStockCountReminderDue = (stockCountsWithInRange.length === 0) &&
             (today.getTime() >= currentWeekDateInfo.reminderDate.getTime());
@@ -187,19 +186,23 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     return deferred.promise;
   };
 
-  var removeProductProfileFrom =  function(productProfile, selectedProductProfiles) {
-    return selectedProductProfiles.filter(function (prodProf) {
-      return prodProf.uuid !== productProfile.uuid;
+  var removeObjFromCollection = function(obj, collection, key){
+    collection = collection.filter(function (item) {
+      if(typeof item[key] === 'undefined' || typeof obj[key] === 'undefined'){
+        throw 'both objects that are being compared must have the property(key) being compared.';
+      }
+      return item[key] !== obj[key];
     });
+    return collection;
   };
 
-  this.addProductProfile = function(selection, selectedProductProfiles){
-   var productProfile = JSON.parse(selection);
-   if(productProfile.deSelected === undefined){
-     selectedProductProfiles.push(productProfile);
-     return selectedProductProfiles;
+  this.addObjectToCollection = function(obj, collections, key){
+   var _obj = JSON.parse(obj);
+   if(_obj.deSelected === undefined){
+     collections.push(_obj);
+     return collections;
    }
-   return removeProductProfileFrom(productProfile, selectedProductProfiles);
+   return removeObjFromCollection(_obj, collections, key);
   };
 
   this.getAppFacilityProfileByEmail = function(email){
@@ -235,16 +238,9 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     /**
    * copies an source array to target associate array(object array or key-pair )
    * @param source
-   * @param target
+   * @param key - property of object that will be used as key
    */
-  this.generateAssociativeArray =  function(source){
-    var target = {};
-    for (var index in source) {
-     var object = source[index];
-     target[object.uuid] = object;
-    }
-    return target;
-  };
+  this.generateAssociativeArray =  utility.castArrayToObject;
 
   /**
    * This returns current app config from cache, if not available, it loads from storageService
