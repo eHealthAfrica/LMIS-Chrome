@@ -122,7 +122,7 @@ angular.module('lmisChromeApp')
               {
                 key: 'daysToReorder',
                 label: i18n('daysLeft'),
-                color:  "#5DE100"
+                color:  "#9954bb"
               }
             ];
 
