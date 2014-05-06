@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title" i18n="reportCcuBreakdown"></h4>
+      </div>
+      <div class="panel-body">
+        <form name="reportCCUBreakdownForm" ng-submit="reportCCUBreakdownForm.$valid && save()" novalidate>
+          <fieldset>
+            <div class="row">
+              <div class="col-sm-12">
+
+                <div class="col-sm-6 center-block">
+
+                  <div class="form-group" ng-class="{ 'has-error': ((reportCCUBreakdownForm.ccuProfile).$error).required
+                      && ccuBreakdown.isSubmitted }">
+                    <label for="ccuProfile" i18n="selectCcu"></label>
+                    <select id="ccuProfile" name="ccuProfile" class="form-control" ng-model="ccuBreakdown.ccuProfile"
+                            required>
+                      <option value="" i18n="selectFacultyCcu"></option>
+                      <option ng-repeat="ccuProfile in facilityCcuList" value="{{ ccuProfile }}" required>
+                        {{ ccuProfile.Manufacturer }} - {{ ccuProfile.ModelName }}
+                      </option>
+                    </select>
+                  <span class="alert-danger form-control" ng-show="((reportCCUBreakdownForm.ccuProfile).$error).required
+                      && ccuBreakdown.isSubmitted" i18n="selectFacultyCcu"></span>
+                  </div>
+                  <div class="row">
+                    <div class="panel-body"></div>
+                    <div class="col-md-4 center-block">
+                      <button type="submit" id="send" name="send" class="btn btn-lg btn-danger"
+                              ng-click="ccuBreakdown.isSubmitted = true" ng-disabled="isSaving">
+                        <span ng-show="!isSaving" i18n="send"></span>
+                        <span ng-show="!isSaving"><i class="fa fa-bullhorn"></i></span>
+                        <span ng-show="isSaving" i18n="sending"></span>
+                        <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
