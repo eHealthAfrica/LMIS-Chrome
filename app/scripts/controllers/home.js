@@ -116,13 +116,13 @@ angular.module('lmisChromeApp')
             var keys = [
               {
                 key: 'daysOfStock',
-                color: "#000000",
+                color: "#444444",
                 label: i18n('daysStock')
               },
               {
                 key: 'daysToReorder',
                 label: i18n('daysLeft'),
-                color:  "#FEFB00"
+                color:  "#9954bb"
               }
             ];
 
@@ -201,6 +201,7 @@ angular.module('lmisChromeApp')
                 });
               }
               $scope.productTypesChart = dashboardfactory.chart(keys, values);
+              
             }, function(err) {
               console.log('getProductTypeCounts Error: '+err);
             });  

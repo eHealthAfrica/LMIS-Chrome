@@ -206,3 +206,6 @@ tr.disabled, tr.disabled span.text-info{
 .btn-left{
    padding-right: 0.5em;
 }
+.panel-stock-levels {
+  height: 220px;
+}
