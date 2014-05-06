@@ -50,7 +50,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
               }
             })
             .catch(function (reason) {
-              alertsFactory.danger(i18n('ccuBreakdownReportFailedMsg'));
               $scope.isSaving = false;
               $log.info(reason);
             });

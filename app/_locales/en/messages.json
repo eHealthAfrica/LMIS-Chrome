@@ -460,9 +460,6 @@
       }
     }
   },
-  "confirmStockOutBodyMsg": {
-    "message": "Are you sure?"
-  },
   "yes": {
     "message": "Yes"
   },
