@@ -3,6 +3,13 @@
     <h1 class="panel-title">Discard Count <!--for the month of {{ monthList[currentMonth] }} {{ currentYear }} --></h1>
   </div>
   <div class="panel-body">
+    <div class="row" ng-hide="detailView">
+      <div class="col-sm-12">
+        <a class="btn btn-default" ui-sref="discardCountForm({countDate: today})">
+          <i class="fa fa-edit"></i> Add
+        </a>
+      </div>
+    </div>
     <div class="row">
       <div class="col-sm-12">
         <table class="table table-bordered" ng-hide="detailView">
@@ -15,16 +22,15 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="date in dateList" ng-class="{'pointer':!missedEntry(date), 'disabled':missedEntry(date) }"
-              ng-click="takeAction(date)">
+          <tr ng-repeat="row in discardCountList" ng-click="takeAction(row.countDate)">
             <td> {{ $index + 1 }}</td>
-            <td><span class="text-info"> {{ date | date:'MMM dd, yyyy' }} </span></td>
+            <td><span class="text-info"> {{ row.countDate | date:'MMM dd, yyyy' }} </span></td>
             <td class="text-center">
               <i class="fa "
-                 ng-class="{'fa-check-circle text-success': discardCountByDate[date].isComplete, 'fa-times-circle text-danger': !discardCountByDate[date].isComplete}"></i>
+                 ng-class="{'fa-check-circle text-success': row.isComplete, 'fa-times-circle text-danger': !row.isComplete}"></i>
             </td>
             <td class="text-center"><i class="fa "
-                                       ng-class="{'fa-check-circle text-success': discardCountByDate[date].synced, 'fa-times-circle text-danger': !discardCountByDate[date].synced}"></i>
+                                       ng-class="{'fa-check-circle text-success': row.synced, 'fa-times-circle text-danger': !row.synced}"></i>
             </td>
           </tr>
           </tbody>
