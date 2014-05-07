@@ -460,6 +460,14 @@
       }
     }
   },
+  "stockOutWarningMsg": {
+    "message": " $productQuantity$ items out of stock, press to send alert",
+    "placeholders": {
+      "productQuantity": {
+        "content": "$1"
+      }
+    }
+  },
   "yes": {
     "message": "Yes"
   },
