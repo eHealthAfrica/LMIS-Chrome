@@ -59,8 +59,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
         currentWeekDateInfo = getCorrectWeeklyDateInfo(currentWeekDateInfo);
 
-        console.log(currentWeekDateInfo);
-
         //get stock-counts within current and week date range
         var stockCountsWithInRange = results.filter(function (stockCount) {
           var stockCountDate = new Date(stockCount.countDate);
