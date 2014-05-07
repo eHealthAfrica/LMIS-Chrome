@@ -18,6 +18,18 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
   this.weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+  var getCorrectWeeklyDateInfo = function(currentWeekDateInfo){
+    if ($filter('date')(new Date(), 'yyyy-MM-dd') < $filter('date')(currentWeekDateInfo.reminderDay, 'yyyy-MM-dd')) {
+      var previousReminderDate =
+          new Date(currentWeekDateInfo.reminderDay.getFullYear(), currentWeekDateInfo.reminderDay.getMonth(),
+              currentWeekDateInfo.reminderDay.getDate());
+
+      return utility.getWeekRangeByDate(previousReminderDate, currentWeekDateInfo.reminderDay.getDay());
+    }else{
+      return currentWeekDateInfo;
+    }
+  };
+
   /**
    * This function uses appConfig reminderDay for stockCount to check if stock count has been carried out within the
    * current date week. it will return TRUE if
@@ -42,6 +54,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     //if not available on cache recalculate and cache the result.
     storageService.all(storageService.STOCK_COUNT)
       .then(function (results) {
+
+        currentWeekDateInfo = getCorrectWeeklyDateInfo(currentWeekDateInfo);
 
         //get stock-counts within current and week date range
         var stockCountsWithInRange = results.filter(function (stockCount) {
