@@ -4,22 +4,33 @@ describe('Tests Counter Directive', function () {
   var scope, html, counter, counterIsolatedScope;
 
   // Load the LMIS module
-  beforeEach(module('lmisChromeApp'));
+  beforeEach(module('lmisChromeApp', 'i18nMocks'));
 
-  beforeEach(inject(function ($compile, $rootScope, $templateCache) {
+ // Initialize the state
+  beforeEach(inject(function($templateCache) {
     // Mock each template used by the state
     var templates = [
-      'index',
-      'nav',
-      'sidebar',
-      'control-panel',
-      'main-activity'
+      'index/index',
+      'index/header',
+      'index/breadcrumbs',
+      'index/alerts',
+      'index/footer',
+      'home/index',
+      'home/nav',
+      'home/sidebar',
+      'home/control-panel',
+      'home/main-activity',
+      'home/home',
+      'dashboard/dashboard',
+      'index/loading-fixture-screen'
     ];
 
-    angular.forEach(templates, function (template) {
-      $templateCache.put('views/home/' + template + '.html', '');
+    angular.forEach(templates, function(template) {
+      $templateCache.put('views/' + template + '.html', '');
     });
+  }));
 
+  beforeEach(inject(function ($compile, $rootScope) {
     //create a scope
     scope = $rootScope.$new();
 

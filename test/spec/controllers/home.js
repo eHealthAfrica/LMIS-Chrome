@@ -17,7 +17,10 @@ describe('Home controller', function () {
       'home/nav',
       'home/sidebar',
       'home/control-panel',
-      'home/main-activity'
+      'home/main-activity',
+      'home/home',
+      'dashboard/dashboard',
+      'index/loading-fixture-screen'
     ];
 
     angular.forEach(templates, function(template) {
@@ -26,7 +29,7 @@ describe('Home controller', function () {
   }));
 
   var $rootScope, $state;
-  beforeEach(inject(function(_$rootScope_, _$state_) {
+  beforeEach(inject(function(_$rootScope_, _$state_, $window) {
     $rootScope = _$rootScope_;
     $state = _$state_;
   }));

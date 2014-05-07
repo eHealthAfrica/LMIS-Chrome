@@ -20,8 +20,8 @@ angular.module('lmisChromeApp', [
       $state.go('home.index.home.mainActivity');
     };
 
-    $rootScope.$on('LOADING_COMPLETED', hideSplashScreen);
-    $rootScope.$on('START_LOADING', showSplashScreen);
+    $rootScope.$on('LOADING_COMPLETED', $window.hideSplashScreen);
+    $rootScope.$on('START_LOADING', $window.showSplashScreen);
 
     if(typeof FastClick !== 'undefined'){
       FastClick.attach(document.body);

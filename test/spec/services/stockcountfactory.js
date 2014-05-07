@@ -6,6 +6,30 @@ describe('Service stockCountFactory', function(){
   var stockCountFactory,
       stockCount,
       scope;
+   // Initialize the state
+  beforeEach(inject(function($templateCache) {
+    // Mock each template used by the state
+    var templates = [
+      'index/index',
+      'index/header',
+      'index/breadcrumbs',
+      'index/alerts',
+      'index/footer',
+      'home/index',
+      'home/nav',
+      'home/sidebar',
+      'home/control-panel',
+      'home/main-activity',
+      'home/home',
+      'dashboard/dashboard',
+      'index/loading-fixture-screen'
+    ];
+
+    angular.forEach(templates, function(template) {
+      $templateCache.put('views/' + template + '.html', '');
+    });
+  }));
+  
   beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q){
     stockCountFactory = _stockCountFactory_;
     scope = $rootScope.$new();
