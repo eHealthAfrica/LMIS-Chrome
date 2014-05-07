@@ -141,11 +141,11 @@ angular.module('lmisChromeApp')
                 return deferred.promise;
               }
 
-              var cacheProductTypes = cacheService.get(cacheService.PRODUCT_TYPE_INFO);
+              /*var cacheProductTypes = cacheService.get(cacheService.PRODUCT_TYPE_INFO);
               if(typeof cacheProductTypes !== 'undefined'){
                 deferred.resolve(cacheProductTypes);
                 return deferred.promise;
-              }
+              }*/
 
               var currentFacility = appConfig.appFacility;
               var promises = [];
@@ -183,7 +183,7 @@ angular.module('lmisChromeApp')
                   }
                   $q.all(innerPromises).then(function() {
                     //cache the result
-                    cacheService.put(cacheService.PRODUCT_TYPE_INFO, productTypeInfo);
+                    //cacheService.put(cacheService.PRODUCT_TYPE_INFO, productTypeInfo);
                     deferred.resolve(productTypeInfo);
                   });
                 })
