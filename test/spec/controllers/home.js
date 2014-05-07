@@ -39,13 +39,11 @@ describe('Home controller', function () {
     expect($state.href(state)).toEqual('#/main-activity');
   });
 
-  it('should go to the main activity state', function () {
-    var home = $state.get('home');
-    home.resolve.appConfig = function () {
-      return {};
-    };
+  iit('should go to the main activity state', function () {
+    var home = $state.get('home.index.home.mainActivity');
+    //home.resolve.appConfig = function(){ return {}};
     $rootScope.$apply(function () {
-      $state.go(state);
+      $state.go(home);
     });
     expect($state.current.name).toBe(state);
   });
