@@ -1,10 +1,9 @@
 <div ng-include="'views/dashboard/partials/stock-out-warning.html'"></div>
 
-<div class="panel panel-default panel-stock-levels">
+<div class="panel panel-default">
 <div class="container-fluid">
   <div class="row">
     <div class="center-text" ng-hide="productTypesChart"><i class="fa fa-refresh fa-spin"></i></div>
-
     <nvd3-multi-bar-horizontal-chart
       data="productTypesChart"
       id="product-types-chart"
