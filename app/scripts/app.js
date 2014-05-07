@@ -9,19 +9,19 @@ angular.module('lmisChromeApp', [
   'nvd3ChartDirectives'
 ])
   // Load fixture data
-  .run(function(storageService, $rootScope, $state) {
+  .run(function(storageService, $rootScope, $state, $window) {
 
-    $rootScope.$on('LOADING_COMPLETED', function(event, args){
-      //TODO: if args.completed !== true not all fixtures were loaded or an error occurred while loading fixture,
-      // do something.
-      console.log('finished loading fixture');
-      $state.go('home.index.home.mainActivity');
-    });
-
-    $rootScope.$on('START_LOADING', function(event, args){
-       console.log('started loading fixture');
+    $window.showSplashScreen = function(event, args){
        $state.go('loadingFixture');
-    });
+    };
+
+    $window.hideSplashScreen = function(event, args){
+      //TODO: if args.completed !== true not all fixtures were loaded or an error occurred while loading fixture,
+      $state.go('home.index.home.mainActivity');
+    };
+
+    $rootScope.$on('LOADING_COMPLETED', hideSplashScreen);
+    $rootScope.$on('START_LOADING', showSplashScreen);
 
     if(typeof FastClick !== 'undefined'){
       FastClick.attach(document.body);

@@ -14,7 +14,7 @@ angular.module('lmisChromeApp')
               deferred.reject(reason);
             });
         return deferred.promise;
-      }
+      };
 
       var getAllUom = function () {
         var deferred = $q.defer(), uomList = [];
@@ -32,7 +32,7 @@ angular.module('lmisChromeApp')
               });
         });
         return deferred.promise;
-      }
+      };
 
       // Public API here
       return {
