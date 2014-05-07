@@ -106,13 +106,16 @@ angular.module('lmisChromeApp')
         'charts': {
           templateUrl: 'views/dashboard/dashboard.html',
           resolve: {
+            stockOutList: function(stockOutBroadcastFactory){
+              return stockOutBroadcastFactory.get();
+            }
             /**
              * Returns an array of {name: product type name, count: total number
              * in facility (as of last stock count)}
              */
             
           },
-          controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService) {
+          controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility) {
             var keys = [
               {
                 key: 'daysOfStock',
@@ -190,16 +193,34 @@ angular.module('lmisChromeApp')
 
             getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService).then(
               function(productTypeCounts) {
-              var values = [], product = {}; 
+              var values = [], product = {}, stockOutWarning = [];
               // TODO: unnecessary transposition
+
               for(var uuid in productTypeCounts) {
                 product = productTypeCounts[uuid];
+                //filter out stock count with no reference to stock out broadcast since the last stock count
+                var filtered = stockOutList.filter(function(element){
+                  var now = new Date().getTime(),
+                      createdTime = new Date(element.created).getTime(),
+                      currentReminderDate = utility.getWeekRangeByDate(new Date(), appConfig.reminderDay).reminderDate,
+                      lastCountDate = currentReminderDate.getTime() - (1000 * 60 * 60 * 24 * appConfig.stockCountInterval);
+                  var dayTest =  (lastCountDate < createdTime ) && (currentReminderDate.getTime() > createdTime);
+
+                  return element.productType.uuid === uuid && dayTest;
+                });
+
+                //create a uuid list of products with zero or less reorder days
+                if(product.daysToReorder <= 0 && filtered.length === 0){
+                  stockOutWarning.push(uuid);
+                }
                 values.push({
                   label: product.name,
                   daysOfStock: Math.floor(product.daysOfStock),
                   daysToReorder: Math.floor(product.daysToReorder)
                 });
               }
+              $scope.stockOutWarning = stockOutWarning;
+
               $scope.productTypesChart = dashboardfactory.chart(keys, values);
               
             }, function(err) {
@@ -237,7 +258,7 @@ angular.module('lmisChromeApp')
         if(!('inventory' in settings && 'products' in settings.inventory)) {
           $scope.productsUnset = true;
         }
-      },
+      }
     })
     .state('home.index.dashboard.chart', {
       url: '',
