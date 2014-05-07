@@ -121,14 +121,14 @@ angular.module('lmisChromeApp')
           controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, stockCountIsAvailable) {
             var keys = [
               {
-                key: 'daysOfStock',
-                color: "#444444",
-                label: i18n('daysStock')
-              },
-              {
                 key: 'daysToReorder',
                 label: i18n('daysLeft'),
                 color:  "#9954bb"
+              },
+              {
+                key: 'daysOfStock',
+                color: "#666666",
+                label: i18n('daysStock')
               }
             ];
 
