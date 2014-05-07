@@ -47,7 +47,7 @@ angular.module('lmisChromeApp')
           $scope.daysInMonthRange = $scope.dayInMonth.splice(0, 10);
 
           $scope.missedEntry = function(date){
-           return stockCountFactory.get.missingEntry(date, $scope);
+            return stockCountFactory.get.missingEntry(date, $scope);
           };
           $scope.takeAction = function(date){
             var missed = $scope.missedEntry(date);
@@ -55,7 +55,7 @@ angular.module('lmisChromeApp')
               if(stockCount !== null){
                 $scope.stockCount = stockCount;
                 $scope.detailView = true;
-                stockCountFactory.set.stock.editStatus($scope);
+                stockCountFactory.set.stock.editStatus($scope, date);
                 $scope.mergedList = stockCountFactory.get.mergedStockCount(stockCount.unopened, $scope.facilityProductsKeys);
               }
               else if(!missed){
@@ -279,8 +279,8 @@ angular.module('lmisChromeApp')
       if(stockCount !== null){
         $scope.stockCount = stockCount;
         $scope.editOn = true; // enable edit mode
-        if(angular.isUndefined($scope.stockCount['lastPosition'])){
-          $scope.stockCount['lastPosition'] = 0;
+        if(angular.isUndefined($scope.stockCount.lastPosition)){
+          $scope.stockCount.lastPosition = 0;
         }
       }
     });
@@ -293,38 +293,38 @@ angular.module('lmisChromeApp')
       $scope.stockCount.dateSynced = new Date().toJSON(); //FIXME: update this after syncing successfully.
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(result){
-            if (typeof result !== 'undefined') {
-              //clear data used to plot product-type-info graph
-               cacheService.remove(cacheService.PRODUCT_TYPE_INFO);
-               cacheService.remove(cacheService.STOCK_COUNT_REMINDER);
+          if (typeof result !== 'undefined') {
+            //clear data used to plot product-type-info graph
+            cacheService.remove(cacheService.PRODUCT_TYPE_INFO);
+            cacheService.remove(cacheService.STOCK_COUNT_REMINDER);
 
-              //if final save, redirect to home page.
-              if ($scope.redirect) {
-                var msg = [
-                  'You have completed stock count for',
-                  $scope.reportDay,
-                  $scope.monthList[$scope.reportMonth],
-                  $scope.reportYear
-                ].join(' ');
-                alertsFactory.success(msg);
-                $state.go('home.index.home.mainActivity', {
-                  'facility': $scope.facilityUuid,
-                  'reportMonth': $scope.reportMonth,
-                  'reportYear': $scope.reportYear,
-                  'stockResult': msg
-                });
-              }
+            //if final save, redirect to home page.
+            if ($scope.redirect) {
+              var msg = [
+                'You have completed stock count for',
+                $scope.reportDay,
+                $scope.monthList[$scope.reportMonth],
+                $scope.reportYear
+              ].join(' ');
+              alertsFactory.success(msg);
+              $state.go('home.index.home.mainActivity', {
+                'facility': $scope.facilityUuid,
+                'reportMonth': $scope.reportMonth,
+                'reportYear': $scope.reportYear,
+                'stockResult': msg
+              });
+            }
 
               //then sync after every save. whether final or backup.
-              $scope.stockCount.uuid = result;
-              syncService.syncItem(DB_NAME, $scope.stockCount)
-                  .then(function (syncResult) {
-                    console.info('stock count sync success: ' + syncResult);
-                  })
-                  .catch(function (reason) {
-                    console.log(reason);
-                  });
-            }
+            $scope.stockCount.uuid = result;
+            syncService.syncItem(DB_NAME, $scope.stockCount)
+              .then(function (syncResult) {
+                console.info('stock count sync success: ' + syncResult);
+              })
+              .catch(function (reason) {
+                console.log(reason);
+              });
+          }
         })
         .catch(function(reason){
           alertsFactory.danger(reason, {persistent: true});
@@ -338,7 +338,7 @@ angular.module('lmisChromeApp')
       }else{
         $scope.redirect = false;
         $scope.stockCount.lastPosition = $scope.step;
-        if(angular.isUndefined($scope.stockCount['isComplete'])){
+        if(angular.isUndefined($scope.stockCount.isComplete)){
           $scope.stockCount.isComplete = 0;
         }
         $scope.save();

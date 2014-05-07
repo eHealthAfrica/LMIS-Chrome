@@ -23,7 +23,7 @@ angular.module('lmisChromeApp')
         },
         controller: function($scope, discardCountFactory, discardCountList, appConfig, productProfiles, $state, $filter){
           $scope.discardCountList = discardCountList;
-          $scope.discardCountByDate = discardCountFactory.get.discardCountListByDate($scope.discardCountList);
+
           $scope.productProfiles = productProfiles;
 
           $scope.facilityObject = appConfig.appFacility;
@@ -38,30 +38,27 @@ angular.module('lmisChromeApp')
           $scope.month = $scope.currentMonth;
           $scope.currentYear = now.getFullYear();
           $scope.year = $scope.currentYear;
+          $scope.today = $scope.currentYear+'-'+$scope.currentMonth+'-'+$scope.currentDay;
 
           $scope.dateActivated = appConfig.dateActivated;
           $scope.countInterval = appConfig.stockCountInterval;
           $scope.reminderDay= appConfig.reminderDay;
           $scope.maxList = 10;
 
-          $scope.dateList = discardCountFactory.get.discardCountByIntervals($scope);
+          //$scope.dateList = discardCountFactory.get.discardCountByIntervals($scope);
 
           $scope.missedEntry = function(date){
            return discardCountFactory.get.missingEntry(date, $scope);
           };
           $scope.takeAction = function(date){
-            var missed = $scope.missedEntry(date);
             discardCountFactory.getDiscardCountByDate(date).then(function(discardCount){
               if(discardCount !== null){
                 $scope.discardCount = discardCount;
                 $scope.detailView = true;
-                if($filter('date')(new Date(), 'yyyy-MM-dd') !== $filter('date')(discardCount.countDate, 'yyyy-MM-dd')){
-                  $scope.editOff = true;
-                }
-                //$scope.mergedList = discardCountFactory.get.mergedDiscardCount(discardCount.unopened, $scope.facilityProductsKeys);
+
                 $scope.discardCountByType = discardCountFactory.get.discardCountByType(discardCount, $scope.facilityProducts);
               }
-              else if(!missed){
+              else{
                 $state.go('discardCountForm', {countDate: date});
               }
             });
