@@ -1,8 +1,8 @@
 <div ng-show="stockOutWarning.length">
   <a ui-sref="multiStockOutBroadcast({productList: stockOutWarning.join(',')})">
     <div class="col-md-12 alert alert-danger">
-      <i class="fa fa-info-circle"></i>
-      <strong><span>{{ stockOutWarning.length }} items is out of stock</span></strong>
+      <img src="images/dashboard-icons/stock-out-warning.png" >
+      <strong><span>{{ stockOutWarningMsg }}</span></strong>
     </div>
   </a>
 </div>
