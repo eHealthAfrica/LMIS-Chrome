@@ -2,21 +2,35 @@
 
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, syncService,
                                                                       productProfileFactory, facilityFactory, utility,
-                                                                      cacheService) {
+                                                                      cacheService, $filter) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   var cache = cacheService.getCache();
   var FACILITY_PROFILE_DB = 'app_facility_profile';
   var STOCK_OUT_REMINDER = 'STOCK_COUNT_REMINDER';
 
-  this.stockCountIntervals = [
+  var stockCountIntervals = [
     {name: 'Daily', value: 1},
     {name: 'Weekly', value: 7},
     {name: 'Bi-Weekly', value: 14},
     {name: 'Monthly', value: 30}
   ];
 
+  this.stockCountIntervals = stockCountIntervals;
+
   this.weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  var getCorrectWeeklyDateInfo = function(currentWeekDateInfo){
+    if ($filter('date')(new Date(), 'yyyy-MM-dd') < $filter('date')(currentWeekDateInfo.reminderDate, 'yyyy-MM-dd')) {
+      var previousReminderDate =
+          new Date(currentWeekDateInfo.reminderDate.getFullYear(), currentWeekDateInfo.reminderDate.getMonth(),
+              currentWeekDateInfo.reminderDate.getDate() - stockCountIntervals[1].value);
+
+      return utility.getWeekRangeByDate(previousReminderDate, currentWeekDateInfo.reminderDate.getDay());
+    }else{
+      return currentWeekDateInfo;
+    }
+  };
 
   /**
    * This function uses appConfig reminderDay for stockCount to check if stock count has been carried out within the
@@ -42,6 +56,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     //if not available on cache recalculate and cache the result.
     storageService.all(storageService.STOCK_COUNT)
       .then(function (results) {
+
+        currentWeekDateInfo = getCorrectWeeklyDateInfo(currentWeekDateInfo);
 
         //get stock-counts within current and week date range
         var stockCountsWithInRange = results.filter(function (stockCount) {

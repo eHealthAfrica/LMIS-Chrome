@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('lmisChromeApp').service('notificationService', function ($modal, $q, i18n) {
-  this.BEEP_MEDIA_URL = 'media/beep.wav';
 
   this.vibrate = function(duration){
     if(navigator.notification) {

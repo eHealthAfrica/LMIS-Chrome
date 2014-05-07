@@ -6,27 +6,35 @@ describe('storageService', function () {
 
   beforeEach(module('lmisChromeApp'));
 
+    // Initialize the state
+  beforeEach(inject(function($templateCache) {
+    // Mock each template used by the state
+    var templates = [
+      'index/index',
+      'index/header',
+      'index/breadcrumbs',
+      'index/alerts',
+      'index/footer',
+      'home/index',
+      'home/nav',
+      'home/sidebar',
+      'home/control-panel',
+      'home/main-activity',
+      'home/home',
+      'dashboard/dashboard',
+      'index/loading-fixture-screen'
+    ];
+
+    angular.forEach(templates, function(template) {
+      $templateCache.put('views/' + template + '.html', '');
+    });
+  }));
+
   beforeEach(inject(function (_storageService_, _$q_, _$rootScope_, _chromeStorageApi_, _$templateCache_){
     storageService = _storageService_;
     deferred = _$q_.defer();
     rootScope = _$rootScope_;
     chromeStorageApi = _chromeStorageApi_;
-
-    templateCache = _$templateCache_;
-
-    var templates = [
-      'index',
-      'nav',
-      'sidebar',
-      'control-panel',
-      'main-activity'
-    ];
-
-    angular.forEach(templates, function (template) {
-      templateCache.put('views/home/' + template + '.html', '');
-    });
-
-
   }));
 
   it('should be able to add new table to the chrome storage', function(){
