@@ -220,6 +220,7 @@ angular.module('lmisChromeApp')
                 });
               }
               $scope.stockOutWarning = stockOutWarning;
+              $scope.stockOutWarningMsg = i18n('stockOutWarningMsg', (stockOutWarning.length).toString());
 
               $scope.productTypesChart = dashboardfactory.chart(keys, values);
               
