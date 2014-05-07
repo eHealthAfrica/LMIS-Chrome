@@ -41,9 +41,6 @@ describe('Home controller', function () {
 
   it('should go to the main activity state', function () {
     var home = $state.get('home');
-    home.resolve.todayStockCount = function () {
-      return {};
-    };
     home.resolve.appConfig = function () {
       return {};
     };

@@ -207,5 +207,5 @@ tr.disabled, tr.disabled span.text-info{
    padding-right: 0.5em;
 }
 .panel-stock-levels {
-  max-height: 250px;
+  max-height: 300px;
 }
