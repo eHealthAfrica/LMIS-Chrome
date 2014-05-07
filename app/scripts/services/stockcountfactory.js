@@ -106,7 +106,7 @@ angular.module('lmisChromeApp')
         });
       }
       return stockCounts;
-    }
+    };
 
     var isSynced = function(sc)
     {
@@ -248,7 +248,7 @@ angular.module('lmisChromeApp')
       stockCountListByDate: function(stockCountList){
         var obj = {};
         for(var i=0; i < stockCountList.length; i++){
-          var date = $filter('date')(stockCountList[i]['countDate'], 'yyyy-MM-dd');
+          var date = $filter('date')(stockCountList[i].countDate, 'yyyy-MM-dd');
           obj[date] = stockCountList[i];
         }
         return obj;
@@ -277,17 +277,23 @@ angular.module('lmisChromeApp')
        * @returns {boolean}
        */
       missingEntry: function(date, scope){
+        var currentReminderDate = utility.getWeekRangeByDate(new Date(), scope.reminderDay).reminderDate;
         var reminderDate = utility.getWeekRangeByDate(new Date(date), scope.reminderDay);
         var lastDay = reminderDate.last;
+        var lastCountDate = new Date(currentReminderDate.getTime() - (1000 * 60 * 60 * 24 * scope.countInterval));
+
         if(angular.isUndefined(scope.stockCountByDate[date])){
           if($filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
-              return false;
-           }
+            return false;
+          }
           else if (($filter('date')(lastDay.toJSON(), 'yyyy-MM-dd') >= $filter('date')(new Date().toJSON(),'yyyy-MM-dd')) && parseInt(scope.countInterval) !== 1){
             return false;
           }
-            else{
-             return true;
+          else if($filter('date')(lastCountDate.toJSON(), 'yyyy-MM-dd') === $filter('date')(date, 'yyyy-MM-dd')){
+            return false;
+          }
+          else{
+            return true;
           }
         }
         else{
@@ -308,13 +314,15 @@ angular.module('lmisChromeApp')
 
         var reminderDate = utility.getWeekRangeByDate(new Date(), scope.reminderDay);
         var currentReminderDate = reminderDate.reminderDate;
+        var lastCountDate = new Date(currentReminderDate.getTime() - 1000 * 60 * 60 * 24 * parseInt(scope.countInterval));
 
         while(dates.length < scope.maxList){
           if($filter('date')(currentReminderDate.toJSON(), 'yyyy-MM-dd') <= $filter('date')(new Date(), 'yyyy-MM-dd')){
             dates.push($filter('date')(currentReminderDate.toJSON(), 'yyyy-MM-dd'));
           }
           currentReminderDate = new Date(currentReminderDate.getTime() - interval);
-          if($filter('date')(currentReminderDate.toJSON(), 'yyyy-MM-dd') < $filter('date')(scope.dateActivated, 'yyyy-MM-dd')){
+
+          if($filter('date')(currentReminderDate.toJSON(), 'yyyy-MM-dd') < $filter('date')(lastCountDate.toJSON(), 'yyyy-MM-dd')){
             break;
           }
         }
@@ -330,8 +338,8 @@ angular.module('lmisChromeApp')
       {
         var deferred = $q.defer();
         var fUuid = typeof facility === 'string' ? facility : facility.uuid;
-        this.allStockCount().then(function(res){
-          var res = res.filter( function(e) { return e !== 'undefined' && e.facility == fUuid } );
+        this.allStockCount().then(function(result){
+          var res = result.filter( function(e) { return e !== 'undefined' && e.facility === fUuid; } );
           deferred.resolve(res);
         }, function(err) {
           deferred.reject(err);
@@ -368,13 +376,19 @@ angular.module('lmisChromeApp')
          * this function sets the edit status for selected stock count detail
          * @param scope
          */
-        editStatus: function(scope){
+        editStatus: function(scope, date){
           // if the selected stock count date is not equals to today, then check if the last day of the
           // week the date fell is less than today and the count interval must not be daily
+
           if($filter('date')(new Date(), 'yyyy-MM-dd') !== $filter('date')(scope.stockCount.countDate, 'yyyy-MM-dd')){
+            var currentReminderDate = utility.getWeekRangeByDate(new Date(), scope.reminderDay).reminderDate;
             var reminderDate = utility.getWeekRangeByDate(new Date(scope.stockCount.countDate), scope.reminderDay);
             var lastDay = reminderDate.last;
+            var lastCountDate = new Date(currentReminderDate.getTime() - (1000 * 60 * 60 * 24 * scope.countInterval));
             if (($filter('date')(lastDay.toJSON(), 'yyyy-MM-dd') >= $filter('date')(new Date().toJSON(),'yyyy-MM-dd')) && parseInt(scope.countInterval) !== 1){
+              scope.editOff = false;
+            }
+            else if ($filter('date')(lastCountDate.toJSON(), 'yyyy-MM-dd') === $filter('date')(date, 'yyyy-MM-dd')){
               scope.editOff = false;
             }
             else{
@@ -384,17 +398,6 @@ angular.module('lmisChromeApp')
         }
       }
     };
-    var watchDiscardedEntries = function(scope){
-      scope.$watchCollection('wasteCount.reason[productKey]', function(newValues, oldValues){
-        if((Object.keys(newValues)).length > 0){
-          for(var i in newValues){
-            if(newValues[i] !== oldValues[i]){
-              scope.checkInput(i);
-            }
-          }
-        }
-      });
-    }
 
     return {
       monthList: months,
