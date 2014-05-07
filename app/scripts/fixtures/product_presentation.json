@@ -108,6 +108,40 @@
     "value": 10,
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
     "description": "vaccine product presentation "
+  },
+  "755b8b10-aa9a-4853-d4a9-1d3b774917a9": {
+    "uuid": "755b8b10-aa9a-4853-d4a9-1d3b774917a9",
+    "created": "2014-01-17T10:39:47.674Z",
+    "modified": "2014-01-17T10:39:47.971Z",
+    "is_deleted": false,
+    "code": "0.05ml-ADS-1-per-Unit",
+    "name": "0.05ml-ADS 1 per unit",
+    "value": 1,
+    "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
+    "description": "single 0.05ml ADS "
+  },
+  "e5924c0c-b029-49ea-bccd-e6355b469f44": {
+    "uuid": "e5924c0c-b029-49ea-bccd-e6355b469f44",
+    "created": "2014-01-17T10:39:47.674Z",
+    "modified": "2014-01-17T10:39:47.971Z",
+    "is_deleted": false,
+    "code": "2.5L-Safety-Box-1-per-Unit",
+    "name": "2.5L Safety-Box  1 per unit",
+    "value": 1,
+    "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
+    "description": "single 2.5L Safety-Box"
+  },
+  "c8668405-a6cc-4b57-e3c5-8c33a6251b8e": {
+    "uuid": "c8668405-a6cc-4b57-e3c5-8c33a6251b8e",
+    "created": "2014-01-17T10:39:47.674Z",
+    "modified": "2014-01-17T10:39:47.971Z",
+    "is_deleted": false,
+    "code": "2ml-Dil-Syringe-1-per-Unit",
+    "name": "2ml Dilution Syringe 1 per unit",
+    "value": 1,
+    "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
+    "description": "single 2ml Dilution Syringe"
   }
+
 }
 
