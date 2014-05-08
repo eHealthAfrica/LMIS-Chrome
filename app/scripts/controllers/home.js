@@ -13,7 +13,7 @@ angular.module('lmisChromeApp')
           return appConfigService.getCurrentAppConfig();
         }
       },
-      controller: function($scope, appConfig, appConfigService, $state, surveyFactory) {
+      controller: function($scope, appConfig, appConfigService, $state) {
 
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');

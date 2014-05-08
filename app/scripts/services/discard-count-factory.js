@@ -49,20 +49,19 @@ angular.module('lmisChromeApp')
       .then(function(uuid) {
         scope.discardCount.uuid = uuid;
         if(scope.redirect) {
-          syncDiscarded(scope.discardCount).then(function(){
-            var msg = [
+          syncDiscarded(scope.discardCount);
+          var msg = [
               'You have completed discard count for',
               scope.currentDay,
               scope.monthList[scope.reportMonth],
               scope.reportYear
             ].join(' ');
-            alertsFactory.success(msg);
-            state.go('home.index.home.mainActivity', {
-              'facility': scope.facilityUuid,
-              'reportMonth': scope.reportMonth,
-              'reportYear': scope.reportYear,
-              'stockResult': msg
-            });
+          alertsFactory.success(msg);
+          state.go('home.index.home.mainActivity', {
+            'facility': scope.facilityUuid,
+            'reportMonth': scope.reportMonth,
+            'reportYear': scope.reportYear,
+            'stockResult': msg
           });
         }
       })
