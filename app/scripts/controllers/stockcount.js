@@ -347,12 +347,14 @@ angular.module('lmisChromeApp')
     });
 
     $scope.finalSave = function(){
-      if('stockCount' in $scope) {
-        $scope.stockCount.lastPosition = 0;
-        $scope.stockCount.isComplete = 1;
+      if((Object.keys($scope.stockCount.unopened)).length === $scope.facilityProductsKeys.length){
+        if('stockCount' in $scope) {
+          $scope.stockCount.lastPosition = 0;
+          $scope.stockCount.isComplete = 1;
+        }
+        $scope.redirect = true;
+        $scope.save();
       }
-      $scope.redirect = true;
-      $scope.save();
     };
     $scope.changeState = function(direction){
       $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];
