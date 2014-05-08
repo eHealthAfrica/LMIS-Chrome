@@ -196,8 +196,8 @@ angular.module('lmisChromeApp')
 
       /**
        * loads fixtures on app startup
-       * @param void
-       * @returns {void}
+       *
+       * @returns {promise|promise|*|promise|promise}
        */
       function loadFixtures() {
 
@@ -241,7 +241,7 @@ angular.module('lmisChromeApp')
         function loadData(db_name) {
           getData(db_name).then(function (data) {
                 if (angular.isUndefined(data)) {
-                  console.log('loading ' + db_name);
+
                   var file_url = 'scripts/fixtures/' + db_name + '.json';
                   $http.get(file_url).success(function (data) {
                     setTable(db_name, data).then(function (res) {
@@ -256,8 +256,6 @@ angular.module('lmisChromeApp')
                 }
                 else {
                   isLoading = false;
-                  console.log(db_name + " is already loaded: " + Object.keys(data).length);
-                  //loadRelatedObject(db_name);
                 }
 
               },
@@ -273,11 +271,8 @@ angular.module('lmisChromeApp')
           if(!isLoading)
           {
             $rootScope.$emit('START_LOADING', {started: true});
-            console.log('calling load '+(i-1));
             isLoading=true;
             loadData(database[--i]);
-          } else {
-            console.log('still loading '+i)
           }
           if(i > 0){
 
