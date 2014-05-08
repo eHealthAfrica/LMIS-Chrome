@@ -19,7 +19,7 @@ angular.module('lmisChromeApp')
       };
 
       var checkDate = function(date){
-        if(angular.isDate(date)){
+        if(!angular.isDate(date)){
           throw date+' is not a date';
         }
       };
@@ -33,119 +33,104 @@ angular.module('lmisChromeApp')
        * @param dailyReminderDate - date object that
        * @returns {boolean}
        */
-      var isDailyReminderDateEvent = function(obj, eventDateKey, dailyReminderDate){
-        angular.isDate(dailyReminderDate)
-        checkDate
-        var reminderDate = dailyReminderDate || new Date();
-        var dailyReminderDate = $filter('date')(reminderDate, 'yyyy-MM-dd');
+      var isDailyReminderDue = function(obj, eventDateKey, dailyReminderDate){
+        checkDate(dailyReminderDate);
+        dailyReminderDate = $filter('date')(dailyReminderDate, 'yyyy-MM-dd');
         checkObjectProperty(obj, eventDateKey);
         var eventDate = $filter('date')(new Date(obj[eventDateKey]), 'yyyy-MM-dd');
-        if (dailyReminderDate !== eventDate) {
-          return false;
-        }
-        return true;
+        return (dailyReminderDate !== eventDate);
       };
 
-      var getMonthlyReminder = function(obj, eventDateKey, monthlyReminderDate){
-        var currentDate = new Date();
+      /**
+       * This returns FALSE if 1) obj.eventDateKey.month === monthlyReminderDate.month AND
+       * 2). obj.eventDateKey.year === monthlyReminderDate.month.
+       *
+       * if monthly reminder is not given it used current year, current month and 1 to form monthly reminder date.
+       *
+       * @param {object} obj - object with eventDateKey as its property.
+       * @param {string} eventDateKey - string that is property of obj.
+       * @param monthlyReminderDate
+       * @returns {boolean}
+       */
+      var isMonthlyReminderDue = function(obj, eventDateKey, monthlyReminderDate){
+        var today = new Date();
         var reminderDateOfTheMonth = 1;
-        var monthlyReminderDate = monthlyReminderDate ||
-            new Date(currentDate.getFullYear(), currentDate.getMonth(), reminderDateOfTheMonth, 0, 0, 0);
+        monthlyReminderDate = monthlyReminderDate ||
+            new Date(today.getFullYear(), today.getMonth(), reminderDateOfTheMonth, 0, 0, 0);
 
-        for (var index in eventList) {
-          var obj = eventList[index];
-          checkObjectProperty(obj, eventDateKey);
-          var eventDate = new Date(obj[eventDateKey]);
-
-          if (monthlyReminderDate.getMonth() === eventDate.getMonth()
-              && monthlyReminderDate.getFullYear() === eventDate.getFullYear()) {
-            //monthly event already taken place,reminder is not necessary, return empty array
-            return [];
-          }
-        }
-        //if you get here, it means monthly reminder is due based on given event list
-        return [monthlyReminderDate];
+        checkObjectProperty(obj, eventDateKey);
+        var eventDate = new Date(obj[eventDateKey]);
+        return !(monthlyReminderDate.getMonth() === eventDate.getMonth()
+            && monthlyReminderDate.getFullYear() === eventDate.getFullYear());
       };
 
-      var getWeeklyReminder = function(eventList, eventDateKey, currentWeekReminderDate, today){
-        today = today || new Date();
-        var previousWeekReminderDate = new Date(currentWeekReminderDate.getFullYear(),
-            currentWeekReminderDate.getMonth(), currentWeekReminderDate.getDate() - WEEKLY, 0, 0, 0);
+      /**
+       *  This checks if given obj weekly reminder is due, weekly reminder is due if given obj[eventDateKey] falls
+       *  within weekReminderDate's week first day date and last day date.
+       *
+       * @param obj
+       * @param eventDateKey
+       * @param weekReminderDate
+       * @returns {boolean}
+       */
+      var isWeeklyReminderDue = function(obj, eventDateKey, weekReminderDate){
+        var weekReminderDateInfo = utility.getWeekRangeByDate(weekReminderDate, weekReminderDate.getDay());
 
-        if($filter('date')(today, 'yyyy-MM-dd') < $filter('date')(currentWeekReminderDate, 'yyyy-MM-dd')){
-          currentWeekReminderDate = previousWeekReminderDate;
-        }
-        var currentWeekReminderDateRange =
-            utility.getWeekRangeByDate(currentWeekReminderDate, currentWeekReminderDate.getDay());
-
-        var currentWeekReminderFirstDate = $filter('date')(currentWeekReminderDateRange.first, 'yyyy-MM-dd');
-        var currentWeekReminderLastDate = $filter('date')(currentWeekReminderDateRange.last, 'yyyy-MM-dd');
-
-        for(var index in eventList){
-          var obj = eventList[index];
-          checkObjectProperty(obj, eventDateKey);
-          var eventDate = new Date(obj[eventDateKey]);
-          eventDate = $filter('date')(new Date(obj[eventDateKey]), 'yyyy-MM-dd');
-
-          if(currentWeekReminderFirstDate <= eventDate && eventDate <= currentWeekReminderLastDate){
-            return [];
-          }
-        }
-        return [currentWeekReminderDate];
+        checkObjectProperty(obj, eventDateKey);
+        checkDate(weekReminderDate);
+        var eventDate = $filter('date')(new Date(obj[eventDateKey]), 'yyyy-MM-dd');
+        var weekReminderDateFirstDate = $filter('date')(weekReminderDateInfo.first, 'yyyy-MM-dd');
+        var weekReminderDateLastDate = $filter('date')(weekReminderDateInfo.last, 'yyyy-MM-dd');
+        return !(weekReminderDateFirstDate <= eventDate && eventDate <= weekReminderDateLastDate);
       };
 
-      var getReminder = function(mainList, eventDateKey, interval, reminderDate){
-        if(interval === DAILY){
-          reminderDate = new Date();
-          var today = $filter('date')(reminderDate, 'yyyy-MM-dd');
-          for(var index in mainList){
-            var obj = mainList[index];
-            checkObjectProperty(obj, eventDateKey);
-            var eventDate = $filter('date')(new Date(obj['eventDateKey']), 'yyyy-MM-dd');
-            if(today === eventDate){
-              //event already taken place no reminder
-              return null;//resolve nothing or empty list.
-            }
-          }
-          //if you get to here, it means daily reminder is due
-          return [today]
+      var isBiweeklyReminderDue = function(obj, eventDateKey, biWkRemDate, includePreviousWeek){
+        checkDate(biWkRemDate);
+        checkObjectProperty(obj, eventDateKey);
+        var biWkRemInfo = utility.getWeekRangeByDate(biWkRemDate, biWkRemDate.getDay());
+        var biWeeklyDateRange;
 
-        }else if(interval === MONTHLY){
-          reminderDate = $filter('date')(reminderDate, 'yyyy-MM-dd');
-          for(var index in mainList){
-            var obj = mainList[index];
-            checkObjectProperty(obj, eventDateKey);
-            var eventDate = $filter('date')(new Date(obj['eventDateKey']), 'yyyy-MM-dd');
-            if(reminderDate === eventDate){
-              //event already taken place no reminder
-              return null;//resolve nothing or empty list.
-            }
-          }
-          //if you get here, it means monthly reminder is due base on given collection
-          return [reminderDate];
+        if(includePreviousWeek){
+          var prevWkRemDate = new Date(biWkRemDate.getFullYear(), biWkRemDate.getMonth(),biWkRemDate.getDate() - WEEKLY);
+          var previousWeekInfo = utility.getWeekRangeByDate(prevWkRemDate, biWkRemDate.getDay());
+          biWeeklyDateRange = {start: previousWeekInfo.first, end: biWkRemInfo.last};
 
-        }else if(interval === WEEKLY){
-          var today = new Date();
-          var thisWeekReminderDay = utility.getWeekRangeByDate(today, reminderDate.getDay());
-          var lowerBoundDate =
-              new Date(reminderDate.getFullYear(), reminderDate.getMonth(), reminderDate.getDate() - WEEKLY, 0, 0, 0);
+        }else{
 
-          if(today.getTime() < reminderDate.getTime()){
-
-          }else{
-            //no reminder return empty array
-          }
-
+          var nextWkRemDate =
+              new Date(biWkRemDate.getFullYear(), biWkRemDate.getMonth(), biWkRemDate.getDate() +  WEEKLY);
+          var nextWkInfo = utility.getWeekRangeByDate(nextWkRemDate, biWkRemDate.getDay());
+          biWeeklyDateRange = {start: biWkRemInfo.first, end: nextWkInfo.last}
         }
 
+        var eventDate = $filter('date')(new Date(obj[eventDateKey]), 'yyyy-MM-dd');
+        var bwStartDate = $filter('date')(biWeeklyDateRange.start, 'yyyy-MM-dd');
+        var bwEndDate = $filter('date')(biWeeklyDateRange.end, 'yyyy-MM-dd');
+        return !(bwStartDate <= eventDate  && eventDate <= bwEndDate);
+      };
+
+      var isReminderDue =  function(obj, dateKey, rmDate, interval, includePreviousWeek){
+        switch (interval) {
+          case DAILY:
+            return isDailyReminderDue(obj, dateKey, rmDate);
+          case WEEKLY:
+            return isWeeklyReminderDue(obj, dateKey, rmDate);
+          case BI_WEEKLY:
+            return isBiweeklyReminderDue(obj, dateKey, rmDate, includePreviousWeek);
+          case MONTHLY:
+            return isMonthlyReminderDue(obj, dateKey, rmDate);
+          default:
+            throw 'Unknown reminder interval';
+        }
       };
 
       return {
-        isDailyReminderDate: isDailyReminderDateEvent,
-        getWeeklyReminder: getWeeklyReminder,
-        getMonthlyReminder: getMonthlyReminder,
-        getReminder: getReminder,
-        checkObjectProperty: checkObjectProperty
+        isDailyReminderDue: isDailyReminderDue,
+        isMonthlyReminderDue: isMonthlyReminderDue,
+        isWeeklyReminderDue: isWeeklyReminderDue,
+        isBiweeklyReminderDue: isBiweeklyReminderDue,
+        checkObjectProperty: checkObjectProperty,
+        isReminderDue: isReminderDue
       };
 
     });
