@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe('Factory: reminder-factory', function () {
+describe('Factory: reminder-factory', function () {
 
   // load the service's module
   beforeEach(module('lmisChromeApp'));

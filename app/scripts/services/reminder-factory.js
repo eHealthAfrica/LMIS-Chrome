@@ -7,6 +7,16 @@ angular.module('lmisChromeApp')
       var WEEKLY = 7;
       var BI_WEEKLY = 14;
       var MONTHLY = 30;
+      var reminders = [];
+
+      /**
+       * This adds a reminder to reminder collections.
+       *
+       * @param {reminder}  an object with following properties: text, icon, type, link
+       */
+      var add = function(reminder){
+        reminders.push(reminder);
+      };
 
       var hasProperty = function(obj, property){
         return typeof obj[property] !== 'undefined'
