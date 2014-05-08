@@ -145,10 +145,12 @@ accordion .panel-heading:hover {
 }
 .counter-btn {
    font-size: 25.5pt;
-   padding: 0.4em 0.8em;
+   padding: 0.1em, 0.2em;
+   height: 2.2em;
 }
 .counter-input{
-  height: 4.3em;
+  padding: 0em;
+  height: 4em;
 }
 input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;

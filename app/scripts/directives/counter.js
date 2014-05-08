@@ -74,7 +74,7 @@ angular.module('lmisChromeApp').directive('counterdropdown', function (notificat
         '<i class="fa fa-minus"></i>' +
         '</button>' +
         '</span>' +
-        '<input type="number" min="0" class="form-control input-lg counter-input" ng-model="count" required/>'+
+        '<input type="number" min="0" class="form-control input-lg counter-input" style="padding-right: 0em" ng-model="count" required/>'+
         '<span class="input-group-btn">' +
         '<button id="_$counterAddBtn" class="btn btn-info counter-btn" ' +
         'type="button" ng-click="count = _tapInputAdd(count)">' +
