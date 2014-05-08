@@ -29,7 +29,7 @@ describe('Home controller', function () {
   }));
 
   var $rootScope, $state;
-  beforeEach(inject(function (_$rootScope_, _$state_, $window) {
+  beforeEach(inject(function (_$rootScope_, _$state_) {
     $rootScope = _$rootScope_;
     $state = _$state_;
   }));
@@ -39,11 +39,13 @@ describe('Home controller', function () {
     expect($state.href(state)).toEqual('#/main-activity');
   });
 
-  iit('should go to the main activity state', function () {
-    var home = $state.get('home.index.home.mainActivity');
-    //home.resolve.appConfig = function(){ return {}};
+  xit('should go to the main activity state', function () {
+    var home = $state.get('home');
+    home.resolve.appConfig = function () {
+      return {};
+    };
     $rootScope.$apply(function () {
-      $state.go(home);
+      $state.go(state);
     });
     expect($state.current.name).toBe(state);
   });
