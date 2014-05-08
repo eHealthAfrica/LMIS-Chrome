@@ -74,13 +74,14 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
               .then(function (result) {
                 if (typeof result !== 'undefined' || result !== null) {
                   stockOut.uuid = result;
+                  saveAndBroadcastStockOut(productList, count - 1);
                   stockOutBroadcastFactory.broadcast(stockOut)
                     .then(function (result) {
                       $log.info('stock-out broad-casted');
-                      saveAndBroadcastStockOut(productList, count - 1);
                     }, function (reason) {
                       $log.error(reason);
                     })
+
                 } else {
                   alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
                 }
