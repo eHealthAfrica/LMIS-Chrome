@@ -304,8 +304,8 @@ describe('Factory: reminder-factory', function () {
     reminderFactory.danger(reminder);
     reminderFactory.danger(reminder);
     expect($rootScope.reminders.length).toBe(2);
-    reminderFactory.clear(1);
-    expect($rootScope.reminders.length).toBeLessThan(2);
+    reminderFactory.remove(1);
+    expect($rootScope.reminders.length).toBe(1);
   });
 
 });
