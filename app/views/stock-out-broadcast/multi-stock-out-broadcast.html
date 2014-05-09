@@ -14,14 +14,18 @@
 
                   <div class="form-group" ng-class="{ 'has-error': ((stockOutBroadcastForm.productType).$error).required
                       && stockOutForm.isSubmitted }">
-                    <label for="productType" i18n="selectProductType"></label>
-                    <select id="productType" name="productType" class="form-control" ng-model="stockOutForm.productType"
-                            required multiple>
-                      <option value="" i18n="selectProductType"></option>
-                      <option ng-repeat="productType in productTypes" ng-selected="productType.uuid === returnUuid(productType.uuid)" value="{{ productType }}" required>
-                        {{ productType.code }} - {{ productType.name }}
-                      </option>
-                    </select>
+
+                    <table class="table table-bordered table-striped">
+                      <tbody>
+                        <tr ng-repeat="productType in filteredProduct">
+                          <td>
+                            {{ productType.name }}
+                            <input type="hidden" ng-model="stockOutForm.productType[$index]">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
                   <span class="alert-danger form-control" ng-show="((stockOutBroadcastForm.productType).$error).required
                       && stockOutForm.isSubmitted" i18n="selectProductType"></span>
                   </div>
