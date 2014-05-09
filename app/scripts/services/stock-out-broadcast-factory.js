@@ -52,7 +52,7 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function(sto
 
   return {
     save: saveStockOut,
-    get: getStockOut,
+    getAll: getStockOut,
     broadcast: broadcastStockOut
   };
 
