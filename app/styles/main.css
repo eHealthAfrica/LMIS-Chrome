@@ -211,3 +211,7 @@ tr.disabled, tr.disabled span.text-info{
 .panel-stock-levels {
   max-height: 300px;
 }
+.reminder-icon {
+  width: 32px;
+  height: 32px;
+}

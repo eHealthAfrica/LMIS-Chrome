@@ -6,17 +6,20 @@ describe('Factory: reminder-factory', function () {
   beforeEach(module('lmisChromeApp'));
 
   // instantiate factory
-  var reminderFactory, $filter, utility, testEventObj, dateKey, nonProperty, today, WEEKLY_INTERVAL;
+  var reminderFactory, $filter, utility, testEventObj, dateKey,
+      nonProperty, today, WEEKLY_INTERVAL, $rootScope, reminder;
 
-  beforeEach(inject(function (_reminderFactory_, _$filter_, _utility_) {
+  beforeEach(inject(function (_reminderFactory_, _$filter_, _utility_, _$rootScope_) {
     reminderFactory = _reminderFactory_;
     $filter = _$filter_;
     utility = _utility_;
+    $rootScope = _$rootScope_;
     testEventObj = { uuid: '1', eventDate: new Date().toJSON() };
     dateKey = 'eventDate';
     nonProperty = 'stockCountDate';//assume not to exist as property of objects
     today = new Date();
     WEEKLY_INTERVAL = 7;
+    reminder = {text: 'Hello World', icon: 'images/path/to/img.png', link: 'urlName'};
   }));
 
   it('i expect checkObjectProperty() to throw an exception', function () {
@@ -223,6 +226,38 @@ describe('Factory: reminder-factory', function () {
     var includeLastWeek = false;
     var biWk = 14;
     expect(reminderFactory.isReminderDue(testEventObj, dateKey, nextWeekDate, biWk, includeLastWeek)).toBeTruthy();
+  });
+
+  it('i expect $rootScope.reminder to be 1 after calling info()', function(){
+    var reminders = $rootScope.reminders;
+    expect(reminders.length).toBe(0);
+    reminderFactory.info(reminder);
+    reminders = $rootScope.reminders;
+    expect(reminders.length).toBe(1);
+  });
+
+  it('i expect $rootScope.reminder to be 1 after calling danger()', function(){
+    var reminders = $rootScope.reminders;
+    expect(reminders.length).toBe(0);
+    reminderFactory.danger(reminder);
+    reminders = $rootScope.reminders;
+    expect(reminders.length).toBe(1);
+  });
+
+  it('i expect $rootScope.reminder to be 1 after calling success()', function(){
+    var reminders = $rootScope.reminders;
+    expect(reminders.length).toBe(0);
+    reminderFactory.success(reminder);
+    reminders = $rootScope.reminders;
+    expect(reminders.length).toBe(1);
+  });
+
+  it('i expect $rootScope.reminder to be 1 after calling warning()', function(){
+    var reminders = $rootScope.reminders;
+    expect(reminders.length).toBe(0);
+    reminderFactory.warning(reminder);
+    reminders = $rootScope.reminders;
+    expect(reminders.length).toBe(1);
   });
 
 });

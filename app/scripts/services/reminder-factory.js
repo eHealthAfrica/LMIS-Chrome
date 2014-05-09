@@ -1,21 +1,51 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('reminderFactory', function ($filter, utility) {
+    .factory('reminderFactory', function ($filter, utility, $rootScope) {
 
       var DAILY = 1;
       var WEEKLY = 7;
       var BI_WEEKLY = 14;
       var MONTHLY = 30;
-      var reminders = [];
+      $rootScope.reminders = [];
 
       /**
        * This adds a reminder to reminder collections.
        *
-       * @param {reminder}  an object with following properties: text, icon, type, link
+       * @param {reminder}  an object with following properties: {text, icon, type, link}
+       *
+       * where type is a Bootstrap alert class, see: http://getbootstrap.com/components/#alerts-examples
        */
       var add = function(reminder){
-        reminders.push(reminder);
+        $rootScope.reminders.push(reminder);
+      };
+
+      var remove =  function(index){
+        $rootScope.reminders.splice(index, 1);
+      };
+
+      var clear = function(){
+        $rootScope.reminders = [];
+      };
+
+      var info = function(reminder){
+        reminder.type = 'info';
+        add(reminder);
+      };
+
+      var warning = function(reminder){
+        reminder.type = 'warning';
+        add(reminder);
+      };
+
+      var danger = function(reminder){
+        reminder.type = 'danger';
+        add(reminder);
+      };
+
+      var success = function(reminder){
+        reminder.type = 'success';
+        add(reminder);
       };
 
       var hasProperty = function(obj, property){
@@ -140,7 +170,11 @@ angular.module('lmisChromeApp')
         isWeeklyReminderDue: isWeeklyReminderDue,
         isBiweeklyReminderDue: isBiweeklyReminderDue,
         checkObjectProperty: checkObjectProperty,
-        isReminderDue: isReminderDue
+        isReminderDue: isReminderDue,
+        info: info,
+        warning: warning,
+        danger: danger,
+        success: success
       };
 
     });
