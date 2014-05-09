@@ -1,0 +1,10 @@
+<div>
+  <a ui-sref="{{ reminder.link }}">
+    <div ng-class="{'alert': true, 'col-md-12': true, 'alert-info': reminder.type === 'info',
+      'alert-warning': reminder.type === 'warning', 'alert-danger': reminder.type === 'danger',
+      'alert-success': reminder.type === 'success' }">
+      <img ng-src="{{}}" class="img-rounded reminder-icon" />
+      <strong><span ng-bind="($parent.reminder).text"></span></strong>
+    </div>
+  </a>
+</div>
