@@ -174,7 +174,9 @@ angular.module('lmisChromeApp')
         info: info,
         warning: warning,
         danger: danger,
-        success: success
+        success: success,
+        clear: clear,
+        remove: remove
       };
 
     });
