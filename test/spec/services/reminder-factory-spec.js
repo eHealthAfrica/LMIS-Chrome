@@ -228,7 +228,7 @@ describe('Factory: reminder-factory', function () {
     expect(reminderFactory.isReminderDue(testEventObj, dateKey, nextWeekDate, biWk, includeLastWeek)).toBeTruthy();
   });
 
-  it('i expect $rootScope.reminder to be 1 after calling info()', function(){
+  it('i expect $rootScope.reminders.length to be 1 after calling info()', function(){
     var reminders = $rootScope.reminders;
     expect(reminders.length).toBe(0);
     reminderFactory.info(reminder);
@@ -236,7 +236,7 @@ describe('Factory: reminder-factory', function () {
     expect(reminders.length).toBe(1);
   });
 
-  it('i expect $rootScope.reminder to be 1 after calling danger()', function(){
+  it('i expect $rootScope.reminders.length to be 1 after calling danger()', function(){
     var reminders = $rootScope.reminders;
     expect(reminders.length).toBe(0);
     reminderFactory.danger(reminder);
@@ -244,7 +244,7 @@ describe('Factory: reminder-factory', function () {
     expect(reminders.length).toBe(1);
   });
 
-  it('i expect $rootScope.reminder to be 1 after calling success()', function(){
+  it('i expect $rootScope.reminders.length to be 1 after calling success()', function(){
     var reminders = $rootScope.reminders;
     expect(reminders.length).toBe(0);
     reminderFactory.success(reminder);
@@ -252,12 +252,44 @@ describe('Factory: reminder-factory', function () {
     expect(reminders.length).toBe(1);
   });
 
-  it('i expect $rootScope.reminder to be 1 after calling warning()', function(){
+  it('i expect $rootScope.reminders.length to be 1 after calling warning()', function(){
     var reminders = $rootScope.reminders;
     expect(reminders.length).toBe(0);
     reminderFactory.warning(reminder);
     reminders = $rootScope.reminders;
     expect(reminders.length).toBe(1);
+  });
+
+  it('i expect $rootScope.reminder[0].type to be "info" after calling info()', function(){
+    var reminders = $rootScope.reminders;
+    expect(reminders.length).toBe(0);
+    reminderFactory.info(reminder);
+    reminders = $rootScope.reminders;
+    expect(reminders[0].type).toBe('info');
+  });
+
+  it('i expect $rootScope.reminder[0].type to be "success" after calling success()', function(){
+    var reminders = $rootScope.reminders;
+    expect(reminders.length).toBe(0);
+    reminderFactory.success(reminder);
+    reminders = $rootScope.reminders;
+    expect(reminders[0].type).toBe('success');
+  });
+
+  it('i expect $rootScope.reminder[0].type to be "warning" after calling warning()', function(){
+    var reminders = $rootScope.reminders;
+    expect(reminders.length).toBe(0);
+    reminderFactory.warning(reminder);
+    reminders = $rootScope.reminders;
+    expect(reminders[0].type).toBe('warning');
+  });
+
+  it('i expect $rootScope.reminder[0].type to be "danger" after calling danger()', function(){
+    var reminders = $rootScope.reminders;
+    expect(reminders.length).toBe(0);
+    reminderFactory.danger(reminder);
+    reminders = $rootScope.reminders;
+    expect(reminders[0].type).toBe('danger');
   });
 
 });
