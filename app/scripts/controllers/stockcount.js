@@ -331,20 +331,6 @@ angular.module('lmisChromeApp')
         });
     };
 
-    $scope.$watch('stockCount.unopened[productKey]', function(newvalue){
-      if(stockCountFactory.validate.invalid(newvalue)){
-        //stockCountFactory.get.errorAlert($scope, 1);
-      }else{
-        $scope.redirect = false;
-        $scope.stockCount.lastPosition = $scope.step;
-        if(angular.isUndefined($scope.stockCount.isComplete)){
-          $scope.stockCount.isComplete = 0;
-        }
-        $scope.save();
-        stockCountFactory.get.errorAlert($scope, 0);
-      }
-    });
-
     $scope.finalSave = function(){
       if((Object.keys($scope.stockCount.unopened)).length === $scope.facilityProductsKeys.length){
         if('stockCount' in $scope) {
@@ -368,6 +354,12 @@ angular.module('lmisChromeApp')
         else{
           $scope.preview = true;
         }
+        $scope.redirect = false;
+        $scope.stockCount.lastPosition = $scope.step;
+        if(angular.isUndefined($scope.stockCount.isComplete)){
+          $scope.stockCount.isComplete = 0;
+        }
+        $scope.save();
         $scope.productKey = $scope.facilityProductsKeys[$scope.step];
       }
       updateUIModel();
