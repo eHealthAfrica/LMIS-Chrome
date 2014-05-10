@@ -306,7 +306,6 @@ angular.module('lmisChromeApp')
                 $scope.monthList[$scope.reportMonth],
                 $scope.reportYear
               ].join(' ');
-              alertsFactory.success(msg);
               $state.go('home.index.home.mainActivity', {
                 'facility': $scope.facilityUuid,
                 'reportMonth': $scope.reportMonth,
