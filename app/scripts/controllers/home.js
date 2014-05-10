@@ -11,22 +11,23 @@ angular.module('lmisChromeApp')
       resolve: {
         appConfig: function(appConfigService){
           return appConfigService.getCurrentAppConfig();
+        },
+        isStockCountDue: function(appConfig, appConfigService){
+          if(angular.isDefined(appConfig)){
+            return appConfigService.isStockCountDue(appConfig.reminderDay);
+          }
+          else{
+            return true;
+          }
         }
       },
-      controller: function($scope, appConfig, appConfigService, $state) {
+      controller: function($scope, appConfig, appConfigService, $state, isStockCountDue) {
 
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
         }
         else {
-          $scope.facility = appConfig.appFacility.name;
-          appConfigService.isStockCountDue(appConfig.reminderDay)
-            .then(function(result){
-              $scope.hasPendingStockCount = result;
-          });
-          appConfigService.isDiscardCountDue(appConfig).then(function(result){
-            $scope.hasPendingDiscardCount = result;
-          });
+          $scope.hasPendingStockCount = isStockCountDue;
 
           /*
           //TODO: re-activate this later for survey reminders
@@ -110,8 +111,14 @@ angular.module('lmisChromeApp')
             stockOutList: function(stockOutBroadcastFactory){
               return stockOutBroadcastFactory.getAll();
             },
-            stockCountIsAvailable: function(stockCountFactory){
-              return stockCountFactory.getStockCountByDate(new Date().toJSON());
+            stockCountIsAvailable: function(appConfigService, appConfig){
+              if(angular.isDefined(appConfig)){
+                return appConfigService.isStockCountDue(appConfig.reminderDay);
+              }
+              else{
+                true;
+              }
+
             }
             /**
              * Returns an array of {name: product type name, count: total number
@@ -195,7 +202,7 @@ angular.module('lmisChromeApp')
               return deferred.promise;
             }
             $scope.showChart = true;
-            if(stockCountIsAvailable !== null){
+            if(!stockCountIsAvailable){
               getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService).then(
                 function(productTypeCounts) {
                 var values = [], product = {}, stockOutWarning = [];
