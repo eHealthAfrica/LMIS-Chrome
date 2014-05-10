@@ -2,7 +2,7 @@
 
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, syncService,
                                                                       productProfileFactory, facilityFactory, utility,
-                                                                      cacheService, $filter) {
+                                                                      cacheService, $filter, reminderFactory, $rootScope) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   var cache = cacheService.getCache();
@@ -27,9 +27,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
               currentWeekDateInfo.reminderDate.getDate() - stockCountIntervals[1].value);
 
       return utility.getWeekRangeByDate(previousReminderDate, currentWeekDateInfo.reminderDate.getDay());
-    }else{
-      return currentWeekDateInfo;
     }
+    return currentWeekDateInfo;
   };
 
   /**
@@ -42,41 +41,26 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * @returns {promise|promise|*|promise|promise}
    */
   this.isStockCountDue = function(reminderDay){
-    var deferred = $q.defer();
-    var today = new Date();
-    var currentWeekDateInfo = utility.getWeekRangeByDate(today, reminderDay);
-
-    //get from cache
-    /*var isStockCountReminderDue = cache.get(STOCK_OUT_REMINDER);
-    if(angular.isDefined(isStockCountReminderDue)){
-      deferred.resolve(isStockCountReminderDue);
-      return deferred.promise;
-    }*/
-
-    //if not available on cache recalculate and cache the result.
-    storageService.all(storageService.STOCK_COUNT)
+    return storageService.all(storageService.STOCK_COUNT)
       .then(function (results) {
-
-        currentWeekDateInfo = getCorrectWeeklyDateInfo(currentWeekDateInfo);
+        var now = new Date();
+        var currentWeekDateInfo = utility.getWeekRangeByDate(now, reminderDay);
+         currentWeekDateInfo = getCorrectWeeklyDateInfo(currentWeekDateInfo);
+        var today = $filter('date')(now, 'yyyy-MM-dd');
 
         //get stock-counts within current and week date range
         var stockCountsWithInRange = results.filter(function (stockCount) {
-          var stockCountDate = new Date(stockCount.countDate);
-          return ((currentWeekDateInfo.first.getTime() <= stockCountDate.getTime()) &&
-              (stockCountDate.getTime() <= currentWeekDateInfo.last.getTime()) && stockCount.isComplete === 1)
+          return (stockCount.isComplete === 1) &&
+                  (!reminderFactory.isWeeklyReminderDue(stockCount, 'countDate', currentWeekDateInfo.reminderDate));
         });
-        var isStockCountReminderDue = (stockCountsWithInRange.length === 0) &&
-            (today.getTime() >= currentWeekDateInfo.reminderDate.getTime());
+        var isStockCountReminderDue = (today >= $filter('date')(currentWeekDateInfo.reminderDate, 'yyyy-MM-dd')) &&
+                (stockCountsWithInRange.length === 0);
 
-          //cache the calculation
-          //cache.put(cacheService.STOCK_COUNT_REMINDER, isStockCountReminderDue);
-
-        deferred.resolve(isStockCountReminderDue);
+        return isStockCountReminderDue;
       })
       .catch(function(reason){
-        deferred.resolve(true);
+        return false;
       });
-    return deferred.promise;
   };
 
   this.isDiscardCountDue = function(appConfig){

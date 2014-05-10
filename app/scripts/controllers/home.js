@@ -17,7 +17,8 @@ angular.module('lmisChromeApp')
 
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
-        } else {
+        }
+        else {
           $scope.facility = appConfig.appFacility.name;
           appConfigService.isStockCountDue(appConfig.reminderDay)
             .then(function(result){
@@ -27,6 +28,12 @@ angular.module('lmisChromeApp')
             $scope.hasPendingDiscardCount = result;
           });
 
+          /*
+          //TODO: re-activate this later for survey reminders
+          surveyFactory.getPendingSurveys(appConfig.appFacility.uuid)
+            .then(function(pendingSurveys){
+             $scope.pendingSurveys = pendingSurveys;
+          });*/
         }
       }
     })
@@ -63,7 +70,7 @@ angular.module('lmisChromeApp')
       views: {
         'activities': {
           templateUrl: 'views/home/main-activity.html',
-          controller: function ($scope, $stateParams, $log, $state, appConfig, i18n, alertsFactory) {
+          controller: function ($scope, $stateParams, $log, $state, appConfig, appConfigService, i18n, alertsFactory) {
 
             if ($stateParams.storageClear !== null) {
               alertsFactory.success(i18n('clearStorageMsg'));

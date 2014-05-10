@@ -46,14 +46,22 @@ angular.module('lmisChromeApp')
         if(object.countDate instanceof Date){
           object.countDate = object.countDate.toJSON();
         }
-        validate.stock.countExist(object.countDate).then(function(stockCount){
-          if(stockCount !== null){
-            object.uuid = stockCount.uuid;
-          }
-          storageService.save(storageService.STOCK_COUNT, object).then(function(uuid){
-            deferred.resolve(uuid);
-          });
-        });
+        validate.stock.countExist(object.countDate)
+            .then(function (stockCount) {
+              if (stockCount !== null) {
+                object.uuid = stockCount.uuid;
+              }
+              storageService.save(storageService.STOCK_COUNT, object)
+                  .then(function (uuid) {
+                    deferred.resolve(uuid);
+                  })
+                  .catch(function (reason) {
+                    deferred.reject(reason);
+                  });
+            })
+            .catch(function (reason) {
+              deferred.reject(reason);
+            });
         return deferred.promise;
       }
     };
@@ -91,6 +99,8 @@ angular.module('lmisChromeApp')
           }
         }
         deferred.resolve(stockCount);
+      }).catch(function(reason){
+        deferred.reject(reason);
       });
       return deferred.promise;
     };
