@@ -108,10 +108,10 @@ angular.module('lmisChromeApp')
           templateUrl: 'views/dashboard/dashboard.html',
           resolve: {
             stockOutList: function(stockOutBroadcastFactory){
-              return stockOutBroadcastFactory.get();
+              return stockOutBroadcastFactory.getAll();
             },
             stockCountIsAvailable: function(stockCountFactory){
-              return stockCountFactory.get.allStockCount();
+              return stockCountFactory.getStockCountByDate(new Date().toJSON());
             }
             /**
              * Returns an array of {name: product type name, count: total number
@@ -195,23 +195,30 @@ angular.module('lmisChromeApp')
               return deferred.promise;
             }
             $scope.showChart = true;
-            if(stockCountIsAvailable.length){
+            if(stockCountIsAvailable !== null){
               getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService).then(
                 function(productTypeCounts) {
                 var values = [], product = {}, stockOutWarning = [];
                 // TODO: unnecessary transposition
-
                 for(var uuid in productTypeCounts) {
                   product = productTypeCounts[uuid];
                   //filter out stock count with no reference to stock out broadcast since the last stock count
+
                   var filtered = stockOutList.filter(function(element){
-                    var now = new Date().getTime(),
+                    var dayTest = function(){
+                      var now = new Date().getTime(),
                         createdTime = new Date(element.created).getTime(),
                         currentReminderDate = utility.getWeekRangeByDate(new Date(), appConfig.reminderDay).reminderDate,
                         lastCountDate = currentReminderDate.getTime() - (1000 * 60 * 60 * 24 * appConfig.stockCountInterval);
-                    var dayTest =  (lastCountDate < createdTime ) && (currentReminderDate.getTime() > createdTime);
+                      if(now >= currentReminderDate.getTime()){
+                        return (currentReminderDate.getTime() < createdTime);
+                      }
+                      else{
+                        return (lastCountDate < createdTime );
+                      }
+                    };
 
-                    return element.productType.uuid === uuid && dayTest;
+                    return element.productType.uuid === uuid && dayTest();
                   });
 
                   //create a uuid list of products with zero or less reorder days

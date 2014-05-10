@@ -50,6 +50,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       var filteredProduct = facilityStockListProductTypes.filter(function(element){
           return $scope.urlParams.indexOf(element.uuid) !== -1;
       });
+      $scope.filteredProduct = filteredProduct;
       //used to hold stock out form data
       $scope.stockOutForm = {
         productType: filteredProduct,
