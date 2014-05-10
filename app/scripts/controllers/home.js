@@ -116,9 +116,8 @@ angular.module('lmisChromeApp')
                 return appConfigService.isStockCountDue(appConfig.reminderDay);
               }
               else{
-                true;
+                return true;
               }
-
             }
             /**
              * Returns an array of {name: product type name, count: total number
