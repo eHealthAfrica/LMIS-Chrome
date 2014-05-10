@@ -27,12 +27,6 @@ angular.module('lmisChromeApp')
             $scope.hasPendingDiscardCount = result;
           });
 
-          /*
-          //TODO: re-activate this later for survey reminders
-          surveyFactory.getPendingSurveys(appConfig.appFacility.uuid)
-            .then(function(pendingSurveys){
-             $scope.pendingSurveys = pendingSurveys;
-          });*/
         }
       }
     })
