@@ -13,12 +13,13 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
   return {
     set: function (obj) {
       var deferred = $q.defer();
-      if(chromeStorage){
-        chromeStorage.set(obj, function(){
-          if($window.chrome.runtime.lastError !== undefined) {
+      if (chromeStorage) {
+        chromeStorage.set(obj, function () {
+          if ($window.chrome.runtime.lastError !== undefined) {
             deferred.reject($window.chrome.runtime.lastError);
+          } else {
+            deferred.resolve(true);
           }
-          deferred.resolve(true);
         });
       } else {
         deferred.reject("chrome.storage api is not available");
@@ -33,15 +34,16 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
      */
     get: function (item, options) {
       var deferred = $q.defer();
-      if(chromeStorage){
-        chromeStorage.get(item, function(data){
-          if($window.chrome.runtime.lastError !== undefined) {
+      if (chromeStorage) {
+        chromeStorage.get(item, function (data) {
+          if ($window.chrome.runtime.lastError !== undefined) {
             deferred.reject($window.chrome.runtime.lastError);
-          }
-          if(options && options.collection) {
-              deferred.resolve(data);
           } else {
+            if (options && options.collection) {
+              deferred.resolve(data);
+            } else {
               deferred.resolve(data[item]);
+            }
           }
         });
       } else {
@@ -52,32 +54,32 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
     },
     remove: function (items) {
       var deferred = $q.defer();
-      if(chromeStorage){
-        chromeStorage.remove(items, function(){
-          if($window.chrome.runtime.lastError !== undefined) {
-            return deferred.reject($window.chrome.runtime.lastError);
+      if (chromeStorage) {
+        chromeStorage.remove(items, function () {
+          if ($window.chrome.runtime.lastError !== undefined) {
+            deferred.reject($window.chrome.runtime.lastError);
+          }else{
+            deferred.resolve(true);
           }
-          deferred.resolve(true);
         });
-      } else {
+      }else {
         deferred.reject("chrome.storage api is not available");
       }
-
       return deferred.promise;
     },
     clear: function () {
       var deferred = $q.defer();
-      if(chromeStorage){
-        chromeStorage.clear(function(){
-          if($window.chrome.runtime.lastError !== undefined) {
-            return deferred.reject($window.chrome.runtime.lastError);
+      if (chromeStorage) {
+        chromeStorage.clear(function () {
+          if ($window.chrome.runtime.lastError !== undefined) {
+            deferred.reject($window.chrome.runtime.lastError);
+          }else{
+            deferred.resolve(true);
           }
-          deferred.resolve(true);
         });
       } else {
         deferred.reject("chrome.storage api is not available");
       }
-
       return deferred.promise;
     }
   };

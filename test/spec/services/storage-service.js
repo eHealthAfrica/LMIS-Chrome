@@ -115,12 +115,6 @@ describe('storageService', function () {
     expect(uuid.length).toBe(36);
   });
 
-  it('should be able to convert a table array to object and return promise', function () {
-    spyOn(chromeStorageApi, 'get').andReturn(deferred.promise);
-    storageService.loadTableObject('test');
-    expect(chromeStorageApi.get).toHaveBeenCalled();
-  });
-
   it('should be able to return an array or collection of rows in the given table and return promise', function () {
     spyOn(chromeStorageApi, 'get').andReturn(deferred.promise);
     storageService.all('test');
@@ -131,7 +125,7 @@ describe('storageService', function () {
     spyOn(chromeStorageApi, 'set').andReturn(deferred.promise);
     storageService.insert('test', {uuid: '123456789'});
     //FIXME: this doesnt if value was stored in table // set is called outside storageService add function scope;
-    //expect(chromeStorageApi.set).toHaveBeenCalled();
+    //expect(chromeStorageApi.set).toHaveBeenCalled();s
   });
 
   it('should be able to update database table row and return promise', function () {

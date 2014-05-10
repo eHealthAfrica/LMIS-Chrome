@@ -313,17 +313,16 @@ angular.module('lmisChromeApp')
                 'reportYear': $scope.reportYear,
                 'stockResult': msg
               });
+               //then sync after every save. whether final or backup.
+              $scope.stockCount.uuid = result;
+              syncService.syncItem(DB_NAME, $scope.stockCount)
+                  .then(function (syncResult) {
+                    console.info('stock count sync success: ' + syncResult);
+                  })
+                  .catch(function (reason) {
+                    console.log(reason);
+                  });
             }
-
-              //then sync after every save. whether final or backup.
-            $scope.stockCount.uuid = result;
-            syncService.syncItem(DB_NAME, $scope.stockCount)
-              .then(function (syncResult) {
-                console.info('stock count sync success: ' + syncResult);
-              })
-              .catch(function (reason) {
-                console.log(reason);
-              });
           }
         })
         .catch(function(reason){
