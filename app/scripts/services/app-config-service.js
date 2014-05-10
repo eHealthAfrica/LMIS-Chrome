@@ -62,33 +62,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         return false;
       });
   };
-
-  this.isDiscardCountDue = function(appConfig){
-    var deferred = $q.defer();
-    var today = new Date();
-    var currentWeekDateInfo = utility.getWeekRangeByDate(today, appConfig.reminderDay);
-
-    storageService.all(storageService.DISCARD_COUNT)
-      .then(function (results) {
-
-        //get discard-counts within current and week date range
-        var discardCountWithInRange = results.filter(function (discardCount) {
-        var discardCountDate = new Date(discardCount.countDate);
-          return (currentWeekDateInfo.first.getTime() <= discardCountDate.getTime()
-                && discardCountDate.getTime() <= currentWeekDateInfo.last.getTime()
-                && discardCount.isComplete === 1)
-        });
-
-        var isDiscardCountReminderDue = (discardCountWithInRange.length === 0) &&
-            (today.getTime() >= currentWeekDateInfo.reminderDate.getTime());
-
-        deferred.resolve(isDiscardCountReminderDue);
-      }, function (reason) {
-        return deferred.resolve(true);
-    });
-    return deferred.promise;
-  };
-
   /**
    * This function setups or configures the app, it checks if a configuration exist then over-writes it, else,
    * it creates a new configuration.
