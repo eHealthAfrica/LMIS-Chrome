@@ -79,7 +79,7 @@
   <div class="panel-body">
     <div>
       <div class="col-sm-12">
-        <form ng-submit="finalSave()">
+        <form>
           <div class="row">
             <div class="col-sm-12" ng-hide="preview">
               <div class="row">
@@ -229,7 +229,7 @@
                     <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
                       <i class="fa fa-chevron-circle-left"></i> Back to form
                     </button>
-                    <button class="btn btn-success btn-lg">
+                    <button ng-click="finalSave()" class="btn btn-success btn-lg">
                       <span i18n="confirm"></span>
                       <span><i class="fa fa-save"></i></span>
                     </button>
