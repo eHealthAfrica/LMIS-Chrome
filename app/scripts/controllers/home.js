@@ -12,29 +12,18 @@ angular.module('lmisChromeApp')
         appConfig: function(appConfigService){
           return appConfigService.getCurrentAppConfig();
         },
-        isStockCountDue: function(appConfig, appConfigService){
-          if(angular.isDefined(appConfig)){
+        isStockCountReminderDue: function(appConfigService, appConfig){
+          if(typeof appConfig !== 'undefined'){
             return appConfigService.isStockCountDue(appConfig.reminderDay);
           }
-          else{
-            return true;
-          }
+          return false;
         }
       },
-      controller: function($scope, appConfig, appConfigService, $state, isStockCountDue) {
-
+      controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope) {
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
-        }
-        else {
-          $scope.hasPendingStockCount = isStockCountDue;
-
-          /*
-          //TODO: re-activate this later for survey reminders
-          surveyFactory.getPendingSurveys(appConfig.appFacility.uuid)
-            .then(function(pendingSurveys){
-             $scope.pendingSurveys = pendingSurveys;
-          });*/
+        }else{
+           $scope.isStockCountReminderDue = isStockCountReminderDue;
         }
       }
     })
@@ -71,7 +60,7 @@ angular.module('lmisChromeApp')
       views: {
         'activities': {
           templateUrl: 'views/home/main-activity.html',
-          controller: function ($scope, $stateParams, $log, $state, appConfig, appConfigService, i18n, alertsFactory) {
+          controller: function ($stateParams, i18n, alertsFactory) {
 
             if ($stateParams.storageClear !== null) {
               alertsFactory.success(i18n('clearStorageMsg'));

@@ -211,7 +211,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, cacheService, syncService, utility){
+  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, appConfigService, productType, cacheService, syncService, utility){
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
@@ -285,49 +285,57 @@ angular.module('lmisChromeApp')
       }
     });
 
+    var saveQueue = queue(1);
+    var saveTask = function(callback){
+      stockCountFactory.save.stock($scope.stockCount)
+        .then(function(result){
+            callback(undefined, result);
+            console.log('hi');
+          })
+        .catch(function(reason){
+           callback(reason);
+        });
+    };
     $scope.save = function() {
       var DB_NAME = 'stockcount';
 
       $scope.stockCount.facility = $scope.facilityUuid;
       $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.reportDay, timezone);
       $scope.stockCount.dateSynced = new Date().toJSON(); //FIXME: update this after syncing successfully.
-      stockCountFactory.save.stock($scope.stockCount)
-        .then(function(result){
-          if (typeof result !== 'undefined') {
-            //clear data used to plot product-type-info graph
-            cacheService.remove(cacheService.PRODUCT_TYPE_INFO);
-            cacheService.remove(cacheService.STOCK_COUNT_REMINDER);
 
-            //if final save, redirect to home page.
-            if ($scope.redirect) {
-              var msg = [
-                'You have completed stock count for',
-                $scope.reportDay,
-                $scope.monthList[$scope.reportMonth],
-                $scope.reportYear
-              ].join(' ');
-              $state.go('home.index.home.mainActivity', {
-                'facility': $scope.facilityUuid,
-                'reportMonth': $scope.reportMonth,
-                'reportYear': $scope.reportYear,
-                'stockResult': msg
-              });
-               //then sync after every save. whether final or backup.
-              $scope.stockCount.uuid = result;
-              syncService.syncItem(DB_NAME, $scope.stockCount)
-                  .then(function (syncResult) {
-                    console.info('stock count sync success: ' + syncResult);
-                  })
-                  .catch(function (reason) {
-                    console.log(reason);
-                  });
-            }
+      saveQueue.defer(saveTask);
+
+      //if final save, redirect to home page.
+      if ($scope.redirect) {
+        saveQueue.awaitAll(function(err, result){
+          if(result){
+            var msg = [
+              'You have completed stock count for',
+              $scope.reportDay,
+              $scope.monthList[$scope.reportMonth],
+              $scope.reportYear
+            ].join(' ');
+            $state.go('home.index.home.mainActivity', {
+              'facility': $scope.facilityUuid,
+              'reportMonth': $scope.reportMonth,
+              'reportYear': $scope.reportYear,
+              'stockResult': msg
+            });
+
+            $scope.stockCount.uuid = result[0];//pick one uuid
+            syncService.syncItem(DB_NAME, $scope.stockCount)
+                .then(function (syncResult) {
+                  console.info('stock count sync success: ' + syncResult);
+                })
+                .catch(function (reason) {
+                  console.log(reason);
+                });
+          }else{
+            console.log(err);
           }
-        })
-        .catch(function(reason){
-          alertsFactory.danger(reason, {persistent: true});
-          console.log('stock count save failed'+reason);
         });
+
+      }
     };
 
     $scope.finalSave = function(){
