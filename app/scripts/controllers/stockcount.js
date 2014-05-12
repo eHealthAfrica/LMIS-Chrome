@@ -211,7 +211,9 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountFormCtrl', function($scope, stockCountFactory, $state, alertsFactory, $stateParams, appConfig, appConfigService, productType, cacheService, syncService, utility){
+  .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, alertsFactory,
+                                             $stateParams, appConfig, appConfigService, productType, cacheService,
+                                             syncService, utility, $rootScope){
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
@@ -309,6 +311,8 @@ angular.module('lmisChromeApp')
       if ($scope.redirect) {
         saveQueue.awaitAll(function(err, result){
           if(result){
+            $rootScope.showChart = true;
+            $rootScope.isStockCountDue = false;//TODO:
 
             var msg = [
               'You have completed stock count for',

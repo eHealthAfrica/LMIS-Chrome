@@ -16,14 +16,17 @@ angular.module('lmisChromeApp')
             return appConfigService.isStockCountDue(appConfig.reminderDay);
           }
           return false;
-        }                         
+        }
       },
-      controller: function(appConfig, $state, $scope, isStockCountReminderDue) {
+      controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope) {
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
         }else{
           $scope.facility = appConfig.appFacility.name;
-          $scope.isStockCountReminderDue = isStockCountReminderDue;
+          if(typeof $rootScope.isStockCountDue === 'undefined' || $rootScope.isStockCountDue === true){
+            $rootScope.isStockCountDue = isStockCountReminderDue
+          }
+
         }
       }
     })
@@ -112,9 +115,9 @@ angular.module('lmisChromeApp')
              * Returns an array of {name: product type name, count: total number
              * in facility (as of last stock count)}
              */
-            
+
           },
-          controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, stockCountIsAvailable) {
+          controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, stockCountIsAvailable) {
             var keys = [
               {
                 key: 'daysToReorder',
@@ -189,8 +192,9 @@ angular.module('lmisChromeApp')
                 });
               return deferred.promise;
             }
-            $scope.showChart = true;
-            if(!stockCountIsAvailable){
+
+            if($rootScope.showChart === true || !stockCountIsAvailable){
+              $rootScope.showChart = true;
               getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService).then(
                 function(productTypeCounts) {
                 var values = [], product = {}, stockOutWarning = [];
@@ -235,7 +239,7 @@ angular.module('lmisChromeApp')
                 console.log('getProductTypeCounts Error: '+err);
               });
             }else{
-              $scope.showChart = false;
+              $rootScope.showChart = !stockCountIsAvailable;
             }
 
           }
