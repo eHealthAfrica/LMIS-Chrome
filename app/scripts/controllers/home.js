@@ -6,7 +6,6 @@ angular.module('lmisChromeApp')
     $urlRouterProvider.otherwise('/main-activity');
     $stateProvider.state('home', {
       parent: 'root.index',
-      abstract: true,
       templateUrl: 'views/home/index.html',
       resolve: {
         appConfig: function(appConfigService){
@@ -17,7 +16,7 @@ angular.module('lmisChromeApp')
             return appConfigService.isStockCountDue(appConfig.reminderDay);
           }
           return false;
-        }
+        }                         
       },
       controller: function(appConfig, $state, $scope, isStockCountReminderDue) {
         if (typeof appConfig === 'undefined') {
@@ -61,7 +60,7 @@ angular.module('lmisChromeApp')
       views: {
         'activities': {
           templateUrl: 'views/home/main-activity.html',
-          controller: function ($stateParams, i18n, alertsFactory) {
+          controller: function ($stateParams, i18n, alertsFactory, $state) {
 
             if ($stateParams.storageClear !== null) {
               alertsFactory.success(i18n('clearStorageMsg'));
