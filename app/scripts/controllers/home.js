@@ -19,11 +19,12 @@ angular.module('lmisChromeApp')
           return false;
         }
       },
-      controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope) {
+      controller: function(appConfig, $state, $scope, isStockCountReminderDue) {
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
         }else{
-           $scope.isStockCountReminderDue = isStockCountReminderDue;
+          $scope.facility = appConfig.appFacility.name;
+          $scope.isStockCountReminderDue = isStockCountReminderDue;
         }
       }
     })

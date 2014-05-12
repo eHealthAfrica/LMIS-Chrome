@@ -57,7 +57,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         var isStockCountReminderDue = (today >= $filter('date')(currentWeekDateInfo.reminderDate, 'yyyy-MM-dd')) &&
                 (stockCountsWithInRange.length === 0);
         deferred.resolve(isStockCountReminderDue);
-        $rootScope.$$phase || $rootScope.$apply();
       })
       .catch(function(reason){
         deferred.resolve(false);

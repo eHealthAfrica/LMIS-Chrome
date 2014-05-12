@@ -290,12 +290,12 @@ angular.module('lmisChromeApp')
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(result){
             callback(undefined, result);
-            console.log('hi');
           })
         .catch(function(reason){
            callback(reason);
         });
     };
+
     $scope.save = function() {
       var DB_NAME = 'stockcount';
 
@@ -303,12 +303,13 @@ angular.module('lmisChromeApp')
       $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.reportDay, timezone);
       $scope.stockCount.dateSynced = new Date().toJSON(); //FIXME: update this after syncing successfully.
 
-      saveQueue.defer(saveTask);
+      saveQueue.defer(saveTask);//queue save task
 
       //if final save, redirect to home page.
       if ($scope.redirect) {
         saveQueue.awaitAll(function(err, result){
           if(result){
+
             var msg = [
               'You have completed stock count for',
               $scope.reportDay,
