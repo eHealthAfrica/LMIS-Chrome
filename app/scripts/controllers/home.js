@@ -6,35 +6,27 @@ angular.module('lmisChromeApp')
     $urlRouterProvider.otherwise('/main-activity');
     $stateProvider.state('home', {
       parent: 'root.index',
-      abstract: true,
       templateUrl: 'views/home/index.html',
       resolve: {
         appConfig: function(appConfigService){
           return appConfigService.getCurrentAppConfig();
         },
-        isStockCountDue: function(appConfig, appConfigService){
-          if(angular.isDefined(appConfig)){
+        isStockCountReminderDue: function(appConfigService, appConfig){
+          if(typeof appConfig !== 'undefined'){
             return appConfigService.isStockCountDue(appConfig.reminderDay);
           }
-          else{
-            return true;
-          }
+          return false;
         }
       },
-      controller: function($scope, appConfig, appConfigService, $state, isStockCountDue) {
-
+      controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope) {
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
-        }
-        else {
-          $scope.hasPendingStockCount = isStockCountDue;
+        }else{
+          $scope.facility = appConfig.appFacility.name;
+          if(typeof $rootScope.isStockCountDue === 'undefined' || $rootScope.isStockCountDue === true){
+            $rootScope.isStockCountDue = isStockCountReminderDue
+          }
 
-          /*
-          //TODO: re-activate this later for survey reminders
-          surveyFactory.getPendingSurveys(appConfig.appFacility.uuid)
-            .then(function(pendingSurveys){
-             $scope.pendingSurveys = pendingSurveys;
-          });*/
         }
       }
     })
@@ -71,7 +63,7 @@ angular.module('lmisChromeApp')
       views: {
         'activities': {
           templateUrl: 'views/home/main-activity.html',
-          controller: function ($scope, $stateParams, $log, $state, appConfig, appConfigService, i18n, alertsFactory) {
+          controller: function ($stateParams, i18n, alertsFactory, $state) {
 
             if ($stateParams.storageClear !== null) {
               alertsFactory.success(i18n('clearStorageMsg'));
@@ -123,9 +115,9 @@ angular.module('lmisChromeApp')
              * Returns an array of {name: product type name, count: total number
              * in facility (as of last stock count)}
              */
-            
+
           },
-          controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, stockCountIsAvailable) {
+          controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, stockCountIsAvailable) {
             var keys = [
               {
                 key: 'daysToReorder',
@@ -200,8 +192,9 @@ angular.module('lmisChromeApp')
                 });
               return deferred.promise;
             }
-            $scope.showChart = true;
-            if(!stockCountIsAvailable){
+
+            if($rootScope.showChart === true || !stockCountIsAvailable){
+              $rootScope.showChart = true;
               getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService).then(
                 function(productTypeCounts) {
                 var values = [], product = {}, stockOutWarning = [];
@@ -246,7 +239,7 @@ angular.module('lmisChromeApp')
                 console.log('getProductTypeCounts Error: '+err);
               });
             }else{
-              $scope.showChart = false;
+              $rootScope.showChart = !stockCountIsAvailable;
             }
 
           }

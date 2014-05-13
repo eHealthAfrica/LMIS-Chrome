@@ -41,7 +41,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * @returns {promise|promise|*|promise|promise}
    */
   this.isStockCountDue = function(reminderDay){
-    return storageService.all(storageService.STOCK_COUNT)
+    var deferred = $q.defer();
+    storageService.all(storageService.STOCK_COUNT)
       .then(function (results) {
         var now = new Date();
         var currentWeekDateInfo = utility.getWeekRangeByDate(now, reminderDay);
@@ -55,12 +56,12 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         });
         var isStockCountReminderDue = (today >= $filter('date')(currentWeekDateInfo.reminderDate, 'yyyy-MM-dd')) &&
                 (stockCountsWithInRange.length === 0);
-
-        return isStockCountReminderDue;
+        deferred.resolve(isStockCountReminderDue);
       })
       .catch(function(reason){
-        return false;
+        deferred.resolve(false);
       });
+    return deferred.promise;
   };
   /**
    * This function setups or configures the app, it checks if a configuration exist then over-writes it, else,
