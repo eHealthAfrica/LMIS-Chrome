@@ -232,6 +232,12 @@ angular.module('lmisChromeApp')
                 }
                 $scope.stockOutWarning = stockOutWarning;
                 $scope.stockOutWarningMsg = i18n('stockOutWarningMsg', (stockOutWarning.length).toString());
+                //var format = d3.format(',.4f');
+                $scope.roundLegend = function(){
+                  return function(d){
+                      return d3.round(d);
+                    }
+                };
 
                 $scope.productTypesChart = dashboardfactory.chart(keys, values);
 
