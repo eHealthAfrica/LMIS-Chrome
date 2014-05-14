@@ -5,7 +5,7 @@ angular.module('lmisChromeApp')
     var getByUuid = function(uuid) {
       var deferred = $q.defer();
       storageService.find(storageService.PRODUCT_PROFILE, uuid)
-        .then(function(productProfile) {
+          .then(function (productProfile) {
             if (typeof productProfile !== 'undefined') {
               var promises = {
                 presentation: presentationFactory.get(productProfile.presentation),
@@ -20,12 +20,12 @@ angular.module('lmisChromeApp')
             } else {
               deferred.resolve();
             }
-        }, function(err){
-          deferred.reject(err);
-        })
-        .catch(function(reason) {
-          deferred.reject(reason);
-        });
+          }, function (err) {
+            deferred.reject(err);
+          })
+          .catch(function (reason) {
+            deferred.reject(reason);
+          });
       return deferred.promise;
     };
 
@@ -63,13 +63,13 @@ angular.module('lmisChromeApp')
       var deferred = $q.defer();
       var ptUuid = typeof productType === 'string' ? productType : productType.uuid;
       storageService.all(storageService.PRODUCT_PROFILE).then(function(profiles){
-        profiles = profiles.filter(function(p) { return p.product === ptUuid });
+        profiles = profiles.filter(function(p) { return p.product === ptUuid; });
         deferred.resolve(profiles);
       })
       .catch(function(err) {
         deferred.reject(err);
       });
-       return deferred.promise;
+      return deferred.promise;
     };
 
     var getProductProfileBatch = function(uuidList){
@@ -94,12 +94,12 @@ angular.module('lmisChromeApp')
     var getAllWithoutNestedObject = function(){
       var deferred = $q.defer();
       storageService.all(storageService.PRODUCT_PROFILE)
-        .then(function(result){
+          .then(function (result) {
             deferred.resolve(result);
-        })
-        .catch(function(reason){
-          deferred.reject(reason);
-        });
+          })
+          .catch(function (reason) {
+            deferred.reject(reason);
+          });
       return deferred.promise;
     };
 

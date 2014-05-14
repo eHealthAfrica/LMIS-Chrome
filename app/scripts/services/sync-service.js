@@ -26,7 +26,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
         deferred.reject(error);
       });
 
-    }, function (error) {
+    }, function () {
       db.put(item, item.uuid)
       .then(function (result) {
         deferred.resolve(result);
@@ -48,7 +48,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
       isSyncing = true;
       var remoteDB = getRemoteDB(dbName);
       remoteDB.info()
-        .then(function(dbInfo){
+        .then(function(){
           saveItem(remoteDB, item).then(function(response){
             isSyncing = false;
             deferred.resolve(response);

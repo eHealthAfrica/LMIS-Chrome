@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 angular.module('lmisChromeApp').service('cacheService', function ($q, $cacheFactory) {
 

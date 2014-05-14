@@ -11,12 +11,11 @@ angular.module('lmisChromeApp', [
   // Load fixture data
   .run(function(storageService, $rootScope, $state, $window) {
 
-    $window.showSplashScreen = function(event, args){
-       $state.go('loadingFixture');
+    $window.showSplashScreen = function(){
+      $state.go('loadingFixture');
     };
 
-    $window.hideSplashScreen = function(event, args){
-      //TODO: if args.completed !== true not all fixtures were loaded or an error occurred while loading fixture,
+    $window.hideSplashScreen = function(){
       $state.go('home.index.home.mainActivity');
     };
 
@@ -30,7 +29,7 @@ angular.module('lmisChromeApp', [
     //load fixtures if not loaded yet.
     storageService.loadFixtures().then(function(result){
       storageService.getAll().then(function(data){
-        console.log("finished loading: "+Object.keys(data));
+        console.log('finished loading: '+Object.keys(data));
       });
     });
 
