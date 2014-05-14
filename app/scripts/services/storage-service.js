@@ -350,7 +350,7 @@ angular.module('lmisChromeApp')
       var insertBatch = function (tableName, batches) {
         var deferred = $q.defer();
         var promises = [];
-        if(angular.isArray(batches)){
+        if(!angular.isArray(batches)){
           throw 'batchList is not an array';
         }
         for (var index in batches) {
