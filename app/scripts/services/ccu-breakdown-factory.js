@@ -13,7 +13,7 @@ angular.module('lmisChromeApp')
         saveCcuBreakdownReport(ccuBreakdownReport)
             .then(function(result){
               if(typeof result !== 'undefined'){
-                ccuBreakdownReport['uuid'] = result;
+                ccuBreakdownReport.uuid = result;
                 syncService.syncItem(storageService.CCU_BREAKDOWN, ccuBreakdownReport)
                     .then(function (syncResult) {
                       console.log('ccu breakdown as synced successfully ' + syncResult);

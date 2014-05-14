@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 angular.module('lmisChromeApp').service('utility', function ($location, $anchorScroll) {
 
@@ -9,7 +9,7 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
    */
   this.getReadableProfileName = function(name){
     return name.replace(/\-/g,' - ').replace(/([0-9])([a-zA-Z])/g,'$1 $2').replace(/([a-z][a-z])([A-Z])/g,'$1 $2');
-  }
+  };
 
   /**
    * this returns the local time-zone difference from GMT.
@@ -19,7 +19,7 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
     //TODO: ref https://bitbucket.org/pellepim/jstimezonedetect
     var tz = new Date().getTimezoneOffset() / 60;
     return (tz < 0) ? parseInt('+' + Math.abs(tz)) : parseInt('-' + Math.abs(tz));
-  }
+  };
 
   /**
    *
@@ -30,15 +30,13 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
 
   this.castArrayToObject = function(array, id){
     var newObject = {};
-
     if(Object.prototype.toString.call(array) === '[object Array]'){
       for(var i=0; i < array.length; i++){
         newObject[array[i][id]] = array[i];
       }
     }
-
     return newObject;
-  }
+  };
 
   this.getWeekRangeByDate = function(date, reminderDay){
     var currentDate = date;
@@ -61,7 +59,7 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
       'first': firstDayDateOfCurrentWeek,
       'last': lastDayDateOfCurrentWeek,
       'reminderDate': reminderDate
-    }
+    };
 
   };
 

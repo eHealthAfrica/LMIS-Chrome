@@ -37,7 +37,7 @@ angular.module('lmisChromeApp')
 
         storageService.all(storageService.PRODUCT_TYPES)
             .then(function (data) {
-              var promises = []
+              var promises = [];
               for(var index in data){
                 var productType = data[index];
                 promises.push(getByUuid(productType.uuid));

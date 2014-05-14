@@ -49,7 +49,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       var filteredProduct = facilityStockListProductTypes.filter(function(element){
           return $scope.urlParams.indexOf(element.uuid) !== -1;
-      });
+        });
+
       $scope.filteredProduct = filteredProduct;
       //used to hold stock out form data
       $scope.stockOutForm = {
@@ -78,10 +79,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
                   saveAndBroadcastStockOut(productList, count - 1);
                   stockOutBroadcastFactory.broadcast(stockOut)
                     .then(function (result) {
-                      $log.info('stock-out broad-casted');
+                      $log.info('stock-out broad-casted: '+result);
                     }, function (reason) {
                       $log.error(reason);
-                    })
+                    });
 
                 } else {
                   alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
@@ -99,7 +100,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
         var title = [];
         for(var i=0; i < filteredProduct.length; i++){
-         title.push(filteredProduct[i].code);
+          title.push(filteredProduct[i].code);
         }
 
         var confirmationTitle = i18n('confirmStockOutHeader', title.join(', '));
@@ -119,7 +120,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       };
 
     }
-  })
+  });
 }).controller('StockOutBroadcastCtrl', function($scope,appConfig, $log, stockOutBroadcastFactory, $state, alertsFactory,
                                                 $modal, i18n, facilityStockListProductTypes, notificationService){
 
@@ -156,10 +157,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
                     stockOut.uuid = result;
                     stockOutBroadcastFactory.broadcast(stockOut)
                         .then(function (result) {
-                          $log.info('stock-out broad-casted');
+                          $log.info('stock-out broad-casted: '+result);
                         }, function (reason) {
                           $log.error(reason);
-                        })
+                        });
                   } else {
                     alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
                   }

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider.state('reportCcuBreakdown', {
     url: '/report-ccu',
@@ -8,14 +10,14 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     },
     resolve: {
       appConfig: function(appConfigService){
-          return appConfigService.getCurrentAppConfig();
+        return appConfigService.getCurrentAppConfig();
       }
     },
     controller: 'ReportCcuBreakdownCtrl'
-  })
+  });
 }).controller('ReportCcuBreakdownCtrl', function($scope, appConfig, $modal, i18n, $log, notificationService, ccuBreakdownFactory, $state, alertsFactory){
-      $scope.facilityCcuList = appConfig.selectedCcuProfiles;
 
+      $scope.facilityCcuList = appConfig.selectedCcuProfiles;
       $scope.ccuBreakdown = {
         ccuProfile: '',
         facility: appConfig.appFacility,
@@ -39,7 +41,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             .then(function (isConfirmed) {
               if (isConfirmed === true) {
                 ccuBreakdownFactory.saveAndSendReport(ccuBreakdownReport)
-                    .then(function (result) {
+                    .then(function () {
                       $state.go('home.index.home.mainActivity', {ccuBreakdownReportResult: true });
                     }).catch(function (reason) {
                       alertsFactory.danger(i18n('ccuBreakdownReportFailedMsg'));

@@ -9,7 +9,7 @@ angular.module('lmisChromeApp')
       var deferred = $q.defer();
 
       if ('cordova' in $window) {
-        var deviceInfo = cordova.require("cordova/plugin/DeviceInformation");
+        var deviceInfo = cordova.require('cordova/plugin/DeviceInformation');
         deviceInfo.get(function (result) {
           var emailList = result.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi).join(',');
           var mainEmail = emailList.split(',')[0];//return first email as main email.

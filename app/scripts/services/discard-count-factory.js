@@ -78,9 +78,11 @@ angular.module('lmisChromeApp')
           if(discardCount !== null){
             object.uuid = discardCount.uuid;
           }
-          storageService.save(storageService.DISCARD_COUNT, object).then(function(uuid){
-            deferred.resolve(uuid);
-          });
+          storageService.save(storageService.DISCARD_COUNT, object)
+              .then(function(uuid){
+                deferred.resolve(uuid);
+              })
+          ;
 
         });
         return deferred.promise;
@@ -103,13 +105,9 @@ angular.module('lmisChromeApp')
          * @param index
          */
         reason: function(scope, index){
-
-
           var currentReason = scope.discardCount.reason[scope.productKey][index];
-
           var entryError = (validate.invalid(currentReason))?true:false;
           var errorMsg = [];
-
 
           if(entryError){
             errorMsg.push('invalid entry');
@@ -118,16 +116,14 @@ angular.module('lmisChromeApp')
           if(errorMsg.length > 0){
             scope.discardErrors[scope.productKey][index] = true;
             scope.discardErrorMsg[scope.productKey][index]= errorMsg.join('<br>');
-          }
-          else{
+          }else{
             delete scope.discardErrors[scope.productKey][index];
             delete scope.discardErrorMsg[scope.productKey][index];
           }
           //if any form field contain invalid data we need to indicate it indefinitely
           if(Object.keys(scope.discardErrors[scope.productKey]).length > 0){
             scope.reasonError = true;
-          }
-          else{
+          }else{
 
             delete scope.discardErrors[scope.productKey];
             delete scope.discardErrorMsg[scope.productKey];
@@ -146,16 +142,13 @@ angular.module('lmisChromeApp')
           scope.currentEntry = scope.discardCount.discarded[scope.productKey];
           if(validate.invalid(scope.currentEntry) && direction !== 0){
             load.errorAlert(scope, 1);
-          }
-          else if (scope.reasonError){
+          }else if (scope.reasonError){
             load.errorAlert(scope, 2);
-          }
-          else{
+          }else{
             load.errorAlert(scope, 0);
             if(direction !== 2){
               scope.step = direction === 0? scope.step-1 : scope.step + 1;
-            }
-            else{
+            }else{
               scope.preview = true;
               scope.discardCount.isComplete = 1;
               //syncDiscarded(scope.discardCount);
@@ -192,7 +185,7 @@ angular.module('lmisChromeApp')
         });
       }
       return discardCounts;
-    }
+    };
 
     var isSynced = function(dc)
     {

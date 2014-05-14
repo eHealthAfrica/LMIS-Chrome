@@ -2,13 +2,11 @@
 
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, syncService,
                                                                       productProfileFactory, facilityFactory, utility,
-                                                                      cacheService, $filter, reminderFactory, $rootScope) {
+                                                                      cacheService, $filter, reminderFactory) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   var cache = cacheService.getCache();
   var FACILITY_PROFILE_DB = 'app_facility_profile';
-  var STOCK_OUT_REMINDER = 'STOCK_COUNT_REMINDER';
-
   var stockCountIntervals = [
     {name: 'Daily', value: 1},
     {name: 'Weekly', value: 7},
@@ -46,7 +44,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       .then(function (results) {
         var now = new Date();
         var currentWeekDateInfo = utility.getWeekRangeByDate(now, reminderDay);
-         currentWeekDateInfo = getCorrectWeeklyDateInfo(currentWeekDateInfo);
+        currentWeekDateInfo = getCorrectWeeklyDateInfo(currentWeekDateInfo);
         var today = $filter('date')(now, 'yyyy-MM-dd');
 
         //get stock-counts within current and week date range
@@ -58,7 +56,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
                 (stockCountsWithInRange.length === 0);
         deferred.resolve(isStockCountReminderDue);
       })
-      .catch(function(reason){
+      .catch(function(){
         deferred.resolve(false);
       });
     return deferred.promise;
@@ -91,7 +89,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       $q.all(promise)
           .then(function (result) {
             for (var key in result) {
-              appConfig[key] = result[key]
+              appConfig[key] = result[key];
             }
 
             var promises = [];
@@ -100,7 +98,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
             } else {
               //over-write appConfig by using existing appConfig uuid for the new appConfig.
               //2014-04-11 - it would be more readable for this to apply individual properties to result rather than uuid to appConfig, that ties storage logic to this
-              appConfig['uuid'] = existingAppConfig.uuid;
+              appConfig.uuid = existingAppConfig.uuid;
               promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
             }
 
@@ -171,12 +169,12 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   };
 
   this.addObjectToCollection = function(obj, collections, key){
-   var _obj = JSON.parse(obj);
-   if(_obj.deSelected === undefined){
-     collections.push(_obj);
-     return collections;
-   }
-   return removeObjFromCollection(_obj, collections, key);
+    var _obj = JSON.parse(obj);
+    if (_obj.deSelected === undefined) {
+      collections.push(_obj);
+      return collections;
+    }
+    return removeObjFromCollection(_obj, collections, key);
   };
 
   this.getAppFacilityProfileByEmail = function(email){
@@ -184,28 +182,27 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     var REMOTE = config.api.url + '/' + FACILITY_PROFILE_DB;
     var remoteDB = pouchdb.create(REMOTE);
     remoteDB.info()
-      .then(function(result){
-        remoteDB.get(email)
-        .then(function(appFacilityProfile){
-          var promises = {
-              appFacility: facilityFactory.get(appFacilityProfile.appFacility),
-              selectedProductProfiles: productProfileFactory.getBatch(appFacilityProfile.selectedProductProfiles)
-          };
+        .then(function () {
+          remoteDB.get(email)
+              .then(function (appFacilityProfile) {
+                var promises = {
+                  appFacility: facilityFactory.get(appFacilityProfile.appFacility),
+                  selectedProductProfiles: productProfileFactory.getBatch(appFacilityProfile.selectedProductProfiles)
+                };
 
-          $q.all(promises).then(function(result) {
-            for(var key in result) {
-              appFacilityProfile[key] = result[key];
-            }
-            deferred.resolve(appFacilityProfile);
-          });
-
-        }, function(reason){
-          deferred.reject(reason);
+                $q.all(promises).then(function (result) {
+                  for (var key in result) {
+                    appFacilityProfile[key] = result[key];
+                  }
+                  deferred.resolve(appFacilityProfile);
+                });
+              }, function (reason) {
+                deferred.reject(reason);
+              });
         })
-      })
-      .catch(function(reason){
-        deferred.reject(reason);
-      });
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
     return deferred.promise;
   };
 
@@ -234,7 +231,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         deferred.reject(err);
       });
     }
-    return deferred.promise
+    return deferred.promise;
   };
 
   this.getProductTypes = function(){

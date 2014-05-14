@@ -49,7 +49,7 @@ angular.module('lmisChromeApp')
       };
 
       var hasProperty = function(obj, property){
-        return typeof obj[property] !== 'undefined'
+        return typeof obj[property] !== 'undefined';
       };
 
       var checkObjectProperty = function (obj, property) {
@@ -100,8 +100,7 @@ angular.module('lmisChromeApp')
 
         checkObjectProperty(obj, eventDateKey);
         var eventDate = new Date(obj[eventDateKey]);
-        return !(monthlyReminderDate.getMonth() === eventDate.getMonth()
-            && monthlyReminderDate.getFullYear() === eventDate.getFullYear());
+        return !(monthlyReminderDate.getMonth() === eventDate.getMonth() && monthlyReminderDate.getFullYear() === eventDate.getFullYear());
       };
 
       /**
@@ -140,7 +139,7 @@ angular.module('lmisChromeApp')
           var nextWkRemDate =
               new Date(biWkRemDate.getFullYear(), biWkRemDate.getMonth(), biWkRemDate.getDate() +  WEEKLY);
           var nextWkInfo = utility.getWeekRangeByDate(nextWkRemDate, biWkRemDate.getDay());
-          biWeeklyDateRange = {start: biWkRemInfo.first, end: nextWkInfo.last}
+          biWeeklyDateRange = {start: biWkRemInfo.first, end: nextWkInfo.last};
         }
 
         var eventDate = $filter('date')(new Date(obj[eventDateKey]), 'yyyy-MM-dd');

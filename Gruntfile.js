@@ -413,4 +413,4 @@ module.exports = function(grunt) {
     'coveralls'
   ]);
 
-}
+};
