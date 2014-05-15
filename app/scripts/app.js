@@ -33,4 +33,10 @@ angular.module('lmisChromeApp', [
       });
     });
 
-  });
+  }).config([
+      '$compileProvider',
+      function ($compileProvider) {
+        //to bye-pass Chrome app CSP for images.
+        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);
+      }
+    ]);

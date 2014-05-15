@@ -18,15 +18,21 @@ angular.module('lmisChromeApp')
           return false;
         }
       },
-      controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope) {
+      controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope, reminderFactory, i18n) {
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
         }else{
           $scope.facility = appConfig.appFacility.name;
           if(typeof $rootScope.isStockCountDue === 'undefined' || $rootScope.isStockCountDue === true){
             $rootScope.isStockCountDue = isStockCountReminderDue;
+            if($rootScope.isStockCountDue === true){
+              //FIXME: move stock count reminder object to a factory function, stock count?? or reminderFactory.
+              reminderFactory.warning({id: reminderFactory.STOCK_COUNT_REMINDER_ID, text: i18n('stockCountReminderMsg'),
+              link: 'stockCountForm', icon: 'views/reminder/partial/stock-count-icon.html'});
+            }
+          }else{
+            reminderFactory.remove(reminderFactory.STOCK_COUNT_REMINDER_ID);
           }
-
         }
       }
     })
@@ -131,18 +137,12 @@ angular.module('lmisChromeApp')
               }
             ];
 
-            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService) {
+            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
               var deferred = $q.defer();
 
               var productTypeInfo = {};
               if(typeof appConfig === 'undefined'){
                 deferred.resolve(productTypeInfo);
-                return deferred.promise;
-              }
-
-              var cacheProductTypes = cacheService.get(cacheService.PRODUCT_TYPE_INFO);
-              if(typeof cacheProductTypes !== 'undefined'){
-                deferred.resolve(cacheProductTypes);
                 return deferred.promise;
               }
 
@@ -181,8 +181,6 @@ angular.module('lmisChromeApp')
                     })(i);
                   }
                   $q.all(innerPromises).then(function() {
-                    //cache the result
-                    cacheService.put(cacheService.PRODUCT_TYPE_INFO, productTypeInfo);
                     deferred.resolve(productTypeInfo);
                   });
                 })
@@ -195,7 +193,7 @@ angular.module('lmisChromeApp')
 
             if($rootScope.showChart === true || !stockCountIsAvailable){
               $rootScope.showChart = true;
-              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService).then(
+              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService).then(
                 function(productTypeCounts) {
                 var values = [], product = {}, stockOutWarning = [];
                 var filterStockCountWithNoStockOutRef = function(stockOutList){

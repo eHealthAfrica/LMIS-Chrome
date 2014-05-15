@@ -4,10 +4,6 @@
     <div ng-repeat="reminder in reminders">
       <div ng-include="'views/reminder/reminder-notification.html'"></div>
     </div>
-    <!-- remove when you completed -->
-    <div ng-include="'views/home/partials/stock-count-reminder.html'"></div>
-    <div ng-include="'views/home/partials/discard-count-reminder.html'"></div>
-    <div ng-include="'views/home/partials/survey-reminder.html'"></div>
     <div ui-view="nav"></div>
   </div>
 </div>
