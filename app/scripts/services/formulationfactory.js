@@ -1,34 +1,38 @@
 'use strict';
 
 angular.module('lmisChromeApp').factory('formulationFactory', function ($q, storageService) {
-  function getByUUID(uuid) {
+
+  var getByUuid = function(uuid) {
+    return storageService.find(storageService.PRODUCT_FORMULATION, uuid);
+  };
+
+  var getAll = function(){
     var deferred = $q.defer();
-    storageService.find(storageService.PRODUCT_FORMULATION, uuid).then(function (data) {
-      deferred.resolve(data);
-    });
+    var promises = [];
+    storageService.all(storageService.PRODUCT_FORMULATION)
+        .then(function(result){
+          for(var index in result){
+            var formulation = result[index];
+            promises.push(getByUuid(formulation.uuid));
+          }
+
+          $q.all(promises)
+              .then(function(results){
+                deferred.resolve(results);
+              })
+              .catch(function(reason){
+                deferred.reject(reason);
+              });
+        })
+        .catch(function(reason){
+          deferred.reject(reason);
+        });
     return deferred.promise;
-  }
+  };
 
-  // Public API here
   return {
-
-    getAll: function () {
-      var deferred = $q.defer();
-      storageService.get(storageService.PRODUCT_FORMULATION).then(function (data) {
-        var formulations = [];
-        for (var uuid in data) {
-          getByUUID(uuid).then(function (data) {
-            if (data !== undefined) {
-              formulations.push(data);
-            }
-          });
-        }
-        deferred.resolve(formulations);
-      });
-      return deferred.promise;
-    },
-
-    get: getByUUID
+    getAll: getAll,
+    get: getByUuid
   };
 
 });

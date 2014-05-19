@@ -2,14 +2,14 @@
 
 angular.module('lmisChromeApp')
   .factory('surveyFactory', function ($q, storageService, syncService) {
-    var QUESTION_TYPES = {YES_NO: 0};
-    var INTERVALS = {ONCE: 0, DAILY: 1, WEEKLY: 7, BIWEEKLY: 14, MONTHLY: 30};
-    var SURVEYS = {
-      "0987-0987-82763-34562-123": {
-        uuid: "0987-0987-82763-34562-123",
-        name: "Facility setup survey",
-        interval: INTERVALS.ONCE,
-        questions: [
+      var QUESTION_TYPES = {YES_NO: 0};
+      var INTERVALS = {ONCE: 0, DAILY: 1, WEEKLY: 7, BIWEEKLY: 14, MONTHLY: 30};
+      var SURVEYS = {
+        "0987-0987-82763-34562-123": {
+          uuid: "0987-0987-82763-34562-123",
+          name: "Facility setup survey",
+          interval: INTERVALS.ONCE,
+          questions: [
             {
               uuid: "123456-0987809-897625-0987856",
               text: 'Is there immunization schedule session plan for RI?',
@@ -44,10 +44,10 @@ angular.module('lmisChromeApp')
           ]
         },
         "123456-0987809-897625-0987856": {
-        uuid: "123456-0987809-897625-0987856",
-        name: "Catchment area meeting survey",
-        interval: INTERVALS.MONTHLY,
-        questions: [
+          uuid: "123456-0987809-897625-0987856",
+          name: "Catchment area meeting survey",
+          interval: INTERVALS.MONTHLY,
+          questions: [
             {
               uuid: "0987856-897625-095623-abr67",
               text: 'Was catchment area meeting conducted in the last month for this health facility?',
@@ -63,80 +63,81 @@ angular.module('lmisChromeApp')
         }
       };
 
-    var getSurveyByUUID = function(uuid){
-      var deferred = $q.defer();
-      deferred.resolve(SURVEYS[uuid]);
-      return deferred.promise;
-    };
+      var getSurveyByUUID = function (uuid) {
+        var deferred = $q.defer();
+        deferred.resolve(SURVEYS[uuid]);
+        return deferred.promise;
+      };
 
-    var getPendingSurveys = function(facilityUUID){
-      //TODO: make reminder to work by interval
-      var deferred = $q.defer();
-      storageService.all(storageService.SURVEY_RESPONSE)
-        .then(function(surveyResponses){
-          console.log(surveyResponses);
-          var pendingSurveys = [];
-          var today = new Date();
-          for(var key in SURVEYS){
-            var survey = SURVEYS[key];
-            if(survey.facilities.indexOf(facilityUUID) > -1){
-              var completedSurvey = surveyResponses.filter(function(surveyResponse){
-                var isComplete = surveyResponse.isComplete && survey.uuid === surveyResponse.survey;
-                return isComplete;
-              });
-              if(completedSurvey.length === 0){
-                pendingSurveys.push(survey);
+      var getPendingSurveys = function (facilityUUID) {
+        //TODO: make reminder to work by interval
+        var deferred = $q.defer();
+        storageService.all(storageService.SURVEY_RESPONSE)
+            .then(function (surveyResponses) {
+              console.log(surveyResponses);
+              var pendingSurveys = [];
+              var getCompletedSurveys = function (surveyResponses, survey) {
+                return surveyResponses.filter(function(surveyResponse){
+                  return surveyResponse.isComplete && survey.uuid === surveyResponse.survey;
+                });
+              };
+              for (var key in SURVEYS) {
+                var survey = SURVEYS[key];
+                if (survey.facilities.indexOf(facilityUUID) > -1) {
+                  var completedSurvey = getCompletedSurveys(surveyResponses, survey);
+                  if (completedSurvey.length === 0) {
+                    pendingSurveys.push(survey);
+                  }
+                }
               }
-            }
-          }
-          deferred.resolve(pendingSurveys);
-        })
-        .catch(function(reason){
-          deferred.reject(reason)
-          console.log('Error trying to get surveys '+reason);
-      });
-      return deferred.promise;
-    };
-
-    var getFacilitySetupSurvey = function(){
-      var deferred = $q.defer();
-      deferred.resolve(SURVEYS['0987-0987-82763-34562-123']);
-      return deferred.promise;
-    };
-
-    var saveSurveyResponse = function(surveyResponse){
-      var deferred = $q.defer();
-      if(surveyResponse.isComplete === true){
-        storageService.save(storageService.SURVEY_RESPONSE, surveyResponse)
-            .then(function (result) {
-              deferred.resolve(result);
-              if (typeof result !== 'undefined') {
-                surveyResponse.uuid = result;
-                syncService.syncItem(storageService.SURVEY_RESPONSE, surveyResponse)
-                    .then(function (result) {
-                      console.log('survey response synced successfully!');
-                    }, function (reason) {
-                      console.error('survey syncing failed: ' + reason);
-                    })
-              }
-            }, function (reason) {
+              deferred.resolve(pendingSurveys);
+            })
+            .catch(function (reason) {
               deferred.reject(reason);
+              console.log('Error trying to get surveys ' + reason);
             });
-      }else{
-        deferred.reject('incomplete survey not saved');
-      }
-      return deferred.promise;
-    };
+        return deferred.promise;
+      };
 
-    // Public API here
-    return {
-      types: QUESTION_TYPES,
-      intervals: INTERVALS,
-      surveys: SURVEYS,
-      getSetupSurvey: getFacilitySetupSurvey,
-      saveSurveyResponse: saveSurveyResponse,
-      getPendingSurveys: getPendingSurveys,
-      get: getSurveyByUUID
-    };
+      var getFacilitySetupSurvey = function () {
+        var deferred = $q.defer();
+        deferred.resolve(SURVEYS['0987-0987-82763-34562-123']);
+        return deferred.promise;
+      };
 
-  });
+      var saveSurveyResponse = function (surveyResponse) {
+        var deferred = $q.defer();
+        if (surveyResponse.isComplete === true) {
+          storageService.save(storageService.SURVEY_RESPONSE, surveyResponse)
+              .then(function (result) {
+                deferred.resolve(result);
+                if (typeof result !== 'undefined') {
+                  surveyResponse.uuid = result;
+                  syncService.syncItem(storageService.SURVEY_RESPONSE, surveyResponse)
+                      .then(function (result) {
+                        console.log('survey response sync result ' +result);
+                      }, function (reason) {
+                        console.error('survey syncing failed: ' + reason);
+                      });
+                }
+              }, function (reason) {
+                deferred.reject(reason);
+              });
+        } else {
+          deferred.reject('incomplete survey not saved');
+        }
+        return deferred.promise;
+      };
+
+      // Public API here
+      return {
+        types: QUESTION_TYPES,
+        intervals: INTERVALS,
+        surveys: SURVEYS,
+        getSetupSurvey: getFacilitySetupSurvey,
+        saveSurveyResponse: saveSurveyResponse,
+        getPendingSurveys: getPendingSurveys,
+        get: getSurveyByUUID
+      };
+
+    });

@@ -37,7 +37,7 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
               YES: buttonLabels[0],
               NO: buttonLabels[1]
             }
-          }
+          };
           deferred.resolve(modalText);
           return deferred.promise;
         }
@@ -47,25 +47,25 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
         $scope.bodyMessage =  modalParams.bodyText;
         $scope.confirmBtnMsg = modalParams.buttonLabels.YES;
         $scope.cancelBtnMsg = modalParams.buttonLabels.NO;
-        $scope.confirm =  $modalInstance.close
-        $scope.cancel = $modalInstance.dismiss
-        $scope.dismissMessage = 'Cancel confirm dialog'
+        $scope.confirm =  $modalInstance.close;
+        $scope.cancel = $modalInstance.dismiss;
+        $scope.dismissMessage = 'Cancel confirm dialog';
       }
     });
     return confirmDialog.result;
   };
 
   var isMobileDialogAvailable = function(){
-    return (typeof navigator.notification !== 'undefined')  && (typeof navigator.notification.confirm !== 'undefined');
+    return (typeof navigator.notification !== 'undefined') && (typeof navigator.notification.confirm !== 'undefined');
   };
 
   var getMobileConfirmDialog = function(title, bodyText, buttonLabels){
     var deferred = $q.defer();
     if(isMobileDialogAvailable()){
-     navigator.notification.confirm(bodyText, function (index) {
+      navigator.notification.confirm(bodyText, function (index) {
                 var YES_INDEX = 1; //position in buttonLabels text + 1.
                 if (index === YES_INDEX) {
-                  deferred.resolve(true)
+                  deferred.resolve(true);
                 } else {
                   deferred.reject('Cancel confirm dialog');
                 }
@@ -77,7 +77,7 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
   };
 
   this.getConfirmDialog = function(title, bodyText, buttonLabels){
-    var buttonLabels = buttonLabels || [i18n('yes'), i18n('no')];
+    buttonLabels = buttonLabels || [i18n('yes'), i18n('no')];
     if(isMobileDialogAvailable()){
       return getMobileConfirmDialog(title, bodyText, buttonLabels);
     }

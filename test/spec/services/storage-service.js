@@ -148,5 +148,8 @@ describe('storageService', function () {
     expect(chromeStorageApi.get).toHaveBeenCalled();
   });
 
+  it('i expect insertBatch to throw an exception', function(){
+    expect(function(){ storageService.insertBatch('test', 'non-array') }).toThrow();
+  });
 
 });

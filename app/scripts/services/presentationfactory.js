@@ -12,21 +12,21 @@ angular.module('lmisChromeApp')
               uom: uomFactory.get(productPresentation.uom)
             };
 
-            $q.all(promises).then(function(result) {
-              for(var key in result) {
+            $q.all(promises).then(function (result) {
+              for (var key in result) {
                 productPresentation[key] = result[key];
               }
               deferred.resolve(productPresentation);
             })
-            .catch(function(err){
-              deferred.reject(err);
-             });
-          }else{
+                .catch(function (err) {
+                  deferred.reject(err);
+                });
+          } else {
             deferred.resolve();
           }
-        }).catch(function(err){
-          deferred.reject(err);
-        });
+        }).catch(function (err) {
+              deferred.reject(err);
+            });
         return deferred.promise;
       };
 

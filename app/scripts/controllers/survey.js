@@ -11,7 +11,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     resolve: {
       appConfig: function(appConfigService){
           return appConfigService.getCurrentAppConfig();
-      }
+        }
     },
     controller: function ($stateParams, $state, $scope, surveyFactory, alertsFactory, appConfig, i18n) {
 
@@ -61,21 +61,21 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         }
 
         surveyFactory.saveSurveyResponse(surveyResponse)
-          .then(function (result) {
-            if (result) {
-              var successMsg = i18n('surveySuccessMsg', $scope.survey.name);
-              $state.go('home.index.home.mainActivity', {surveySuccessMsg: successMsg});
-              $scope.isSaving = false;
-            } else {
+            .then(function (result) {
+              if (result) {
+                var successMsg = i18n('surveySuccessMsg', $scope.survey.name);
+                $state.go('home.index.home.mainActivity', {surveySuccessMsg: successMsg});
+                $scope.isSaving = false;
+              } else {
+                alertsFactory.danger(i18n('surveyFailedMsg'));
+                $scope.isSaving = false;
+              }
+            }, function () {
               alertsFactory.danger(i18n('surveyFailedMsg'));
               $scope.isSaving = false;
-            }
-          }, function (reason) {
-            alertsFactory.danger(i18n('surveyFailedMsg'));
-            $scope.isSaving = false;
-        });
+            });
       };
 
     }
-  })
+  });
 });

@@ -22,7 +22,7 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
           }
         });
       } else {
-        deferred.reject("chrome.storage api is not available");
+        deferred.reject('chrome.storage api is not available');
       }
 
       return deferred.promise;
@@ -47,7 +47,7 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
           }
         });
       } else {
-        deferred.reject("chrome.storage api is not available");
+        deferred.reject('chrome.storage api is not available');
       }
 
       return deferred.promise;
@@ -63,7 +63,7 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
           }
         });
       }else {
-        deferred.reject("chrome.storage api is not available");
+        deferred.reject('chrome.storage api is not available');
       }
       return deferred.promise;
     },
@@ -78,7 +78,7 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
           }
         });
       } else {
-        deferred.reject("chrome.storage api is not available");
+        deferred.reject('chrome.storage api is not available');
       }
       return deferred.promise;
     }
