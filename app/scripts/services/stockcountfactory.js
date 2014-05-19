@@ -95,8 +95,8 @@ angular.module('lmisChromeApp')
         var stockCount = null;
         for (var index in stockCounts) {
           var row = stockCounts[index];
-          var stockCountDate = $filter('date')(new Date(row.countDate), 'yyyy-MM-dd');
-          date = $filter('date')(new Date(date), 'yyyy-MM-dd');
+          var stockCountDate = isoDate(row.countDate);
+          date = isoDate(date);
           if (date === stockCountDate) {
             stockCount = row;
             break;
@@ -114,9 +114,10 @@ angular.module('lmisChromeApp')
       if(stockCounts !== 'undefined')
       {
         stockCounts = stockCounts.map(function (sc) {
-          if(sc !== 'undefined')
+          if(sc !== 'undefined'){
             sc.synced = isSynced(sc);
-          return sc;
+            return sc;
+          }
         });
       }
       return stockCounts;
@@ -128,7 +129,7 @@ angular.module('lmisChromeApp')
         we can be pretty sure it's accurate but right now there's no db feedback being saved
         locally */
       return (sc.dateSynced && sc.modified &&
-         $filter('date')(sc.dateSynced, 'yyyy-MM-dd') >= $filter('date')(sc.modified, 'yyyy-MM-dd'));
+        isoDate(sc.dateSynced) >=isoDate(sc.modified));
     };
 
     var load={
@@ -143,17 +144,6 @@ angular.module('lmisChromeApp')
             stockCount = addSyncStatus(stockCount);
             deferred.resolve(stockCount);
           });
-        return deferred.promise;
-      },
-       /*
-       *
-       */
-      locations: function(){
-        var deferred = $q.defer();
-        var fileUrl = 'scripts/fixtures/locations.json';
-        $http.get(fileUrl).success(function (data){
-          deferred.resolve(data);
-        });
         return deferred.promise;
       },
       /**
@@ -176,15 +166,20 @@ angular.module('lmisChromeApp')
         var productName = this.currentProductObject(productObject, index).name;
         return utility.getReadableProfileName(productName);
       },
-       /*
+      /**
        *
+       * @param productObject
+       * @param index
+       * @param productType
+       * @returns {{}}
        */
       productTypeCode: function(productObject, index, productType){
         var currentProductUuid = this.currentProductObject(productObject, index).product;
         return productType[currentProductUuid];
       },
-      /*
+      /**
        *
+       * @returns {number}
        */
       timezone: function(){
         return utility.getTimeZone();
@@ -340,8 +335,13 @@ angular.module('lmisChromeApp')
           if(currentReminderDate.getTime() < new Date(scope.dateActivated).getTime()){
             break;
           }
-          dates.push(isoDate(currentReminderDate.toJSON()));
+          var dateExist = parseInt(dates.indexOf(isoDate(currentReminderDate.toJSON())));
+          if(dateExist === -1){
+            console.log(dateExist +' '+ isoDate(currentReminderDate.toJSON()));
+            dates.push(isoDate(currentReminderDate.toJSON()));
+          }
         }
+        console.log(dates);
         return dates;
       },
       /**
@@ -374,7 +374,7 @@ angular.module('lmisChromeApp')
           var reminderDate = utility.getWeekRangeByDate(new Date(), appConfig.reminderDay);
           // if the selected stock count date is not equals to today, then check if the last day of the
           // week the date fell is less than today and the count interval must not be daily
-          if($filter('date')(new Date().toJSON(), 'yyyy-MM-dd') < $filter('date')(reminderDate.reminderDate.toJSON(), 'yyyy-MM-dd')){
+          if(isoDate() < isoDate(reminderDate.reminderDate.toJSON())){
             var newDate = new Date(reminderDate.reminderDate.getTime() - interval);
             return $filter('date')(newDate.toJSON(), 'dd');
           }
@@ -390,6 +390,7 @@ angular.module('lmisChromeApp')
       stock: {
         /**
          * this function sets the edit status for selected stock count detail
+         * @param date
          * @param scope
          */
         editStatus: function(scope, date){
