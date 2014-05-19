@@ -40,13 +40,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       $scope.urlParams = ($stateParams.productList !== null) ? ($stateParams.productList).split(',') : $stateParams.productList;
 
-      $scope.returnUuid = function(uuid){
-        if($scope.urlParams.indexOf(uuid) !== -1){
-          return uuid;
-        }
-        return '';
-      };
-
       var filteredProduct = facilityStockListProductTypes.filter(function(element){
           return $scope.urlParams.indexOf(element.uuid) !== -1;
         });
@@ -63,40 +56,35 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       $scope.save = function(){
 
-        $scope.isSaving = true;
-
-        var saveAndBroadcastStockOut = function(productList, count){
+      $scope.isSaving = true;
+      var saveAndBroadcastStockOut = function(productList){
+        var stockOutList = [];
+        for(var i=0; i < productList.length; i++){
           var stockOut = {
-            productType: productList[count],
+            productType: productList[i],
             facility: $scope.stockOutForm.facility
           };
-
-          if(count >= 0){
-            stockOutBroadcastFactory.save(stockOut)
-              .then(function (result) {
-                if (typeof result !== 'undefined' || result !== null) {
-                  stockOut.uuid = result;
-                  saveAndBroadcastStockOut(productList, count - 1);
-                  stockOutBroadcastFactory.broadcast(stockOut)
-                    .then(function (result) {
-                      $log.info('stock-out broad-casted: '+result);
-                    }, function (reason) {
-                      $log.error(reason);
-                    });
-
-                } else {
-                  alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-                }
-              })
-              .catch(function (reason) {
-                alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-                $log.error(reason);
-              });
-          }else{
-            $scope.isSaving = false;
-            $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
-          }
-        };
+          stockOutList.push(stockOut);
+          stockOutBroadcastFactory.broadcast(stockOut)
+            .then(function () {
+              $log.info('stock-out broad-casted');
+            }, function (reason) {
+              $log.error(reason);
+            });
+        }
+        stockOutBroadcastFactory.saveBatch(stockOutList)
+            .then(function(result){
+              $scope.isSaving = false;
+              $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
+            }, function(reason){
+              alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+              $log.error(reason);
+            })
+            .catch(function(reason){
+              alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+              $log.error(reason);
+            });
+      };
 
         var title = [];
         for(var i=0; i < filteredProduct.length; i++){
@@ -110,7 +98,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
           .then(function (isConfirmed) {
             if (isConfirmed === true) {
-              saveAndBroadcastStockOut(filteredProduct, filteredProduct.length - 1);
+              saveAndBroadcastStockOut(filteredProduct);
             }
           })
           .catch(function (reason) {

@@ -43,7 +43,20 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
     return deferred.promise;
   };
 
-  var getStockOut = function () {
+  var saveMultipleStockOut = function(stockOutList){
+    var deferred = $q.defer();
+    storageService.insertBatch(storageService.STOCK_OUT, stockOutList)
+      .then(function(result){
+
+        deferred.resolve(result);
+      })
+      .catch(function(reason){
+        deferred.reject(reason);
+      });
+    return deferred.promise;
+  };
+
+  var getStockOut = function(){
     var deferred = $q.defer();
     storageService.all(storageService.STOCK_OUT).then(function (result) {
       deferred.resolve(result);
@@ -53,6 +66,7 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
 
   return {
     save: saveStockOut,
+    saveBatch: saveMultipleStockOut,
     getAll: getStockOut,
     broadcast: broadcastStockOut
   };
