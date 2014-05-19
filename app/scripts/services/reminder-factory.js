@@ -7,7 +7,9 @@ angular.module('lmisChromeApp')
       var WEEKLY = 7;
       var BI_WEEKLY = 14;
       var MONTHLY = 30;
-      $rootScope.reminders = [];
+      $rootScope.reminders = {};
+      var id = 0;
+      var stockCountReminderId = 'scReminder';
 
       /**
        * This adds a reminder to reminder collections.
@@ -17,39 +19,52 @@ angular.module('lmisChromeApp')
        * where type is a Bootstrap alert class, see: http://getbootstrap.com/components/#alerts-examples
        */
       var add = function(reminder){
-        $rootScope.reminders.push(reminder);
+        if(typeof reminder.id === 'undefined'){
+          reminder.id = generateReminderId();
+        }
+        $rootScope.reminders[reminder.id] = reminder;
+        return reminder.id;
       };
 
-      var remove =  function(index){
-        $rootScope.reminders.splice(index, 1);
+      var generateReminderId = function(){
+        id = id + 1;
+        return String(id);
+      };
+
+      var remove =  function(id){
+        delete $rootScope.reminders[id];
       };
 
       var clear = function(){
-        $rootScope.reminders = [];
+        $rootScope.reminders = {};
+      };
+
+      var get = function(id){
+        return $rootScope.reminders[id];
       };
 
       var info = function(reminder){
         reminder.type = 'info';
-        add(reminder);
+        return add(reminder);
       };
 
       var warning = function(reminder){
         reminder.type = 'warning';
-        add(reminder);
+        return add(reminder);
       };
 
       var danger = function(reminder){
         reminder.type = 'danger';
-        add(reminder);
+        return add(reminder);
       };
 
       var success = function(reminder){
         reminder.type = 'success';
-        add(reminder);
+        return add(reminder);
       };
 
       var hasProperty = function(obj, property){
-        return typeof obj[property] !== 'undefined'
+        return typeof obj[property] !== 'undefined';
       };
 
       var checkObjectProperty = function (obj, property) {
@@ -100,8 +115,7 @@ angular.module('lmisChromeApp')
 
         checkObjectProperty(obj, eventDateKey);
         var eventDate = new Date(obj[eventDateKey]);
-        return !(monthlyReminderDate.getMonth() === eventDate.getMonth()
-            && monthlyReminderDate.getFullYear() === eventDate.getFullYear());
+        return !(monthlyReminderDate.getMonth() === eventDate.getMonth() && monthlyReminderDate.getFullYear() === eventDate.getFullYear());
       };
 
       /**
@@ -140,7 +154,7 @@ angular.module('lmisChromeApp')
           var nextWkRemDate =
               new Date(biWkRemDate.getFullYear(), biWkRemDate.getMonth(), biWkRemDate.getDate() +  WEEKLY);
           var nextWkInfo = utility.getWeekRangeByDate(nextWkRemDate, biWkRemDate.getDay());
-          biWeeklyDateRange = {start: biWkRemInfo.first, end: nextWkInfo.last}
+          biWeeklyDateRange = {start: biWkRemInfo.first, end: nextWkInfo.last};
         }
 
         var eventDate = $filter('date')(new Date(obj[eventDateKey]), 'yyyy-MM-dd');
@@ -176,7 +190,9 @@ angular.module('lmisChromeApp')
         danger: danger,
         success: success,
         clear: clear,
-        remove: remove
+        remove: remove,
+        get: get,
+        STOCK_COUNT_REMINDER_ID: stockCountReminderId
       };
 
     });

@@ -1,18 +1,19 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function(storageService, $q, $log, syncService, $window) {
-  var saveStockOut = function(stockOut){
+angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, $log, syncService, $window) {
+  var saveStockOut = function (stockOut) {
     var deferred = $q.defer();
-    storageService.save(storageService.STOCK_OUT, stockOut).then(function(result){
-      deferred.resolve(result);
-    })
-    .catch(function(reason){
-      deferred.reject(reason);
-    });
+    storageService.save(storageService.STOCK_OUT, stockOut)
+        .then(function (result) {
+          deferred.resolve(result);
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
     return deferred.promise;
   };
 
-  var broadcastStockOut = function(stockOut){
+  var broadcastStockOut = function (stockOut) {
     var deferred = $q.defer();
     var stockOutModel = {
       uuid: stockOut.uuid,
@@ -22,29 +23,29 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function(sto
       modified: stockOut.modified
     };
 
-    try{
-      if($window.navigator.onLine){
+    try {
+      if ($window.navigator.onLine) {
         syncService.syncItem(storageService.STOCK_OUT, stockOutModel)
-          .then(function (result) {
-            deferred.resolve(result);
-          })
-          .catch(function (reason) {
-            deferred.reject(reason);
-          });
+            .then(function (result) {
+              deferred.resolve(result);
+            })
+            .catch(function (reason) {
+              deferred.reject(reason);
+            });
 
-      }else{
+      } else {
         //TODO: send SMS if offline
         deferred.reject('system is offline, send SMS!');
       }
-    }catch(e){
+    } catch (e) {
       deferred.reject(e);
     }
     return deferred.promise;
   };
 
-  var getStockOut = function(){
+  var getStockOut = function () {
     var deferred = $q.defer();
-    storageService.all(storageService.STOCK_OUT).then(function(result){
+    storageService.all(storageService.STOCK_OUT).then(function (result) {
       deferred.resolve(result);
     });
     return deferred.promise;

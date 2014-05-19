@@ -8,7 +8,7 @@ angular.module('lmisChromeApp')
       $scope.facilities = data;
     });
 
-       storageService.get(storageService.USER).then(function(data) {
+    storageService.get(storageService.USER).then(function(data) {
       $scope.users = data;
     });
 

@@ -14,21 +14,22 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $rootScope.showChart = false;
 
         //clear local storage
-        storageService.clear().then(function(clearResult){
+        storageService.clear()
+            .then(function () {
+              var promises = [];
+              promises.push(storageService.loadFixtures());
 
-          var promises = [];
-          promises.push(storageService.loadFixtures());
-
-          $q.all(promises).then(function(results) {
-            deferred.resolve(results);
-            $state.go('appConfigWelcome', {storageClear: true});
-          });
-
-        });
+              $q.all(promises).then(function (results) {
+                deferred.resolve(results);
+                $state.go('appConfigWelcome', {storageClear: true});
+              });
+            })
+            .catch(function(reason){
+              console.log(reason);
+            });
         return deferred.promise;
       };
-
       clearAndLoadFixture();
     }
-  })
+  });
 });

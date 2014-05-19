@@ -78,7 +78,7 @@ angular.module('lmisChromeApp')
         });
 
         return deferred.promise;
-      }
+      };
 
 
       /**

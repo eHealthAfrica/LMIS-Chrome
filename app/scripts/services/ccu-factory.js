@@ -10,7 +10,7 @@ angular.module('lmisChromeApp')
         WORKING: 3
       };
 
-      function getByUuid(uuid) {
+      var getByUuid = function(uuid) {
         var deferred = $q.defer();
         storageService.find(storageService.CCU, uuid).then(function (storageUnit) {
           //TODO: attach nested storageUnit objects
@@ -48,16 +48,16 @@ angular.module('lmisChromeApp')
           }
           var facilityUuid = appConfig.appFacility.uuid;
           if(typeof facilityUuid === 'undefined'){
-            throw 'current facility uuid is not defined'
+            throw 'current facility uuid is not defined';
           }
 
           getCcuListByFacility(facilityUuid)
-            .then(function (storageUnits) {
-              deferred.resolve(storageUnits);
-            })
-            .catch(function(reason){
-              deferred.reject(reason);
-          });
+              .then(function (storageUnits) {
+                deferred.resolve(storageUnits);
+              })
+              .catch(function (reason) {
+                deferred.reject(reason);
+              });
 
         }).catch(function(reason){
           deferred.reject(reason);
@@ -71,7 +71,7 @@ angular.module('lmisChromeApp')
         storageService.all(storageService.CCU)
           .then(function(ccuList){
             for(var index in ccuList){
-              completeCcuList.push(getByUuid(ccuList[index].uuid))
+              completeCcuList.push(getByUuid(ccuList[index].uuid));
             }
 
             $q.all(completeCcuList)
@@ -84,7 +84,7 @@ angular.module('lmisChromeApp')
           })
           .catch(function(reason){
             deferred.reject(reason);
-          })
+          });
         return deferred.promise;
       };
 
@@ -92,6 +92,7 @@ angular.module('lmisChromeApp')
         getCurrentFacilityCcuList: getCurrentFacilityCcuList,
         getCcuListByFacility: getCcuListByFacility,
         get: getByUuid,
+        getAll: getAll,
         STATUS_LIST: CCU_STATUS_LIST
       };
 

@@ -24,47 +24,55 @@ angular.module('lmisChromeApp')
      * @param facility 
      * @param productType
      * @returns {promise|promise|*|Function|promise}
-     */  
-    var getStockLevel = function(facility, productType)
-    {
+     */
+    var getStockLevel = function (facility, productType) {
       var deferred = $q.defer();
-      var profileIds = [];
       var promises = [];
       promises.push(stockCountFactory.get.byFacility(facility));
       promises.push(productProfileFactory.getByProductType(productType));
       $q.all(promises).then(
-        function(res){
-          var stockCounts = res[0];
-          var profiles = res[1];
-          var profileIds = profiles.map(function(pp){ return pp.uuid });
-          var count = 0;
-          //find the most recent stockCount mentioning ANY of the above profileIds. 
-          if(typeof stockCounts !== 'undefined')
-          {
-            var stockCounts = stockCounts.filter(function(stockCount) {
-                return Object.keys(stockCount.unopened)
-                  .some(function (ppid) { return profileIds.indexOf(ppid) != -1 });
+          function (res) {
+            var stockCounts = res[0];
+            var profiles = res[1];
+            var profileIds = profiles.map(function (pp) {
+              return pp.uuid;
             });
-            if(stockCounts.length > 0)
-            {
-              stockCounts = stockCounts
-                .sort(function(stockCount) { return new Date(stockCount.countDate); });
-              var mostRecent = stockCounts[0];
-              var profileCounts = [];
-              if(typeof mostRecent !== 'undefined')
-              {
-                count = Object.keys(mostRecent.unopened)
-                  .filter(function (ppid) { return profileIds.indexOf(ppid) != -1; })
-                  .map( function (ppid) { return mostRecent.unopened[ppid]; })
-                  .reduce( function (total, current) { return total + current; });
+            var count = 0;
+            //find the most recent stockCount mentioning ANY of the above profileIds.
+            if (typeof stockCounts !== 'undefined') {
+              stockCounts = stockCounts.filter(function (stockCount) {
+                return Object.keys(stockCount.unopened)
+                    .some(function (ppid) {
+                      return profileIds.indexOf(ppid) !== -1;
+                    });
+              });
+              if (stockCounts.length > 0) {
+                stockCounts = stockCounts
+                    .sort(function (stockCount) {
+                      return new Date(stockCount.countDate);
+                    });
+                var mostRecent = stockCounts[0];
+                if (typeof mostRecent !== 'undefined') {
+                  count = Object.keys(mostRecent.unopened)
+                      .filter(function (ppid) {
+                        return profileIds.indexOf(ppid) !== -1;
+                      })
+                      .map(function (ppid) {
+                        return mostRecent.unopened[ppid];
+                      })
+                      .reduce(function (total, current) {
+                        return total + current;
+                      });
+                }
               }
             }
+            deferred.resolve(count);
+          },
+          function (err) {
+            deferred.reject(err);
           }
-          deferred.resolve(count);
-        }, 
-        function(err) { deferred.reject(err); }
       );
-      
+
       return deferred.promise;
     };
 
@@ -75,28 +83,27 @@ angular.module('lmisChromeApp')
     * @param {String} uuid of product type for which to get lead time data
     * @return {Number} average lead time for product type in days
     */
-    var leadTimeAvgByProductType = function (productTypeUuid)
-    {
+    var leadTimeAvgByProductType = function (productTypeUuid) {
       var avgLeadTimeMocks = {
         '00f987e4-54e1-46f0-820b-b249a6d38759': 6.8,
-        '0930b906-4802-4a65-8516-057bd839db3e':  5.13,
-        '111fbb51-0c5a-492a-97f6-2c7664e23d01':  5.13,
-        '1203c362-b7a8-499a-b7ba-b842bace7920':  5.13,
-        '19e16c20-04b7-4e06-a679-7f7b60d976be':  6.8,
-        '251fc8c2-0273-423f-a519-4ea20fc74832':  5.27,
-        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f':  5.27,
-        '367f3f7f-a1cc-4266-8a0a-020722576cc9':  5,
-        '401f8608-e232-4c5a-b32d-032d632abf88':  5,
-        '939d5e05-2aa4-4883-9246-35c60dfa06a5':  5.13,
-        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  6.8,
-        'db513859-4491-4db7-9343-4980a16c8b04':  6.8,
-        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  6.8,
-        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  5.27,
-        'f96946be-7dac-438e-9220-efc386276481':  5.27
+        '0930b906-4802-4a65-8516-057bd839db3e': 5.13,
+        '111fbb51-0c5a-492a-97f6-2c7664e23d01': 5.13,
+        '1203c362-b7a8-499a-b7ba-b842bace7920': 5.13,
+        '19e16c20-04b7-4e06-a679-7f7b60d976be': 6.8,
+        '251fc8c2-0273-423f-a519-4ea20fc74832': 5.27,
+        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f': 5.27,
+        '367f3f7f-a1cc-4266-8a0a-020722576cc9': 5,
+        '401f8608-e232-4c5a-b32d-032d632abf88': 5,
+        '939d5e05-2aa4-4883-9246-35c60dfa06a5': 5.13,
+        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758': 6.8,
+        'db513859-4491-4db7-9343-4980a16c8b04': 6.8,
+        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0': 6.8,
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1': 5.27,
+        'f96946be-7dac-438e-9220-efc386276481': 5.27
       };
 
       return avgLeadTimeMocks[productTypeUuid];
-    }
+    };
 
     /** 
     * Standard deviation of lead time for given product type
@@ -104,27 +111,26 @@ angular.module('lmisChromeApp')
     * @param {String} uuid of product type for which to get lead time data
     * @return {Number} standard deviation of lead times for product type in days
     */
-    var leadTimeStdByProductType = function (productTypeUuid)
-    {
+    var leadTimeStdByProductType = function (productTypeUuid) {
       var stdLeadTimeMocks = {
-        '00f987e4-54e1-46f0-820b-b249a6d38759':  2.83,
-        '0930b906-4802-4a65-8516-057bd839db3e':  2.68,
-        '111fbb51-0c5a-492a-97f6-2c7664e23d01':  2.68,
-        '1203c362-b7a8-499a-b7ba-b842bace7920':  2.68,
-        '19e16c20-04b7-4e06-a679-7f7b60d976be':  2.83,
-        '251fc8c2-0273-423f-a519-4ea20fc74832':  2.64,
-        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f':  2.64,
-        '367f3f7f-a1cc-4266-8a0a-020722576cc9':  2,
-        '401f8608-e232-4c5a-b32d-032d632abf88':  2,
-        '939d5e05-2aa4-4883-9246-35c60dfa06a5':  2.68,
-        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  2.83,
-        'db513859-4491-4db7-9343-4980a16c8b04':  2.83,
-        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  2.83,
-        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  2.64,
-        'f96946be-7dac-438e-9220-efc386276481':  2.64
+        '00f987e4-54e1-46f0-820b-b249a6d38759': 2.83,
+        '0930b906-4802-4a65-8516-057bd839db3e': 2.68,
+        '111fbb51-0c5a-492a-97f6-2c7664e23d01': 2.68,
+        '1203c362-b7a8-499a-b7ba-b842bace7920': 2.68,
+        '19e16c20-04b7-4e06-a679-7f7b60d976be': 2.83,
+        '251fc8c2-0273-423f-a519-4ea20fc74832': 2.64,
+        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f': 2.64,
+        '367f3f7f-a1cc-4266-8a0a-020722576cc9': 2,
+        '401f8608-e232-4c5a-b32d-032d632abf88': 2,
+        '939d5e05-2aa4-4883-9246-35c60dfa06a5': 2.68,
+        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758': 2.83,
+        'db513859-4491-4db7-9343-4980a16c8b04': 2.83,
+        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0': 2.83,
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1': 2.64,
+        'f96946be-7dac-438e-9220-efc386276481': 2.64
       };
       return stdLeadTimeMocks[productTypeUuid];
-    }
+    };
 
     /** 
     * Average consumption for given product type
@@ -132,27 +138,26 @@ angular.module('lmisChromeApp')
     * @param {String} uuid of product type for which to get consumption data
     * @return {Number} consumption average in standard units for product type / day
     */
-    var consumptionAvgByProductType = function (productTypeUuid)
-    {
+    var consumptionAvgByProductType = function (productTypeUuid) {
       var avgConsumptionMocks = {
-        '00f987e4-54e1-46f0-820b-b249a6d38759':  20.29,
-        '0930b906-4802-4a65-8516-057bd839db3e':  20.39,
-        '111fbb51-0c5a-492a-97f6-2c7664e23d01':  20.29,
-        '1203c362-b7a8-499a-b7ba-b842bace7920':  20.39,
-        '19e16c20-04b7-4e06-a679-7f7b60d976be':  20.29,
-        '251fc8c2-0273-423f-a519-4ea20fc74832':  100,
-        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f':  25.1,
-        '367f3f7f-a1cc-4266-8a0a-020722576cc9':  10,
-        '401f8608-e232-4c5a-b32d-032d632abf88':  100,
-        '939d5e05-2aa4-4883-9246-35c60dfa06a5':  25.1,
-        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  20.39,
-        'db513859-4491-4db7-9343-4980a16c8b04':  20.39,
-        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  20.39,
-        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  20.29,
-        'f96946be-7dac-438e-9220-efc386276481':  20.29
+        '00f987e4-54e1-46f0-820b-b249a6d38759': 20.29,
+        '0930b906-4802-4a65-8516-057bd839db3e': 20.39,
+        '111fbb51-0c5a-492a-97f6-2c7664e23d01': 20.29,
+        '1203c362-b7a8-499a-b7ba-b842bace7920': 20.39,
+        '19e16c20-04b7-4e06-a679-7f7b60d976be': 20.29,
+        '251fc8c2-0273-423f-a519-4ea20fc74832': 100,
+        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f': 25.1,
+        '367f3f7f-a1cc-4266-8a0a-020722576cc9': 10,
+        '401f8608-e232-4c5a-b32d-032d632abf88': 100,
+        '939d5e05-2aa4-4883-9246-35c60dfa06a5': 25.1,
+        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758': 20.39,
+        'db513859-4491-4db7-9343-4980a16c8b04': 20.39,
+        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0': 20.39,
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1': 20.29,
+        'f96946be-7dac-438e-9220-efc386276481': 20.29
       };
       return avgConsumptionMocks[productTypeUuid];
-    }
+    };
 
     /** 
     * Standard deviation of consumption for given product type
@@ -160,72 +165,68 @@ angular.module('lmisChromeApp')
     * @param {String} uuid of product type for which to get consumption data
     * @return {Number} consumption standard deviation in standard units for product type / day
     */
-    var consumptionStdByProductType = function (productTypeUuid)
-    {
+    var consumptionStdByProductType = function (productTypeUuid) {
       var stdConsumptionMocks = {
-        '00f987e4-54e1-46f0-820b-b249a6d38759':  10,
-        '0930b906-4802-4a65-8516-057bd839db3e':  15.09,
-        '111fbb51-0c5a-492a-97f6-2c7664e23d01':  10,
-        '1203c362-b7a8-499a-b7ba-b842bace7920':  15.09,
-        '19e16c20-04b7-4e06-a679-7f7b60d976be':  10,
-        '251fc8c2-0273-423f-a519-4ea20fc74832':  50,
-        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f':  13.68,
-        '367f3f7f-a1cc-4266-8a0a-020722576cc9':  5,
-        '401f8608-e232-4c5a-b32d-032d632abf88':  50,
-        '939d5e05-2aa4-4883-9246-35c60dfa06a5':  13.68,
-        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  15.09,
-        'db513859-4491-4db7-9343-4980a16c8b04':  15.09,
-        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  15.09,
-        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  10,
-        'f96946be-7dac-438e-9220-efc386276481':  10
+        '00f987e4-54e1-46f0-820b-b249a6d38759': 10,
+        '0930b906-4802-4a65-8516-057bd839db3e': 15.09,
+        '111fbb51-0c5a-492a-97f6-2c7664e23d01': 10,
+        '1203c362-b7a8-499a-b7ba-b842bace7920': 15.09,
+        '19e16c20-04b7-4e06-a679-7f7b60d976be': 10,
+        '251fc8c2-0273-423f-a519-4ea20fc74832': 50,
+        '2fee31f0-7757-4f06-9914-d16c5ca9cc5f': 13.68,
+        '367f3f7f-a1cc-4266-8a0a-020722576cc9': 5,
+        '401f8608-e232-4c5a-b32d-032d632abf88': 50,
+        '939d5e05-2aa4-4883-9246-35c60dfa06a5': 13.68,
+        'abe41e88-ab4a-4c6f-b7a4-4549e13fb758': 15.09,
+        'db513859-4491-4db7-9343-4980a16c8b04': 15.09,
+        'e55e1452-b0ab-4046-9d7e-3a98f1f968d0': 15.09,
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1': 10,
+        'f96946be-7dac-438e-9220-efc386276481': 10
       };
       return stdConsumptionMocks[productTypeUuid];
-    }
+    };
      
     /**
     * Temporary version of per-producttype LTC
     */
-    var leadTimeConsumptionByProductType = function(productTypeUuid)
-    {
+    var leadTimeConsumptionByProductType = function(productTypeUuid) {
       return leadTimeAvgByProductType(productTypeUuid) * consumptionAvgByProductType(productTypeUuid);
-    }
+    };
 
     /**
     * Temporary version of per-producttype buffer stock
     */
-    var bufferByProductType = function(productTypeUuid)
-    {
-      return serviceFactor() * Math.sqrt(
-        leadTimeAvgByProductType(productTypeUuid) * Math.pow(leadTimeStdByProductType(productTypeUuid),2.0)
-        + Math.pow(consumptionAvgByProductType(productTypeUuid),2.0) * Math.pow(leadTimeStdByProductType(productTypeUuid), 2.0));
-    }
+    var bufferByProductType = function (productTypeUuid) {
+      return serviceFactor() * Math.sqrt(leadTimeAvgByProductType(productTypeUuid) * Math.pow(leadTimeStdByProductType(
+          productTypeUuid), 2.0) + Math.pow(consumptionAvgByProductType(productTypeUuid), 2.0) * Math.pow(
+          leadTimeStdByProductType(productTypeUuid), 2.0));
+    };
 
     /**
     * Temporary version of per-producttype rop
     */
-    var reorderPointByProductType = function(productTypeUuid)
-    {
+    var reorderPointByProductType = function (productTypeUuid) {
       return bufferByProductType(productTypeUuid) + leadTimeConsumptionByProductType(productTypeUuid);
-    }
+    };
 
     /**
     * Temporary version of days to reorder point per product (stock - rop) / consumption
     * @returns {promise|promise|*|Function|promise}
     */
-    var daysToReorderPoint = function(facility, productTypeUuid)
-    {
+    var daysToReorderPoint = function (facility, productTypeUuid) {
       var deferred = $q.defer();
       getStockLevel(facility, productTypeUuid).then(function (stockLevel) {
-          var days = (stockLevel - reorderPointByProductType(productTypeUuid)) / consumptionAvgByProductType(productTypeUuid); 
-          deferred.resolve(Math.floor(days));
-        }, 
-        function (err) { deferred.reject(err); } 
-        );
+            var days = (stockLevel - reorderPointByProductType(productTypeUuid)) / consumptionAvgByProductType(productTypeUuid);
+            deferred.resolve(Math.floor(days));
+          },
+          function (err) {
+            deferred.reject(err);
+          }
+      );
       return deferred.promise;
-    }
+    };
 
-    var daysOfStock= function(facility, productTypeUuid)
-    {
+    var daysOfStock= function(facility, productTypeUuid){
       var deferred = $q.defer();
       getStockLevel(facility, productTypeUuid).then(function (stockLevel) {
         var days = stockLevel / consumptionAvgByProductType(productTypeUuid);
@@ -234,7 +235,7 @@ angular.module('lmisChromeApp')
         deferred.reject(err);
       });
       return deferred.promise;
-    }
+    };
 
     /**
      * Order lead time.
@@ -292,7 +293,7 @@ angular.module('lmisChromeApp')
      * @param {Object} consumptions An array of consumption levels
      * @return {Number} average LTC in ms
      */
-     var leadTimeConsumption = function(leadTimes, consumptions) {
+    var leadTimeConsumption = function(leadTimes, consumptions) {
       var leadAvg = average(leadTimes),
       consAvg = average(consumptions);
 

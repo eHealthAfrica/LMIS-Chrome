@@ -3,7 +3,7 @@
 angular.module('lmisChromeApp')
     .factory('bundleFactory', function ($q, storageService) {
 
-      function saveBundleReceipt(bundleReceipt) {
+      var saveBundleReceipt =  function(bundleReceipt) {
         var deferred = $q.defer(), batches = [];
         storageService.save(storageService.BUNDLE_RECEIPT, bundleReceipt).then(function (data) {
           if (data !== undefined) {
@@ -35,10 +35,10 @@ angular.module('lmisChromeApp')
       /**
        * function used get JSON response for a bundle.
        *
-       * @param bundleUUID
+       * @param bundleUuid
        * @returns {promise|*}
        */
-      function get(bundleUUID) {
+      var get = function(bundleUuid) {
         var deferred = $q.defer();
         var facilities = {};
         var users = {};
@@ -53,7 +53,7 @@ angular.module('lmisChromeApp')
         });
 
         try {
-          storageService.find(storageService.BUNDLE, bundleUUID).then(function (data) {
+          storageService.find(storageService.BUNDLE, bundleUuid).then(function (data) {
             //compose bundle response
             if (data !== undefined) {
               var bundle = {
@@ -61,7 +61,7 @@ angular.module('lmisChromeApp')
                 'receiving_facility': facilities[data.receiving_facility],
                 'parent': facilities[data.parent],
                 'order': '12345-90882', //TODO: replace with order object when complete
-                'bundle_lines': getBundleLines(bundleUUID)
+                'bundle_lines': getBundleLines(bundleUuid)
               };
               deferred.resolve(bundle);
             } else {
@@ -131,6 +131,7 @@ angular.module('lmisChromeApp')
       }
 
       function getBundleReceiptLine(bundleUUID) {
+        //FIXME: re-write this function
         var batches = {};
         var programs = {};
         var productTypes = {};
@@ -185,12 +186,14 @@ angular.module('lmisChromeApp')
        * @returns {promise|promise|*|Function|promise}
        */
       function getBundleNumbers() {
-        var bundleNumbers = [];
         var deferred = $q.defer();
-        storageService.get(storageService.BUNDLE).then(function (data) {
-          bundleNumbers = Object.keys(data);
-          deferred.resolve(bundleNumbers);
-        });
+        storageService.get(storageService.BUNDLE)
+            .then(function (data) {
+              var bundleNumbers = Object.keys(data);
+              deferred.resolve(bundleNumbers);
+            }).catch(function (reason) {
+              deferred.reject(reason);
+            });
         return deferred.promise;
       }
 
