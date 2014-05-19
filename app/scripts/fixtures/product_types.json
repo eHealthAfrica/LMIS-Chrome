@@ -70,10 +70,10 @@
       "created": "2014-01-15T14:45:41.187Z",
       "modified": "2014-01-15T14:47:19.121Z",
       "is_deleted": false,
-      "code": "DTP",
-      "name": "Diphtheria-Tetanus-Pertussis Vaccine",
+      "code": "Penta",
+      "name": "Penta Vaccine",
       "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
-      "description": "combination vaccines against diphtheria, pertussis (whooping cough) and tetanus. ",
+      "description": "Five in one combination vaccine against diseases. ",
       "active": true
     },
     "19e16c20-04b7-4e06-a679-7f7b60d976be": {
