@@ -27,9 +27,9 @@ angular.module('lmisChromeApp', [
     }
 
     //load fixtures if not loaded yet.
-    storageService.loadFixtures().then(function(result){
+    storageService.loadFixtures().then(function(){
       storageService.getAll().then(function(data){
-        console.log('finished loading: '+Object.keys(data));
+        console.log("finished loading: "+(Object.keys(data)).join('\n'));
       });
     });
 
