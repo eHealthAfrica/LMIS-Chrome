@@ -179,9 +179,11 @@ angular.module('lmisChromeApp')
       if(discardCounts !== 'undefined')
       {
         discardCounts = discardCounts.map(function (dc) {
-          if(dc !== 'undefined')
+          if(dc !== 'undefined'){
             dc.synced = isSynced(dc);
-          return dc;
+            return dc;
+          }
+
         });
       }
       return discardCounts;
@@ -193,7 +195,7 @@ angular.module('lmisChromeApp')
         we can be pretty sure it's accurate but right now there's no db feedback being saved
         locally */
       return (dc.dateSynced && dc.modified &&
-          new isoDate(dc.dateSynced) >= new isoDate(dc.modified));
+          isoDate(dc.dateSynced) >= isoDate(dc.modified));
     };
 
 
@@ -427,7 +429,7 @@ angular.module('lmisChromeApp')
       var deferred = $q.defer();
       var DB_NAME = 'discardcount';
       syncService.syncItem(DB_NAME, discardCountObject)
-        .then(function (syncResult) {
+        .then(function () {
           discardCountObject.dateSynced = new Date().toJSON();
           storageService.save(storageService.DISCARD_COUNT, discardCountObject)
             .then(function(){
@@ -440,8 +442,8 @@ angular.module('lmisChromeApp')
         .catch(function (reason) {
           deferred.reject(reason);
           //console.log('Discard count sync failed: '+reason);
-      });
-      return deferred.promise;;
+        });
+      return deferred.promise;
     };
 
     var checkInput = function(scope, index){

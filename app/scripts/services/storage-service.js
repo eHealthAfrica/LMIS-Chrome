@@ -54,28 +54,31 @@ angular.module('lmisChromeApp')
       /**
        * Add new table data to the chrome store.
        *
-       * @param {string} key - Table name.
-       * @param {mixed} value - rows of the table (all values are stored as JSON.)
+       * @param {string} table - Table name.
+       * @param {mixed} data - rows of the table (all values are stored as JSON.)
        * @return {Promise} Promise object
        * @private
        */
 
-      var setData = function(table, data) {
+      var setData = function (table, data) {
         var deferred = $q.defer();
         var obj = {};
         getData(table).then(function(tableData){
           if(angular.isUndefined(tableData)){
             tableData = {};
-            tableData[data.uuid] = data;
-            obj[table] = tableData;
-          }else{
-            tableData[data.uuid] = data;
-            obj[table] = tableData;
           }
-          chromeStorageApi.set(obj);
-          deferred.resolve(data.uuid);
+          tableData[data.uuid] = data;
+          obj[table] = tableData;
+          chromeStorageApi.set(obj)
+              .then(function(){
+                deferred.resolve(data.uuid);
+              })
+              .catch(function(reason){
+                deferred.reject(reason);
+              });
+
         }).catch(function(reason){
-          deferred.resolve(reason);
+          deferred.reject(reason);
         });
         return deferred.promise;
       };
@@ -88,7 +91,7 @@ angular.module('lmisChromeApp')
        * @return {Promise} Promise object
        * @private
        */
-      var setTable = function(table, data) {
+      var setTable = function (table, data) {
         var obj = {};
         obj[table] = data;
         return  chromeStorageApi.set(obj);
@@ -236,64 +239,66 @@ angular.module('lmisChromeApp')
           ccuProfile
         ];
         var isLoading = false;
-        function loadData(dbName) {
-          getData(dbName)
-              .then(function (data) {
-                if (angular.isUndefined(data)) {
-                  var fileUrl = 'scripts/fixtures/' + dbName + '.json';
-                  $http.get(fileUrl)
-                      .success(function (data) {
-                        setTable(dbName, data).then(function (res) {
-                          isLoading = false;
-                        }, function (err) {
-                          isLoading = false;
-                        });
-                      })
-                      .error(function (err) {
-                        console.log(err);
-                        isLoading = false;
-                      });
-                }else {
-                  isLoading = false;
-                }
-              })
-              .catch(function (reason) {
-                isLoading = false;
-                console.log('error loading ' + dbName + ' ' + reason);
-              });
-        }
+        var loadData = function(count){
 
-        var loadNext = function (i) {
-          if (!isLoading) {
-            $rootScope.$emit('START_LOADING', {started: true});
+          if(count >= 0){
             isLoading = true;
-            loadData(database[--i]);
-          }
-          if (i > 0) {
-            setTimeout(function () {loadNext(i); }, 10);
-          } else {
-            //this is when the app is actually ready
-            $rootScope.$emit('LOADING_COMPLETED', {completed: true});
+            $rootScope.$emit('START_LOADING', {started: true});
+            var dbName = database[count];
+            getData(dbName)
+                .then(function(result){
+                  if (angular.isUndefined(result)) {
+                    var fileUrl = 'scripts/fixtures/' + dbName + '.json';
+                    $http.get(fileUrl)
+                        .success(function (data) {
+                          setTable(dbName, data)
+                              .then(function () {
+                                console.log(dbName +' was loaded successfully, remaining '+(count)+' data');
+                                loadData(count - 1);
+                              }, function (reason) {
+                                console.log(reason);
+                                loadData(count - 1);
+                              });
+                        })
+                        .error(function (err) {
+                          console.log(err);
+                          loadData(count - 1);
+                        });
+                  }
+                  else{
+                     loadData(count - 1);
+                     console.log(dbName +' already exist, remaining '+(count)+' data to go');
+                  }
+
+                })
+                .catch(function(reason){
+                  loadData(count - 1);
+                  console.log(reason);
+                });
+          }else{
             deferred.resolve(true);
+            $rootScope.$emit('LOADING_COMPLETED', {completed: true});
+            isLoading = false;
           }
         };
-        loadNext(database.length);
+        loadData(database.length - 1);
+
         return deferred.promise;
       };
 
+
       var uuidGenerator = function () {
         var now = Date.now();
-        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
           var r = (now + Math.random() * 16) % 16 | 0;
           now = Math.floor(now / 16);
           return (c === 'x' ? r : (r & 0x7 | 0x8)).toString(16);
         });
-        return uuid;
       };
 
-      var getFromTableByKey = function(tableName, key) {
+      var getFromTableByKey = function (tableName, _key) {
         var deferred = $q.defer();
-        key = String(key);//force conversion to string
+        var key = String(_key);//force conversion to string
         getData(tableName)
             .then(function (data) {
               deferred.resolve(data[key]);
@@ -347,23 +352,45 @@ angular.module('lmisChromeApp')
         return deferred.promise;
       };
 
-      var insertBatch = function (tableName, batches) {
+      var insertBatch = function (table, batchList){
         var deferred = $q.defer();
-        var promises = [];
-        if(!angular.isArray(batches)){
+        var obj = {};
+        var uuidList = [];
+        if(Object.prototype.toString.call(batchList) !== '[object Array]'){
           throw 'batchList is not an array';
         }
-        for (var index in batches) {
-          var batch = batches[index];
-          promises.push(setData(tableName, batch));
-        }
-        $q.all(promises)
-            .then(function(results){
-              deferred.resolve(results);
+        getData(table)
+            .then(function(tableData){
+              if(angular.isUndefined(tableData)){
+                tableData = {};
+              }
+              for(var i=0; i < batchList.length; i++){
+                var batch = batchList[i];
+                var hasUUID = batch.hasOwnProperty('uuid');                batch.modified = getDateTime();
+
+                batch.uuid = batch.hasOwnProperty('uuid')? batch.uuid : uuidGenerator();
+                batch.created = batch.hasOwnProperty('created')? batch.created : getDateTime();
+                batch.modified = getDateTime();
+                tableData[batch.uuid] = batch;
+                uuidList.push(batch.uuid);
+              }
+              obj[table] = tableData;
+              chromeStorageApi.set(obj)
+                  .then(function(){
+                    deferred.resolve(uuidList);
+                  })
+                  .catch(function(reason){
+                    deferred.reject(reason);
+                  });
+
             })
             .catch(function(reason){
               deferred.reject(reason);
             });
+
+
+
+
         return deferred.promise;
       };
 

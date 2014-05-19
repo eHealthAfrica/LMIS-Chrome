@@ -292,10 +292,10 @@ angular.module('lmisChromeApp')
     var saveTask = function(callback){
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(result){
-            callback(undefined, result);
-          })
+          callback(undefined, result);
+        })
         .catch(function(reason){
-           callback(reason);
+          callback(reason);
         });
     };
 
@@ -340,7 +340,6 @@ angular.module('lmisChromeApp')
             console.log(err);
           }
         });
-
       }
     };
 

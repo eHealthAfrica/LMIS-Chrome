@@ -197,6 +197,7 @@ angular.module('lmisChromeApp')
                 function(productTypeCounts) {
                 var values = [], product = {}, stockOutWarning = [];
                 var filterStockCountWithNoStockOutRef = function(stockOutList){
+
                   return stockOutList.filter(function(element){
                     var dayTest = function () {
                       var now = new Date().getTime(),
