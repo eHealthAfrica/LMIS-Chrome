@@ -352,45 +352,23 @@ angular.module('lmisChromeApp')
         return deferred.promise;
       };
 
-      var insertBatch = function (table, batchList){
+      var insertBatch = function (tableName, batches) {
         var deferred = $q.defer();
-        var obj = {};
-        var uuidList = [];
-        if(Object.prototype.toString.call(batchList) === '[object Array]'){
-          getData(table)
-              .then(function(tableData){
-                if(angular.isUndefined(tableData)){
-                  tableData = {};
-                }
-                for(var i=0; i < batchList.length; i++){
-                  var batch = batchList[i];
-                  var hasUUID = batch.hasOwnProperty('uuid');
-                  batch.uuid = batch.hasOwnProperty('uuid')? batch.uuid : uuidGenerator();
-                  batch.created = batch.hasOwnProperty('created')? batch.created : getDateTime();
-                  batch.modified = hasUUID? '0000-00-00 00:00:00' : getDateTime();
-                  tableData[batch.uuid] = batch;
-                  uuidList.push(batch.uuid);
-                }
-                obj[table] = tableData;
-                chromeStorageApi.set(obj)
-                    .then(function(){
-                      deferred.resolve(uuidList);
-                    })
-                    .catch(function(reason){
-                      deferred.reject(reason);
-                    });
-
-              })
-              .catch(function(reason){
-                deferred.reject(reason);
-              });
-
-
-        }else{
-          deferred.reject('wrong data type passed');
+        var promises = [];
+        if(!angular.isArray(batches)){
           throw 'batchList is not an array';
         }
-
+        for (var index in batches) {
+          var batch = batches[index];
+          promises.push(setData(tableName, batch));
+        }
+        $q.all(promises)
+            .then(function(results){
+              deferred.resolve(results);
+            })
+            .catch(function(reason){
+              deferred.reject(reason);
+            });
         return deferred.promise;
       };
 
