@@ -388,6 +388,7 @@ angular.module('lmisChromeApp')
 
         }else{
           deferred.reject('wrong data type passed');
+          throw 'batchList is not an array';
         }
 
         return deferred.promise;
