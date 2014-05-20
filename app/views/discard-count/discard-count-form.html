@@ -84,8 +84,8 @@
 
               <ng-pluralize count=" discardCount.discarded[productKey]"
                             when="{
-                    '1': '{{ (((facilityProducts[facilityProductsKeys[step]]).product).base_uom).symbol }}',
-                    'other': '{{ (((facilityProducts[facilityProductsKeys[step]]).product).base_uom).symbol }}s'}">
+                    '1': '{{ (((facilityProducts[facilityProductsKeys[step]]).presentation).uom).symbol }}',
+                    'other': '{{ (((facilityProducts[facilityProductsKeys[step]]).presentation).uom).symbol }}s'}">
               </ng-pluralize>
             </h3>
 

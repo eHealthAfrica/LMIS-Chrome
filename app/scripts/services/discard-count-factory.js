@@ -313,7 +313,7 @@ angular.module('lmisChromeApp')
         var arr = [];
         if(Object.prototype.toString.call(discardCount) === '[object Object]'){
           for(var i in discardCount.discarded){
-            var uom = facilityProductProfiles[i].product.base_uom.symbol;
+            var uom = facilityProductProfiles[i].presentation.uom.symbol;
             arr.push({
               header: true,
               value: discardCount.discarded[i],
