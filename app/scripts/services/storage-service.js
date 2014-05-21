@@ -366,9 +366,12 @@ angular.module('lmisChromeApp')
               }
               for(var i=0; i < batchList.length; i++){
                 var batch = batchList[i];
-                batch.uuid = batch.hasOwnProperty('uuid')? batch.uuid : uuidGenerator();
-                batch.created = batch.hasOwnProperty('created')? batch.created : getDateTime();
-                batch.modified = getDateTime();
+                var now = getDateTime();
+                if(batch.hasOwnProperty('uuid') === false){
+                  batch.uuid = uuidGenerator();
+                  batch.created = now;
+                }
+                batch.modified = now;
                 tableData[batch.uuid] = batch;
                 uuidList.push(batch.uuid);
               }
@@ -385,6 +388,9 @@ angular.module('lmisChromeApp')
             .catch(function(reason){
               deferred.reject(reason);
             });
+
+
+
 
         return deferred.promise;
       };
