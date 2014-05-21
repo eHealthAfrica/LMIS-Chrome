@@ -314,13 +314,13 @@ angular.module('lmisChromeApp')
           if(result){
             $rootScope.showChart = true;
             $rootScope.isStockCountDue = false;//TODO:
-
             var msg = [
               'You have completed stock count for',
               $scope.reportDay,
               $scope.monthList[$scope.reportMonth],
               $scope.reportYear
             ].join(' ');
+            $scope.isSaving = false;
             $state.go('home.index.home.mainActivity', {
               'facility': $scope.facilityUuid,
               'reportMonth': $scope.reportMonth,
@@ -344,14 +344,14 @@ angular.module('lmisChromeApp')
     };
 
     $scope.finalSave = function(){
-      if((Object.keys($scope.stockCount.unopened)).length === $scope.facilityProductsKeys.length){
-        if('stockCount' in $scope) {
-          $scope.stockCount.lastPosition = 0;
-          $scope.stockCount.isComplete = 1;
-        }
-        $scope.redirect = true;
-        $scope.save();
+      $scope.isSaving = true;
+      if('stockCount' in $scope) {
+        $scope.stockCount.lastPosition = 0;
+        $scope.stockCount.isComplete = 1;
       }
+      $scope.redirect = true;
+      $scope.save();
+
     };
     $scope.changeState = function(direction){
       $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];

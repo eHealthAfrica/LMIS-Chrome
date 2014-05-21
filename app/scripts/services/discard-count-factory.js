@@ -57,6 +57,7 @@ angular.module('lmisChromeApp')
               scope.reportYear
             ].join(' ');
           alertsFactory.success(msg);
+          scope.isSaving = false;
           state.go('home.index.home.mainActivity', {
             'facility': scope.facilityUuid,
             'reportMonth': scope.reportMonth,

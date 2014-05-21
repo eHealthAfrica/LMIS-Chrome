@@ -251,13 +251,16 @@
                   </button>
                 </div>
                 <div class="btn-group">
-                  <button class="btn btn-success btn-lg">
-                    Save <i class="fa fa-save"></i>
+                  <button class="btn btn-success btn-lg" ng-disabled="isSaving">
+                    <span ng-show="isSaving">Saving</span>
+                    <span ng-show="!isSaving">Save</span>
+                    <i class="fa " ng-class="{'fa-save':!isSaving, 'fa-spinner fa-spin': isSaving}"></i>
                   </button>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
