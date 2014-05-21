@@ -40,9 +40,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       $scope.urlParams = ($stateParams.productList !== null) ? ($stateParams.productList).split(',') : $stateParams.productList;
 
-      var filteredProduct = facilityStockListProductTypes.filter(function(element){
-          return $scope.urlParams.indexOf(element.uuid) !== -1;
-        });
+      var filteredProduct = facilityStockListProductTypes.filter(function (element) {
+        return $scope.urlParams.indexOf(element.uuid) !== -1;
+      });
 
       $scope.filteredProduct = filteredProduct;
       //used to hold stock out form data
@@ -54,40 +54,35 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
       $scope.isSaving = false;
 
-      $scope.save = function(){
+      $scope.save = function () {
 
-      $scope.isSaving = true;
-      var saveAndBroadcastStockOut = function(productList){
-        var stockOutList = [];
-        for(var i=0; i < productList.length; i++){
-          var stockOut = {
-            productType: productList[i],
-            facility: $scope.stockOutForm.facility
-          };
-          stockOutList.push(stockOut);
-          stockOutBroadcastFactory.broadcast(stockOut)
-            .then(function () {
-              $log.info('stock-out broad-casted');
-            }, function (reason) {
-              $log.error(reason);
-            });
-        }
-        stockOutBroadcastFactory.saveBatch(stockOutList)
-            .then(function(result){
-              $scope.isSaving = false;
-              $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
-            }, function(reason){
-              alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-              $log.error(reason);
-            })
-            .catch(function(reason){
-              alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-              $log.error(reason);
-            });
-      };
+        $scope.isSaving = true;
+        var saveAndBroadcastStockOut = function (productList) {
+          var stockOutList = [];
+          for (var i = 0; i < productList.length; i++) {
+            var stockOut = {
+              productType: productList[i],
+              facility: $scope.stockOutForm.facility
+            };
+            stockOutList.push(stockOut);
+            stockOutBroadcastFactory.broadcast(stockOut);//sync in the background
+          }
+          stockOutBroadcastFactory.saveBatch(stockOutList)
+              .then(function (result) {
+                $scope.isSaving = false;
+                $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
+              }, function (reason) {
+                alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+                $log.error(reason);
+              })
+              .catch(function (reason) {
+                alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+                $log.error(reason);
+              });
+        };
 
         var title = [];
-        for(var i=0; i < filteredProduct.length; i++){
+        for (var i = 0; i < filteredProduct.length; i++) {
           title.push(filteredProduct[i].code);
         }
 
@@ -96,15 +91,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         var buttonLabels = [i18n('yes'), i18n('no')];
 
         notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
-          .then(function (isConfirmed) {
-            if (isConfirmed === true) {
-              saveAndBroadcastStockOut(filteredProduct);
-            }
-          })
-          .catch(function (reason) {
-            $scope.isSaving = false;
-            $log.info(reason);
-          });
+            .then(function (isConfirmed) {
+              if (isConfirmed === true) {
+                saveAndBroadcastStockOut(filteredProduct);
+              }
+            })
+            .catch(function (reason) {
+              $scope.isSaving = false;
+              $log.info(reason);
+            });
       };
 
     }

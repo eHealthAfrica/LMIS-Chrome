@@ -29,14 +29,12 @@ angular.module('lmisChromeApp', [
     //load fixtures if not loaded yet.
     storageService.loadFixtures().then(function(){
       storageService.getAll().then(function(data){
-        console.log("finished loading: "+(Object.keys(data)).join('\n'));
+        console.log('finished loading: '+(Object.keys(data)).join('\n'));
       });
     });
 
-  }).config([
-      '$compileProvider',
-      function ($compileProvider) {
-        //to bye-pass Chrome app CSP for images.
-        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);
-      }
-    ]);
+  }).config(['$compileProvider', function ($compileProvider) {
+      //to bye-pass Chrome app CSP for images.
+      $compileProvider.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);
+    }
+  ]);
