@@ -105,7 +105,7 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
       scope.startCounter = function (isIncrement) {
         isDown = true;
         var startTime = new Date().getTime();
-        var maxDelay = 150, interval = 1000, delay = maxDelay;
+        var maxDelay = 100, interval = 75, delay = maxDelay;
 
         function count() {
           var currentTime = new Date().getTime();
