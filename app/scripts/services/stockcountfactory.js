@@ -37,6 +37,21 @@ angular.module('lmisChromeApp')
       return $filter('date')(date, 'yyyy-MM-dd');
     };
 
+    var getDueDateInfo = function(_interval, _reminderDay, _date){
+      var dateObject = angular.isDefined(_date) ? new Date(_date): new Date();
+      var reminderDateObject = utility.getWeekRangeByDate(dateObject, _reminderDay);
+      var currentReminderDate = angular.isDefined(_date) ? utility.getWeekRangeByDate(new Date(), _reminderDay).reminderDate : angular.copy(reminderDateObject.reminderDate);
+      var interval = 1000 * 60 * 60 * 24 * parseInt(_interval, 10);
+      return {
+        interval: interval,
+        reminderDate: reminderDateObject.reminderDate,
+        lastDay: reminderDateObject.last,
+        firstDay: reminderDateObject.first,
+        currentReminderDate: currentReminderDate,
+        lastCountDate: new Date(currentReminderDate - interval)
+      };
+    };
+
     var addRecord={
       /**
        * Add/Update Stock count
@@ -286,31 +301,30 @@ angular.module('lmisChromeApp')
        * @returns {boolean}
        */
       missingEntry: function(date, scope){
-        var currentReminderDate = utility.getWeekRangeByDate(new Date(), scope.reminderDay).reminderDate;
-        var reminderDate = utility.getWeekRangeByDate(new Date(date), scope.reminderDay);
-        var lastDay = reminderDate.last;
-        var lastCountDate = new Date(currentReminderDate.getTime() - (1000 * 60 * 60 * 24 * scope.countInterval));
+        var dueDateInfo = getDueDateInfo(scope.countInterval, scope.reminderDay, date);
 
         if(angular.isUndefined(scope.stockCountByDate[date])){
-          if($filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
-            return false;
-          }
-          else if ((isoDate(lastDay.toJSON()) >= isoDate(new Date().toJSON())) && parseInt(scope.countInterval) !== 1){
-            return false;
-          }
-          else if(isoDate(lastCountDate.toJSON()) === isoDate(date) && currentReminderDate.getTime() > new Date().getTime()){
-            return false;
-          }
-          else{
-            return true;
-          }
+          var validateDate = ((isoDate(date) === isoDate()) ||
+              ((isoDate(dueDateInfo.lastDay.toJSON()) >= isoDate(new Date().toJSON())) && parseInt(scope.countInterval, 10) !== 1) ||
+              (isoDate(dueDateInfo.lastCountDate.toJSON()) === isoDate(date) && dueDateInfo.currentReminderDate.getTime() > new Date().getTime()));
+          return (!validateDate);
         }
-        else{
-          if(scope.stockCountByDate[date].isComplete || $filter('date')(date, 'yyyy-MM-dd') === $filter('date')(new Date(), 'yyyy-MM-dd')){
-            return false;
-          }
-          return true;
+        return (!(scope.stockCountByDate[date].isComplete || isoDate(date) === isoDate()));
+      },
+      /**
+       *
+       * @param dueDateInfo
+       * @returns {Array}
+       */
+      firstDate: function (dueDateInfo){
+        var dates = [];
+        if(dueDateInfo.reminderDate.getTime() < new Date().getTime()){
+          dates.push(isoDate(dueDateInfo.reminderDate.toJSON()));
         }
+        if(dueDateInfo.reminderDate.getTime() > new Date().getTime()){
+          dates.push(isoDate(dueDateInfo.lastCountDate.toJSON()));
+        }
+        return dates;
       },
       /**
        *
@@ -318,30 +332,19 @@ angular.module('lmisChromeApp')
        */
       stockCountByIntervals: function(scope){
 
-        var dates = [];
-        var interval = 1000 * 60 * 60 * 24 * parseInt(scope.countInterval);
-
-        var reminderDate = utility.getWeekRangeByDate(new Date(), scope.reminderDay).reminderDate;
-        var currentReminderDate = angular.copy(reminderDate);
-        var lastCountDate = new Date(currentReminderDate.getTime() - 1000 * 60 * 60 * 24 * parseInt(scope.countInterval));
-        if(reminderDate.getTime() < new Date().getTime()){
-          dates.push(isoDate(reminderDate.toJSON()));
-        }
-        if(reminderDate.getTime() > new Date().getTime()){
-          dates.push(isoDate(lastCountDate.toJSON()));
-        }
+        var lastDate = utility.getWeekRangeByDate(new Date(scope.dateActivated), scope.reminderDay).reminderDate;
+        var dueDateInfo = getDueDateInfo(scope.countInterval, scope.reminderDay);
+        var dates = load.firstDate(dueDateInfo);
         while(dates.length < scope.maxList){
-          currentReminderDate = new Date(currentReminderDate.getTime() - interval);
-          if(currentReminderDate.getTime() < new Date(scope.dateActivated).getTime()){
+          dueDateInfo.currentReminderDate = new Date(dueDateInfo.currentReminderDate.getTime() - dueDateInfo.interval);
+          if(dueDateInfo.currentReminderDate.getTime() < lastDate.getTime()){
             break;
           }
-          var dateExist = parseInt(dates.indexOf(isoDate(currentReminderDate.toJSON())));
-          if(dateExist === -1){
-            console.log(dateExist +' '+ isoDate(currentReminderDate.toJSON()));
-            dates.push(isoDate(currentReminderDate.toJSON()));
+
+          if(parseInt(dates.indexOf(isoDate(dueDateInfo.currentReminderDate.toJSON())), 10) === -1){
+            dates.push(isoDate(dueDateInfo.currentReminderDate.toJSON()));
           }
         }
-        console.log(dates);
         return dates;
       },
       /**
@@ -370,16 +373,15 @@ angular.module('lmisChromeApp')
        */
       reminderDayFromDate: function(dayFromUrlParams, appConfig){
         if(dayFromUrlParams === null){
-          var interval = 1000 * 60 * 60 * 24 * parseInt(appConfig.stockCountInterval); //convert interval to day
-          var reminderDate = utility.getWeekRangeByDate(new Date(), appConfig.reminderDay);
+          var dueDateInfo = getDueDateInfo(appConfig.stockCountInterval, appConfig.reminderDay);
           // if the selected stock count date is not equals to today, then check if the last day of the
           // week the date fell is less than today and the count interval must not be daily
-          if(isoDate() < isoDate(reminderDate.reminderDate.toJSON())){
-            var newDate = new Date(reminderDate.reminderDate.getTime() - interval);
+          if(isoDate() < isoDate(dueDateInfo.reminderDate.toJSON())){
+            var newDate = new Date(dueDateInfo.reminderDate.getTime() - dueDateInfo.interval);
             return $filter('date')(newDate.toJSON(), 'dd');
           }
           else{
-            return $filter('date')(reminderDate.reminderDate.toJSON(), 'dd');
+            return $filter('date')(dueDateInfo.reminderDate.toJSON(), 'dd');
           }
         }
         return dayFromUrlParams;
@@ -398,19 +400,13 @@ angular.module('lmisChromeApp')
           // week the date fell is less than today and the count interval must not be daily
 
           if(isoDate() !== isoDate(scope.stockCount.countDate)){
-            var currentReminderDate = utility.getWeekRangeByDate(new Date(), scope.reminderDay).reminderDate;
-            var reminderDate = utility.getWeekRangeByDate(new Date(scope.stockCount.countDate), scope.reminderDay);
-            var lastDay = reminderDate.last;
-            var lastCountDate = new Date(currentReminderDate.getTime() - (1000 * 60 * 60 * 24 * scope.countInterval));
-            if (($filter('date')(lastDay.toJSON(), 'yyyy-MM-dd') >= $filter('date')(new Date().toJSON(),'yyyy-MM-dd')) && parseInt(scope.countInterval) !== 1){
-              scope.editOff = false;
-            }
-            else if (isoDate(lastCountDate.toJSON()) === isoDate(date) && currentReminderDate.getTime() > new Date().getTime()){
-              scope.editOff = false;
-            }
-            else{
-              scope.editOff = true;
-            }
+            var dueDateInfo = getDueDateInfo(scope.countInterval, scope.reminderDay, date);
+            var validateDate = (
+                  isoDate(dueDateInfo.lastCountDate.toJSON()) === isoDate(date) &&
+                  dueDateInfo.currentReminderDate.getTime() > new Date().getTime()) ||
+                  ((isoDate(dueDateInfo.lastDay.toJSON()) >= isoDate()) && scope.countInterval !== 1
+                );
+            scope.editOff = (!validateDate) ;
           }
         }
       }
