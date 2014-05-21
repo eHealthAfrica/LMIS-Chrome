@@ -31,8 +31,6 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
       //attach mouse and touch event listeners, start: is called on touch-start and mouse-down,
       // end: is called on touch-end or mouse up.
       minusBtnElem.on('touchstart', function (event) {
-        event.stopPropagation();
-        event.preventDefault();
         scope.$apply(function () {
           scope.startCounter(!shouldCountUp);
         });
@@ -47,8 +45,6 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
 
       //attach touch listener to add button
       plusBtnElem.on('touchstart', function (event) {
-        event.stopPropagation();
-        event.preventDefault();
         scope.$apply(function () {
           scope.startCounter(shouldCountUp);
         });
@@ -129,6 +125,7 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
                 } else {
                   scope.decreaseCount();
                 }
+                scope.$apply();
                 count();
               } else {
                 $timeout.cancel(promise);
@@ -142,12 +139,10 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
 
       scope.increaseCount = function () {
         scope.count = isInvalid(scope.count) ? 1 : (parseInt(scope.count) + 1); //count up
-        scope.$apply();
       };
 
       scope.decreaseCount = function () {
         scope.count = isInvalid(scope.count) ? 0 : (parseInt(scope.count) - 1);//count down
-        scope.$apply();
       };
     }
   };
