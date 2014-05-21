@@ -21,14 +21,12 @@ angular.module('lmisChromeApp')
      * maaaaan this would be a lot easier with a relational datasource or ORM
      * TODO: this has no concept of unit - dose/vial, also don't know how to deal with opened vials
      * TODO: very big, could be broken up
-     * @param facility 
+     * @param facility
      * @param productType
      * @returns {promise|promise|*|Function|promise}
-     */  
-    var getStockLevel = function(facility, productType)
-    {
+    */
+    var getStockLevel = function(facility, productType){
       var deferred = $q.defer();
-      var profileIds = [];
       var promises = [];
       promises.push(stockCountFactory.get.byFacility(facility));
       promises.push(productProfileFactory.getByProductType(productType));
@@ -36,35 +34,30 @@ angular.module('lmisChromeApp')
         function(res){
           var stockCounts = res[0];
           var profiles = res[1];
-          var profileIds = profiles.map(function(pp){ return pp.uuid });
+          var profileIds = profiles.map(function(pp){ return pp.uuid; });
           var count = 0;
           //find the most recent stockCount mentioning ANY of the above profileIds. 
           if(typeof stockCounts !== 'undefined')
           {
-            var stockCounts = stockCounts.filter(function(stockCount) {
-                return Object.keys(stockCount.unopened)
-                  .some(function (ppid) { return profileIds.indexOf(ppid) != -1 });
+            stockCounts = stockCounts.filter(function(stockCount) {
+              return Object.keys(stockCount.unopened).some(function (ppid) { return profileIds.indexOf(ppid) !== -1; });
             });
             if(stockCounts.length > 0)
             {
               stockCounts = stockCounts
                 .sort(function(stockCount) { return new Date(stockCount.countDate); });
               var mostRecent = stockCounts[0];
-              var profileCounts = [];
               if(typeof mostRecent !== 'undefined')
               {
                 count = Object.keys(mostRecent.unopened)
-                  .filter(function (ppid) { return profileIds.indexOf(ppid) != -1; })
+                  .filter(function (ppid) { return profileIds.indexOf(ppid) !== -1; })
                   .map( function (ppid) { return mostRecent.unopened[ppid]; })
                   .reduce( function (total, current) { return total + current; });
               }
             }
           }
           deferred.resolve(count);
-        }, 
-        function(err) { deferred.reject(err); }
-      );
-      
+        }, function(err) { deferred.reject(err); });
       return deferred.promise;
     };
 
@@ -96,7 +89,7 @@ angular.module('lmisChromeApp')
       };
 
       return avgLeadTimeMocks[productTypeUuid];
-    }
+    };
 
     /** 
     * Standard deviation of lead time for given product type
@@ -124,7 +117,7 @@ angular.module('lmisChromeApp')
         'f96946be-7dac-438e-9220-efc386276481':  2.64
       };
       return stdLeadTimeMocks[productTypeUuid];
-    }
+    };
 
     /** 
     * Average consumption for given product type
@@ -152,7 +145,7 @@ angular.module('lmisChromeApp')
         'f96946be-7dac-438e-9220-efc386276481':  187.29
       };
       return avgConsumptionMocks[productTypeUuid];
-    }
+    };
 
     /** 
     * Standard deviation of consumption for given product type
@@ -180,7 +173,7 @@ angular.module('lmisChromeApp')
         'f96946be-7dac-438e-9220-efc386276481':  100
       };
       return stdConsumptionMocks[productTypeUuid];
-    }
+    };
      
     /**
     * Temporary version of per-producttype LTC
@@ -188,7 +181,7 @@ angular.module('lmisChromeApp')
     var leadTimeConsumptionByProductType = function(productTypeUuid)
     {
       return leadTimeAvgByProductType(productTypeUuid) * consumptionAvgByProductType(productTypeUuid);
-    }
+    };
 
     /**
     * Temporary version of per-producttype buffer stock
@@ -196,9 +189,10 @@ angular.module('lmisChromeApp')
     var bufferByProductType = function(productTypeUuid)
     {
       return serviceFactor() * Math.sqrt(
-        leadTimeAvgByProductType(productTypeUuid) * Math.pow(leadTimeStdByProductType(productTypeUuid),2.0)
-        + Math.pow(consumptionAvgByProductType(productTypeUuid),2.0) * Math.pow(leadTimeStdByProductType(productTypeUuid), 2.0));
-    }
+        leadTimeAvgByProductType(productTypeUuid) * Math.pow(leadTimeStdByProductType(productTypeUuid),2.0) +
+            Math.pow(consumptionAvgByProductType(productTypeUuid),2.0) *
+                Math.pow(leadTimeStdByProductType(productTypeUuid), 2.0));
+    };
 
     /**
     * Temporary version of per-producttype rop
@@ -206,7 +200,7 @@ angular.module('lmisChromeApp')
     var reorderPointByProductType = function(productTypeUuid)
     {
       return bufferByProductType(productTypeUuid) + leadTimeConsumptionByProductType(productTypeUuid);
-    }
+    };
 
     /**
     * Temporary version of days to reorder point per product (stock - rop) / consumption
@@ -216,13 +210,15 @@ angular.module('lmisChromeApp')
     {
       var deferred = $q.defer();
       getStockLevel(facility, productTypeUuid).then(function (stockLevel) {
-          var days = (stockLevel - reorderPointByProductType(productTypeUuid)) / consumptionAvgByProductType(productTypeUuid); 
-          deferred.resolve(Math.floor(days));
-        }, 
-        function (err) { deferred.reject(err); } 
-        );
+            var days = (stockLevel - reorderPointByProductType(productTypeUuid)) / consumptionAvgByProductType(productTypeUuid);
+            deferred.resolve(Math.floor(days));
+          },
+          function (err) {
+            deferred.reject(err);
+          }
+      );
       return deferred.promise;
-    }
+    };
 
     var daysOfStock= function(facility, productTypeUuid)
     {
@@ -234,7 +230,7 @@ angular.module('lmisChromeApp')
         deferred.reject(err);
       });
       return deferred.promise;
-    }
+    };
 
     /**
      * Order lead time.
@@ -292,10 +288,9 @@ angular.module('lmisChromeApp')
      * @param {Object} consumptions An array of consumption levels
      * @return {Number} average LTC in ms
      */
-     var leadTimeConsumption = function(leadTimes, consumptions) {
+    var leadTimeConsumption = function(leadTimes, consumptions) {
       var leadAvg = average(leadTimes),
       consAvg = average(consumptions);
-
       return leadAvg * consAvg;
     };
 
