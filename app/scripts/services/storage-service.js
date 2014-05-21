@@ -266,8 +266,8 @@ angular.module('lmisChromeApp')
                         });
                   }
                   else{
-                     loadData(count - 1);
-                     console.log(dbName +' already exist, remaining '+(count)+' data to go');
+                    loadData(count - 1);
+                    console.log(dbName +' already exist, remaining '+(count)+' data to go');
                   }
 
                 })
@@ -366,8 +366,6 @@ angular.module('lmisChromeApp')
               }
               for(var i=0; i < batchList.length; i++){
                 var batch = batchList[i];
-                var hasUUID = batch.hasOwnProperty('uuid');                batch.modified = getDateTime();
-
                 batch.uuid = batch.hasOwnProperty('uuid')? batch.uuid : uuidGenerator();
                 batch.created = batch.hasOwnProperty('created')? batch.created : getDateTime();
                 batch.modified = getDateTime();
@@ -387,9 +385,6 @@ angular.module('lmisChromeApp')
             .catch(function(reason){
               deferred.reject(reason);
             });
-
-
-
 
         return deferred.promise;
       };
