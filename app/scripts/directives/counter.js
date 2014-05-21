@@ -30,52 +30,52 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
 
       //attach mouse and touch event listeners, start: is called on touch-start and mouse-down,
       // end: is called on touch-end or mouse up.
-      minusBtnElem.on('touchstart', function (event) {
+      minusBtnElem.on('touchstart', function () {
         scope.$apply(function () {
           scope.startCounter(!shouldCountUp);
         });
         var NUMBER_OF_REPEATS = 1;
         notificationService.beep(NUMBER_OF_REPEATS);
       });
-      minusBtnElem.on('touchend', function (event) {
+      minusBtnElem.on('touchend', function () {
         scope.$apply(function () {
           scope.stopCounter();
         });
       });
 
       //attach touch listener to add button
-      plusBtnElem.on('touchstart', function (event) {
+      plusBtnElem.on('touchstart', function () {
         scope.$apply(function () {
           scope.startCounter(shouldCountUp);
         });
         var DURATION_MILLI_SECONDS = 50;
         notificationService.vibrate(DURATION_MILLI_SECONDS);
       });
-      plusBtnElem.on('touchend', function (event) {
+      plusBtnElem.on('touchend', function () {
         scope.$apply(function () {
           scope.stopCounter();
         });
       });
 
       //add mouse listeners for mouse-up and mouse-down events
-      minusBtnElem.on('mousedown', function (event) {
+      minusBtnElem.on('mousedown', function () {
         scope.$apply(function () {
           scope.startCounter(!shouldCountUp);
         });
       });
-      minusBtnElem.on('mouseup', function (event) {
+      minusBtnElem.on('mouseup', function () {
         scope.$apply(function () {
           scope.stopCounter();
         });
       });
 
       //attach listener to add button
-      plusBtnElem.on('mousedown', function (event) {
+      plusBtnElem.on('mousedown', function () {
         scope.$apply(function () {
           scope.startCounter(shouldCountUp);
         });
       });
-      plusBtnElem.on('mouseup', function (event) {
+      plusBtnElem.on('mouseup', function () {
         scope.$apply(function () {
           scope.stopCounter();
         });
@@ -133,7 +133,7 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
 
             }, delay);
           }
-        };
+        }
         count();
       };
 
