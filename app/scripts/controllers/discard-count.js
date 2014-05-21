@@ -174,6 +174,7 @@ angular.module('lmisChromeApp')
     };
 
     $scope.finalSave = function(){
+      $scope.isSaving = true;
       $scope.discardCount.lastPosition = 0;
       $scope.redirect = true;
       $scope.discardCount.isComplete = 1;
