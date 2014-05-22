@@ -328,19 +328,28 @@ angular.module('lmisChromeApp')
       },
       /**
        *
+       * @param dateActivated
+       * @param reminderDay
+       * @param interval
+       * @returns {{}}
+       */
+      lastDate: function (dateActivated, reminderDay, interval){
+        var dueDateInfo = utility.getWeekRangeByDate(new Date(dateActivated), reminderDay);
+        return isoDate(dueDateInfo.reminderDate.toJSON()) <= isoDate(dateActivated) ? dueDateInfo.reminderDate : new Date(dueDateInfo.reminderDate.getTime() - interval);
+      },
+      /**
+       *
        * @param scope
        */
       stockCountByIntervals: function(scope){
-
-        var lastDate = utility.getWeekRangeByDate(new Date(scope.dateActivated), scope.reminderDay).reminderDate;
         var dueDateInfo = getDueDateInfo(scope.countInterval, scope.reminderDay);
+        var lastDate = load.lastDate(scope.dateActivated, scope.reminderDay, dueDateInfo.interval);
         var dates = load.firstDate(dueDateInfo);
         while(dates.length < scope.maxList){
           dueDateInfo.currentReminderDate = new Date(dueDateInfo.currentReminderDate.getTime() - dueDateInfo.interval);
           if(dueDateInfo.currentReminderDate.getTime() < lastDate.getTime()){
             break;
           }
-
           if(parseInt(dates.indexOf(isoDate(dueDateInfo.currentReminderDate.toJSON())), 10) === -1){
             dates.push(isoDate(dueDateInfo.currentReminderDate.toJSON()));
           }
@@ -350,7 +359,7 @@ angular.module('lmisChromeApp')
       /**
      * This function returns stock counts by the given facility
      *
-     * @param facility
+     * @param facility>
      * @returns {promise|promise|*|Function|promise}
      */
       byFacility: function(facility)
