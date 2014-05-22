@@ -1,25 +1,35 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('ccuBreakdownFactory', function ($q, storageService, syncService) {
+    .factory('ccuBreakdownFactory', function ($q, storageService, syncService, $window, notificationService) {
 
       var saveCcuBreakdownReport = function(ccuBreakdownReport){
         return storageService.save(storageService.CCU_BREAKDOWN, ccuBreakdownReport);
       };
 
+      var generateSmsMsg = function(ccuBreakdownReport){
+        var msg = 'ccuBrk:'+ccuBreakdownReport.uuid+';'+'fac:'+ccuBreakdownReport.facility.uuid+
+            ';ccuId:'+ccuBreakdownReport.ccuProfile.dhis2_modelid;
+        return msg;
+      };
+
       var saveAndSendCcuBreakdownReport = function(ccuBreakdownReport){
         var deferred = $q.defer();
-        //TODO: what should be done if the device is offline, SMS???
         saveCcuBreakdownReport(ccuBreakdownReport)
             .then(function(result){
-              if(typeof result !== 'undefined'){
+              if (typeof result !== 'undefined') {
                 ccuBreakdownReport.uuid = result;
-                syncService.syncItem(storageService.CCU_BREAKDOWN, ccuBreakdownReport)
-                    .then(function (syncResult) {
-                      console.log('ccu breakdown as synced successfully ' + syncResult);
-                    }).catch(function (reason) {
-                      console.log('ccu breakdown syncing failed: ' + reason);
-                    });
+                if (!$window.navigator.onLine) {
+                  var msg = generateSmsMsg(ccuBreakdownReport);
+                  notificationService.sendSms(notificationService.alertRecipient, msg);
+                }else{
+                  syncService.syncItem(storageService.CCU_BREAKDOWN, ccuBreakdownReport)
+                      .then(function (syncResult) {
+                        console.log('ccu breakdown as synced successfully ' + syncResult);
+                      }).catch(function (reason) {
+                        console.log(reason);
+                      });
+                }
               }
               deferred.resolve(result);
             }).catch(function(reason){

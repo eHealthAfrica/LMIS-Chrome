@@ -4,6 +4,7 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
 
   var noSmsSupportMsg = 'SMS support not available!';
   this.NO_SMS_SUPPORT = noSmsSupportMsg;
+  this.alertRecipient = '08062514736';//FIXME: This is for test purpose replace later with designated no.
 
   this.vibrate = function(duration){
     if(navigator.notification) {
