@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').service('notificationService', function ($modal, $q, i18n) {
+angular.module('lmisChromeApp').service('notificationService', function ($modal, $q, i18n, $window) {
 
   this.vibrate = function(duration){
     if(navigator.notification) {
@@ -82,6 +82,26 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
       return getMobileConfirmDialog(title, bodyText, buttonLabels);
     }
     return getConfirmDialogBox(title, bodyText, buttonLabels);
+  };
+
+  /**s
+   * @param phoneNo{String} - recipient phone number
+   * @param msg{String} - message body
+   * @returns {promise|Function|promise|promise|promise|*}
+   */
+  this.sendSms =  function(phoneNo, msg){
+    var deferred = $q.defer();
+    var intent = "";//leave empty for sending sms using default intent(SMSManager)
+    if('sms' in $window){
+      $window.sms.send(phoneNo, msg, intent, function () {
+        deferred.resolve(true);
+      }, function (error) {
+        deferred.reject(error);
+      });
+    }else{
+      deferred.reject('sms support not available!');
+    }
+    return deferred.promise;
   };
 
 });
