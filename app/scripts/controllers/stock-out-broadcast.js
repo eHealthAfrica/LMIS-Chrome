@@ -146,14 +146,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
                         });
                   } else {
                     alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+                    $scope.isSaving = false;
                   }
                 })
                 .catch(function (reason) {
                   alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-                  $log.error(reason);
-                })
-                .finally(function () {
                   $scope.isSaving = false;
+                  $log.error(reason);
                 });
           }
         })

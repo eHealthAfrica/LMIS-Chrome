@@ -42,7 +42,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
     var deferred = $q.defer();
     if (isSyncing) {
       deferred.reject('Syncing is already in progress');
-    }else  if(!$window.navigator.onLine){
+    }else if(!$window.navigator.onLine){
       deferred.reject('device is not online, check your internet connection settings.');
     }else{
       isSyncing = true;

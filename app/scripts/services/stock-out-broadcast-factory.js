@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, $log, syncService, $window) {
+angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, $log, syncService, $window, notificationService) {
   var saveStockOut = function (stockOut) {
     var deferred = $q.defer();
     storageService.save(storageService.STOCK_OUT, stockOut)
@@ -14,8 +14,7 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
   };
 
   var broadcastStockOut = function (stockOut) {
-    var deferred = $q.defer();
-    var stockOutModel = {
+    var so = {
       uuid: stockOut.uuid,
       facility: stockOut.facility.uuid,
       productType: stockOut.productType.uuid,
@@ -23,24 +22,13 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
       modified: stockOut.modified
     };
 
-    try {
-      if ($window.navigator.onLine) {
-        syncService.syncItem(storageService.STOCK_OUT, stockOutModel)
-            .then(function (result) {
-              deferred.resolve(result);
-            })
-            .catch(function (reason) {
-              deferred.reject(reason);
-            });
-
-      } else {
-        //TODO: send SMS if offline
-        deferred.reject('system is offline, send SMS!');
-      }
-    } catch (e) {
-      deferred.reject(e);
+    if ($window.navigator.onLine) {
+      return syncService.syncItem(storageService.STOCK_OUT, so);
+    } else {
+      var msg = 'stkOut:'+so.uuid+';fac:'+so.facility+';prodtype:'+so.productType;
+      return notificationService.sendSms(notificationService.alertRecipient, msg);
     }
-    return deferred.promise;
+
   };
 
   var saveMultipleStockOut = function(stockOutList){
