@@ -2,6 +2,9 @@
 
 angular.module('lmisChromeApp').service('notificationService', function ($modal, $q, i18n, $window) {
 
+  var noSmsSupportMsg = 'SMS support not available!';
+  this.NO_SMS_SUPPORT = noSmsSupportMsg;
+
   this.vibrate = function(duration){
     if(navigator.notification) {
       navigator.notification.vibrate(duration);
@@ -84,7 +87,7 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
     return getConfirmDialogBox(title, bodyText, buttonLabels);
   };
 
-  /**s
+  /**
    * @param phoneNo{String} - recipient phone number
    * @param msg{String} - message body
    * @returns {promise|Function|promise|promise|promise|*}
@@ -99,7 +102,7 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
         deferred.reject(error);
       });
     }else{
-      deferred.reject('sms support not available!');
+      deferred.reject(noSmsSupportMsg);
     }
     return deferred.promise;
   };
