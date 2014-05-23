@@ -1,45 +1,60 @@
 'use strict';
 
-describe('StockCountStepsFormCtrl', function(){
+describe('StockCountFormCtrl', function(){
   var scope;
   var ctrl;
   var state;
-  var stockCountFactory = {};
-  var appConfig = {};
+  var stockCount;
+  var appConfig;
   var productType;
-  var appConfigMock = {selectedProductProfiles: []};
-  var productTypeMock = {};
 
-  beforeEach(module('lmisChromeApp', 'lmisChromeAppMocks', function($provide){
-    $provide.value('currentFacility', currentFacilityMock);
-    $provide.value('productType', productTypeMock);
+  beforeEach(module('lmisChromeApp', 'appConfigMocks', 'stockCountMocks', function($provide){
+    //$provide.value('appConfig',{});
+    $provide.value('productType', {});
   }));
 
-  beforeEach(inject(function($controller, $state, _stockCountFactory_, _productType_, _alertsFactory_, _appConfig_){
+  beforeEach(inject(function($controller, $state, _stockCountFactory_, _productType_, _alertsFactory_, appConfigMock,
+                             stockData){
     scope = {};
+    stockCount = stockData;
     state = $state;
     productType = _productType_;
-    appConfig = _appConfig_;
-    ctrl = $controller('StockCountStepsFormCtrl', {
+    appConfig = appConfigMock;
+    ctrl = $controller('StockCountFormCtrl', {
       $scope: scope,
       $state: state,
-      stockCountFactory:_stockCountFactory_,
-      appConfig:appConfig,
-      productType:_productType_
+      stockCountFactory: _stockCountFactory_,
+      appConfig: appConfig,
+      productType: _productType_
     });
   }));
 
-  /*it('should show that facility object exist', function (){
-    expect(scope.facilityProducts).not.toBeDefined();
-  });
-
-  /*it('should return the default value of step variable', function (){
+  it('should show variable initial value', function (){
     expect(scope.step).toEqual(0);
   });
 
-  it('should change step value equal parameter entered for edit()', function(){
-    scope.edit(1);
+  it('should change step value', function (){
+    scope.stockCount = stockCount;
+    scope.changeState(1);
+    scope.changeState(1);
+    expect(scope.step).toEqual(2);
+    scope.changeState(0);
     expect(scope.step).toEqual(1);
   });
-  */
+
+  it('show change stock count last form position', function(){
+    scope.stockCount = stockCount;
+    expect(scope.stockCount.lastPosition).toEqual(1);
+    scope.changeState(1);
+    scope.changeState(1);
+    expect(scope.stockCount.lastPosition).toEqual(scope.step);
+    expect(scope.stockCount.lastPosition).toEqual(2);
+  });
+
+  it('should change set stock count object to complete', function(){
+    scope.stockCount = stockCount;
+    expect(scope.stockCount.isComplete).toEqual(0);
+    scope.finalSave();
+    expect(scope.stockCount.isComplete).toEqual(1);
+  });
 });
