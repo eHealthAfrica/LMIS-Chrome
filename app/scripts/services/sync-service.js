@@ -3,8 +3,10 @@
 angular.module('lmisChromeApp').service('syncService', function ($q, storageService, pouchdb, config, $window) {
 
   var isSyncing = false;
+  var DEVICE_OFFLINE_ERR_MSG = 'device is not online, check your internet connection settings.';
+  this.DEVICE_OFFLINE_ERR_MSG = DEVICE_OFFLINE_ERR_MSG;//make err msg public
 
-  var getLocalDB = function(dbUrl){
+  var getLocalDb = function(dbUrl){
     return pouchdb.create(dbUrl);
   };
 
@@ -52,7 +54,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
     if (isSyncing) {
       deferred.reject('Syncing is already in progress');
     }else if(!$window.navigator.onLine){
-      deferred.reject('device is not online, check your internet connection settings.');
+      deferred.reject(DEVICE_OFFLINE_ERR_MSG);
     }else{
       isSyncing = true;
       var remoteDB = getRemoteDB(dbName);
@@ -74,17 +76,20 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
   };
 
   this.clearPouchDB = function(dbName){
-    return getLocalDB(dbName).destroy();
+    return getLocalDb(dbName).destroy();
   };
 
   this.addSyncStatus = function (objList) {
-    //FIXME: consider passing property keys that will be used in comparism as function parameter.
     if (!angular.isArray(objList)) {
       throw 'an array parameter is expected.';
     }
     return objList.map(function (obj) {
       if (obj !== 'undefined') {
-        obj.synced = (obj.dateSynced && obj.modified) &&  (new Date(obj.dateSynced) >= new Date(obj.modified));
+        if((obj.dateSynced && obj.modified) && (new Date(obj.dateSynced) >= new Date(obj.modified))){
+          obj.synced = true;
+        }else{
+          obj.synced = false;
+        }
         return obj;
       }
     });
