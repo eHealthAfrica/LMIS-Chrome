@@ -43,12 +43,12 @@ angular.module('lmisChromeApp')
       var bundleReceipt = 'bundle_receipts';
       var bundleReceiptLines = 'bundle_receipt_lines';
       var locations = 'locations';
-      var stockCount = 'stockCount';
-      var discardCount = 'discardCount';
+      var stockCount = 'stockcount';
+      var discardCount = 'discard_count';
       var appConfig = 'app_config';
       var stockOut = 'stock_out';
       var surveyResponse = 'survey_response';
-      var ccuProfile = 'dhis-ccei-fixture';
+      var ccuProfile = 'dhis_ccei_fixture';
       var ccuBreakdown = 'ccu_breakdown';
 
       /**
@@ -188,8 +188,8 @@ angular.module('lmisChromeApp')
         if(!data.hasOwnProperty('uuid')){
           throw 'update should only be called with data that has UUID or primary key already.';
         }
-        if(updateDateModified && updateDateModified === true){
-           data.modified = this.getDateTime();
+        if(updateDateModified !== false){
+           data.modified = getDateTime();
         }
         return setData(table, data);
       };
@@ -273,7 +273,7 @@ angular.module('lmisChromeApp')
                         .success(function (data) {
                           setTable(dbName, data)
                               .then(function () {
-                                console.log(dbName +' was loaded successfully, remaining '+(count)+' data');
+                                console.log(dbName +' was loaded successfully, remaining '+(count)+' database');
                                 loadData(count - 1);
                               }, function (reason) {
                                 console.log(reason);
@@ -287,7 +287,7 @@ angular.module('lmisChromeApp')
                   }
                   else{
                     loadData(count - 1);
-                    console.log(dbName +' already exist, remaining '+(count)+' data to go');
+                    console.log(dbName +' already exist, remaining '+(count)+' database to go');
                   }
 
                 })

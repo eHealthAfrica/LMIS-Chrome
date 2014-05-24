@@ -155,23 +155,25 @@ describe('storageService', function () {
 
   it('i expect updateData NOT to update record dateModified if called with updateDateModified set to false', function(){
     var updateDateModified = false;
-    spyOn(storageService, 'getDateTime').andCallThrough();
+    var modifiedDate = record.modified;
+    expect(modifiedDate).toBe(record.modified);
     storageService.update('test', record, updateDateModified);
-    expect(storageService.getDateTime).not.toHaveBeenCalled();
+    expect(modifiedDate).toBe(record.modified);//should be same after calling update
   });
 
   it('i expect updateData TO UPDATE record dateModified if called with updateDateModified set to true', function(){
+    var modifiedDate = record.modified;
     var updateDateModified = true;
-    spyOn(storageService, 'getDateTime').andCallThrough();
+    expect(modifiedDate).toBe(record.modified);//should be same before calling update
     storageService.update('test', record, updateDateModified);
-    expect(storageService.getDateTime).toHaveBeenCalled();
+    expect(modifiedDate).not.toBe(record.modified);
   });
 
   it('i expect updateData TO UPDATE record dateModified if called WITHOUT updateDateModified.', function(){
-    var updateDateModified = true;
-    spyOn(storageService, 'getDateTime').andCallThrough();
-    storageService.update('test', record, updateDateModified);
-    expect(storageService.getDateTime).toHaveBeenCalled();
+    var modifiedDate = record.modified;
+    expect(modifiedDate).toBe(record.modified);//should be same before calling update
+    storageService.update('test', record);
+    expect(modifiedDate).not.toBe(record.modified);
   });
 
   it('i expect update to throw exception when called with data that has no UUID or Primary Key field.', function(){
