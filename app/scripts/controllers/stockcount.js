@@ -21,50 +21,7 @@ angular.module('lmisChromeApp')
             return stockCountFactory.get.productProfile();
           }
         },
-        controller: function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state){
-          $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
-          $scope.productProfiles = productProfiles;
-          $scope.stockCountList = stockCountList;
-          $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
-          $scope.facilityObject = appConfig.appFacility;
-          $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
-          $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
-          var now = new Date();
-          $scope.currentDay = now.getDate();
-          $scope.day = $scope.currentDay;
-          $scope.currentMonth = (now.getMonth()+1) < 10 ? '0'+(now.getMonth()+1) : now.getMonth()+1;
-          $scope.month = $scope.currentMonth;
-          $scope.currentYear = now.getFullYear();
-          $scope.year = $scope.currentYear;
-          $scope.monthList = stockCountFactory.monthList;
-          $scope.dateActivated = appConfig.dateActivated;
-          $scope.countInterval = appConfig.stockCountInterval;
-          $scope.reminderDay= appConfig.reminderDay;
-          $scope.maxList = 10;
-
-          $scope.dateList = stockCountFactory.get.stockCountByIntervals($scope);
-          $scope.dayInMonth = stockCountFactory.get.daysInMonth($scope.month, $scope.year).splice(0, $scope.currentDay).reverse();
-          $scope.daysInMonthRange = $scope.dayInMonth.splice(0, 10);
-
-          $scope.missedEntry = function(date){
-            return stockCountFactory.get.missingEntry(date, $scope);
-          };
-          $scope.takeAction = function(date){
-            var missed = $scope.missedEntry(date);
-            stockCountFactory.getStockCountByDate(date).then(function(stockCount){
-              if(stockCount !== null){
-                $scope.stockCount = stockCount;
-                
-                $scope.detailView = true;
-                stockCountFactory.set.stock.editStatus($scope, date);
-                $scope.mergedList = stockCountFactory.get.mergedStockCount(stockCount.unopened, $scope.facilityProductsKeys);
-              }
-              else if(!missed){
-                $state.go('stockCountForm', {countDate: date});
-              }
-            });
-          };
-        }
+        controller: 'StockCountHomeCtrl'
       })
       .state('stockCountForm', {
         parent: 'root.index',
@@ -95,7 +52,7 @@ angular.module('lmisChromeApp')
         url: '/sync-stock-count',
         resolve: {
           localDocs: function(pouchdb) {
-            var db = pouchdb.create('stockcount');//FIXME: deprecate this part of stock count.
+            var db = pouchdb.create('stockcount');
             // XXX: db#info returns incorrect doc_count, see item:333
             return db.allDocs();
           }
@@ -211,6 +168,49 @@ angular.module('lmisChromeApp')
           }
         }
       });
+  })
+  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountList, appConfig, productProfiles, $state){
+    $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
+    $scope.productProfiles = productProfiles;
+    $scope.stockCountList = stockCountList;
+    $scope.stockCountByDate = stockCountFactory.get.stockCountListByDate($scope.stockCountList);
+    $scope.facilityObject = appConfig.appFacility;
+    $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
+    $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
+    var now = new Date();
+    $scope.currentDay = now.getDate();
+    $scope.day = $scope.currentDay;
+    $scope.currentMonth = (now.getMonth()+1) < 10 ? '0'+(now.getMonth()+1) : now.getMonth()+1;
+    $scope.month = $scope.currentMonth;
+    $scope.currentYear = now.getFullYear();
+    $scope.year = $scope.currentYear;
+    $scope.monthList = stockCountFactory.monthList;
+    $scope.dateActivated = appConfig.dateActivated;
+    $scope.countInterval = appConfig.stockCountInterval;
+    $scope.reminderDay= appConfig.reminderDay;
+    $scope.maxList = 10;
+
+    $scope.dateList = stockCountFactory.get.stockCountByIntervals($scope);
+    $scope.dayInMonth = stockCountFactory.get.daysInMonth($scope.month, $scope.year).splice(0, $scope.currentDay).reverse();
+    $scope.daysInMonthRange = $scope.dayInMonth.splice(0, 10);
+
+    $scope.missedEntry = function(date){
+      return stockCountFactory.get.missingEntry(date, $scope);
+    };
+    $scope.takeAction = function(date){
+      var missed = $scope.missedEntry(date);
+      stockCountFactory.getStockCountByDate(date).then(function(stockCount){
+        if(stockCount !== null){
+          $scope.stockCount = stockCount;
+          $scope.detailView = true;
+          stockCountFactory.set.stock.editStatus($scope, date);
+          $scope.mergedList = stockCountFactory.get.mergedStockCount(stockCount.unopened, $scope.facilityProductsKeys);
+        }
+        else if(!missed){
+          $state.go('stockCountForm', {countDate: date});
+        }
+      });
+    };
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, alertsFactory,
                                              $stateParams, appConfig, appConfigService, productType, cacheService,
