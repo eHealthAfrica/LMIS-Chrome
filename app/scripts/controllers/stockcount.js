@@ -54,6 +54,7 @@ angular.module('lmisChromeApp')
             stockCountFactory.getStockCountByDate(date).then(function(stockCount){
               if(stockCount !== null){
                 $scope.stockCount = stockCount;
+                
                 $scope.detailView = true;
                 stockCountFactory.set.stock.editStatus($scope, date);
                 $scope.mergedList = stockCountFactory.get.mergedStockCount(stockCount.unopened, $scope.facilityProductsKeys);
@@ -94,7 +95,7 @@ angular.module('lmisChromeApp')
         url: '/sync-stock-count',
         resolve: {
           localDocs: function(pouchdb) {
-            var db = pouchdb.create('stockcount');
+            var db = pouchdb.create('stockcount');//FIXME: deprecate this part of stock count.
             // XXX: db#info returns incorrect doc_count, see item:333
             return db.allDocs();
           }
@@ -288,7 +289,7 @@ angular.module('lmisChromeApp')
       }
     });
 
-    var saveQueue = queue(1);
+    var saveQueue = queue(1);//use 1 to serialize the asynchronous task.
     var saveTask = function(callback){
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(result){
@@ -300,13 +301,12 @@ angular.module('lmisChromeApp')
     };
 
     $scope.save = function() {
-      var DB_NAME = 'stockcount';
+      var DB_NAME = stockCountFactory.STOCK_COUNT_DB;
 
       $scope.stockCount.facility = $scope.facilityUuid;
       $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.reportDay, timezone);
-      $scope.stockCount.dateSynced = new Date().toJSON(); //FIXME: update this after syncing successfully.
-
-      saveQueue.defer(saveTask);//queue save task
+      //queue save task
+      saveQueue.defer(saveTask);
 
       //if final save, redirect to home page.
       if ($scope.redirect) {

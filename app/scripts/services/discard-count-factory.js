@@ -49,7 +49,7 @@ angular.module('lmisChromeApp')
       .then(function(uuid) {
         scope.discardCount.uuid = uuid;
         if(scope.redirect) {
-          syncDiscarded(scope.discardCount);
+          syncService.syncItem(storageService.DISCARD_COUNT, scope.discardCount);//sync in the background
           var msg = [
               'You have completed discard count for',
               scope.currentDay,
@@ -152,7 +152,6 @@ angular.module('lmisChromeApp')
             }else{
               scope.preview = true;
               scope.discardCount.isComplete = 1;
-              //syncDiscarded(scope.discardCount);
             }
           }
           scope.discardCount.lastPosition = scope.step;
@@ -174,31 +173,6 @@ angular.module('lmisChromeApp')
       }
 
     };
-
-    var addSyncStatus= function(discardCounts)
-    {
-      if(discardCounts !== 'undefined')
-      {
-        discardCounts = discardCounts.map(function (dc) {
-          if(dc !== 'undefined'){
-            dc.synced = isSynced(dc);
-            return dc;
-          }
-
-        });
-      }
-      return discardCounts;
-    };
-
-    var isSynced = function(dc)
-    {
-      /* TODO: decide on the best way of determining this. If dateSynced is set in the db
-        we can be pretty sure it's accurate but right now there's no db feedback being saved
-        locally */
-      return (dc.dateSynced && dc.modified &&
-          isoDate(dc.dateSynced) >= isoDate(dc.modified));
-    };
-
 
     var getDiscardCountByDate = function (date) {
       var deferred = $q.defer();
@@ -226,9 +200,9 @@ angular.module('lmisChromeApp')
       allDiscardCount: function(){
         var deferred = $q.defer();
         storageService.all(storageService.DISCARD_COUNT)
-          .then(function(discardCount){
-            discardCount = addSyncStatus(discardCount);
-            deferred.resolve(discardCount);
+          .then(function(discardCounts){
+            discardCounts = syncService.addSyncStatus(discardCounts);
+            deferred.resolve(discardCounts);
           });
         return deferred.promise;
       },
@@ -424,27 +398,6 @@ angular.module('lmisChromeApp')
           }
         }
       });
-    };
-
-    var syncDiscarded = function(discardCountObject){
-      var deferred = $q.defer();
-      var DB_NAME = 'discardcount';
-      syncService.syncItem(DB_NAME, discardCountObject)
-        .then(function () {
-          discardCountObject.dateSynced = new Date().toJSON();
-          storageService.save(storageService.DISCARD_COUNT, discardCountObject)
-            .then(function(){
-              deferred.resolve();
-            },
-            function(reason){
-              deferred.reject(reason);
-            });
-        })
-        .catch(function (reason) {
-          deferred.reject(reason);
-          //console.log('Discard count sync failed: '+reason);
-        });
-      return deferred.promise;
     };
 
     var checkInput = function(scope, index){
