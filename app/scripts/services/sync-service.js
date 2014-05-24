@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').service('syncService', function ($q, $log, $rootScope, storageService, pouchdb, config, $window) {
+angular.module('lmisChromeApp').service('syncService', function ($q, storageService, pouchdb, config, $window) {
 
   var isSyncing = false;
 
@@ -13,14 +13,22 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
     return pouchdb.create(REMOTE);
   };
 
-  var saveItem = function(db, item){
+  var updateItemKeysAndUpdateLocalCopy = function(dbName, item, response){
+    item._id = response.id;
+    item._rev = response.rev;
+    var updateModifiedDate = false;
+    return storageService.update(dbName, item, updateModifiedDate);
+  };
+
+  var saveItem = function(dbName, db, item){
     var deferred = $q.defer();
+    item.dateSynced = new Date().toJSON();//update sync date
     db.get(item.uuid).then(function (response) {
       item._id = response._id;
       item._rev = response._rev;
-      item.dateSynced = new Date().toJSON();
       db.put(item, response._id, response._rev)
       .then(function (result) {
+        updateItemKeysAndUpdateLocalCopy(dbName, item, result);//FIXME: resolve this promise and return it.
         deferred.resolve(result);
       }, function (error) {
         deferred.reject(error);
@@ -29,6 +37,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
     }, function () {
       db.put(item, item.uuid)
       .then(function (result) {
+        updateItemKeysAndUpdateLocalCopy(dbName, item, result); //FIXME: resolve this promise and return it.
         deferred.resolve(result);
       }, function (error) {
         deferred.reject(error);
@@ -49,7 +58,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
       var remoteDB = getRemoteDB(dbName);
       remoteDB.info()
         .then(function(){
-          saveItem(remoteDB, item).then(function(response){
+          saveItem(dbName, remoteDB, item).then(function(response){
             isSyncing = false;
             deferred.resolve(response);
           }, function(saveError){
@@ -66,6 +75,19 @@ angular.module('lmisChromeApp').service('syncService', function ($q, $log, $root
 
   this.clearPouchDB = function(dbName){
     return getLocalDB(dbName).destroy();
+  };
+
+  this.addSyncStatus = function (objList) {
+    //FIXME: consider passing property keys that will be used in comparism as function parameter.
+    if (!angular.isArray(objList)) {
+      throw 'an array parameter is expected.';
+    }
+    return objList.map(function (obj) {
+      if (obj !== 'undefined') {
+        obj.synced = (obj.dateSynced && obj.modified) &&  (new Date(obj.dateSynced) >= new Date(obj.modified));
+        return obj;
+      }
+    });
   };
 
 });
