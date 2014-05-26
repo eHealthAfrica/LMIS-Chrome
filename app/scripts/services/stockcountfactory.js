@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility) {
+  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService) {
+
+    var STOCK_COUNT_DB = storageService.STOCK_COUNT;
       /**
        *
        * @type {{}}
@@ -124,29 +126,6 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
-    var addSyncStatus= function(stockCounts)
-    {
-      if(stockCounts !== 'undefined')
-      {
-        stockCounts = stockCounts.map(function (sc) {
-          if(sc !== 'undefined'){
-            sc.synced = isSynced(sc);
-            return sc;
-          }
-        });
-      }
-      return stockCounts;
-    };
-
-    var isSynced = function(sc)
-    {
-      /* TODO: decide on the best way of determining this. If dateSynced is set in the db
-        we can be pretty sure it's accurate but right now there's no db feedback being saved
-        locally */
-      return (sc.dateSynced && sc.modified &&
-        isoDate(sc.dateSynced) >=isoDate(sc.modified));
-    };
-
     var load={
       /**
        *
@@ -155,9 +134,9 @@ angular.module('lmisChromeApp')
       allStockCount: function(){
         var deferred = $q.defer();
         storageService.all(storageService.STOCK_COUNT)
-          .then(function(stockCount){
-            stockCount = addSyncStatus(stockCount);
-            deferred.resolve(stockCount);
+          .then(function(stockCounts){
+            stockCounts = syncService.addSyncStatus(stockCounts);
+            deferred.resolve(stockCounts);
           });
         return deferred.promise;
       },
@@ -428,6 +407,7 @@ angular.module('lmisChromeApp')
       get:load,
       set: setter,
       getStockCountByDate: getStockCountByDate,
-      validate: validate
+      validate: validate,
+      STOCK_COUNT_DB: STOCK_COUNT_DB
     };
   });

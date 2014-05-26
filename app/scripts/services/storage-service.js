@@ -43,12 +43,12 @@ angular.module('lmisChromeApp')
       var bundleReceipt = 'bundle_receipts';
       var bundleReceiptLines = 'bundle_receipt_lines';
       var locations = 'locations';
-      var stockCount = 'stockCount';
-      var discardCount = 'discardCount';
+      var stockCount = 'stockcount';
+      var discardCount = 'discard_count';
       var appConfig = 'app_config';
       var stockOut = 'stock_out';
       var surveyResponse = 'survey_response';
-      var ccuProfile = 'dhis-ccei-fixture';
+      var ccuProfile = 'dhis_ccei_fixture';
       var ccuBreakdown = 'ccu_breakdown';
 
       /**
@@ -61,11 +61,24 @@ angular.module('lmisChromeApp')
        */
 
       var setData = function (table, data) {
+        if(!data.hasOwnProperty('uuid')){
+          throw 'data should have a uuid or primary key field.';
+        }
         var deferred = $q.defer();
         var obj = {};
         getData(table).then(function(tableData){
           if(angular.isUndefined(tableData)){
             tableData = {};
+          }
+          var oldRecord = tableData[data.uuid];
+          if(typeof oldRecord !== 'undefined'){
+            //record already exists, update its fields that exist on data
+            var properties = Object.keys(data);
+            for(var index in properties){
+              var key = properties[index];
+              oldRecord[key] = data[key];
+            }
+            data = oldRecord; //swap after updating fields.
           }
           tableData[data.uuid] = data;
           obj[table] = tableData;
@@ -156,6 +169,9 @@ angular.module('lmisChromeApp')
        * @returns {Promise}
        */
       var insertData = function(table, data) {
+        if(data.hasOwnProperty('uuid')){
+          throw 'insert should only be called with fresh record that has not uuid or primary key field.';
+        }
         data.uuid = uuidGenerator();
         data.created = data.modified = getDateTime();
         return setData(table, data);
@@ -168,9 +184,13 @@ angular.module('lmisChromeApp')
        * @param data
        * @returns {Promise}
        */
-      var updateData = function(table, data) {
-        //todo: refactor to dateModified
-        data.modified = getDateTime();
+      var updateData = function(table, data, updateDateModified) {
+        if(!data.hasOwnProperty('uuid')){
+          throw 'update should only be called with data that has UUID or primary key already.';
+        }
+        if(updateDateModified !== false){
+           data.modified = getDateTime();
+        }
         return setData(table, data);
       };
 
@@ -253,7 +273,7 @@ angular.module('lmisChromeApp')
                         .success(function (data) {
                           setTable(dbName, data)
                               .then(function () {
-                                console.log(dbName +' was loaded successfully, remaining '+(count)+' data');
+                                console.log(dbName +' was loaded successfully, remaining '+(count)+' database');
                                 loadData(count - 1);
                               }, function (reason) {
                                 console.log(reason);
@@ -267,7 +287,7 @@ angular.module('lmisChromeApp')
                   }
                   else{
                     loadData(count - 1);
-                    console.log(dbName +' already exist, remaining '+(count)+' data to go');
+                    console.log(dbName +' already exist, remaining '+(count)+' database to go');
                   }
 
                 })
@@ -406,6 +426,7 @@ angular.module('lmisChromeApp')
         where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,
+        getDateTime: getDateTime,
         PRODUCT_TYPES: productTypes,
         PRODUCT_CATEGORY: productCategory,
         ADDRESS: address,

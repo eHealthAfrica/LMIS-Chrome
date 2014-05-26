@@ -2,7 +2,7 @@
 
 describe('storageService', function () {
 
-  var deferred, storageService, chromeStorageApi, rootScope, templateCache, resolvedValue;
+  var deferred, storageService, chromeStorageApi, rootScope, templateCache, resolvedValue, record;
 
   beforeEach(module('lmisChromeApp'));
 
@@ -35,11 +35,12 @@ describe('storageService', function () {
     deferred = _$q_.defer();
     rootScope = _$rootScope_;
     chromeStorageApi = _chromeStorageApi_;
+    record = { uuid: '1234-67615-901817', modified: new Date(), dateSynced: new Date() };
   }));
 
   it('should be able to add new table to the chrome storage', function(){
     spyOn(chromeStorageApi, 'set').andReturn(deferred.promise);
-    storageService.add('table', {key:'value'});
+    storageService.add('table', {uuid: 'value'});
     //FIXME: this doesnt if value was stored in table // set is called outside storageService add function scope;
     //expect(chromeStorageApi.set).toHaveBeenCalled();
   });
@@ -123,14 +124,14 @@ describe('storageService', function () {
 
   it('should be able to insert new database table row and return promise only if there is no row', function () {
     spyOn(chromeStorageApi, 'set').andReturn(deferred.promise);
-    storageService.insert('test', {uuid: '123456789'});
+    storageService.insert('test', {username: 'lomis'});
     //FIXME: this doesnt if value was stored in table // set is called outside storageService add function scope;
     //expect(chromeStorageApi.set).toHaveBeenCalled();s
   });
 
   it('should be able to update database table row and return promise', function () {
     spyOn(chromeStorageApi, 'set').andReturn(deferred.promise);
-    storageService.update('test', {key: 'value'});
+    storageService.update('test', {uuid: 'value'});
     //FIXME: this doesnt if value was stored in table // set is called outside storageService add function scope;
     //expect(chromeStorageApi.set).toHaveBeenCalled();
   });
@@ -150,6 +151,42 @@ describe('storageService', function () {
 
   it('i expect insertBatch to throw an exception', function(){
     expect(function(){ storageService.insertBatch('test', 'non-array') }).toThrow();
+  });
+
+  it('i expect updateData NOT to update record dateModified if called with updateDateModified set to false', function(){
+    var updateDateModified = false;
+    var modifiedDate = record.modified;
+    expect(modifiedDate).toBe(record.modified);
+    storageService.update('test', record, updateDateModified);
+    expect(modifiedDate).toBe(record.modified);//should be same after calling update
+  });
+
+  it('i expect updateData TO UPDATE record dateModified if called with updateDateModified set to true', function(){
+    var modifiedDate = record.modified;
+    var updateDateModified = true;
+    expect(modifiedDate).toBe(record.modified);//should be same before calling update
+    storageService.update('test', record, updateDateModified);
+    expect(modifiedDate).not.toBe(record.modified);
+  });
+
+  it('i expect updateData TO UPDATE record dateModified if called WITHOUT updateDateModified.', function(){
+    var modifiedDate = record.modified;
+    expect(modifiedDate).toBe(record.modified);//should be same before calling update
+    storageService.update('test', record);
+    expect(modifiedDate).not.toBe(record.modified);
+  });
+
+  it('i expect update to throw exception when called with data that has no UUID or Primary Key field.', function(){
+    var recordWithoutPkField = { name: 'test-user', age: 19};
+    expect(function(){ storageService.update('test', recordWithoutPkField); }).toThrow();
+  });
+
+  it('i expect insert new db row to throw exception when called with record that HAS uuid or PK field', function () {
+    expect(function(){  storageService.insert('test', {uuid: 'lomis'}); }).toThrow();
+  });
+
+  it('i expect add record to throw exception when called with that that has no uuid', function(){
+    expect(function(){  storageService.add('test', {nouuid: 'lomis'}); }).toThrow();
   });
 
 });
