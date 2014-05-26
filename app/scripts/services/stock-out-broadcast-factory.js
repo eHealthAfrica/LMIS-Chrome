@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, $log, syncService, $window, notificationService) {
+angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, syncService, $window, notificationService) {
+
   var saveStockOut = function (stockOut) {
     var deferred = $q.defer();
     storageService.save(storageService.STOCK_OUT, stockOut)
@@ -26,7 +27,7 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
       return syncService.syncItem(storageService.STOCK_OUT, so);
     } else {
       var msg = 'stkOut:'+so.uuid+';fac:'+so.facility+';prodtype:'+so.productType;
-      return notificationService.sendSms(notificationService.alertRecipient, msg);
+      notificationService.sendSms(notificationService.alertRecipient, msg);
     }
 
   };
@@ -35,7 +36,6 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
     var deferred = $q.defer();
     storageService.insertBatch(storageService.STOCK_OUT, stockOutList)
       .then(function(result){
-
         deferred.resolve(result);
       })
       .catch(function(reason){
