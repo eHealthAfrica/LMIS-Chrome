@@ -65,10 +65,12 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
               facility: $scope.stockOutForm.facility
             };
             stockOutList.push(stockOut);
-            stockOutBroadcastFactory.broadcast(stockOut);//sync in the background
           }
           stockOutBroadcastFactory.saveBatch(stockOutList)
               .then(function (result) {
+                for(var i = 0; i < result.length; i++){
+                  stockOutBroadcastFactory.broadcast(result[i]);
+                }
                 $scope.isSaving = false;
                 $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
               }, function (reason) {

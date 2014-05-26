@@ -375,7 +375,7 @@ angular.module('lmisChromeApp')
       var insertBatch = function (table, batchList){
         var deferred = $q.defer();
         var obj = {};
-        var uuidList = [];
+        var newBatchList = [];
         if(Object.prototype.toString.call(batchList) !== '[object Array]'){
           throw 'batchList is not an array';
         }
@@ -393,12 +393,12 @@ angular.module('lmisChromeApp')
                 }
                 batch.modified = now;
                 tableData[batch.uuid] = batch;
-                uuidList.push(batch.uuid);
+                newBatchList.push(batch);
               }
               obj[table] = tableData;
               chromeStorageApi.set(obj)
                   .then(function(){
-                    deferred.resolve(uuidList);
+                    deferred.resolve(newBatchList);
                   })
                   .catch(function(reason){
                     deferred.reject(reason);
