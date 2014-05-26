@@ -26,8 +26,15 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
     if ($window.navigator.onLine) {
       return syncService.syncItem(storageService.STOCK_OUT, so);
     } else {
+      //TODO: abstract this to a syncService function that sends sms if device is offline and update pending sync list
       var msg = 'stkOut:'+so.uuid+';fac:'+so.facility+';prodtype:'+so.productType;
-      notificationService.sendSms(notificationService.alertRecipient, msg);
+      var smsPromise = notificationService.sendSms(notificationService.alertRecipient, msg);
+      var pendingSyncRecord = { dbName: storageService.STOCK_OUT, uuid: so.uuid };
+      smsPromise.finally(function(){
+        //update pending sync record in the background
+        storageService.save(storageService.PENDING_SYNCS, pendingSyncRecord);
+      });
+      return smsPromise;
     }
 
   };
