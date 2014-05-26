@@ -19,9 +19,16 @@ angular.module('lmisChromeApp')
             .then(function(result){
               if (typeof result !== 'undefined') {
                 ccuBreakdownReport.uuid = result;
+                //broadcast CCU breakdown report in the background
                 if (!$window.navigator.onLine) {
                   var msg = generateSmsMsg(ccuBreakdownReport);
-                  notificationService.sendSms(notificationService.alertRecipient, msg);
+                  //TODO: abstract this to a syncService function that sends sms if device is offline and update pending sync list
+                  var smsPromise = notificationService.sendSms(notificationService.alertRecipient, msg);
+                  var pendingSyncRecord = { dbName: storageService.CCU_BREAKDOWN, uuid: ccuBreakdownReport.uuid };
+                  smsPromise.finally(function () {
+                    //update pending sync record in the background
+                    storageService.save(storageService.PENDING_SYNCS, pendingSyncRecord);
+                  });
                 }else{
                   syncService.syncItem(storageService.CCU_BREAKDOWN, ccuBreakdownReport)
                       .then(function (syncResult) {
