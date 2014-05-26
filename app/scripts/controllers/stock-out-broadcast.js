@@ -69,8 +69,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           stockOutBroadcastFactory.saveBatch(stockOutList)
               .then(function (result) {
                 for(var i = 0; i < result.length; i++){
-                  stockOutList[i].uuid = result[i];
-                  stockOutBroadcastFactory.broadcast(stockOut);
+                  stockOutBroadcastFactory.broadcast(result[i]);
                 }
                 $scope.isSaving = false;
                 $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
