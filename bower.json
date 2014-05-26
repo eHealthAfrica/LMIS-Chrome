@@ -4,7 +4,7 @@
   "dependencies": {
     "angular": "1.2.15",
     "angular-bootstrap": "0.10.0",
-    "font-awesome": "~4.0.3",
+    "font-awesome": "~4.1.0",
     "angular-ui-router": "0.2.10",
     "tv-breadcrumbs": "~0.1.1",
     "bootstrap-css-only": "~3.1.0",
