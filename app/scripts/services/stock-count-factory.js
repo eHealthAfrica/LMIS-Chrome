@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService) {
+  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService, i18n) {
 
     var STOCK_COUNT_DB = storageService.STOCK_COUNT;
       /**
@@ -126,6 +126,43 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    /**
+     *
+     * @param dueDateInfo
+     * @returns {Array}
+     */
+    var getFirstDate = function (dueDateInfo){
+      var dates = [];
+      if(dueDateInfo.reminderDate.getTime() < new Date().getTime()){
+        dates.push(isoDate(dueDateInfo.reminderDate.toJSON()));
+      }
+      if(dueDateInfo.reminderDate.getTime() > new Date().getTime()){
+        dates.push(isoDate(dueDateInfo.lastCountDate.toJSON()));
+      }
+      return dates;
+    };
+    /**
+     *
+     * @param dateActivated
+     * @param reminderDay
+     * @param interval
+     * @returns {{}}
+     */
+    var getLastDate = function (dateActivated, reminderDay, interval){
+      var dueDateInfo = utility.getWeekRangeByDate(new Date(dateActivated), reminderDay);
+      return isoDate(dueDateInfo.reminderDate.toJSON()) <= isoDate(dateActivated) ? dueDateInfo.reminderDate : new Date(dueDateInfo.reminderDate.getTime() - interval);
+    };
+
+    /**
+     *
+     * @param productObject
+     * @param index
+     * @returns {object}
+     */
+    var currentProductObject = function(productObject, index){
+      var productKey =  (Object.keys(productObject))[index];
+      return productObject[productKey];
+    };
     var load={
       /**
        *
@@ -140,16 +177,7 @@ angular.module('lmisChromeApp')
           });
         return deferred.promise;
       },
-      /**
-       *
-       * @param productObject
-       * @param index
-       * @returns {object}
-       */
-      currentProductObject: function(productObject, index){
-        var productKey =  (Object.keys(productObject))[index];
-        return productObject[productKey];
-      },
+
       /**
        *
        * @param productObject
@@ -157,7 +185,7 @@ angular.module('lmisChromeApp')
        * @returns {string}
        */
       productReadableName: function(productObject, index){
-        var productName = this.currentProductObject(productObject, index).name;
+        var productName = currentProductObject(productObject, index).name;
         return utility.getReadableProfileName(productName);
       },
       /**
@@ -168,7 +196,7 @@ angular.module('lmisChromeApp')
        * @returns {{}}
        */
       productTypeCode: function(productObject, index, productType){
-        var currentProductUuid = this.currentProductObject(productObject, index).product;
+        var currentProductUuid = currentProductObject(productObject, index).product;
         return productType[currentProductUuid];
       },
       /**
@@ -186,11 +214,11 @@ angular.module('lmisChromeApp')
       errorAlert: function(scope, error){
         if(error === 1){
           scope.productError = true;
-          scope.productErrorMsg = 'count value is invalid, at least enter Zero "0" to proceed';
+          scope.productErrorMsg = i18n('stockCountErrorMsg');
         }
         else if (error === 2){
           scope.productError = true;
-          scope.productErrorMsg = 'please fix errors in reason selection';
+          scope.productErrorMsg = i18n('discardErrorMsg');
         }
         else{
           scope.productError = false;
@@ -225,36 +253,31 @@ angular.module('lmisChromeApp')
         return dayArray;
       },
       /**
-       *
-       * @returns {Array}
-       */
-      yearRange: function(){
-        var yearRangeArray = [];
-        var currentYear = new Date().getFullYear();
-        var rangeDiff = 3;
-        for(var i=currentYear-rangeDiff; i<currentYear+1; i++){
-          yearRangeArray.push(i);
-        }
-        return yearRangeArray;
-      },
-      /**
-      *
+      * this function return object list of product file
        */
       productProfile: function(){
         return storageService.get(storageService.PRODUCT_PROFILE);
       },
       /**
        *
-       * @param stockCountList
-       * @returns {{}}
+       * @returns {promise}
        */
-      stockCountListByDate: function(stockCountList){
+      stockCountListByDate: function(){
+        var deferred = $q.defer();
         var obj = {};
-        for(var i=0; i < stockCountList.length; i++){
-          var date = $filter('date')(stockCountList[i].countDate, 'yyyy-MM-dd');
-          obj[date] = stockCountList[i];
-        }
-        return obj;
+        this.allStockCount()
+            .then(function(stockCountList){
+              for(var i=0; i < stockCountList.length; i++){
+                obj[isoDate(stockCountList[i].countDate)] = stockCountList[i];
+              }
+              deferred.resolve(obj);
+            })
+            .catch(function(reason){
+              deferred.resolve(obj);
+              console.error(reason);
+            });
+
+        return deferred.promise;
       },
       /**
        *
@@ -290,40 +313,15 @@ angular.module('lmisChromeApp')
         }
         return (!(scope.stockCountByDate[date].isComplete || isoDate(date) === isoDate()));
       },
-      /**
-       *
-       * @param dueDateInfo
-       * @returns {Array}
-       */
-      firstDate: function (dueDateInfo){
-        var dates = [];
-        if(dueDateInfo.reminderDate.getTime() < new Date().getTime()){
-          dates.push(isoDate(dueDateInfo.reminderDate.toJSON()));
-        }
-        if(dueDateInfo.reminderDate.getTime() > new Date().getTime()){
-          dates.push(isoDate(dueDateInfo.lastCountDate.toJSON()));
-        }
-        return dates;
-      },
-      /**
-       *
-       * @param dateActivated
-       * @param reminderDay
-       * @param interval
-       * @returns {{}}
-       */
-      lastDate: function (dateActivated, reminderDay, interval){
-        var dueDateInfo = utility.getWeekRangeByDate(new Date(dateActivated), reminderDay);
-        return isoDate(dueDateInfo.reminderDate.toJSON()) <= isoDate(dateActivated) ? dueDateInfo.reminderDate : new Date(dueDateInfo.reminderDate.getTime() - interval);
-      },
+
       /**
        *
        * @param scope
        */
       stockCountByIntervals: function(scope){
         var dueDateInfo = getDueDateInfo(scope.countInterval, scope.reminderDay);
-        var lastDate = load.lastDate(scope.dateActivated, scope.reminderDay, dueDateInfo.interval);
-        var dates = load.firstDate(dueDateInfo);
+        var lastDate = getLastDate(scope.dateActivated, scope.reminderDay, dueDateInfo.interval);
+        var dates = getFirstDate(dueDateInfo);
         while(dates.length < scope.maxList){
           dueDateInfo.currentReminderDate = new Date(dueDateInfo.currentReminderDate.getTime() - dueDateInfo.interval);
           if(dueDateInfo.currentReminderDate.getTime() < lastDate.getTime()){
@@ -338,7 +336,7 @@ angular.module('lmisChromeApp')
       /**
      * This function returns stock counts by the given facility
      *
-     * @param facility>
+     * @param facility
      * @returns {promise|promise|*|Function|promise}
      */
       byFacility: function(facility)
