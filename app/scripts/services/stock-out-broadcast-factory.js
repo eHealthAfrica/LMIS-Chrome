@@ -15,24 +15,16 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
   };
 
   var broadcastStockOut = function (stockOut) {
-    var so = {
-      uuid: stockOut.uuid,
-      facility: stockOut.facility.uuid,
-      productType: stockOut.productType.uuid,
-      created: stockOut.created,
-      modified: stockOut.modified
-    };
 
     if ($window.navigator.onLine) {
-      return syncService.syncItem(storageService.STOCK_OUT, so);
+      return syncService.syncItem(storageService.STOCK_OUT, stockOut);
     } else {
-      //TODO: abstract this to a syncService function that sends sms if device is offline and update pending sync list
-      var msg = 'stkOut:'+so.uuid+';fac:'+so.facility+';prodtype:'+so.productType;
+      var msg = 'stkOut:'+stockOut.uuid+';facility:'+stockOut.facility.uuid+';prodType:'+stockOut.productType.uuid;
       var smsPromise = notificationService.sendSms(notificationService.alertRecipient, msg);
       var pendingSyncRecord = { dbName: storageService.STOCK_OUT, uuid: so.uuid };
       smsPromise.finally(function(){
         //update pending sync record in the background
-        storageService.save(storageService.PENDING_SYNCS, pendingSyncRecord);
+        syncService.addToPendingSync(pendingSyncRecord);
       });
       return smsPromise;
     }
@@ -53,9 +45,13 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
 
   var getStockOut = function(){
     var deferred = $q.defer();
-    storageService.all(storageService.STOCK_OUT).then(function (result) {
-      deferred.resolve(result);
-    });
+    storageService.all(storageService.STOCK_OUT)
+        .then(function (result) {
+          deferred.resolve(result);
+        })
+        .catch(function(reason){
+          deferred.reject(reason);
+        });
     return deferred.promise;
   };
 
