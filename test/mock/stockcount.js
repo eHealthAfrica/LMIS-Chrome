@@ -1,57 +1,20 @@
 'use strict';
 
 angular.module('stockCountMocks', [])
-  .value('stockData', [
-    {
-      confirmation: {},
-      day: 11,
-      facility: 'd48a39fb-6d37-4472-9983-bc0720403719',
-      month: '03',
-      used_opened: {
-        '0': 20,
-        '1': 200,
-        '2': 9949,
-        '3': 98943,
-        '4': 112,
-        '5': 1223,
-        '6': 1000,
-        '7': 234,
-        '8': 998,
-        '9': 2333,
-        '10': 234,
-        '11': 12233,
-        '12': 22334
-      },
-      used_unopened: {
-        '0': 233,
-        '1': 1223,
-        '2': 993,
-        '3': 999,
-        '4': 223,
-        '5': 233,
-        '6': 233,
-        '7': 234,
-        '8': 999,
-        '9': 2234,
-        '10': 1233,
-        '11': 2334,
-        '12': 23
-      },
-      year: 2014
-    }
-  ])
-  .value('$window', {
-    chrome: {
-      storage: {
-        local: {
-          get: function() {},
-          set: function() {},
-          clear: function() {},
-          remove: function() {}
-        }
-      },
-      i18n: {
-        getMessage: function() {}
-      }
-    }
-  });
+  .value('stockData', {
+    'countDate': '2014-05-23T00:00:00.000Z',
+    'created': '2014-05-23T08:34:18.815Z',
+    'dateSynced': '2014-05-23T08:34:51.135Z',
+    'facility': 'a6ef2104-45bb-438c-80b8-21b4cb7d43bc',
+    'isComplete': 0,
+    'lastPosition': 0,
+    'modified': '2014-05-23T08:34:51.145Z',
+    'unopened': {
+        '075bd789-4b29-4033-80b6-4f834e602628': 181,
+        '756fe956-aaad-4114-93fc-43199d86e59d': 211,
+        'abf5f2fc-056a-45cc-b7b7-553a09c927d7': 1255,
+        'dfe5b135-12b8-4da0-ad39-b54e864f5663': 863,
+        'f97be2aa-d5b6-4560-8f31-5a559fb80567': 288
+    },
+    'uuid': '84af3153-dc97-409a-a157-9712e5459696'
+});

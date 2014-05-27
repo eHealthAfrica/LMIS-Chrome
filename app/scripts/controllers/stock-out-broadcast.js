@@ -33,79 +33,79 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         return appConfigService.getProductTypes();
       }
     },
-    controller: function($scope,appConfig, notificationService, $log, stockOutBroadcastFactory, $state, alertsFactory,
+    controller: 'MultiStockOutBroadcastCtrl'
+  });
+}).controller('MultiStockOutBroadcastCtrl', function($scope,appConfig, notificationService, $log, stockOutBroadcastFactory, $state, alertsFactory,
                                                  i18n, facilityStockListProductTypes, $stateParams){
 
-      $scope.productTypes = facilityStockListProductTypes;
+  $scope.productTypes = facilityStockListProductTypes;
 
-      $scope.urlParams = ($stateParams.productList !== null) ? ($stateParams.productList).split(',') : $stateParams.productList;
+  $scope.urlParams = ($stateParams.productList !== null) ? ($stateParams.productList).split(',') : $stateParams.productList;
 
-      var filteredProduct = facilityStockListProductTypes.filter(function (element) {
-        return $scope.urlParams.indexOf(element.uuid) !== -1;
-      });
-
-      $scope.filteredProduct = filteredProduct;
-      //used to hold stock out form data
-      $scope.stockOutForm = {
-        productType: filteredProduct,
-        facility: appConfig.appFacility,
-        isSubmitted: false
-      };
-
-      $scope.isSaving = false;
-
-      $scope.save = function () {
-
-        $scope.isSaving = true;
-        var saveAndBroadcastStockOut = function (productList) {
-          var stockOutList = [];
-          for (var i = 0; i < productList.length; i++) {
-            var stockOut = {
-              productType: productList[i],
-              facility: $scope.stockOutForm.facility
-            };
-            stockOutList.push(stockOut);
-          }
-          stockOutBroadcastFactory.saveBatch(stockOutList)
-              .then(function (result) {
-                for(var i = 0; i < result.length; i++){
-                  stockOutBroadcastFactory.broadcast(result[i]);
-                }
-                $scope.isSaving = false;
-                $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
-              }, function (reason) {
-                alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-                $log.error(reason);
-              })
-              .catch(function (reason) {
-                alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-                $log.error(reason);
-              });
-        };
-
-        var title = [];
-        for (var i = 0; i < filteredProduct.length; i++) {
-          title.push(filteredProduct[i].code);
-        }
-
-        var confirmationTitle = i18n('confirmStockOutHeader', title.join(', '));
-        var confirmationQuestion = i18n('dialogConfirmationQuestion');
-        var buttonLabels = [i18n('yes'), i18n('no')];
-
-        notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
-            .then(function (isConfirmed) {
-              if (isConfirmed === true) {
-                saveAndBroadcastStockOut(filteredProduct);
-              }
-            })
-            .catch(function (reason) {
-              $scope.isSaving = false;
-              $log.info(reason);
-            });
-      };
-
-    }
+  var filteredProduct = facilityStockListProductTypes.filter(function (element) {
+    return $scope.urlParams.indexOf(element.uuid) !== -1;
   });
+
+  $scope.filteredProduct = filteredProduct;
+  //used to hold stock out form data
+  $scope.stockOutForm = {
+    productType: filteredProduct,
+    facility: appConfig.appFacility,
+    isSubmitted: false
+  };
+
+  $scope.isSaving = false;
+
+  $scope.save = function () {
+
+    $scope.isSaving = true;
+    var saveAndBroadcastStockOut = function (productList) {
+      var stockOutList = [];
+      for (var i = 0; i < productList.length; i++) {
+        var stockOut = {
+          productType: productList[i],
+          facility: $scope.stockOutForm.facility
+        };
+        stockOutList.push(stockOut);
+      }
+      stockOutBroadcastFactory.saveBatch(stockOutList)
+          .then(function (result) {
+            for(var i = 0; i < result.length; i++){
+               stockOutBroadcastFactory.broadcast(result[i]);//sync in the background
+            }
+            $scope.isSaving = false;
+            $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
+          }, function (reason) {
+            alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+            $log.error(reason);
+          })
+          .catch(function (reason) {
+            alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+            $log.error(reason);
+          });
+    };
+
+    var title = [];
+    for (var i = 0; i < filteredProduct.length; i++) {
+      title.push(filteredProduct[i].code);
+    }
+
+    var confirmationTitle = i18n('confirmStockOutHeader', title.join(', '));
+    var confirmationQuestion = i18n('dialogConfirmationQuestion');
+    var buttonLabels = [i18n('yes'), i18n('no')];
+
+    notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
+        .then(function (isConfirmed) {
+          if (isConfirmed === true) {
+            saveAndBroadcastStockOut(filteredProduct);
+          }
+        })
+        .catch(function (reason) {
+          $scope.isSaving = false;
+          $log.info(reason);
+        });
+  };
+
 }).controller('StockOutBroadcastCtrl', function($scope,appConfig, $log, stockOutBroadcastFactory, $state, alertsFactory,
                                                 $modal, i18n, facilityStockListProductTypes, notificationService){
 
