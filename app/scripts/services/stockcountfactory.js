@@ -157,8 +157,7 @@ angular.module('lmisChromeApp')
        * @returns {string}
        */
       productReadableName: function(productObject, index){
-        var productName = this.currentProductObject(productObject, index).name;
-        return utility.getReadableProfileName(productName);
+        return load.currentProductObject(productObject, index);
       },
       /**
        *
