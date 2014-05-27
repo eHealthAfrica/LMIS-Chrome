@@ -23,7 +23,8 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
    */
   var broadcastStockOut = function (stockOut) {
     var deferred = $q.defer();
-    syncService.syncItem(storageService.STOCK_OUT, stockOut).
+    var allowMultipleSync = true;
+    syncService.syncItem(storageService.STOCK_OUT, stockOut, allowMultipleSync).
         then(function (result) {
           deferred.resolve(result);
         })
