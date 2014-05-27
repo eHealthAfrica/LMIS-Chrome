@@ -30,9 +30,6 @@
       ]
     }
   },
-  "web_accessible_resources": [
-    "images/*.*"
-  ],
   "default_locale": "en",
   "author": "eHealth Africa"
 }
