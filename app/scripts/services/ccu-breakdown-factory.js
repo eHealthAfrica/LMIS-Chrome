@@ -16,7 +16,7 @@ angular.module('lmisChromeApp')
       var saveAndSendCcuBreakdownReport = function (ccuBreakdownReport) {
         var deferred = $q.defer();
         saveCcuBreakdownReport(ccuBreakdownReport)
-            .then(function () {
+            .then(function (saveResult) {
               syncService.syncItem(storageService.CCU_BREAKDOWN, ccuBreakdownReport)
                   .then(function (syncResult) {
                     deferred.resolve(syncResult);
@@ -24,11 +24,11 @@ angular.module('lmisChromeApp')
                     //online syncing failed, send offline sms alert.
                     var msg = generateSmsMsg(ccuBreakdownReport);
                     notificationService.sendSms(notificationService.alertRecipient, msg)
-                        .then(function (result) {
-                          deferred.resolve(result);
+                        .then(function (smsResult) {
+                          deferred.resolve(smsResult);
                         })
-                        .catch(function (smsError) {
-                          deferred.reject(smsError);
+                        .catch(function () {
+                          deferred.resolve(saveResult);
                         });
                   });
             }).catch(function (reason) {
