@@ -21,7 +21,7 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
     } else {
       var msg = 'stkOut:'+stockOut.uuid+';facility:'+stockOut.facility.uuid+';prodType:'+stockOut.productType.uuid;
       var smsPromise = notificationService.sendSms(notificationService.alertRecipient, msg);
-      var pendingSyncRecord = { dbName: storageService.STOCK_OUT, uuid: so.uuid };
+      var pendingSyncRecord = { dbName: storageService.STOCK_OUT, uuid: stockOut.uuid };
       smsPromise.finally(function(){
         //update pending sync record in the background
         syncService.addToPendingSync(pendingSyncRecord);
