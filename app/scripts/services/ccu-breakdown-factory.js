@@ -3,43 +3,35 @@
 angular.module('lmisChromeApp')
     .factory('ccuBreakdownFactory', function ($q, storageService, syncService, $window, notificationService) {
 
-      var saveCcuBreakdownReport = function(ccuBreakdownReport){
+      var saveCcuBreakdownReport = function (ccuBreakdownReport) {
         return storageService.save(storageService.CCU_BREAKDOWN, ccuBreakdownReport);
       };
 
-      var generateSmsMsg = function(ccuBreakdownReport){
-        var msg = 'ccuBrk:'+ccuBreakdownReport.uuid+';'+'fac:'+ccuBreakdownReport.facility.uuid+
-            ';ccuId:'+ccuBreakdownReport.ccuProfile.dhis2_modelid;
+      var generateSmsMsg = function (ccuBreakdownReport) {
+        var msg = 'ccuBrk:' + ccuBreakdownReport.uuid + ';' + 'fac:' + ccuBreakdownReport.facility.uuid +
+            ';ccuId:' + ccuBreakdownReport.ccuProfile.dhis2_modelid;
         return msg;
       };
 
-      var saveAndSendCcuBreakdownReport = function(ccuBreakdownReport){
+      var saveAndSendCcuBreakdownReport = function (ccuBreakdownReport) {
         var deferred = $q.defer();
         saveCcuBreakdownReport(ccuBreakdownReport)
-            .then(function(result){
-              if (typeof result !== 'undefined') {
-                ccuBreakdownReport.uuid = result;
-                //broadcast CCU breakdown report in the background
-                if (!$window.navigator.onLine) {
-                  var msg = generateSmsMsg(ccuBreakdownReport);
-                  //TODO: abstract this to a syncService function that sends sms if device is offline and update pending sync list
-                  var smsPromise = notificationService.sendSms(notificationService.alertRecipient, msg);
-                  var pendingSyncRecord = { dbName: storageService.CCU_BREAKDOWN, uuid: ccuBreakdownReport.uuid };
-                  smsPromise.finally(function () {
-                    //update pending sync record in the background
-                    storageService.save(storageService.PENDING_SYNCS, pendingSyncRecord);
+            .then(function () {
+              syncService.syncItem(storageService.CCU_BREAKDOWN, ccuBreakdownReport)
+                  .then(function (syncResult) {
+                    deferred.resolve(syncResult);
+                  }).catch(function () {
+                    //online syncing failed, send offline sms alert.
+                    var msg = generateSmsMsg(ccuBreakdownReport);
+                    notificationService.sendSms(notificationService.alertRecipient, msg)
+                        .then(function (result) {
+                          deferred.resolve(result);
+                        })
+                        .catch(function (smsError) {
+                          deferred.reject(smsError);
+                        });
                   });
-                }else{
-                  syncService.syncItem(storageService.CCU_BREAKDOWN, ccuBreakdownReport)
-                      .then(function (syncResult) {
-                        console.log('ccu breakdown as synced successfully ' + syncResult);
-                      }).catch(function (reason) {
-                        console.log(reason);
-                      });
-                }
-              }
-              deferred.resolve(result);
-            }).catch(function(reason){
+            }).catch(function (reason) {
               deferred.reject(reason);
             });
         return deferred.promise;
