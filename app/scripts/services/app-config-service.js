@@ -180,6 +180,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   this.getAppFacilityProfileByEmail = function(email){
     var deferred = $q.defer();
     var REMOTE = config.api.url + '/' + FACILITY_PROFILE_DB;
+    //TODO: refactor retrieval of remote db record to syncService function.
     var remoteDB = pouchdb.create(REMOTE);
     remoteDB.info()
         .then(function () {
@@ -253,6 +254,28 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       .catch(function(reason){
         deferred.reject(reason);//resolves empty facilityStockListProductTypes
       });
+    return deferred.promise;
+  };
+
+  this.updateAppConfigFromRemote = function(){
+    var deferred = $q.defer();
+    this.getCurrentAppConfig()
+        .then(function(appConfig){
+          if(typeof appConfig === 'undefined'){
+            deferred.reject('local copy of appConfig does not exist.');
+          }else{
+           syncService.updateFromRemote(storageService.APP_CONFIG, appConfig)
+               .then(function(result){
+                 deferred.resolve(result);
+               })
+               .catch(function(reason){
+                 deferred.reject(reason);
+               });
+          }
+        })
+        .catch(function(reason){
+          deferred.reject(reason);
+        })
     return deferred.promise;
   };
 
