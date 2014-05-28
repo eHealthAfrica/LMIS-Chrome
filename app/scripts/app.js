@@ -29,17 +29,12 @@ angular.module('lmisChromeApp', [
     //load fixtures if not loaded yet.
     storageService.loadFixtures().then(function(){
       //trigger background syncing after loading fixtures.
-      syncService.canConnect()
-          .then(function(result){
-            if(result === true){
-              syncService.backgroundSyncingOfPendingRecords()
-                  .finally(function(){
-                    console.log('background syncing trigger on start up!');
-                  });
-            }
+      syncService.backgroundSync()
+          .finally(function () {
+            console.log('background syncing trigger on start up has been completed!');
           });
-      storageService.getAll().then(function(data){
-        console.log('finished loading: '+(Object.keys(data)).join('\n'));
+      storageService.getAll().then(function (data) {
+        console.log('finished loading: ' + (Object.keys(data)).join('\n'));
       });
     });
 
