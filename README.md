@@ -11,7 +11,7 @@
 [codeclimate-url]: https://codeclimate.com/github/eHealthAfrica/LMIS-Chrome
 [codeclimate-image]: https://codeclimate.com/github/eHealthAfrica/LMIS-Chrome.png
 
-> LMIS Chrome packaged app
+> User centered medical supply management
 
 ## Usage
 
