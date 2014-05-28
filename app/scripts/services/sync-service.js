@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').service('syncService', function ($q, storageService, pouchdb, config, $window) {
+angular.module('lmisChromeApp').service('syncService', function ($q, storageService, pouchdb, $rootScope, config, $window) {
 
   var isSyncing = false;
   var DEVICE_OFFLINE_ERR_MSG = 'device is not online, check your internet connection settings.';
@@ -39,7 +39,10 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
     }, function () {
       db.put(item, item.uuid)
       .then(function (result) {
-        updateItemKeysAndUpdateLocalCopy(dbName, item, result); //FIXME: resolve this promise and return it.
+        updateItemKeysAndUpdateLocalCopy(dbName, item, result)
+            .finally(function(){
+              $rootScope.$$phase || $rootScope.$digest();//update view.
+            }); //FIXME: resolve this promise and return it.
         deferred.resolve(result);
       }, function (error) {
         deferred.reject(error);
@@ -49,8 +52,11 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
     return deferred.promise;
   };
 
-  this.syncItem = function(dbName, item){
+  this.syncItem = function(dbName, item, allowMultipleSync){
     var deferred = $q.defer();
+    if(typeof allowMultipleSync !== 'undefined'){
+      isSyncing  = allowMultipleSync;
+    }
     if (isSyncing) {
       deferred.reject('Syncing is already in progress');
     }else if(!$window.navigator.onLine){

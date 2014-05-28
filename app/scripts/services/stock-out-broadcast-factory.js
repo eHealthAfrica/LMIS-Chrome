@@ -23,7 +23,8 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
     };
 
     if ($window.navigator.onLine) {
-      return syncService.syncItem(storageService.STOCK_OUT, so);
+      var allowMultipleSync = true;
+      return syncService.syncItem(storageService.STOCK_OUT, stockOut, allowMultipleSync);
     } else {
       var msg = 'stkOut:'+so.uuid+';fac:'+so.facility+';prodtype:'+so.productType;
       return notificationService.sendSms(notificationService.alertRecipient, msg);

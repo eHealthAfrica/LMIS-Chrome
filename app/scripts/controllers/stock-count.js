@@ -122,7 +122,7 @@ angular.module('lmisChromeApp')
     }
 
     var updateUIModel = function(){
-      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
+      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step).name;
       $scope.productProfileUom =
           $scope.facilityProducts[$scope.facilityProductsKeys[$scope.step]].product.base_uom.symbol;
       $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
