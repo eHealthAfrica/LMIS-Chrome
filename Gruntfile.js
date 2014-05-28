@@ -363,10 +363,10 @@ module.exports = function(grunt) {
 
     bumpAndroid: {
       options: {
-        files: ['app/manifest.mobile.json'],
-        commit: true,
-        commitMessage: 'Bump Android version code to v%VERSION%',
-        commitFiles: ['app/manifest.mobile.json'],
+        files: [
+          'app/manifest.mobile.json'
+        ],
+        commit: false,
         createTag: false,
         push: false
       }
