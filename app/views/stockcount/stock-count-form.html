@@ -212,8 +212,8 @@
                 <ng-pluralize count="stockCount.unopened[productProfile.uuid]"
                               when="
                       {
-                      '1': '{{ ((productProfile.presentation).uom).name }}',
-                      'other': '{{ ((productProfile.presentation).uom).name }}s'}">
+                      '1': '{{ (((productProfile).product).base_uom).symbol }}',
+                      'other': '{{ (((productProfile).product).base_uom).symbol }}s'}">
                 </ng-pluralize>
               </span>
                           </td>
