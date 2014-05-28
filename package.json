@@ -1,7 +1,37 @@
 {
   "name": "lmis-chrome",
+  "description": "User centered medical supply management",
   "version": "0.9.0",
+  "homepage": "https://github.com/eHealthAfrica/LMIS-Chrome",
+  "author": {
+    "name": "eHealth Africa",
+    "url": "http://ehealthafrica.org"
+  },
+  "license": "ISC",
   "private": true,
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "scripts": {
+    "test": "grunt travis",
+    "test-watch": "./node_modules/karma/bin/karma start --autoWatch true --singleRun false"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eHealthAfrica/LMIS-Chrome.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eHealthAfrica/LMIS-Chrome/issues"
+  },
+  "keywords": [
+    "lmis",
+    "chrome",
+    "ehealth"
+  ],
   "dependencies": {},
   "devDependencies": {
     "gift": "^0.3.0",
@@ -37,32 +67,5 @@
     "load-grunt-tasks": "~0.4.0",
     "semver": "^2.2.1",
     "time-grunt": "~0.3.1"
-  },
-  "engines": {
-    "node": "0.10.x"
-  },
-  "scripts": {
-    "test": "grunt travis",
-    "test-watch": "./node_modules/karma/bin/karma start --autoWatch true --singleRun false"
-  },
-  "description": "LMIS Chrome packaged app",
-  "main": "Gruntfile.js",
-  "directories": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/eHealthAfrica/LMIS-Chrome.git"
-  },
-  "keywords": [
-    "lmis",
-    "chrome",
-    "ehealth"
-  ],
-  "author": "eHealth Africa <http://ehealthafrica.org>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/eHealthAfrica/LMIS-Chrome/issues"
-  },
-  "homepage": "https://github.com/eHealthAfrica/LMIS-Chrome"
+  }
 }
