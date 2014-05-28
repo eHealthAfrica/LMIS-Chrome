@@ -266,6 +266,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
           }else{
            syncService.updateFromRemote(storageService.APP_CONFIG, appConfig)
                .then(function(result){
+                 cache.remove(storageService.APP_CONFIG);//clear cache
                  deferred.resolve(result);
                })
                .catch(function(reason){
