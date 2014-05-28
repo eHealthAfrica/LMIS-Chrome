@@ -1,8 +1,11 @@
-language: node_js
+language: android
 node_js:
   - '0.10'
 before_script:
   - 'npm install -g bower grunt-cli'
   - 'bower install'
+script:
+  - 'npm test'
+after_script: './scripts/build.sh'
 notifications:
   flowdock: 232485f7661e644ae5878944c2597042
