@@ -1,0 +1,10 @@
+--- config.xml	2014-05-28 22:38:01.000000000 +0100
++++ config.xml-new	2014-05-28 22:37:55.000000000 +0100
+@@ -8,6 +8,7 @@
+     <preference name="StatusBarBackgroundColor" value="#000000" />
+     <preference name="iosPersistentFileLocation" value="Library" />
+     <preference name="AndroidPersistentFileLocation" value="Internal" />
++    <preference name="Notification" value="org.apache.cordova.Notification"/>
+     <content src="plugins/org.chromium.bootstrap/chromeapp.html" />
+     <access origin="http://lomis.ehealth.org.ng/*" />
+     <access origin="http://dev.lomis.ehealth.org.ng/*" />
