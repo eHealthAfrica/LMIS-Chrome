@@ -45,7 +45,7 @@
     "test": "grunt travis",
     "test-watch": "./node_modules/karma/bin/karma start --autoWatch true --singleRun false"
   },
-  "description": "LMIS Chrome packaged app",
+  "description": "User centered medical supply management",
   "main": "Gruntfile.js",
   "directories": {
     "test": "test"
