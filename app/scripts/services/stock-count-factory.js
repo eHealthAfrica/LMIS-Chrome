@@ -302,8 +302,8 @@ angular.module('lmisChromeApp')
        * @param scope
        * @returns {boolean}
        */
-      missingEntry: function(date, scope){
-        var dueDateInfo = getDueDateInfo(scope.countInterval, scope.reminderDay, date);
+      missingEntry: function(date, scope, appConfig){
+        var dueDateInfo = getDueDateInfo(appConfig.stockCountInterval, appConfig.reminderDay, date);
 
         if(angular.isUndefined(scope.stockCountByDate[date])){
           var validateDate = ((isoDate(date) === isoDate()) ||
@@ -318,9 +318,9 @@ angular.module('lmisChromeApp')
        *
        * @param scope
        */
-      stockCountByIntervals: function(scope){
-        var dueDateInfo = getDueDateInfo(scope.countInterval, scope.reminderDay);
-        var lastDate = getLastDate(scope.dateActivated, scope.reminderDay, dueDateInfo.interval);
+      stockCountByIntervals: function(scope, appConfig){
+        var dueDateInfo = getDueDateInfo(appConfig.stockCountInterval, appConfig.reminderDay);
+        var lastDate = getLastDate(appConfig.dateActivated, appConfig.reminderDay, dueDateInfo.interval);
         var dates = getFirstDate(dueDateInfo);
         while(dates.length < scope.maxList){
           dueDateInfo.currentReminderDate = new Date(dueDateInfo.currentReminderDate.getTime() - dueDateInfo.interval);
@@ -379,21 +379,22 @@ angular.module('lmisChromeApp')
         /**
          * this function sets the edit status for selected stock count detail
          * @param date
-         * @param scope
+         * @param appConfig
          */
-        editStatus: function(scope, date){
+        editStatus: function(date, appConfig){
           // if the selected stock count date is not equals to today, then check if the last day of the
           // week the date fell is less than today and the count interval must not be daily
-
-          if(isoDate() !== isoDate(scope.stockCount.countDate)){
-            var dueDateInfo = getDueDateInfo(scope.countInterval, scope.reminderDay, date);
+          var editOff = true;
+          if(isoDate() !== isoDate(date)){
+            var dueDateInfo = getDueDateInfo(appConfig.stockCountInterval, appConfig.reminderDay, date);
             var validateDate = (
                   isoDate(dueDateInfo.lastCountDate.toJSON()) === isoDate(date) &&
                   dueDateInfo.currentReminderDate.getTime() > new Date().getTime()) ||
-                  ((isoDate(dueDateInfo.lastDay.toJSON()) >= isoDate()) && scope.countInterval !== 1
+                  ((isoDate(dueDateInfo.lastDay.toJSON()) >= isoDate()) && appConfig.stockCountInterval !== 1
                 );
-            scope.editOff = (!validateDate) ;
+            editOff = (!validateDate);
           }
+          return editOff;
         }
       }
     };
