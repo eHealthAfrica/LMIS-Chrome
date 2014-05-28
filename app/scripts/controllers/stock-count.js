@@ -16,9 +16,6 @@ angular.module('lmisChromeApp')
           },
           stockCountByDate: function(stockCountFactory){
             return stockCountFactory.get.stockCountListByDate();
-          },
-          productProfiles: function(stockCountFactory){
-            return stockCountFactory.get.productProfile();
           }
         },
         controller: 'StockCountHomeCtrl'
@@ -28,7 +25,7 @@ angular.module('lmisChromeApp')
         data:{
           label:'Stock Count Form'
         },
-        url:'/stockCountForm?facility&reportMonth&reportYear&reportDay&countDate&productKey',
+        url:'/stockCountForm?facility&reportMonth&reportYear&reportDay&countDate&productKey&detailView&editOff',
         templateUrl: 'views/stockcount/stock-count-form.html',
         controller: 'StockCountFormCtrl',
         resolve:{
@@ -39,40 +36,24 @@ angular.module('lmisChromeApp')
             return stockCountFactory.productType();
           }
         }
-      })
-      .state('syncStockCount', {
-        parent: 'root.index',
-        abstract: true,
-        templateUrl: 'views/stockcount/sync.html'
       });
   })
-  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, productProfiles, $state){
-    $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
-    $scope.productProfiles = productProfiles;
+  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state){
     $scope.stockCountByDate = stockCountByDate;
-    $scope.facilityObject = appConfig.appFacility;
-    $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
-    $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
-
     $scope.monthList = stockCountFactory.monthList;
-    $scope.dateActivated = appConfig.dateActivated;
-    $scope.countInterval = appConfig.stockCountInterval;
-    $scope.reminderDay= appConfig.reminderDay;
-    $scope.maxList = 10;
 
-    $scope.dateList = stockCountFactory.get.stockCountByIntervals($scope);
+    $scope.dateList = stockCountFactory.get.stockCountByIntervals(appConfig);
 
     $scope.missedEntry = function(date){
-      return stockCountFactory.get.missingEntry(date, $scope);
+      return stockCountFactory.get.missingEntry(date, stockCountByDate, appConfig);
     };
     $scope.takeAction = function(date){
       var missed = $scope.missedEntry(date);
       stockCountFactory.getStockCountByDate(date).then(function(stockCount){
         if(stockCount !== null){
           $scope.stockCount = stockCount;
-          $scope.detailView = true;
-          stockCountFactory.set.stock.editStatus($scope, date);
-          $scope.mergedList = stockCountFactory.get.mergedStockCount(stockCount.unopened, $scope.facilityProductsKeys);
+          $scope.editOff = stockCountFactory.set.stock.editStatus(date, appConfig);
+          $state.go('stockCountForm', {detailView: true, countDate: date, editOff: $scope.editOff});
         }
         else if(!missed){
           $state.go('stockCountForm', {countDate: date});
@@ -83,6 +64,7 @@ angular.module('lmisChromeApp')
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, alertsFactory,
                                              $stateParams, appConfig, appConfigService, productType, cacheService,
                                              syncService, utility, $rootScope){
+    //TODO: refactor entire stock count controller to simpler more readable controller
     var now = new Date();
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
@@ -102,13 +84,12 @@ angular.module('lmisChromeApp')
     $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
     $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
 
-    $scope.preview = false;
+    $scope.preview = $scope.detailView = $stateParams.detailView;
     $scope.editOn = false;
-
+    $scope.editOff = ($stateParams.editOff === 'true');
 
     $scope.stockCount = {};
     $scope.stockCount.unopened = {};
-    $scope.stockCount.countDate = '';
     $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
     $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
     $scope.productKey = $scope.facilityProductsKeys[$scope.step];
@@ -118,7 +99,7 @@ angular.module('lmisChromeApp')
       $scope.maxStep =  $scope.facilityProductsKeys.length-1;
     }
     else{
-      $scope.maxStep =0;
+      $scope.maxStep = 0;
     }
 
     var updateUIModel = function(){
@@ -126,14 +107,6 @@ angular.module('lmisChromeApp')
       $scope.productProfileUom =
           $scope.facilityProducts[$scope.facilityProductsKeys[$scope.step]].product.base_uom.symbol;
       $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
-    };
-
-    $scope.edit = function(key){
-      $scope.step = $scope.facilityProductsKeys.indexOf(key);
-      $scope.productKey = key;
-      $scope.preview = false;
-      $scope.editOn = true;
-      updateUIModel();
     };
 
     updateUIModel();
@@ -188,12 +161,7 @@ angular.module('lmisChromeApp')
               $scope.reportYear
             ].join(' ');
             $scope.isSaving = false;
-            $state.go('home.index.home.mainActivity', {
-              'facility': $scope.facilityUuid,
-              'reportMonth': $scope.reportMonth,
-              'reportYear': $scope.reportYear,
-              'stockResult': msg
-            });
+            $state.go('home.index.home.mainActivity', {'stockResult': msg});
 
             $scope.stockCount.uuid = result[0];//pick one uuid
             syncService.syncItem(DB_NAME, $scope.stockCount)
@@ -210,6 +178,16 @@ angular.module('lmisChromeApp')
       }
     };
 
+    $scope.edit = function(key){
+      if($scope.editOff === false){
+        $scope.step = $scope.facilityProductsKeys.indexOf(key);
+        $scope.productKey = key;
+        $scope.preview = false;
+        $scope.editOn = true;
+        updateUIModel();
+      }
+    };
+
     $scope.finalSave = function(){
       $scope.isSaving = true;
       if('stockCount' in $scope) {
@@ -218,8 +196,8 @@ angular.module('lmisChromeApp')
       }
       $scope.redirect = true;
       $scope.save();
-
     };
+
     $scope.changeState = function(direction){
       $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
