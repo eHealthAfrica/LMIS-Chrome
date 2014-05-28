@@ -98,8 +98,8 @@ angular.module('lmisChromeApp')
       };
 
       /**
-       * This function removes a given record with the given uuid from the given tableName and return True
-       * if it was done successfully else rejects with reason why removeData was failed.
+       * This function removes a given record with the given uuid from the given tableName and returns True
+       * if it was done successfully else rejects with reason why removeData failed.
        *
        * @param tableName
        * @param uuid
