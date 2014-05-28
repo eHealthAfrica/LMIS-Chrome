@@ -9,6 +9,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
   this.SYNC_ALREADY_IN_PROGRESS = syncAlreadyInProgress;
   var pendingSyncRecordNotFound = 'Pending Sync record does not exist!';
   this.PENDING_SYNC_RECORD_NOT_FOUND = pendingSyncRecordNotFound;
+  var sameRevisionNoMsg = 'both local and remote copy have same revision number.';
 
   var getLocalDb = function (dbUrl) {
     return pouchdb.create(dbUrl);
@@ -256,7 +257,6 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
    */
   this.backgroundSyncingOfPendingRecords = function () {
     var outerDeferred = $q.defer();
-
     var syncNextPendingRecord = function (pendingSyncs, index) {
       var innerDeferred = $q.defer();
       var nextIndex = index - 1;
@@ -287,6 +287,45 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
           outerDeferred.reject(error);
         });
     return outerDeferred.promise;
+  };
+
+  /**
+   *
+   * @param dbName{String} - database name of the record to be updated.
+   * @param record{Object} - object with uuid as one of its properties.
+   * @returns {promise|Function|promise|promise|promise|*}
+   */
+  this.updateFromRemote = function(dbName, record){
+    if(!record.hasOwnProperty('uuid')){
+      throw 'record to be updated remotely does not have a uuid.';
+    }
+    var deferred = $q.defer();
+    var remoteDb = getRemoteDb(dbName);
+    remoteDb.info()
+        .then(function () {
+          remoteDb.get(record.uuid)
+              .then(function(result){
+                //TODO: discuss if it is possible that remote and local copy record structure will be different.
+                if(record._rev !== result._rev){
+                  storageService.update(dbName, result)
+                      .then(function(saveResult){
+                        deferred.resolve(saveResult);
+                      })
+                      .catch(function(saveError){
+                        deferred.reject(saveError);
+                      });
+                }else{
+                  deferred.reject(sameRevisionNoMsg);
+                }
+              })
+              .catch(function(reason){
+                deferred.reject(reason);
+              });
+        })
+        .catch(function (dbConError) {
+          deferred.reject(dbConError);
+        });
+    return deferred.promise;
   };
 
 });
