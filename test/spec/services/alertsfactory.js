@@ -117,18 +117,13 @@ describe('Service: alertsFactory', function() {
     });
   });
 
-  /*
-  //FIXME: create a working test for persistent alerts
-
   it('should be able to create persistent alerts', function() {
-    inject(function($timeout) {
-
-      alertsFactory.info('Test', {persistent: true});
-      expect(scope.alerts.length).toEqual(1);
-      $timeout.flush();
-      expect(scope.alerts.length).toEqual(1);
-    });
-  });*/
+    jasmine.Clock.useMock()
+    alertsFactory.info('Test', {persistent: true});
+    expect(scope.alerts.length).toEqual(1);
+    jasmine.Clock.tick(5001)
+    expect(scope.alerts.length).toEqual(1);
+  });
 
   describe('levels', function() {
     it('should expose alert levels', function() {
