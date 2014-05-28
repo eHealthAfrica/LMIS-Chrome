@@ -3,7 +3,10 @@
   "description": "User centered medical supply management",
   "version": "0.9.0",
   "homepage": "https://github.com/eHealthAfrica/LMIS-Chrome",
-  "author": "eHealth Africa <http://ehealthafrica.org>",
+  "author": {
+    "name": "eHealth Africa",
+    "url": "http://ehealthafrica.org"
+  },
   "license": "ISC",
   "private": true,
   "main": "Gruntfile.js",
