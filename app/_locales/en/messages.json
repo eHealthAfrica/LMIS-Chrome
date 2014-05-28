@@ -311,6 +311,12 @@
   "discrepancyThreshold": {
     "message": "Discrepancy Threshold"
   },
+  "stockCountErrorMsg": {
+    "message": "stock count value is invalid, at least enter Zero '0' to proceed"
+  },
+  "discardErrorMsg": {
+    "message": "please fix errors in reason selection"
+  },
   "stockCountSaved": {
     "message": "Stock count saved"
   },

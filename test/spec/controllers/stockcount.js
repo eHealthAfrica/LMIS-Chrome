@@ -1,21 +1,17 @@
 'use strict';
 
-describe('StockCountFormCtrl', function(){
-  var scope;
-  var ctrl;
-  var state;
-  var stockCount;
-  var appConfig;
-  var productType;
+describe('Controller: StockCountFormCtrl', function(){
+  var scope, ctrl, state, stockCount, appConfig, productType, _i18n;
 
-  beforeEach(module('lmisChromeApp', 'appConfigMocks', 'stockCountMocks', function($provide){
+  beforeEach(module('lmisChromeApp', 'appConfigMocks', 'stockCountMocks', 'i18nMocks', function($provide){
     //$provide.value('appConfig',{});
     $provide.value('productType', {});
   }));
 
   beforeEach(inject(function($controller, $state, _stockCountFactory_, _productType_, _alertsFactory_, appConfigMock,
-                             stockData){
+                             stockData, i18n){
     scope = {};
+    _i18n = i18n;
     stockCount = stockData;
     state = $state;
     productType = _productType_;
@@ -42,7 +38,7 @@ describe('StockCountFormCtrl', function(){
     expect(scope.step).toEqual(1);
   });
 
-  it('show change stock count last form position', function(){
+  it('should change stock count last form position', function(){
     scope.stockCount = stockCount;
     expect(scope.stockCount.lastPosition).toEqual(1);
     scope.changeState(1);
@@ -51,10 +47,11 @@ describe('StockCountFormCtrl', function(){
     expect(scope.stockCount.lastPosition).toEqual(2);
   });
 
-  it('should change set stock count object to complete', function(){
+  it('should set stock count object to complete', function(){
     scope.stockCount = stockCount;
     expect(scope.stockCount.isComplete).toEqual(0);
     scope.finalSave();
     expect(scope.stockCount.isComplete).toEqual(1);
   });
+
 });

@@ -1,11 +1,12 @@
 'use strict';
 
 describe('Service stockCountFactory', function(){
-  beforeEach(module('lmisChromeApp', 'stockCountMocks'));
+  beforeEach(module('lmisChromeApp', 'stockCountMocks', 'i18nMocks'));
 
   var stockCountFactory,
       stockCount,
-      scope;
+      scope,
+      _i18n;
    // Initialize the state
   beforeEach(inject(function($templateCache) {
     // Mock each template used by the state
@@ -30,10 +31,11 @@ describe('Service stockCountFactory', function(){
     });
   }));
   
-  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q){
+  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q, i18n){
     stockCountFactory = _stockCountFactory_;
     scope = $rootScope.$new();
     stockCount = stockData;
+    _i18n = i18n;
 
     spyOn(stockCountFactory, 'getStockCountByDate').andCallFake(function (date) {
       //TODO: re-write this when local storage and storageprovider mocks are completed.

@@ -331,7 +331,7 @@ angular.module('lmisChromeApp')
                 })
                 .catch(function(reason){
                   loadData(count - 1);
-                  console.log(reason);
+                  //console.log(reason); // stop showing logs during test
                 });
           }else{
             deferred.resolve(true);

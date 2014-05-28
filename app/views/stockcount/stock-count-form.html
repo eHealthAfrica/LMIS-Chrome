@@ -224,7 +224,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row" ng-show="!editOff">
                   <div class="col-xs-12">
                     <div class="btn-separator">
                       <div class="btn-group btn-group-justified">
@@ -241,6 +241,15 @@
                           </button>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" ng-show="editOff">
+                  <div class="col-xs-12">
+                    <div class="btn-separator-xs text-center">
+                      <a ui-sref="stockCountHome" ng-show="detailView" class="btn btn-default">
+                        <i class="fa fa-list"></i> Back to list
+                      </a>
                     </div>
                   </div>
                 </div>
