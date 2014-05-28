@@ -6,7 +6,6 @@
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-autoprefixer": "~0.7.2",
-    "grunt-bower-install": "~1.4.0",
     "grunt-bump": "0.0.14",
     "grunt-chrome-manifest": "^0.2.1",
     "grunt-concurrent": "~0.5.0",
@@ -29,6 +28,7 @@
     "grunt-rev": "~0.1.0",
     "grunt-svgmin": "~0.4.0",
     "grunt-usemin": "~2.1.0",
+    "grunt-wiredep": "^1.7.0",
     "jshint-stylish": "~0.1.5",
     "karma": "~0.12.1",
     "karma-coverage": "^0.2.0",
