@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, $log, syncService, $window, notificationService) {
+angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, syncService, $window, notificationService) {
+
   var saveStockOut = function (stockOut) {
     var deferred = $q.defer();
     storageService.save(storageService.STOCK_OUT, stockOut)
@@ -13,43 +14,56 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
     return deferred.promise;
   };
 
+  /**
+   * This function tries to sync stock-out alert if it fails, it sends sms alert.
+   * NB: syncItem updates pending sync record if sync fails #see syncService.syncItem for more detail.
+   *
+   * @param stockOut
+   * @returns {promise|Function|promise|promise|promise|*}
+   */
   var broadcastStockOut = function (stockOut) {
-    var so = {
-      uuid: stockOut.uuid,
-      facility: stockOut.facility.uuid,
-      productType: stockOut.productType.uuid,
-      created: stockOut.created,
-      modified: stockOut.modified
-    };
-
-    if ($window.navigator.onLine) {
-      var allowMultipleSync = true;
-      return syncService.syncItem(storageService.STOCK_OUT, stockOut, allowMultipleSync);
-    } else {
-      var msg = 'stkOut:'+so.uuid+';fac:'+so.facility+';prodtype:'+so.productType;
-      return notificationService.sendSms(notificationService.alertRecipient, msg);
-    }
-
-  };
-
-  var saveMultipleStockOut = function(stockOutList){
     var deferred = $q.defer();
-    storageService.insertBatch(storageService.STOCK_OUT, stockOutList)
-      .then(function(result){
-
-        deferred.resolve(result);
-      })
-      .catch(function(reason){
-        deferred.reject(reason);
-      });
+    var allowMultipleSync = true;
+    syncService.syncItem(storageService.STOCK_OUT, stockOut, allowMultipleSync).
+        then(function (result) {
+          deferred.resolve(result);
+        })
+        .catch(function (reason) {
+          //sync failed send sms alert
+          var msg = 'stkOut:' + stockOut.uuid + ';facility:' + stockOut.facility.uuid + ';prodType:' +
+              stockOut.productType.uuid;
+          notificationService.sendSms(notificationService.alertRecipient, msg)
+              .then(function (result) {
+                deferred.resolve(result);
+              })
+              .catch(function (reason) {
+                deferred.reject(reason);
+              });
+        });
     return deferred.promise;
   };
 
-  var getStockOut = function(){
+  var saveMultipleStockOut = function (stockOutList) {
     var deferred = $q.defer();
-    storageService.all(storageService.STOCK_OUT).then(function (result) {
-      deferred.resolve(result);
-    });
+    storageService.insertBatch(storageService.STOCK_OUT, stockOutList)
+        .then(function (result) {
+          deferred.resolve(result);
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
+    return deferred.promise;
+  };
+
+  var getStockOut = function () {
+    var deferred = $q.defer();
+    storageService.all(storageService.STOCK_OUT)
+        .then(function (result) {
+          deferred.resolve(result);
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
     return deferred.promise;
   };
 

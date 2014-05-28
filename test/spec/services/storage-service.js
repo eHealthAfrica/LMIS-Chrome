@@ -2,7 +2,7 @@
 
 describe('storageService', function () {
 
-  var deferred, storageService, chromeStorageApi, rootScope, templateCache, resolvedValue, record;
+  var deferred, storageService, chromeStorageApi, rootScope, templateCache, resolvedValue, record, $q;
 
   beforeEach(module('lmisChromeApp'));
 
@@ -30,12 +30,13 @@ describe('storageService', function () {
     });
   }));
 
-  beforeEach(inject(function (_storageService_, _$q_, _$rootScope_, _chromeStorageApi_, _$templateCache_){
+  beforeEach(inject(function (_storageService_, _$q_, _$rootScope_, _chromeStorageApi_){
     storageService = _storageService_;
     deferred = _$q_.defer();
     rootScope = _$rootScope_;
     chromeStorageApi = _chromeStorageApi_;
     record = { uuid: '1234-67615-901817', modified: new Date(), dateSynced: new Date() };
+    $q = _$q_;
   }));
 
   it('should be able to add new table to the chrome storage', function(){
@@ -187,6 +188,14 @@ describe('storageService', function () {
 
   it('i expect add record to throw exception when called with that that has no uuid', function(){
     expect(function(){  storageService.add('test', {nouuid: 'lomis'}); }).toThrow();
+  });
+
+  it('i expect removeRecord to call chromeStorage.get', function(){
+    var dbName = 'test';
+    spyOn(chromeStorageApi, 'get').andCallThrough();
+    storageService.removeRecord(dbName, '1');
+    expect(chromeStorageApi.get).toHaveBeenCalledWith(dbName);
+    //FIXME: test also that chromeStorage.set is called after deleting record
   });
 
 });

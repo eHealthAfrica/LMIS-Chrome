@@ -50,6 +50,7 @@ angular.module('lmisChromeApp')
       var surveyResponse = 'survey_response';
       var ccuProfile = 'dhis_ccei_fixture';
       var ccuBreakdown = 'ccu_breakdown';
+      var pendingSyncs = 'pending_syncs';
 
       /**
        * Add new table data to the chrome store.
@@ -93,6 +94,43 @@ angular.module('lmisChromeApp')
         }).catch(function(reason){
           deferred.reject(reason);
         });
+        return deferred.promise;
+      };
+
+      /**
+       * This function removes a given record with the given uuid from the given tableName and returns True
+       * if it was done successfully else rejects with reason why removeData failed.
+       *
+       * @param tableName
+       * @param uuid
+       * @returns {promise|Function|promise|promise|promise|*}
+       */
+      var removeRecordFromTable = function(tableName, uuid){
+        var deferred = $q.defer();
+        var tableObj = {};
+        getData(tableName)
+            .then(function(tableData){
+              if(typeof tableData !== 'undefined'){
+                if(typeof tableData[uuid] !== 'undefined'){
+                  delete tableData[uuid];
+                  tableObj[tableName] = tableData;
+                  chromeStorageApi.set(tableObj)
+                      .then(function () {
+                        deferred.resolve(true);
+                      })
+                      .catch(function (reason) {
+                        deferred.reject(reason);
+                      });
+                }else{
+                  deferred.reject('record with given uuid does not exist.');
+                }
+              }else{
+                deferred.reject('table does not exist.');
+              }
+            })
+            .catch(function(reason){
+              deferred.reject(reason);
+            });
         return deferred.promise;
       };
 
@@ -415,6 +453,7 @@ angular.module('lmisChromeApp')
         all: getAllFromTable,
         add: setData,
         get: getData,
+        removeRecord: removeRecordFromTable,
         getAll: getAllFromStore,
         remove: removeData, // removeFromChrome,
         clear: clearStorage, // clearChrome */
@@ -465,7 +504,8 @@ angular.module('lmisChromeApp')
         STOCK_OUT: stockOut,
         SURVEY_RESPONSE: surveyResponse,
         CCU_PROFILE: ccuProfile,
-        CCU_BREAKDOWN: ccuBreakdown
+        CCU_BREAKDOWN: ccuBreakdown,
+        PENDING_SYNCS: pendingSyncs
       };
 
     });

@@ -12,7 +12,7 @@ angular.module('lmisChromeApp')
       views: {
         'header': {
           templateUrl: 'views/index/header.html',
-          controller: function($scope, $window, i18n) {
+          controller: function($scope, $window, i18n, syncService, $interval) {
             var states = {
               online: i18n('online'),
               offline: i18n('offline')
@@ -31,6 +31,10 @@ angular.module('lmisChromeApp')
                   label: states[event]
                 };
                 $scope.$digest();
+
+                //trigger background syncing
+                syncService.persistentBackgroundSync();
+
               }, false);
             };
 
