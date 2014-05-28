@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "gift": "^0.3.0",
     "grunt": "~0.4.2",
     "grunt-autoprefixer": "~0.7.2",
     "grunt-bower-install": "~1.4.0",
+    "grunt-bump": "0.0.14",
     "grunt-chrome-manifest": "^0.2.1",
     "grunt-concurrent": "~0.5.0",
     "grunt-contrib-clean": "~0.5.0",
@@ -35,7 +35,6 @@
     "karma-jasmine": "~0.1.5",
     "karma-phantomjs-launcher": "~0.1.2",
     "load-grunt-tasks": "~0.4.0",
-    "semver": "^2.2.1",
     "time-grunt": "~0.3.1"
   },
   "engines": {

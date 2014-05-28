@@ -347,6 +347,18 @@ module.exports = function(grunt) {
         src: '<%= yeoman.app %>',
         dest: '<%= yeoman.dist %>'
       }
+    },
+
+    bump: {
+      options: {
+        files: [
+          'package.json',
+          'bower.json',
+          'app/manifest.json'
+        ],
+        commitFiles: '<%= bump.options.files %>',
+        pushTo: 'origin'
+      }
     }
   });
 
