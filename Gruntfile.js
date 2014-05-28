@@ -250,7 +250,8 @@ module.exports = function(grunt) {
               'images/{,*/}*.{webp}',
               '_locales/{,*/}*.json',
               'media/*',
-              'scripts/fixtures/*.json'
+              'scripts/fixtures/*.json',
+              'manifest.mobile.json'
             ]
           },
           {
