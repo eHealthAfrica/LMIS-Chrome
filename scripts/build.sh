@@ -9,7 +9,10 @@ have() { command -v "$1" >/dev/null; }
 info() { echo "$0: $1"; }
 error() { info "$1"; exit 1;}
 
+info "Running grunt build"
 grunt build
+
+info "Building Mobile Chrome App"
 have "cca" || npm install -g cca
 have "android" || error "Android SDK required"
 
@@ -22,8 +25,8 @@ cca plugin add $(< "$pwd/scripts/build/cca-plugins.txt")
 patch < "$pwd/scripts/build/config.patch"
 cca build
 
-apk="platforms/android/ant-build/LoMIS-debug.apk"
+info "Linking snapshot build"
+apk="$build/$app/platforms/android/ant-build/LoMIS-debug.apk"
 [[ -f "$apk" ]] || error "$apk does not exist"
-
 snapshot="snapshots/$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-mkdir -p "$snapshot" && ln -s "$apk" "$snaphot"
+mkdir -p "$snapshot" && ln -s "$apk" "$snapshot"
