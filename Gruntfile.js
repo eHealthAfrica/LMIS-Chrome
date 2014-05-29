@@ -367,7 +367,9 @@ module.exports = function(grunt) {
         files: [
           'app/manifest.mobile.json'
         ],
-        commit: false,
+        commit: true,
+        commitMessage: 'Bump Android version code to v%VERSION%',
+        commitFiles: '<%= bumpAndroid.options.files %>',
         createTag: false,
         push: false
       }
@@ -436,4 +438,15 @@ module.exports = function(grunt) {
     'test',
     'coveralls'
   ]);
+
+  grunt.registerTask('release', function(versionType) {
+    var bump = 'bump';
+    if(versionType) {
+      bump += ':' + versionType;
+    }
+    grunt.task.run([
+      'bumpAndroid',
+      bump
+    ]);
+  });
 };
