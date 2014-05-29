@@ -25,8 +25,10 @@ cca plugin add $(< "$pwd/scripts/build/cca-plugins.txt")
 patch < "$pwd/scripts/build/config.patch"
 cca build
 
-info "Linking snapshot build"
+info "Linking build"
 apk="$build/$app/platforms/android/ant-build/LoMIS-debug.apk"
 [[ -f "$apk" ]] || error "$apk does not exist"
-snapshot="snapshots/$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-mkdir -p "$snapshot" && ln -s "$apk" "$snapshot"
+
+[[ -z "$TRAVIS_TAG" ]] && buildType="releases" || buildType="snapshots"
+buildType="$buildType/$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+mkdir -p "$buildType" && ln -s "$apk" "$buildType"
