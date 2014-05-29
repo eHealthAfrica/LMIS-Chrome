@@ -21,3 +21,9 @@ cd "$build/$app"
 cca plugin add $(< "$pwd/scripts/build/cca-plugins.txt")
 patch < "$pwd/scripts/build/config.patch"
 cca build
+
+apk="platforms/android/ant-build/LoMIS-debug.apk"
+[[ -f "$apk" ]] || error "$apk does not exist"
+
+snapshot="snapshots/$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+mkdir -p "$snapshot" && ln -s "$apk" "$snaphot"
