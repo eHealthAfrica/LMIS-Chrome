@@ -20,5 +20,7 @@ deploy:
   local-dir: build/lomis/snapshots
   upload-dir: snapshots
   skip_cleanup: true
+  region: eu-west-1
   on:
     all_branches: true
+    repo: eHealthAfrica/LMIS-Chrome
