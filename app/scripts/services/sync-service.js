@@ -11,7 +11,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
   this.PENDING_SYNC_RECORD_NOT_FOUND = pendingSyncRecordNotFound;
   var sameRevisionNoMsg = 'both local and remote copy have same revision number.';
   var THIRTY_SECS_DELAY = 30 * 1000;//30 secs
-  var MAX_CONNECTION_ATTEMPT = 10;
+  var MAX_CONNECTION_ATTEMPT = 5;
 
   var getLocalDb = function (dbUrl) {
     return pouchdb.create(dbUrl);
