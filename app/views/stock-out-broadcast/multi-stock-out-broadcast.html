@@ -19,7 +19,7 @@
                       <tbody>
                         <tr ng-repeat="productType in filteredProduct">
                           <td>
-                            {{ productType.name }}
+                            {{ productType.code }}
                             <input type="hidden" ng-model="stockOutForm.productType[$index]">
                           </td>
                         </tr>
