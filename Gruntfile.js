@@ -137,7 +137,7 @@ module.exports = function(grunt) {
     },
 
     // Automatically inject Bower components into the app
-    'bowerInstall': {
+    wiredep: {
       target: {
         src: '<%= yeoman.app %>/index.html',
         ignorePath: '<%= yeoman.app %>/'
@@ -222,7 +222,7 @@ module.exports = function(grunt) {
 
     // Allow the use of non-minsafe AngularJS files. Automatically makes it
     // minsafe compatible so Uglify does not destroy the ng references
-    ngmin: {
+    ngAnnotate: {
       dist: {
         files: [{
           expand: true,
@@ -347,6 +347,18 @@ module.exports = function(grunt) {
         src: '<%= yeoman.app %>',
         dest: '<%= yeoman.dist %>'
       }
+    },
+
+    bump: {
+      options: {
+        files: [
+          'package.json',
+          'bower.json',
+          'app/manifest.json'
+        ],
+        commitFiles: '<%= bump.options.files %>',
+        pushTo: 'origin'
+      }
     }
   });
 
@@ -357,7 +369,7 @@ module.exports = function(grunt) {
 
     grunt.task.run([
       'clean:server',
-      'bowerInstall',
+      'wiredep',
       'ngconstant:development',
       'concurrent:server',
       'autoprefixer',
@@ -386,14 +398,14 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'bowerInstall',
+    'wiredep',
     'ngconstant:production',
     'chromeManifest:dist',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
     'concat',
-    'ngmin',
+    'ngAnnotate',
     'copy:dist',
     'cssmin',
     'uglify',

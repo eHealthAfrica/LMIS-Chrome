@@ -29,37 +29,6 @@
           </tr>
           </tbody>
         </table>
-        <button ng-show="detailView" class="btn btn-default" ng-click="detailView=!detailView" i18n="backToList">
-        </button>
-          <a class="btn btn-default" ui-sref="stockCountForm({countDate: stockCount.countDate})"
-           ng-show="detailView && !editOff">
-          <span><i class="fa fa-edit"></i></span>
-          <span i18n="edit"></span>
-        </a>
-        <table class="table table-bordered" ng-show="detailView">
-          <thead>
-          <tr>
-            <th i18n="stockItem"></th>
-            <th i18n="count"></th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr ng-repeat="productProfile in selectedProductProfiles">
-            <td ng-bind="productProfile.name"></td>
-            <td>
-              <span ng-bind="stockCount.unopened[productProfile.uuid]"></span>
-              <span>
-                <ng-pluralize count="stockCount.unopened[productProfile.uuid]"
-                              when="
-                      {
-                      '1': '{{ ((productProfile.presentation).uom).name }}',
-                      'other': '{{ ((productProfile.presentation).uom).name }}s'}">
-                </ng-pluralize>
-              </span>
-            </td>
-          </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   </div>
