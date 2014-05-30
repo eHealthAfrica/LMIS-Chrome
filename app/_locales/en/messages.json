@@ -466,11 +466,20 @@
       }
     }
   },
+  "item": {
+    "message": "item"
+  },
+  "items": {
+    "message": "items"
+  },
   "stockOutWarningMsg": {
-    "message": " $productQuantity$ items out of stock, press to send alert",
+    "message": " $productQuantity$ $itemName$ low on stock, press to send alert",
     "placeholders": {
       "productQuantity": {
         "content": "$1"
+      },
+      "itemName": {
+        "content": "$2"
       }
     }
   },

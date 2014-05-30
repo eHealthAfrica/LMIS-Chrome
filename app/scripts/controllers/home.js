@@ -230,12 +230,13 @@ angular.module('lmisChromeApp')
                   });
                 }
                 $scope.stockOutWarning = stockOutWarning;
-                $scope.stockOutWarningMsg = i18n('stockOutWarningMsg', (stockOutWarning.length).toString());
+                var items = (stockOutWarning.length > 1) ? i18n('items') : i18n('item');
+                $scope.stockOutWarningMsg = i18n('stockOutWarningMsg', [(stockOutWarning.length).toString(), items]);
                 //var format = d3.format(',.4f');
                 $scope.roundLegend = function(){
                   return function(d){
-                      return d3.round(d);
-                    };
+                    return d3.round(d);
+                  };
                 };
 
                 $scope.productTypesChart = dashboardfactory.chart(keys, values);
