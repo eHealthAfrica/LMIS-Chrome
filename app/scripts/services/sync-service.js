@@ -346,43 +346,6 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
     return deferred.promise;
   };
 
-//
-//  /**
-//   * This function makes MAX_CONNECTION_ATTEMPT attempts to to sync yet to be synced records.
-//   * @returns {promise|Function|promise|promise|promise|*}
-//   */
-//  this.persistentBackgroundSync = function(){
-//    var deferred = $q.defer();
-//    var counter = 0;
-//    var terminate = function(syncRequest){
-//      deferred.resolve(true); //True to show that max connection attempts or background has been completed.
-//      $interval.cancel(syncRequest);//cancel further interval fxn execution.
-//    };
-//    var syncRequest = $interval(function () {
-//      if (counter < MAX_CONNECTION_ATTEMPT) {
-//        canConnect()
-//            .then(function (result) {
-//              if (result === true && counter < MAX_CONNECTION_ATTEMPT) {
-//                counter = MAX_CONNECTION_ATTEMPT; //cancel further connection attempt
-//                backgroundSyncingOfPendingRecords()
-//                    .finally(function () {
-//                      terminate(syncRequest);
-//
-//                    });
-//              } else {
-//                counter = counter + 1;
-//              }
-//            })
-//            .catch(function () {
-//              counter = counter + 1;
-//            });
-//      } else {
-//        terminate(syncRequest);
-//      }
-//    }, THIRTY_SECS_DELAY);
-//    return deferred.promise;
-//  };
-
   /**
    *
    * @param dbName{String} - database name of the record to be updated.
