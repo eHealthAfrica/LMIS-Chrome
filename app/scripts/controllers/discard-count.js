@@ -16,59 +16,9 @@ angular.module('lmisChromeApp')
           },
           discardCountList: function(discardCountFactory){
             return discardCountFactory.get.allDiscardCount();
-          },
-          productProfiles: function(discardCountFactory){
-            return discardCountFactory.get.productProfile();
           }
         },
-        controller: function($scope, discardCountFactory, discardCountList, appConfig, productProfiles, $state, $filter){
-          $scope.discardCountList = discardCountList;
-
-          $scope.productProfiles = productProfiles;
-
-          $scope.facilityObject = appConfig.appFacility;
-          $scope.facilityProducts = discardCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
-
-          $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
-
-          var now = new Date();
-          $scope.currentDay = now.getDate();
-          $scope.day = $scope.currentDay;
-          $scope.currentMonth = (now.getMonth()+1) < 10 ? '0'+(now.getMonth()+1) : now.getMonth()+1;
-          $scope.month = $scope.currentMonth;
-          $scope.currentYear = now.getFullYear();
-          $scope.year = $scope.currentYear;
-          $scope.today = $scope.currentYear+'-'+$scope.currentMonth+'-'+$scope.currentDay;
-
-          $scope.dateActivated = appConfig.dateActivated;
-          $scope.countInterval = appConfig.stockCountInterval;
-          $scope.reminderDay= appConfig.reminderDay;
-          $scope.maxList = 10;
-
-          //$scope.dateList = discardCountFactory.get.discardCountByIntervals($scope);
-
-          $scope.missedEntry = function(date){
-           return discardCountFactory.get.missingEntry(date, $scope);
-          };
-          $scope.takeAction = function(date){
-            discardCountFactory.getDiscardCountByDate(date).then(function(discardCount){
-              if(discardCount !== null){
-                $scope.discardCount = discardCount;
-                $scope.detailView = true;
-
-                $scope.discardCountByType = discardCountFactory.get.discardCountByType(discardCount, $scope.facilityProducts);
-              }
-              else{
-                $state.go('discardCountForm', {countDate: date});
-              }
-            });
-          };
-
-          $scope.getName = function(row){
-            return discardCountFactory.get.productName(row, $scope.facilityProducts);
-          };
-
-        }
+        controller: 'discardCountHomeCtrl'
       })
       .state('discardCountForm', {
         parent: 'root.index',
@@ -87,6 +37,31 @@ angular.module('lmisChromeApp')
           }
         }
       })
+  })
+  .controller('discardCountHomeCtrl', function($scope, discardCountFactory, discardCountList, appConfig, $state){
+    $scope.discardCountList = discardCountList;
+    $scope.facilityProducts = discardCountFactory.get.productObject(appConfig.selectedProductProfiles);
+    $scope.missedEntry = function(date){
+      return discardCountFactory.get.missingEntry(date, $scope);
+    };
+    $scope.takeAction = function(date){
+      discardCountFactory.getDiscardCountByDate(date).then(function(discardCount){
+        if(discardCount !== null){
+          $scope.discardCount = discardCount;
+          $scope.detailView = true;
+
+          $scope.discardCountByType = discardCountFactory.get.discardCountByType(discardCount, $scope.facilityProducts);
+        }
+        else{
+          $state.go('discardCountForm', {countDate: date});
+        }
+      });
+    };
+
+    $scope.getName = function(row){
+      return discardCountFactory.get.productName(row, $scope.facilityProducts);
+    };
+
   })
 /*
  * Discard Count Controller
