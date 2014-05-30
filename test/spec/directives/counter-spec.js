@@ -112,7 +112,7 @@ describe('Tests Counter Directive', function () {
       counterScope.stopCounter();
     }, 1000);
     $timeout.flush();
-    expect( counterScope.count).toBe(1);
+    expect( counterScope.count).toBeGreaterThan(0);
   });
 
   it('i expect count up when triggered to increase count value', function(){
