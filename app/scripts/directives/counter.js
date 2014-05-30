@@ -118,14 +118,14 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
             delay = 1;
           }
           if (isDown) {
+            if (isIncrement === true) {
+              scope.increaseCount();
+            } else {
+              scope.decreaseCount();
+            }
+            scope.$apply();
             var promise = $timeout(function () {
               if (isDown) {
-                if (isIncrement === true) {
-                  scope.increaseCount();
-                } else {
-                  scope.decreaseCount();
-                }
-                scope.$apply();
                 count();
               } else {
                 $timeout.cancel(promise);
