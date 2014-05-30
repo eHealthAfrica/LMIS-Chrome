@@ -107,7 +107,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
 }).controller('StockOutBroadcastCtrl', function($scope,appConfig, $log, stockOutBroadcastFactory, $state, alertsFactory,
-                                                $modal, i18n, facilityStockListProductTypes, notificationService){
+                                                $modal, i18n, facilityStockListProductTypes, notificationService,
+                                                inventoryRulesFactory){
+
+  stockOutBroadcastFactory.getAll()
+      .then(function(stockOutList){
+        console.log(stockOutList);
+      });
 
   $scope.productTypes = facilityStockListProductTypes;
 
@@ -122,46 +128,58 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
   $scope.save = function(){
     $scope.isSaving = true;
-
-    var stockOut = {
-      productType: JSON.parse($scope.stockOutForm.productType),
-      facility: $scope.stockOutForm.facility
-    };
-
-    var confirmationTitle = i18n('confirmStockOutHeader', stockOut.productType.code);
+    var productType = JSON.parse($scope.stockOutForm.productType);
+    var confirmationTitle = i18n('confirmStockOutHeader', productType.code);
     var confirmationQuestion = i18n('dialogConfirmationQuestion');
     var buttonLabels = [i18n('yes'), i18n('no')];
 
-    notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
-        .then(function (isConfirmed) {
-          if (isConfirmed === true) {
-            stockOutBroadcastFactory.save(stockOut)
-                .then(function (result) {
-                  if (typeof result !== 'undefined' || result !== null) {
-                    $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
-                    stockOut.uuid = result;
-                    stockOutBroadcastFactory.broadcast(stockOut)
-                        .then(function (result) {
-                          $log.info('stock-out broad-casted: '+result);
-                        }, function (reason) {
-                          $log.error(reason);
-                        });
-                  } else {
-                    alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-                    $scope.isSaving = false;
-                  }
-                })
-                .catch(function (reason) {
-                  alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-                  $scope.isSaving = false;
-                  $log.error(reason);
-                });
-          }
+    var stockOut = {
+      productType: productType,
+      facility: $scope.stockOutForm.facility
+    };
+
+    inventoryRulesFactory.getStockLevel($scope.stockOutForm.facility, productType)
+        .then(function (result) {
+          stockOut.stockLevel = result;
+          confirmStockOutAlert(stockOut);
         })
         .catch(function (reason) {
-          $scope.isSaving = false;
-          $log.info(reason);
+          confirmStockOutAlert(stockOut);
         });
+
+    var confirmStockOutAlert = function (stockOut) {
+      notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
+          .then(function (isConfirmed) {
+            if (isConfirmed === true) {
+              stockOutBroadcastFactory.save(stockOut)
+                  .then(function (result) {
+                    if (typeof result !== 'undefined' || result !== null) {
+                      $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
+                      stockOut.uuid = result;
+                      stockOutBroadcastFactory.broadcast(stockOut)
+                          .then(function (result) {
+                            $log.info('stock-out broad-casted: ' + result);
+                          }, function (reason) {
+                            $log.error(reason);
+                          });
+                    } else {
+                      alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+                      $scope.isSaving = false;
+                    }
+                  })
+                  .catch(function (reason) {
+                    alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+                    $scope.isSaving = false;
+                    $log.error(reason);
+                  });
+            }
+          })
+          .catch(function (reason) {
+            $scope.isSaving = false;
+            $log.info(reason);
+          });
+    };
+
 
   };
 
