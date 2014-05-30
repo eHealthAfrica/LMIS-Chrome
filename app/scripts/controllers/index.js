@@ -33,7 +33,7 @@ angular.module('lmisChromeApp')
                 $scope.$digest();
 
                 //trigger background syncing
-                syncService.persistentBackgroundSync();
+                syncService.backgroundSync();
 
               }, false);
             };
