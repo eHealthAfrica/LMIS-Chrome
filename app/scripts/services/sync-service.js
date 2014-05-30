@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').service('syncService', function ($q, storageService, pouchdb, $rootScope, config, $window) {
+angular.module('lmisChromeApp').service('syncService', function ($q, storageService, pouchdb, $rootScope, config, $window, $interval) {
 
   var isSyncing = false;
   var deviceIsOfflineMsg = 'device is not online, check your internet connection settings.';
@@ -218,37 +218,50 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
    * This determines if the device/app can make a connection to a remote server by performing the following checks.
    *
    * 1) checks if the device is online or has internet connection.
-   * 2) tries to make a connection to remote test connection db.
+   * 2) makes multiple connection attempts to remote test connection db.
    *
    * This resolves True if:
    *
    * 1) device is online AND
    * 2) connects successfully to remote test connection db
    *
-   * Else: rejects with connection error/ failure reason.
+   * Else: rejects with connection error after making MAX connection attempts..
    *
    * @returns {promise|Function|promise|promise|promise|*}
    */
-  this.canConnect = function () {
+  var canConnect = function () {
     var deferred = $q.defer();
     var testDb = 'connection_test';
+    var counter = 0;
+    var reason;
     if (!$window.navigator.onLine) {
       deferred.reject(deviceIsOfflineMsg);
     } else {
-      try {
-        var remoteDb = getRemoteDb(testDb);
-        remoteDb.info()
-            .then(function () {
-              deferred.resolve(true);
-            })
-            .catch(function (conError) {
-              deferred.reject(conError);
-            });
-      } catch (e) {
-        deferred.reject(e);
-      }
+      var syncRequest = $interval(function () {
+        if (counter < MAX_CONNECTION_ATTEMPT) {
+          try {
+            var remoteDb = getRemoteDb(testDb);
+            remoteDb.info()
+                .then(function () {
+                  $interval.cancel(syncRequest);//free $interval to avoid memory leak
+                  deferred.resolve(true);
+                  counter = MAX_CONNECTION_ATTEMPT;
+                })
+                .catch(function (conError) {
+                  reason = conError;
+                  counter = counter + 1;
+                });
+          } catch (e) {
+            reason = e;
+            counter = counter + 1;
+          }
+        } else {
+          deferred.reject(reason);//couldn't establish connection
+          $interval.cancel(syncRequest);//free $interval to avoid memory leak
+        }
+      }, THIRTY_SECS_DELAY);
+      return deferred.promise;
     }
-    return deferred.promise;
   };
 
   /**
