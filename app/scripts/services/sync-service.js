@@ -260,8 +260,8 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
           $interval.cancel(syncRequest);//free $interval to avoid memory leak
         }
       }, THIRTY_SECS_DELAY);
-      return deferred.promise;
     }
+    return deferred.promise;
   };
 
   /**
@@ -317,10 +317,12 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
   this.backgroundSyncingOfPendingRecords = backgroundSyncingOfPendingRecords;
 
   /**
-   * This function makes only one attempt to sync. it starts syncing if device/app can connect to remote server,
-   * It returns True if background syncing was completed NOTE: this does not mean that pending sync records were all
-   * synced successfully.
-   * It rejects with reason why sync attempt failed.
+   * This uses canConnect() to get device/app connection status if it can connect, it starts background syncing.
+   *
+   * It rejects with reason why it couldn't connect, if it can establish connection, it returns true which means that
+   * an attempt has been made toi sync all pending syncs this does not guarantee that all pending syncs has been
+   * completed.
+   *
    * {promise|Function|promise|promise|promise|*}
    */
   this.backgroundSync = function(){
@@ -333,6 +335,9 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
               })
               .catch(function (reason) {
                 deferred.reject(reason);
+              })
+              .finally(function(){
+                $rootScope.$$phase || $rootScope.$digest(); //update views
               });
         })
         .catch(function (error) {
@@ -341,41 +346,42 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
     return deferred.promise;
   };
 
-  /**
-   * This function makes MAX_CONNECTION_ATTEMPT attempts to to sync yet to be synced records.
-   * @returns {promise|Function|promise|promise|promise|*}
-   */
-  this.persistentBackgroundSync = function(){
-    var deferred = $q.defer();
-    var counter = 0;
-    var terminate = function(syncRequest){
-      deferred.resolve(true); //True to show that max connection attempts or background has been completed.
-      $interval.cancel(syncRequest);//cancel further interval fxn execution.
-    };
-    var syncRequest = $interval(function () {
-      if (counter < MAX_CONNECTION_ATTEMPT) {
-        canConnect()
-            .then(function (result) {
-              if (result === true && counter < MAX_CONNECTION_ATTEMPT) {
-                counter = MAX_CONNECTION_ATTEMPT; //cancel further connection attempt
-                backgroundSyncingOfPendingRecords()
-                    .finally(function () {
-                      terminate(syncRequest);
-                      $rootScope.$$phase || $rootScope.$digest(); //update views
-                    });
-              } else {
-                counter = counter + 1;
-              }
-            })
-            .catch(function () {
-              counter = counter + 1;
-            });
-      } else {
-        terminate(syncRequest);
-      }
-    }, THIRTY_SECS_DELAY);
-    return deferred.promise;
-  };
+//
+//  /**
+//   * This function makes MAX_CONNECTION_ATTEMPT attempts to to sync yet to be synced records.
+//   * @returns {promise|Function|promise|promise|promise|*}
+//   */
+//  this.persistentBackgroundSync = function(){
+//    var deferred = $q.defer();
+//    var counter = 0;
+//    var terminate = function(syncRequest){
+//      deferred.resolve(true); //True to show that max connection attempts or background has been completed.
+//      $interval.cancel(syncRequest);//cancel further interval fxn execution.
+//    };
+//    var syncRequest = $interval(function () {
+//      if (counter < MAX_CONNECTION_ATTEMPT) {
+//        canConnect()
+//            .then(function (result) {
+//              if (result === true && counter < MAX_CONNECTION_ATTEMPT) {
+//                counter = MAX_CONNECTION_ATTEMPT; //cancel further connection attempt
+//                backgroundSyncingOfPendingRecords()
+//                    .finally(function () {
+//                      terminate(syncRequest);
+//
+//                    });
+//              } else {
+//                counter = counter + 1;
+//              }
+//            })
+//            .catch(function () {
+//              counter = counter + 1;
+//            });
+//      } else {
+//        terminate(syncRequest);
+//      }
+//    }, THIRTY_SECS_DELAY);
+//    return deferred.promise;
+//  };
 
   /**
    *
