@@ -379,9 +379,7 @@ angular.module('lmisChromeApp')
             var newDate = new Date(dueDateInfo.reminderDate.getTime() - dueDateInfo.interval);
             return $filter('date')(newDate.toJSON(), 'dd');
           }
-          else{
-            return $filter('date')(dueDateInfo.reminderDate.toJSON(), 'dd');
-          }
+          return $filter('date')(dueDateInfo.reminderDate.toJSON(), 'dd');
         }
         return dayFromUrlParams;
       }
@@ -397,7 +395,7 @@ angular.module('lmisChromeApp')
         editStatus: function(date, appConfig){
           // if the selected stock count date is not equals to today, then check if the last day of the
           // week the date fell is less than today and the count interval must not be daily
-          var editOff = false;
+
           if(isoDate() !== isoDate(date)){
             var dueDateInfo = getDueDateInfo(appConfig.stockCountInterval, appConfig.reminderDay, date);
             var validateDate = (
@@ -405,9 +403,8 @@ angular.module('lmisChromeApp')
                   dueDateInfo.currentReminderDate.getTime() > new Date().getTime()) ||
                   ((isoDate(dueDateInfo.lastDay.toJSON()) >= isoDate()) && appConfig.stockCountInterval !== 1
                 );
-            editOff = (!validateDate);
+            return (!validateDate);
           }
-          return editOff;
         }
       }
     };
