@@ -36,7 +36,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     controller: 'MultiStockOutBroadcastCtrl'
   });
 }).controller('MultiStockOutBroadcastCtrl', function($scope,appConfig, notificationService, $log, stockOutBroadcastFactory, $state, alertsFactory,
-                                                 i18n, facilityStockListProductTypes, $stateParams){
+                                                 i18n, facilityStockListProductTypes, $stateParams, inventoryRulesFactory){
 
   $scope.productTypes = facilityStockListProductTypes;
 
@@ -56,6 +56,17 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
   $scope.isSaving = false;
 
+  var addStockLevelAndBroadcast = function(stockOut){
+    inventoryRulesFactory.getStockLevel(stockOut.facility, stockOut.productType)
+        .then(function(stockLevel){
+          stockOut.stockLevel = stockLevel;
+          stockOutBroadcastFactory.broadcast(stockOut);//sync in the background
+        })
+        .catch(function(){
+          stockOutBroadcastFactory.broadcast(stockOut);//sync in the background
+        });
+  };
+
   $scope.save = function () {
 
     $scope.isSaving = true;
@@ -71,7 +82,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       stockOutBroadcastFactory.saveBatch(stockOutList)
           .then(function (result) {
             for(var i = 0; i < result.length; i++){
-               stockOutBroadcastFactory.broadcast(result[i]);//sync in the background
+               addStockLevelAndBroadcast(result[i]);
             }
             $scope.isSaving = false;
             $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
@@ -109,11 +120,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 }).controller('StockOutBroadcastCtrl', function($scope,appConfig, $log, stockOutBroadcastFactory, $state, alertsFactory,
                                                 $modal, i18n, facilityStockListProductTypes, notificationService,
                                                 inventoryRulesFactory){
-
-  stockOutBroadcastFactory.getAll()
-      .then(function(stockOutList){
-        console.log(stockOutList);
-      });
 
   $scope.productTypes = facilityStockListProductTypes;
 
@@ -179,7 +185,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             $log.info(reason);
           });
     };
-
 
   };
 
