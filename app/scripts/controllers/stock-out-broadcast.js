@@ -36,7 +36,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     controller: 'MultiStockOutBroadcastCtrl'
   });
 }).controller('MultiStockOutBroadcastCtrl', function($scope,appConfig, notificationService, $log, stockOutBroadcastFactory, $state, alertsFactory,
-                                                 i18n, facilityStockListProductTypes, $stateParams, inventoryRulesFactory){
+                                                 i18n, facilityStockListProductTypes, $stateParams, inventoryRulesFactory, $q){
 
   $scope.productTypes = facilityStockListProductTypes;
 
@@ -56,39 +56,45 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
   $scope.isSaving = false;
 
-  var addStockLevelAndBroadcast = function(stockOut){
-    inventoryRulesFactory.getStockLevel(stockOut.facility, stockOut.productType)
-        .then(function(stockLevel){
-          stockOut.stockLevel = stockLevel;
-          stockOutBroadcastFactory.broadcast(stockOut);//sync in the background
-        })
-        .catch(function(){
-          stockOutBroadcastFactory.broadcast(stockOut);//sync in the background
-        });
-  };
-
   $scope.save = function () {
 
     $scope.isSaving = true;
+
     var saveAndBroadcastStockOut = function (productList) {
-      var stockOutList = [];
-      for (var i = 0; i < productList.length; i++) {
-        var stockOut = {
-          productType: productList[i],
-          facility: $scope.stockOutForm.facility
-        };
-        stockOutList.push(stockOut);
-      }
-      stockOutBroadcastFactory.saveBatch(stockOutList)
+      var deferred = $q.defer();
+
+      var addNextStockLevelAndSave = function (productList, index) {
+        var nextIndex = index - 1;
+        if (nextIndex >= 0) {
+          var stockOut = {
+            productType: productList[nextIndex],
+            facility: $scope.stockOutForm.facility
+          };
+          stockOutBroadcastFactory.addStockLevelAndSave(stockOut)
+              .then(function (result) {
+                //broadcast in the background
+                stockOutBroadcastFactory.broadcast(result)
+                    .then(function (broadcastResult) {
+                      console.log(broadcastResult);
+                    })
+                    .catch(function (reason) {
+                      console.log(reason);
+                    });
+                addNextStockLevelAndSave(productList, nextIndex);
+              })
+              .catch(function () {
+                addNextStockLevelAndSave(productList, nextIndex)
+              });
+        } else {
+          deferred.resolve(true);//
+        }
+        return deferred.promise;
+      };
+
+      addNextStockLevelAndSave(productList, productList.length)
           .then(function (result) {
-            for(var i = 0; i < result.length; i++){
-               addStockLevelAndBroadcast(result[i]);
-            }
             $scope.isSaving = false;
             $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
-          }, function (reason) {
-            alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-            $log.error(reason);
           })
           .catch(function (reason) {
             alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
@@ -118,18 +124,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
 }).controller('StockOutBroadcastCtrl', function($scope,appConfig, $log, stockOutBroadcastFactory, $state, alertsFactory,
-                                                $modal, i18n, facilityStockListProductTypes, notificationService,
-                                                inventoryRulesFactory){
+                                                $modal, i18n, facilityStockListProductTypes, notificationService){
 
   $scope.productTypes = facilityStockListProductTypes;
-
   //used to hold stock out form data
   $scope.stockOutForm = {
     productType: '',
     facility: appConfig.appFacility,
     isSubmitted: false
   };
-
   $scope.isSaving = false;
 
   $scope.save = function(){
@@ -144,47 +147,36 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       facility: $scope.stockOutForm.facility
     };
 
-    inventoryRulesFactory.getStockLevel($scope.stockOutForm.facility, productType)
-        .then(function (result) {
-          stockOut.stockLevel = result;
-          confirmStockOutAlert(stockOut);
-        })
-        .catch(function (reason) {
-          confirmStockOutAlert(stockOut);
-        });
-
-    var confirmStockOutAlert = function (stockOut) {
-      notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
-          .then(function (isConfirmed) {
-            if (isConfirmed === true) {
-              stockOutBroadcastFactory.save(stockOut)
-                  .then(function (result) {
-                    if (typeof result !== 'undefined' || result !== null) {
-                      $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
-                      stockOut.uuid = result;
-                      stockOutBroadcastFactory.broadcast(stockOut)
-                          .then(function (result) {
-                            $log.info('stock-out broad-casted: ' + result);
-                          }, function (reason) {
-                            $log.error(reason);
-                          });
-                    } else {
-                      alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
-                      $scope.isSaving = false;
-                    }
-                  })
-                  .catch(function (reason) {
+    notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
+        .then(function (isConfirmed) {
+          if (isConfirmed === true) {
+            stockOutBroadcastFactory.addStockLevelAndSave(stockOut)
+                .then(function (result) {
+                  if (typeof result !== 'undefined') {
+                    $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
+                    stockOutBroadcastFactory.broadcast(result)
+                        .then(function (result) {
+                          $log.info('stock-out broad-casted: ' + result);
+                        }, function (reason) {
+                          $log.error(reason);
+                        });
+                  } else {
                     alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
                     $scope.isSaving = false;
-                    $log.error(reason);
-                  });
-            }
-          })
-          .catch(function (reason) {
-            $scope.isSaving = false;
-            $log.info(reason);
-          });
-    };
+                  }
+                })
+                .catch(function (reason) {
+                  alertsFactory.danger(i18n('stockOutBroadcastFailedMsg'));
+                  $scope.isSaving = false;
+                  $log.error(reason);
+                });
+          }
+        })
+        .catch(function (reason) {
+          $scope.isSaving = false;
+          $log.info(reason);
+        });
+
 
   };
 
