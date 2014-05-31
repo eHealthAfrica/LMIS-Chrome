@@ -17,7 +17,7 @@
 
                     <table class="table table-bordered table-striped">
                       <tbody>
-                        <tr ng-repeat="productType in filteredProduct">
+                        <tr ng-repeat="productType in stockOutProductTypes">
                           <td>
                             {{ productType.code }}
                             <input type="hidden" ng-model="stockOutForm.productType[$index]">
