@@ -24,6 +24,7 @@ deploy:
     on:
       all_branches: true
       repo: eHealthAfrica/LMIS-Chrome
+      tags: false
   - provider: s3
     access_key_id: AKIAINSUTVOB4CPQYP2A
     secret_access_key:
