@@ -397,7 +397,7 @@ angular.module('lmisChromeApp')
         editStatus: function(date, appConfig){
           // if the selected stock count date is not equals to today, then check if the last day of the
           // week the date fell is less than today and the count interval must not be daily
-          var editOff = true;
+          var editOff = false;
           if(isoDate() !== isoDate(date)){
             var dueDateInfo = getDueDateInfo(appConfig.stockCountInterval, appConfig.reminderDay, date);
             var validateDate = (
