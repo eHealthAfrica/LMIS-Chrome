@@ -38,18 +38,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 }).controller('MultiStockOutBroadcastCtrl', function($scope,appConfig, notificationService, $log, stockOutBroadcastFactory, $state, alertsFactory,
                                                  i18n, facilityStockListProductTypes, $stateParams, inventoryRulesFactory, $q){
 
-  $scope.productTypes = facilityStockListProductTypes;
-
   $scope.urlParams = ($stateParams.productList !== null) ? ($stateParams.productList).split(',') : $stateParams.productList;
-
-  var filteredProduct = facilityStockListProductTypes.filter(function (element) {
+  var stockOutProductTypes = facilityStockListProductTypes.filter(function (element) {
     return $scope.urlParams.indexOf(element.uuid) !== -1;
   });
 
-  $scope.filteredProduct = filteredProduct;
+  $scope.stockOutProductTypes = stockOutProductTypes;
+
   //used to hold stock out form data
   $scope.stockOutForm = {
-    productType: filteredProduct,
+    productType: stockOutProductTypes,
     facility: appConfig.appFacility,
     isSubmitted: false
   };
@@ -73,13 +71,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           stockOutBroadcastFactory.addStockLevelAndSave(stockOut)
               .then(function (result) {
                 //broadcast in the background
-                stockOutBroadcastFactory.broadcast(result)
-                    .then(function (broadcastResult) {
-                      console.log(broadcastResult);
-                    })
-                    .catch(function (reason) {
-                      console.log(reason);
-                    });
+                stockOutBroadcastFactory.broadcast(result);
                 addNextStockLevelAndSave(productList, nextIndex);
               })
               .catch(function () {
@@ -103,8 +95,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     };
 
     var title = [];
-    for (var i = 0; i < filteredProduct.length; i++) {
-      title.push(filteredProduct[i].code);
+    for (var i = 0; i < stockOutProductTypes.length; i++) {
+      title.push(stockOutProductTypes[i].code);
     }
 
     var confirmationTitle = i18n('confirmStockOutHeader', title.join(', '));
@@ -114,7 +106,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
         .then(function (isConfirmed) {
           if (isConfirmed === true) {
-            saveAndBroadcastStockOut(filteredProduct);
+            saveAndBroadcastStockOut(stockOutProductTypes);
           }
         })
         .catch(function (reason) {
