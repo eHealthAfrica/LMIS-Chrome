@@ -99,7 +99,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           $scope.preSelectCcuProfiles =
               appConfigService.generateAssociativeArray($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
           $scope.preSelectProductProfileCheckBox =
-              appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles);
+              appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles, 'uuid');
 
           $scope.moveTo(nextStep);
 
