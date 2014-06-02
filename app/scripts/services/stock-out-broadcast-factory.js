@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, syncService, $window, notificationService) {
+angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, syncService, $window, notificationService, inventoryRulesFactory) {
 
   var saveStockOut = function (stockOut) {
     var deferred = $q.defer();
@@ -31,7 +31,7 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
         .catch(function (reason) {
           //sync failed send sms alert
           var msg = 'stkOut:' + stockOut.uuid + ';facility:' + stockOut.facility.uuid + ';prodType:' +
-              stockOut.productType.uuid;
+              stockOut.productType.uuid+';stkLvl:'+stockOut.stockLevel;
           notificationService.sendSms(notificationService.alertRecipient, msg)
               .then(function (result) {
                 deferred.resolve(result);
@@ -67,11 +67,35 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
     return deferred.promise;
   };
 
+  var addStockLevelAndSave = function(stockOut){
+    var deferred = $q.defer();
+    var processSaveStockOut = function (stkOut) {
+      saveStockOut(stkOut)
+          .then(function (result) {
+            stkOut.uuid = result;
+            deferred.resolve(stkOut);
+          })
+          .catch(function(reason){
+            deferred.reject(reason);
+          })
+    };
+    inventoryRulesFactory.getStockLevel(stockOut.facility, stockOut.productType)
+        .then(function(stockLevel){
+          stockOut.stockLevel = stockLevel;
+          processSaveStockOut(stockOut);
+        })
+        .catch(function(){
+          processSaveStockOut(stockOut);
+        });
+    return deferred.promise;
+  };
+
   return {
     save: saveStockOut,
     saveBatch: saveMultipleStockOut,
     getAll: getStockOut,
-    broadcast: broadcastStockOut
+    broadcast: broadcastStockOut,
+    addStockLevelAndSave: addStockLevelAndSave
   };
 
 });

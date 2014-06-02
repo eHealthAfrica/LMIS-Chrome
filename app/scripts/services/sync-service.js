@@ -73,8 +73,8 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
    * @returns {promise|Function|promise|promise|promise|*}
    */
   var syncARecord = function (dbName, record, allowMultipleSync) {
-    if(typeof allowMultipleSync === 'undefined'){
-      isSyncing = allowMultipleSync;
+    if(allowMultipleSync === true){
+      isSyncing = !allowMultipleSync;
     }
     var pendingSyncRecord = { dbName: dbName, uuid: record.uuid };
     var deferred = $q.defer();

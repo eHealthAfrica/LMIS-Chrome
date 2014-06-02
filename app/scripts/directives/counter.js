@@ -123,14 +123,13 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
             } else {
               scope.decreaseCount();
             }
-            scope.$apply();
             var promise = $timeout(function () {
               if (isDown) {
                 count();
               } else {
                 $timeout.cancel(promise);
               }
-
+              scope.$apply();
             }, delay);
           }
         }
