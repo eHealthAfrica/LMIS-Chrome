@@ -220,6 +220,19 @@ module.exports = function(grunt) {
       }
     },
 
+    removelogging: {
+      dist: {
+        src: '.tmp/concat/scripts/scripts.js',
+        options: {
+          namespace: [
+            'console',
+            'window.console',
+            '\\$log'
+          ]
+        }
+      }
+    },
+
     // Allow the use of non-minsafe AngularJS files. Automatically makes it
     // minsafe compatible so Uglify does not destroy the ng references
     ngAnnotate: {
@@ -250,7 +263,8 @@ module.exports = function(grunt) {
               'images/{,*/}*.{webp}',
               '_locales/{,*/}*.json',
               'media/*',
-              'scripts/fixtures/*.json'
+              'scripts/fixtures/*.json',
+              'manifest.mobile.json'
             ]
           },
           {
@@ -359,6 +373,19 @@ module.exports = function(grunt) {
         commitFiles: '<%= bump.options.files %>',
         pushTo: 'origin'
       }
+    },
+
+    bumpAndroid: {
+      options: {
+        files: [
+          'app/manifest.mobile.json'
+        ],
+        commit: true,
+        commitMessage: 'Bump Android version code to v%VERSION%',
+        commitFiles: '<%= bumpAndroid.options.files %>',
+        createTag: false,
+        push: false
+      }
     }
   });
 
@@ -396,23 +423,39 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.registerTask('build', [
-    'clean:dist',
-    'wiredep',
-    'ngconstant:production',
-    'chromeManifest:dist',
-    'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
-    'concat',
-    'ngAnnotate',
-    'copy:dist',
-    'cssmin',
-    'uglify',
-    'rev',
-    'usemin',
-    'htmlmin'
-  ]);
+  grunt.registerTask('build', function(target) {
+    var head = [
+      'clean:dist',
+      'wiredep',
+      'ngconstant:production',
+      'chromeManifest:dist',
+      'useminPrepare',
+      'concurrent:dist',
+      'autoprefixer',
+      'concat'
+    ];
+
+    var torso = [
+      'removelogging'
+    ];
+
+    var tail = [
+      'ngAnnotate',
+      'copy:dist',
+      'cssmin',
+      'uglify',
+      'rev',
+      'usemin',
+      'htmlmin'
+    ];
+
+    if(target === 'release') {
+      grunt.task.run(head.concat(torso, tail));
+    }
+    else {
+      grunt.task.run(head.concat(tail));
+    }
+  });
 
   grunt.registerTask('default', [
     'newer:jshint',
@@ -425,4 +468,14 @@ module.exports = function(grunt) {
     'coveralls'
   ]);
 
+  grunt.registerTask('release', function(versionType) {
+    var bump = 'bump';
+    if(versionType) {
+      bump += ':' + versionType;
+    }
+    grunt.task.run([
+      'bumpAndroid',
+      bump
+    ]);
+  });
 };
