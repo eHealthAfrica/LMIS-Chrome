@@ -9,7 +9,7 @@ angular.module('lmisChromeApp', [
   'nvd3ChartDirectives'
 ])
   // Load fixture data
-  .run(function(storageService, $rootScope, $state, $window, syncService) {
+  .run(function(storageService, $rootScope, $state, $window, appConfigService) {
 
     $window.showSplashScreen = function(){
       $state.go('loadingFixture');
@@ -28,11 +28,12 @@ angular.module('lmisChromeApp', [
 
     //load fixtures if not loaded yet.
     storageService.loadFixtures().then(function(){
-      //trigger background syncing after loading fixtures.
-      syncService.backgroundSync()
+      //update appConfig from remote then trigger background syncing
+      appConfigService.updateAppConfigAndStartBackgroundSync()
           .finally(function () {
-            console.log('background syncing trigger on start up has been completed!');
+            console.log('updateAppConfigAndStartBackgroundSync triggered on start up have been completed!');
           });
+
       storageService.getAll().then(function (data) {
         console.log('finished loading: ' + (Object.keys(data)).join('\n'));
       });

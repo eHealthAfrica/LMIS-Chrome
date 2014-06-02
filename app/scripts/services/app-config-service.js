@@ -180,6 +180,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   this.getAppFacilityProfileByEmail = function(email){
     var deferred = $q.defer();
     var REMOTE = config.api.url + '/' + FACILITY_PROFILE_DB;
+    //TODO: refactor retrieval of remote db record to syncService function.
     var remoteDB = pouchdb.create(REMOTE);
     remoteDB.info()
         .then(function () {
@@ -217,7 +218,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * This returns current app config from cache, if not available, it loads from storageService
    * @returns {promise|promise|*|promise|promise}
    */
-  this.getCurrentAppConfig = function() {
+  var getCurrentAppConfig = function() {
     var deferred = $q.defer();
     var appConfig = cache.get(storageService.APP_CONFIG);
 
@@ -234,9 +235,16 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     return deferred.promise;
   };
 
+  /**
+   * expose private function.
+   *
+   * @type {Function}
+   */
+  this.getCurrentAppConfig = getCurrentAppConfig;
+
   this.getProductTypes = function(){
     var deferred = $q.defer();
-    this.getCurrentAppConfig()
+    getCurrentAppConfig()
       .then(function(appConfig){
         var facilityStockListProductTypes = [];
         var uuidListOfProductTypesAlreadyRecorded = [];
@@ -253,6 +261,55 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       .catch(function(reason){
         deferred.reject(reason);//resolves empty facilityStockListProductTypes
       });
+    return deferred.promise;
+  };
+
+  var updateAppConfigFromRemote = function(){
+    var deferred = $q.defer();
+    getCurrentAppConfig()
+        .then(function(appConfig){
+          if(typeof appConfig === 'undefined'){
+            deferred.reject('local copy of appConfig does not exist.');
+          }else{
+           syncService.updateFromRemote(storageService.APP_CONFIG, appConfig)
+               .then(function(result){
+                 cache.remove(storageService.APP_CONFIG);//clear cache
+                 deferred.resolve(result);
+               })
+               .catch(function(reason){
+                 deferred.reject(reason);
+               });
+          }
+        })
+        .catch(function(reason){
+          deferred.reject(reason);
+        })
+    return deferred.promise;
+  };
+
+  /**
+   * This function obtains device/app connection status, if the app can connect to remote server, it does the following:
+   * 1) try to update local copy of app-config from remote server if both have different revision number.
+   * 2) triggers background syncing upon completion of app-config update.
+   *
+   * @returns {promise|Function|promise|promise|promise|*}
+   */
+  this.updateAppConfigAndStartBackgroundSync = function(){
+    var deferred = $q.defer();
+    var hasCompletedRemoteUpdateAndBackgroundSyncAttempts = true;
+    syncService.canConnect()
+        .then(function () {
+          updateAppConfigFromRemote()
+              .finally(function () {
+                syncService.backgroundSync()
+                    .finally(function () {
+                      deferred.resolve(hasCompletedRemoteUpdateAndBackgroundSyncAttempts);
+                    });
+              });
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
     return deferred.promise;
   };
 
