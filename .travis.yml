@@ -12,32 +12,17 @@ notifications:
 before_deploy:
 - ./scripts/build.sh
 deploy:
-  - provider: s3
-    access_key_id: AKIAINSUTVOB4CPQYP2A
-    secret_access_key:
-      secure: rxaf+OKQKnxXefvvyBnPDDh1lRerKdbI5mvXwx1En7BxdTYRnM2T/IhUMo1SXJH1O1T+eP4vskqA/HjCJCygFApoHj8Zqr7M+z5vje65F4Vpl7AFqLohquLg3vanYXAZ73JKo1zQyNbPd3bmMwjdTekK0+lTD8TSMR59dweqGYI=
-    bucket: eha-lomis
-    local-dir: build/lomis/snapshots
-    upload-dir: snapshots
-    skip_cleanup: true
-    region: eu-west-1
-    on:
-      all_branches: true
-      repo: eHealthAfrica/LMIS-Chrome
-      condition: "$TRAVIS_TAG == ''"
-  - provider: s3
-    access_key_id: AKIAINSUTVOB4CPQYP2A
-    secret_access_key:
-      secure: rxaf+OKQKnxXefvvyBnPDDh1lRerKdbI5mvXwx1En7BxdTYRnM2T/IhUMo1SXJH1O1T+eP4vskqA/HjCJCygFApoHj8Zqr7M+z5vje65F4Vpl7AFqLohquLg3vanYXAZ73JKo1zQyNbPd3bmMwjdTekK0+lTD8TSMR59dweqGYI=
-    bucket: eha-lomis
-    local-dir: build/lomis/releases
-    upload-dir: releases
-    skip_cleanup: true
-    region: eu-west-1
-    on:
-      all_branches: true
-      repo: eHealthAfrica/LMIS-Chrome
-      tags: true
+  provider: s3
+  access_key_id: AKIAINSUTVOB4CPQYP2A
+  secret_access_key:
+    secure: rxaf+OKQKnxXefvvyBnPDDh1lRerKdbI5mvXwx1En7BxdTYRnM2T/IhUMo1SXJH1O1T+eP4vskqA/HjCJCygFApoHj8Zqr7M+z5vje65F4Vpl7AFqLohquLg3vanYXAZ73JKo1zQyNbPd3bmMwjdTekK0+lTD8TSMR59dweqGYI=
+  bucket: eha-lomis
+  local-dir: build/lomis/build
+  skip_cleanup: true
+  region: eu-west-1
+  on:
+    all_branches: true
+    repo: eHealthAfrica/LMIS-Chrome
 env:
   global:
     - secure: "cgUIcbrv6vY+tCgTVYNr0jIdwy0tuiG4pdRjF8Kf1SkelyJ102o9rUtnsS1AJbPa7ur3yHhCQ5YTKvt/ybBFb7h3A21AIzebGjknDuYMQM1V3mAeU6g9HsjON/mGrgtQFwaHTuh569Ms7TmPG4zV+3IYhUSuCeKoQavWKy2gSTs="

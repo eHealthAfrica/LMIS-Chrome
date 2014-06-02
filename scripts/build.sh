@@ -27,6 +27,9 @@ cca plugin add $(< "$pwd/scripts/build/cca-plugins.txt")
 patch < "$pwd/scripts/build/config.patch"
 
 android="$build/$app/platforms/android"
+releases="build/releases"
+snapshots="build/snapshots"
+
 if [[ "$TRAVIS_TAG" ]]; then
   echo -n $id_rsa_{00..30} >> ~/.ssh/id_rsa_base64
   base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
@@ -37,13 +40,13 @@ if [[ "$TRAVIS_TAG" ]]; then
   scp -r travisci@$eha:android-keystore/\* "$android"
   cca build --release
   apk="$android/ant-build/LoMIS-release.apk"
-  out="releases/$app-$TRAVIS_TAG.apk"
+  out="$releases/$app-$TRAVIS_TAG.apk"
 else
   cca build
   apk="$android/ant-build/LoMIS-debug.apk"
   now="$(date -u +"%Y%m%d%H%M%S")"
-  out="snapshots/$app-$now.apk"
+  out="$snapshots/$app-$now.apk"
 fi
 
-mkdir -p "releases" "snapshots"
+mkdir -p "$releases" "$snapshots"
 ln -s "$apk" "$out"
