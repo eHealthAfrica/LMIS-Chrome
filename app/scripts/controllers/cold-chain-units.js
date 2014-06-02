@@ -40,10 +40,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
             .then(function (isConfirmed) {
               if (isConfirmed === true) {
-                ccuBreakdownFactory.saveAndSendReport(ccuBreakdownReport)
-                    .then(function () {
+                ccuBreakdownFactory.save(ccuBreakdownReport)
+                    .then(function (result) {
+                      //move to home page send alert in the background
                       $state.go('home.index.home.mainActivity', {ccuBreakdownReportResult: true });
-                    }).catch(function (reason) {
+                      ccuBreakdownFactory.broadcast(result);
+                    })
+                    .catch(function (reason) {
                       alertsFactory.danger(i18n('ccuBreakdownReportFailedMsg'));
                       $scope.isSaving = false;
                       $log.info(reason);
