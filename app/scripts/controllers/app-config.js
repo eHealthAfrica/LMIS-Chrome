@@ -94,7 +94,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           $scope.appConfig.stockCountInterval = result.stockCountInterval;
           $scope.appConfig.contactPerson = result.contactPerson;
           $scope.appConfig.facility = JSON.stringify(result.appFacility);//used to pre-select facility drop down
-          $scope.appConfig.selectedProductProfiles = result.selectedProductProfiles;
+          $scope.appConfig.selectedProductProfiles = result.selectedProductProfiles || [];
           $scope.appConfig.selectedCcuProfiles = result.selectedCcuProfiles || [];
           $scope.preSelectCcuProfiles =
               appConfigService.generateAssociativeArray($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
