@@ -21,8 +21,14 @@ angular.module('lmisChromeApp')
       };
 
       var generateSmsMsg = function (ccuBreakdown) {
-        var msg = 'ccuBrk:' + ccuBreakdown.uuid + ';' + 'fac:' + ccuBreakdown.facility.uuid +
-            ';ccuId:' + ccuBreakdown.ccuProfile.dhis2_modelid;
+        var msg = [
+          'ccuBrk:',
+          ccuBreakdown.uuid,
+          ';facility:',
+          ccuBreakdown.facility.uuid,
+          ';ccuId:',
+          ccuBreakdown.ccuProfile.dhis2_modelid
+        ].join('');
         return msg;
       };
 
