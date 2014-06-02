@@ -15,7 +15,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     },
     controller: 'ReportCcuBreakdownCtrl'
   });
-}).controller('ReportCcuBreakdownCtrl', function($scope, appConfig, $modal, i18n, $log, notificationService, ccuBreakdownFactory, $state, alertsFactory){
+}).controller('ReportCcuBreakdownCtrl', function($scope, appConfig, $modal, i18n, $log, notificationService, ccuBreakdownFactory, $state, growl){
 
       $scope.facilityCcuList = appConfig.selectedCcuProfiles;
       $scope.ccuBreakdown = {
@@ -47,7 +47,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
                       ccuBreakdownFactory.broadcast(result);
                     })
                     .catch(function (reason) {
-                      alertsFactory.danger(i18n('ccuBreakdownReportFailedMsg'));
+                      growl.error(i18n('ccuBreakdownReportFailedMsg'));
                       $scope.isSaving = false;
                       $log.info(reason);
                     });

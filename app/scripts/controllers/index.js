@@ -53,9 +53,6 @@ angular.module('lmisChromeApp')
             $scope.state = $state;
           }
         },
-        'alerts': {
-          templateUrl: 'views/index/alerts.html'
-        },
         'content': {},
         'footer': {
           templateUrl: 'views/index/footer.html',

@@ -7,7 +7,7 @@ angular.module('lmisChromeApp')
     });
   })
 
-  .controller('programFormCtrl', function($scope, storageService, $location, alertsFactory) {
+  .controller('programFormCtrl', function($scope, storageService, $location, growl) {
     $scope.program = {};
     $scope.uuid = ($location.search()).uuid;
 
@@ -28,11 +28,11 @@ angular.module('lmisChromeApp')
             } : {
               message: 'Program entry was successful'
             };
-            alertsFactory.success(msg);
+            growl.success(msg);
             $location.path('/main/programs');
           });
       } else {
-        alertsFactory.danger('Can\'t save a blank form');
+        growl.error('Can\'t save a blank form');
       }
     };
 
@@ -76,7 +76,7 @@ angular.module('lmisChromeApp')
     });
   })
 
-  .controller('programProductFormCtrl', function($scope, storageService, $location, alertsFactory) {
+  .controller('programProductFormCtrl', function($scope, storageService, $location, growl) {
 
     storageService.get(storageService.PROGRAM).then(function(programs) {
       $scope.programList = programs;
@@ -113,12 +113,12 @@ angular.module('lmisChromeApp')
             } : {
               message: 'Program entry was successful'
             };
-            alertsFactory.success(msg);
+            growl.success(msg);
             $location.path('/main/program_products');
           });
 
       } else {
-        alertsFactory.danger('Can\'t save a blank form');
+        growl.error('Can\'t save a blank form');
       }
     };
     storageService.get(storageService.PROGRAM_PRODUCTS).then(function(

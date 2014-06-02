@@ -91,7 +91,7 @@ angular.module('lmisChromeApp')
 /*
  * Discard Count Controller
  */
-  .controller('discardCountFormCtrl', function($scope, discardCountFactory, $state, alertsFactory, $stateParams, appConfig, productType, utility){
+  .controller('discardCountFormCtrl', function($scope, discardCountFactory, $state, growl, $stateParams, appConfig, productType, utility){
 
     var now = new Date();
     var day = now.getDate();
@@ -170,7 +170,7 @@ angular.module('lmisChromeApp')
     });
 
     $scope.save = function(){
-      discardCountFactory.save($scope, $state, alertsFactory);
+      discardCountFactory.save($scope, $state, growl);
     };
 
     $scope.finalSave = function(){

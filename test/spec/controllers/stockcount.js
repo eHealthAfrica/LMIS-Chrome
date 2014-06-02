@@ -8,7 +8,7 @@ describe('Controller: StockCountFormCtrl', function(){
     $provide.value('productType', {});
   }));
 
-  beforeEach(inject(function($controller, $state, _stockCountFactory_, _productType_, _alertsFactory_, appConfigMock,
+  beforeEach(inject(function($controller, $state, _stockCountFactory_, _productType_, appConfigMock,
                              stockData, i18n){
     scope = {};
     _i18n = i18n;

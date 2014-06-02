@@ -6,7 +6,7 @@ describe('multiStockOutBroadcast', function(){
     //$provide.value('facilityStockListProductTypes', []);
   }));
 
-  beforeEach(inject(function($controller, $state, $stateParams, productTypeMock, _alertsFactory_, appConfigMock, i18n,
+  beforeEach(inject(function($controller, $state, $stateParams, productTypeMock, appConfigMock, i18n,
       _stockOutBroadcastFactory_, _notificationService_, _$q_){
     scope = {};
     state = $state;

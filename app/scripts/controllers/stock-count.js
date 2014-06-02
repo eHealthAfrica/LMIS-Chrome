@@ -61,7 +61,7 @@ angular.module('lmisChromeApp')
       });
     };
   })
-  .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, alertsFactory,
+  .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl,
                                              $stateParams, appConfig, appConfigService, productType, cacheService,
                                              syncService, utility, $rootScope){
     //TODO: refactor entire stock count controller to simpler more readable controller
