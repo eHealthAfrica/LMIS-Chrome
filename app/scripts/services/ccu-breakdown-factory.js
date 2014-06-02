@@ -3,35 +3,62 @@
 angular.module('lmisChromeApp')
     .factory('ccuBreakdownFactory', function ($q, storageService, syncService, $window, notificationService) {
 
-      var saveCcuBreakdownReport = function (ccuBreakdownReport) {
-        return storageService.save(storageService.CCU_BREAKDOWN, ccuBreakdownReport);
+      var saveCcuBreakdownReport = function (ccuBreakdown) {
+        var deferred = $q.defer();
+        storageService.save(storageService.CCU_BREAKDOWN, ccuBreakdown)
+            .then(function (result) {
+              if (typeof result !== 'undefined') {
+                ccuBreakdown.uuid = result;
+                deferred.resolve(ccuBreakdown);
+              } else {
+                deferred.reject('result is undefined.');
+              }
+            })
+            .catch(function (reason) {
+              deferred.reject(reason);
+            });
+        return deferred.promise;
       };
 
-      var generateSmsMsg = function (ccuBreakdownReport) {
-        var msg = 'ccuBrk:' + ccuBreakdownReport.uuid + ';' + 'fac:' + ccuBreakdownReport.facility.uuid +
-            ';ccuId:' + ccuBreakdownReport.ccuProfile.dhis2_modelid;
+      var generateSmsMsg = function (ccuBreakdown) {
+        var msg = 'ccuBrk:' + ccuBreakdown.uuid + ';' + 'fac:' + ccuBreakdown.facility.uuid +
+            ';ccuId:' + ccuBreakdown.ccuProfile.dhis2_modelid;
         return msg;
       };
 
-      var saveAndSendCcuBreakdownReport = function (ccuBreakdownReport) {
+      var broadcastCcuBreakdown = function (ccuBreakdown) {
         var deferred = $q.defer();
-        saveCcuBreakdownReport(ccuBreakdownReport)
-            .then(function (saveResult) {
-              syncService.syncItem(storageService.CCU_BREAKDOWN, ccuBreakdownReport)
-                  .then(function (syncResult) {
-                    deferred.resolve(syncResult);
-                  }).catch(function () {
-                    //online syncing failed, send offline sms alert.
-                    var msg = generateSmsMsg(ccuBreakdownReport);
-                    notificationService.sendSms(notificationService.alertRecipient, msg)
-                        .then(function (smsResult) {
-                          deferred.resolve(smsResult);
-                        })
-                        .catch(function () {
-                          deferred.resolve(saveResult);
-                        });
+        var allowMultipleSync = true;
+        syncService.syncItem(storageService.CCU_BREAKDOWN, ccuBreakdown, allowMultipleSync)
+            .then(function (syncResult) {
+              deferred.resolve(syncResult);
+            }).catch(function () {
+              //online syncing failed, send offline sms alert.
+              var msg = generateSmsMsg(ccuBreakdown);
+              notificationService.sendSms(notificationService.alertRecipient, msg)
+                  .then(function (smsResult) {
+                    deferred.resolve(smsResult);
+                  })
+                  .catch(function (reason) {
+                    deferred.reject(reason);
                   });
-            }).catch(function (reason) {
+            });
+        return deferred.promise;
+      };
+
+      var saveAndSendCcuBreakdownReport = function (ccuBreakdown) {
+        var deferred = $q.defer();
+        saveCcuBreakdownReport(ccuBreakdown)
+            .then(function(result){
+              broadcastCcuBreakdown(result)
+                  .then(function(broadcastResult){
+                    deferred.resolve(broadcastResult);
+                  })
+                  .catch(function(reason){
+                    deferred.reject(reason);
+                  });
+            })
+            .catch(function(reason){
               deferred.reject(reason);
             });
         return deferred.promise;
@@ -39,6 +66,7 @@ angular.module('lmisChromeApp')
 
       return {
         save: saveCcuBreakdownReport,
+        broadcast: broadcastCcuBreakdown,
         saveAndSendReport: saveAndSendCcuBreakdownReport
       };
 
