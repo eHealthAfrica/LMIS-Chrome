@@ -250,7 +250,8 @@ module.exports = function(grunt) {
               'images/{,*/}*.{webp}',
               '_locales/{,*/}*.json',
               'media/*',
-              'scripts/fixtures/*.json'
+              'scripts/fixtures/*.json',
+              'manifest.mobile.json'
             ]
           },
           {
@@ -359,6 +360,19 @@ module.exports = function(grunt) {
         commitFiles: '<%= bump.options.files %>',
         pushTo: 'origin'
       }
+    },
+
+    bumpAndroid: {
+      options: {
+        files: [
+          'app/manifest.mobile.json'
+        ],
+        commit: true,
+        commitMessage: 'Bump Android version code to v%VERSION%',
+        commitFiles: '<%= bumpAndroid.options.files %>',
+        createTag: false,
+        push: false
+      }
     }
   });
 
@@ -425,4 +439,14 @@ module.exports = function(grunt) {
     'coveralls'
   ]);
 
+  grunt.registerTask('release', function(versionType) {
+    var bump = 'bump';
+    if(versionType) {
+      bump += ':' + versionType;
+    }
+    grunt.task.run([
+      'bumpAndroid',
+      bump
+    ]);
+  });
 };
