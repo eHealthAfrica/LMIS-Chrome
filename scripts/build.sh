@@ -10,7 +10,7 @@ info() { echo "$0: $1"; }
 error() { info "$1"; exit 1;}
 
 info "Running grunt build"
-grunt build
+[[ "$TRAVIS_TAG" ]] && grunt build:release || grunt build
 
 info "Building Mobile Chrome App"
 have "cca" || npm install -g cca
