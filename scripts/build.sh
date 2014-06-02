@@ -9,7 +9,9 @@ have() { command -v "$1" >/dev/null; }
 info() { echo "$0: $1"; }
 error() { info "$1"; exit 1;}
 
-info "Running grunt build"
+[[ "$TAVIS_TAG" ]] && type="release" || type="snapshot"
+info "Performing $type build"
+
 [[ "$TRAVIS_TAG" ]] && grunt build:release || grunt build
 
 info "Building Mobile Chrome App"
@@ -35,12 +37,13 @@ if [[ "$TRAVIS_TAG" ]]; then
   scp -r travisci@$eha:android-keystore/\* "$android"
   cca build --release
   apk="$android/ant-build/LoMIS-release.apk"
-  deployDir="releases"
-  mkdir -p "$deployDir" && ln -s "$apk" "$deployDir/$app-$TRAVIS_TAG.apk"
+  out="releases/$app-$TRAVIS_TAG.apk"
 else
   cca build
   apk="$android/ant-build/LoMIS-debug.apk"
   now="$(date -u +"%Y%m%d%H%M%S")"
-  deployDir="snapshots"
-  mkdir -p "$deployDir" && ln -s "$apk" "$deployDir/$app-$now.apk"
+  out="snapshots/$app-$now.apk"
 fi
+
+mkdir -p "releases" "snapshots"
+ln -s "$apk" "$out"
