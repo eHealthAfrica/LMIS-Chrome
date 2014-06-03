@@ -13,10 +13,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           return appConfigService.getCurrentAppConfig();
         }
     },
-    controller: function ($stateParams, $state, $scope, surveyFactory, alertsFactory, appConfig, i18n) {
+    controller: function ($stateParams, $state, $scope, surveyFactory, growl, appConfig, i18n) {
 
       if(!$stateParams.surveyUUID){
-        alertsFactory.danger(i18n('surveyNotFound'), {persistent: true});
+        growl.error(i18n('surveyNotFound'), {persistent: true});
         return;
       }
 
@@ -26,7 +26,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.responses = {};
 
       if(typeof $scope.survey === 'undefined'){
-        alertsFactory.danger(i18n('surveyNotFound'), {persistent: true});
+        growl.error(i18n('surveyNotFound'), {persistent: true});
         return;
       }
 
@@ -56,7 +56,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
         if (!surveyResponse.isComplete) {
           $scope.isSaving = false;
-          alertsFactory.danger(i18n('incompleteSurveyErrorMsg'));
+          growl.error(i18n('incompleteSurveyErrorMsg'));
           return;
         }
 
@@ -67,11 +67,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
                 $state.go('home.index.home.mainActivity', {surveySuccessMsg: successMsg});
                 $scope.isSaving = false;
               } else {
-                alertsFactory.danger(i18n('surveyFailedMsg'));
+                growl.error(i18n('surveyFailedMsg'));
                 $scope.isSaving = false;
               }
             }, function () {
-              alertsFactory.danger(i18n('surveyFailedMsg'));
+              growl.error(i18n('surveyFailedMsg'));
               $scope.isSaving = false;
             });
       };

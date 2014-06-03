@@ -14,7 +14,6 @@ describe('Service stockCountFactory', function(){
       'index/index',
       'index/header',
       'index/breadcrumbs',
-      'index/alerts',
       'index/footer',
       'home/index',
       'home/nav',
@@ -30,7 +29,7 @@ describe('Service stockCountFactory', function(){
       $templateCache.put('views/' + template + '.html', '');
     });
   }));
-  
+
   beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q, i18n){
     stockCountFactory = _stockCountFactory_;
     scope = $rootScope.$new();

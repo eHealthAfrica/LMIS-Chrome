@@ -69,35 +69,35 @@ angular.module('lmisChromeApp')
       views: {
         'activities': {
           templateUrl: 'views/home/main-activity.html',
-          controller: function ($stateParams, i18n, alertsFactory) {
+          controller: function ($stateParams, i18n, growl) {
 
             if ($stateParams.storageClear !== null) {
-              alertsFactory.success(i18n('clearStorageMsg'));
+              growl.success(i18n('clearStorageMsg'));
               $stateParams.storageClear = null;
             }
 
             if ($stateParams.ccuBreakdownReportResult !== null) {
-              alertsFactory.success(i18n('ccuBreakdownReportSuccessMsg'));
+              growl.success(i18n('ccuBreakdownReportSuccessMsg'));
               $stateParams.ccuBreakdownReportResult = null;
             }
 
             if ($stateParams.stockOutBroadcastResult !== null) {
-              alertsFactory.success(i18n('stockOutBroadcastSuccessMsg'));
+              growl.success(i18n('stockOutBroadcastSuccessMsg'));
               $stateParams.stockOutBroadcastResult = null;
             }
 
             if ($stateParams.appConfigResult !== null) {
-              alertsFactory.success($stateParams.appConfigResult);
+              growl.success($stateParams.appConfigResult);
               $stateParams.appConfigResult = null;
             }
 
             if($stateParams.stockResult !== null){
-              alertsFactory.success($stateParams.stockResult);
+              growl.success($stateParams.stockResult);
               $stateParams.stockResult = null;
             }
 
             if ($stateParams.surveySuccessMsg !== null) {
-              alertsFactory.success($stateParams.surveySuccessMsg);
+              growl.success($stateParams.surveySuccessMsg);
               $stateParams.surveySuccessMsg = null;
             }
 
@@ -322,7 +322,7 @@ angular.module('lmisChromeApp')
           return settingsService.load();
         }
       },
-      controller: function($scope, settings, settingsService, alertsFactory, i18n) {
+      controller: function($scope, settings, settingsService, growl, i18n) {
         var fields = ['facility', 'inventory'];
         for(var i = fields.length - 1; i >= 0; i--) {
           if(!(fields[i] in settings)) {
@@ -334,10 +334,10 @@ angular.module('lmisChromeApp')
         $scope.save = function(settings) {
           settingsService.save(settings)
             .then(function() {
-              alertsFactory.success(i18n('settingsSaved'));
+              growl.success(i18n('settingsSaved'));
             })
             .catch(function() {
-              alertsFactory.success(i18n('settingsFailed'));
+              growl.success(i18n('settingsFailed'));
             });
         };
       }
