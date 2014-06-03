@@ -185,6 +185,10 @@ angular.module('lmisChromeApp')
 
     discardCountFactory.watchDiscarded($scope);
   })
+/**
+ * discard count form 2
+  */
+
   .controller('discardCountForm2Ctrl', function($scope, discardCountFactory, $state, growl, $stateParams, appConfig, productType, i18n){
     var initDiscardCount = function(discardCount){
       if(discardCount !== null && discardCount !== undefined){
@@ -214,11 +218,13 @@ angular.module('lmisChromeApp')
            initDiscardCount(discardCount);
         });
 
-    $scope.updateData = function(){
-      initReason();
-      $scope.discardCount.discarded[$scope.productKey] = $scope.reasonQuantity;
-      $scope.discardCount.reason[$scope.productKey][$scope.selectedReason]= $scope.reasonQuantity;
-    };
+    $scope.$watch('reasonQuantity', function(newValue){
+      if(angular.isDefined(newValue)){
+        initReason();
+        $scope.discardCount.discarded[$scope.productKey] = $scope.reasonQuantity;
+        $scope.discardCount.reason[$scope.productKey][$scope.selectedReason]= $scope.reasonQuantity;
+      }
+    });
 
     $scope.loadSelected = function(){
       initReason();
