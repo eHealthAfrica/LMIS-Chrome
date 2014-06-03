@@ -507,6 +507,12 @@
   "discardCountSaved": {
     "message": "Discard count saved successfully"
   },
+  "selectDiscardReason": {
+    "message": "Select Discard Reason"
+  },
+  "enterQuantity": {
+    "message": "Enter Quantity"
+  },
   "back": {
     "message": "Back"
   },
