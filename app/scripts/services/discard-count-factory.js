@@ -42,7 +42,7 @@ angular.module('lmisChromeApp')
       return $filter('date')(date, 'yyyy-MM-dd');
     };
 
-    var saveDiscarded = function(scope, state, alertsFactory){
+    var saveDiscarded = function(scope, state, growl){
       scope.discardCount.facility = scope.facilityUuid;
       scope.discardCount.countDate = new Date(scope.reportYear, parseInt(scope.reportMonth)-1, scope.currentDay, load.timezone());
       addRecord(scope.discardCount)
@@ -56,7 +56,7 @@ angular.module('lmisChromeApp')
               scope.monthList[scope.reportMonth],
               scope.reportYear
             ].join(' ');
-          alertsFactory.success(msg);
+          growl.success(msg);
           scope.isSaving = false;
           state.go('home.index.home.mainActivity', {
             'facility': scope.facilityUuid,
@@ -67,7 +67,7 @@ angular.module('lmisChromeApp')
         }
       })
       .catch(function(reason){
-        alertsFactory.danger(reason, {persistent: true});
+        growl.error(reason, {persistent: true});
       });
     };
     var addRecord = function(object){

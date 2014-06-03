@@ -13,7 +13,6 @@ describe('storageService', function () {
       'index/index',
       'index/header',
       'index/breadcrumbs',
-      'index/alerts',
       'index/footer',
       'home/index',
       'home/nav',

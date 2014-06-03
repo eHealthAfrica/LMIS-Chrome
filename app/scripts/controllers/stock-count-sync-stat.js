@@ -23,7 +23,7 @@ angular.module('lmisChromeApp')
           views: {
             'stats': {
               templateUrl: 'views/stockcount/sync/stats.html',
-              controller: function($q, $log, $scope, i18n, config, pouchdb, localDocs, alertsFactory) {
+              controller: function($q, $log, $scope, i18n, config, pouchdb, localDocs, growl) {
                 var dbName = 'stockcount',
                     remote = config.api.url + '/' + dbName;
 
@@ -49,12 +49,12 @@ angular.module('lmisChromeApp')
 
                 var sync = function(source) {
                   var deferred = $q.defer();
-                  alertsFactory.info(i18n('syncing', source.label));
+                  growl.info(i18n('syncing', source.label));
                   $scope.syncing = true;
                   var cb = {
                     complete: function() {
                       $scope.syncing = false;
-                      alertsFactory.success(i18n('syncSuccess', source.label));
+                      growl.success(i18n('syncSuccess', source.label));
                       deferred.resolve();
                     }
                   };

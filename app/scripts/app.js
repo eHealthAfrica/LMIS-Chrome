@@ -6,7 +6,9 @@ angular.module('lmisChromeApp', [
   'tv.breadcrumbs',
   'pouchdb',
   'config',
-  'nvd3ChartDirectives'
+  'nvd3ChartDirectives',
+  'angular-growl',
+  'ngAnimate'
 ])
   // Load fixture data
   .run(function(storageService, $rootScope, $state, $window, appConfigService) {
@@ -38,9 +40,18 @@ angular.module('lmisChromeApp', [
         console.log('finished loading: ' + (Object.keys(data)).join('\n'));
       });
     });
+  })
 
-  }).config(['$compileProvider', function ($compileProvider) {
-      //to bye-pass Chrome app CSP for images.
-      $compileProvider.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);
-    }
-  ]);
+  .config(function($compileProvider) {
+    // to bypass Chrome app CSP for images.
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);
+  })
+
+  .config(function(growlProvider) {
+    growlProvider.globalTimeToLive({
+      success: 2000,
+      error: 5000,
+      warning: 2000,
+      info: 2000
+    });
+  });
