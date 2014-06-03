@@ -298,6 +298,7 @@ module.exports = function(grunt) {
               'scripts/{,*/}*.js',
               'styles/{,*/}*.css',
               'images/{,*/}*',
+              'bower_components/font-awesome/fonts/*'
             ]
           }
         ]
@@ -401,6 +402,16 @@ module.exports = function(grunt) {
         createTag: false,
         push: false
       }
+    },
+
+    wiredepCopy: {
+      snapshot: {
+        options: {
+          src: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>',
+          wiredep: '<%= wiredep.target %>'
+        }
+      }
     }
   });
 
@@ -463,7 +474,8 @@ module.exports = function(grunt) {
 
     var snapshot = [
       'autoprefixer',
-      'copy:snapshot'
+      'copy:snapshot',
+      'wiredepCopy:snapshot'
     ];
 
     if(target === 'release') {
