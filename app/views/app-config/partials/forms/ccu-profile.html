@@ -23,14 +23,14 @@
       <div class="list-group pre-scrollable">
         <div class="list-group-item"
              ng-repeat="ccuProfile in ccuProfiles | filter:search track by ccuProfile.dhis2_modelid">
-        <span>
+        <label>
           <input type="checkbox" ng-model="ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]"
                  ng-true-value="{{ ccuProfile }}"
                  ng-false-value="{{ {'dhis2_modelid': ccuProfile.dhis2_modelid, deSelected: true} }}"
                  ng-change="onCcuSelection(ccuProfileCheckBoxes[ccuProfile.dhis2_modelid])"
                  ng-checked="preSelectCcuProfiles[ccuProfile.dhis2_modelid]"/>
           {{ ccuProfile.Manufacturer }} {{ ccuProfile.ModelName }}
-        </span>
+        </label>
         </div>
       </div>
     </div>

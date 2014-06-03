@@ -1,8 +1,50 @@
-language: node_js
+language: android
 node_js:
-  - '0.10'
+- '0.10'
 before_script:
-  - 'npm install -g bower grunt-cli'
-  - 'bower install'
+- npm install -g bower grunt-cli
+- npm install
+- bower install
+script:
+- npm test
 notifications:
   flowdock: 232485f7661e644ae5878944c2597042
+before_deploy:
+- ./scripts/build.sh
+deploy:
+  provider: s3
+  access_key_id: AKIAINSUTVOB4CPQYP2A
+  secret_access_key:
+    secure: rxaf+OKQKnxXefvvyBnPDDh1lRerKdbI5mvXwx1En7BxdTYRnM2T/IhUMo1SXJH1O1T+eP4vskqA/HjCJCygFApoHj8Zqr7M+z5vje65F4Vpl7AFqLohquLg3vanYXAZ73JKo1zQyNbPd3bmMwjdTekK0+lTD8TSMR59dweqGYI=
+  bucket: eha-lomis
+  local-dir: build/lomis/build
+  skip_cleanup: true
+  region: eu-west-1
+  on:
+    all_branches: true
+    repo: eHealthAfrica/LMIS-Chrome
+env:
+  global:
+    - secure: "cgUIcbrv6vY+tCgTVYNr0jIdwy0tuiG4pdRjF8Kf1SkelyJ102o9rUtnsS1AJbPa7ur3yHhCQ5YTKvt/ybBFb7h3A21AIzebGjknDuYMQM1V3mAeU6g9HsjON/mGrgtQFwaHTuh569Ms7TmPG4zV+3IYhUSuCeKoQavWKy2gSTs="
+    - secure: "mJGMnVBplPEsDNq0u/Cg8j+v38no/mFu5arcrTLCwITamdj+ujNnqTb9thIcuitdRpX9JlYhlUzl1JpqzY6eq585Wv3lGxPzdsdx7ALCeMEQhrY0qO381fitD8jmfJ+ZGXrdBZ8trEtViZmZ7UA72fbYaguImoqlCEKGUbLbfJM="
+    - secure: "eMz37uqcqqB6JSPUTrVmTUnzRpbsYF8mrtywTnATxEnxCNILAOYZ2vQAlIvae5AHh+dypZrcwEh4h+xVxAeLI7K2wNJozT6I6rkPW06LhrCJ1mtmYsa891bafEl5fUVq5/AyfDoGPghPf6j0Tz2Hi8iVw/9adEbZ1n6oV/B3NQk="
+    - secure: "T3vwbjM3f/ru9wQCCD6jCUOJYte9VKST7Z4cPpu45BkYtkY/OF2iygaAGFCX8LvQrLGxTHva9TzTepR6eTib1jZIj2sFLwbuxS0NqK4OoHw2+9kKAz373+ofyDOmifzIDc26m5pt6mf3ylAVJdTpCqSWbph1v6i853xZpA8NmMA="
+    - secure: "K87VHZV7qDL3CMojZx9y/dADwFuaVaC+fJJMNI+KFHcbNcdPg77H+DaI3tWx5PxTtqkCE44VG0PBVgYcrugLaZ1BzUqzfedQZPLABIc/jBCDb3nMmLvoGmt3vHECq2tzUB9M4Z690L+HHTRUdsV85CXcUNjffSG7g7koGaQVG3o="
+    - secure: "m3VbaPtf+QBjfFPx+v2q/mArBkkmZqPdvC8YgU8QdeZpa56H28MwFj0C0NMHGDSQK+od7XsMDUCagxyV0U90VmaffRaJ5U2244cNIdMEmsnvWH/FfRYhg57ArcEkZP7WmmRpJDy2gVroJeFmDgNkqvWbfjErCFWJHuvEZY6yHMw="
+    - secure: "QGHltXFBT+HbBzyc+TW/95L5fGYKGs9E2PQaPdzoO6QPsdlF26TrVoZ7m2uxhGACmLEY82SDNVCMnhOudGs+tFAwtXdTwbAVzXTypCGsF8XOq60ZZjDEEdq8NiqPdWkz/7wSVps+pE4Y1Z71B9DLUodv8nPGsUrxBuRGEMJKvz8="
+    - secure: "bKtTe/5UPTSnVC+72y4z6RY23xPXe1D5CUUSG/67uTHWfpXSXIbpnXbq9AliP9MeYvpgIWJSFTkwu4GxFjMID1om6ZfJ0ne1fEjOIw6YS6ERp0MyZMrS4yaG2uso4xqKpfDUGyUwEhYTK1tkfZ2LoaOGPra5uBUL00AG5gnlahU="
+    - secure: "h4mPTGV4/OXCxzC2pVboGmcgHOWsQBGMwLKYl/4cq+x4P/59u1gT7FR62AgzOA5xO6crtSNkLcLcpjMTbRqftk1+gIh5O1UYuF/JCOfFYdDbztXCZA9sXkjwy47dLd+olbOo8osmu9fmuMpbcF6DWEkMEQRw/tfXHWBdlFQ0104="
+    - secure: "CEPE34/Sxuf/RSa7d316M4PwgEPaMI7Y6Lf6ta3KmNtRTHp5FSa/0G/Ar3Z+gRJa/Uh7DXB8hcHZt/It8+by5D7It7QV528mmmIgNYMmZPByPVbTZRoSjQB5Is35siqeuAa9JvVqIYk++Sphjb5Z1JsZNN80bDdnVRclVpR1ptI="
+    - secure: "jei/4LR2IwLTKod881YURyaUlNMmNB518KMnnxK8AzaIHf94yEijHaIHaqt6RudyKzH+yIgAobBwAnXFtKF3hPSqXOG3Fb2b8k2/4JXo0Ery1/byMc7vQLU8rXYHLGdkhxM1lgej1HWIQtHSdCd2uJMirtX+OYhI2e6qiNaQHcg="
+    - secure: "Gcl1MNId9f+tuOJAo3Ev370+9tfmVUkRmsPje1UY6V7wxDEj74YeUVr9Yjjj66BL0T47tYqdge1us3YAdA/Y2zbL8xiM1ABlArEdak7hP2+o+divTG+lHaL4xj73xtaNFf0KbXum1hpeUiokR60giuD14ZN9eDcPKfm8iPIBHQU="
+    - secure: "U7BXKVowY76Va2bBZUayyVWrI2aHkiA03BlT3QxByGhfS38csuzHzzZMMj89KOjRW0eDJiC5gecTyUOBlGvJGHz2+xsJ6IylAD0iCkoCXySTI39KX7lSn5U13x3X/2LUjbHpcP8pg8W2hA4L/XgGHTi2KsSgKDUPWC4n3VDwkug="
+    - secure: "oX18NhhXHx1s14+qh3siieNUQ3D4d+sAybzyP/vw2ZQ0Vt1soWkGjj+L0MLr+zP5ILDCNwlme0A1GZtJPZ0bfDXXXEbxqcIKLWbbunuhdKBhSGfjrdDWFuPjKfoTxx1FHxiR0n6eE99e6CSdZUywehwSe7ksHwKMgImBYznG8MI="
+    - secure: "mquydiqJycqX3q7wkmFV9pjGBLZOfcQnwItvuyk7/yxARZu2lS5mhadPmxN1gW0c0hPk4U5sZLALOolZrLqY68+xSdPNn3zwgXhSiiLL39VZHA7T6BsJp0BW4bFrfBMQJksImEVkEHgTWJYODpVsyx4NnsCOlJyGgD2PbWlXlPI="
+    - secure: "C++tt74GOz10GsnmS7GZUhAsS+VG8HFY4fDq6A4qkaV6h/cBhTMVXa/5ab9guxJXnRdamM+tWz46wTEjwwlTFahrTH4mpkPtJ/U96lgezhtiaEtgJmEWPVoNm7tX3iZF8+DYjxoIULlYixxxTD7tGfoP8WlyHCLpQMZa4d37ASQ="
+    - secure: "gNp5oD+hcMu+/i3J8nGPlU/HAnSAx+firE2oGvp07pW5Yj0HaQBjFd4pg0/SejiiK6ZGLfa4AzM4IhzUXSJ076vO6kVq84PH5mxfkUmF6UagfoP/Tyug1KJac0woVAt3+KTzUoqLOqN4Wj5/FtW7U0zNS14/ZBf+1JOe8xCaQRw="
+    - secure: "lvhcXw6fQkW18HNpKNiKzrBehbZU6ECJY9AlyvanOVPBBMQGEL2qE/w1PJZMxo/LZafZ+NSKr/EeMHEPZgA7A1sWwRpYXvz8DtumuXHzlTBycBnVF6Doo+dlEvF4IGoc5G6dKiCqTTPqZkJltpIdqKdgCFqMYJmBuCc2mrET+cU="
+    - secure: "eTZ1aqsnSCAHaZlDax0c7UoR9aKXYeMu4DCXeUq7aFOPGrKdbxuEuj2eyEbV11BeGOiKn/4s+VyD3nCOMvaVzluy9aJJa7RRGsB3d7JKYyi4LzoXQRE9cnTKLEsfGAgLNylMCAwJPV2oiWhVNJ6mdQ2Mfc69SgOO/hF4Pf0TUqM="
+    - secure: "MDCEg76qx6eW/U1gs6lwm8T0Ae0TNV3rUUgfkSqsIJ4e42b7XSdbc7DfFckpy6T/Qw5J6zdpByaRqHgfD03C2mKM/H4MAyTN7v5GiOfs1Il5zwWOMFxWxlUSMVNUDA7X/uYaclUhFLrJ3z9DcCye9yt4dq/BgBqNzxw3ixqK9/w="
+    - secure: "PyznH0dbKc4xnSxJNPK/HNzkx6CbBOefsu+rt5D7nGXe4UAjO+M/wNjeBDWigzq+ht2XsgNmCdqGZPrJrq47y8QrIL6jMzsB4jISmMFtdK2xwC9cB4ylCpF+VhbIAPxT2ENhxNOC2ijuRC7f7dqnjceBGkt89oHNOCCr9MWkpx4="
+    - secure: "PdV2QnnmEIr4HrRIlld0CGJXbR/SXfzUtldwEEyVyJdwM0vsMVoCeiDk4fT72+tA5dSNdh/CNt9Kz141Vx9Q7RrN5Xj2JJdM/h1pNtq6Vq3IUx3er71C1B8FQNPBjMP2OKWUjHaR3/XSx/M9O+yv/y+NMF995FTUmpwIxMjVzzI="
+    - secure: "dJGRRd19h87+looqndhu+O039kl3sXrcgAv2z8kLZ50KHNSuQJ6bUc7YE0ilOOv9tPmtFlepsloEnzNosVSUZRkhNeSu3Gi4zuqQggEAg4NLM1ZmLw1mD7Bn7BVUmLR7y51MVKqZDByN9ICCDJvOZtpjgmWi/ImBIotUNKMVAQc="

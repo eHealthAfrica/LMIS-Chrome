@@ -58,7 +58,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     }
   });
 
-}).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, alertsFactory, $state,
+}).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, growl, $state,
         i18n, deviceInfo, $log, ccuProfiles){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
@@ -94,12 +94,12 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           $scope.appConfig.stockCountInterval = result.stockCountInterval;
           $scope.appConfig.contactPerson = result.contactPerson;
           $scope.appConfig.facility = JSON.stringify(result.appFacility);//used to pre-select facility drop down
-          $scope.appConfig.selectedProductProfiles = result.selectedProductProfiles;
+          $scope.appConfig.selectedProductProfiles = result.selectedProductProfiles || [];
           $scope.appConfig.selectedCcuProfiles = result.selectedCcuProfiles || [];
           $scope.preSelectCcuProfiles =
               appConfigService.generateAssociativeArray($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
           $scope.preSelectProductProfileCheckBox =
-              appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles);
+              appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles, 'uuid');
 
           $scope.moveTo(nextStep);
 
@@ -146,16 +146,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
               $scope.appConfig.uuid = result;
               $state.go('home.index.home.mainActivity', {'appConfigResult': i18n('appConfigSuccessMsg') });
             } else {
-              alertsFactory.danger(i18n('appConfigFailedMsg'));
+              growl.error(i18n('appConfigFailedMsg'));
             }
           }).catch(function (reason) {
-            alertsFactory.danger(i18n('appConfigFailedMsg'));
+            growl.error(i18n('appConfigFailedMsg'));
           }).finally(function () {
             $scope.isSaving = false;
           });
     };
 
-}).controller('EditAppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, alertsFactory, $log,
+}).controller('EditAppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, growl, $log,
                                          i18n, $state, appConfig, ccuProfiles) {
 
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -211,11 +211,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             $scope.appConfig.uuid = result;
             $state.go('home.index.home.mainActivity', {'appConfigResult': i18n('appConfigSuccessMsg') });
           } else {
-            alertsFactory.danger(i18n('appConfigFailedMsg'));
+            growl.error(i18n('appConfigFailedMsg'));
           }
         })
         .catch(function (reason) {
-          alertsFactory.danger(i18n('appConfigFailedMsg'));
+          growl.error(i18n('appConfigFailedMsg'));
           $log.error(reason);
         }).finally(function () {
           $scope.isSaving = false;

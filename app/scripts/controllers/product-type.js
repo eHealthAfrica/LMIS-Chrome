@@ -62,7 +62,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * AddProductCtrl - This is used to save Product Type to local storage.
  *
  */
-    .controller('AddProductTypeCtrl', function ($scope, storageService, $location, alertsFactory) {
+    .controller('AddProductTypeCtrl', function ($scope, storageService, $location, growl) {
 
       //create a blank object tha will be used to hold product form info
       $scope.product = {};
@@ -80,14 +80,14 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         if (Object.keys($scope.product).length > 0) {
           storageService.save(storageService.PRODUCT_TYPES, $scope.product).then(function (bool) {
             if (bool) {
-              alertsFactory.success('Data saved');
+              growl.success('Data saved');
               $location.path('/main/products');
             } else {
 
             }
           });
         } else {
-          alertsFactory.danger('can\'t save empty form');
+          growl.error('can\'t save empty form');
         }
       };
     });

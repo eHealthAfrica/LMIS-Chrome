@@ -15,10 +15,11 @@ describe('Service: SyncService', function() {
     $window = _$window_;
     storageService = _storageService_;
     recordWithoutUuid = {name: 'test', date: new Date() };
-    recordWithUuid = {uuid: '123', name: 'test', date: new Date() };
+    recordWithUuid = {uuid: '1234', name: 'test', date: new Date() };
     db = {
       destroy: function(){ return $q.when(true); },
-      info: function(){ return $q.when({}); }
+      info: function(){ return $q.when({}); },
+      get: function(uuid){ return $q.when({ _rev: '1234', _id: uuid, name: 'test', date: new Date() }); }
     };
     dbName = 'testdb';
     spyOn(pouchdb, 'create').andCallFake(function(dbName){ return db });
@@ -84,7 +85,7 @@ describe('Service: SyncService', function() {
 
   it('i expect addToPendingSync to call storageService.save when called with correct parameters.', function(){
     spyOn(storageService, 'save').andCallThrough();
-    var pendingSync = { dbName: dbName, uuid: '12345' }
+    var pendingSync = { dbName: dbName, uuid: '12345' };
     syncService.addToPendingSync(pendingSync);
     expect(storageService.save).toHaveBeenCalled();
   });
@@ -112,6 +113,18 @@ describe('Service: SyncService', function() {
     spyOn(storageService, 'all').andCallThrough();
     syncService.backgroundSyncingOfPendingRecords();
     expect(storageService.all).toHaveBeenCalledWith(storageService.PENDING_SYNCS);
+  });
+
+  it('i expect updateFromRemote to throw an exception when called with record object without "uuid" property.', function(){
+    var recordWithOutUuid = { name: 'BCG', type: 'Anti-gen'};
+    expect(function(){ syncService.updateFromRemote('testDb', recordWithOutUuid); }).toThrow();
+  });
+
+  it('i expect updateFromRemote to call pouchdb\'s .info() ', function(){
+    spyOn(db, 'info').andCallThrough();
+    expect(db.info).not.toHaveBeenCalled();
+    syncService.updateFromRemote('testDb', recordWithUuid);
+    expect(db.info).toHaveBeenCalled();
   });
 
 });

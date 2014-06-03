@@ -6,10 +6,12 @@ angular.module('lmisChromeApp', [
   'tv.breadcrumbs',
   'pouchdb',
   'config',
-  'nvd3ChartDirectives'
+  'nvd3ChartDirectives',
+  'angular-growl',
+  'ngAnimate'
 ])
   // Load fixture data
-  .run(function(storageService, $rootScope, $state, $window, syncService) {
+  .run(function(storageService, $rootScope, $state, $window, appConfigService) {
 
     $window.showSplashScreen = function(){
       $state.go('loadingFixture');
@@ -28,18 +30,28 @@ angular.module('lmisChromeApp', [
 
     //load fixtures if not loaded yet.
     storageService.loadFixtures().then(function(){
-      //trigger background syncing after loading fixtures.
-      syncService.backgroundSync()
+      //update appConfig from remote then trigger background syncing
+      appConfigService.updateAppConfigAndStartBackgroundSync()
           .finally(function () {
-            console.log('background syncing trigger on start up has been completed!');
+            console.log('updateAppConfigAndStartBackgroundSync triggered on start up have been completed!');
           });
+
       storageService.getAll().then(function (data) {
         console.log('finished loading: ' + (Object.keys(data)).join('\n'));
       });
     });
+  })
 
-  }).config(['$compileProvider', function ($compileProvider) {
-      //to bye-pass Chrome app CSP for images.
-      $compileProvider.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);
-    }
-  ]);
+  .config(function($compileProvider) {
+    // to bypass Chrome app CSP for images.
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);
+  })
+
+  .config(function(growlProvider) {
+    growlProvider.globalTimeToLive({
+      success: 2000,
+      error: 5000,
+      warning: 2000,
+      info: 2000
+    });
+  });

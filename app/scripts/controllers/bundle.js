@@ -23,7 +23,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
  * LogIncomingCtrl for logging incoming bundle and updating inventory batch list view, bundle status, generates and stores
  * Bundle Receipt.
  */
-    .controller('LogIncomingCtrl', function ($scope, $filter, $state, bundleNumbers, storageUnitFactory, i18n, currentFacilityStorageUnits, bundleFactory, userFactory, alertsFactory) {
+    .controller('LogIncomingCtrl', function ($scope, $filter, $state, bundleNumbers, storageUnitFactory, i18n, currentFacilityStorageUnits, bundleFactory, userFactory, growl) {
 
       $scope.LOG_STEPS = {ENTER_BUNDLE_NO: 1, BUNDLE_NOT_FOUND: 2, VERIFY: 3, CONFIRM: 4};
       $scope.bundleNumbersAutoCompleteList = bundleNumbers;
@@ -140,7 +140,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             });
           }
         }, function (error) {
-          alertsFactory.danger(error);
+          growl.error(error);
           console.log(error);
         });
 

@@ -34,8 +34,7 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
         scope.$apply(function () {
           scope.startCounter(!shouldCountUp);
         });
-        var NUMBER_OF_REPEATS = 1;
-        notificationService.beep(NUMBER_OF_REPEATS);
+        vibrate();
       });
       minusBtnElem.on('touchend', function () {
         scope.$apply(function () {
@@ -43,13 +42,17 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
         });
       });
 
+      var vibrate = function(){
+        var DURATION_MILLI_SECONDS = 50;
+        notificationService.vibrate(DURATION_MILLI_SECONDS);
+      };
+
       //attach touch listener to add button
       plusBtnElem.on('touchstart', function () {
         scope.$apply(function () {
           scope.startCounter(shouldCountUp);
         });
-        var DURATION_MILLI_SECONDS = 50;
-        notificationService.vibrate(DURATION_MILLI_SECONDS);
+        vibrate();
       });
       plusBtnElem.on('touchend', function () {
         scope.$apply(function () {
@@ -118,19 +121,18 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
             delay = 1;
           }
           if (isDown) {
+            if (isIncrement === true) {
+              scope.increaseCount();
+            } else {
+              scope.decreaseCount();
+            }
             var promise = $timeout(function () {
               if (isDown) {
-                if (isIncrement === true) {
-                  scope.increaseCount();
-                } else {
-                  scope.decreaseCount();
-                }
-                scope.$apply();
                 count();
               } else {
                 $timeout.cancel(promise);
               }
-
+              scope.$apply();
             }, delay);
           }
         }
