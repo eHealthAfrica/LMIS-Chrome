@@ -504,6 +504,9 @@
   "discardCountReminderMsg": {
     "message": "Discard count is due today!"
   },
+  "discardCountSaved": {
+    "message": "Discard count saved successfully"
+  },
   "back": {
     "message": "Back"
   },
