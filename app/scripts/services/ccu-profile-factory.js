@@ -27,7 +27,30 @@ angular.module('lmisChromeApp').factory('ccuProfileFactory', function ($q, stora
     return deferred.promise;
   };
 
+  var getAllGroupedByCategory = function () {
+    var deferred = $q.defer();
+    var groupedList = {};
+    storageService.all(storageService.CCU_PROFILE)
+        .then(function (result) {
+          for (var index in result) {
+            var ccuProfile = result[index];
+            var NOT_FOUND = -1;
+            var existingGroups = Object.keys(groupedList);
+            if (existingGroups.indexOf(ccuProfile.RefType) === NOT_FOUND) {
+              groupedList[ccuProfile.RefType] = [];
+            }
+            groupedList[ccuProfile.RefType].push(ccuProfile);
+          }
+          deferred.resolve(groupedList);
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
+    return deferred.promise;
+  };
+
   return {
+    getAllGroupedByCategory: getAllGroupedByCategory,
     getAll: getCcuProfiles,
     get: getByModelId
   };
