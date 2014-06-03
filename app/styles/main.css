@@ -218,3 +218,7 @@ tr.disabled, tr.disabled span.text-info{
   width: 32px;
   height: 32px;
 }
+.highlight-selected-item {
+  background-color: #449d44;
+  color: #FFFFFF;
+}
