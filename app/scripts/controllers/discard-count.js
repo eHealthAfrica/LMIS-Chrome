@@ -37,6 +37,23 @@ angular.module('lmisChromeApp')
           }
         }
       })
+      .state('discardCountForm2', {
+        parent: 'root.index',
+        data:{
+          label:'Discard Count Form'
+        },
+        url: '/discardCountForm2?facility&reportMonth&reportYear&reportDay&countDate',
+        templateUrl: 'views/discard-count/discard-count-form2.html',
+        controller:'discardCountForm2Ctrl',
+        resolve: {
+          appConfig: function(appConfigService){
+            return appConfigService.getCurrentAppConfig();
+          },
+          productType: function(stockCountFactory){
+            return stockCountFactory.productType();
+          }
+        }
+      });
   })
   .controller('discardCountHomeCtrl', function($scope, discardCountFactory, discardCountList, appConfig, $state){
     $scope.discardCountList = discardCountList;
@@ -167,4 +184,65 @@ angular.module('lmisChromeApp')
     };
 
     discardCountFactory.watchDiscarded($scope);
+  })
+  .controller('discardCountForm2Ctrl', function($scope, discardCountFactory, $state, growl, $stateParams, appConfig, productType, i18n){
+    var initDiscardCount = function(discardCount){
+      if(discardCount !== null && discardCount !== undefined){
+        $scope.discardCount = discardCount;
+      }
+      else{
+        $scope.discardCount = {};
+        $scope.discardCount.facility = appConfig.appFacility.uuid;
+        $scope.discardCount.reason = {};
+        $scope.discardCount.discarded = {};
+      }
+    };
+
+    var initReason = function (){
+      if(angular.isUndefined($scope.discardCount.reason[$scope.productKey])){
+        $scope.discardCount.reason[$scope.productKey] = {};
+      }
+    };
+
+    initDiscardCount();
+    $scope.discardedReasons = discardCountFactory.discardedReasons;
+    $scope.productType = productType;
+    $scope.facilityProducts = discardCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
+
+    discardCountFactory.getDiscardCountByDate(new Date())
+        .then(function(discardCount){
+           initDiscardCount(discardCount);
+        });
+
+    $scope.updateData = function(){
+      initReason();
+      $scope.discardCount.discarded[$scope.productKey] = $scope.reasonQuantity;
+      $scope.discardCount.reason[$scope.productKey][$scope.selectedReason]= $scope.reasonQuantity;
+    };
+
+    $scope.loadSelected = function(){
+      initReason();
+      $scope.reasonQuantity = $scope.discardCount.reason[$scope.productKey][$scope.selectedReason];
+    };
+
+    $scope.save = function(type){
+      $scope.isSaving = true;
+      $scope.discardCount.countDate = new Date();
+      $scope.discardCount.isComplete = 1;
+      discardCountFactory.add($scope.discardCount)
+          .then(function(){
+            $scope.isSaving = false;
+            var msg = i18n('discardCountSaved');
+            growl.success(msg);
+            if(type === 0){
+              $state.go('home.index.home.mainActivity', {'stockResult': msg});
+            }
+            else{
+              $scope.productKey = '';
+              $scope.selectedReason = '';
+              $scope.reasonQuantity = '';
+            }
+          });
+    };
+
   });
