@@ -131,12 +131,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.onCcuSelection = function (ccuProfile) {
     $scope.appConfig.selectedCcuProfiles =
           appConfigService.addObjectToCollection(ccuProfile, $scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
-    $scope.preSelectCcuProfiles = appConfigService.generateAssociativeArray($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
+    $scope.preSelectCcuProfiles =
+        appConfigService.generateAssociativeArray($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
   };
 
   $scope.onProductProfileSelection = function (productProfile) {
     $scope.appConfig.selectedProductProfiles =
           appConfigService.addObjectToCollection(productProfile, $scope.appConfig.selectedProductProfiles, 'uuid');
+    $scope.preSelectProductProfileCheckBox =
+      appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles, 'uuid');
   };
 
   $scope.save = function () {
@@ -186,7 +189,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.appConfig.appFacility = appConfig.appFacility;
     $scope.appConfig.selectedProductProfiles = appConfig.selectedProductProfiles || [];
     $scope.appConfig.selectedCcuProfiles = appConfig.selectedCcuProfiles || [];
-    $scope.preSelectCcuProfiles = appConfigService.generateAssociativeArray(appConfig.selectedCcuProfiles, 'dhis2_modelid');
+    $scope.preSelectCcuProfiles =
+        appConfigService.generateAssociativeArray(appConfig.selectedCcuProfiles, 'dhis2_modelid');
     $scope.preSelectProductProfileCheckBox =
       appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles, 'uuid');
   }
@@ -197,7 +201,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.onCcuSelection = function (ccuProfile) {
     $scope.appConfig.selectedCcuProfiles =
       appConfigService.addObjectToCollection(ccuProfile, $scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
-    $scope.preSelectCcuProfiles = appConfigService.generateAssociativeArray($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
+    $scope.preSelectCcuProfiles =
+        appConfigService.generateAssociativeArray($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
   };
 
   $scope.onProductProfileSelection = function (productProfile) {
@@ -205,7 +210,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       appConfigService.addObjectToCollection(productProfile, $scope.appConfig.selectedProductProfiles, 'uuid');
     $scope.preSelectProductProfileCheckBox =
       appConfigService.generateAssociativeArray($scope.appConfig.selectedProductProfiles, 'uuid');
-
   };
 
   $scope.save = function () {
