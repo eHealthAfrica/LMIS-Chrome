@@ -69,7 +69,7 @@ angular.module('lmisChromeApp')
     var day = now.getDate();
     day = day < 10 ? '0' + day : day;
 
-    var month = now.getMonth() + 1;
+    var month = now.getMonth();
     month = month < 10 ? '0' + month : month;
     $scope.productType = productType;
 
