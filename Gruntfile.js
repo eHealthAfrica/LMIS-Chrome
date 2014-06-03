@@ -286,6 +286,21 @@ module.exports = function(grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
+      },
+      snapshot: {
+        files: [
+          '<%= copy.dist.files %>',
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/',
+            dest: '<%= yeoman.dist %>',
+            src: [
+              'scripts/{,*/}*.js',
+              'styles/{,*/}*.css',
+              'images/{,*/}*',
+            ]
+          }
+        ]
       }
     },
 
@@ -424,22 +439,19 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('build', function(target) {
-    var head = [
+    var common = [
       'clean:dist',
       'wiredep',
       'ngconstant:production',
-      'chromeManifest:dist',
+      'chromeManifest:dist'
+    ];
+
+    var release = [
       'useminPrepare',
       'concurrent:dist',
       'autoprefixer',
-      'concat'
-    ];
-
-    var torso = [
-      'removelogging'
-    ];
-
-    var tail = [
+      'concat',
+      'removelogging',
       'ngAnnotate',
       'copy:dist',
       'cssmin',
@@ -449,11 +461,16 @@ module.exports = function(grunt) {
       'htmlmin'
     ];
 
+    var snapshot = [
+      'autoprefixer',
+      'copy:snapshot'
+    ];
+
     if(target === 'release') {
-      grunt.task.run(head.concat(torso, tail));
+      grunt.task.run(common.concat(release));
     }
     else {
-      grunt.task.run(head.concat(tail));
+      grunt.task.run(common.concat(snapshot));
     }
   });
 
