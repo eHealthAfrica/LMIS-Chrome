@@ -58,12 +58,7 @@ angular.module('lmisChromeApp')
             ].join(' ');
           growl.success(msg);
           scope.isSaving = false;
-          state.go('home.index.home.mainActivity', {
-            'facility': scope.facilityUuid,
-            'reportMonth': scope.reportMonth,
-            'reportYear': scope.reportYear,
-            'stockResult': msg
-          });
+          state.go('home.index.home.mainActivity', {'stockResult': msg});
         }
       })
       .catch(function(reason){
@@ -71,23 +66,26 @@ angular.module('lmisChromeApp')
       });
     };
     var addRecord = function(object){
-        var deferred = $q.defer();
-        if(object.countDate instanceof Date){
-          object.countDate = object.countDate.toJSON();
+      var deferred = $q.defer();
+      if(object.countDate instanceof Date){
+        object.countDate = object.countDate.toJSON();
+      }
+      validate.discard.countExist().then(function(discardCount){
+        if(discardCount !== null){
+          object.uuid = discardCount.uuid;
         }
-        validate.discard.countExist().then(function(discardCount){
-          if(discardCount !== null){
-            object.uuid = discardCount.uuid;
-          }
-          storageService.save(storageService.DISCARD_COUNT, object)
-              .then(function(uuid){
-                deferred.resolve(uuid);
-              })
-          ;
-
-        });
-        return deferred.promise;
-      };
+        storageService.save(storageService.DISCARD_COUNT, object)
+            .then(function(uuid){
+              deferred.resolve(uuid);
+            }, function(reason){
+              deferred.reject(reason);
+            })
+            .catch(function(reason){
+              deferred.reject(reason);
+            });
+      });
+      return deferred.promise;
+    };
 
     var validate = {
      /*
@@ -175,6 +173,7 @@ angular.module('lmisChromeApp')
     };
 
     var getDiscardCountByDate = function (date) {
+      date = date instanceof Date ? isoDate(date.toJSON()) : date;
       var deferred = $q.defer();
       storageService.all(storageService.DISCARD_COUNT).then(function (discardCounts) {
         var discardCount = null;
@@ -297,7 +296,7 @@ angular.module('lmisChromeApp')
             });
             if((Object.keys(discardCount.reason[i])).length > 0){
               for(var j in discardCount.reason[i]){
-                if(discardCount.reason[i][j] !== 0){
+                if(discardCount.reason[i][j] !== 0 && discardCount.reason[i][j] !== ''){
                   arr.push(
                     {
                       header: false,
@@ -415,6 +414,7 @@ angular.module('lmisChromeApp')
       monthList: months,
       productType: productType,
       discardedReasons: discardedReasons,
+      add: addRecord,
       save:saveDiscarded,
       get:load,
       getDiscardCountByDate: getDiscardCountByDate,

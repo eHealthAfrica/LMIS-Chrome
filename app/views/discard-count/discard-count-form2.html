@@ -1,0 +1,111 @@
+<div class="panel panel-default" ng-show="showHelp">
+  <div class="panel-body">
+
+    <div class="col-sm-12">
+      <div class="pull-right" ng-click="showHelp=!showHelp">
+        <i class="text-danger fa fa-times fa-2x"></i>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="info-box">
+            <div class="info-box-number one">1</div>
+            <div class="info-box-text">
+              Count the number of items
+              discarded.
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+        </div>
+        <div class="col-sm-3">
+          <div class="info-box">
+            <div class="info-box-number two">2</div>
+            <div class="info-box-text">
+              Enter the amount discarded
+              for each reason.
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="info-box">
+            <div class="info-box-number three">3</div>
+            <div class="info-box-text">
+              Press Next to move to the next
+              product.
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+        </div>
+        <div class="col-sm-3">
+          <div class="info-box">
+            <div class="info-box-number four">4</div>
+            <div class="info-box-text">
+              When finished, press Save,
+              check your counts and press
+              Confirm to finalize your
+              count.
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+<div class="panel-heading">
+  <h1 class="panel-title">
+
+    <div class="pull-right">
+        <span ng-click="showHelp=!showHelp">
+          <i class="text-success fa fa-question-circle fa-2x"></i>
+        </span>
+    </div>
+    <div class="clearfix"></div>
+  </h1>
+</div>
+
+<div class="panel-body">
+  <form name="discardForm">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+          <label i18n="selectProductType"></label>
+          <select ng-change="loadSelected()" ng-model="productKey" class="form-control">
+            <option value="" i18n="selectProductType"></option>
+            <option value="{{ product.uuid }}" ng-repeat="product in facilityProducts"> {{ product.name }}</option>
+          </select>
+        </div>
+
+        <div class="form-group" ng-show="productKey">
+          <label i18n="selectDiscardReason"></label>
+          <select ng-change="loadSelected()" ng-model="selectedReason" class="form-control">
+            <option value="" i18n="selectDiscardReason"></option>
+            <option value="{{ $index }}" ng-repeat="reason in discardedReasons"> {{ reason }}</option>
+          </select>
+        </div>
+
+        <div class="form-group" ng-show="(selectedReason !== undefined &&  selectedReason !== '') && productKey !== ''">
+          <label i18n="enterQuantity"></label>
+          <!--input class="form-control" ng-model="reasonQuantity" ng-change="updateData()"-->
+          <counter bind="reasonQuantity"></counter>
+        </div>
+      </div>
+    </div>
+    <div class="btn-group btn-group-justified" ng-show="(reasonQuantity !== undefined &&  reasonQuantity !== '')">
+      <div class="btn-group">
+        <button ng-click="save(0)" class="btn btn-success">
+          Save
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+</div>
