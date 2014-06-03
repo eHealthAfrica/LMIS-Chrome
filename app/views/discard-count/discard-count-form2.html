@@ -78,23 +78,24 @@
       <div class="col-xs-12">
         <div class="form-group">
           <label i18n="selectProductType"></label>
-          <select ng-model="productKey" class="form-control">
+          <select ng-change="loadSelected()" ng-model="productKey" class="form-control">
             <option value="" i18n="selectProductType"></option>
             <option value="{{ product.uuid }}" ng-repeat="product in facilityProducts"> {{ product.name }}</option>
           </select>
         </div>
 
         <div class="form-group" ng-show="productKey">
-          <label>Select Reason</label>
+          <label i18n="selectDiscardReason"></label>
           <select ng-change="loadSelected()" ng-model="selectedReason" class="form-control">
-            <option value="" i18n="selectProductType"></option>
+            <option value="" i18n="selectDiscardReason"></option>
             <option value="{{ $index }}" ng-repeat="reason in discardedReasons"> {{ reason }}</option>
           </select>
         </div>
 
         <div class="form-group" ng-show="(selectedReason !== undefined &&  selectedReason !== '') && productKey !== ''">
-          <label>Enter Qty</label>
-          <input class="form-control" ng-model="reasonQuantity" ng-change="updateData()">
+          <label i18n="enterQuantity"></label>
+          <!--input class="form-control" ng-model="reasonQuantity" ng-change="updateData()"-->
+          <counter bind="reasonQuantity"></counter>
         </div>
       </div>
     </div>
