@@ -16,6 +16,9 @@ angular.module('lmisChromeApp')
           },
           stockCountByDate: function(stockCountFactory){
             return stockCountFactory.getStockCountListByDate();
+          },
+          mostRecentStockCount: function(stockCountFactory){
+            return stockCountFactory.getMostRecentStockCount();
           }
         },
         controller: 'StockCountHomeCtrl'
@@ -38,13 +41,16 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state){
+  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state, mostRecentStockCount){
     $scope.stockCountsByCreatedDate = stockCountByDate;
-    $scope.showStockCountFormByDate = function(date, isEditable){
+    $scope.showStockCountFormByDate = function(date){
       stockCountFactory.getStockCountByDate(date)
           .then(function (stockCount) {
             if (stockCount !== null) {
-              $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !isEditable});
+              //only most recent is editable.
+              var isEditable = (typeof mostRecentStockCount !== 'undefined') &&
+                  (mostRecentStockCount.uuid=== stockCount.uuid);
+              $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !isEditable });
             } else {
               $state.go('stockCountForm', {countDate: date});
             }
