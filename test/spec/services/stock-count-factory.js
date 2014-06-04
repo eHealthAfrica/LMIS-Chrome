@@ -6,7 +6,8 @@ describe('Service stockCountFactory', function(){
   var stockCountFactory,
       stockCount,
       scope,
-      _i18n;
+      _i18n,
+      storageService;
    // Initialize the state
   beforeEach(inject(function($templateCache) {
     // Mock each template used by the state
@@ -30,11 +31,12 @@ describe('Service stockCountFactory', function(){
     });
   }));
 
-  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q, i18n){
+  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q, i18n, _storageService_){
     stockCountFactory = _stockCountFactory_;
     scope = $rootScope.$new();
     stockCount = stockData;
     _i18n = i18n;
+    storageService = _storageService_;
 
     spyOn(stockCountFactory, 'getStockCountByDate').andCallFake(function (date) {
       //TODO: re-write this when local storage and storageprovider mocks are completed.
@@ -58,21 +60,11 @@ describe('Service stockCountFactory', function(){
     expect(stockCountFactory).toBeDefined();
   });
 
-  it('should contain the name of a function', function(){
-    expect(stockCountFactory.get.allStockCount).toBeDefined();
-  });
-
-  it('should return Month object', function(){
-    expect(stockCountFactory.monthList).toBeDefined();
-  });
-
-  it('should return 12 months', function(){
-    var monthsCount = Object.keys(stockCountFactory.monthList).length;
-    expect(monthsCount).toBeDefined(12);
-  });
-
-  it('should return the first month in the object', function(){
-    expect(stockCountFactory.monthList['01']).toEqual('January');
+  it('i expect stockCount.getAll() to call storageService.all with right parameters.', function(){
+    spyOn(storageService, 'all').andCallThrough();
+    expect(storageService.all).not.toHaveBeenCalled();
+    stockCountFactory.getAll();
+    expect(storageService.all).toHaveBeenCalledWith(storageService.STOCK_COUNT);
   });
 
   it('should confirm validate object exist', function(){
