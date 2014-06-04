@@ -40,16 +40,18 @@ angular.module('lmisChromeApp')
   })
   .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state){
     $scope.stockCountsByCreatedDate = stockCountByDate;
-    $scope.showStockCountFormByDate = function(date){
-      stockCountFactory.getStockCountByDate(date).then(function(stockCount){
-        if(stockCount !== null){
-          $scope.stockCount = stockCount;
-          $scope.editOff = stockCountFactory.set.stock.editStatus(date, appConfig);
-          $state.go('stockCountForm', {detailView: true, countDate: date, editOff: $scope.editOff});
-        }else{
-          $state.go('stockCountForm', {countDate: date});
-        }
-      });
+    $scope.showStockCountFormByDate = function(date, isEditable){
+      stockCountFactory.getStockCountByDate(date)
+          .then(function (stockCount) {
+            if (stockCount !== null) {
+              $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !isEditable});
+            } else {
+              $state.go('stockCountForm', {countDate: date});
+            }
+          })
+          .catch(function () {
+            //TODO: decides what happens if for any reason, retrieving stock count fails.
+          });
     };
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl,
@@ -120,7 +122,7 @@ angular.module('lmisChromeApp')
     $scope.save = function() {
       var DB_NAME = stockCountFactory.STOCK_COUNT_DB;
 
-      $scope.stockCount.facility = $scope.facilityUuid;
+      $scope.stockCount.facility = $scope.facilityObject.uuid;
       $scope.stockCount.countDate = $scope.stockCountDate;
       //queue save task
       saveQueue.defer(saveTask);
