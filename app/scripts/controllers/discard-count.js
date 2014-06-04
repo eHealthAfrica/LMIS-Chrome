@@ -61,12 +61,11 @@ angular.module('lmisChromeApp')
     $scope.missedEntry = function(date){
       return discardCountFactory.get.missingEntry(date, $scope);
     };
-    $scope.takeAction = function(date){
+    $scope.showStockCountFormByDate = function(date){
       discardCountFactory.getDiscardCountByDate(date).then(function(discardCount){
         if(discardCount !== null){
           $scope.discardCount = discardCount;
           $scope.detailView = true;
-
           $scope.discardCountByType = discardCountFactory.get.discardCountByType(discardCount, $scope.facilityProducts);
         }
         else{
