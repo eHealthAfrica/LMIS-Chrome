@@ -6,10 +6,11 @@ describe('Service: utility ', function() {
   beforeEach(module('lmisChromeApp'));
 
   // instantiate service
-  var utility;
+  var utility, $filter;
 
-  beforeEach(inject(function(_utility_) {
+  beforeEach(inject(function(_utility_, _$filter_) {
     utility = _utility_;
+    $filter = _$filter_;
   }));
 
   it('as a user, i expect utility service to be defined ', function(){
@@ -49,6 +50,18 @@ describe('Service: utility ', function() {
     expect(typeof studentList).toEqual('object');
     expect(angular.isArray(studentList)).toBeFalsy();
 
+  });
+
+  it('i expect getFullDate() to return a full date in the format YYYY-MM-dd', function(){
+    var testDate = new Date();
+    var expectedDate = $filter('date')(testDate, 'yyyy-MM-dd');
+    expect(utility.getFullDate(testDate)).toEqual(expectedDate);
+  });
+
+  it('i expect getFullDate() to return correct result when called with a date in string format', function(){
+    var testDate = new Date();
+    var expectedDate = $filter('date')(testDate, 'yyyy-MM-dd');
+    expect(utility.getFullDate(testDate.toJSON())).toEqual(expectedDate);
   });
 
 });
