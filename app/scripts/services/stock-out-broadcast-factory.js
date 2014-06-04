@@ -28,7 +28,7 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
         then(function (result) {
           deferred.resolve(result);
         })
-        .catch(function (reason) {
+        .catch(function () {
           //sync failed send sms alert
           var msg = 'stkOut:' + stockOut.uuid + ';facility:' + stockOut.facility.uuid + ';prodType:' +
               stockOut.productType.uuid+';stkLvl:'+stockOut.stockLevel;
@@ -77,7 +77,7 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
           })
           .catch(function(reason){
             deferred.reject(reason);
-          })
+          });
     };
     inventoryRulesFactory.getStockLevel(stockOut.facility, stockOut.productType)
         .then(function(stockLevel){
