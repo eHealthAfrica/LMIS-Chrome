@@ -165,7 +165,9 @@ angular.module('lmisChromeApp')
                       innerPromises.push(inventoryRulesFactory.daysOfStock(currentFacility, types[i].uuid)
                         .then(
                           function (stockLevel) {
-                            productTypeInfo[types[i].uuid].daysOfStock = stockLevel;
+                            var uuid = types[i].uuid;
+                            productTypeInfo[uuid].daysOfStock = stockLevel;
+                            productTypeInfo[uuid].reorderPoint = inventoryRulesFactory.reorderPointByProductType(uuid);
                           },
                           function (err) {
                             deferred.reject(err);
@@ -228,6 +230,7 @@ angular.module('lmisChromeApp')
                   values.push({
                     label: product.name,
                     daysOfStock: Math.floor(product.daysOfStock),
+                    reorderPoint: Math.floor(product.reorderPoint),
                     daysToReorder: Math.floor(product.daysToReorder)
                   });
                 }
@@ -255,7 +258,7 @@ angular.module('lmisChromeApp')
                 $scope.productTypesChart = [];
                 var min = 0, mean = 0, max = 0;
                 values.forEach(function(value) {
-                  max = value.daysToReorder;
+                  max = value.reorderPoint;
                   $scope.productTypesChart.push({
                     title: value.label,
                     ranges: [min, mean, max],

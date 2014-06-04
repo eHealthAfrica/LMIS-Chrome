@@ -204,6 +204,10 @@ angular.module('lmisChromeApp')
       return bufferByProductType(productTypeUuid) + leadTimeConsumptionByProductType(productTypeUuid);
     };
 
+    var reorderPointByProductTypeDays = function(productTypeUuid) {
+      return bufferByProductType(productTypeUuid) / consumptionAvgByProductType(productTypeUuid);
+    };
+
     /**
     * Temporary version of days to reorder point per product (stock - rop) / consumption
     * @returns {promise|promise|*|Function|promise}
@@ -364,6 +368,7 @@ angular.module('lmisChromeApp')
       reorderPoint: reorderPoint,
       getStockLevel: getStockLevel,
       daysToReorderPoint: daysToReorderPoint,
-      daysOfStock: daysOfStock
+      daysOfStock: daysOfStock,
+      reorderPointByProductType: reorderPointByProductTypeDays
     };
   });
