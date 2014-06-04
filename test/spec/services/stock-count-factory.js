@@ -7,7 +7,8 @@ describe('Service stockCountFactory', function(){
       stockCount,
       scope,
       _i18n,
-      storageService;
+      storageService,
+      $q;
    // Initialize the state
   beforeEach(inject(function($templateCache) {
     // Mock each template used by the state
@@ -31,12 +32,13 @@ describe('Service stockCountFactory', function(){
     });
   }));
 
-  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, $q, i18n, _storageService_){
+  beforeEach(inject(function(_stockCountFactory_, $rootScope, stockData, _$q_, i18n, _storageService_){
     stockCountFactory = _stockCountFactory_;
     scope = $rootScope.$new();
     stockCount = stockData;
     _i18n = i18n;
     storageService = _storageService_;
+    $q = _$q_;
 
     spyOn(stockCountFactory, 'getStockCountByDate').andCallFake(function (date) {
       //TODO: re-write this when local storage and storageprovider mocks are completed.
@@ -95,6 +97,33 @@ describe('Service stockCountFactory', function(){
     scope.$digest();
     expect(stockCountFactory.validate.stock.countExist).toHaveBeenCalled();
     expect(stockCount).not.toBeNull();
+  });
+
+  it('i expect stockCountFactory.getAll() to return sorted stock count list.', function(){
+    var today = new Date();
+    var oneDay = 86400000; //in milli-seconds
+    var yesterday = new Date(today.getTime() - oneDay);
+    var tomorrow = new Date(today.getTime() + oneDay);
+
+    spyOn(storageService, 'all').andCallFake(function () {
+      var stockCounts = [
+        { uuid: '4321', created: yesterday },
+        { uuid: '1234', created: today },
+        { uuid: '3652', created: tomorrow }
+      ];
+      var deferred = $q.defer();
+      deferred.resolve(stockCounts);
+      return deferred.promise;
+    });
+    expect(storageService.all).not.toHaveBeenCalled();
+    runs(
+        function () {
+          return stockCountFactory.getMostRecentStockCount();
+        },
+        function checkExpectations(mostRecentStockCount) {
+          expect(mostRecentStockCount.created).toBe(tomorrow);
+        }
+    );
   });
 
 });
