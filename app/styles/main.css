@@ -211,23 +211,20 @@ tr.disabled, tr.disabled span.text-info{
 .btn-left{
    padding-right: 0.5em;
 }
-.panel-stock-levels {
-  max-height: 300px;
-  overflow-y: scroll;
-}
 .reminder-icon {
   width: 32px;
   height: 32px;
 }
-.product-series {
-  height: 120px;
-  margin: -40px 0;
+.product-chart {
+  margin: 0 auto;
+  padding: 0 10px 40px;
 }
-
+.product-series {
+  height: 80px;
+}
 .product-series .nvd3.nv-bullet .nv-measure {
   fill: black !important;
 }
-
 .product-series .nvd3.nv-bullet .nv-range {
   fill: #ff7518;
 }
