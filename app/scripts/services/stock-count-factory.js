@@ -5,29 +5,12 @@ angular.module('lmisChromeApp')
 
     var STOCK_COUNT_DB = storageService.STOCK_COUNT;
       /**
-       *
-       * @type {{}}
-       */
-    var months = {
-      '01': 'January',
-      '02': 'February',
-      '03': 'March',
-      '04': 'April',
-      '05': 'May',
-      '06': 'June',
-      '07': 'July',
-      '08': 'August',
-      '09': 'September',
-      '10': 'October',
-      '11': 'November',
-      '12': 'December'
-    };
-      /**
        * gets product types object list
        * @returns {promise}
        * @public
        */
     var productType = function(){
+      //TODO: consider deprecating this
       var deferred = $q.defer();
       storageService.get(storageService.PRODUCT_TYPES).then(function(productTypes){
 
@@ -35,16 +18,7 @@ angular.module('lmisChromeApp')
       });
       return deferred.promise;
     };
-     /**
-      * this function converts any date format to yyyy-MM-dd format
-      * @param _date
-      * @returns {*}
-      * @private
-      */
-    var isoDate = function(_date){
-      var date = (angular.isDefined(_date)) ? new Date(_date) : new Date();
-      return $filter('date')(date, 'yyyy-MM-dd');
-    };
+
      /**
       *
       * @param _interval
@@ -106,6 +80,7 @@ angular.module('lmisChromeApp')
       * I'm going to assume any value entered that is not a number is invalid
       */
       invalid: function(entry){
+        //TODO: consider moving this to utility
         return !!((entry === '' || angular.isUndefined(entry) || isNaN(entry) || entry < 0));
       },
       stock: {
@@ -127,9 +102,7 @@ angular.module('lmisChromeApp')
         var stockCount = null;
         for (var index in stockCounts) {
           var row = stockCounts[index];
-          var stockCountDate = isoDate(row.countDate);
-          date = isoDate(date);
-          if (date === stockCountDate) {
+          if (utility.getFullDate(date) === utility.getFullDate(row.countDate)) {
             stockCount = row;
             break;
           }
@@ -147,16 +120,15 @@ angular.module('lmisChromeApp')
      * @returns {Array}
      * @private
      */
-    var getFirstDate = function (dueDateInfo){
-      var dates = [];
+    var getCurrentStockCountDueDate = function (stockCountInterval, reminderDay, date){
+      var dueDateInfo = getDueDateInfo(stockCountInterval, reminderDay, date);
       if(dueDateInfo.reminderDate.getTime() < new Date().getTime()){
-        dates.push(isoDate(dueDateInfo.reminderDate.toJSON()));
+        return dueDateInfo.reminderDate;
+      }else{
+        return dueDateInfo.lastCountDate;
       }
-      if(dueDateInfo.reminderDate.getTime() > new Date().getTime()){
-        dates.push(isoDate(dueDateInfo.lastCountDate.toJSON()));
-      }
-      return dates;
     };
+
     /**
      *
      * @param dateActivated
@@ -165,9 +137,14 @@ angular.module('lmisChromeApp')
      * @returns {{}}
      * @private
      */
-    var getLastDate = function (dateActivated, reminderDay, interval){
+    var getStockCountDateByDateActivated = function (dateActivated, reminderDay, interval){
+      //TODO: consider deprecating this
       var dueDateInfo = utility.getWeekRangeByDate(new Date(dateActivated), reminderDay);
-      return isoDate(dueDateInfo.reminderDate.toJSON()) <= isoDate(dateActivated) ? dueDateInfo.reminderDate : new Date(dueDateInfo.reminderDate.getTime() - interval);
+      if(utility.getFullDate(dueDateInfo.reminderDate.toJSON()) <= utility.getFullDate(dateActivated)){
+        return dueDateInfo.reminderDate;
+      }else{
+        return new Date(dueDateInfo.reminderDate.getTime() - interval);
+      }
     };
 
     /**
@@ -181,21 +158,38 @@ angular.module('lmisChromeApp')
       var productKey =  (Object.keys(productObject))[index];
       return productObject[productKey];
     };
-    var load={
-      /**
-       *
-       * @returns {promise}
-       * @public
-       */
-      allStockCount: function(){
-        var deferred = $q.defer();
-        storageService.all(storageService.STOCK_COUNT)
-          .then(function(stockCounts){
+
+    var getAllStockCount = function(){
+      var deferred = $q.defer();
+      storageService.all(storageService.STOCK_COUNT)
+          .then(function (stockCounts) {
             stockCounts = syncService.addSyncStatus(stockCounts);
             deferred.resolve(stockCounts);
+          })
+          .catch(function (reason) {
+            deferred.reject(reason);
           });
-        return deferred.promise;
-      },
+      return deferred.promise;
+    };
+
+    var getStockCountListByCreatedDate = function(){
+      var deferred = $q.defer();
+      var obj = {};
+      getAllStockCount()
+          .then(function (stockCountList) {
+            for (var i = 0; i < stockCountList.length; i++) {
+              obj[utility.getFullDate(stockCountList[i].created)] = stockCountList[i];
+            }
+            deferred.resolve(obj);
+          })
+          .catch(function (reason) {
+            deferred.resolve(obj);
+            console.error(reason);
+          });
+      return deferred.promise;
+    };
+
+    var load={
 
       /**
        *
@@ -204,6 +198,7 @@ angular.module('lmisChromeApp')
        * @returns {{}}
        */
       productReadableName: function(productObject, index){
+        //TODO: consider deprecating this
         return currentProductObject(productObject, index);
       },
       /**
@@ -216,13 +211,6 @@ angular.module('lmisChromeApp')
       productTypeCode: function(productObject, index, productType){
         var currentProductUuid = currentProductObject(productObject, index).product;
         return productType[currentProductUuid];
-      },
-      /**
-       *
-       * @returns {number}
-       */
-      timezone: function(){
-        return utility.getTimeZone();
       },
       /**
        *
@@ -258,6 +246,7 @@ angular.module('lmisChromeApp')
        * @returns {Array}
        */
       daysInMonth: function (_month, _year){
+        //TODO: consider deprecating this
         var now = new Date();
         var year = (_year !== '')?_year: now.getFullYear();
         var month = (_month !== '')?_month: now.getMonth() + 1;
@@ -269,28 +258,8 @@ angular.module('lmisChromeApp')
           dayArray.push(day);
         }
         return dayArray;
-      },
-      /**
-       *
-       * @returns {promise}
-       */
-      stockCountListByDate: function(){
-        var deferred = $q.defer();
-        var obj = {};
-        this.allStockCount()
-            .then(function(stockCountList){
-              for(var i=0; i < stockCountList.length; i++){
-                obj[isoDate(stockCountList[i].countDate)] = stockCountList[i];
-              }
-              deferred.resolve(obj);
-            })
-            .catch(function(reason){
-              deferred.resolve(obj);
-              console.error(reason);
-            });
-
-        return deferred.promise;
-      },
+      }
+      ,
       /**
        *
        * @param fromDB
@@ -298,6 +267,7 @@ angular.module('lmisChromeApp')
        * @returns {Array}
        */
       mergedStockCount: function(fromDB, fromFacilitySelected){
+        //TODO: consider deprecating this
         var db = Object.keys(fromDB);
         var dbArr = Object.keys(fromDB);
         for(var i in fromFacilitySelected){
@@ -316,15 +286,16 @@ angular.module('lmisChromeApp')
        * @returns {boolean}
        */
       missingEntry: function(date, stockCountByDate, appConfig){
+        //TODO: consider deprecating this
         var dueDateInfo = getDueDateInfo(appConfig.stockCountInterval, appConfig.reminderDay, date);
 
         if(angular.isUndefined(stockCountByDate[date])){
-          var validateDate = ((isoDate(date) === isoDate()) ||
-              ((isoDate(dueDateInfo.lastDay.toJSON()) >= isoDate(new Date().toJSON())) && parseInt(appConfig.stockCountInterval, 10) !== 1) ||
-              (isoDate(dueDateInfo.lastCountDate.toJSON()) === isoDate(date) && dueDateInfo.currentReminderDate.getTime() > new Date().getTime()));
+          var validateDate = ((utility.getFullDate(date) === utility.getFullDate(new Date())) ||
+              ((utility.getFullDate(dueDateInfo.lastDay.toJSON()) >= utility.getFullDate(new Date().toJSON())) && parseInt(appConfig.stockCountInterval, 10) !== 1) ||
+              (utility.getFullDate(dueDateInfo.lastCountDate.toJSON()) === utility.getFullDate(date) && dueDateInfo.currentReminderDate.getTime() > new Date().getTime()));
           return (!validateDate);
         }
-        return (!(stockCountByDate[date].isComplete || isoDate(date) === isoDate()));
+        return (!(stockCountByDate[date].isComplete || utility.getFullDate(date) === utility.getFullDate(new Date())));
       },
 
       /**
@@ -332,16 +303,17 @@ angular.module('lmisChromeApp')
        * @param appConfig
        */
       stockCountByIntervals: function(appConfig){
+        //TODO: consider deprecating this
         var dueDateInfo = getDueDateInfo(appConfig.stockCountInterval, appConfig.reminderDay);
-        var lastDate = getLastDate(appConfig.dateActivated, appConfig.reminderDay, dueDateInfo.interval);
-        var dates = getFirstDate(dueDateInfo);
+        var lastDate = getStockCountDateByDateActivated(appConfig.dateActivated, appConfig.reminderDay, dueDateInfo.interval);
+        var dates = getCurrentStockCountDueDate(dueDateInfo);
         while(dates.length < 10){
           dueDateInfo.currentReminderDate = new Date(dueDateInfo.currentReminderDate.getTime() - dueDateInfo.interval);
           if(dueDateInfo.currentReminderDate.getTime() < lastDate.getTime()){
             break;
           }
-          if(parseInt(dates.indexOf(isoDate(dueDateInfo.currentReminderDate.toJSON())), 10) === -1){
-            dates.push(isoDate(dueDateInfo.currentReminderDate.toJSON()));
+          if(parseInt(dates.indexOf(utility.getFullDate(dueDateInfo.currentReminderDate.toJSON())), 10) === -1){
+            dates.push(utility.getFullDate(dueDateInfo.currentReminderDate.toJSON()));
           }
         }
         return dates;
@@ -352,38 +324,19 @@ angular.module('lmisChromeApp')
      * @param facility
      * @returns {promise|promise|*|Function|promise}
      */
-      byFacility: function(facility)
-      {
+      byFacility: function (facility) {
         var deferred = $q.defer();
         var fUuid = typeof facility === 'string' ? facility : facility.uuid;
-        this.allStockCount().then(function(result){
-          var res = result.filter( function(e) { return e !== 'undefined' && e.facility === fUuid; } );
+        getAllStockCount().then(function (result) {
+          var res = result.filter(function (e) {
+            return e !== 'undefined' && e.facility === fUuid;
+          });
           deferred.resolve(res);
-        }, function(err) {
+        }, function (err) {
           deferred.reject(err);
         });
         return deferred.promise;
-      },
-      /**
-       * this return default day if none was provided via url
-       * @param dayFromUrlParams
-       * @param appConfig
-       * @returns {number}
-       */
-      reminderDayFromDate: function(dayFromUrlParams, appConfig){
-        if(dayFromUrlParams === null){
-          var dueDateInfo = getDueDateInfo(appConfig.stockCountInterval, appConfig.reminderDay);
-          // if the selected stock count date is not equals to today, then check if the last day of the
-          // week the date fell is less than today and the count interval must not be daily
-          if(isoDate() < isoDate(dueDateInfo.reminderDate.toJSON())){
-            var newDate = new Date(dueDateInfo.reminderDate.getTime() - dueDateInfo.interval);
-            return $filter('date')(newDate.toJSON(), 'dd');
-          }
-          return $filter('date')(dueDateInfo.reminderDate.toJSON(), 'dd');
-        }
-        return dayFromUrlParams;
       }
-
     };
     var setter= {
       stock: {
@@ -396,12 +349,13 @@ angular.module('lmisChromeApp')
           // if the selected stock count date is not equals to today, then check if the last day of the
           // week the date fell is less than today and the count interval must not be daily
 
-          if(isoDate() !== isoDate(date)){
+          if(utility.getFullDate(new Date()) !== utility.getFullDate(date)){
             var dueDateInfo = getDueDateInfo(appConfig.stockCountInterval, appConfig.reminderDay, date);
             var validateDate = (
-                  isoDate(dueDateInfo.lastCountDate.toJSON()) === isoDate(date) &&
+                  utility.getFullDate(dueDateInfo.lastCountDate.toJSON()) === utility.getFullDate(date) &&
                   dueDateInfo.currentReminderDate.getTime() > new Date().getTime()) ||
-                  ((isoDate(dueDateInfo.lastDay.toJSON()) >= isoDate()) && appConfig.stockCountInterval !== 1
+                  ((utility.getFullDate(dueDateInfo.lastDay.toJSON()) >= utility.getFullDate(new Date())) &&
+                      appConfig.stockCountInterval !== 1
                 );
             return (!validateDate);
           }
@@ -410,7 +364,9 @@ angular.module('lmisChromeApp')
     };
 
     return {
-      monthList: months,
+      getCurrentStockCountDueDate: getCurrentStockCountDueDate,
+      getStockCountListByDate: getStockCountListByCreatedDate,
+      getAll: getAllStockCount,
       productType: productType,
       save:addRecord,
       get:load,
