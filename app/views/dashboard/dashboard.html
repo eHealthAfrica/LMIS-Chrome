@@ -5,23 +5,17 @@
   <div class="container-fluid">
     <div class="row">
       <div class="center-text" ng-hide="productTypesChart"><i class="fa fa-refresh fa-spin"></i></div>
-      <nvd3-multi-bar-horizontal-chart
-        data="productTypesChart"
-        id="product-types-chart"
-        tooltips="false"
-        showValues="true"
-        showControls="false"
-        showLegend="true"
-        showLabels="true"
-        showXAxis="true"
-        stacked="false"
-        height="250"
-        labelType="label"
-        margin="{left:80,top:0,bottom:0,right:50}"
-        noData="No stock data available"
-        valueFormat="roundLegend()">
-      </nvd3-multi-bar-horizontal-chart>
-
+        <div ng-repeat="series in productTypesChart" class="product-series">
+          <nvd3-bullet-chart
+            data="series"
+            id="series{{series.title}}"
+            width="550"
+            height="160"
+            tooltips="true"
+            tooltipcontent="tooltipFormatter()"
+          >
+          </nvd3-bullet-chart>
+        </div>
     </div>
   </div>
   </div>

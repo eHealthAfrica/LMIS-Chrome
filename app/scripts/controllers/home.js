@@ -123,7 +123,8 @@ angular.module('lmisChromeApp')
              */
 
           },
-          controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, stockCountIsAvailable) {
+          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, stockCountIsAvailable) {
+            /*
             var keys = [
               {
                 key: 'daysToReorder',
@@ -136,6 +137,7 @@ angular.module('lmisChromeApp')
                 label: i18n('daysStock')
               }
             ];
+            */
 
             var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
               var deferred = $q.defer();
@@ -235,11 +237,32 @@ angular.module('lmisChromeApp')
                 //var format = d3.format(',.4f');
                 $scope.roundLegend = function(){
                   return function(d){
-                    return d3.round(d);
+                    return $window.d3.round(d);
                   };
                 };
 
-                $scope.productTypesChart = dashboardfactory.chart(keys, values);
+                // $scope.productTypesChart = dashboardfactory.chart(keys, values);
+
+                $scope.tooltipFormatter = function(){
+                  return function(key, x, y) {
+                    if(x === 'Maximum') {
+                      x = 'Reorder';
+                    }
+                    return '<p>' + x + ': ' + y + ' days</p>';
+                  };
+                };
+
+                $scope.productTypesChart = [];
+                var min = 0, mean = 0, max = 0;
+                values.forEach(function(value) {
+                  max = value.daysToReorder;
+                  $scope.productTypesChart.push({
+                    title: value.label,
+                    ranges: [min, mean, max],
+                    measures: [value.daysOfStock],
+                    markers: []
+                  });
+                });
 
               }, function(err) {
                 console.log('getProductTypeCounts Error: '+err);
