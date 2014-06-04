@@ -606,5 +606,20 @@
   },
   "ccuBreakdownReportFailedMsg": {
     "message":  "CCU breakdown report failed, please contact support"
+  },
+  "stockCountHistory": {
+    "message": "Stock Count History"
+  },
+  "done": {
+    "message": "Done"
+  },
+  "synced": {
+    "message": "Synced"
+  },
+  "date": {
+    "message": "Date"
+  },
+  "stockCountSuccessMsg": {
+    "message": "You have completed stock count successfully!"
   }
 }
