@@ -78,6 +78,7 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
   };
 
   this.getFullDate = function(date){
+    //TODO: add validation for invalid date object.
     if( !isDateObject(date)){
       date = new Date(date);//create date object
     }
