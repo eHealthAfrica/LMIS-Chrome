@@ -5,8 +5,13 @@
   <div class="panel-body">
     <div class="row" ng-hide="detailView">
       <div class="col-sm-12">
+        <!--
         <a class="btn btn-default" ui-sref="discardCountForm({countDate: today})">
           <i class="fa fa-edit"></i> Add
+        </a>
+        -->
+        <a class="btn btn-default" ui-sref="discardCountForm2">
+          <i class="fa fa-plus"></i> Add
         </a>
       </div>
     </div>
@@ -36,7 +41,7 @@
           </tbody>
         </table>
         <button ng-show="detailView" class="btn btn-default" ng-click="detailView=!detailView">Back to List</button>
-        <a class="btn btn-default" ui-sref="discardCountForm({countDate: discardCount.countDate})"
+        <a class="btn btn-default" ui-sref="discardCountForm2({countDate: discardCount.countDate})"
            ng-show="detailView && !editOff">
           <i class="fa fa-edit"></i> Edit
         </a>

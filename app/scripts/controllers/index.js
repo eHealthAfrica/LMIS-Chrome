@@ -12,7 +12,7 @@ angular.module('lmisChromeApp')
       views: {
         'header': {
           templateUrl: 'views/index/header.html',
-          controller: function($scope, $window, i18n) {
+          controller: function($scope, $window, i18n, appConfigService) {
             var states = {
               online: i18n('online'),
               offline: i18n('offline')
@@ -31,6 +31,14 @@ angular.module('lmisChromeApp')
                   label: states[event]
                 };
                 $scope.$digest();
+
+                //trigger background syncing
+                appConfigService.updateAppConfigAndStartBackgroundSync()
+                    .finally(function(){
+                      console.log('updateAppConfigAndStartBackgroundSync  triggered on device connection ' +
+                          'status change has been completed.');
+                    });
+
               }, false);
             };
 
@@ -45,9 +53,6 @@ angular.module('lmisChromeApp')
             $scope.state = $state;
           }
         },
-        'alerts': {
-          templateUrl: 'views/index/alerts.html'
-        },
         'content': {},
         'footer': {
           templateUrl: 'views/index/footer.html',
@@ -60,9 +65,6 @@ angular.module('lmisChromeApp')
       }
     })
     .state('loadingFixture', {
-      templateUrl: 'views/index/loading-fixture-screen.html',
-      controller: function(){
-        console.log('loading screen controller');
-      }
+      templateUrl: 'views/index/loading-fixture-screen.html'
     });
   });

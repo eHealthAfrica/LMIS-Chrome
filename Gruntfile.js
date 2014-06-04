@@ -137,7 +137,7 @@ module.exports = function(grunt) {
     },
 
     // Automatically inject Bower components into the app
-    'bowerInstall': {
+    wiredep: {
       target: {
         src: '<%= yeoman.app %>/index.html',
         ignorePath: '<%= yeoman.app %>/'
@@ -220,9 +220,22 @@ module.exports = function(grunt) {
       }
     },
 
+    removelogging: {
+      dist: {
+        src: '.tmp/concat/scripts/scripts.js',
+        options: {
+          namespace: [
+            'console',
+            'window.console',
+            '\\$log'
+          ]
+        }
+      }
+    },
+
     // Allow the use of non-minsafe AngularJS files. Automatically makes it
     // minsafe compatible so Uglify does not destroy the ng references
-    ngmin: {
+    ngAnnotate: {
       dist: {
         files: [{
           expand: true,
@@ -250,7 +263,8 @@ module.exports = function(grunt) {
               'images/{,*/}*.{webp}',
               '_locales/{,*/}*.json',
               'media/*',
-              'scripts/fixtures/*.json'
+              'scripts/fixtures/*.json',
+              'manifest.mobile.json'
             ]
           },
           {
@@ -347,6 +361,31 @@ module.exports = function(grunt) {
         src: '<%= yeoman.app %>',
         dest: '<%= yeoman.dist %>'
       }
+    },
+
+    bump: {
+      options: {
+        files: [
+          'package.json',
+          'bower.json',
+          'app/manifest.json'
+        ],
+        commitFiles: '<%= bump.options.files %>',
+        pushTo: 'origin'
+      }
+    },
+
+    bumpAndroid: {
+      options: {
+        files: [
+          'app/manifest.mobile.json'
+        ],
+        commit: true,
+        commitMessage: 'Bump Android version code to v%VERSION%',
+        commitFiles: '<%= bumpAndroid.options.files %>',
+        createTag: false,
+        push: false
+      }
     }
   });
 
@@ -357,7 +396,7 @@ module.exports = function(grunt) {
 
     grunt.task.run([
       'clean:server',
-      'bowerInstall',
+      'wiredep',
       'ngconstant:development',
       'concurrent:server',
       'autoprefixer',
@@ -384,23 +423,39 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.registerTask('build', [
-    'clean:dist',
-    'bowerInstall',
-    'ngconstant:production',
-    'chromeManifest:dist',
-    'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
-    'concat',
-    'ngmin',
-    'copy:dist',
-    'cssmin',
-    'uglify',
-    'rev',
-    'usemin',
-    'htmlmin'
-  ]);
+  grunt.registerTask('build', function(target) {
+    var head = [
+      'clean:dist',
+      'wiredep',
+      'ngconstant:production',
+      'chromeManifest:dist',
+      'useminPrepare',
+      'concurrent:dist',
+      'autoprefixer',
+      'concat'
+    ];
+
+    var torso = [
+      'removelogging'
+    ];
+
+    var tail = [
+      'ngAnnotate',
+      'copy:dist',
+      'cssmin',
+      'uglify',
+      'rev',
+      'usemin',
+      'htmlmin'
+    ];
+
+    if(target === 'release') {
+      grunt.task.run(head.concat(torso, tail));
+    }
+    else {
+      grunt.task.run(head.concat(tail));
+    }
+  });
 
   grunt.registerTask('default', [
     'newer:jshint',
@@ -413,4 +468,14 @@ module.exports = function(grunt) {
     'coveralls'
   ]);
 
+  grunt.registerTask('release', function(versionType) {
+    var bump = 'bump';
+    if(versionType) {
+      bump += ':' + versionType;
+    }
+    grunt.task.run([
+      'bumpAndroid',
+      bump
+    ]);
+  });
 };

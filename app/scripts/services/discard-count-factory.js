@@ -42,51 +42,50 @@ angular.module('lmisChromeApp')
       return $filter('date')(date, 'yyyy-MM-dd');
     };
 
-    var saveDiscarded = function(scope, state, alertsFactory){
+    var saveDiscarded = function(scope, state, growl){
       scope.discardCount.facility = scope.facilityUuid;
       scope.discardCount.countDate = new Date(scope.reportYear, parseInt(scope.reportMonth)-1, scope.currentDay, load.timezone());
       addRecord(scope.discardCount)
       .then(function(uuid) {
         scope.discardCount.uuid = uuid;
         if(scope.redirect) {
-          syncDiscarded(scope.discardCount);
+          syncService.syncItem(storageService.DISCARD_COUNT, scope.discardCount);//sync in the background
           var msg = [
               'You have completed discard count for',
               scope.currentDay,
               scope.monthList[scope.reportMonth],
               scope.reportYear
             ].join(' ');
-          alertsFactory.success(msg);
-          state.go('home.index.home.mainActivity', {
-            'facility': scope.facilityUuid,
-            'reportMonth': scope.reportMonth,
-            'reportYear': scope.reportYear,
-            'stockResult': msg
-          });
+          growl.success(msg);
+          scope.isSaving = false;
+          state.go('home.index.home.mainActivity', {'stockResult': msg});
         }
       })
       .catch(function(reason){
-        alertsFactory.danger(reason, {persistent: true});
+        growl.error(reason, {persistent: true});
       });
     };
     var addRecord = function(object){
-        var deferred = $q.defer();
-        if(object.countDate instanceof Date){
-          object.countDate = object.countDate.toJSON();
+      var deferred = $q.defer();
+      if(object.countDate instanceof Date){
+        object.countDate = object.countDate.toJSON();
+      }
+      validate.discard.countExist().then(function(discardCount){
+        if(discardCount !== null){
+          object.uuid = discardCount.uuid;
         }
-        validate.discard.countExist().then(function(discardCount){
-          if(discardCount !== null){
-            object.uuid = discardCount.uuid;
-          }
-          storageService.save(storageService.DISCARD_COUNT, object)
-              .then(function(uuid){
-                deferred.resolve(uuid);
-              })
-          ;
-
-        });
-        return deferred.promise;
-      };
+        storageService.save(storageService.DISCARD_COUNT, object)
+            .then(function(uuid){
+              deferred.resolve(uuid);
+            }, function(reason){
+              deferred.reject(reason);
+            })
+            .catch(function(reason){
+              deferred.reject(reason);
+            });
+      });
+      return deferred.promise;
+    };
 
     var validate = {
      /*
@@ -151,7 +150,6 @@ angular.module('lmisChromeApp')
             }else{
               scope.preview = true;
               scope.discardCount.isComplete = 1;
-              //syncDiscarded(scope.discardCount);
             }
           }
           scope.discardCount.lastPosition = scope.step;
@@ -174,32 +172,8 @@ angular.module('lmisChromeApp')
 
     };
 
-    var addSyncStatus= function(discardCounts)
-    {
-      if(discardCounts !== 'undefined')
-      {
-        discardCounts = discardCounts.map(function (dc) {
-          if(dc !== 'undefined'){
-            dc.synced = isSynced(dc);
-            return dc;
-          }
-
-        });
-      }
-      return discardCounts;
-    };
-
-    var isSynced = function(dc)
-    {
-      /* TODO: decide on the best way of determining this. If dateSynced is set in the db
-        we can be pretty sure it's accurate but right now there's no db feedback being saved
-        locally */
-      return (dc.dateSynced && dc.modified &&
-          isoDate(dc.dateSynced) >= isoDate(dc.modified));
-    };
-
-
     var getDiscardCountByDate = function (date) {
+      date = date instanceof Date ? isoDate(date.toJSON()) : date;
       var deferred = $q.defer();
       storageService.all(storageService.DISCARD_COUNT).then(function (discardCounts) {
         var discardCount = null;
@@ -225,9 +199,9 @@ angular.module('lmisChromeApp')
       allDiscardCount: function(){
         var deferred = $q.defer();
         storageService.all(storageService.DISCARD_COUNT)
-          .then(function(discardCount){
-            discardCount = addSyncStatus(discardCount);
-            deferred.resolve(discardCount);
+          .then(function(discardCounts){
+            discardCounts = syncService.addSyncStatus(discardCounts);
+            deferred.resolve(discardCounts);
           });
         return deferred.promise;
       },
@@ -322,7 +296,7 @@ angular.module('lmisChromeApp')
             });
             if((Object.keys(discardCount.reason[i])).length > 0){
               for(var j in discardCount.reason[i]){
-                if(discardCount.reason[i][j] !== 0){
+                if(discardCount.reason[i][j] !== 0 && discardCount.reason[i][j] !== ''){
                   arr.push(
                     {
                       header: false,
@@ -425,27 +399,6 @@ angular.module('lmisChromeApp')
       });
     };
 
-    var syncDiscarded = function(discardCountObject){
-      var deferred = $q.defer();
-      var DB_NAME = 'discardcount';
-      syncService.syncItem(DB_NAME, discardCountObject)
-        .then(function () {
-          discardCountObject.dateSynced = new Date().toJSON();
-          storageService.save(storageService.DISCARD_COUNT, discardCountObject)
-            .then(function(){
-              deferred.resolve();
-            },
-            function(reason){
-              deferred.reject(reason);
-            });
-        })
-        .catch(function (reason) {
-          deferred.reject(reason);
-          //console.log('Discard count sync failed: '+reason);
-        });
-      return deferred.promise;
-    };
-
     var checkInput = function(scope, index){
       if(angular.isUndefined(scope.discardErrors[scope.productKey])){
         scope.discardErrors[scope.productKey] = {};
@@ -461,6 +414,7 @@ angular.module('lmisChromeApp')
       monthList: months,
       productType: productType,
       discardedReasons: discardedReasons,
+      add: addRecord,
       save:saveDiscarded,
       get:load,
       getDiscardCountByDate: getDiscardCountByDate,

@@ -43,13 +43,14 @@ angular.module('lmisChromeApp')
       var bundleReceipt = 'bundle_receipts';
       var bundleReceiptLines = 'bundle_receipt_lines';
       var locations = 'locations';
-      var stockCount = 'stockCount';
-      var discardCount = 'discardCount';
+      var stockCount = 'stockcount';
+      var discardCount = 'discard_count';
       var appConfig = 'app_config';
       var stockOut = 'stock_out';
       var surveyResponse = 'survey_response';
-      var ccuProfile = 'dhis-ccei-fixture';
+      var ccuProfile = 'dhis_ccei_fixture';
       var ccuBreakdown = 'ccu_breakdown';
+      var pendingSyncs = 'pending_syncs';
 
       /**
        * Add new table data to the chrome store.
@@ -61,11 +62,24 @@ angular.module('lmisChromeApp')
        */
 
       var setData = function (table, data) {
+        if(!data.hasOwnProperty('uuid')){
+          throw 'data should have a uuid or primary key field.';
+        }
         var deferred = $q.defer();
         var obj = {};
         getData(table).then(function(tableData){
           if(angular.isUndefined(tableData)){
             tableData = {};
+          }
+          var oldRecord = tableData[data.uuid];
+          if(typeof oldRecord !== 'undefined'){
+            //record already exists, update its fields that exist on data
+            var properties = Object.keys(data);
+            for(var index in properties){
+              var key = properties[index];
+              oldRecord[key] = data[key];
+            }
+            data = oldRecord; //swap after updating fields.
           }
           tableData[data.uuid] = data;
           obj[table] = tableData;
@@ -80,6 +94,43 @@ angular.module('lmisChromeApp')
         }).catch(function(reason){
           deferred.reject(reason);
         });
+        return deferred.promise;
+      };
+
+      /**
+       * This function removes a given record with the given uuid from the given tableName and returns True
+       * if it was done successfully else rejects with reason why removeData failed.
+       *
+       * @param tableName
+       * @param uuid
+       * @returns {promise|Function|promise|promise|promise|*}
+       */
+      var removeRecordFromTable = function(tableName, uuid){
+        var deferred = $q.defer();
+        var tableObj = {};
+        getData(tableName)
+            .then(function(tableData){
+              if(typeof tableData !== 'undefined'){
+                if(typeof tableData[uuid] !== 'undefined'){
+                  delete tableData[uuid];
+                  tableObj[tableName] = tableData;
+                  chromeStorageApi.set(tableObj)
+                      .then(function () {
+                        deferred.resolve(true);
+                      })
+                      .catch(function (reason) {
+                        deferred.reject(reason);
+                      });
+                }else{
+                  deferred.reject('record with given uuid does not exist.');
+                }
+              }else{
+                deferred.reject('table does not exist.');
+              }
+            })
+            .catch(function(reason){
+              deferred.reject(reason);
+            });
         return deferred.promise;
       };
 
@@ -156,6 +207,9 @@ angular.module('lmisChromeApp')
        * @returns {Promise}
        */
       var insertData = function(table, data) {
+        if(data.hasOwnProperty('uuid')){
+          throw 'insert should only be called with fresh record that has not uuid or primary key field.';
+        }
         data.uuid = uuidGenerator();
         data.created = data.modified = getDateTime();
         return setData(table, data);
@@ -168,9 +222,13 @@ angular.module('lmisChromeApp')
        * @param data
        * @returns {Promise}
        */
-      var updateData = function(table, data) {
-        //todo: refactor to dateModified
-        data.modified = getDateTime();
+      var updateData = function(table, data, updateDateModified) {
+        if(!data.hasOwnProperty('uuid')){
+          throw 'update should only be called with data that has UUID or primary key already.';
+        }
+        if(updateDateModified !== false){
+           data.modified = getDateTime();
+        }
         return setData(table, data);
       };
 
@@ -253,7 +311,7 @@ angular.module('lmisChromeApp')
                         .success(function (data) {
                           setTable(dbName, data)
                               .then(function () {
-                                console.log(dbName +' was loaded successfully, remaining '+(count)+' data');
+                                console.log(dbName +' was loaded successfully, remaining '+(count)+' database');
                                 loadData(count - 1);
                               }, function (reason) {
                                 console.log(reason);
@@ -266,14 +324,14 @@ angular.module('lmisChromeApp')
                         });
                   }
                   else{
-                     loadData(count - 1);
-                     console.log(dbName +' already exist, remaining '+(count)+' data to go');
+                    loadData(count - 1);
+                    console.log(dbName +' already exist, remaining '+(count)+' database to go');
                   }
 
                 })
                 .catch(function(reason){
                   loadData(count - 1);
-                  console.log(reason);
+                  //console.log(reason); // stop showing logs during test
                 });
           }else{
             deferred.resolve(true);
@@ -355,7 +413,7 @@ angular.module('lmisChromeApp')
       var insertBatch = function (table, batchList){
         var deferred = $q.defer();
         var obj = {};
-        var uuidList = [];
+        var newBatchList = [];
         if(Object.prototype.toString.call(batchList) !== '[object Array]'){
           throw 'batchList is not an array';
         }
@@ -366,18 +424,19 @@ angular.module('lmisChromeApp')
               }
               for(var i=0; i < batchList.length; i++){
                 var batch = batchList[i];
-                var hasUUID = batch.hasOwnProperty('uuid');                batch.modified = getDateTime();
-
-                batch.uuid = batch.hasOwnProperty('uuid')? batch.uuid : uuidGenerator();
-                batch.created = batch.hasOwnProperty('created')? batch.created : getDateTime();
-                batch.modified = getDateTime();
+                var now = getDateTime();
+                if(batch.hasOwnProperty('uuid') === false){
+                  batch.uuid = uuidGenerator();
+                  batch.created = now;
+                }
+                batch.modified = now;
                 tableData[batch.uuid] = batch;
-                uuidList.push(batch.uuid);
+                newBatchList.push(batch);
               }
               obj[table] = tableData;
               chromeStorageApi.set(obj)
                   .then(function(){
-                    deferred.resolve(uuidList);
+                    deferred.resolve(newBatchList);
                   })
                   .catch(function(reason){
                     deferred.reject(reason);
@@ -387,10 +446,6 @@ angular.module('lmisChromeApp')
             .catch(function(reason){
               deferred.reject(reason);
             });
-
-
-
-
         return deferred.promise;
       };
 
@@ -398,6 +453,7 @@ angular.module('lmisChromeApp')
         all: getAllFromTable,
         add: setData,
         get: getData,
+        removeRecord: removeRecordFromTable,
         getAll: getAllFromStore,
         remove: removeData, // removeFromChrome,
         clear: clearStorage, // clearChrome */
@@ -409,6 +465,7 @@ angular.module('lmisChromeApp')
         where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,
+        getDateTime: getDateTime,
         PRODUCT_TYPES: productTypes,
         PRODUCT_CATEGORY: productCategory,
         ADDRESS: address,
@@ -447,7 +504,8 @@ angular.module('lmisChromeApp')
         STOCK_OUT: stockOut,
         SURVEY_RESPONSE: surveyResponse,
         CCU_PROFILE: ccuProfile,
-        CCU_BREAKDOWN: ccuBreakdown
+        CCU_BREAKDOWN: ccuBreakdown,
+        PENDING_SYNCS: pendingSyncs
       };
 
     });

@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, $log, syncService, $window) {
+angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, syncService, $window, notificationService, inventoryRulesFactory) {
+
   var saveStockOut = function (stockOut) {
     var deferred = $q.defer();
     storageService.save(storageService.STOCK_OUT, stockOut)
@@ -13,54 +14,79 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
     return deferred.promise;
   };
 
+  /**
+   * This function tries to sync stock-out alert if it fails, it sends sms alert.
+   * NB: syncItem updates pending sync record if sync fails #see syncService.syncItem for more detail.
+   *
+   * @param stockOut
+   * @returns {promise|Function|promise|promise|promise|*}
+   */
   var broadcastStockOut = function (stockOut) {
     var deferred = $q.defer();
-    var stockOutModel = {
-      uuid: stockOut.uuid,
-      facility: stockOut.facility.uuid,
-      productType: stockOut.productType.uuid,
-      created: stockOut.created,
-      modified: stockOut.modified
-    };
-
-    try {
-      if ($window.navigator.onLine) {
-        syncService.syncItem(storageService.STOCK_OUT, stockOutModel)
-            .then(function (result) {
-              deferred.resolve(result);
-            })
-            .catch(function (reason) {
-              deferred.reject(reason);
-            });
-
-      } else {
-        //TODO: send SMS if offline
-        deferred.reject('system is offline, send SMS!');
-      }
-    } catch (e) {
-      deferred.reject(e);
-    }
+    var allowMultipleSync = true;
+    syncService.syncItem(storageService.STOCK_OUT, stockOut, allowMultipleSync).
+        then(function (result) {
+          deferred.resolve(result);
+        })
+        .catch(function (reason) {
+          //sync failed send sms alert
+          var msg = 'stkOut:' + stockOut.uuid + ';facility:' + stockOut.facility.uuid + ';prodType:' +
+              stockOut.productType.uuid+';stkLvl:'+stockOut.stockLevel;
+          notificationService.sendSms(notificationService.alertRecipient, msg)
+              .then(function (result) {
+                deferred.resolve(result);
+              })
+              .catch(function (reason) {
+                deferred.reject(reason);
+              });
+        });
     return deferred.promise;
   };
 
-  var saveMultipleStockOut = function(stockOutList){
+  var saveMultipleStockOut = function (stockOutList) {
     var deferred = $q.defer();
     storageService.insertBatch(storageService.STOCK_OUT, stockOutList)
-      .then(function(result){
-
-        deferred.resolve(result);
-      })
-      .catch(function(reason){
-        deferred.reject(reason);
-      });
+        .then(function (result) {
+          deferred.resolve(result);
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
     return deferred.promise;
   };
 
-  var getStockOut = function(){
+  var getStockOut = function () {
     var deferred = $q.defer();
-    storageService.all(storageService.STOCK_OUT).then(function (result) {
-      deferred.resolve(result);
-    });
+    storageService.all(storageService.STOCK_OUT)
+        .then(function (result) {
+          deferred.resolve(result);
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
+    return deferred.promise;
+  };
+
+  var addStockLevelAndSave = function(stockOut){
+    var deferred = $q.defer();
+    var processSaveStockOut = function (stkOut) {
+      saveStockOut(stkOut)
+          .then(function (result) {
+            stkOut.uuid = result;
+            deferred.resolve(stkOut);
+          })
+          .catch(function(reason){
+            deferred.reject(reason);
+          })
+    };
+    inventoryRulesFactory.getStockLevel(stockOut.facility, stockOut.productType)
+        .then(function(stockLevel){
+          stockOut.stockLevel = stockLevel;
+          processSaveStockOut(stockOut);
+        })
+        .catch(function(){
+          processSaveStockOut(stockOut);
+        });
     return deferred.promise;
   };
 
@@ -68,7 +94,8 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
     save: saveStockOut,
     saveBatch: saveMultipleStockOut,
     getAll: getStockOut,
-    broadcast: broadcastStockOut
+    broadcast: broadcastStockOut,
+    addStockLevelAndSave: addStockLevelAndSave
   };
 
 });

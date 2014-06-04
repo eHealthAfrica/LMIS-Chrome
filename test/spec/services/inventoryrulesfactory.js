@@ -8,17 +8,19 @@ describe('Service: inventoryRulesFactory', function() {
     'ordersMocks',
     'facilitiesMocks',
     'settingsMocks',
-    'inventoriesMocks'
+    'inventoriesMocks',
+    'i18nMocks'
   ));
 
   // instantiate service
-  var inventoryRulesFactory, orders, facilities, settings, inventory;
-  beforeEach(inject(function(_inventoryRulesFactory_, ordersMock, facilitiesMock, settingsMock, inventoriesMock) {
+  var inventoryRulesFactory, orders, facilities, settings, inventory, _i18n;
+  beforeEach(inject(function(_inventoryRulesFactory_, ordersMock, facilitiesMock, settingsMock, inventoriesMock, i18n) {
     inventoryRulesFactory = _inventoryRulesFactory_;
     orders = ordersMock;
     facilities = facilitiesMock;
     settings = settingsMock;
     inventory = inventoriesMock;
+    _i18n = i18n;
   }));
 
   describe('stock level by type', function() {

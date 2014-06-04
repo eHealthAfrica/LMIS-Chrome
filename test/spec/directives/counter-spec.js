@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Tests Counter Directive', function () {
-  var scope, html, counter, counterIsolatedScope;
+  var scope, html, counter,  counterScope, $timeout, shouldCountUp;
 
   // Load the LMIS module
   beforeEach(module('lmisChromeApp', 'i18nMocks'));
@@ -13,7 +13,6 @@ describe('Tests Counter Directive', function () {
       'index/index',
       'index/header',
       'index/breadcrumbs',
-      'index/alerts',
       'index/footer',
       'home/index',
       'home/nav',
@@ -30,19 +29,18 @@ describe('Tests Counter Directive', function () {
     });
   }));
 
-  beforeEach(inject(function ($compile, $rootScope) {
+  beforeEach(inject(function ($compile, $rootScope, _$timeout_) {
     //create a scope
     scope = $rootScope.$new();
-
     scope.counterResult = '';
-
     //set our view html.
-    html = '<counter bind="counterResult"></div>';
+    html = '<counter bind="counterResult"></counter>';
     counter = $compile(html)(scope);
-
     scope.$apply();
     //retrieve the counter's isolated scope.
-    counterIsolatedScope = counter.scope().$$childHead;
+    counterScope = counter.scope().$$childHead;
+    $timeout = _$timeout_;
+    shouldCountUp = true;
   }));
 
   it('as a user, i want counter to have two button ', function () {
@@ -65,28 +63,66 @@ describe('Tests Counter Directive', function () {
     expect(plusBtn.attr('id')).toBe('_$counterAddBtn');
   });
 
-  it('i expect counter minus function to reduce given value by 1', function(){
-    var currentCount = 3;
-    expect(counterIsolatedScope. _tapInputSub(currentCount)).toBe(currentCount - 1);
+  it('i expect count value to be zero when counting down initially', function(){
+    counterScope.startCounter(!shouldCountUp);// count downward
+    $timeout(function(){
+      counterScope.stopCounter();
+    }, 1000);
+    $timeout.flush();
+    expect( counterScope.count).toBe(0);
   });
 
-  it('i expect counter minus function to reset to 0 when called with non-numeric value/empty string', function(){
-    expect(counterIsolatedScope. _tapInputSub('44HJJ56')).toBe(0);
-    expect(counterIsolatedScope. _tapInputSub('')).toBe(0);
+  it('i expect count value to be zero when counting down with non-numeric initial count value', function(){
+    counterScope.count = '44HJJ56';
+    counterScope.startCounter(!shouldCountUp);// count downward
+    $timeout(function(){
+      counterScope.stopCounter();
+    }, 1000);
+    $timeout.flush();
+    expect( counterScope.count).toBe(0);
   });
 
-  it('as a user, i expect minus function when triggered not to count below zero.', function(){
-    expect(counterIsolatedScope. _tapInputSub(0)).toBe(0);
+  it('i expect count down when triggered not to count below zero.', function(){
+    counterScope.count = 4;
+    counterScope.startCounter(!shouldCountUp);// count downward
+    $timeout(function(){
+      counterScope.stopCounter();
+    }, 5000);
+    $timeout.flush();
+    expect(counterScope.count).not.toBeLessThan(0);
   });
 
-  it('i expect counter plus function to increase given value by 1', function(){
-    var currentCount = 3;
-    expect(counterIsolatedScope. _tapInputAdd(currentCount)).toBe(currentCount + 1);
+  it('i expect count down when triggered to reduce count value', function(){
+    var initialValue = 4335;
+    counterScope.count = initialValue;
+    counterScope.startCounter(!shouldCountUp);// count downward
+    $timeout(function(){
+      counterScope.stopCounter();
+    }, 500);
+    $timeout.flush();
+    expect(counterScope.count).toBeLessThan(initialValue);
+    expect(counterScope.count).not.toBe(0); //cause 500ms delay is not enough to reduce count to 0
   });
 
-  it('i expect counter plus function to reset to 1 when called with non-numeric value/empty string', function(){
-    expect(counterIsolatedScope. _tapInputAdd('44HJJ56')).toBe(1);
-    expect(counterIsolatedScope. _tapInputAdd('')).toBe(1);
+  it('i expect counting up to reset to 1 when called with non-numeric value/empty string', function(){
+    counterScope.count = '44HJJ56';
+    counterScope.startCounter(shouldCountUp);// count up
+    $timeout(function(){
+      counterScope.stopCounter();
+    }, 1000);
+    $timeout.flush();
+    expect( counterScope.count).toBeGreaterThan(0);
+  });
+
+  it('i expect count up when triggered to increase count value', function(){
+    var initialValue = 4335;
+    counterScope.count = initialValue;
+    counterScope.startCounter(shouldCountUp);// count downward
+    $timeout(function(){
+      counterScope.stopCounter();
+    }, 500);
+    $timeout.flush();
+    expect(counterScope.count).toBeGreaterThan(initialValue);
   });
 
 });

@@ -21,6 +21,9 @@ module.exports = function(config) {
       'app/bower_components/angular-pouchdb/angular-pouchdb.js',
       'app/bower_components/jasmine-as-promised/src/jasmine-as-promised.js',
       'app/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.min.js',
+      'app/bower_components/queue-async/queue.js',
+      'app/bower_components/angular-growl-v2/build/angular-growl.js',
+      'app/bower_components/angular-animate/angular-animate.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
