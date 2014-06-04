@@ -15,7 +15,10 @@ angular.module('lmisChromeApp')
             return appConfigService.getCurrentAppConfig();
           },
           stockCountByDate: function(stockCountFactory){
-            return stockCountFactory.get.stockCountListByDate();
+            return stockCountFactory.getStockCountListByDate();
+          },
+          mostRecentStockCount: function(stockCountFactory){
+            return stockCountFactory.getMostRecentStockCount();
           }
         },
         controller: 'StockCountHomeCtrl'
@@ -38,52 +41,36 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state){
-    $scope.stockCountByDate = stockCountByDate;
-    $scope.monthList = stockCountFactory.monthList;
-
-    $scope.dateList = stockCountFactory.get.stockCountByIntervals(appConfig);
-
-    $scope.missedEntry = function(date){
-      return stockCountFactory.get.missingEntry(date, stockCountByDate, appConfig);
-    };
-    $scope.takeAction = function(date){
-      var missed = $scope.missedEntry(date);
-      stockCountFactory.getStockCountByDate(date).then(function(stockCount){
-        if(stockCount !== null){
-          $scope.stockCount = stockCount;
-          $scope.editOff = stockCountFactory.set.stock.editStatus(date, appConfig);
-          $state.go('stockCountForm', {detailView: true, countDate: date, editOff: $scope.editOff});
-        }
-        else if(!missed){
-          $state.go('stockCountForm', {countDate: date});
-        }
-      });
+  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state, mostRecentStockCount){
+    $scope.stockCountsByCreatedDate = stockCountByDate;
+    $scope.showStockCountFormByDate = function(date){
+      stockCountFactory.getStockCountByDate(date)
+          .then(function (stockCount) {
+            if (stockCount !== null) {
+              //only most recent is editable.
+              var isEditable = (typeof mostRecentStockCount !== 'undefined') &&
+                  (mostRecentStockCount.uuid=== stockCount.uuid);
+              $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !isEditable });
+            } else {
+              $state.go('stockCountForm', {countDate: date});
+            }
+          })
+          .catch(function () {
+            //TODO: decides what happens if for any reason, retrieving stock count fails.
+          });
     };
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl,
                                              $stateParams, appConfig, appConfigService, productType, cacheService,
-                                             syncService, utility, $rootScope){
+                                             syncService, utility, $rootScope, i18n){
     //TODO: refactor entire stock count controller to simpler more readable controller
-    var now = new Date();
-    var day = now.getDate();
-    day = day < 10 ? '0' + day : day;
 
-    var month = now.getMonth();
-    month = month < 10 ? '0' + month : month;
     $scope.productType = productType;
-
     $scope.step = 0;
-    $scope.monthList = stockCountFactory.monthList;
-
-    // get url parameters
     $scope.facilityObject = appConfig.appFacility;
     $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
-    $scope.facilityUuid = ($stateParams.facility !== null)?$stateParams.facility:$scope.facilityObject.uuid;
-    $scope.reportDay = stockCountFactory.get.reminderDayFromDate($stateParams.reportDay, appConfig);
-    $scope.reportMonth = ($stateParams.reportMonth !== null)?$stateParams.reportMonth:month;
-    $scope.reportYear = ($stateParams.reportYear !== null)?$stateParams.reportYear: now.getFullYear();
-
+    $scope.stockCountDate = stockCountFactory.getCurrentStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
+    $scope.dateInfo = new Date();
     $scope.preview = $scope.detailView = $stateParams.detailView;
     $scope.editOn = false;
     $scope.editOff = ($stateParams.editOff === 'true');
@@ -97,8 +84,7 @@ angular.module('lmisChromeApp')
     //set maximum steps
     if($scope.facilityProductsKeys.length>0){
       $scope.maxStep =  $scope.facilityProductsKeys.length-1;
-    }
-    else{
+    }else{
       $scope.maxStep = 0;
     }
 
@@ -111,10 +97,8 @@ angular.module('lmisChromeApp')
 
     updateUIModel();
 
-    var timezone = stockCountFactory.get.timezone();
-
     //load existing count for the day if any.
-    var date = $scope.reportYear+'-'+$scope.reportMonth+'-'+$scope.reportDay;
+    var date = $scope.stockCountDate;
     if($stateParams.countDate){
       date = $stateParams.countDate;
       $scope.reportDay = new Date(Date.parse(date)).getDate();
@@ -122,6 +106,7 @@ angular.module('lmisChromeApp')
     stockCountFactory.getStockCountByDate(date).then(function(stockCount){
       if(stockCount !== null){
         $scope.stockCount = stockCount;
+        $scope.dateInfo = $scope.stockCount.created;
         $scope.editOn = true; // enable edit mode
         if(angular.isUndefined($scope.stockCount.lastPosition)){
           $scope.stockCount.lastPosition = 0;
@@ -143,8 +128,8 @@ angular.module('lmisChromeApp')
     $scope.save = function() {
       var DB_NAME = stockCountFactory.STOCK_COUNT_DB;
 
-      $scope.stockCount.facility = $scope.facilityUuid;
-      $scope.stockCount.countDate = new Date($scope.reportYear, parseInt($scope.reportMonth)-1, $scope.reportDay, timezone);
+      $scope.stockCount.facility = $scope.facilityObject.uuid;
+      $scope.stockCount.countDate = $scope.stockCountDate;
       //queue save task
       saveQueue.defer(saveTask);
 
@@ -154,12 +139,7 @@ angular.module('lmisChromeApp')
           if(result){
             $rootScope.showChart = true;
             $rootScope.isStockCountDue = false;//TODO:
-            var msg = [
-              'You have completed stock count for',
-              $scope.reportDay,
-              $scope.monthList[$scope.reportMonth],
-              $scope.reportYear
-            ].join(' ');
+            var msg = i18n('stockCountSuccessMsg');
             $scope.isSaving = false;
             $state.go('home.index.home.mainActivity', {'stockResult': msg});
 

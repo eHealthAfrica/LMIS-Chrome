@@ -39,6 +39,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * @returns {promise|promise|*|promise|promise}
    */
   this.isStockCountDue = function(reminderDay){
+    //TODO: complete this and move to stock-count-factory
     var deferred = $q.defer();
     storageService.all(storageService.STOCK_COUNT)
       .then(function (results) {
@@ -283,7 +284,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         })
         .catch(function(reason){
           deferred.reject(reason);
-        })
+        });
     return deferred.promise;
   };
 
