@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('discardCountFactory', function ($filter, storageService, utility, $q, syncService) {
+  .factory('wasteCountFactory', function ($filter, storageService, utility, $q, syncService) {
 
-    var discardedReasons = [
+    var wasteReasons = [
       'VVM Stage 3',
       'Broken Vial',
       'Label Missing',
@@ -42,16 +42,16 @@ angular.module('lmisChromeApp')
       return $filter('date')(date, 'yyyy-MM-dd');
     };
 
-    var saveDiscarded = function(scope, state, growl){
-      scope.discardCount.facility = scope.facilityUuid;
-      scope.discardCount.countDate = new Date(scope.reportYear, parseInt(scope.reportMonth)-1, scope.currentDay, load.timezone());
-      addRecord(scope.discardCount)
+    var saveWasteCount = function(scope, state, growl){
+      scope.wasteCount.facility = scope.facilityUuid;
+      scope.wasteCount.countDate = new Date(scope.reportYear, parseInt(scope.reportMonth)-1, scope.currentDay, load.timezone());
+      addRecord(scope.wasteCount)
       .then(function(uuid) {
-        scope.discardCount.uuid = uuid;
+        scope.wasteCount.uuid = uuid;
         if(scope.redirect) {
-          syncService.syncItem(storageService.DISCARD_COUNT, scope.discardCount);//sync in the background
+          syncService.syncItem(storageService.DISCARD_COUNT, scope.wasteCount);//sync in the background
           var msg = [
-              'You have completed discard count for',
+              'You have completed waste count for',
               scope.currentDay,
               scope.monthList[scope.reportMonth],
               scope.reportYear
@@ -70,9 +70,9 @@ angular.module('lmisChromeApp')
       if(object.countDate instanceof Date){
         object.countDate = object.countDate.toJSON();
       }
-      validate.discard.countExist().then(function(discardCount){
-        if(discardCount !== null){
-          object.uuid = discardCount.uuid;
+      validate.waste.countExist().then(function(wasteCount){
+        if(wasteCount !== null){
+          object.uuid = wasteCount.uuid;
         }
         storageService.save(storageService.DISCARD_COUNT, object)
             .then(function(uuid){
@@ -94,9 +94,9 @@ angular.module('lmisChromeApp')
       invalid: function(entry){
         return !!((entry === '' || angular.isUndefined(entry) || isNaN(entry) || entry < 0));
       },
-      discard: {
+      waste: {
         countExist: function(date){
-          return getDiscardCountByDate(date);
+          return getWasteCountByDate(date);
         },
         /**
          * this function validate reason and save the current value if no error
@@ -104,7 +104,7 @@ angular.module('lmisChromeApp')
          * @param index
          */
         reason: function(scope, index){
-          var currentReason = scope.discardCount.reason[scope.productKey][index];
+          var currentReason = scope.wasteCount.reason[scope.productKey][index];
           var entryError = (validate.invalid(currentReason))?true:false;
           var errorMsg = [];
 
@@ -113,32 +113,32 @@ angular.module('lmisChromeApp')
           }
 
           if(errorMsg.length > 0){
-            scope.discardErrors[scope.productKey][index] = true;
-            scope.discardErrorMsg[scope.productKey][index]= errorMsg.join('<br>');
+            scope.wasteErrors[scope.productKey][index] = true;
+            scope.wasteErrorMsg[scope.productKey][index]= errorMsg.join('<br>');
           }else{
-            delete scope.discardErrors[scope.productKey][index];
-            delete scope.discardErrorMsg[scope.productKey][index];
+            delete scope.wasteErrors[scope.productKey][index];
+            delete scope.wasteErrorMsg[scope.productKey][index];
           }
           //if any form field contain invalid data we need to indicate it indefinitely
-          if(Object.keys(scope.discardErrors[scope.productKey]).length > 0){
+          if(Object.keys(scope.wasteErrors[scope.productKey]).length > 0){
             scope.reasonError = true;
           }else{
 
-            delete scope.discardErrors[scope.productKey];
-            delete scope.discardErrorMsg[scope.productKey];
+            delete scope.wasteErrors[scope.productKey];
+            delete scope.wasteErrorMsg[scope.productKey];
             scope.reasonError = false;
             scope.redirect = false;
-            scope.discardCount.lastPosition = scope.step;
-            scope.discardCount.discarded[scope.productKey] =  load.sumReasonObject(scope.discardCount.reason[scope.productKey]);
-            if(scope.discardCount.reason[scope.productKey][index] === null){
-              scope.discardCount.reason[scope.productKey][index] = 0;
+            scope.wasteCount.lastPosition = scope.step;
+            scope.wasteCount.discarded[scope.productKey] =  load.sumReasonObject(scope.wasteCount.reason[scope.productKey]);
+            if(scope.wasteCount.reason[scope.productKey][index] === null){
+              scope.wasteCount.reason[scope.productKey][index] = 0;
             }
             scope.save();
           }
         },
         changeState: function(scope, direction){
           scope.productKey = scope.facilityProductsKeys[scope.step];
-          scope.currentEntry = scope.discardCount.discarded[scope.productKey];
+          scope.currentEntry = scope.wasteCount.discarded[scope.productKey];
           if(validate.invalid(scope.currentEntry) && direction !== 0){
             load.errorAlert(scope, 1);
           }else if (scope.reasonError){
@@ -149,44 +149,44 @@ angular.module('lmisChromeApp')
               scope.step = direction === 0? scope.step-1 : scope.step + 1;
             }else{
               scope.preview = true;
-              scope.discardCount.isComplete = 1;
+              scope.wasteCount.isComplete = 1;
             }
           }
-          scope.discardCount.lastPosition = scope.step;
+          scope.wasteCount.lastPosition = scope.step;
           scope.productKey = scope.facilityProductsKeys[scope.step];
           scope.selectedFacilityProduct = load.productReadableName(scope.facilityProducts, scope.step);
           scope.productTypeCode = load.productTypeCode(scope.facilityProducts, scope.step, scope.productType);
-          if(angular.isUndefined(scope.discardCount.reason[scope.productKey])){
-            scope.discardCount.reason[scope.productKey] = {};
+          if(angular.isUndefined(scope.wasteCount.reason[scope.productKey])){
+            scope.wasteCount.reason[scope.productKey] = {};
           }
-          for(var i in scope.discardedReasons){
-            if(angular.isUndefined(scope.discardCount.reason[scope.productKey][i])){
-              scope.discardCount.reason[scope.productKey][i] = 0;
+          for(var i in scope.wasteReasons){
+            if(angular.isUndefined(scope.wasteCount.reason[scope.productKey][i])){
+              scope.wasteCount.reason[scope.productKey][i] = 0;
             }
           }
-          if(angular.isUndefined(scope.discardCount.discarded[scope.productKey])){
-            scope.discardCount.discarded[scope.productKey] = 0;
+          if(angular.isUndefined(scope.wasteCount.discarded[scope.productKey])){
+            scope.wasteCount.discarded[scope.productKey] = 0;
           }
         }
       }
 
     };
 
-    var getDiscardCountByDate = function (date) {
+    var getWasteCountByDate = function (date) {
       date = date instanceof Date ? isoDate(date.toJSON()) : date;
       var deferred = $q.defer();
-      storageService.all(storageService.DISCARD_COUNT).then(function (discardCounts) {
-        var discardCount = null;
-        for (var index in discardCounts) {
-          var row = discardCounts[index];
-          var discardCountDate = isoDate(row.countDate);
+      storageService.all(storageService.DISCARD_COUNT).then(function (wasteCounts) {
+        var wasteCount = null;
+        for (var index in wasteCounts) {
+          var row = wasteCounts[index];
+          var wasteCountDate = isoDate(row.countDate);
           date = isoDate(date);
-          if (date === discardCountDate) {
-            discardCount = row;
+          if (date === wasteCountDate) {
+            wasteCount = row;
             break;
           }
         }
-        deferred.resolve(discardCount);
+        deferred.resolve(wasteCount);
       });
       return deferred.promise;
     };
@@ -196,12 +196,12 @@ angular.module('lmisChromeApp')
        *
        * @returns {promise}
        */
-      allDiscardCount: function(){
+      allWasteCount: function(){
         var deferred = $q.defer();
         storageService.all(storageService.DISCARD_COUNT)
-          .then(function(discardCounts){
-            discardCounts = syncService.addSyncStatus(discardCounts);
-            deferred.resolve(discardCounts);
+          .then(function(wasteCounts){
+            wasteCounts = syncService.addSyncStatus(wasteCounts);
+            deferred.resolve(wasteCounts);
           });
         return deferred.promise;
       },
@@ -283,24 +283,24 @@ angular.module('lmisChromeApp')
       productProfile: function(){
         return storageService.get(storageService.PRODUCT_PROFILE);
       },
-      discardCountByType: function(discardCount, facilityProductProfiles){
+      wasteCountByType: function(wasteCount, facilityProductProfiles){
         var arr = [];
-        if(Object.prototype.toString.call(discardCount) === '[object Object]'){
-          for(var i in discardCount.discarded){
+        if(Object.prototype.toString.call(wasteCount) === '[object Object]'){
+          for(var i in wasteCount.discarded){
             var uom = facilityProductProfiles[i].presentation.uom.symbol;
             arr.push({
               header: true,
-              value: discardCount.discarded[i],
+              value: wasteCount.discarded[i],
               key: i,
               uom: uom
             });
-            if((Object.keys(discardCount.reason[i])).length > 0){
-              for(var j in discardCount.reason[i]){
-                if(discardCount.reason[i][j] !== 0 && discardCount.reason[i][j] !== ''){
+            if((Object.keys(wasteCount.reason[i])).length > 0){
+              for(var j in wasteCount.reason[i]){
+                if(wasteCount.reason[i][j] !== 0 && wasteCount.reason[i][j] !== ''){
                   arr.push(
                     {
                       header: false,
-                      value: discardCount.reason[i][j],
+                      value: wasteCount.reason[i][j],
                       key: j,
                       uom: uom
                     }
@@ -316,7 +316,7 @@ angular.module('lmisChromeApp')
        *
        * @param scope
        */
-      discardCountByIntervals: function(scope){
+      wasteCountByIntervals: function(scope){
 
         var dates = [];
         var interval = 1000 * 60 * 60 * 24 * parseInt(scope.countInterval);
@@ -335,7 +335,7 @@ angular.module('lmisChromeApp')
         }
         return dates;
       },
-      discardCountListByDate: function(stockCountList){
+      wasteCountListByDate: function(stockCountList){
         var obj = {};
         for(var i=0; i < stockCountList.length; i++){
           var date = isoDate(stockCountList[i].countDate);
@@ -346,7 +346,7 @@ angular.module('lmisChromeApp')
       missingEntry: function(date, scope){
         var reminderDate = utility.getWeekRangeByDate(new Date(date), scope.reminderDay);
         var lastDay = reminderDate.last;
-        if(angular.isUndefined(scope.discardCountByDate[date])){
+        if(angular.isUndefined(scope.wasteCountByDate[date])){
           if(isoDate(date) === isoDate()){
             return false;
           }
@@ -358,13 +358,13 @@ angular.module('lmisChromeApp')
           }
         }
         else{
-          if(scope.discardCountByDate[date].isComplete ||isoDate(date) === isoDate()){
+          if(scope.wasteCountByDate[date].isComplete ||isoDate(date) === isoDate()){
             return false;
           }
           return true;
         }
       },
-      mergedDiscardCount: function(fromDB, fromFacilitySelected){
+      mergedWasteCount: function(fromDB, fromFacilitySelected){
         var db = Object.keys(fromDB);
         var dbArr = Object.keys(fromDB);
         for(var i in fromFacilitySelected){
@@ -381,14 +381,14 @@ angular.module('lmisChromeApp')
           name = facilityProducts[row.key].name;
         }
         else{
-          name = discardedReasons[row.key];
+          name = wasteReasons[row.key];
         }
         return name;
       }
 
     };
-    var watchDiscardedEntries = function(scope){
-      scope.$watchCollection('discardCount.reason[productKey]', function(newValues, oldValues){
+    var watchWasteCountEntries = function(scope){
+      scope.$watchCollection('wasteCount.reason[productKey]', function(newValues, oldValues){
         if((Object.keys(newValues)).length > 0){
           for(var i in newValues){
             if(newValues[i] !== oldValues[i]){
@@ -400,25 +400,25 @@ angular.module('lmisChromeApp')
     };
 
     var checkInput = function(scope, index){
-      if(angular.isUndefined(scope.discardErrors[scope.productKey])){
-        scope.discardErrors[scope.productKey] = {};
+      if(angular.isUndefined(scope.wasteErrors[scope.productKey])){
+        scope.wasteErrors[scope.productKey] = {};
       }
-      if(angular.isUndefined(scope.discardErrorMsg[scope.productKey])){
-        scope.discardErrorMsg[scope.productKey] = {};
+      if(angular.isUndefined(scope.wasteErrorMsg[scope.productKey])){
+        scope.wasteErrorMsg[scope.productKey] = {};
       }
-      validate.discard.reason(scope, index);
-      scope.discardCountByType = load.discardCountByType(scope.discardCount, scope.facilityProducts);
+      validate.waste.reason(scope, index);
+      scope.wasteCountByType = load.wasteCountByType(scope.wasteCount, scope.facilityProducts);
     };
 
     return {
       monthList: months,
       productType: productType,
-      discardedReasons: discardedReasons,
+      wasteReasons: wasteReasons,
       add: addRecord,
-      save:saveDiscarded,
+      save:saveWasteCount,
       get:load,
-      getDiscardCountByDate: getDiscardCountByDate,
+      getWasteCountByDate: getWasteCountByDate,
       validate: validate,
-      watchDiscarded: watchDiscardedEntries
+      watchWasteCount: watchWasteCountEntries
     };
   });

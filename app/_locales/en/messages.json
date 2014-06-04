@@ -195,7 +195,7 @@
     "message": "Stock Count"
   },
   "addWasteCount": {
-    "message": "Discard Count"
+    "message": "Waste Count"
   },
   "orderPlacedSuccess": {
     "message": "Order placed successfully"
@@ -314,7 +314,7 @@
   "stockCountErrorMsg": {
     "message": "stock count value is invalid, at least enter Zero '0' to proceed"
   },
-  "discardErrorMsg": {
+  "wasteErrorMsg": {
     "message": "please fix errors in reason selection"
   },
   "stockCountSaved": {
@@ -501,14 +501,14 @@
   "stockCountReminderMsg": {
     "message": "A stock count is due today!"
   },
-  "discardCountReminderMsg": {
-    "message": "Discard count is due today!"
+  "wasteCountReminderMsg": {
+    "message": "Waste count is due today!"
   },
-  "discardCountSaved": {
-    "message": "Discard count saved successfully"
+  "wasteCountSaved": {
+    "message": "waste count saved successfully"
   },
-  "selectDiscardReason": {
-    "message": "Select Discard Reason"
+  "selectWasteReason": {
+    "message": "Select Waste Reason"
   },
   "enterQuantity": {
     "message": "Enter Quantity"
