@@ -150,9 +150,6 @@ angular.module('lmisChromeApp')
       storageService.all(storageService.STOCK_COUNT)
           .then(function (stockCounts) {
             stockCounts = syncService.addSyncStatus(stockCounts);
-            stockCounts = stockCounts.sort(function (a, b) {
-              return (new Date(a.countDate).getTime() < new Date(b.countDate).getTime());
-            });
             deferred.resolve(stockCounts);
           })
           .catch(function (reason) {
@@ -173,7 +170,6 @@ angular.module('lmisChromeApp')
           })
           .catch(function (reason) {
             deferred.resolve(obj);
-            console.error(reason);
           });
       return deferred.promise;
     };
@@ -249,7 +245,32 @@ angular.module('lmisChromeApp')
       }
     };
 
+    var getMostRecentStockCount = function(){
+      var deferred = $q.defer();
+      var mostRecentStockCount;
+      getAllStockCount()
+          .then(function(result){
+            for(var index in result){
+              var stockCount = result[index];
+              if(typeof mostRecentStockCount === 'undefined'){
+                mostRecentStockCount = stockCount;
+                continue;
+              }
+
+              if(new Date(mostRecentStockCount.created).getTime() < new Date(stockCount.created).getTime()){
+                mostRecentStockCount = stockCount;
+              }
+            }
+            deferred.resolve(mostRecentStockCount);
+          })
+          .catch(function(){
+            deferred.resolve(mostRecentStockCount);
+          });
+      return deferred.promise;
+    };
+
     return {
+      getMostRecentStockCount: getMostRecentStockCount,
       getCurrentStockCountDueDate: getCurrentStockCountDueDate,
       getStockCountListByDate: getStockCountListByCreatedDate,
       getAll: getAllStockCount,
