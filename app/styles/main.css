@@ -223,3 +223,11 @@ tr.disabled, tr.disabled span.text-info{
   height: 120px;
   margin: -40px 0;
 }
+
+.product-series .nvd3.nv-bullet .nv-measure {
+  fill: black !important;
+}
+
+.product-series .nvd3.nv-bullet .nv-range {
+  fill: #ff7518;
+}
