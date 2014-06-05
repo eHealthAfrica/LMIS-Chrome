@@ -36,7 +36,7 @@ angular.module('lmisChromeApp')
           var profiles = res[1];
           var profileIds = profiles.map(function(pp){ return pp.uuid; });
           var count = 0;
-          //find the most recent stockCount mentioning ANY of the above profileIds. 
+          //find the most recent stockCount mentioning ANY of the above profileIds.
           if(typeof stockCounts !== 'undefined')
           {
             stockCounts = stockCounts.filter(function(stockCount) {
@@ -64,7 +64,7 @@ angular.module('lmisChromeApp')
     };
 
     //TODO move these into a stat class like stats(productype).leadtime.avg() etc
-    /** 
+    /**
     * Average lead time for a given product type
     * Should be calculated from past lead times of orders for given product type
     * @param {String} uuid of product type for which to get lead time data
@@ -93,7 +93,7 @@ angular.module('lmisChromeApp')
       return avgLeadTimeMocks[productTypeUuid];
     };
 
-    /** 
+    /**
     * Standard deviation of lead time for given product type
     * Should be calculated from past lead times of orders for given product type
     * @param {String} uuid of product type for which to get lead time data
@@ -121,7 +121,7 @@ angular.module('lmisChromeApp')
       return stdLeadTimeMocks[productTypeUuid];
     };
 
-    /** 
+    /**
     * Average consumption for given product type
     * Should be calculated from past consumption of given product type
     * @param {String} uuid of product type for which to get consumption data
@@ -149,7 +149,7 @@ angular.module('lmisChromeApp')
       return avgConsumptionMocks[productTypeUuid];
     };
 
-    /** 
+    /**
     * Standard deviation of consumption for given product type
     * Should be calculated from past consumption of given product type
     * @param {String} uuid of product type for which to get consumption data
@@ -176,7 +176,7 @@ angular.module('lmisChromeApp')
       };
       return stdConsumptionMocks[productTypeUuid];
     };
-     
+
     /**
     * Temporary version of per-producttype LTC
     */
@@ -202,6 +202,10 @@ angular.module('lmisChromeApp')
     var reorderPointByProductType = function(productTypeUuid)
     {
       return bufferByProductType(productTypeUuid) + leadTimeConsumptionByProductType(productTypeUuid);
+    };
+
+    var reorderPointByProductTypeDays = function(productTypeUuid) {
+      return bufferByProductType(productTypeUuid) / consumptionAvgByProductType(productTypeUuid);
     };
 
     /**
@@ -364,6 +368,7 @@ angular.module('lmisChromeApp')
       reorderPoint: reorderPoint,
       getStockLevel: getStockLevel,
       daysToReorderPoint: daysToReorderPoint,
-      daysOfStock: daysOfStock
+      daysOfStock: daysOfStock,
+      reorderPointByProductType: reorderPointByProductTypeDays
     };
   });
