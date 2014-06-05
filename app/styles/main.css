@@ -218,6 +218,20 @@ tr.disabled, tr.disabled span.text-info{
   width: 32px;
   height: 32px;
 }
+.product-chart {
+  margin: 0 auto;
+  padding: 0 10px 40px;
+}
+.product-series {
+  height: 80px;
+}
+.product-series .nvd3.nv-bullet .nv-measure {
+  fill: black !important;
+}
+.product-series .nvd3.nv-bullet .nv-range {
+  fill: #ff0039;
+}
+}
 .highlight-selected-item {
   background-color: #449d44;
   color: #FFFFFF;
