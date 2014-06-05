@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('wasteCountFactory', function ($filter, storageService, utility, $q, syncService) {
+  .factory('wasteCountFactory', function ($filter, storageService, utility, $q, syncService, i18n) {
 
     var wasteReasons = [
       'VVM Stage 3',
@@ -246,11 +246,11 @@ angular.module('lmisChromeApp')
       errorAlert: function(scope, error){
         if(error === 1){
           scope.productError = true;
-          scope.productErrorMsg = 'count value is invalid, at least enter Zero "0" to proceed';
+          scope.productErrorMsg = i18n('stockCountErrorMsg');;
         }
         else if (error === 2){
           scope.productError = true;
-          scope.productErrorMsg = 'please fix errors in reason selection';
+          scope.productErrorMsg = i18n('discardErrorMsg');
         }
         else{
           scope.productError = false;
@@ -279,101 +279,36 @@ angular.module('lmisChromeApp')
         }
         return sum;
       },
-
-      productProfile: function(){
-        return storageService.get(storageService.PRODUCT_PROFILE);
-      },
       wasteCountByType: function(wasteCount, facilityProductProfiles){
         var arr = [];
         if(Object.prototype.toString.call(wasteCount) === '[object Object]'){
           for(var i in wasteCount.discarded){
-            var uom = facilityProductProfiles[i].presentation.uom.symbol;
-            arr.push({
-              header: true,
-              value: wasteCount.discarded[i],
-              key: i,
-              uom: uom
-            });
-            if((Object.keys(wasteCount.reason[i])).length > 0){
-              for(var j in wasteCount.reason[i]){
-                if(wasteCount.reason[i][j] !== 0 && wasteCount.reason[i][j] !== ''){
-                  arr.push(
-                    {
-                      header: false,
-                      value: wasteCount.reason[i][j],
-                      key: j,
-                      uom: uom
-                    }
-                  );
+            if(angular.isDefined(facilityProductProfiles[i])){
+              var uom = facilityProductProfiles[i].presentation.uom.symbol;
+              arr.push({
+                header: true,
+                value: wasteCount.discarded[i],
+                key: i,
+                uom: uom
+              });
+              if((Object.keys(wasteCount.reason[i])).length > 0){
+                for(var j in wasteCount.reason[i]){
+                  if(wasteCount.reason[i][j] !== 0 && wasteCount.reason[i][j] !== ''){
+                    arr.push(
+                      {
+                        header: false,
+                        value: wasteCount.reason[i][j],
+                        key: j,
+                        uom: uom
+                      }
+                    );
+                  }
                 }
               }
             }
           }
         }
         return arr;
-      },
-      /**
-       *
-       * @param scope
-       */
-      wasteCountByIntervals: function(scope){
-
-        var dates = [];
-        var interval = 1000 * 60 * 60 * 24 * parseInt(scope.countInterval);
-
-        var reminderDate = utility.getWeekRangeByDate(new Date(), scope.reminderDay);
-        var current = reminderDate.reminderDate;
-
-        while(dates.length < scope.maxList){
-          if(isoDate(current.toJSON()) <= isoDate()){
-            dates.push(isoDate(current.toJSON()));
-          }
-          current = new Date(current.getTime() - interval);
-          if(isoDate(current.toJSON()) < isoDate(scope.dateActivated)){
-            break;
-          }
-        }
-        return dates;
-      },
-      wasteCountListByDate: function(stockCountList){
-        var obj = {};
-        for(var i=0; i < stockCountList.length; i++){
-          var date = isoDate(stockCountList[i].countDate);
-          obj[date] = stockCountList[i];
-        }
-        return obj;
-      },
-      missingEntry: function(date, scope){
-        var reminderDate = utility.getWeekRangeByDate(new Date(date), scope.reminderDay);
-        var lastDay = reminderDate.last;
-        if(angular.isUndefined(scope.wasteCountByDate[date])){
-          if(isoDate(date) === isoDate()){
-            return false;
-          }
-          else if (isoDate(lastDay.toJSON()) >= isoDate()){
-            return false;
-          }
-          else{
-            return true;
-          }
-        }
-        else{
-          if(scope.wasteCountByDate[date].isComplete ||isoDate(date) === isoDate()){
-            return false;
-          }
-          return true;
-        }
-      },
-      mergedWasteCount: function(fromDB, fromFacilitySelected){
-        var db = Object.keys(fromDB);
-        var dbArr = Object.keys(fromDB);
-        for(var i in fromFacilitySelected){
-          if(fromFacilitySelected[i] in fromDB){
-            var index = db.indexOf(fromFacilitySelected[i]);
-            dbArr.pop(index);
-          }
-        }
-        return fromFacilitySelected.concat(dbArr);
       },
       productName: function(row, facilityProducts){
         var name = row.key;
@@ -419,6 +354,7 @@ angular.module('lmisChromeApp')
       get:load,
       getWasteCountByDate: getWasteCountByDate,
       validate: validate,
-      watchWasteCount: watchWasteCountEntries
+      watchWasteCount: watchWasteCountEntries,
+      DB_NAME: storageService.DISCARD_COUNT
     };
   });
