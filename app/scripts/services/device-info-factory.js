@@ -14,11 +14,15 @@ angular.module('lmisChromeApp')
         var deviceInfo = $window.cordova.require('cordova/plugin/DeviceInformation');
 
         var success = function(result) {
-          var emailRegxp = '/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-zA-Z0-9._-]+)/gi';
-          var emails = result.match(emailRegxp).join(',');
+          var pattern = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
+          var emails = result.match(pattern);
+
+          if(!emails || !emails.length) {
+            return deferred.reject('No device emails found');
+          }
 
           deferred.resolve({
-            mainAccount: emails.split(',')[0]
+            mainAccount: emails[0]
           });
         };
 

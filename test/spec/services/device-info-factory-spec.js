@@ -45,5 +45,26 @@ describe('Device info factory', function() {
           });
       });
     }));
+
+    it('should return the first device email', inject(function($window) {
+      $window.cordova = deviceInfoMocks.sparseEmail;
+      runs(function() {
+        return deviceInfoFactory.getDeviceInfo()
+          .then(function(result) {
+            expect(result.mainAccount).toBe('test@example.com');
+          });
+      });
+    }));
+
+    it('should reject if there are no emails', inject(function($window) {
+      $window.cordova = deviceInfoMocks.emptySuccess;
+      runs(function() {
+        return deviceInfoFactory.getDeviceInfo()
+          .catch(function(reason) {
+            expect(reason).toBeDefined();
+          });
+      });
+    }));
+
   });
 });
