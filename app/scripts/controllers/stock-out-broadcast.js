@@ -99,7 +99,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       title.push(stockOutProductTypes[i].code);
     }
 
-    var confirmationTitle = i18n('confirmStockOutHeader', title.join(', '));
+    var confirmationTitle = title;
     var confirmationQuestion = i18n('dialogConfirmationQuestion');
     var buttonLabels = [i18n('yes'), i18n('no')];
 
