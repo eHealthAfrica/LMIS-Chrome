@@ -20,8 +20,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       facilities: function(facilityFactory){
         return facilityFactory.getAll();
       },
-      deviceInfo: function(deviceInfoFactory){
-        return deviceInfoFactory.getDeviceInfo();
+      deviceEmail: function($q, deviceInfoFactory){
+        var deferred = $q.defer();
+        deviceInfoFactory.getDeviceInfo()
+          .then(function(result) {
+            deferred.resolve(result.mainAccount);
+          })
+          .catch(function() {
+            deferred.resolve('');
+          });
+        return deferred;
       },
       ccuProfilesGroupedByCategory: function(ccuProfileFactory){
         return ccuProfileFactory.getAllGroupedByCategory();
@@ -59,7 +67,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   });
 
 }).controller('AppConfigWizard', function($scope, facilities, appConfigService, growl, $state,
-        i18n, deviceInfo, $log, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory){
+        i18n, deviceEmail, $log, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -112,11 +120,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           $scope.profileNotFound = true;
         });
   };
-
-  var deviceEmail = '';
-  if (typeof deviceInfo === 'object') {
-    deviceEmail = deviceInfo.mainAccount;
-  }
 
   $scope.appConfig = {
       uuid: deviceEmail,
