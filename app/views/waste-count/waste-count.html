@@ -1,12 +1,12 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h1 class="panel-title">Discard Count <!--for the month of {{ monthList[currentMonth] }} {{ currentYear }} --></h1>
+    <h1 class="panel-title">Waste Count</h1>
   </div>
   <div class="panel-body">
     <div class="row" ng-hide="detailView">
       <div class="col-sm-12">
-        <a class="btn btn-default" ui-sref="discardCountForm({countDate: today})">
-          <i class="fa fa-edit"></i> Add
+        <a class="btn btn-default" ui-sref="wasteCountForm2">
+          <i class="fa fa-plus"></i> Add
         </a>
       </div>
     </div>
@@ -22,7 +22,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="row in discardCountList" ng-click="takeAction(row.countDate)">
+          <tr ng-repeat="row in wasteCountList" ng-click="takeAction(row.countDate)">
             <td> {{ $index + 1 }}</td>
             <td><span class="text-info"> {{ row.countDate | date:'MMM dd, yyyy' }} </span></td>
             <td class="text-center">
@@ -36,7 +36,7 @@
           </tbody>
         </table>
         <button ng-show="detailView" class="btn btn-default" ng-click="detailView=!detailView">Back to List</button>
-        <a class="btn btn-default" ui-sref="discardCountForm({countDate: discardCount.countDate})"
+        <a class="btn btn-default" ui-sref="wasteCountForm2({countDate: wasteCount.countDate})"
            ng-show="detailView && !editOff">
           <i class="fa fa-edit"></i> Edit
         </a>
@@ -48,7 +48,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="row in discardCountByType" ng-class="{'td-header': row.header}">
+          <tr ng-repeat="row in wasteCountByType" ng-class="{'td-header': row.header}">
             <td>
               <div ng-class="{'child-margin': !row.header}">{{ getName(row) }}</div>
             </td>

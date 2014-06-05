@@ -195,7 +195,7 @@
     "message": "Stock Count"
   },
   "addWasteCount": {
-    "message": "Discard Count"
+    "message": "Waste Count"
   },
   "orderPlacedSuccess": {
     "message": "Order placed successfully"
@@ -314,7 +314,7 @@
   "stockCountErrorMsg": {
     "message": "stock count value is invalid, at least enter Zero '0' to proceed"
   },
-  "discardErrorMsg": {
+  "wasteErrorMsg": {
     "message": "please fix errors in reason selection"
   },
   "stockCountSaved": {
@@ -501,8 +501,17 @@
   "stockCountReminderMsg": {
     "message": "A stock count is due today!"
   },
-  "discardCountReminderMsg": {
-    "message": "Discard count is due today!"
+  "wasteCountReminderMsg": {
+    "message": "Waste count is due today!"
+  },
+  "wasteCountSaved": {
+    "message": "waste count saved successfully"
+  },
+  "selectWasteReason": {
+    "message": "Select Waste Reason"
+  },
+  "enterQuantity": {
+    "message": "Enter Quantity"
   },
   "back": {
     "message": "Back"
@@ -597,5 +606,20 @@
   },
   "ccuBreakdownReportFailedMsg": {
     "message":  "CCU breakdown report failed, please contact support"
+  },
+  "stockCountHistory": {
+    "message": "Stock Count History"
+  },
+  "done": {
+    "message": "Done"
+  },
+  "synced": {
+    "message": "Synced"
+  },
+  "date": {
+    "message": "Date"
+  },
+  "stockCountSuccessMsg": {
+    "message": "You have completed stock count successfully!"
   }
 }

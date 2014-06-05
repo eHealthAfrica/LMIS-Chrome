@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').service('utility', function ($location, $anchorScroll) {
+angular.module('lmisChromeApp').service('utility', function ($location, $anchorScroll, $filter) {
 
   /**
    * This spaces out string concatenated by -
@@ -72,5 +72,17 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
     $location.hash('top');
     $anchorScroll();
   };
-  
+
+  var isDateObject = function(date){
+    return Object.prototype.toString.call(date) === '[object Date]';
+  };
+
+  this.getFullDate = function(date){
+    //TODO: add validation for invalid date object.
+    if( !isDateObject(date)){
+      date = new Date(date);//create date object
+    }
+    return $filter('date')(date, 'yyyy-MM-dd');
+  };
+
 });
