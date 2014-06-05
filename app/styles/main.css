@@ -211,6 +211,9 @@ tr.disabled, tr.disabled span.text-info{
 .btn-left{
    padding-right: 0.5em;
 }
+.panel-stock-levels {
+  max-height: 300px;
+}
 .reminder-icon {
   width: 32px;
   height: 32px;
@@ -227,4 +230,8 @@ tr.disabled, tr.disabled span.text-info{
 }
 .product-series .nvd3.nv-bullet .nv-range {
   fill: #ff0039;
+}
+.highlight-selected-item {
+  background-color: #449d44;
+  color: #FFFFFF;
 }

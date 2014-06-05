@@ -1061,6 +1061,7 @@
     "dhis2_modelattributeid": 240,
     "CatalogID": "E0040001",
     "Cold Box Type": "DayCarrier",
+    "RefType": "VaccineCarrier",
     "Manufacturer": "Electrolux",
     "ModelName": "RCW 4 ((need to add Litres unit to left with Net Storage)",
     "Net Storage": "4"
@@ -1070,6 +1071,7 @@
     "dhis2_modelid": 0,
     "dhis2_modelattributeid": 0,
     "CatalogID": "other",
+    "RefType": "Others",
     "Cold Box Type": "Other",
     "Manufacturer": "Other",
     "ModelName": "Other",
