@@ -1,40 +1,33 @@
 <div class="col-md-12">
-  <!-- <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title" i18n="selectedProductProfile"></h4>
-      </div>
 
-      <div class="list-group pre-scrollable">
-        <li class="list-group-item" ng-repeat="productProfile in appConfig.selectedProductProfiles
-                          track by $index"
-            ng-bind="productProfile.name">
-        </li>
-      </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title" i18n="selectFacilityProductProfiles"></h4>
     </div>
-  </div> -->
+    <div ng-include="'views/partials/search.html'"></div>
+    <div class="panel-body"></div>
+    <div ng-repeat="ppCategory in productProfileCategories">
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title" i18n="selectFacilityProductProfiles"></h4>
-      </div>
-      <div ng-include="'views/partials/search.html'"></div>
-      <div class="panel-body"></div>
       <div class="list-group">
-        <div
-             ng-class="{
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">{{ (productProfilesGroupedByCategory[ppCategory].category).name }}</h4>
+          </div>
+        </div>
+        <div ng-class="{
           'highlight-selected-item': preSelectProductProfileCheckBox[productProfile.uuid], 'list-group-item': true }"
-             ng-repeat="productProfile in productProfiles | filter:search track by productProfile.uuid">
-        <label>
-          <input type="checkbox" ng-model="productProfileCheckBoxes[productProfile.uuid]"
-                 ng-true-value="{{ productProfile }}"
-                 ng-false-value="{{ {'uuid': productProfile.uuid, deSelected: true} }}"
-                 ng-change="onProductProfileSelection(productProfileCheckBoxes[productProfile.uuid])"
-                 ng-checked="preSelectProductProfileCheckBox[productProfile.uuid]"/>
-          {{ productProfile.name }}
-        </label>
+                ng-repeat="productProfile in productProfilesGroupedByCategory[ppCategory].productProfiles | filter:search track by productProfile.uuid">
+          <label>
+            <input type="checkbox" ng-model="productProfileCheckBoxes[productProfile.uuid]"
+                   ng-true-value="{{ productProfile }}"
+                   ng-false-value="{{ {'uuid': productProfile.uuid, deSelected: true} }}"
+                   ng-change="onProductProfileSelection(productProfileCheckBoxes[productProfile.uuid])"
+                   ng-checked="preSelectProductProfileCheckBox[productProfile.uuid]"/>
+            {{ productProfile.name }}
+          </label>
         </div>
       </div>
+    </div>
     </div>
 
 </div>
