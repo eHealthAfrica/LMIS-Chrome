@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe('Device info factory', function() {
+describe('Device info factory', function() {
 
   it('should be defined', function() {
     module('lmisChromeApp');
@@ -30,13 +30,20 @@ ddescribe('Device info factory', function() {
   describe('with Cordova support', function() {
     beforeEach(module('lmisChromeApp', 'deviceInfoMocks'));
 
-    var deviceInfoFactory;
-    beforeEach(inject(function(_deviceInfoFactory_) {
+    var deviceInfoFactory, deviceInfoMocks;
+    beforeEach(inject(function(_deviceInfoFactory_, _deviceInfoMocks_) {
       deviceInfoFactory = _deviceInfoFactory_;
+      deviceInfoMocks = _deviceInfoMocks_;
     }));
 
-    it('should not reject', function() {
-    });
-
+    it('should reject if getDeviceInfo failed', inject(function($window) {
+      $window.cordova = deviceInfoMocks.failure;
+      runs(function() {
+        return deviceInfoFactory.getDeviceInfo()
+          .catch(function(reason) {
+            expect(reason).toBeDefined();
+          });
+      });
+    }));
   });
 });
