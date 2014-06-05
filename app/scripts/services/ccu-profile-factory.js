@@ -32,7 +32,7 @@ angular.module('lmisChromeApp').factory('ccuProfileFactory', function ($q, stora
     var groupedList = {};
     storageService.all(storageService.CCU_PROFILE)
         .then(function (result) {
-          for (var index in result) {tem
+          for (var index in result) {
             var ccuProfile = result[index];
             var NOT_FOUND = -1;
             var existingGroups = Object.keys(groupedList);
