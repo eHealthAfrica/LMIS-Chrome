@@ -20,14 +20,14 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       facilities: function(facilityFactory){
         return facilityFactory.getAll();
       },
-      productProfiles: function(productProfileFactory){
-        return productProfileFactory.getAllWithoutNestedObject();
-      },
       deviceInfo: function(deviceInfoService){
         return deviceInfoService.getDeviceInfo();
       },
       ccuProfilesGroupedByCategory: function(ccuProfileFactory){
         return ccuProfileFactory.getAllGroupedByCategory();
+      },
+      productProfilesGroupedByCategory: function(productProfileFactory){
+        return productProfileFactory.getAllGroupedByCategory();
       }
     },
     controller: 'AppConfigWizard',
@@ -42,14 +42,14 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       facilities: function(facilityFactory){
         return facilityFactory.getAll();
       },
-      productProfiles: function(productProfileFactory){
-        return productProfileFactory.getAllWithoutNestedObject();
-      },
       appConfig: function(appConfigService){
         return appConfigService.getCurrentAppConfig();
       },
       ccuProfilesGroupedByCategory: function(ccuProfileFactory){
         return ccuProfileFactory.getAllGroupedByCategory();
+      },
+      productProfilesGroupedByCategory: function(productProfileFactory){
+        return productProfileFactory.getAllGroupedByCategory();
       }
     },
     controller: 'EditAppConfigCtrl',
@@ -58,8 +58,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     }
   });
 
-}).controller('AppConfigWizard', function($scope, facilities, productProfiles, appConfigService, growl, $state,
-        i18n, deviceInfo, $log, ccuProfilesGroupedByCategory){
+}).controller('AppConfigWizard', function($scope, facilities, appConfigService, growl, $state,
+        i18n, deviceInfo, $log, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory){
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -70,9 +70,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.STEP_FOUR = 4;
   $scope.STEP_FIVE = 5;
   $scope.facilities = facilities;
-  $scope.productProfiles = productProfiles;
   $scope.ccuProfilesCategories = Object.keys(ccuProfilesGroupedByCategory);
   $scope.ccuProfilesGroupedByCategory = ccuProfilesGroupedByCategory;
+  $scope.productProfileCategories = Object.keys(productProfilesGroupedByCategory);
+  $scope.productProfilesGroupedByCategory = productProfilesGroupedByCategory;
   $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
   $scope.ccuProfileCheckBoxes = [];
   $scope.preSelectCcuProfiles = {};
@@ -160,15 +161,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           });
     };
 
-}).controller('EditAppConfigCtrl', function ($scope, facilities, productProfiles, appConfigService, growl, $log,
-                                         i18n, $state, appConfig, ccuProfilesGroupedByCategory) {
+}).controller('EditAppConfigCtrl', function ($scope, facilities, appConfigService, growl, $log,
+                                         i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory) {
 
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
   $scope.weekDays = appConfigService.weekDays;
   $scope.facilities = facilities;
-  $scope.productProfiles = productProfiles;
   $scope.ccuProfilesCategories = Object.keys(ccuProfilesGroupedByCategory);
   $scope.ccuProfilesGroupedByCategory = ccuProfilesGroupedByCategory;
+  $scope.productProfileCategories = Object.keys(productProfilesGroupedByCategory);
+  $scope.productProfilesGroupedByCategory = productProfilesGroupedByCategory;
 
   //used to hold check box selection for both ccu and product profile
   $scope.productProfileCheckBoxes = [];
