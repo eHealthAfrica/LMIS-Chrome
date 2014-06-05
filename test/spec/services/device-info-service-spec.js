@@ -9,11 +9,11 @@ describe('DeviceInfoService service', function () {
     deviceInfoService = _deviceInfoService_;
   }));
 
-  it('as a user, i expect "deviceInfoService" to exist for accessing device info', function(){
+  it('should define a service', function() {
     expect(deviceInfoService).toBeDefined();
   });
 
-  it('as a user, i want to be able to get device information', function() {
+  it('should reject when cordova is not supported', function() {
     runs(
         function () {
           return deviceInfoService.getDeviceInfo();
