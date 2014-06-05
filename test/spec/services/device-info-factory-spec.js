@@ -1,25 +1,42 @@
 'use strict';
 
-describe('DeviceInfoFactory service', function() {
-  // Load the controller's module
-  beforeEach(module('lmisChromeApp'));
+ddescribe('Device info factory', function() {
 
-  var deviceInfoFactory;
-  beforeEach(inject(function(_deviceInfoFactory_) {
-    deviceInfoFactory = _deviceInfoFactory_;
-  }));
-
-  it('should define a factory', function() {
-    expect(deviceInfoFactory).toBeDefined();
-  });
-
-  it('should reject when cordova is not supported', function() {
-    runs(function() {
-      return deviceInfoFactory.getDeviceInfo()
-        .catch(function(reason) {
-          expect(reason).toBeDefined();
-        });
+  it('should be defined', function() {
+    module('lmisChromeApp');
+    inject(function(deviceInfoFactory) {
+      expect(deviceInfoFactory).toBeDefined();
     });
   });
 
+  describe('without Cordova support', function() {
+
+    it('should reject with a reason', function() {
+      module('lmisChromeApp');
+      inject(function(deviceInfoFactory) {
+
+        runs(function() {
+          return deviceInfoFactory.getDeviceInfo()
+            .catch(function(reason) {
+              expect(reason).toBeDefined();
+            });
+        });
+
+      });
+    });
+
+  });
+
+  describe('with Cordova support', function() {
+    beforeEach(module('lmisChromeApp', 'deviceInfoMocks'));
+
+    var deviceInfoFactory;
+    beforeEach(inject(function(_deviceInfoFactory_) {
+      deviceInfoFactory = _deviceInfoFactory_;
+    }));
+
+    it('should not reject', function() {
+    });
+
+  });
 });
