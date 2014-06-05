@@ -8,6 +8,7 @@
     "beforeEach": false,
     "browser": false,
     "describe": false,
+    "ddescribe": false,
     "expect": false,
     "inject": false,
     "it": false,
