@@ -20,8 +20,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       facilities: function(facilityFactory){
         return facilityFactory.getAll();
       },
-      deviceInfo: function(deviceInfoService){
-        return deviceInfoService.getDeviceInfo();
+      deviceInfo: function(deviceInfoFactory){
+        return deviceInfoFactory.getDeviceInfo();
       },
       ccuProfilesGroupedByCategory: function(ccuProfileFactory){
         return ccuProfileFactory.getAllGroupedByCategory();
@@ -106,7 +106,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           $scope.moveTo(nextStep);
 
         })
-        .catch(function (error) {
+        .catch(function () {
           $scope.disableBtn = false;
           $scope.isSubmitted = false;
           $scope.profileNotFound = true;
@@ -154,7 +154,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             } else {
               growl.error(i18n('appConfigFailedMsg'));
             }
-          }).catch(function (reason) {
+          }).catch(function () {
             growl.error(i18n('appConfigFailedMsg'));
           }).finally(function () {
             $scope.isSaving = false;
