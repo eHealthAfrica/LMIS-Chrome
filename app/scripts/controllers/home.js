@@ -246,7 +246,7 @@ angular.module('lmisChromeApp')
 
                 // $scope.productTypesChart = dashboardfactory.chart(keys, values);
 
-                $scope.tooltipFormatter = function(){
+                $scope.tooltipFormatter = function() {
                   return function(key, x, y) {
                     if(x === 'Maximum') {
                       x = 'Reorder';
@@ -255,12 +255,21 @@ angular.module('lmisChromeApp')
                   };
                 };
 
+                // Prevent overflowing on chart label due to width constraints
+                var labelFormatter = function(label) {
+                  var max = 5;
+                  if(label.length > max) {
+                    label = label.substr(0, max - 1) + '…';
+                  }
+                  return label;
+                };
+
                 $scope.productTypesChart = [];
                 var min = 0, mean = 0, max = 0;
                 values.forEach(function(value) {
                   max = value.reorderPoint;
                   $scope.productTypesChart.push({
-                    title: value.label,
+                    title: labelFormatter(value.label),
                     ranges: [min, mean, max],
                     measures: [value.daysOfStock],
                     markers: []
