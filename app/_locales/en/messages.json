@@ -466,6 +466,9 @@
       }
     }
   },
+  "confirmStockOutHeader2": {
+    "message": "Confirm stock-out broadcast for the following:"
+  },
   "item": {
     "message": "item"
   },
