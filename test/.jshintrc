@@ -11,6 +11,7 @@
     "expect": false,
     "inject": false,
     "it": false,
+    "iit": false,
     "jasmine": false,
     "spyOn": false,
     "runs": false,
