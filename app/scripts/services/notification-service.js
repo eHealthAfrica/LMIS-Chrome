@@ -98,7 +98,7 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
       var strings = [];
       for(var i in obj)
       {
-        if(i == 'uuid' || i == 'db')
+        if(i === 'uuid' || i === 'db')
           continue;
         var chunk = {uuid: obj.uuid, db: obj.db};
         chunk[i] = obj[i];
@@ -107,7 +107,9 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
       return strings;
     }
     else
+    {
       return [s];
+    }
   }
 
   var decode = function(str) {
@@ -117,13 +119,17 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
   var _send = function(phoneNo, content, intent)
   {
     var deferred = $q.defer();
-    $window.sms.send(phoneNo, content, intent, function () {
-        deferred.resolve(true);
-      }, function (error) {
-        $window.sms.send(phoneNo, ('sms-failed: '+error).substr(0,140), intent);
-        console.log(error);
-        deferred.reject(error);
-      });
+    var success = function () {
+      deferred.resolve(true);
+    };
+    var failure = function () {
+      $window.sms.send(phoneNo, ('sms-failed: '+error).substr(0,140), intent);
+      console.log(error);
+      deferred.reject(error);
+    };
+
+    $window.sms.send(phoneNo, content, intent, success, failure);
+
     return deferred;
   }
 
@@ -143,9 +149,9 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
       {
         promises.push(_send(phoneNo, content[i], intent));
       }
-      $q.all(promises).then(
-        function (res) { deferred.resolve(res); }, 
-        function (err) { deferred.reject(err); });
+      $q.all(promises)
+      .then(function (res) { deferred.resolve(res); })
+      .catch(function (err) { deferred.reject(err); });
     }else{
       deferred.reject(noSmsSupportMsg);
     }
