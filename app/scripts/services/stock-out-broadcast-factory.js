@@ -29,6 +29,7 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
           deferred.resolve(result);
         })
         .catch(function () {
+          console.log("Cordova sending sms:");
           //sync failed send sms alert
           var msg = {
             uuid:stockOut.uuid,
@@ -36,7 +37,8 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
             productType: stockOut.productType.uuid,
             stockLevel: stockOut.stockLevel
             };
-          notificationService.sendSms(notificationService.alertRecipient, msg)
+            //alert("Cordova "+msg);
+          notificationService.sendSms(notificationService.alertRecipient, msg, 'stock_out')
               .then(function (result) {
                 deferred.resolve(result);
               })

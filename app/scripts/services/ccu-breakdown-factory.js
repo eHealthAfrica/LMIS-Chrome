@@ -38,7 +38,7 @@ angular.module('lmisChromeApp')
             }).catch(function () {
               //online syncing failed, send offline sms alert.
               var msg = generateSmsMsg(ccuBreakdown);
-              notificationService.sendSms(notificationService.alertRecipient, msg)
+              notificationService.sendSms(notificationService.alertRecipient, msg, 'ccu_breakdown')
                   .then(function (smsResult) {
                     deferred.resolve(smsResult);
                   })
