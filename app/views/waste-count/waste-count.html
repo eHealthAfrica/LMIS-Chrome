@@ -37,7 +37,7 @@
         </table>
         <button ng-show="detailView" class="btn btn-default" ng-click="detailView=!detailView">Back to List</button>
         <a class="btn btn-default" ui-sref="wasteCountForm2({countDate: wasteCount.countDate})"
-           ng-show="editOn">
+           ng-show="editOn && detailView">
           <i class="fa fa-edit"></i> Edit
         </a>
         <table class="table table-bordered" ng-show="detailView">
