@@ -55,19 +55,23 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('wasteCountHomeCtrl', function($scope, wasteCountFactory, wasteCountList, appConfig, $state){
+  .controller('wasteCountHomeCtrl', function($scope, wasteCountFactory, wasteCountList, appConfig, $state, $filter){
     $scope.wasteCountList = wasteCountList;
+    $scope.today = $filter('date')(new Date(), 'yyyy-MM-dd');
     $scope.facilityProducts = wasteCountFactory.get.productObject(appConfig.selectedProductProfiles);
     $scope.missedEntry = function(date){
       return wasteCountFactory.get.missingEntry(date, $scope);
     };
     $scope.takeAction = function(date){
+      console.log(date);
       wasteCountFactory.getWasteCountByDate(date).then(function(wasteCount){
         if(wasteCount !== null){
           $scope.wasteCount = wasteCount;
           $scope.detailView = true;
-
           $scope.wasteCountByType = wasteCountFactory.get.wasteCountByType(wasteCount, $scope.facilityProducts);
+          if($filter('date')(wasteCount.countDate, 'yyyy-MM-dd') === $scope.today){
+            $scope.editOn = true;
+          }
         }
         else{
           $state.go('wasteCountForm', {countDate: date});
@@ -189,7 +193,11 @@ angular.module('lmisChromeApp')
  * waste count form 2
   */
 
-  .controller('wasteCountForm2Ctrl', function($scope, wasteCountFactory, $state, growl, $stateParams, appConfig, productType, i18n){
+  .controller('wasteCountForm2Ctrl', function($scope, wasteCountFactory, $state, growl, $stateParams, appConfig,
+                                              productType, i18n, syncService){
+    var getCountDate = function(){
+      return ($stateParams.countDate === null) ? new Date() : new Date($stateParams.countDate);
+    };
     var initWasteCount = function(wasteCount){
       if(wasteCount !== null && wasteCount !== undefined){
         $scope.wasteCount = wasteCount;
@@ -213,7 +221,7 @@ angular.module('lmisChromeApp')
     $scope.productType = productType;
     $scope.facilityProducts = wasteCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
 
-    wasteCountFactory.getWasteCountByDate(new Date())
+    wasteCountFactory.getWasteCountByDate(getCountDate())
         .then(function(wasteCount){
            initWasteCount(wasteCount);
         });
@@ -233,10 +241,12 @@ angular.module('lmisChromeApp')
 
     $scope.save = function(type){
       $scope.isSaving = true;
-      $scope.wasteCount.countDate = new Date();
+      $scope.wasteCount.countDate =  getCountDate();
       $scope.wasteCount.isComplete = 1;
       wasteCountFactory.add($scope.wasteCount)
-          .then(function(){
+          .then(function(uuid){
+            $scope.wasteCount.uuid = uuid;
+            syncService.syncItem(wasteCountFactory.DB_NAME, $scope.wasteCount);
             $scope.isSaving = false;
             var msg = i18n('wasteCountSaved');
             growl.success(msg);
