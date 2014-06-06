@@ -223,13 +223,16 @@ tr.disabled, tr.disabled span.text-info{
   padding: 0 10px 40px;
 }
 .product-series {
-  height: 80px;
+  height: 85px;
 }
 .product-series .nvd3.nv-bullet .nv-measure {
   fill: black !important;
 }
 .product-series .nvd3.nv-bullet .nv-range {
   fill: #ff0039;
+}
+.product-series .nvd3.nv-bullet .nv-markerTriangle {
+  display: none;
 }
 .highlight-selected-item {
   background-color: #449d44;
