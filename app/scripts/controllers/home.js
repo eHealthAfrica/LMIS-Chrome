@@ -123,7 +123,8 @@ angular.module('lmisChromeApp')
              */
 
           },
-          controller: function($q, $log, $scope, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, stockCountIsAvailable) {
+          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, stockCountIsAvailable) {
+            /*
             var keys = [
               {
                 key: 'daysToReorder',
@@ -136,6 +137,7 @@ angular.module('lmisChromeApp')
                 label: i18n('daysStock')
               }
             ];
+            */
 
             var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
               var deferred = $q.defer();
@@ -163,7 +165,9 @@ angular.module('lmisChromeApp')
                       innerPromises.push(inventoryRulesFactory.daysOfStock(currentFacility, types[i].uuid)
                         .then(
                           function (stockLevel) {
-                            productTypeInfo[types[i].uuid].daysOfStock = stockLevel;
+                            var uuid = types[i].uuid;
+                            productTypeInfo[uuid].daysOfStock = stockLevel;
+                            productTypeInfo[uuid].reorderPoint = inventoryRulesFactory.reorderPointByProductType(uuid);
                           },
                           function (err) {
                             deferred.reject(err);
@@ -226,6 +230,7 @@ angular.module('lmisChromeApp')
                   values.push({
                     label: product.name,
                     daysOfStock: Math.floor(product.daysOfStock),
+                    reorderPoint: Math.floor(product.reorderPoint),
                     daysToReorder: Math.floor(product.daysToReorder)
                   });
                 }
@@ -235,11 +240,41 @@ angular.module('lmisChromeApp')
                 //var format = d3.format(',.4f');
                 $scope.roundLegend = function(){
                   return function(d){
-                    return d3.round(d);
+                    return $window.d3.round(d);
                   };
                 };
 
-                $scope.productTypesChart = dashboardfactory.chart(keys, values);
+                // $scope.productTypesChart = dashboardfactory.chart(keys, values);
+
+                $scope.tooltipFormatter = function() {
+                  return function(key, x, y) {
+                    if(x === 'Maximum') {
+                      x = 'Reorder';
+                    }
+                    return '<p>' + x + ': ' + y + ' days</p>';
+                  };
+                };
+
+                // Prevent overflowing on chart label due to width constraints
+                var labelFormatter = function(label) {
+                  var max = 5;
+                  if(label.length > max) {
+                    label = label.substr(0, max - 1) + '…';
+                  }
+                  return label;
+                };
+
+                $scope.productTypesChart = [];
+                var min = 0, mean = 0, max = 0;
+                values.forEach(function(value) {
+                  max = value.reorderPoint;
+                  $scope.productTypesChart.push({
+                    title: labelFormatter(value.label),
+                    ranges: [min, mean, max],
+                    measures: [value.daysOfStock],
+                    markers: []
+                  });
+                });
 
               }, function(err) {
                 console.log('getProductTypeCounts Error: '+err);

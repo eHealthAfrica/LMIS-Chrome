@@ -47,7 +47,8 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
         }
       },
       controller: function ($scope, $state, $modalInstance, modalParams) {
-        $scope.headerMessage =  modalParams.title;
+        $scope.headerMessage =  !angular.isArray(modalParams.title) ? modalParams.title : '';
+        $scope.headerMessage2 = modalParams.title;
         $scope.bodyMessage =  modalParams.bodyText;
         $scope.confirmBtnMsg = modalParams.buttonLabels.YES;
         $scope.cancelBtnMsg = modalParams.buttonLabels.NO;

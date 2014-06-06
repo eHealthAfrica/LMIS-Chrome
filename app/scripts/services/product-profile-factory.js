@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('productProfileFactory', function ($q, storageService, presentationFactory, productTypeFactory) {
+  .factory('productProfileFactory', function ($q, storageService, presentationFactory, productTypeFactory, productCategoryFactory) {
+
     var getByUuid = function(uuid) {
       var deferred = $q.defer();
       storageService.find(storageService.PRODUCT_PROFILE, uuid)
@@ -92,10 +93,36 @@ angular.module('lmisChromeApp')
     };
 
     var getAllWithoutNestedObject = function(){
+      return storageService.all(storageService.PRODUCT_PROFILE);
+    };
+
+    var getAllGroupedByProductCategory = function(){
       var deferred = $q.defer();
-      storageService.all(storageService.PRODUCT_PROFILE)
+      var groupedList = {};
+      var promises = [];
+      promises.push(storageService.all(storageService.PRODUCT_PROFILE));
+      promises.push(productCategoryFactory.getKeyValuePairs());
+
+      $q.all(promises)
           .then(function (result) {
-            deferred.resolve(result);
+            var productProfiles = result[0];
+            var categoriesKeyValuePairs = result[1];
+            for (var index in productProfiles) {
+              var productProfile = productProfiles[index];
+              var NOT_FOUND = -1;
+              var existingGroups = Object.keys(groupedList);
+              if (existingGroups.indexOf(productProfile.category) === NOT_FOUND) {
+                var categoryObj = categoriesKeyValuePairs[productProfile.category];
+                var group = {
+                  category: categoryObj,
+                  productProfiles: []
+                }
+                groupedList[productProfile.category] = group;
+              }
+              var groupCategory = groupedList[productProfile.category];
+              groupCategory.productProfiles.push(productProfile);
+            }
+            deferred.resolve(groupedList);
           })
           .catch(function (reason) {
             deferred.reject(reason);
@@ -108,6 +135,7 @@ angular.module('lmisChromeApp')
       getAll: getAll,
       getByProductType: getByProductType,
       getBatch: getProductProfileBatch,
-      getAllWithoutNestedObject: getAllWithoutNestedObject
+      getAllWithoutNestedObject: getAllWithoutNestedObject,
+      getAllGroupedByCategory: getAllGroupedByProductCategory
     };
   });

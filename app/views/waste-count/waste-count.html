@@ -1,6 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h1 class="panel-title">Waste Count</h1>
+    <h1 class="panel-title">Waste Count </h1>
   </div>
   <div class="panel-body">
     <div class="row" ng-hide="detailView">
@@ -37,7 +37,7 @@
         </table>
         <button ng-show="detailView" class="btn btn-default" ng-click="detailView=!detailView">Back to List</button>
         <a class="btn btn-default" ui-sref="wasteCountForm2({countDate: wasteCount.countDate})"
-           ng-show="detailView && !editOff">
+           ng-show="editOn">
           <i class="fa fa-edit"></i> Edit
         </a>
         <table class="table table-bordered" ng-show="detailView">
