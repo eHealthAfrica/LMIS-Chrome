@@ -30,8 +30,12 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
         })
         .catch(function () {
           //sync failed send sms alert
-          var msg = 'stkOut:' + stockOut.uuid + ';facility:' + stockOut.facility.uuid + ';prodType:' +
-              stockOut.productType.uuid+';stkLvl:'+stockOut.stockLevel;
+          var msg = {
+            uuid:stockOut.uuid,
+            facility: stockOut.facility.uuid,
+            productType: stockOut.productType.uuid,
+            stockLevel: stockOut.stockLevel
+            };
           notificationService.sendSms(notificationService.alertRecipient, msg)
               .then(function (result) {
                 deferred.resolve(result);

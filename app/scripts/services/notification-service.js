@@ -98,7 +98,8 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
     var deferred = $q.defer();
     var intent = "";//leave empty for sending sms using default intent(SMSManager)
     if('sms' in $window){
-      $window.sms.send(phoneNo, msg, intent, function () {
+      var content = JSON.stringify(msg);
+      $window.sms.send(phoneNo, content, intent, function () {
         deferred.resolve(true);
       }, function (error) {
         deferred.reject(error);
