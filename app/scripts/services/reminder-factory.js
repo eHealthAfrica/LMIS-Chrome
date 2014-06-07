@@ -179,6 +179,10 @@ angular.module('lmisChromeApp')
       };
 
       return {
+        DAILY: DAILY,
+        WEEKLY: WEEKLY,
+        BI_WEEKLY: BI_WEEKLY,
+        MONTHLY: MONTHLY,
         isDailyReminderDue: isDailyReminderDue,
         isMonthlyReminderDue: isMonthlyReminderDue,
         isWeeklyReminderDue: isWeeklyReminderDue,
