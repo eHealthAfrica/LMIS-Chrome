@@ -74,7 +74,7 @@ angular.module('lmisChromeApp')
     $scope.preview = $scope.detailView = $stateParams.detailView;
     $scope.editOn = false;
     $scope.editOff = ($stateParams.editOff === 'true');
-
+    $scope.countValue = {};
     $scope.stockCount = {};
     $scope.stockCount.unopened = {};
     $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
@@ -89,12 +89,24 @@ angular.module('lmisChromeApp')
     }
 
     var updateUIModel = function(){
-      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step).name;
+      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
       $scope.productProfileUom =
-          $scope.facilityProducts[$scope.facilityProductsKeys[$scope.step]].product.base_uom.symbol;
+          $scope.facilityProducts[$scope.facilityProductsKeys[$scope.step]];
       $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
     };
 
+    var updateCountValue = function(){
+      if(angular.isDefined($scope.stockCount.unopened[$scope.productKey])){
+        var value = $scope.facilityProducts[$scope.productKey].presentation.value;
+        $scope.countValue[$scope.productKey] = ($scope.stockCount.unopened[$scope.productKey]/value);
+      }
+    };
+    $scope.$watch('countValue[productKey]', function(newValue){
+      if(angular.isDefined(newValue)){
+        var value = $scope.facilityProducts[$scope.productKey].presentation.value;
+        $scope.stockCount.unopened[$scope.productKey] = $scope.countValue[$scope.productKey] * value;
+      }
+    });
     updateUIModel();
 
     //load existing count for the day if any.
@@ -111,6 +123,7 @@ angular.module('lmisChromeApp')
         if(angular.isUndefined($scope.stockCount.lastPosition)){
           $scope.stockCount.lastPosition = 0;
         }
+        updateCountValue();
       }
     });
 
@@ -165,6 +178,7 @@ angular.module('lmisChromeApp')
         $scope.preview = false;
         $scope.editOn = true;
         updateUIModel();
+        updateCountValue();
       }
     };
 
@@ -179,7 +193,8 @@ angular.module('lmisChromeApp')
     };
 
     $scope.changeState = function(direction){
-      $scope.currentEntry = $scope.stockCount.unopened[$scope.facilityProductsKeys[$scope.step]];
+
+      $scope.currentEntry = $scope.countValue[$scope.facilityProductsKeys[$scope.step]];
       if(stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0){
         stockCountFactory.get.errorAlert($scope, 1);
       }
@@ -198,7 +213,9 @@ angular.module('lmisChromeApp')
         }
         $scope.save();
         $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+
       }
+      updateCountValue();
       updateUIModel();
       utility.scrollToTop();
     };
