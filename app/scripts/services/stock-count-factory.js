@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService, i18n) {
+  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService, i18n, reminderFactory) {
 
     var STOCK_COUNT_DB = storageService.STOCK_COUNT;
       /**
@@ -260,6 +260,7 @@ angular.module('lmisChromeApp')
               if(new Date(mostRecentStockCount.created).getTime() < new Date(stockCount.created).getTime()){
                 mostRecentStockCount = stockCount;
               }
+
             }
             deferred.resolve(mostRecentStockCount);
           })
@@ -269,7 +270,41 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    var getIsStockCountDueByInterval = function(stockCountInterval, stockCount, reminderDay){
+      stockCountInterval = parseInt(stockCountInterval);
+      var reminderDate = getCurrentStockCountDueDate(stockCountInterval, reminderDay);
+      stockCountInterval = parseInt(stockCountInterval);
+      switch (stockCountInterval) {
+        case reminderFactory.DAILY:
+          return reminderFactory.isDailyReminderDue(stockCount, 'countDate', reminderDate);
+        case reminderFactory.WEEKLY:
+          return reminderFactory.isWeeklyReminderDue(stockCount, 'countDate', reminderDate);
+        case reminderFactory.BI_WEEKLY:
+          return reminderFactory.isBiweeklyReminderDue(stockCount, 'countDate', reminderDate);
+        case reminderFactory.MONTHLY:
+          return reminderFactory.isMonthlyReminderDue(stockCount, 'countDate');
+        default:
+          throw 'Unknown reminder interval';
+      }
+    };
+
+    var isStockCountDue = function(stockCountInterval, reminderDay){
+      var deferred = $q.defer();
+      var isStockCountDue = true;
+      this.getMostRecentStockCount()
+          .then(function (recentStockCount) {
+            isStockCountDue = (typeof recentStockCount === 'undefined' || recentStockCount.isComplete !== 1 ||
+                getIsStockCountDueByInterval(stockCountInterval, recentStockCount, reminderDay));
+            deferred.resolve(isStockCountDue);
+          })
+          .catch(function (reason) {
+            deferred.reject(reason);
+          });
+      return deferred.promise;
+    };
+
     return {
+      isStockCountDue: isStockCountDue,
       getMostRecentStockCount: getMostRecentStockCount,
       getCurrentStockCountDueDate: getCurrentStockCountDueDate,
       getStockCountListByDate: getStockCountListByCreatedDate,
