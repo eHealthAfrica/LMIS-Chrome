@@ -101,12 +101,13 @@ angular.module('lmisChromeApp')
         $scope.countValue[$scope.productKey] = ($scope.stockCount.unopened[$scope.productKey]/value);
       }
     };
-    $scope.$watch('countValue[productKey]', function(newValue){
-      if(angular.isDefined(newValue)){
+
+    $scope.convertToPresentationUom = function(){
+      if(angular.isDefined($scope.countValue[$scope.productKey])){
         var value = $scope.facilityProducts[$scope.productKey].presentation.value;
         $scope.stockCount.unopened[$scope.productKey] = $scope.countValue[$scope.productKey] * value;
       }
-    });
+    };
     updateUIModel();
 
     //load existing count for the day if any.
@@ -199,6 +200,7 @@ angular.module('lmisChromeApp')
         stockCountFactory.get.errorAlert($scope, 1);
       }
       else{
+        $scope.convertToPresentationUom();
         stockCountFactory.get.errorAlert($scope, 0);
         if(direction !== 2){
           $scope.step = direction === 0? $scope.step-1 : $scope.step + 1;
