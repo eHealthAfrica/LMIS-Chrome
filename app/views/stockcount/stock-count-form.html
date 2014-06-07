@@ -94,7 +94,7 @@
                       {
                       '1': '{{ (((productProfileUom).presentation).uom).symbol }}',
                       'other': '{{ (((productProfileUom).presentation).uom).symbol }}s'}">
-                    </ng-pluralize>
+                    </ng-pluralize>:
                   </h3>
                 </div>
                 <div class="row">
@@ -103,9 +103,24 @@
 
                       <!-- start form counter input -->
                       <div class="col-xs-12">
-                        <div class="btn-separator">
+                        <div>
                           <counter bind="countValue[productKey]"></counter>
                           <div ng-show="productError" class="custom-error text-center">{{ productErrorMsg }}</div>
+
+                          <!-- conversion view starts here -->
+                          <div class="no-bold text-center" ng-hide="countValue[productKey] === undefined">
+                            <h3>
+                              <span>{{ countValue[productKey] * ((productProfileUom).presentation).value }}</span>
+                              <span>
+                                <ng-pluralize count="countValue[productKey] * ((productProfileUom).presentation).value"
+                                    when="{
+                                            '1': '{{ (((productProfileUom).product).base_uom).symbol }}',
+                                            'other': '{{ (((productProfileUom).product).base_uom).symbol }}s'
+                                          }">
+                                </ng-pluralize>
+                              </span>
+                            </h3>
+                        </div>
                         </div>
                       </div>
 
