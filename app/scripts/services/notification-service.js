@@ -66,6 +66,8 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
 
   var getMobileConfirmDialog = function(title, bodyText, buttonLabels){
     var deferred = $q.defer();
+    bodyText = angular.isArray(title) ? title.join('\n')+'\n\n'+bodyText : bodyText;
+    title = angular.isArray(title) ? i18n('confirmStockOutHeader2') : title;
     if(isMobileDialogAvailable()){
       navigator.notification.confirm(bodyText, function (index) {
                 var YES_INDEX = 1; //position in buttonLabels text + 1.
