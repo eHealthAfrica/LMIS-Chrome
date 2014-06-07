@@ -84,16 +84,16 @@
             <div class="col-sm-12" ng-hide="preview">
               <div class="row">
                 <div class="col-sm-12">
-                  <h3 class="center-text">{{ selectedFacility }}</h3>
-                  <h3 class="center-text" ng-show="stockCount.unopened[productKey] === undefined">
-                    {{ productProfileUom }}s
+                  <h3 class="center-text">{{ selectedFacility.name }}</h3>
+                  <h3 class="center-text bold-text" ng-show="countValue[productKey] === undefined">
+                    {{ sentation(((productProfileUom).presentation).uom).symbol }}s
                   </h3>
-                  <h3 class="center-text" ng-show="stockCount.unopened[productKey] >= 0">
-                    <ng-pluralize count="stockCount.unopened[productKey]"
+                  <h3 class="center-text bold-text" ng-show="stockCount.unopened[productKey] >= 0">
+                    <ng-pluralize count="countValue[productKey]"
                                   when="
                       {
-                      '1': '{{ productProfileUom }}',
-                      'other': '{{ productProfileUom }}s'}">
+                      '1': '{{ (((productProfileUom).presentation).uom).symbol }}',
+                      'other': '{{ (((productProfileUom).presentation).uom).symbol }}s'}">
                     </ng-pluralize>
                   </h3>
                 </div>
@@ -104,7 +104,7 @@
                       <!-- start form counter input -->
                       <div class="col-xs-12">
                         <div class="btn-separator">
-                          <counter bind="stockCount.unopened[productKey]"></counter>
+                          <counter bind="countValue[productKey]"></counter>
                           <div ng-show="productError" class="custom-error text-center">{{ productErrorMsg }}</div>
                         </div>
                       </div>
