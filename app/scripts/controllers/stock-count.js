@@ -43,6 +43,8 @@ angular.module('lmisChromeApp')
   })
   .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state, mostRecentStockCount){
     $scope.stockCountsByCreatedDate = stockCountByDate;
+    $scope.stockCountCreatedDates =  Object.keys($scope.stockCountsByCreatedDate).reverse();
+
     $scope.showStockCountFormByDate = function(date){
       stockCountFactory.getStockCountByDate(date)
           .then(function (stockCount) {
