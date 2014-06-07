@@ -15,16 +15,16 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="stockCount in stockCountsByCreatedDate" ng-class="{'pointer':!missedEntry(date), 'disabled':missedEntry(date) }"
-              ng-click="showStockCountFormByDate(stockCount.countDate)">
+          <tr ng-repeat="createdDate in stockCountCreatedDates" ng-class="{'pointer':!missedEntry(date), 'disabled':missedEntry(date) }"
+              ng-click="showStockCountFormByDate(stockCountsByCreatedDate[createdDate].countDate)">
             <td> {{ $index + 1 }}</td>
-            <td><span class="text-info"> {{ stockCount.created | date:'MMM dd, yyyy' }} </span></td>
+            <td><span class="text-info"> {{ stockCountsByCreatedDate[createdDate].created | date:'MMM dd, yyyy' }} </span></td>
             <td class="text-center">
               <i class="fa "
-                 ng-class="{'fa-check-circle text-success': stockCount.isComplete, 'fa-times-circle text-danger': !stockCount.isComplete}"></i>
+                 ng-class="{'fa-check-circle text-success': stockCountsByCreatedDate[createdDate].isComplete, 'fa-times-circle text-danger': !stockCountsByCreatedDate[createdDate].isComplete}"></i>
             </td>
             <td class="text-center"><i class="fa "
-                                       ng-class="{'fa-check-circle text-success': stockCount.synced, 'fa-times-circle text-danger': !stockCount.synced}"></i>
+                                       ng-class="{'fa-check-circle text-success': stockCountsByCreatedDate[createdDate].synced, 'fa-times-circle text-danger': !stockCountsByCreatedDate[createdDate].synced}"></i>
             </td>
           </tr>
           </tbody>
