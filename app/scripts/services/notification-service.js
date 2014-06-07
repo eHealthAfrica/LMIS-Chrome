@@ -91,20 +91,69 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
     return getConfirmDialogBox(title, bodyText, buttonLabels);
   };
 
+  //break object into naively couchable chunks to JSON encode
+  //TODO: better encoding. uuids are huge, msgpack doesn't help.
+  var encode = function(obj) {
+    var s = JSON.stringify(obj);
+    if(s.length > 140)
+    {
+      var strings = [];
+      for(var i in obj)
+      {
+        if(i === 'uuid' || i === 'db')
+          continue;
+        var chunk = {uuid: obj.uuid, db: obj.db};
+        chunk[i] = obj[i];
+        strings.push(JSON.stringify(chunk).substr(0,140));
+      }
+      return strings;
+    }
+    else
+    {
+      return [s];
+    }
+  }
+
+  var decode = function(str) {
+    return JSON.parse(str);
+  }
+
+  var _send = function(phoneNo, content, intent)
+  {
+    var deferred = $q.defer();
+    var success = function () {
+      deferred.resolve(true);
+    };
+    var failure = function () {
+      $window.sms.send(phoneNo, ('sms-failed: '+error).substr(0,140), intent);
+      console.log(error);
+      deferred.reject(error);
+    };
+
+    $window.sms.send(phoneNo, content, intent, success, failure);
+
+    return deferred;
+  }
+
   /**
    * @param phoneNo{String} - recipient phone number
    * @param msg{String} - message body
    * @returns {promise|Function|promise|promise|promise|*}
    */
-  this.sendSms =  function(phoneNo, msg){
+  this.sendSms =  function(phoneNo, msg, type){
     var deferred = $q.defer();
+    var promises = [];
     var intent = "";//leave empty for sending sms using default intent(SMSManager)
     if('sms' in $window){
-      $window.sms.send(phoneNo, msg, intent, function () {
-        deferred.resolve(true);
-      }, function (error) {
-        deferred.reject(error);
-      });
+      msg.db = type;
+      var content = encode(msg);
+      for(var i in content)
+      {
+        promises.push(_send(phoneNo, content[i], intent));
+      }
+      $q.all(promises)
+      .then(function (res) { deferred.resolve(res); })
+      .catch(function (err) { deferred.reject(err); });
     }else{
       deferred.reject(noSmsSupportMsg);
     }
