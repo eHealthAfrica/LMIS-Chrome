@@ -11,11 +11,10 @@ angular.module('lmisChromeApp')
         appConfig: function(appConfigService){
           return appConfigService.getCurrentAppConfig();
         },
-        isStockCountReminderDue: function(appConfigService, appConfig){
+        isStockCountReminderDue: function(stockCountFactory, appConfig){
           if(typeof appConfig !== 'undefined'){
-            return appConfigService.isStockCountDue(appConfig.reminderDay);
+            return stockCountFactory.isStockCountDue(appConfig.stockCountInterval, appConfig.reminderDay);
           }
-          return false;
         }
       },
       controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope, reminderFactory, i18n) {
@@ -23,14 +22,11 @@ angular.module('lmisChromeApp')
           $state.go('appConfigWelcome');
         }else{
           $scope.facility = appConfig.appFacility.name;
-          if(typeof $rootScope.isStockCountDue === 'undefined' || $rootScope.isStockCountDue === true){
-            $rootScope.isStockCountDue = isStockCountReminderDue;
-            if($rootScope.isStockCountDue === true){
-              //FIXME: move stock count reminder object to a factory function, stock count?? or reminderFactory.
-              reminderFactory.warning({id: reminderFactory.STOCK_COUNT_REMINDER_ID, text: i18n('stockCountReminderMsg'),
+          if (isStockCountReminderDue === true) {
+            //FIXME: move stock count reminder object to a factory function, stock count?? or reminderFactory.
+            reminderFactory.warning({id: reminderFactory.STOCK_COUNT_REMINDER_ID, text: i18n('stockCountReminderMsg'),
               link: 'stockCountForm', icon: 'views/reminder/partial/stock-count-icon.html'});
-            }
-          }else{
+          } else {
             reminderFactory.remove(reminderFactory.STOCK_COUNT_REMINDER_ID);
           }
         }
@@ -109,21 +105,13 @@ angular.module('lmisChromeApp')
             stockOutList: function(stockOutBroadcastFactory){
               return stockOutBroadcastFactory.getAll();
             },
-            stockCountIsAvailable: function(appConfigService, appConfig){
-              if(angular.isDefined(appConfig)){
-                return appConfigService.isStockCountDue(appConfig.reminderDay);
-              }
-              else{
-                return true;
+            isStockCountDue: function (stockCountFactory, appConfig) {
+              if (typeof appConfig !== 'undefined') {
+                return stockCountFactory.isStockCountDue(appConfig.stockCountInterval, appConfig.reminderDay);
               }
             }
-            /**
-             * Returns an array of {name: product type name, count: total number
-             * in facility (as of last stock count)}
-             */
-
           },
-          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, stockCountIsAvailable) {
+          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountDue) {
             /*
             var keys = [
               {
@@ -195,8 +183,8 @@ angular.module('lmisChromeApp')
               return deferred.promise;
             };
 
-            if($rootScope.showChart === true || !stockCountIsAvailable){
-              $rootScope.showChart = true;
+            $scope.showChart = !isStockCountDue;
+            if($scope.showChart){
               getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService).then(
                 function(productTypeCounts) {
                 var values = [], product = {}, stockOutWarning = [];
@@ -279,8 +267,6 @@ angular.module('lmisChromeApp')
               }, function(err) {
                 console.log('getProductTypeCounts Error: '+err);
               });
-            }else{
-              $rootScope.showChart = !stockCountIsAvailable;
             }
 
           }
