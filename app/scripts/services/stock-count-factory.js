@@ -19,27 +19,33 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
-     /**
-      *
-      * @param _interval
-      * @param _reminderDay
-      * @param _date
-      * @returns {{}}
-      * @private
-      */
-    var getDueDateInfo = function(_interval, _reminderDay, _date){
-      var dateObject = angular.isDefined(_date) ? new Date(_date): new Date();
-      var reminderDateObject = utility.getWeekRangeByDate(dateObject, _reminderDay);
-      var currentReminderDate = angular.isDefined(_date) ? utility.getWeekRangeByDate(new Date(), _reminderDay).reminderDate : angular.copy(reminderDateObject.reminderDate);
-      var interval = 1000 * 60 * 60 * 24 * parseInt(_interval, 10);
-      return {
-        interval: interval,
-        reminderDate: reminderDateObject.reminderDate,
-        lastDay: reminderDateObject.last,
-        firstDay: reminderDateObject.first,
-        currentReminderDate: currentReminderDate,
-        lastCountDate: new Date(currentReminderDate - interval)
-      };
+
+    var getStockCountDueDate = function(interval, reminderDay, date){
+      var today = new Date();
+      var currentDate = date || today;
+      var countDate;
+      switch (interval) {
+        case reminderFactory.DAILY:
+          countDate = new Date(utility.getFullDate(currentDate));
+          break;
+        case reminderFactory.WEEKLY:
+          countDate = utility.getWeekRangeByDate(currentDate, reminderDay).reminderDate;
+          if(currentDate.getTime() < countDate.getTime()){
+            //current week count date is not yet due, return previous week count date..
+            countDate = new Date(countDate.getFullYear(), countDate.getMonth(), countDate.getDate() - interval);
+          };
+          break;
+        case reminderFactory.BI_WEEKLY:
+          countDate = utility.getWeekRangeByDate(currentDate, reminderDay).reminderDate;
+          break;
+        case reminderFactory.MONTHLY:
+          var monthlyDate = (currentDate.getTime() === today.getTime())? 1 : currentDate.getDate();
+          countDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), monthlyDate);
+          break;
+        default:
+          throw 'unknown stock count interval.';
+      }
+      return countDate
     };
 
     var addRecord={
@@ -116,21 +122,6 @@ angular.module('lmisChromeApp')
 
     /**
      *
-     * @param dueDateInfo
-     * @returns {Array}
-     * @private
-     */
-    var getCurrentStockCountDueDate = function (stockCountInterval, reminderDay, date){
-      var dueDateInfo = getDueDateInfo(stockCountInterval, reminderDay, date);
-      if(dueDateInfo.reminderDate.getTime() < new Date().getTime()){
-        return dueDateInfo.reminderDate;
-      }else{
-        return dueDateInfo.lastCountDate;
-      }
-    };
-
-    /**
-     *
      * @param productObject
      * @param index
      * @returns {object}
@@ -164,7 +155,7 @@ angular.module('lmisChromeApp')
       getAllStockCount()
           .then(function (stockCountList) {
             for (var i = 0; i < stockCountList.length; i++) {
-              obj[utility.getFullDate(stockCountList[i].created)] = stockCountList[i];
+              obj[utility.getFullDate(stockCountList[i].countDate)] = stockCountList[i];
             }
             deferred.resolve(obj);
           })
@@ -270,31 +261,15 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
-    var getIsStockCountDueByInterval = function(stockCountInterval, stockCount, reminderDay){
-      stockCountInterval = parseInt(stockCountInterval);
-      var reminderDate = getCurrentStockCountDueDate(stockCountInterval, reminderDay);
-      stockCountInterval = parseInt(stockCountInterval);
-      switch (stockCountInterval) {
-        case reminderFactory.DAILY:
-          return reminderFactory.isDailyReminderDue(stockCount, 'countDate', reminderDate);
-        case reminderFactory.WEEKLY:
-          return reminderFactory.isWeeklyReminderDue(stockCount, 'countDate', reminderDate);
-        case reminderFactory.BI_WEEKLY:
-          return reminderFactory.isBiweeklyReminderDue(stockCount, 'countDate', reminderDate);
-        case reminderFactory.MONTHLY:
-          return reminderFactory.isMonthlyReminderDue(stockCount, 'countDate');
-        default:
-          throw 'Unknown reminder interval';
-      }
-    };
-
     var isStockCountDue = function(stockCountInterval, reminderDay){
       var deferred = $q.defer();
       var isStockCountDue = true;
       this.getMostRecentStockCount()
           .then(function (recentStockCount) {
+            var reminderDate = getStockCountDueDate(stockCountInterval, reminderDay);
+            var includePreviousWeek = true;
             isStockCountDue = (typeof recentStockCount === 'undefined' || recentStockCount.isComplete !== 1 ||
-                getIsStockCountDueByInterval(stockCountInterval, recentStockCount, reminderDay));
+                reminderFactory.isReminderDue(recentStockCount, 'countDate', reminderDate, stockCountInterval, includePreviousWeek));
             deferred.resolve(isStockCountDue);
           })
           .catch(function (reason) {
@@ -304,9 +279,9 @@ angular.module('lmisChromeApp')
     };
 
     return {
+      getStockCountDueDate: getStockCountDueDate,
       isStockCountDue: isStockCountDue,
       getMostRecentStockCount: getMostRecentStockCount,
-      getCurrentStockCountDueDate: getCurrentStockCountDueDate,
       getStockCountListByDate: getStockCountListByCreatedDate,
       getAll: getAllStockCount,
       productType: productType,
