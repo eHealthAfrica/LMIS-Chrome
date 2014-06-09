@@ -24,6 +24,8 @@ angular.module('lmisChromeApp')
       var today = new Date();
       var currentDate = date || today;
       var countDate;
+      interval = parseInt(interval);
+
       switch (interval) {
         case reminderFactory.DAILY:
           countDate = new Date(utility.getFullDate(currentDate));
@@ -33,7 +35,7 @@ angular.module('lmisChromeApp')
           if(currentDate.getTime() < countDate.getTime()){
             //current week count date is not yet due, return previous week count date..
             countDate = new Date(countDate.getFullYear(), countDate.getMonth(), countDate.getDate() - interval);
-          };
+          }
           break;
         case reminderFactory.BI_WEEKLY:
           countDate = utility.getWeekRangeByDate(currentDate, reminderDay).reminderDate;
