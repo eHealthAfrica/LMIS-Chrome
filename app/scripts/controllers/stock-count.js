@@ -45,14 +45,15 @@ angular.module('lmisChromeApp')
     $scope.stockCountsByCountDate = stockCountByDate;
     $scope.stockCountCountDates =  Object.keys($scope.stockCountsByCountDate);
 
+   $scope.isEditable = function(stockCount){
+     return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid=== stockCount.uuid);
+   };
+
     $scope.showStockCountFormByDate = function(date){
       stockCountFactory.getStockCountByDate(date)
           .then(function (stockCount) {
             if (stockCount !== null) {
-              //only most recent is editable.
-              var isEditable = (typeof mostRecentStockCount !== 'undefined') &&
-                  (mostRecentStockCount.uuid=== stockCount.uuid);
-              $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !isEditable });
+              $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !$scope.isEditable(stockCount) });
             } else {
               $state.go('stockCountForm', {countDate: date});
             }
