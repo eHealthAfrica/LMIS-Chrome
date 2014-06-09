@@ -29,7 +29,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           .catch(function() {
             deferred.resolve('');
           });
-        return deferred;
+        return deferred.promise;
       },
       ccuProfilesGroupedByCategory: function(ccuProfileFactory){
         return ccuProfileFactory.getAllGroupedByCategory();

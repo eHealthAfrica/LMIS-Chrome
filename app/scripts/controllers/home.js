@@ -260,7 +260,7 @@ angular.module('lmisChromeApp')
                     title: labelFormatter(value.label),
                     ranges: [min, mean, max],
                     measures: [value.daysOfStock],
-                    markers: []
+                    markers: [value.daysOfStock]
                   });
                 });
 
