@@ -42,8 +42,8 @@ angular.module('lmisChromeApp')
       });
   })
   .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state, mostRecentStockCount){
-    $scope.stockCountsByCreatedDate = stockCountByDate;
-    $scope.stockCountCreatedDates =  Object.keys($scope.stockCountsByCreatedDate).reverse();
+    $scope.stockCountsByCountDate = stockCountByDate;
+    $scope.stockCountCountDates =  Object.keys($scope.stockCountsByCountDate);
 
     $scope.showStockCountFormByDate = function(date){
       stockCountFactory.getStockCountByDate(date)
@@ -71,7 +71,7 @@ angular.module('lmisChromeApp')
     $scope.step = 0;
     $scope.facilityObject = appConfig.appFacility;
     $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
-    $scope.stockCountDate = stockCountFactory.getCurrentStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
+    $scope.stockCountDate = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
     $scope.dateInfo = new Date();
     $scope.preview = $scope.detailView = $stateParams.detailView;
     $scope.editOn = false;
