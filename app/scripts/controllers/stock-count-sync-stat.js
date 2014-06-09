@@ -6,7 +6,7 @@ angular.module('lmisChromeApp')
         .state('syncStockCount', {
           parent: 'root.index',
           abstract: true,
-          templateUrl: 'views/stockcount/sync.html'
+          templateUrl: 'views/stock-count/sync.html'
         })
         .state('syncStockCount.detail', {
           data: {
@@ -15,16 +15,16 @@ angular.module('lmisChromeApp')
           url: '/sync-stock-count',
           resolve: {
             localDocs: function(pouchdb) {
-              var db = pouchdb.create('stockcount');
+              var db = pouchdb.create('stock-count');
               // XXX: db#info returns incorrect doc_count, see item:333
               return db.allDocs();
             }
           },
           views: {
             'stats': {
-              templateUrl: 'views/stockcount/sync/stats.html',
+              templateUrl: 'views/stock-count/sync/stats.html',
               controller: function($q, $log, $scope, i18n, config, pouchdb, localDocs, growl) {
-                var dbName = 'stockcount',
+                var dbName = 'stock-count',
                     remote = config.api.url + '/' + dbName;
 
                 var updateCounts = function() {
@@ -85,7 +85,7 @@ angular.module('lmisChromeApp')
               }
             },
             'status': {
-              templateUrl: 'views/stockcount/sync/status.html',
+              templateUrl: 'views/stock-count/sync/status.html',
               controller: function($log, $scope, localDocs, config, pouchdb) {
                 $scope.locals = localDocs.rows.map(function(local) {
                   return local.id;
@@ -93,7 +93,7 @@ angular.module('lmisChromeApp')
 
                 $scope.compare = function() {
                   $scope.syncing = true;
-                  var remote = pouchdb.create(config.api.url + '/stockcount');
+                  var remote = pouchdb.create(config.api.url + '/stock-count');
                   remote.allDocs()
                     .then(function(remotes) {
                       remotes = remotes.rows.map(function(remote) {

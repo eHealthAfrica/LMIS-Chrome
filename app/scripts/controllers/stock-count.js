@@ -9,7 +9,7 @@ angular.module('lmisChromeApp')
         data: {
           label: 'Stock Count Home'
         },
-        templateUrl: 'views/stockcount/index.html',
+        templateUrl: 'views/stock-count/index.html',
         resolve: {
           appConfig: function(appConfigService){
             return appConfigService.getCurrentAppConfig();
@@ -29,7 +29,7 @@ angular.module('lmisChromeApp')
           label:'Stock Count Form'
         },
         url:'/stockCountForm?facility&reportMonth&reportYear&reportDay&countDate&productKey&detailView&editOff',
-        templateUrl: 'views/stockcount/stock-count-form.html',
+        templateUrl: 'views/stock-count/stock-count-form.html',
         controller: 'StockCountFormCtrl',
         resolve:{
           appConfig: function(appConfigService){
