@@ -11,7 +11,7 @@
       <div class="list-group">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 class="panel-title">{{ ccuCategory }}</h4>
+            <h4 class="panel-title">{{ spaceOutUpperCaseWords(ccuCategory) }}</h4>
           </div>
         </div>
         <div ng-repeat="ccuProfile in ccuProfilesGroupedByCategory[ccuCategory] | filter:search" ng-class="{
