@@ -86,9 +86,9 @@
                 <div class="col-sm-12">
                   <h3 class="center-text">{{ selectedFacility.name }}</h3>
                   <h3 class="center-text bold-text" ng-show="countValue[productKey] === undefined">
-                    {{ sentation(((productProfileUom).presentation).uom).symbol }}s
+                    {{ (((productProfileUom).presentation).uom).symbol }}s
                   </h3>
-                  <h3 class="center-text bold-text" ng-show="stockCount.unopened[productKey] >= 0">
+                  <h3 class="center-text bold-text" ng-show="countValue[productKey] >= 0">
                     <ng-pluralize count="countValue[productKey]"
                                   when="
                       {
