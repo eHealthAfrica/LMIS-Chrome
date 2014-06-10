@@ -4,20 +4,6 @@ angular.module('lmisChromeApp')
   .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService, i18n) {
 
     var STOCK_COUNT_DB = storageService.STOCK_COUNT;
-      /**
-       * gets product types object list
-       * @returns {promise}
-       * @public
-       */
-    var productType = function(){
-      //TODO: consider deprecating this
-      var deferred = $q.defer();
-      storageService.get(storageService.PRODUCT_TYPES).then(function(productTypes){
-
-        deferred.resolve(productTypes);
-      });
-      return deferred.promise;
-    };
 
      /**
       *
@@ -129,18 +115,6 @@ angular.module('lmisChromeApp')
       }
     };
 
-    /**
-     *
-     * @param productObject
-     * @param index
-     * @returns {object}
-     * @private
-     */
-    var currentProductObject = function(productObject, index){
-      var productKey =  (Object.keys(productObject))[index];
-      return productObject[productKey];
-    };
-
       /**
        * returns array of stock count objects sorted by count date.
        * @returns {promise|promise|*|promise|promise}
@@ -200,28 +174,6 @@ angular.module('lmisChromeApp')
     };
 
     var load={
-
-      /**
-       *
-       * @param productObject
-       * @param index
-       * @returns {{}}
-       */
-      productReadableName: function(productObject, index){
-        //TODO: consider deprecating this
-        return currentProductObject(productObject, index);
-      },
-      /**
-       *
-       * @param productObject
-       * @param index
-       * @param productType
-       * @returns {{}}
-       */
-      productTypeCode: function(productObject, index, productType){
-        var currentProductUuid = currentProductObject(productObject, index);
-        return productType[currentProductUuid];
-      },
       /**
        *
        * @param scope
@@ -304,7 +256,6 @@ angular.module('lmisChromeApp')
       getStockCountListByDate: getStockCountListByCreatedDate,
       getProductObjectWithCategory: getProductObjectWithCategory,
       getAll: getAllStockCount,
-      productType: productType,
       save:addRecord,
       get:load,
       getStockCountByDate: getStockCountByDate,

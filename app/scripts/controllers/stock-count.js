@@ -35,9 +35,6 @@ angular.module('lmisChromeApp')
           appConfig: function(appConfigService){
             return appConfigService.getCurrentAppConfig();
           },
-          productType: function(stockCountFactory){
-            return stockCountFactory.productType();
-          },
           productWithCategories: function(stockCountFactory, appConfig){
             return stockCountFactory.getProductObjectWithCategory(appConfig);
           }
@@ -64,11 +61,9 @@ angular.module('lmisChromeApp')
     };
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl,
-                                             $stateParams, appConfig, appConfigService, productType, cacheService,
+                                             $stateParams, appConfig, appConfigService, cacheService,
                                              syncService, utility, $rootScope, i18n, productWithCategories){
     //TODO: refactor entire stock count controller to simpler more readable controller
-
-    $scope.productType = productType;
     $scope.step = 0;
     $scope.facilityObject = appConfig.appFacility;
     $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
@@ -93,10 +88,8 @@ angular.module('lmisChromeApp')
     }
 
     var updateUIModel = function(){
-      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
       $scope.productProfileUom =
-          $scope.facilityProducts[$scope.facilityProductsKeys[$scope.step]];
-      $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
+          $scope.facilityProducts[$scope.productKey];
     };
 
     var updateCountValue = function(){
