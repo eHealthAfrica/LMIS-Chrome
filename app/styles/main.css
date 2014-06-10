@@ -238,9 +238,82 @@ tr.disabled, tr.disabled span.text-info{
   background-color: #449d44;
   color: #FFFFFF;
 }
+.small-font{
+  font-size: 0.85em;
+}
 .no-bold{
   font-weight: normal;
 }
 .bold-text{
-    font-weight: bold;
+  font-weight: bold;
+}
+.blue>.panel-heading{
+  background-color: #0000CD;
+  color: #FFFFFF;
+}
+.blue{
+  border-color: #0000CD;
+}
+.saddleBrown>.panel-heading{
+  background-color: #8B4513;
+  color: #FFFFFF;
+}
+.saddleBrown{
+  border-color: #8B4513;
+}
+.maroon>.panel-heading{
+  background-color: #B03060;
+  color: #FFFFFF;
+}
+.maroon{
+  border-color: #B03060;
+}
+.salmon>.panel-heading{
+  background-color: #FA8072;
+  color: #FFFFFF;
+}
+.salmon{
+  border-color: #FA8072;
+}
+.slateGray>.panel-heading{
+  background-color: #708090;
+  color: #FFFFFF;
+}
+.slateGray{
+  border-color: #708090;
+}
+.steelBlue>.panel-heading{
+  background-color: #4682B4;
+  color: #FFFFFF;
+}
+.steelBlue{
+  border-color: #4682B4;
+}
+.olive>.panel-heading{
+  background-color: #808000;
+  color: #FFFFFF;
+}
+.olive{
+  border-color: #808000;
+}
+.indianRed>.panel-heading{
+  background-color: #CD5C5C;
+  color: #FFFFFF;
+}
+.indianRed{
+  border-color: #CD5C5C;
+}
+.cold-store-vaccines>.panel-heading{
+  background-color: #808000;
+  color: #FFFFFF;
+}
+.cold-store-vaccines{
+  border-color: #808000;
+}
+.dry-store-safety-boxes>.panel-heading, .dry-store-syringes>.panel-heading{
+  background-color: #4682B4;
+  color: #FFFFFF;
+}
+.dry-store-safety-boxes, .dry-store-syringes{
+  border-color: #4682B4;
 }
