@@ -33,18 +33,18 @@ describe('Controller: StockCountFormCtrl', function(){
     scope.stockCount = stockCount;
     scope.changeState(1);
     scope.changeState(1);
-    expect(scope.step).toEqual(2);
-    scope.changeState(0);
     expect(scope.step).toEqual(1);
+    scope.changeState(0);
+    expect(scope.step).toEqual(0);
   });
 
   it('should change stock count last form position', function(){
     scope.stockCount = stockCount;
-    expect(scope.stockCount.lastPosition).toEqual(1);
+    expect(scope.stockCount.lastPosition).toEqual(0);
     scope.changeState(1);
     scope.changeState(1);
     expect(scope.stockCount.lastPosition).toEqual(scope.step);
-    expect(scope.stockCount.lastPosition).toEqual(2);
+    expect(scope.stockCount.lastPosition).toEqual(1);
   });
 
   it('should set stock count object to complete', function(){
@@ -54,4 +54,16 @@ describe('Controller: StockCountFormCtrl', function(){
     expect(scope.stockCount.isComplete).toEqual(1);
   });
 
+  it('should convert count value from product uom to presentation uom', function(){
+    /*
+     The first product in stockCountMocks is BCG 20
+     BCG 20 presentation is in 20 doses per vials
+     so 1000 doses = 50 vials
+     productKey = uuid of selected product. default to first product
+     */
+    scope.stockCount = stockCount;
+    scope.countValue[scope.productKey] = 50;
+    scope.convertToPresentationUom();
+    expect(scope.stockCount.unopened[scope.productKey]).toEqual(1000);
+  });
 });

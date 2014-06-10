@@ -237,6 +237,9 @@ angular.module('lmisChromeApp')
     $scope.loadSelected = function(){
       initReason();
       $scope.reasonQuantity = $scope.wasteCount.reason[$scope.productKey][$scope.selectedReason];
+      var uom = $scope.productKey !== ''?$scope.facilityProducts[$scope.productKey].presentation.uom.symbol : '';
+
+      $scope.enterQuantityLabel = i18n('enterQuantity', uom);
     };
 
     $scope.save = function(type){

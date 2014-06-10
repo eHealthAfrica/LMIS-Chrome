@@ -64,12 +64,12 @@ angular.module('appConfigMocks', [])
             'name': 'BCG 20',
             'packed_volume': 1.2,
             'presentation': {
-                'code': '1-DPV',
+                'code': '20-DPV',
                 'created': '2014-01-17T10:55:22.686Z',
-                'description': '1 dose per vial',
+                'description': '20 dose per vial',
                 'is_deleted': false,
                 'modified': '2014-01-17T10:55:22.713Z',
-                'name': '1 Dose Per Vial',
+                'name': '20 Dose Per Vial',
                 'uom': {
                     'created': '2014-01-15T14:20:02.098Z',
                     'factor': 0,
@@ -83,7 +83,7 @@ angular.module('appConfigMocks', [])
                     'uuid': '82cc6fac-d0f6-43da-b0c6-07dc58669431'
                 },
                 'uuid': '8ee9ff30-a9f5-41f9-8054-8257920adf2d',
-                'value': 1
+                'value': 20
             },
             'product': {
                 'active': true,

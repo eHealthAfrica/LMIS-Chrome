@@ -514,7 +514,12 @@
     "message": "Select Waste Reason"
   },
   "enterQuantity": {
-    "message": "Enter Quantity"
+    "message": "Enter Quantity in $Quantity$s",
+    "placeholders": {
+      "Quantity": {
+       "content": "$1"
+      }
+    }
   },
   "back": {
     "message": "Back"
