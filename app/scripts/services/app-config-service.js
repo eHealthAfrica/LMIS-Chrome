@@ -302,7 +302,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         .then(function () {
           updateAppConfigFromRemote()
               .then(function(){
-                growl.success(i18n('remoteAppConfigUpdateMsg'));
+                var DELAY_BEFORE_REMOVAL = 10000;//10 secs
+                growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: DELAY_BEFORE_REMOVAL });
               })
               .finally(function () {
                 syncService.backgroundSync()
