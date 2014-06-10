@@ -268,10 +268,10 @@ angular.module('lmisChromeApp')
       var isStockCountDue = true;
       this.getMostRecentStockCount()
           .then(function (recentStockCount) {
-            var reminderDate = getStockCountDueDate(stockCountInterval, reminderDay);
-            var includePreviousWeek = true;
+            var mostRecentDueDate = new Date(getStockCountDueDate(stockCountInterval, reminderDay));
             isStockCountDue = (typeof recentStockCount === 'undefined' || recentStockCount.isComplete !== 1 ||
-                reminderFactory.isReminderDue(recentStockCount, 'countDate', reminderDate, stockCountInterval, includePreviousWeek));
+                (mostRecentDueDate.getTime() > new Date(recentStockCount.countDate).getTime()));
+
             deferred.resolve(isStockCountDue);
           })
           .catch(function (reason) {
