@@ -3,7 +3,7 @@
 describe('Service: dashboardfactory', function() {
 
   // load the service's module
-  beforeEach(module('lmisChromeApp', 'seriesMocks'));
+  beforeEach(module('lmisChromeApp', 'seriesMocks', 'i18nMocks'));
 
   beforeEach(inject(function($templateCache) {
     // Mock each template used by the state

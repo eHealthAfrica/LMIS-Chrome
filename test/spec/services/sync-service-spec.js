@@ -3,7 +3,7 @@
 describe('Service: SyncService', function() {
 
   // load the service's module
-  beforeEach(module('lmisChromeApp'));
+  beforeEach(module('lmisChromeApp', 'i18nMocks'));
 
   // instantiate service
   var syncService, pouchdb, $q, db, dbName, recordWithoutUuid, storageService, recordWithUuid, $window;
