@@ -174,6 +174,31 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    var getProductObjectWithCategory = function(appConfig){
+      var deferred = $q.defer();
+      storageService.get(storageService.PRODUCT_CATEGORY)
+          .then(function(productCategory){
+            var facilitySelectedProducts = appConfig.selectedProductProfiles
+                .map(function(product){
+                  product.category =
+                      angular.isDefined(productCategory[product.category]) ? productCategory[product.category] : product.category;
+                  return product;
+                })
+                .sort(function(a, b){
+                  if(angular.isDefined(a.category.name) && angular.isDefined(b.category.name)){
+                    return a.category.name > b.category.name;
+                  }
+                  return a.category > b.category;
+                });
+            var productObject = utility.castArrayToObject(facilitySelectedProducts, 'uuid');
+            deferred.resolve(productObject);
+          })
+          .catch(function(reason){
+            deferred.reject(reason);
+          });
+      return deferred.promise;
+    };
+
     var load={
 
       /**
@@ -194,7 +219,7 @@ angular.module('lmisChromeApp')
        * @returns {{}}
        */
       productTypeCode: function(productObject, index, productType){
-        var currentProductUuid = currentProductObject(productObject, index).product;
+        var currentProductUuid = currentProductObject(productObject, index);
         return productType[currentProductUuid];
       },
       /**
@@ -222,6 +247,10 @@ angular.module('lmisChromeApp')
        * @returns {{}}
        */
       productObject: function(array){
+        array = array
+            .sort(function(a, b){
+              return a.category > b.category;
+            });
         return utility.castArrayToObject(array, 'uuid');
       },
       /**
@@ -273,6 +302,7 @@ angular.module('lmisChromeApp')
       getMostRecentStockCount: getMostRecentStockCount,
       getCurrentStockCountDueDate: getCurrentStockCountDueDate,
       getStockCountListByDate: getStockCountListByCreatedDate,
+      getProductObjectWithCategory: getProductObjectWithCategory,
       getAll: getAllStockCount,
       productType: productType,
       save:addRecord,
