@@ -62,10 +62,13 @@
     </div>
   </div>
 </div>
-<div class="panel panel-default">
+<div class="panel panel-default" ng-class="getCategoryColor(((facilityProducts[productKey]).category).name)">
   <div class="panel-heading">
     <h1 class="panel-title">
-      Stock Count for {{ facilityObject.name }} - {{ dateInfo  | date:'dd MMMM, yyyy' }}
+      <div class="pull-left">
+        Stock Count for - {{ dateInfo  | date:'dd MMMM, yyyy' }}
+        <div class="small-font" ng-hide="preview">{{ ((facilityProducts[productKey]).category).name}}</div>
+      </div>
       <div class="pull-right">
         <span ng-click="showHelp=!showHelp">
           <i class="text-success fa fa-question-circle fa-2x"></i>
@@ -82,9 +85,10 @@
         <form>
           <div class="row">
             <div class="col-sm-12" ng-hide="preview">
+
               <div class="row">
                 <div class="col-sm-12">
-                  <h3 class="center-text">{{ selectedFacility.name }}</h3>
+                  <h3 class="center-text">{{ facilityProducts[productKey].name }}</h3>
                   <h3 class="center-text bold-text" ng-show="countValue[productKey] === undefined">
                     {{ (((productProfileUom).presentation).uom).symbol }}s
                   </h3>
