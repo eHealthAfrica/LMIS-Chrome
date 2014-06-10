@@ -629,5 +629,8 @@
   },
   "stockCountSuccessMsg": {
     "message": "You have completed stock count successfully!"
+  },
+  "remoteAppConfigUpdateMsg": {
+    "message": "Application configurations has been updated."
   }
 }
