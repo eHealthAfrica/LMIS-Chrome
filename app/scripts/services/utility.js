@@ -104,4 +104,8 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
     return removeObjFromCollection(_obj, collections, key);
   };
 
+  this.spaceOutUpperCaseWords = function(upperCaseWord){
+    return upperCaseWord.split(/(?=[A-Z])/).join(' ');
+  }
+
 });

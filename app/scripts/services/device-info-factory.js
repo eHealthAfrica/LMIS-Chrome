@@ -17,10 +17,10 @@ angular.module('lmisChromeApp')
           var pattern = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
           var emails = result.match(pattern);
 
-          if(!emails || !emails.length) {
-            deferred.reject('No device emails found');
-          }else{
+          if(emails && emails.length) {
             deferred.resolve({ mainAccount: emails[0] });
+          } else {
+            deferred.reject('No device emails found');
           }
 
         };
