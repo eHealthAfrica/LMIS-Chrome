@@ -37,6 +37,9 @@ angular.module('lmisChromeApp')
           },
           productType: function(stockCountFactory){
             return stockCountFactory.productType();
+          },
+          productWithCategories: function(stockCountFactory, appConfig){
+            return stockCountFactory.getProductObjectWithCategory(appConfig);
           }
         }
       });
@@ -62,7 +65,7 @@ angular.module('lmisChromeApp')
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl,
                                              $stateParams, appConfig, appConfigService, productType, cacheService,
-                                             syncService, utility, $rootScope, i18n){
+                                             syncService, utility, $rootScope, i18n, productWithCategories){
     //TODO: refactor entire stock count controller to simpler more readable controller
 
     $scope.productType = productType;
@@ -77,9 +80,10 @@ angular.module('lmisChromeApp')
     $scope.countValue = {};
     $scope.stockCount = {};
     $scope.stockCount.unopened = {};
-    $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
+    $scope.facilityProducts = productWithCategories; // selected products for current facility
     $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
     $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+
 
     //set maximum steps
     if($scope.facilityProductsKeys.length>0){
