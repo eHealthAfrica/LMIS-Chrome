@@ -61,9 +61,16 @@ angular.module('lmisChromeApp')
     };
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl,
-                                             $stateParams, appConfig, appConfigService, cacheService,
-                                             syncService, utility, $rootScope, i18n, productWithCategories){
+                                             $stateParams, appConfig, appConfigService, cacheService, syncService,
+                                             utility, $rootScope, i18n, productWithCategories){
     //TODO: refactor entire stock count controller to simpler more readable controller
+
+    $scope.getCategoryColor = function(categoryName){
+      if($scope.preview){
+        return;
+      }
+      return categoryName.split(' ').join('-').toLowerCase();
+    };
     $scope.step = 0;
     $scope.facilityObject = appConfig.appFacility;
     $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
