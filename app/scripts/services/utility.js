@@ -29,6 +29,7 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
    */
 
   this.castArrayToObject = function(array, id){
+    id = angular.isUndefined(id) ? 'uuid' : id;
     var newObject = {};
     if(Object.prototype.toString.call(array) === '[object Array]'){
       for(var i=0; i < array.length; i++){
