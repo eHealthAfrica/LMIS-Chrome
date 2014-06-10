@@ -43,7 +43,7 @@ angular.module('lmisChromeApp')
   })
   .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state, mostRecentStockCount){
     $scope.stockCountsByCountDate = stockCountByDate;
-    $scope.stockCountCountDates =  Object.keys($scope.stockCountsByCountDate);
+    $scope.stockCountCountDates =  Object.keys($scope.stockCountsByCountDate).reverse();
 
    $scope.isEditable = function(stockCount){
      return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid=== stockCount.uuid);
