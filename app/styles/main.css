@@ -238,3 +238,9 @@ tr.disabled, tr.disabled span.text-info{
   background-color: #449d44;
   color: #FFFFFF;
 }
+.no-bold{
+  font-weight: normal;
+}
+.bold-text{
+    font-weight: bold;
+}
