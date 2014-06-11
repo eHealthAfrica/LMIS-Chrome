@@ -49,8 +49,8 @@ angular.module('lmisChromeApp')
           appConfig: function(appConfigService){
             return appConfigService.getCurrentAppConfig();
           },
-          productType: function(stockCountFactory){
-            return stockCountFactory.productType();
+          productType: function(wasteCountFactory){
+            return wasteCountFactory.productType();
           }
         }
       });

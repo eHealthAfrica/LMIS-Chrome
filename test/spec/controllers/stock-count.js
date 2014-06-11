@@ -3,13 +3,13 @@
 describe('Controller: StockCountFormCtrl', function(){
   var scope, ctrl, state, stockCount, appConfig, productType, _i18n;
 
-  beforeEach(module('lmisChromeApp', 'appConfigMocks', 'stockCountMocks', 'i18nMocks', function($provide){
+  beforeEach(module('lmisChromeApp', 'appConfigMocks', 'stockCountMocks', 'i18nMocks', 'productWithCategoryMocks', function($provide){
     //$provide.value('appConfig',{});
     $provide.value('productType', {});
   }));
 
   beforeEach(inject(function($controller, $state, _stockCountFactory_, _productType_, appConfigMock,
-                             stockData, i18n){
+                             stockData, i18n, productWithCategoryMock){
     scope = {};
     _i18n = i18n;
     stockCount = stockData;
@@ -21,7 +21,8 @@ describe('Controller: StockCountFormCtrl', function(){
       $state: state,
       stockCountFactory: _stockCountFactory_,
       appConfig: appConfig,
-      productType: _productType_
+      productType: _productType_,
+      productWithCategories: productWithCategoryMock
     });
   }));
 
@@ -65,5 +66,11 @@ describe('Controller: StockCountFormCtrl', function(){
     scope.countValue[scope.productKey] = 50;
     scope.convertToPresentationUom();
     expect(scope.stockCount.unopened[scope.productKey]).toEqual(1000);
+  });
+
+  it('should return css class created from category name', function(){
+    var categoryName = 'Dry Store Safety Boxes';
+    var className = scope.getCategoryColor(categoryName);
+    expect(className).toEqual('dry-store-safety-boxes');
   });
 });

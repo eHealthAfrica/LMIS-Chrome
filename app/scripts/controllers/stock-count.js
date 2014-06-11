@@ -9,7 +9,7 @@ angular.module('lmisChromeApp')
         data: {
           label: 'Stock Count Home'
         },
-        templateUrl: 'views/stockcount/index.html',
+        templateUrl: 'views/stock-count/index.html',
         resolve: {
           appConfig: function(appConfigService){
             return appConfigService.getCurrentAppConfig();
@@ -29,14 +29,14 @@ angular.module('lmisChromeApp')
           label:'Stock Count Form'
         },
         url:'/stockCountForm?facility&reportMonth&reportYear&reportDay&countDate&productKey&detailView&editOff',
-        templateUrl: 'views/stockcount/stock-count-form.html',
+        templateUrl: 'views/stock-count/stock-count-form.html',
         controller: 'StockCountFormCtrl',
         resolve:{
           appConfig: function(appConfigService){
             return appConfigService.getCurrentAppConfig();
           },
-          productType: function(stockCountFactory){
-            return stockCountFactory.productType();
+          productWithCategories: function(stockCountFactory, appConfig){
+            return stockCountFactory.getProductObjectWithCategory(appConfig);
           }
         }
       });
@@ -64,11 +64,16 @@ angular.module('lmisChromeApp')
     };
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl,
-                                             $stateParams, appConfig, appConfigService, productType, cacheService,
-                                             syncService, utility, $rootScope, i18n){
+                                             $stateParams, appConfig, appConfigService, cacheService, syncService,
+                                             utility, $rootScope, i18n, productWithCategories){
     //TODO: refactor entire stock count controller to simpler more readable controller
 
-    $scope.productType = productType;
+    $scope.getCategoryColor = function(categoryName){
+      if($scope.preview){
+        return;
+      }
+      return categoryName.split(' ').join('-').toLowerCase();
+    };
     $scope.step = 0;
     $scope.facilityObject = appConfig.appFacility;
     $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
@@ -80,9 +85,10 @@ angular.module('lmisChromeApp')
     $scope.countValue = {};
     $scope.stockCount = {};
     $scope.stockCount.unopened = {};
-    $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
+    $scope.facilityProducts = productWithCategories; // selected products for current facility
     $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
     $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+
 
     //set maximum steps
     if($scope.facilityProductsKeys.length>0){
@@ -92,10 +98,8 @@ angular.module('lmisChromeApp')
     }
 
     var updateUIModel = function(){
-      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
       $scope.productProfileUom =
-          $scope.facilityProducts[$scope.facilityProductsKeys[$scope.step]];
-      $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
+          $scope.facilityProducts[$scope.productKey];
     };
 
     var updateCountValue = function(){
