@@ -19,6 +19,15 @@ angular.module('lmisChromeApp')
       return $filter('date')(date, 'yyyy-MM-dd');
     };
 
+    var getCategoriesExcludeFromCount = function(){
+      //TODO: this needs to be in a database or some sort of setup script
+      return [
+        'd5ffa6bd-58d2-41b5-a688-6a9d6894c5ae',
+        'a0f10e2e-cffa-42c4-832b-1ba0e48caa64',
+        '99fde088-7ff2-4545-b0c1-8f2c36911f01',
+        '1c761db0-d7f3-4abf-8c12-6c678f862851'
+      ];
+    };
 
     var addRecord = function(object){
       var deferred = $q.defer();
@@ -76,6 +85,11 @@ angular.module('lmisChromeApp')
       },
 
       productObject: function(array){
+        array = array
+            .filter(function(product){
+               var excludedCategories = getCategoriesExcludeFromCount();
+               return excludedCategories.indexOf(product.category) === -1;
+            });
         return utility.castArrayToObject(array, 'uuid');
       },
       wasteCountByType: function(wasteCount, facilityProductProfiles){
