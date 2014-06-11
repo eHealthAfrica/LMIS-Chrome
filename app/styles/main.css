@@ -244,3 +244,7 @@ tr.disabled, tr.disabled span.text-info{
 .bold-text{
     font-weight: bold;
 }
+.growl-container.growl-fixed {
+  width: 90%;
+  max-width: 400px;
+}

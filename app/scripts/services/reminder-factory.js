@@ -164,6 +164,7 @@ angular.module('lmisChromeApp')
       };
 
       var isReminderDue =  function(obj, dateKey, rmDate, interval, includePreviousWeek){
+        interval = interval = parseInt(interval);//cast to integer.
         switch (interval) {
           case DAILY:
             return isDailyReminderDue(obj, dateKey, rmDate);
@@ -179,6 +180,10 @@ angular.module('lmisChromeApp')
       };
 
       return {
+        DAILY: DAILY,
+        WEEKLY: WEEKLY,
+        BI_WEEKLY: BI_WEEKLY,
+        MONTHLY: MONTHLY,
         isDailyReminderDue: isDailyReminderDue,
         isMonthlyReminderDue: isMonthlyReminderDue,
         isWeeklyReminderDue: isWeeklyReminderDue,
