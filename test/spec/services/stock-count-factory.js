@@ -424,12 +424,12 @@ describe('Service stockCountFactory', function () {
 
   });
 
-   it('i expect isStockCountDue() to return False if interval is BI_WEEKLY and bi-weekly stock count due date is  before most recent stock count date.', function () {
+  it('i expect isStockCountDue() to return False if interval is BI_WEEKLY and bi-weekly stock count due date is  before most recent stock count date.', function () {
     var dfd = $q.defer();
     var today = new Date();
     var reminderDay = 5;//friday
     var weeklyStockCountDateInfo = utility.getWeekRangeByDate(today, reminderDay);
-     var rmDate = weeklyStockCountDateInfo.reminderDate;
+    var rmDate = weeklyStockCountDateInfo.reminderDate;
 
     var stockCount = {
       countDate: new Date(rmDate.getFullYear(), rmDate.getMonth(), rmDate.getDate() + reminderDay), //a day after due date
@@ -439,9 +439,8 @@ describe('Service stockCountFactory', function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
-     console.log(rmDate);
-     console.log(stockCount.countDate);
-     expect(rmDate.getTime()).toBeLessThan(stockCount.countDate)
+
+    expect(rmDate.getTime()).toBeLessThan(stockCount.countDate)
 
     runs(function () {
       return stockCountFactory.isStockCountDue(reminderFactory.BI_WEEKLY, reminderDay)
@@ -457,7 +456,7 @@ describe('Service stockCountFactory', function () {
     var today = new Date();
     var reminderDay = 5;//friday
     var weeklyStockCountDateInfo = utility.getWeekRangeByDate(today, 5);
-     var rmDate = weeklyStockCountDateInfo.reminderDate;
+    var rmDate = weeklyStockCountDateInfo.reminderDate;
 
     var stockCount = {
       countDate: new Date(rmDate.getFullYear(), rmDate.getMonth(), rmDate.getDate() - reminderFactory.BI_WEEKLY), //two weeks ago
@@ -482,7 +481,7 @@ describe('Service stockCountFactory', function () {
     var today = new Date();
     var reminderDay = 5;//friday
     var weeklyStockCountDateInfo = utility.getWeekRangeByDate(today, 5);
-     var rmDate = weeklyStockCountDateInfo.reminderDate;
+    var rmDate = weeklyStockCountDateInfo.reminderDate;
 
     var stockCount = {
       countDate: new Date(rmDate.getFullYear(), rmDate.getMonth(), rmDate.getDate() + 1), //last week
@@ -507,7 +506,7 @@ describe('Service stockCountFactory', function () {
     var today = new Date();
     var reminderDay = 5;//friday
     var weeklyStockCountDateInfo = utility.getWeekRangeByDate(today, 5);
-     var rmDate = weeklyStockCountDateInfo.reminderDate;
+    var rmDate = weeklyStockCountDateInfo.reminderDate;
 
     var stockCount = {
       countDate: new Date(rmDate.getFullYear(), rmDate.getMonth(), rmDate.getDate() - reminderFactory.WEEKLY), //last week
