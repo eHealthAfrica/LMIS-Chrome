@@ -1,9 +1,17 @@
-<footer id="footer">
+<footer lmis-page-view-report="index_footer" id="footer">
   <div class="container">
     <small class="text-muted">
       <span ng-bind="'© ' + year"></span>
       <span i18n="appAuthor"></span>
       <span class="pull-right" ng-bind="'v' + version"></span>
+      <nav role="navigation">
+        <ul class="list-inline">
+          <li><a lmis-analytics-directive="dashboard" i18n="dashboard"></a></li>
+          <li><a lmis-analytics-directive="terms_of_service" i18n="termsOfService"></a></li>
+          <li><a lmis-analytics-directive="privacy_policy" i18n="privacyPolicy"></a></li>
+          <li><a lmis-analytics-directive="contuct_us" i18n="contactUs"></a></li>
+        </ul>
+      </nav>
     </small>
   </div>
 </footer>

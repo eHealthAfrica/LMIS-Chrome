@@ -9,3 +9,4 @@ test/bower_components
 coverage
 app/scripts/config.js
 build
+/nbproject/private/
