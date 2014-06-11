@@ -42,21 +42,24 @@ angular.module('lmisChromeApp')
       });
   })
   .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state, mostRecentStockCount){
-    $scope.stockCountsByCreatedDate = stockCountByDate;
+    $scope.stockCountsByCountDate = stockCountByDate;
+    $scope.stockCountCountDates =  Object.keys($scope.stockCountsByCountDate).reverse();
+
+   $scope.isEditable = function(stockCount){
+     return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid=== stockCount.uuid);
+   };
+
     $scope.showStockCountFormByDate = function(date){
       stockCountFactory.getStockCountByDate(date)
           .then(function (stockCount) {
             if (stockCount !== null) {
-              //only most recent is editable.
-              var isEditable = (typeof mostRecentStockCount !== 'undefined') &&
-                  (mostRecentStockCount.uuid=== stockCount.uuid);
-              $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !isEditable });
+              $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !$scope.isEditable(stockCount) });
             } else {
               $state.go('stockCountForm', {countDate: date});
             }
           })
           .catch(function () {
-            //TODO: decides what happens if for any reason, retrieving stock count fails.
+            //TODO: decide what happens if for any reason, retrieving stock count fails.
           });
     };
   })
@@ -69,7 +72,7 @@ angular.module('lmisChromeApp')
     $scope.step = 0;
     $scope.facilityObject = appConfig.appFacility;
     $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
-    $scope.stockCountDate = stockCountFactory.getCurrentStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
+    $scope.stockCountDate = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
     $scope.dateInfo = new Date();
     $scope.preview = $scope.detailView = $stateParams.detailView;
     $scope.editOn = false;
@@ -151,8 +154,6 @@ angular.module('lmisChromeApp')
       if ($scope.redirect) {
         saveQueue.awaitAll(function(err, result){
           if(result){
-            $rootScope.showChart = true;
-            $rootScope.isStockCountDue = false;//TODO:
             var msg = i18n('stockCountSuccessMsg');
             $scope.isSaving = false;
             $state.go('home.index.home.mainActivity', {'stockResult': msg});

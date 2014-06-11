@@ -64,7 +64,7 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
   };
 
   /**
-   * This function scrolls to top of the page where it was called,
+   * This function scrolls to top of the page where it is called,
    *
    * #see 'top' is the id of a href element defined in views/index/index.html
    */
@@ -83,6 +83,25 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
       date = new Date(date);//create date object
     }
     return $filter('date')(date, 'yyyy-MM-dd');
+  };
+
+  var removeObjFromCollection = function(obj, collection, key){
+    collection = collection.filter(function (item) {
+      if(typeof item[key] === 'undefined' || typeof obj[key] === 'undefined'){
+        throw 'both objects that are being compared must have the property(key) being compared.';
+      }
+      return item[key] !== obj[key];
+    });
+    return collection;
+  };
+
+  this.addObjectToCollection = function(obj, collections, key){
+    var _obj = JSON.parse(obj);
+    if (_obj.deSelected === undefined) {
+      collections.push(_obj);
+      return collections;
+    }
+    return removeObjFromCollection(_obj, collections, key);
   };
 
   this.spaceOutUpperCaseWords = function(upperCaseWord){
