@@ -39,6 +39,10 @@ angular.module('lmisChromeApp')
           break;
         case reminderFactory.BI_WEEKLY:
           countDate = utility.getWeekRangeByDate(currentDate, reminderDay).reminderDate;
+          if (currentDate.getTime() < countDate.getTime()) {
+            //current week count date is not yet due, return last bi-weekly count date
+            countDate = new Date(countDate.getFullYear(), countDate.getMonth(), countDate.getDate() - interval);
+          }
           break;
         case reminderFactory.MONTHLY:
           var monthlyDate = (currentDate.getTime() === today.getTime())? 1 : currentDate.getDate();
@@ -269,8 +273,9 @@ angular.module('lmisChromeApp')
       this.getMostRecentStockCount()
           .then(function (recentStockCount) {
             var mostRecentDueDate = new Date(getStockCountDueDate(stockCountInterval, reminderDay));
+            
             isStockCountDue = (typeof recentStockCount === 'undefined' || recentStockCount.isComplete !== 1 ||
-                (mostRecentDueDate.getTime() > new Date(recentStockCount.countDate).getTime()));
+                (new Date(recentStockCount.countDate).getTime()) < mostRecentDueDate.getTime());
 
             deferred.resolve(isStockCountDue);
           })
