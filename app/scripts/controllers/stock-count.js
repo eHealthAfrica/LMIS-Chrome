@@ -154,8 +154,6 @@ angular.module('lmisChromeApp')
       if ($scope.redirect) {
         saveQueue.awaitAll(function(err, result){
           if(result){
-            $rootScope.showChart = true;
-            $rootScope.isStockCountDue = false;//TODO:
             var msg = i18n('stockCountSuccessMsg');
             $scope.isSaving = false;
             $state.go('home.index.home.mainActivity', {'stockResult': msg});
