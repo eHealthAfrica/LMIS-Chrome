@@ -3,7 +3,7 @@
 describe('Service: cacheService ', function() {
 
   // load the service's module
-  beforeEach(module('lmisChromeApp'));
+  beforeEach(module('lmisChromeApp', 'i18nMocks'));
 
   // instantiate service
   var cacheService, $cacheFactory;

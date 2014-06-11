@@ -238,9 +238,31 @@ tr.disabled, tr.disabled span.text-info{
   background-color: #449d44;
   color: #FFFFFF;
 }
+.small-font{
+  font-size: 0.85em;
+}
 .no-bold{
   font-weight: normal;
 }
 .bold-text{
-    font-weight: bold;
+  font-weight: bold;
+}
+.cold-store-vaccines>.panel-heading{
+  background-color: #808000;
+  color: #FFFFFF;
+}
+.cold-store-vaccines{
+  border-color: #808000;
+}
+.dry-store-safety-boxes>.panel-heading, .dry-store-syringes>.panel-heading{
+  background-color: #4682B4;
+  color: #FFFFFF;
+}
+.dry-store-safety-boxes, .dry-store-syringes{
+  border-color: #4682B4;
+  font-weight: bold;
+}
+.growl-container.growl-fixed {
+  width: 90%;
+  max-width: 400px;
 }

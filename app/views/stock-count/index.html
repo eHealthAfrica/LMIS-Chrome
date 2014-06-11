@@ -1,0 +1,40 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h1 class="panel-title" i18n="stockCountHistory"></h1>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table table-bordered" ng-hide="detailView">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th i18n="date"></th>
+            <th i18n="done"></th>
+            <th i18n="synced"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="countDate in stockCountCountDates" ng-class="{ 'disabled': !isEditable(stockCountsByCountDate[countDate]) }"
+              ng-click="showStockCountFormByDate(countDate)">
+            <td> {{ $index + 1 }}</td>
+            <td>
+              <span class="text-info">
+                {{ stockCountsByCountDate[countDate].created | date:'MMM dd, yyyy' }}
+                [<span>for: {{ countDate | date:'MMM dd, yyyy' }}</span>]
+              </span>
+            </td>
+            <td class="text-center">
+              <i class="fa "
+                 ng-class="{'fa-check-circle text-success': stockCountsByCountDate[countDate].isComplete, 'fa-times-circle text-danger': !stockCountsByCountDate[countDate].isComplete}"></i>
+            </td>
+            <td class="text-center"><i class="fa "
+                                       ng-class="{'fa-check-circle text-success': stockCountsByCountDate[countDate].synced, 'fa-times-circle text-danger': !stockCountsByCountDate[countDate].synced}"></i>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

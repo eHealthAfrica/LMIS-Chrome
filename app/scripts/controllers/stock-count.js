@@ -9,7 +9,7 @@ angular.module('lmisChromeApp')
         data: {
           label: 'Stock Count Home'
         },
-        templateUrl: 'views/stockcount/index.html',
+        templateUrl: 'views/stock-count/index.html',
         resolve: {
           appConfig: function(appConfigService){
             return appConfigService.getCurrentAppConfig();
@@ -29,47 +29,55 @@ angular.module('lmisChromeApp')
           label:'Stock Count Form'
         },
         url:'/stockCountForm?facility&reportMonth&reportYear&reportDay&countDate&productKey&detailView&editOff',
-        templateUrl: 'views/stockcount/stock-count-form.html',
+        templateUrl: 'views/stock-count/stock-count-form.html',
         controller: 'StockCountFormCtrl',
         resolve:{
           appConfig: function(appConfigService){
             return appConfigService.getCurrentAppConfig();
           },
-          productType: function(stockCountFactory){
-            return stockCountFactory.productType();
+          productWithCategories: function(stockCountFactory, appConfig){
+            return stockCountFactory.getProductObjectWithCategory(appConfig);
           }
         }
       });
   })
   .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state, mostRecentStockCount){
-    $scope.stockCountsByCreatedDate = stockCountByDate;
+    $scope.stockCountsByCountDate = stockCountByDate;
+    $scope.stockCountCountDates =  Object.keys($scope.stockCountsByCountDate).reverse();
+
+   $scope.isEditable = function(stockCount){
+     return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid=== stockCount.uuid);
+   };
+
     $scope.showStockCountFormByDate = function(date){
       stockCountFactory.getStockCountByDate(date)
           .then(function (stockCount) {
             if (stockCount !== null) {
-              //only most recent is editable.
-              var isEditable = (typeof mostRecentStockCount !== 'undefined') &&
-                  (mostRecentStockCount.uuid=== stockCount.uuid);
-              $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !isEditable });
+              $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !$scope.isEditable(stockCount) });
             } else {
               $state.go('stockCountForm', {countDate: date});
             }
           })
           .catch(function () {
-            //TODO: decides what happens if for any reason, retrieving stock count fails.
+            //TODO: decide what happens if for any reason, retrieving stock count fails.
           });
     };
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl,
-                                             $stateParams, appConfig, appConfigService, productType, cacheService,
-                                             syncService, utility, $rootScope, i18n){
+                                             $stateParams, appConfig, appConfigService, cacheService, syncService,
+                                             utility, $rootScope, i18n, productWithCategories){
     //TODO: refactor entire stock count controller to simpler more readable controller
 
-    $scope.productType = productType;
+    $scope.getCategoryColor = function(categoryName){
+      if($scope.preview){
+        return;
+      }
+      return categoryName.split(' ').join('-').toLowerCase();
+    };
     $scope.step = 0;
     $scope.facilityObject = appConfig.appFacility;
     $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
-    $scope.stockCountDate = stockCountFactory.getCurrentStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
+    $scope.stockCountDate = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
     $scope.dateInfo = new Date();
     $scope.preview = $scope.detailView = $stateParams.detailView;
     $scope.editOn = false;
@@ -77,9 +85,10 @@ angular.module('lmisChromeApp')
     $scope.countValue = {};
     $scope.stockCount = {};
     $scope.stockCount.unopened = {};
-    $scope.facilityProducts = stockCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
+    $scope.facilityProducts = productWithCategories; // selected products for current facility
     $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
     $scope.productKey = $scope.facilityProductsKeys[$scope.step];
+
 
     //set maximum steps
     if($scope.facilityProductsKeys.length>0){
@@ -89,10 +98,8 @@ angular.module('lmisChromeApp')
     }
 
     var updateUIModel = function(){
-      $scope.selectedFacility = stockCountFactory.get.productReadableName($scope.facilityProducts, $scope.step);
       $scope.productProfileUom =
-          $scope.facilityProducts[$scope.facilityProductsKeys[$scope.step]];
-      $scope.productTypeCode = stockCountFactory.get.productTypeCode($scope.facilityProducts, $scope.step, $scope.productType);
+          $scope.facilityProducts[$scope.productKey];
     };
 
     var updateCountValue = function(){
@@ -151,8 +158,6 @@ angular.module('lmisChromeApp')
       if ($scope.redirect) {
         saveQueue.awaitAll(function(err, result){
           if(result){
-            $rootScope.showChart = true;
-            $rootScope.isStockCountDue = false;//TODO:
             var msg = i18n('stockCountSuccessMsg');
             $scope.isSaving = false;
             $state.go('home.index.home.mainActivity', {'stockResult': msg});

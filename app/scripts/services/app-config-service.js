@@ -2,66 +2,21 @@
 
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, syncService,
                                                                       productProfileFactory, facilityFactory, utility,
-                                                                      cacheService, $filter, reminderFactory) {
+                                                                      cacheService, $filter, reminderFactory, growl, i18n) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   var cache = cacheService.getCache();
   var FACILITY_PROFILE_DB = 'app_facility_profile';
-  var stockCountIntervals = [
-    {name: 'Daily', value: 1},
-    {name: 'Weekly', value: 7},
-    {name: 'Bi-Weekly', value: 14},
-    {name: 'Monthly', value: 30}
-  ];
 
-  this.stockCountIntervals = stockCountIntervals;
+  this.stockCountIntervals = [
+    {name: 'Daily', value: reminderFactory.DAILY},
+    {name: 'Weekly', value: reminderFactory.WEEKLY},
+    {name: 'Bi-Weekly', value: reminderFactory.BI_WEEKLY},
+    {name: 'Monthly', value: reminderFactory.MONTHLY}
+  ];
 
   this.weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-  var getCorrectWeeklyDateInfo = function(currentWeekDateInfo){
-    if ($filter('date')(new Date(), 'yyyy-MM-dd') < $filter('date')(currentWeekDateInfo.reminderDate, 'yyyy-MM-dd')) {
-      var previousReminderDate =
-          new Date(currentWeekDateInfo.reminderDate.getFullYear(), currentWeekDateInfo.reminderDate.getMonth(),
-              currentWeekDateInfo.reminderDate.getDate() - stockCountIntervals[1].value);
-
-      return utility.getWeekRangeByDate(previousReminderDate, currentWeekDateInfo.reminderDate.getDay());
-    }
-    return currentWeekDateInfo;
-  };
-
-  /**
-   * This function uses appConfig reminderDay for stockCount to check if stock count has been carried out within the
-   * current date week. it will return TRUE if
-   * 1) current date is greater than reminderDay of current week and
-   * 2) current date is less than last day of the week and
-   * 3) stock count does not exist for the week or has not been completed.
-   * @param reminderDay
-   * @returns {promise|promise|*|promise|promise}
-   */
-  this.isStockCountDue = function(reminderDay){
-    //TODO: complete this and move to stock-count-factory
-    var deferred = $q.defer();
-    storageService.all(storageService.STOCK_COUNT)
-      .then(function (results) {
-        var now = new Date();
-        var currentWeekDateInfo = utility.getWeekRangeByDate(now, reminderDay);
-        currentWeekDateInfo = getCorrectWeeklyDateInfo(currentWeekDateInfo);
-        var today = $filter('date')(now, 'yyyy-MM-dd');
-
-        //get stock-counts within current and week date range
-        var stockCountsWithInRange = results.filter(function (stockCount) {
-          return (stockCount.isComplete === 1) &&
-                  (!reminderFactory.isWeeklyReminderDue(stockCount, 'countDate', currentWeekDateInfo.reminderDate));
-        });
-        var isStockCountReminderDue = (today >= $filter('date')(currentWeekDateInfo.reminderDate, 'yyyy-MM-dd')) &&
-                (stockCountsWithInRange.length === 0);
-        deferred.resolve(isStockCountReminderDue);
-      })
-      .catch(function(){
-        deferred.resolve(false);
-      });
-    return deferred.promise;
-  };
   /**
    * This function setups or configures the app, it checks if a configuration exist then over-writes it, else,
    * it creates a new configuration.
@@ -112,13 +67,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
                   cache.remove(cacheService.STOCK_COUNT_REMINDER);
                   deferred.resolve(result[0]);
                   //sync app config in the back-ground
-                  syncService.syncItem(storageService.APP_CONFIG, appConfig)
-                      .then(function (syncResult) {
-                        console.log('app config sync result ' + syncResult);
-                      })
-                      .catch(function (error) {
-                        console.log('app config error: ' + error);
-                      });
+                  syncService.syncItem(storageService.APP_CONFIG, appConfig);
                 })
                 .catch(function (reason) {
                   console.log(reason);
@@ -159,25 +108,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     return deferred.promise;
   };
 
-  var removeObjFromCollection = function(obj, collection, key){
-    collection = collection.filter(function (item) {
-      if(typeof item[key] === 'undefined' || typeof obj[key] === 'undefined'){
-        throw 'both objects that are being compared must have the property(key) being compared.';
-      }
-      return item[key] !== obj[key];
-    });
-    return collection;
-  };
-
-  this.addObjectToCollection = function(obj, collections, key){
-    var _obj = JSON.parse(obj);
-    if (_obj.deSelected === undefined) {
-      collections.push(_obj);
-      return collections;
-    }
-    return removeObjFromCollection(_obj, collections, key);
-  };
-
   this.getAppFacilityProfileByEmail = function(email){
     var deferred = $q.defer();
     var REMOTE = config.api.url + '/' + FACILITY_PROFILE_DB;
@@ -208,18 +138,11 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     return deferred.promise;
   };
 
-    /**
-   * copies an source array to target associate array(object array or key-pair )
-   * @param source
-   * @param key - property of object that will be used as key
-   */
-  this.generateAssociativeArray =  utility.castArrayToObject;
-
   /**
    * This returns current app config from cache, if not available, it loads from storageService
    * @returns {promise|promise|*|promise|promise}
    */
-  var getCurrentAppConfig = function() {
+  var getAppConfigFromCacheOrStorage = function() {
     var deferred = $q.defer();
     var appConfig = cache.get(storageService.APP_CONFIG);
 
@@ -241,11 +164,11 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    *
    * @type {Function}
    */
-  this.getCurrentAppConfig = getCurrentAppConfig;
+  this.getCurrentAppConfig = getAppConfigFromCacheOrStorage;
 
   this.getProductTypes = function(){
     var deferred = $q.defer();
-    getCurrentAppConfig()
+    getAppConfigFromCacheOrStorage()
       .then(function(appConfig){
         var facilityStockListProductTypes = [];
         var uuidListOfProductTypesAlreadyRecorded = [];
@@ -267,7 +190,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
   var updateAppConfigFromRemote = function(){
     var deferred = $q.defer();
-    getCurrentAppConfig()
+    getAppConfigFromCacheOrStorage()
         .then(function(appConfig){
           if(typeof appConfig === 'undefined'){
             deferred.reject('local copy of appConfig does not exist.');
@@ -301,6 +224,10 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     syncService.canConnect()
         .then(function () {
           updateAppConfigFromRemote()
+              .then(function(){
+                var DELAY_BEFORE_REMOVAL = 10000;//10 secs
+                growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: DELAY_BEFORE_REMOVAL });
+              })
               .finally(function () {
                 syncService.backgroundSync()
                     .finally(function () {

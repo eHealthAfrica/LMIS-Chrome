@@ -11,8 +11,8 @@
             <span
               class="label"
               ng-class="{
-                'label-success': status.online,
-                'label-danger': !status.online
+                'label-success': status.label === states.online,
+                'label-danger': status.label === states.offline
               }"
               ng-bind="status.label">
             </span>
