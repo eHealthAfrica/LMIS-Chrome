@@ -9,17 +9,16 @@
         </div>
 
         <div class="product-chart">
-          <div ng-repeat="series in productTypesChart" class="product-series">
-            <nvd3-bullet-chart
-              data="series"
-              id="series-{{$index}}"
-              width="420"
-              height="120"
-              tooltips="true"
-              tooltipcontent="tooltipFormatter()"
-            >
-            </nvd3-bullet-chart>
-          </div>
+          <nvd3-multi-bar-horizontal-chart
+            data="productTypesChart"
+            id="product-types-chart"
+            height="200"
+            tooltips="true"
+            showXAxis="true"
+            showYAxis="true"
+            stacked="true"
+          >
+          </nvd3-multi-bar-horizontal-chart>
         </div>
 
       </div>

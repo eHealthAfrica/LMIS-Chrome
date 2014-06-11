@@ -107,22 +107,20 @@ angular.module('lmisChromeApp')
             }
           },
           controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
-            /*
             var keys = [
               {
-                key: 'daysToReorder',
-                label: i18n('daysLeft'),
+                key: 'daysAboveReorder',
+                label: i18n('daysAbove'),
                 color:  '#9954bb'
               },
               {
-                key: 'daysOfStock',
-                color: '#666666',
-                label: i18n('daysStock')
+                key: 'daysBelowReorder',
+                label: i18n('daysBelow'),
+                color: '#666666'
               }
             ];
-            */
 
-            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory) {
+            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
               var deferred = $q.defer();
 
               var productTypeInfo = {};
@@ -150,7 +148,6 @@ angular.module('lmisChromeApp')
                           function (stockLevel) {
                             var uuid = types[i].uuid;
                             productTypeInfo[uuid].daysOfStock = stockLevel;
-                            productTypeInfo[uuid].reorderPoint = inventoryRulesFactory.reorderPointByProductType(uuid);
                           },
                           function (err) {
                             deferred.reject(err);
@@ -187,7 +184,6 @@ angular.module('lmisChromeApp')
 
                   return stockOutList.filter(function(element){
                     var dayTest = function () {
-                      var now = new Date().getTime();
                       var createdTime = new Date(element.created).getTime();
                       var stockCountDueDate  = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
                       return stockCountDueDate.getTime() < createdTime;
@@ -205,11 +201,15 @@ angular.module('lmisChromeApp')
                   if(product.daysToReorder <= 0 && filtered.length === 0){
                     stockOutWarning.push(uuid);
                   }
+
                   values.push({
                     label: product.name,
-                    daysOfStock: Math.floor(product.daysOfStock),
-                    reorderPoint: Math.floor(product.reorderPoint),
-                    daysToReorder: Math.floor(product.daysToReorder)
+                    daysAboveReorder: inventoryRulesFactory.daysAboveReorder(
+                      product.daysOfStock, product.daysToReorder
+                    ),
+                    daysBelowReorder: inventoryRulesFactory.daysBelowReorder(
+                      product.daysOfStock, product.daysToReorder
+                    )
                   });
                 }
                 $scope.stockOutWarning = stockOutWarning;
@@ -222,37 +222,7 @@ angular.module('lmisChromeApp')
                   };
                 };
 
-                // $scope.productTypesChart = dashboardfactory.chart(keys, values);
-
-                $scope.tooltipFormatter = function() {
-                  return function(key, x, y) {
-                    if(x === 'Maximum') {
-                      x = 'Reorder';
-                    }
-                    return '<p>' + x + ': ' + y + ' days</p>';
-                  };
-                };
-
-                // Prevent overflowing on chart label due to width constraints
-                var labelFormatter = function(label) {
-                  var max = 5;
-                  if(label.length > max) {
-                    label = label.substr(0, max - 1) + '…';
-                  }
-                  return label;
-                };
-
-                $scope.productTypesChart = [];
-                var min = 0, mean = 0, max = 0;
-                values.forEach(function(value) {
-                  max = value.reorderPoint;
-                  $scope.productTypesChart.push({
-                    title: labelFormatter(value.label),
-                    ranges: [min, mean, max],
-                    measures: [value.daysOfStock],
-                    markers: [value.daysOfStock]
-                  });
-                });
+                $scope.productTypesChart = dashboardfactory.chart(keys, values);
 
               }, function(err) {
                 console.log('getProductTypeCounts Error: '+err);

@@ -16,6 +16,10 @@ angular.module('lmisChromeApp')
       return Math.floor(Math.random()*(max-min+1)+min);
     };
 
+    Number.prototype.clamp = function(min, max) {
+      return Math.min(Math.max(this, min), max);
+    };
+
     /**
      * This function returns the current amount of productType at facility
      * maaaaan this would be a lot easier with a relational datasource or ORM
@@ -359,6 +363,16 @@ angular.module('lmisChromeApp')
       return inventory;
     };
 
+    var daysAboveReorder = function(daysOfStock, reorderPoint) {
+      var above = (daysOfStock - reorderPoint).clamp(0, daysOfStock);
+      return Math.floor(above);
+    };
+
+    var daysBelowReorder = function(daysOfStock, reorderPoint) {
+      var below = daysOfStock.clamp(0, reorderPoint);
+      return Math.floor(below);
+    };
+
     return {
       leadTime: leadTime,
       consumption: consumption,
@@ -369,6 +383,8 @@ angular.module('lmisChromeApp')
       getStockLevel: getStockLevel,
       daysToReorderPoint: daysToReorderPoint,
       daysOfStock: daysOfStock,
-      reorderPointByProductType: reorderPointByProductTypeDays
+      reorderPointByProductType: reorderPointByProductTypeDays,
+      daysAboveReorder: daysAboveReorder,
+      daysBelowReorder: daysBelowReorder
     };
   });

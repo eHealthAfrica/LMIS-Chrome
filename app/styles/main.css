@@ -220,19 +220,7 @@ tr.disabled, tr.disabled span.text-info{
 }
 .product-chart {
   margin: 0 auto;
-  padding: 0 10px 40px;
-}
-.product-series {
-  height: 85px;
-}
-.product-series .nvd3.nv-bullet .nv-measure {
-  fill: black !important;
-}
-.product-series .nvd3.nv-bullet .nv-range {
-  fill: #ff0039;
-}
-.product-series .nvd3.nv-bullet .nv-markerTriangle {
-  display: none;
+  padding-left: 40px;
 }
 .highlight-selected-item {
   background-color: #449d44;
