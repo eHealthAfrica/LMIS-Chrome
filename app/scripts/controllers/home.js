@@ -109,18 +109,18 @@ angular.module('lmisChromeApp')
           controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
             var keys = [
               {
-                key: 'daysToReorder',
-                label: i18n('daysLeft'),
+                key: 'daysAboveReorder',
+                label: i18n('daysAbove'),
                 color:  '#9954bb'
               },
               {
-                key: 'daysOfStock',
-                color: '#666666',
-                label: i18n('daysStock')
+                key: 'daysBelowReorder',
+                label: i18n('daysBelow'),
+                color: '#666666'
               }
             ];
 
-            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory) {
+            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
               var deferred = $q.defer();
 
               var productTypeInfo = {};
@@ -184,7 +184,6 @@ angular.module('lmisChromeApp')
 
                   return stockOutList.filter(function(element){
                     var dayTest = function () {
-                      var now = new Date().getTime();
                       var createdTime = new Date(element.created).getTime();
                       var stockCountDueDate  = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
                       return stockCountDueDate.getTime() < createdTime;
@@ -203,13 +202,14 @@ angular.module('lmisChromeApp')
                     stockOutWarning.push(uuid);
                   }
 
-                  var daysOfStock = Math.floor(product.daysOfStock),
-                     daysToReorder = Math.floor(product.daysToReorder);
-
                   values.push({
                     label: product.name,
-                    daysOfStock: daysOfStock - daysToReorder >= 0 ? daysOfStock - daysToReorder : 0,
-                    daysToReorder: daysOfStock > daysToReorder ? daysToReorder : daysOfStock
+                    daysAboveReorder: inventoryRulesFactory.daysAboveReorder(
+                      product.daysOfStock, product.daysToReorder
+                    ),
+                    daysBelowReorder: inventoryRulesFactory.daysBelowReorder(
+                      product.daysOfStock, product.daysToReorder
+                    )
                   });
                 }
                 $scope.stockOutWarning = stockOutWarning;
