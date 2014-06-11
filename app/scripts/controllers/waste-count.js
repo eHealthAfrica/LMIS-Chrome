@@ -97,13 +97,13 @@ angular.module('lmisChromeApp')
            initWasteCount(wasteCount);
         });
 
-    $scope.$watch('reasonQuantity', function(newValue){
-      if(angular.isDefined(newValue)){
+    $scope.change = function(){
+      if(angular.isDefined($scope.reasonQuantity)){
         initReason();
         $scope.wasteCount.discarded[$scope.productKey] = $scope.reasonQuantity;
         $scope.wasteCount.reason[$scope.productKey][$scope.selectedReason]= $scope.reasonQuantity;
       }
-    });
+    };
 
     $scope.loadSelected = function(){
       initReason();
