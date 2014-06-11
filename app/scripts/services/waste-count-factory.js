@@ -45,14 +45,18 @@ angular.module('lmisChromeApp')
     var getWasteCountByDate = function (date) {
       date = date instanceof Date ? isoDate(date.toJSON()) : isoDate(date);
       var deferred = $q.defer();
-      storageService.all(DB_NAME).then(function (wasteCounts) {
-        wasteCounts = wasteCounts
-            .filter(function(countRow){
-              return isoDate(countRow.countDate) === isoDate(date);
-            });
-        var wasteCount = (wasteCounts.length) ? wasteCounts[0] : null;
-        deferred.resolve(wasteCount);
-      });
+      storageService.all(DB_NAME)
+          .then(function (wasteCounts) {
+            wasteCounts = wasteCounts
+                .filter(function(countRow){
+                  return isoDate(countRow.countDate) === isoDate(date);
+                });
+            var wasteCount = (wasteCounts.length) ? wasteCounts[0] : null;
+            deferred.resolve(wasteCount);
+          })
+          .catch(function(reason){
+            deferred.reject(reason);
+          });
       return deferred.promise;
     };
 
@@ -78,9 +82,7 @@ angular.module('lmisChromeApp')
         var arr = [];
 
         if(Object.prototype.toString.call(wasteCount) === '[object Object]'){
-
           for(var i in wasteCount.discarded){
-
             if(angular.isDefined(facilityProductProfiles[i])){
               var uom = facilityProductProfiles[i].presentation.uom.symbol;
               arr.push({
