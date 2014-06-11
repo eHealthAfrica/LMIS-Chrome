@@ -4,7 +4,7 @@ describe('storageService', function () {
 
   var deferred, storageService, chromeStorageApi, rootScope, templateCache, resolvedValue, record, $q;
 
-  beforeEach(module('lmisChromeApp'));
+  beforeEach(module('lmisChromeApp', 'i18nMocks'));
 
     // Initialize the state
   beforeEach(inject(function($templateCache) {

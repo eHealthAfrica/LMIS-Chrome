@@ -2,7 +2,7 @@
 
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, syncService,
                                                                       productProfileFactory, facilityFactory, utility,
-                                                                      cacheService, reminderFactory) {
+                                                                      cacheService, $filter, reminderFactory, growl, i18n) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   var cache = cacheService.getCache();
@@ -224,6 +224,10 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     syncService.canConnect()
         .then(function () {
           updateAppConfigFromRemote()
+              .then(function(){
+                var DELAY_BEFORE_REMOVAL = 10000;//10 secs
+                growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: DELAY_BEFORE_REMOVAL });
+              })
               .finally(function () {
                 syncService.backgroundSync()
                     .finally(function () {
