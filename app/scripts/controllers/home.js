@@ -111,7 +111,7 @@ angular.module('lmisChromeApp')
               }
             }
           },
-          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountDue) {
+          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountDue, stockCountFactory) {
             /*
             var keys = [
               {
@@ -127,7 +127,7 @@ angular.module('lmisChromeApp')
             ];
             */
 
-            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
+            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory) {
               var deferred = $q.defer();
 
               var productTypeInfo = {};
@@ -185,22 +185,17 @@ angular.module('lmisChromeApp')
 
             $scope.showChart = !isStockCountDue;
             if($scope.showChart){
-              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService).then(
+              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory).then(
                 function(productTypeCounts) {
                 var values = [], product = {}, stockOutWarning = [];
                 var filterStockCountWithNoStockOutRef = function(stockOutList){
 
                   return stockOutList.filter(function(element){
                     var dayTest = function () {
-                      var now = new Date().getTime(),
-                          createdTime = new Date(element.created).getTime(),
-                          currentReminderDate = utility.getWeekRangeByDate(new Date(), appConfig.reminderDay).reminderDate,
-                          lastCountDate = currentReminderDate.getTime() - (1000 * 60 * 60 * 24 * appConfig.stockCountInterval);
-                      if (now >= currentReminderDate.getTime()) {
-                        return (currentReminderDate.getTime() < createdTime);
-                      } else {
-                        return (lastCountDate < createdTime );
-                      }
+                      var now = new Date().getTime();
+                      var createdTime = new Date(element.created).getTime();
+                      var stockCountDueDate  = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
+                      return stockCountDueDate.getTime() < createdTime;
                     };
                     return element.productType.uuid === uuid && dayTest();
                   });
