@@ -260,4 +260,9 @@ tr.disabled, tr.disabled span.text-info{
 }
 .dry-store-safety-boxes, .dry-store-syringes{
   border-color: #4682B4;
+  font-weight: bold;
+}
+.growl-container.growl-fixed {
+  width: 90%;
+  max-width: 400px;
 }

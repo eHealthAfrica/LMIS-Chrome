@@ -11,11 +11,10 @@ angular.module('lmisChromeApp')
         appConfig: function(appConfigService){
           return appConfigService.getCurrentAppConfig();
         },
-        isStockCountReminderDue: function(appConfigService, appConfig){
+        isStockCountReminderDue: function(stockCountFactory, appConfig){
           if(typeof appConfig !== 'undefined'){
-            return appConfigService.isStockCountDue(appConfig.reminderDay);
+            return stockCountFactory.isStockCountDue(appConfig.stockCountInterval, appConfig.reminderDay);
           }
-          return false;
         }
       },
       controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope, reminderFactory, i18n) {
@@ -23,14 +22,11 @@ angular.module('lmisChromeApp')
           $state.go('appConfigWelcome');
         }else{
           $scope.facility = appConfig.appFacility.name;
-          if(typeof $rootScope.isStockCountDue === 'undefined' || $rootScope.isStockCountDue === true){
-            $rootScope.isStockCountDue = isStockCountReminderDue;
-            if($rootScope.isStockCountDue === true){
-              //FIXME: move stock count reminder object to a factory function, stock count?? or reminderFactory.
-              reminderFactory.warning({id: reminderFactory.STOCK_COUNT_REMINDER_ID, text: i18n('stockCountReminderMsg'),
+          if (isStockCountReminderDue === true) {
+            //FIXME: move stock count reminder object to a factory function, stock count?? or reminderFactory.
+            reminderFactory.warning({id: reminderFactory.STOCK_COUNT_REMINDER_ID, text: i18n('stockCountReminderMsg'),
               link: 'stockCountForm', icon: 'views/reminder/partial/stock-count-icon.html'});
-            }
-          }else{
+          } else {
             reminderFactory.remove(reminderFactory.STOCK_COUNT_REMINDER_ID);
           }
         }
@@ -108,22 +104,9 @@ angular.module('lmisChromeApp')
           resolve: {
             stockOutList: function(stockOutBroadcastFactory){
               return stockOutBroadcastFactory.getAll();
-            },
-            stockCountIsAvailable: function(appConfigService, appConfig){
-              if(angular.isDefined(appConfig)){
-                return appConfigService.isStockCountDue(appConfig.reminderDay);
-              }
-              else{
-                return true;
-              }
             }
-            /**
-             * Returns an array of {name: product type name, count: total number
-             * in facility (as of last stock count)}
-             */
-
           },
-          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, stockCountIsAvailable) {
+          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
             /*
             var keys = [
               {
@@ -139,7 +122,7 @@ angular.module('lmisChromeApp')
             ];
             */
 
-            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
+            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory) {
               var deferred = $q.defer();
 
               var productTypeInfo = {};
@@ -195,24 +178,19 @@ angular.module('lmisChromeApp')
               return deferred.promise;
             };
 
-            if($rootScope.showChart === true || !stockCountIsAvailable){
-              $rootScope.showChart = true;
-              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService).then(
+            $scope.showChart = !isStockCountReminderDue;
+            if($scope.showChart){
+              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory).then(
                 function(productTypeCounts) {
                 var values = [], product = {}, stockOutWarning = [];
                 var filterStockCountWithNoStockOutRef = function(stockOutList){
 
                   return stockOutList.filter(function(element){
                     var dayTest = function () {
-                      var now = new Date().getTime(),
-                          createdTime = new Date(element.created).getTime(),
-                          currentReminderDate = utility.getWeekRangeByDate(new Date(), appConfig.reminderDay).reminderDate,
-                          lastCountDate = currentReminderDate.getTime() - (1000 * 60 * 60 * 24 * appConfig.stockCountInterval);
-                      if (now >= currentReminderDate.getTime()) {
-                        return (currentReminderDate.getTime() < createdTime);
-                      } else {
-                        return (lastCountDate < createdTime );
-                      }
+                      var now = new Date().getTime();
+                      var createdTime = new Date(element.created).getTime();
+                      var stockCountDueDate  = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
+                      return stockCountDueDate.getTime() < createdTime;
                     };
                     return element.productType.uuid === uuid && dayTest();
                   });
@@ -279,8 +257,6 @@ angular.module('lmisChromeApp')
               }, function(err) {
                 console.log('getProductTypeCounts Error: '+err);
               });
-            }else{
-              $rootScope.showChart = !stockCountIsAvailable;
             }
 
           }
