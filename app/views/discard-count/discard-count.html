@@ -1,0 +1,72 @@
+<div lmis-page-view-report="discard-count_discard-count" class="panel panel-default">
+  <div class="panel-heading">
+    <h1 class="panel-title">Discard Count <!--for the month of {{ monthList[currentMonth] }} {{ currentYear }} --></h1>
+  </div>
+  <div class="panel-body">
+    <div class="row" ng-hide="detailView">
+      <div class="col-sm-12">
+        <a class="btn btn-default" ui-sref="wasteCountForm">
+          <i class="fa fa-plus"></i> Add
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table table-bordered" ng-hide="detailView">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Done</th>
+            <th>Synced</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="row in discardCountList" ng-click="takeAction(row.countDate)">
+            <td> {{ $index + 1 }}</td>
+            <td><span class="text-info"> {{ row.countDate | date:'MMM dd, yyyy' }} </span></td>
+            <td class="text-center">
+              <i class="fa "
+                 ng-class="{'fa-check-circle text-success': row.isComplete, 'fa-times-circle text-danger': !row.isComplete}"></i>
+            </td>
+            <td class="text-center"><i class="fa "
+                                       ng-class="{'fa-check-circle text-success': row.synced, 'fa-times-circle text-danger': !row.synced}"></i>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <button ng-show="detailView" lmis-analytics-directive="detail_view" class="btn btn-default" ng-click="detailView=!detailView">Back to List</button>
+        <a lmis-analytics-directive="discard_count_form" class="btn btn-default" ui-sref="discardCountForm2({countDate: discardCount.countDate})"
+           ng-show="detailView && !editOff">
+          <i class="fa fa-edit"></i> Edit
+        </a>
+        <table class="table table-bordered" ng-show="detailView">
+          <thead>
+          <tr>
+            <th>Item</th>
+            <th>Today's Count</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="row in discardCountByType" ng-class="{'td-header': row.header}">
+            <td>
+              <div ng-class="{'child-margin': !row.header}">{{ getName(row) }}</div>
+            </td>
+            <td>
+              <span>{{ row.value }}</span>
+                      <span><ng-pluralize count="row.value"
+                                          when="
+                      {
+                      '1': '{{ row.uom }}',
+                      'other': '{{ row.uom }}s'}">
+                      </ng-pluralize>
+
+                    </span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
