@@ -10,7 +10,7 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
         '<i class="fa fa-minus"></i>' +
         '</button>' +
         '</span>' +
-        '<input type="number" min="0" class="form-control input-lg counter-input" style="padding-right: 0em" ng-model="count" required/>' +
+        '<input type="number" min="0" class="form-control input-lg counter-input" ng-change="change" style="padding-right: 0em" ng-model="count" required/>' +
         '<span class="input-group-btn">' +
         '<button id="_$counterAddBtn" class="btn btn-info counter-btn" ' +
         'type="button">' +
@@ -19,7 +19,8 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
         '</span>' +
         '</div>',
     scope: {
-      count: '=bind'
+      count: '=bind',
+      change: '=onchange'
     },
     link: function (scope, element, attr) {
       var isDown = false;

@@ -94,7 +94,7 @@
 
         <div class="form-group" ng-show="(selectedReason !== undefined &&  selectedReason !== '') && productKey !== ''">
           <label>{{ enterQuantityLabel }}</label>
-          <counter bind="reasonQuantity"></counter>
+          <counter onChange="change()" bind="reasonQuantity"></counter>
         </div>
       </div>
     </div>
