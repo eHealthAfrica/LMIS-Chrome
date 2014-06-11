@@ -104,14 +104,9 @@ angular.module('lmisChromeApp')
           resolve: {
             stockOutList: function(stockOutBroadcastFactory){
               return stockOutBroadcastFactory.getAll();
-            },
-            isStockCountDue: function (stockCountFactory, appConfig) {
-              if (typeof appConfig !== 'undefined') {
-                return stockCountFactory.isStockCountDue(appConfig.stockCountInterval, appConfig.reminderDay);
-              }
             }
           },
-          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountDue, stockCountFactory) {
+          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
             /*
             var keys = [
               {
@@ -183,7 +178,7 @@ angular.module('lmisChromeApp')
               return deferred.promise;
             };
 
-            $scope.showChart = !isStockCountDue;
+            $scope.showChart = !isStockCountReminderDue;
             if($scope.showChart){
               getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory).then(
                 function(productTypeCounts) {
