@@ -31,6 +31,10 @@ angular.module('lmisChromeApp')
 
         deviceInfo.get(success, failure);
         return deferred.promise;
+      },
+
+      isOnline: function(){
+        return $window.navigator.onLine;
       }
     };
   });
