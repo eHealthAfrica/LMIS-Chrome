@@ -1,6 +1,6 @@
-<div class="panel panel-default">
+<div lmis-page-view-report="stock_count_index" class="panel panel-default">
   <div class="panel-heading">
-    <h1 class="panel-title" i18n="stockCountHistory"></h1>
+    <h1 class="panel-title" >Stock Count for the month of {{ monthList[currentMonth] }} {{ currentYear }}</h1>
   </div>
   <div class="panel-body">
     <div class="row">
@@ -9,22 +9,22 @@
           <thead>
           <tr>
             <th>#</th>
-            <th i18n="date"></th>
-            <th i18n="done"></th>
-            <th i18n="synced"></th>
+            <th>Date</th>
+            <th>Done</th>
+            <th>Synced</th>
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="stockCount in stockCountsByCreatedDate" ng-class="{'pointer':!missedEntry(date), 'disabled':missedEntry(date) }"
-              ng-click="showStockCountFormByDate(stockCount.countDate)">
+          <tr ng-repeat="date in dateList" ng-class="{'pointer':!missedEntry(date), 'disabled':missedEntry(date) }"
+              ng-click="takeAction(date)">
             <td> {{ $index + 1 }}</td>
-            <td><span class="text-info"> {{ stockCount.created | date:'MMM dd, yyyy' }} </span></td>
+            <td><span class="text-info"> {{ date | date:'MMM dd, yyyy' }} </span></td>
             <td class="text-center">
               <i class="fa "
-                 ng-class="{'fa-check-circle text-success': stockCount.isComplete, 'fa-times-circle text-danger': !stockCount.isComplete}"></i>
+                 ng-class="{'fa-check-circle text-success': stockCountByDate[date].isComplete, 'fa-times-circle text-danger': !stockCountByDate[date].isComplete}"></i>
             </td>
             <td class="text-center"><i class="fa "
-                                       ng-class="{'fa-check-circle text-success': stockCount.synced, 'fa-times-circle text-danger': !stockCount.synced}"></i>
+                                       ng-class="{'fa-check-circle text-success': stockCountByDate[date].synced, 'fa-times-circle text-danger': !stockCountByDate[date].synced}"></i>
             </td>
           </tr>
           </tbody>

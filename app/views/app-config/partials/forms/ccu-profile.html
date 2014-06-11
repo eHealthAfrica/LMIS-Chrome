@@ -1,32 +1,38 @@
-<div class="col-md-12">
+<div lmis-page-view-report="app-config_partials_forms_ccu-profile" class="col-md-15">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title" i18n="facilityCcuProfile"></h4>
+      </div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title" i18n="selectFacilityCcuProfile"></h4>
-    </div>
-    <div ng-include="'views/partials/search.html'"></div>
-    <div class="panel-body"></div>
-    <div ng-repeat="ccuCategory in ccuProfilesCategories | filter:search">
-
-      <div class="list-group">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">{{ spaceOutUpperCaseWords(ccuCategory) }}</h4>
-          </div>
-        </div>
-        <div ng-repeat="ccuProfile in ccuProfilesGroupedByCategory[ccuCategory] | filter:search" ng-class="{
-          'highlight-selected-item': preSelectCcuProfiles[ccuProfile.dhis2_modelid], 'list-group-item': true }">
-          <label>
-            <input type="checkbox" ng-model="ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]"
-                   ng-true-value="{{ ccuProfile }}"
-                   ng-false-value="{{ {'dhis2_modelid': ccuProfile.dhis2_modelid, deSelected: true} }}"
-                   ng-change="onCcuSelection(ccuProfileCheckBoxes[ccuProfile.dhis2_modelid])"
-                   ng-checked="preSelectCcuProfiles[ccuProfile.dhis2_modelid]"/>
-            {{ ccuProfile.Manufacturer }} - {{ ccuProfile.ModelName }}
-          </label>
-        </div>
+      <div class="list-group pre-scrollable">
+        <li class="list-group-item" ng-repeat="ccuProfile in appConfig.selectedCcuProfiles track by $index">
+          {{ ccuProfile.Manufacturer }} {{ ccuProfile.ModelName }}
+        </li>
       </div>
     </div>
   </div>
 
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title" i18n="selectFacilityCcuProfile"></h4>
+      </div>
+      <div ng-include="'views/partials/search.html'"></div>
+      <div class="panel-body"></div>
+      <div class="list-group pre-scrollable">
+        <div class="list-group-item"
+             ng-repeat="ccuProfile in ccuProfiles | filter:search track by ccuProfile.dhis2_modelid">
+        <label>
+          <input type="checkbox" ng-model="ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]"
+                 ng-true-value="{{ ccuProfile }}"
+                 ng-false-value="{{ {'dhis2_modelid': ccuProfile.dhis2_modelid, deSelected: true} }}"
+                 ng-change="onCcuSelection(ccuProfileCheckBoxes[ccuProfile.dhis2_modelid])"
+                 ng-checked="preSelectCcuProfiles[ccuProfile.dhis2_modelid]"/>
+          {{ ccuProfile.Manufacturer }} {{ ccuProfile.ModelName }}
+        </label>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
