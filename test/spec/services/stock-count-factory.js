@@ -424,26 +424,29 @@ describe('Service stockCountFactory', function () {
 
   });
 
-   it('i expect isStockCountDue() to return True if interval is BI_WEEKLY and most recent stock count is not within bi-weekly range and complete.', function () {
+   it('i expect isStockCountDue() to return False if interval is BI_WEEKLY and bi-weekly stock count due date is  before most recent stock count date.', function () {
     var dfd = $q.defer();
     var today = new Date();
     var reminderDay = 5;//friday
-    var weeklyStockCountDateInfo = utility.getWeekRangeByDate(today, 5);
+    var weeklyStockCountDateInfo = utility.getWeekRangeByDate(today, reminderDay);
      var rmDate = weeklyStockCountDateInfo.reminderDate;
 
     var stockCount = {
-      countDate: new Date(rmDate.getFullYear(), rmDate.getMonth(), rmDate.getDate() - reminderFactory.BI_WEEKLY), //two weeks ago
+      countDate: new Date(rmDate.getFullYear(), rmDate.getMonth(), rmDate.getDate() + reminderDay), //a day after due date
       isComplete: 1
     };
     spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
+     console.log(rmDate);
+     console.log(stockCount.countDate);
+     expect(rmDate.getTime()).toBeLessThan(stockCount.countDate)
 
     runs(function () {
-      return stockCountFactory.isStockCountDue(reminderFactory.BI_WEEKLY, today.getDay())
+      return stockCountFactory.isStockCountDue(reminderFactory.BI_WEEKLY, reminderDay)
           .then(function (result) {
-            expect(result).toBeTruthy();
+            expect(result).toBeFalsy();
           });
     });
 
@@ -482,7 +485,7 @@ describe('Service stockCountFactory', function () {
      var rmDate = weeklyStockCountDateInfo.reminderDate;
 
     var stockCount = {
-      countDate: new Date(rmDate.getFullYear(), rmDate.getMonth(), rmDate.getDate() - reminderFactory.WEEKLY), //last week
+      countDate: new Date(rmDate.getFullYear(), rmDate.getMonth(), rmDate.getDate() + 1), //last week
       isComplete: 1
     };
     spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
