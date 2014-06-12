@@ -355,5 +355,13 @@ angular.module('lmisChromeApp')
         }
         $scope.inventory = inventory;
       }
+    })
+    .state('contact', {
+      parent: 'root.index',
+      url: '/contact',
+      templateUrl: 'views/home/contact.html',
+      controller: function($scope) {
+
+      }
     });
   });
