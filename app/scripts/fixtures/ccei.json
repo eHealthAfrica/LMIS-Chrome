@@ -1,5 +1,4 @@
-{
-  "18887": {
+{"8a529495c6076aed9f1850d53d02696b": {
     "name": "E003001 + TCW 2000 DC",
     "dhis2_modelid": 18887,
     "dhis2_modelattributeid": 51,
@@ -13,41 +12,24 @@
     "RefGrossVolume": "118",
     "RefNetVolume": "76",
     "FreezeGrossVolume": "42",
-    "FreezeNetVolume": "30"
-  },
-  "18888": {
-    "name": "E003002 + HBD-116",
-    "dhis2_modelid": 18888,
-    "dhis2_modelattributeid": 51,
-    "CatalogID": "E003002",
-    "ModelName": "HBD-116",
-    "Manufacturer": "Haier",
-    "RefPowerSource": "Electricity",
-    "RefType": "ChestFreezer",
-    "ClimateZone": "Hot",
-    "DataSource": "PQS",
-    "RefGrossVolume": "0",
-    "RefNetVolume": "0",
-    "FreezeGrossVolume": "121",
-    "FreezeNetVolume": "92"
-  },
-  "18889": {
-    "name": "E003003 + HBD-286",
-    "dhis2_modelid": 18889,
-    "dhis2_modelattributeid": 51,
-    "CatalogID": "E003003",
-    "ModelName": "HBD-286",
-    "Manufacturer": "Haier",
-    "RefPowerSource": "Electricity",
-    "RefType": "ChestFreezer",
-    "ClimateZone": "Hot",
-    "DataSource": "PQS",
-    "RefGrossVolume": "0",
-    "RefNetVolume": "0",
-    "FreezeGrossVolume": "298",
-    "FreezeNetVolume": "224"
-  },
-  "18890": {
+    "FreezeNetVolume": "30",
+    "_id": "8a529495c6076aed9f1850d53d02696b",
+    "_rev": "6-7febf38de0db42347522e9e06adc0ef0",
+    "uuid": "8a529495c6076aed9f1850d53d02696b"
+}, "8a529495c6076aed9f1850d53d02789f": {
+    "_id": "8a529495c6076aed9f1850d53d02789f",
+    "_rev": "5-aba1183f3a5d3d6e70a2482fab6b1578",
+    "uuid": "8a529495c6076aed9f1850d53d02789f",
+    "name": "Other",
+    "dhis2_modelid": 0,
+    "dhis2_modelattributeid": 0,
+    "CatalogID": "other",
+    "RefType": "Others",
+    "Cold Box Type": "Other",
+    "Manufacturer": "Other",
+    "ModelName": "Other",
+    "Net Storage": "0"
+}, "8a529495c6076aed9f1850d53d027b71": {
     "name": "E003004 + TFW 800",
     "dhis2_modelid": 18890,
     "dhis2_modelattributeid": 51,
@@ -61,9 +43,29 @@
     "RefGrossVolume": "0",
     "RefNetVolume": "0",
     "FreezeGrossVolume": "247",
-    "FreezeNetVolume": "0"
-  },
-  "18891": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d027b71",
+    "_rev": "3-9ff364ff49402a484f79976cb8708340",
+    "uuid": "8a529495c6076aed9f1850d53d027b71"
+}, "8a529495c6076aed9f1850d53d028023": {
+    "name": "E003002 + HBD-116",
+    "dhis2_modelid": 18888,
+    "dhis2_modelattributeid": 51,
+    "CatalogID": "E003002",
+    "ModelName": "HBD-116",
+    "Manufacturer": "Haier",
+    "RefPowerSource": "Electricity",
+    "RefType": "ChestFreezer",
+    "ClimateZone": "Hot",
+    "DataSource": "PQS",
+    "RefGrossVolume": "0",
+    "RefNetVolume": "0",
+    "FreezeGrossVolume": "121",
+    "FreezeNetVolume": "92",
+    "_id": "8a529495c6076aed9f1850d53d028023",
+    "_rev": "4-428c62efaa8dfa2e81ef2cbb30ce0cbb",
+    "uuid": "8a529495c6076aed9f1850d53d028023"
+}, "8a529495c6076aed9f1850d53d028ad5": {
     "name": "E003005 + HBC-70",
     "dhis2_modelid": 18891,
     "dhis2_modelattributeid": 51,
@@ -77,25 +79,11 @@
     "RefGrossVolume": "71",
     "RefNetVolume": "45",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18892": {
-    "name": "E003006 + HBC-200",
-    "dhis2_modelid": 18892,
-    "dhis2_modelattributeid": 51,
-    "CatalogID": "E003006",
-    "ModelName": "HBC-200",
-    "Manufacturer": "Haier",
-    "RefPowerSource": "Electricity",
-    "RefType": "IceLinedRefrigerator",
-    "ClimateZone": "Hot",
-    "DataSource": "PQS",
-    "RefGrossVolume": "198",
-    "RefNetVolume": "90",
-    "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18893": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d028ad5",
+    "_rev": "3-707ec791251b2000b847d0ce454841c6",
+    "uuid": "8a529495c6076aed9f1850d53d028ad5"
+}, "8a529495c6076aed9f1850d53d028dd6": {
     "name": "E003007 + MK304",
     "dhis2_modelid": 18893,
     "dhis2_modelattributeid": 51,
@@ -109,9 +97,29 @@
     "RefGrossVolume": "218",
     "RefNetVolume": "105",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18894": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d028dd6",
+    "_rev": "3-42f4f48c7ac17a129e35eff87b422654",
+    "uuid": "8a529495c6076aed9f1850d53d028dd6"
+}, "8a529495c6076aed9f1850d53d029d47": {
+    "name": "E003006 + HBC-200",
+    "dhis2_modelid": 18892,
+    "dhis2_modelattributeid": 51,
+    "CatalogID": "E003006",
+    "ModelName": "HBC-200",
+    "Manufacturer": "Haier",
+    "RefPowerSource": "Electricity",
+    "RefType": "IceLinedRefrigerator",
+    "ClimateZone": "Hot",
+    "DataSource": "PQS",
+    "RefGrossVolume": "198",
+    "RefNetVolume": "90",
+    "FreezeGrossVolume": "0",
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d029d47",
+    "_rev": "3-1c1ac278a17085caa80c69c8243fe72e",
+    "uuid": "8a529495c6076aed9f1850d53d029d47"
+}, "8a529495c6076aed9f1850d53d02a6fa": {
     "name": "E003008 + TCW 3000 DC",
     "dhis2_modelid": 18894,
     "dhis2_modelattributeid": 51,
@@ -125,9 +133,11 @@
     "RefGrossVolume": "204",
     "RefNetVolume": "109.5",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18895": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d02a6fa",
+    "_rev": "3-5d21f0281b3f16730a69268195f11203",
+    "uuid": "8a529495c6076aed9f1850d53d02a6fa"
+}, "8a529495c6076aed9f1850d53d02aafd": {
     "name": "E003009 + MK S044",
     "dhis2_modelid": 18895,
     "dhis2_modelattributeid": 51,
@@ -141,9 +151,11 @@
     "RefGrossVolume": "48",
     "RefNetVolume": "19.5",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18896": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d02aafd",
+    "_rev": "3-95a3f1404d2345b65e22c4dcdf9e71ae",
+    "uuid": "8a529495c6076aed9f1850d53d02aafd"
+}, "8a529495c6076aed9f1850d53d02ac9a": {
     "name": "E003010 + MK 074",
     "dhis2_modelid": 18896,
     "dhis2_modelattributeid": 51,
@@ -157,9 +169,29 @@
     "RefGrossVolume": "54",
     "RefNetVolume": "16",
     "FreezeGrossVolume": "10",
-    "FreezeNetVolume": "0"
-  },
-  "18897": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d02ac9a",
+    "_rev": "3-794dc7f64ba0d6fc4e742d9b08b7a536",
+    "uuid": "8a529495c6076aed9f1850d53d02ac9a"
+}, "8a529495c6076aed9f1850d53d02b996": {
+    "name": "E003003 + HBD-286",
+    "dhis2_modelid": 18889,
+    "dhis2_modelattributeid": 51,
+    "CatalogID": "E003003",
+    "ModelName": "HBD-286",
+    "Manufacturer": "Haier",
+    "RefPowerSource": "Electricity",
+    "RefType": "ChestFreezer",
+    "ClimateZone": "Hot",
+    "DataSource": "PQS",
+    "RefGrossVolume": "0",
+    "RefNetVolume": "0",
+    "FreezeGrossVolume": "298",
+    "FreezeNetVolume": "224",
+    "_id": "8a529495c6076aed9f1850d53d02b996",
+    "_rev": "3-c331d2521755100e20e68b44aa8ebba0",
+    "uuid": "8a529495c6076aed9f1850d53d02b996"
+}, "8a529495c6076aed9f1850d53d02c116": {
     "name": "E003011 + MK 204",
     "dhis2_modelid": 18897,
     "dhis2_modelattributeid": 51,
@@ -173,9 +205,11 @@
     "RefGrossVolume": "136",
     "RefNetVolume": "75",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18898": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d02c116",
+    "_rev": "3-4b950890b5bd73892d3975aba3e877bb",
+    "uuid": "8a529495c6076aed9f1850d53d02c116"
+}, "8a529495c6076aed9f1850d53d02cae5": {
     "name": "E003012 + MK 404",
     "dhis2_modelid": 18898,
     "dhis2_modelattributeid": 51,
@@ -189,25 +223,11 @@
     "RefGrossVolume": "240",
     "RefNetVolume": "135",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18899": {
-    "name": "E003013 + BLF 100 AC",
-    "dhis2_modelid": 18899,
-    "dhis2_modelattributeid": 51,
-    "CatalogID": "E003013",
-    "ModelName": "BLF 100 AC",
-    "Manufacturer": "True Energy",
-    "RefPowerSource": "Electricity",
-    "RefType": "IceLinedRefrigerator",
-    "ClimateZone": "Hot",
-    "DataSource": "PQS",
-    "RefGrossVolume": "125",
-    "RefNetVolume": "103",
-    "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18900": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d02cae5",
+    "_rev": "3-4107dcfa4acf1a15a51182a9f2a35fcd",
+    "uuid": "8a529495c6076aed9f1850d53d02cae5"
+}, "8a529495c6076aed9f1850d53d02d5d3": {
     "name": "E003014 + TCW2000 AC",
     "dhis2_modelid": 18900,
     "dhis2_modelattributeid": 51,
@@ -221,9 +241,29 @@
     "RefGrossVolume": "60",
     "RefNetVolume": "99",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "43"
-  },
-  "18901": {
+    "FreezeNetVolume": "43",
+    "_id": "8a529495c6076aed9f1850d53d02d5d3",
+    "_rev": "3-89949731ff7d2fa27f2ebe099f98b3bd",
+    "uuid": "8a529495c6076aed9f1850d53d02d5d3"
+}, "8a529495c6076aed9f1850d53d02e554": {
+    "name": "E003013 + BLF 100 AC",
+    "dhis2_modelid": 18899,
+    "dhis2_modelattributeid": 51,
+    "CatalogID": "E003013",
+    "ModelName": "BLF 100 AC",
+    "Manufacturer": "True Energy",
+    "RefPowerSource": "Electricity",
+    "RefType": "IceLinedRefrigerator",
+    "ClimateZone": "Hot",
+    "DataSource": "PQS",
+    "RefGrossVolume": "125",
+    "RefNetVolume": "103",
+    "FreezeGrossVolume": "0",
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d02e554",
+    "_rev": "3-c23b0458f827d9689bdb79e78de3cb16",
+    "uuid": "8a529495c6076aed9f1850d53d02e554"
+}, "8a529495c6076aed9f1850d53d02e9ef": {
     "name": "E003015 + HBC-340",
     "dhis2_modelid": 18901,
     "dhis2_modelattributeid": 51,
@@ -237,9 +277,11 @@
     "RefGrossVolume": "340",
     "RefNetVolume": "200",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18902": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d02e9ef",
+    "_rev": "3-d8f2700c42c41294249636c84ec6a30c",
+    "uuid": "8a529495c6076aed9f1850d53d02e9ef"
+}, "8a529495c6076aed9f1850d53d02f170": {
     "name": "E003016 + PS65i",
     "dhis2_modelid": 18902,
     "dhis2_modelattributeid": 51,
@@ -253,9 +295,11 @@
     "RefGrossVolume": "61",
     "RefNetVolume": "37.5",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18903": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d02f170",
+    "_rev": "3-730fca8ce940047009defe7aeb0ac6dc",
+    "uuid": "8a529495c6076aed9f1850d53d02f170"
+}, "8a529495c6076aed9f1850d53d02fb49": {
     "name": "E003017 + TCW3000 AC",
     "dhis2_modelid": 18903,
     "dhis2_modelattributeid": 51,
@@ -269,9 +313,11 @@
     "RefGrossVolume": "204",
     "RefNetVolume": "150",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18904": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d02fb49",
+    "_rev": "3-3c6f6de50542d1fa960c65c30f516ee0",
+    "uuid": "8a529495c6076aed9f1850d53d02fb49"
+}, "8a529495c6076aed9f1850d53d03052b": {
     "name": "E003018 + HBC-60",
     "dhis2_modelid": 18904,
     "dhis2_modelattributeid": 51,
@@ -285,9 +331,11 @@
     "RefGrossVolume": "50",
     "RefNetVolume": "21",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18905": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d03052b",
+    "_rev": "3-b77cccb8f23a4826d16d54f0e6ae23da",
+    "uuid": "8a529495c6076aed9f1850d53d03052b"
+}, "8a529495c6076aed9f1850d53d030c3a": {
     "name": "E3100M + FCW 200",
     "dhis2_modelid": 18905,
     "dhis2_modelattributeid": 51,
@@ -301,9 +349,11 @@
     "RefGrossVolume": "0",
     "RefNetVolume": "0",
     "FreezeGrossVolume": "180",
-    "FreezeNetVolume": "144"
-  },
-  "18906": {
+    "FreezeNetVolume": "144",
+    "_id": "8a529495c6076aed9f1850d53d030c3a",
+    "_rev": "3-7f1eb73182c6184f5a5e90c624de1463",
+    "uuid": "8a529495c6076aed9f1850d53d030c3a"
+}, "8a529495c6076aed9f1850d53d031a92": {
     "name": "E3101M + PVR150",
     "dhis2_modelid": 18906,
     "dhis2_modelattributeid": 51,
@@ -317,9 +367,11 @@
     "RefGrossVolume": "105",
     "RefNetVolume": "30",
     "FreezeGrossVolume": "38",
-    "FreezeNetVolume": "0"
-  },
-  "18907": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d031a92",
+    "_rev": "3-3867a700b2cda563ca4b3b355d6e1ddb",
+    "uuid": "8a529495c6076aed9f1850d53d031a92"
+}, "8a529495c6076aed9f1850d53d031d40": {
     "name": "E3102M + GR 265 EK",
     "dhis2_modelid": 18907,
     "dhis2_modelattributeid": 51,
@@ -333,9 +385,11 @@
     "RefGrossVolume": "0",
     "RefNetVolume": "0",
     "FreezeGrossVolume": "215",
-    "FreezeNetVolume": "16"
-  },
-  "18908": {
+    "FreezeNetVolume": "16",
+    "_id": "8a529495c6076aed9f1850d53d031d40",
+    "_rev": "3-58fbeef0baac04dab602e67f133b75c1",
+    "uuid": "8a529495c6076aed9f1850d53d031d40"
+}, "8a529495c6076aed9f1850d53d031f3e": {
     "name": "E3103M + VC-65 F",
     "dhis2_modelid": 18908,
     "dhis2_modelattributeid": 51,
@@ -349,9 +403,11 @@
     "RefGrossVolume": "68",
     "RefNetVolume": "37.5",
     "FreezeGrossVolume": "25",
-    "FreezeNetVolume": "0"
-  },
-  "18909": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d031f3e",
+    "_rev": "3-53c3fe840daeb97912f28f6ef83d2037",
+    "uuid": "8a529495c6076aed9f1850d53d031f3e"
+}, "8a529495c6076aed9f1850d53d0320e5": {
     "name": "E3104M + VaccPack XL 2100",
     "dhis2_modelid": 18909,
     "dhis2_modelattributeid": 51,
@@ -365,9 +421,11 @@
     "RefGrossVolume": "39",
     "RefNetVolume": "21",
     "FreezeGrossVolume": "22",
-    "FreezeNetVolume": "0"
-  },
-  "18910": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d0320e5",
+    "_rev": "3-b7810516122cb8bc05179d1c1b852bc8",
+    "uuid": "8a529495c6076aed9f1850d53d0320e5"
+}, "8a529495c6076aed9f1850d53d032fc9": {
     "name": "E3105M + VaccPack XL 6000",
     "dhis2_modelid": 18910,
     "dhis2_modelattributeid": 51,
@@ -381,9 +439,11 @@
     "RefGrossVolume": "114",
     "RefNetVolume": "60",
     "FreezeGrossVolume": "26",
-    "FreezeNetVolume": "0"
-  },
-  "18911": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d032fc9",
+    "_rev": "3-2305caa546240ecceb19f116938a5bd2",
+    "uuid": "8a529495c6076aed9f1850d53d032fc9"
+}, "8a529495c6076aed9f1850d53d0331ce": {
     "name": "E3106M + PS65",
     "dhis2_modelid": 18911,
     "dhis2_modelattributeid": 51,
@@ -397,9 +457,11 @@
     "RefGrossVolume": "66",
     "RefNetVolume": "37.5",
     "FreezeGrossVolume": "24",
-    "FreezeNetVolume": "0"
-  },
-  "18912": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d0331ce",
+    "_rev": "3-76dba107d61f3652f59c8e0bf317ced3",
+    "uuid": "8a529495c6076aed9f1850d53d0331ce"
+}, "8a529495c6076aed9f1850d53d033737": {
     "name": "E3107 + TCW 3000",
     "dhis2_modelid": 18912,
     "dhis2_modelattributeid": 51,
@@ -413,9 +475,11 @@
     "RefGrossVolume": "278",
     "RefNetVolume": "126.5",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18913": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d033737",
+    "_rev": "3-77181c498e5211b7c4b17690ad99696e",
+    "uuid": "8a529495c6076aed9f1850d53d033737"
+}, "8a529495c6076aed9f1850d53d03451d": {
     "name": "E3108M + PR 265 EK",
     "dhis2_modelid": 18913,
     "dhis2_modelattributeid": 51,
@@ -429,9 +493,11 @@
     "RefGrossVolume": "179",
     "RefNetVolume": "37.5",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "32"
-  },
-  "18914": {
+    "FreezeNetVolume": "32",
+    "_id": "8a529495c6076aed9f1850d53d03451d",
+    "_rev": "3-3ccf8614c318f1648fe1a1274e818480",
+    "uuid": "8a529495c6076aed9f1850d53d03451d"
+}, "8a529495c6076aed9f1850d53d034b37": {
     "name": "E3109M + PS40",
     "dhis2_modelid": 18914,
     "dhis2_modelattributeid": 51,
@@ -445,9 +511,11 @@
     "RefGrossVolume": "35",
     "RefNetVolume": "18",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "24"
-  },
-  "18915": {
+    "FreezeNetVolume": "24",
+    "_id": "8a529495c6076aed9f1850d53d034b37",
+    "_rev": "3-6e76fa362171bbf87e480d71e0fab0c3",
+    "uuid": "8a529495c6076aed9f1850d53d034b37"
+}, "8a529495c6076aed9f1850d53d035381": {
     "name": "E3110M + DOVLINE",
     "dhis2_modelid": 18915,
     "dhis2_modelattributeid": 51,
@@ -461,9 +529,11 @@
     "RefGrossVolume": "42",
     "RefNetVolume": "16",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18916": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d035381",
+    "_rev": "3-235452734b8bfcb8eb4eb66e35c05eec",
+    "uuid": "8a529495c6076aed9f1850d53d035381"
+}, "8a529495c6076aed9f1850d53d035745": {
     "name": "E3111M + TCW 2000 AC",
     "dhis2_modelid": 18916,
     "dhis2_modelattributeid": 51,
@@ -477,9 +547,11 @@
     "RefGrossVolume": "118",
     "RefNetVolume": "60",
     "FreezeGrossVolume": "42",
-    "FreezeNetVolume": "0"
-  },
-  "18917": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d035745",
+    "_rev": "3-78d694beb3d3e7c98a6207828cc973fb",
+    "uuid": "8a529495c6076aed9f1850d53d035745"
+}, "8a529495c6076aed9f1850d53d0363ac": {
     "name": "E321M + RCW 42 EG",
     "dhis2_modelid": 18917,
     "dhis2_modelattributeid": 51,
@@ -493,9 +565,11 @@
     "RefGrossVolume": "40",
     "RefNetVolume": "10.5",
     "FreezeGrossVolume": "1.6",
-    "FreezeNetVolume": "0"
-  },
-  "18918": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d0363ac",
+    "_rev": "3-0c395e52be1910d3f7cde5d8365250d3",
+    "uuid": "8a529495c6076aed9f1850d53d0363ac"
+}, "8a529495c6076aed9f1850d53d037278": {
     "name": "E322M + RCW 42 EK",
     "dhis2_modelid": 18918,
     "dhis2_modelattributeid": 51,
@@ -509,9 +583,11 @@
     "RefGrossVolume": "40",
     "RefNetVolume": "18.2",
     "FreezeGrossVolume": "1.2",
-    "FreezeNetVolume": "0"
-  },
-  "18919": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d037278",
+    "_rev": "3-4c7bb10d7b44886d43766990085138d4",
+    "uuid": "8a529495c6076aed9f1850d53d037278"
+}, "8a529495c6076aed9f1850d53d037b5f": {
     "name": "E324M + TCW 1152",
     "dhis2_modelid": 18919,
     "dhis2_modelattributeid": 51,
@@ -525,9 +601,11 @@
     "RefGrossVolume": "250",
     "RefNetVolume": "169",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18920": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d037b5f",
+    "_rev": "3-dfa3fd97a44c81aeb9fccac3f06c8f13",
+    "uuid": "8a529495c6076aed9f1850d53d037b5f"
+}, "8a529495c6076aed9f1850d53d038910": {
     "name": "E330M + RCW 42AC",
     "dhis2_modelid": 18920,
     "dhis2_modelattributeid": 51,
@@ -541,9 +619,11 @@
     "RefGrossVolume": "36",
     "RefNetVolume": "12",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18921": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d038910",
+    "_rev": "3-0827d5af41e5e2ef08e2fca9a48cccb1",
+    "uuid": "8a529495c6076aed9f1850d53d038910"
+}, "8a529495c6076aed9f1850d53d0394c8": {
     "name": "E331M + RCW 42 DC",
     "dhis2_modelid": 18921,
     "dhis2_modelattributeid": 51,
@@ -557,9 +637,11 @@
     "RefGrossVolume": "27",
     "RefNetVolume": "14",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18922": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d0394c8",
+    "_rev": "3-88459b3b7ded9d267a227dd2a7dcd912",
+    "uuid": "8a529495c6076aed9f1850d53d0394c8"
+}, "8a529495c6076aed9f1850d53d039a77": {
     "name": "E337M + VR50F",
     "dhis2_modelid": 18922,
     "dhis2_modelattributeid": 51,
@@ -573,9 +655,11 @@
     "RefGrossVolume": "44",
     "RefNetVolume": "17.5",
     "FreezeGrossVolume": "5",
-    "FreezeNetVolume": "0"
-  },
-  "18923": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d039a77",
+    "_rev": "3-3b3bcb69b892a7b0eadb471e66e252a1",
+    "uuid": "8a529495c6076aed9f1850d53d039a77"
+}, "8a529495c6076aed9f1850d53d03a007": {
     "name": "E357M + MK 144",
     "dhis2_modelid": 18923,
     "dhis2_modelattributeid": 51,
@@ -589,9 +673,11 @@
     "RefGrossVolume": "94",
     "RefNetVolume": "45",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18924": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d03a007",
+    "_rev": "3-8336d24b132a4422dcf8ad245a832c64",
+    "uuid": "8a529495c6076aed9f1850d53d03a007"
+}, "8a529495c6076aed9f1850d53d03af02": {
     "name": "E362M + TCW 1990",
     "dhis2_modelid": 18924,
     "dhis2_modelattributeid": 51,
@@ -605,9 +691,11 @@
     "RefGrossVolume": "66",
     "RefNetVolume": "37.5",
     "FreezeGrossVolume": "17",
-    "FreezeNetVolume": "0"
-  },
-  "18925": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d03af02",
+    "_rev": "3-fc58198e1412737382f0365962573c9b",
+    "uuid": "8a529495c6076aed9f1850d53d03af02"
+}, "8a529495c6076aed9f1850d53d03b265": {
     "name": "E364M + VC 139 F",
     "dhis2_modelid": 18925,
     "dhis2_modelattributeid": 51,
@@ -621,9 +709,11 @@
     "RefGrossVolume": "262",
     "RefNetVolume": "107.5",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18926": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d03b265",
+    "_rev": "3-4b931c3ad1deebe427401645e789c177",
+    "uuid": "8a529495c6076aed9f1850d53d03b265"
+}, "8a529495c6076aed9f1850d53d03b9fb": {
     "name": "E365M + NRC 30-10",
     "dhis2_modelid": 18926,
     "dhis2_modelattributeid": 51,
@@ -637,9 +727,11 @@
     "RefGrossVolume": "15.5",
     "RefNetVolume": "15.5",
     "FreezeGrossVolume": "12.2",
-    "FreezeNetVolume": "0"
-  },
-  "18927": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d03b9fb",
+    "_rev": "3-349471a3cc39feb85356daf4d6b2fa62",
+    "uuid": "8a529495c6076aed9f1850d53d03b9fb"
+}, "8a529495c6076aed9f1850d53d03bc73": {
     "name": "E370M + CFS49 ISI",
     "dhis2_modelid": 18927,
     "dhis2_modelattributeid": 51,
@@ -653,9 +745,11 @@
     "RefGrossVolume": "49",
     "RefNetVolume": "20",
     "FreezeGrossVolume": "7.3",
-    "FreezeNetVolume": "0"
-  },
-  "18928": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d03bc73",
+    "_rev": "3-f5565b1aeaafcd9dfab00ef9a29be01c",
+    "uuid": "8a529495c6076aed9f1850d53d03bc73"
+}, "8a529495c6076aed9f1850d53d03c3d3": {
     "name": "E372M + FCW 20 EG",
     "dhis2_modelid": 18928,
     "dhis2_modelattributeid": 51,
@@ -669,9 +763,11 @@
     "RefGrossVolume": "0",
     "RefNetVolume": "0",
     "FreezeGrossVolume": "18",
-    "FreezeNetVolume": "14"
-  },
-  "18929": {
+    "FreezeNetVolume": "14",
+    "_id": "8a529495c6076aed9f1850d53d03c3d3",
+    "_rev": "3-dd2c60201b62c0d31d7664f927e35fcc",
+    "uuid": "8a529495c6076aed9f1850d53d03c3d3"
+}, "8a529495c6076aed9f1850d53d03cd56": {
     "name": "E373M + FCW 20 EK",
     "dhis2_modelid": 18929,
     "dhis2_modelattributeid": 51,
@@ -685,9 +781,11 @@
     "RefGrossVolume": "0",
     "RefNetVolume": "0",
     "FreezeGrossVolume": "18",
-    "FreezeNetVolume": "14"
-  },
-  "18930": {
+    "FreezeNetVolume": "14",
+    "_id": "8a529495c6076aed9f1850d53d03cd56",
+    "_rev": "3-2885b04a368f67d3d3cd7ac9124b3298",
+    "uuid": "8a529495c6076aed9f1850d53d03cd56"
+}, "8a529495c6076aed9f1850d53d03dc28": {
     "name": "E377M + RFVB-134a",
     "dhis2_modelid": 18930,
     "dhis2_modelattributeid": 51,
@@ -701,9 +799,11 @@
     "RefGrossVolume": "56.8",
     "RefNetVolume": "38.7",
     "FreezeGrossVolume": "32.5",
-    "FreezeNetVolume": "0"
-  },
-  "18931": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d03dc28",
+    "_rev": "3-364aabe2325e1e5095a88eb9b813d473",
+    "uuid": "8a529495c6076aed9f1850d53d03dc28"
+}, "8a529495c6076aed9f1850d53d03de17": {
     "name": "E379M + VC-150 F",
     "dhis2_modelid": 18931,
     "dhis2_modelattributeid": 51,
@@ -717,9 +817,11 @@
     "RefGrossVolume": "127",
     "RefNetVolume": "85",
     "FreezeGrossVolume": "63",
-    "FreezeNetVolume": "0"
-  },
-  "18932": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d03de17",
+    "_rev": "3-2e04e6fd850c94ae455e831186685f81",
+    "uuid": "8a529495c6076aed9f1850d53d03de17"
+}, "8a529495c6076aed9f1850d53d03ebc2": {
     "name": "E383 + TBP VR 50",
     "dhis2_modelid": 18932,
     "dhis2_modelattributeid": 51,
@@ -733,9 +835,11 @@
     "RefGrossVolume": "40",
     "RefNetVolume": "18",
     "FreezeGrossVolume": "5",
-    "FreezeNetVolume": "0"
-  },
-  "18933": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d03ebc2",
+    "_rev": "3-22be01a22fa2bc012d44675b8348d23a",
+    "uuid": "8a529495c6076aed9f1850d53d03ebc2"
+}, "8a529495c6076aed9f1850d53d03efa8": {
     "name": "E384M + V 170 GE",
     "dhis2_modelid": 18933,
     "dhis2_modelattributeid": 51,
@@ -749,9 +853,11 @@
     "RefGrossVolume": "170",
     "RefNetVolume": "55",
     "FreezeGrossVolume": "47",
-    "FreezeNetVolume": "36"
-  },
-  "18934": {
+    "FreezeNetVolume": "36",
+    "_id": "8a529495c6076aed9f1850d53d03efa8",
+    "_rev": "3-80814d2f20c686509c6ff392c4ad60fe",
+    "uuid": "8a529495c6076aed9f1850d53d03efa8"
+}, "8a529495c6076aed9f1850d53d03fe89": {
     "name": "E385M + V 170 EK",
     "dhis2_modelid": 18934,
     "dhis2_modelattributeid": 51,
@@ -765,25 +871,11 @@
     "RefGrossVolume": "170",
     "RefNetVolume": "55",
     "FreezeGrossVolume": "47",
-    "FreezeNetVolume": "36"
-  },
-  "18935": {
-    "name": "E386M + V 110 GE",
-    "dhis2_modelid": 18935,
-    "dhis2_modelattributeid": 51,
-    "CatalogID": "E386M",
-    "ModelName": "V 110 GE",
-    "Manufacturer": "Sibir",
-    "RefPowerSource": "GasElectric",
-    "RefType": "UprightRefrigerator",
-    "ClimateZone": "Hot",
-    "DataSource": "PIS",
-    "RefGrossVolume": "110",
-    "RefNetVolume": "17",
-    "FreezeGrossVolume": "15",
-    "FreezeNetVolume": "0"
-  },
-  "18936": {
+    "FreezeNetVolume": "36",
+    "_id": "8a529495c6076aed9f1850d53d03fe89",
+    "_rev": "3-4529e7c3eadfe578c753a9fd33dfec89",
+    "uuid": "8a529495c6076aed9f1850d53d03fe89"
+}, "8a529495c6076aed9f1850d53d03ff3c": {
     "name": "E387M + V 110 EK",
     "dhis2_modelid": 18936,
     "dhis2_modelattributeid": 51,
@@ -797,9 +889,29 @@
     "RefGrossVolume": "110",
     "RefNetVolume": "17",
     "FreezeGrossVolume": "15",
-    "FreezeNetVolume": "0"
-  },
-  "18937": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d03ff3c",
+    "_rev": "3-9711435262f662a2b918bbb442e27baa",
+    "uuid": "8a529495c6076aed9f1850d53d03ff3c"
+}, "8a529495c6076aed9f1850d53d0403f4": {
+    "name": "E386M + V 110 GE",
+    "dhis2_modelid": 18935,
+    "dhis2_modelattributeid": 51,
+    "CatalogID": "E386M",
+    "ModelName": "V 110 GE",
+    "Manufacturer": "Sibir",
+    "RefPowerSource": "GasElectric",
+    "RefType": "UprightRefrigerator",
+    "ClimateZone": "Hot",
+    "DataSource": "PIS",
+    "RefGrossVolume": "110",
+    "RefNetVolume": "17",
+    "FreezeGrossVolume": "15",
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d0403f4",
+    "_rev": "3-9ee9eb6224f3eef12e6794db8ee87324",
+    "uuid": "8a529495c6076aed9f1850d53d0403f4"
+}, "8a529495c6076aed9f1850d53d040429": {
     "name": "E388M + RCW 50 EG",
     "dhis2_modelid": 18937,
     "dhis2_modelattributeid": 51,
@@ -813,9 +925,11 @@
     "RefGrossVolume": "70",
     "RefNetVolume": "24",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "18938": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d040429",
+    "_rev": "3-50057646af734c1ff3ebcb68b0d0332a",
+    "uuid": "8a529495c6076aed9f1850d53d040429"
+}, "8a529495c6076aed9f1850d53d040c62": {
     "name": "E389M + PR 245 EK",
     "dhis2_modelid": 18938,
     "dhis2_modelattributeid": 51,
@@ -829,9 +943,11 @@
     "RefGrossVolume": "107",
     "RefNetVolume": "18",
     "FreezeGrossVolume": "20",
-    "FreezeNetVolume": "0"
-  },
-  "18939": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d040c62",
+    "_rev": "3-8eeb1d7066b8a69ee8e24b365822f997",
+    "uuid": "8a529495c6076aed9f1850d53d040c62"
+}, "8a529495c6076aed9f1850d53d041a17": {
     "name": "E390M + GR 245 G/E",
     "dhis2_modelid": 18939,
     "dhis2_modelattributeid": 51,
@@ -845,9 +961,11 @@
     "RefGrossVolume": "107",
     "RefNetVolume": "18",
     "FreezeGrossVolume": "20",
-    "FreezeNetVolume": "0"
-  },
-  "18940": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d041a17",
+    "_rev": "3-e86b183506f85fe8d20d85205c2a8d95",
+    "uuid": "8a529495c6076aed9f1850d53d041a17"
+}, "8a529495c6076aed9f1850d53d04296f": {
     "name": "E391M + RCW 50 EK",
     "dhis2_modelid": 18940,
     "dhis2_modelattributeid": 51,
@@ -861,9 +979,11 @@
     "RefGrossVolume": "70",
     "RefNetVolume": "24",
     "FreezeGrossVolume": "2.4",
-    "FreezeNetVolume": "0"
-  },
-  "18941": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d04296f",
+    "_rev": "3-1d0853aa477936e8d2d1f4895647767d",
+    "uuid": "8a529495c6076aed9f1850d53d04296f"
+}, "8a529495c6076aed9f1850d53d042bf8": {
     "name": "E392M + Model 120-30",
     "dhis2_modelid": 18941,
     "dhis2_modelattributeid": 51,
@@ -877,9 +997,11 @@
     "RefGrossVolume": "120",
     "RefNetVolume": "63",
     "FreezeGrossVolume": "30",
-    "FreezeNetVolume": "0"
-  },
-  "18942": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d042bf8",
+    "_rev": "3-23f98ee6bdf603a79f775126d38e9755",
+    "uuid": "8a529495c6076aed9f1850d53d042bf8"
+}, "8a529495c6076aed9f1850d53d04384f": {
     "name": "E393M + RCW 50DC",
     "dhis2_modelid": 18942,
     "dhis2_modelattributeid": 51,
@@ -893,9 +1015,11 @@
     "RefGrossVolume": "70",
     "RefNetVolume": "24",
     "FreezeGrossVolume": "9",
-    "FreezeNetVolume": "0"
-  },
-  "18943": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d04384f",
+    "_rev": "3-316bb1f41105df90fb85d3630e91f82a",
+    "uuid": "8a529495c6076aed9f1850d53d04384f"
+}, "8a529495c6076aed9f1850d53d043fa0": {
     "name": "E394M + RCW 50 AC",
     "dhis2_modelid": 18943,
     "dhis2_modelattributeid": 51,
@@ -909,9 +1033,11 @@
     "RefGrossVolume": "70",
     "RefNetVolume": "24",
     "FreezeGrossVolume": "9",
-    "FreezeNetVolume": "0"
-  },
-  "18944": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d043fa0",
+    "_rev": "3-33210e630c19576a6867418a2b0b3d61",
+    "uuid": "8a529495c6076aed9f1850d53d043fa0"
+}, "8a529495c6076aed9f1850d53d044613": {
     "name": "E395M + PF 230 IP KE",
     "dhis2_modelid": 18944,
     "dhis2_modelattributeid": 51,
@@ -925,9 +1051,11 @@
     "RefGrossVolume": "0",
     "RefNetVolume": "0",
     "FreezeGrossVolume": "230",
-    "FreezeNetVolume": "144"
-  },
-  "18945": {
+    "FreezeNetVolume": "144",
+    "_id": "8a529495c6076aed9f1850d53d044613",
+    "_rev": "3-bdfde615ba82efb9659388d61adccb49",
+    "uuid": "8a529495c6076aed9f1850d53d044613"
+}, "8a529495c6076aed9f1850d53d044db2": {
     "name": "E396M + MF 114",
     "dhis2_modelid": 18945,
     "dhis2_modelattributeid": 51,
@@ -941,9 +1069,11 @@
     "RefGrossVolume": "0",
     "RefNetVolume": "0",
     "FreezeGrossVolume": "111",
-    "FreezeNetVolume": "72"
-  },
-  "18946": {
+    "FreezeNetVolume": "72",
+    "_id": "8a529495c6076aed9f1850d53d044db2",
+    "_rev": "3-8236ed583a50482635da18c9af6d51dc",
+    "uuid": "8a529495c6076aed9f1850d53d044db2"
+}, "8a529495c6076aed9f1850d53d045c1f": {
     "name": "E397M + MF 214",
     "dhis2_modelid": 18946,
     "dhis2_modelattributeid": 51,
@@ -957,9 +1087,11 @@
     "RefGrossVolume": "0",
     "RefNetVolume": "0",
     "FreezeGrossVolume": "213",
-    "FreezeNetVolume": "192"
-  },
-  "18947": {
+    "FreezeNetVolume": "192",
+    "_id": "8a529495c6076aed9f1850d53d045c1f",
+    "_rev": "3-2d1835fd15dfcd678772af39245c2726",
+    "uuid": "8a529495c6076aed9f1850d53d045c1f"
+}, "8a529495c6076aed9f1850d53d046360": {
     "name": "E398M + MF 314",
     "dhis2_modelid": 18947,
     "dhis2_modelattributeid": 51,
@@ -973,9 +1105,11 @@
     "RefGrossVolume": "0",
     "RefNetVolume": "0",
     "FreezeGrossVolume": "323",
-    "FreezeNetVolume": "264"
-  },
-  "18948": {
+    "FreezeNetVolume": "264",
+    "_id": "8a529495c6076aed9f1850d53d046360",
+    "_rev": "3-fba941a2e8527d41102ef1bfd1fba4dc",
+    "uuid": "8a529495c6076aed9f1850d53d046360"
+}, "8a529495c6076aed9f1850d53d0464e6": {
     "name": "E399M + FCW 300",
     "dhis2_modelid": 18948,
     "dhis2_modelattributeid": 51,
@@ -989,9 +1123,11 @@
     "RefGrossVolume": "0",
     "RefNetVolume": "0",
     "FreezeGrossVolume": "300",
-    "FreezeNetVolume": "264"
-  },
-  "18949": {
+    "FreezeNetVolume": "264",
+    "_id": "8a529495c6076aed9f1850d53d0464e6",
+    "_rev": "3-88cde633c15207ee8c62c5187a56725a",
+    "uuid": "8a529495c6076aed9f1850d53d0464e6"
+}, "8a529495c6076aed9f1850d53d04696d": {
     "name": "B001 + HF506",
     "dhis2_modelid": 18949,
     "dhis2_modelattributeid": 51,
@@ -1005,9 +1141,11 @@
     "RefGrossVolume": "0",
     "RefNetVolume": "0",
     "FreezeGrossVolume": "464",
-    "FreezeNetVolume": "348"
-  },
-  "18950": {
+    "FreezeNetVolume": "348",
+    "_id": "8a529495c6076aed9f1850d53d04696d",
+    "_rev": "3-420499952779931977e1225733b9478a",
+    "uuid": "8a529495c6076aed9f1850d53d04696d"
+}, "8a529495c6076aed9f1850d53d046aad": {
     "name": "Solar + Solar",
     "dhis2_modelid": 18950,
     "dhis2_modelattributeid": 51,
@@ -1021,9 +1159,11 @@
     "RefGrossVolume": "20",
     "RefNetVolume": "10",
     "FreezeGrossVolume": "0",
-    "FreezeNetVolume": "0"
-  },
-  "19858": {
+    "FreezeNetVolume": "0",
+    "_id": "8a529495c6076aed9f1850d53d046aad",
+    "_rev": "3-c2e641b7b8beebde3618abd8a6c41214",
+    "uuid": "8a529495c6076aed9f1850d53d046aad"
+}, "8a529495c6076aed9f1850d53d04721f": {
     "name": "steps to add new equipment to catalog before adding to facility",
     "dhis2_modelid": 19858,
     "dhis2_modelattributeid": 46,
@@ -1037,9 +1177,11 @@
     "FreezeNetVolume": "0",
     "RefGrossVolume": "100",
     "FreezeGrossVolume": "20",
-    "ClimateZone": "Hot"
-  },
-  "19859": {
+    "ClimateZone": "Hot",
+    "_id": "8a529495c6076aed9f1850d53d04721f",
+    "_rev": "3-f9187892bd6510f200ce658727d133b9",
+    "uuid": "8a529495c6076aed9f1850d53d04721f"
+}, "8a529495c6076aed9f1850d53d047d99": {
     "name": "Common upright domestic refrigerator",
     "dhis2_modelid": 19859,
     "dhis2_modelattributeid": 46,
@@ -1053,9 +1195,11 @@
     "FreezeNetVolume": "15",
     "RefGrossVolume": "100",
     "FreezeGrossVolume": "25",
-    "ClimateZone": "Temperate"
-  },
-  "19860": {
+    "ClimateZone": "Temperate",
+    "_id": "8a529495c6076aed9f1850d53d047d99",
+    "_rev": "3-c26022097c28aab886f9250758663651",
+    "uuid": "8a529495c6076aed9f1850d53d047d99"
+}, "8a529495c6076aed9f1850d53d048344": {
     "name": "Standard RCW 4",
     "dhis2_modelid": 19860,
     "dhis2_modelattributeid": 240,
@@ -1064,17 +1208,8 @@
     "RefType": "VaccineCarrier",
     "Manufacturer": "Electrolux",
     "ModelName": "RCW 4 ((need to add Litres unit to left with Net Storage)",
-    "Net Storage": "4"
-  },
-  "1": {
-    "name": "Other",
-    "dhis2_modelid": 0,
-    "dhis2_modelattributeid": 0,
-    "CatalogID": "other",
-    "RefType": "Others",
-    "Cold Box Type": "Other",
-    "Manufacturer": "Other",
-    "ModelName": "Other",
-    "Net Storage": "0"
-  }
-}
+    "Net Storage": "4",
+    "_id": "8a529495c6076aed9f1850d53d048344",
+    "_rev": "4-cd4731781e906d3c34235d3d64eaaf96",
+    "uuid": "8a529495c6076aed9f1850d53d048344"
+}}
