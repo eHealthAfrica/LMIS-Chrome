@@ -39,6 +39,14 @@ describe('Service: inventoryRulesFactory', function() {
     });
   });
 
+  describe('lead time by type', function() {
+    it('should calculate the avg lead time for an product type in days', function() {
+      var leadTime = inventoryRulesFactory.leadTimeAvgByProductType("");
+      expect(typeof leadTime).toBe('number');
+      expect(leadTime).toBe(14);
+    });
+  }
+
 
   describe('lead time', function() {
     it('should calculate the lead time for an order in ms', function() {
