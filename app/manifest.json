@@ -5,6 +5,7 @@
   "manifest_version": 2,
   "permissions": [ "storage", "https://www.google-analytics.com/",
     {
+        
       "fileSystem": [
         "write",
         "retainEntries",
