@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('storageService', function ($q, $rootScope, $http, $window, chromeStorageApi) {
+    .factory('storageService', function ($q, $rootScope, $http, $window, chromeStorageApi, utility) {
 
       /**
        *  Global variables used to define table names, with this there will be one
@@ -72,15 +72,7 @@ angular.module('lmisChromeApp')
             tableData = {};
           }
           var oldRecord = tableData[data.uuid];
-          if(typeof oldRecord !== 'undefined'){
-            //record already exists, update its fields that exist on data
-            var properties = Object.keys(data);
-            for(var index in properties){
-              var key = properties[index];
-              oldRecord[key] = data[key];
-            }
-            data = oldRecord; //swap after updating fields.
-          }
+          data = utility.copy(oldRecord, data);
           tableData[data.uuid] = data;
           obj[table] = tableData;
           chromeStorageApi.set(obj)
@@ -430,7 +422,10 @@ angular.module('lmisChromeApp')
                   batch.created = now;
                 }
                 batch.modified = now;
-                tableData[batch.uuid] = batch;
+                var oldRecord = tableData[batch.uuid];
+                  console.log(oldRecord);
+                tableData[batch.uuid] = utility.copy(oldRecord, batch);//update old copy if it exists.
+                console.log(tableData[batch.uuid]);
                 newBatchList.push(batch);
               }
               obj[table] = tableData;
