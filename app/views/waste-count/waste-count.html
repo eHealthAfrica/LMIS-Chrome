@@ -1,20 +1,11 @@
-<div lmis-page-view-report="discard-count_discard-count" class="panel panel-default">
+<div class="panel panel-default">
   <div class="panel-heading">
-    <h1 class="panel-title">Discard Count <!--for the month of {{ monthList[currentMonth] }} {{ currentYear }} --></h1>
+    <h1 class="panel-title">Waste Count </h1>
   </div>
   <div class="panel-body">
     <div class="row" ng-hide="detailView">
       <div class="col-sm-12">
-<<<<<<< HEAD:app/views/waste-count/waste-count.html
         <a class="btn btn-default" ui-sref="wasteCountForm">
-=======
-        <!--
-        <a class="btn btn-default" ui-sref="discardCountForm({countDate: today})">
-          <i class="fa fa-edit"></i> Add
-        </a>
-        -->
-        <a class="btn btn-default" lmis-analytics-directive="discard_count_add_record" ui-sref="discardCountForm2">
->>>>>>> 3a372466b355b7bfdab29a2b9d45cea8e936bbe3:app/views/discard-count/discard-count.html
           <i class="fa fa-plus"></i> Add
         </a>
       </div>
@@ -31,7 +22,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="row in discardCountList" ng-click="takeAction(row.countDate)">
+          <tr ng-repeat="row in wasteCountList" ng-click="takeAction(row.countDate)">
             <td> {{ $index + 1 }}</td>
             <td><span class="text-info"> {{ row.countDate | date:'MMM dd, yyyy' }} </span></td>
             <td class="text-center">
@@ -44,11 +35,8 @@
           </tr>
           </tbody>
         </table>
-        <button ng-show="detailView" lmis-analytics-directive="detail_view" class="btn btn-default" ng-click="detailView=!detailView">Back to List</button>
-        <a lmis-analytics-directive="discard_count_form" class="btn btn-default" ui-sref="discardCountForm2({countDate: discardCount.countDate})"
-           ng-show="detailView && !editOff">
-          <i class="fa fa-edit"></i> Edit
-        </a>
+        <button ng-show="detailView" class="btn btn-default" ng-click="detailView=!detailView">Back to List</button>
+
         <table class="table table-bordered" ng-show="detailView">
           <thead>
           <tr>
@@ -57,7 +45,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="row in discardCountByType" ng-class="{'td-header': row.header}">
+          <tr ng-repeat="row in wasteCountByType" ng-class="{'td-header': row.header}">
             <td>
               <div ng-class="{'child-margin': !row.header}">{{ getName(row) }}</div>
             </td>
