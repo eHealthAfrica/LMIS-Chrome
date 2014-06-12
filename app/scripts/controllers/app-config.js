@@ -31,8 +31,21 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           });
         return deferred.promise;
       },
-      ccuProfilesGroupedByCategory: function(ccuProfileFactory){
-        return ccuProfileFactory.getAllGroupedByCategory();
+      ccuProfilesGroupedByCategory: function(ccuProfileFactory, syncService, storageService, $q){
+        var deferred = $q.defer();
+        var obj = {};
+        syncService.updateDbFromRemote(storageService.CCU_PROFILE)
+            .finally(function(){
+                ccuProfileFactory.getAllGroupedByCategory()
+                    .then(function(res){
+                        obj = res;
+                        deferred.resolve(obj);
+                    })
+                    .catch(function(){
+                        deferred.resolve(obj);
+                    });
+            });
+        return deferred.promise;
       },
       productProfilesGroupedByCategory: function(productProfileFactory, syncService, storageService, $q){
         var deferred = $q.defer();
