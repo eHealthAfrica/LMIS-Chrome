@@ -80,12 +80,14 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
     var deferred = $q.defer();
     if (isSyncing) {
       //add to pending sync list
+        //TODO: extract to a separate function
       addToPendingSyncList(pendingSyncRecord)
           .finally(function () {
             deferred.reject(syncAlreadyInProgress);
           });
     } else if (!$window.navigator.onLine) {
       //add to pending sync list
+        //TODO: extract to a separate function
       addToPendingSyncList(pendingSyncRecord)
           .finally(function () {
             deferred.reject(deviceIsOfflineMsg);
@@ -100,6 +102,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
                   isSyncing = false;
                   deferred.resolve(response);
                 }).catch(function (saveError) {
+                    //TODO: extract to a separate function
                   addToPendingSyncList(pendingSyncRecord)
                       .finally(function () {
                         deferred.reject(saveError);
@@ -108,6 +111,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
                 });
           })
           .catch(function (dbConError) {
+              //TODO: extract to a separate function
             addToPendingSyncList(pendingSyncRecord)
                 .finally(function () {
                   deferred.reject(dbConError);
@@ -224,7 +228,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
      */
   this.syncPendingSyncRecord = function(pendingSync){
     return updatePendingSyncRecord(pendingSync);
-  }
+  };
 
   /**
    * This determines if the device/app can make a connection to a remote server by performing the following checks.
@@ -396,6 +400,49 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
         })
         .catch(function (dbConError) {
           deferred.reject(dbConError);
+        });
+    return deferred.promise;
+  };
+
+    /**
+     * This retrieves the given 'dbName' and updates local copy of the database.
+     * @param dbName
+     * @returns {promise|promise|*|promise|promise}
+     */
+  this.updateDbFromRemote = function(dbName){
+    var deferred = $q.defer();
+    var remoteDb = getRemoteDb(dbName);
+    var remoteRecords = [];
+    var map = function(doc){
+        if(doc){
+          emit(doc);
+        }
+    };
+    remoteDb.info()
+        .then(function(result){
+            remoteDb.query({map: map}, {reduce: false})
+                .then(function(res){
+                    var data = res.rows;
+                    for(var i in data){
+                      var record = data[i].key;
+                      remoteRecords.push(record);
+                    }
+
+                    //save remoteRecords to storage-service
+                    storageService.insertBatch(dbName, remoteRecords)
+                        .then(function(batchRes){
+                            deferred.resolve(batchRes);
+                        })
+                        .catch(function(reason){
+                            deferred.reject(reason);
+                        });
+                })
+                .catch(function(err){
+                    deferred.reject(err);
+                });
+        })
+        .catch(function(error){
+            deferred.reject(error);
         });
     return deferred.promise;
   };
