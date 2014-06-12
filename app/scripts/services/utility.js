@@ -29,6 +29,7 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
    */
 
   this.castArrayToObject = function(array, id){
+    id = angular.isUndefined(id) ? 'uuid' : id;
     var newObject = {};
     if(Object.prototype.toString.call(array) === '[object Array]'){
       for(var i=0; i < array.length; i++){
@@ -64,7 +65,7 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
   };
 
   /**
-   * This function scrolls to top of the page where it was called,
+   * This function scrolls to top of the page where it is called,
    *
    * #see 'top' is the id of a href element defined in views/index/index.html
    */
@@ -85,8 +86,40 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
     return $filter('date')(date, 'yyyy-MM-dd');
   };
 
+  var removeObjFromCollection = function(obj, collection, key){
+    collection = collection.filter(function (item) {
+      if(typeof item[key] === 'undefined' || typeof obj[key] === 'undefined'){
+        throw 'both objects that are being compared must have the property(key) being compared.';
+      }
+      return item[key] !== obj[key];
+    });
+    return collection;
+  };
+
+  this.addObjectToCollection = function(obj, collections, key){
+    var _obj = JSON.parse(obj);
+    if (_obj.deSelected === undefined) {
+      collections.push(_obj);
+      return collections;
+    }
+    return removeObjFromCollection(_obj, collections, key);
+  };
+
   this.spaceOutUpperCaseWords = function(upperCaseWord){
     return upperCaseWord.split(/(?=[A-Z])/).join(' ');
-  }
+  };
+
+  this.copy = function(src, des){
+    if (typeof src !== 'undefined') {
+      //record already exists, update its fields that exist on data
+      var properties = Object.keys(des);
+      for (var index in properties) {
+        var key = properties[index];
+        src[key] = des[key];
+      }
+      des = src; //swap after updating fields.
+    }
+    return des;
+  };
 
 });

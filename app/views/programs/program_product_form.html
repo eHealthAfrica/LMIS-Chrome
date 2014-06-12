@@ -10,14 +10,14 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="program">Program</label>
-                                <select lmis-analytics-directive="program" id="program" class="form-control" name="program" ng-model="program_product.program">
+                                <select id="program" class="form-control" name="program" ng-model="program_product.program">
                                     <option value="">-- select program --</option>
                                     <option ng-repeat="row in programList" value="{{ row.uuid }}">{{ row.name }}</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="product">Product</label>
-                                <select lmis-analytics-directive="product" id="product" class="form-control" name="product" ng-model="program_product.product">
+                                <select id="product" class="form-control" name="product" ng-model="program_product.product">
                                     <option value="">-- select product --</option>
                                     <option ng-repeat="row in productList" value="{{ row.uuid }}">{{ row.name }}</option>
                                 </select>
@@ -32,14 +32,14 @@
                             </div>
                             <div class="form-group">
                                 <label for="priceCurrency">Currency</label>
-                                <select lmis-analytics-directive="price_currency" id="priceCurrency" class="form-control" name="price_currency" ng-model="program_product.price_currency">
+                                <select id="priceCurrency" class="form-control" name="price_currency" ng-model="program_product.price_currency">
                                     <option value="">-- select currency --</option>
                                     <option ng-repeat="row in priceCurrencyList" value="{{ row.uuid }}">{{ row.name }}</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="fundingSource">Funding Source</label>
-                                <select lmis-analytics-directive="funding_source" id="fundingSource" class="form-control" name="funding_source" ng-model="program_product.funding_source">
+                                <select id="fundingSource" class="form-control" name="funding_source" ng-model="program_product.funding_source">
                                     <option value="">-- select funding source --</option>
                                     <option ng-repeat="row in companyList" value="{{ row.uuid }}">{{ row.name }}</option>
                                 </select>

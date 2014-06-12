@@ -1,28 +1,29 @@
-<div lmis-page-view-report="dashboard_dashboard" ng-show="showChart">
+<div ng-show="showChart">
   <div ng-include="'views/dashboard/partials/stock-out-warning.html'"></div>
+  <div class="panel panel-default">
+    <div class="container-fluid">
+      <div class="row">
 
-  <div class="panel panel-default panel-stock-levels">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="center-text" ng-hide="productTypesChart"><i class="fa fa-refresh fa-spin"></i></div>
-      <nvd3-multi-bar-horizontal-chart
-        data="productTypesChart"
-        id="product-types-chart"
-        tooltips="false"
-        showValues="true"
-        showControls="false"
-        showLegend="true"
-        showLabels="true"
-        showXAxis="true"
-        stacked="false"
-        height="250"
-        labelType="label"
-        margin="{left:80,top:0,bottom:0,right:50}"
-        noData="No stock data available"
-        valueFormat="roundLegend()">
-      </nvd3-multi-bar-horizontal-chart>
+        <div class="center-text" ng-hide="productTypesChart">
+          <i class="fa fa-refresh fa-spin"></i>
+        </div>
 
+        <div class="product-chart">
+          <nvd3-multi-bar-horizontal-chart
+            data="productTypesChart"
+            id="product-types-chart"
+            height="200"
+            tooltips="true"
+            showXAxis="true"
+            showYAxis="true"
+            stacked="true"
+            yaxistickformat="roundLegend()"
+            showlegend="true"
+          >
+          </nvd3-multi-bar-horizontal-chart>
+        </div>
+
+      </div>
     </div>
-  </div>
   </div>
 </div>

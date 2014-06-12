@@ -1,4 +1,4 @@
-<div lmis-page-view-report="stock-out-broadcast_stock-out-broadcast" class="row">
+<div class="row">
   <div class="col-sm-12">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -15,7 +15,7 @@
                   <div class="form-group" ng-class="{ 'has-error': ((stockOutBroadcastForm.productType).$error).required
                       && stockOutForm.isSubmitted }">
                     <label for="productType" i18n="selectProductType"></label>
-                    <select lmis-analytics-directive="product_type_select" id="productType" name="productType" class="form-control" ng-model="stockOutForm.productType"
+                    <select id="productType" name="productType" class="form-control" ng-model="stockOutForm.productType"
                             required>
                       <option value="" i18n="selectProductType"></option>
                       <option ng-repeat="productType in productTypes" value="{{ productType }}" required>
@@ -28,7 +28,7 @@
                   <div class="row">
                     <div class="panel-body"></div>
                     <div class="col-md-4 center-block">
-                      <button lmis-analytics-directive="stock_out_submit" type="submit" id="send" name="send" class="btn btn-lg btn-danger"
+                      <button type="submit" id="send" name="send" class="btn btn-lg btn-danger"
                               ng-click="stockOutForm.isSubmitted = true" ng-disabled="isSaving">
                         <span ng-show="!isSaving" i18n="send"></span>
                         <span ng-show="!isSaving"><i class="fa fa-bullhorn"></i></span>

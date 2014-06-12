@@ -80,12 +80,14 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
     var deferred = $q.defer();
     if (isSyncing) {
       //add to pending sync list
+        //TODO: extract to a separate function
       addToPendingSyncList(pendingSyncRecord)
           .finally(function () {
             deferred.reject(syncAlreadyInProgress);
           });
     } else if (!$window.navigator.onLine) {
       //add to pending sync list
+        //TODO: extract to a separate function
       addToPendingSyncList(pendingSyncRecord)
           .finally(function () {
             deferred.reject(deviceIsOfflineMsg);
@@ -100,6 +102,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
                   isSyncing = false;
                   deferred.resolve(response);
                 }).catch(function (saveError) {
+                    //TODO: extract to a separate function
                   addToPendingSyncList(pendingSyncRecord)
                       .finally(function () {
                         deferred.reject(saveError);
@@ -108,6 +111,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
                 });
           })
           .catch(function (dbConError) {
+              //TODO: extract to a separate function
             addToPendingSyncList(pendingSyncRecord)
                 .finally(function () {
                   deferred.reject(dbConError);
@@ -118,11 +122,17 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
     return deferred.promise;
   };
 
-  /**
-   * expose or make sync an single item function public.
-   * @type {Function}
-   */
-  this.syncItem = syncARecord;
+    /**
+     * expose or make sync an single item function public.
+     *
+     * @param dbName
+     * @param record
+     * @param allowMultipleSync
+     * @returns {promise|Function|promise|promise|promise|*}
+     */
+  this.syncItem = function(dbName, record, allowMultipleSync){
+    return syncARecord(dbName, record, allowMultipleSync);
+  };
 
   this.clearPouchDB = function (dbName) {
     return getLocalDb(dbName).destroy();
@@ -160,11 +170,14 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
     return storageService.save(storageService.PENDING_SYNCS, pendingSync);
   };
 
-  /**
-   * expose addToPendingSyncList and make it public;
-   * @type {Function}
-   */
-  this.addToPendingSync = addToPendingSyncList;
+    /**
+     * expose addToPendingSyncList and make it public;
+     * @param pendingSync
+     * @returns {*|Session}
+     */
+  this.addToPendingSync = function(pendingSync){
+    return addToPendingSyncList(pendingSync);
+  };
 
 
   /**
@@ -208,11 +221,14 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
     return deferred.promise;
   };
 
-  /**
-   * expose private method.
-   * @type {Function}
-   */
-  this.syncPendingSyncRecord = updatePendingSyncRecord;
+    /**
+     * expose private method.
+     * @param pendingSync
+     * @returns {promise|Function|promise|promise|promise|*}
+     */
+  this.syncPendingSyncRecord = function(pendingSync){
+    return updatePendingSyncRecord(pendingSync);
+  };
 
   /**
    * This determines if the device/app can make a connection to a remote server by performing the following checks.
@@ -230,6 +246,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
    * @returns {promise|Function|promise|promise|promise|*}
    */
   var canConnect = function () {
+      //TODO: move to deviceInfoFactory
     var deferred = $q.defer();
     var testDb = 'connection_test';
     var counter = 0;
@@ -268,7 +285,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
    * expose private method
    * @type {Function}
    */
-  this.canConnect = canConnect;
+  this.canConnect = canConnect;//TODO: move to deviceInfoFactory
 
   /**
    * This goes through pending sync list and try to sync all yet to be synced records, it returns True when
@@ -314,7 +331,9 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
    * expose private methods.
    * @type {Function}
    */
-  this.backgroundSyncingOfPendingRecords = backgroundSyncingOfPendingRecords;
+  this.backgroundSyncingOfPendingRecords = function(){
+    return backgroundSyncingOfPendingRecords();
+  };
 
   /**
    * This uses canConnect() to get device/app connection status if it can connect, it starts background syncing.
@@ -381,6 +400,49 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
         })
         .catch(function (dbConError) {
           deferred.reject(dbConError);
+        });
+    return deferred.promise;
+  };
+
+    /**
+     * This retrieves the given 'dbName' and updates local copy of the database.
+     * @param dbName
+     * @returns {promise|promise|*|promise|promise}
+     */
+  this.updateDbFromRemote = function(dbName){
+    var deferred = $q.defer();
+    var remoteDb = getRemoteDb(dbName);
+    var remoteRecords = [];
+    var map = function(doc){
+        if(doc){
+          emit(doc);
+        }
+    };
+    remoteDb.info()
+        .then(function(result){
+            remoteDb.query({map: map}, {reduce: false})
+                .then(function(res){
+                    var data = res.rows;
+                    for(var i in data){
+                      var record = data[i].key;
+                      remoteRecords.push(record);
+                    }
+
+                    //save remoteRecords to storage-service
+                    storageService.insertBatch(dbName, remoteRecords)
+                        .then(function(batchRes){
+                            deferred.resolve(batchRes);
+                        })
+                        .catch(function(reason){
+                            deferred.reject(reason);
+                        });
+                })
+                .catch(function(err){
+                    deferred.reject(err);
+                });
+        })
+        .catch(function(error){
+            deferred.reject(error);
         });
     return deferred.promise;
   };

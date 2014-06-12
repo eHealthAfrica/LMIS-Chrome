@@ -22,7 +22,7 @@
 
               <div class="form-group">
                 <label for="product">Product</label>
-                <select lmis-analytics-directive="product_profile" id="product" class="form-control" ng-model="productProfile.product" required>
+                <select id="product" class="form-control" ng-model="productProfile.product" required>
                   <option value="">-- select product --</option>
                   <option ng-repeat="product in products" value="{{ product.uuid }}">
                     {{product.name }}
@@ -32,7 +32,7 @@
 
               <div class="form-group">
                 <label for="presentation">Presentation</label>
-                <select lmis-analytics-directive="presentation" id="presentation" class="form-control" ng-model="productProfile.presentation" required>
+                <select id="presentation" class="form-control" ng-model="productProfile.presentation" required>
                   <option value="">-- select product presentation --</option>
                   <option ng-repeat="presentation in presentations" value="{{ presentation.uuid }}">
                     {{ presentation.name }}
@@ -42,7 +42,7 @@
 
               <div class="form-group">
                 <label for="formulation">Formulation</label>
-                <select lmis-analytics-directive="formulation" id="formulation" class="form-control" ng-model="productProfile.formulation" required>
+                <select id="formulation" class="form-control" ng-model="productProfile.formulation" required>
                   <option value="">-- select product formulation --</option>
                   <option ng-repeat="formulation in formulations" value="{{ formulation.uuid }}">
                     {{ formulation.name }}
@@ -52,7 +52,7 @@
 
               <div class="form-group">
                 <label for="modeOfUse">Mode Of Administration</label>
-                <select lmis-analytics-directive="mode_of_use" id="modeOfUse" class="form-control" ng-model="productProfile.mode_of_use" required>
+                <select id="modeOfUse" class="form-control" ng-model="productProfile.mode_of_use" required>
                   <option value="">-- select mode of use --</option>
                   <option ng-repeat="mode in modes" value="{{ mode.uuid }}">
                     {{mode.name }}
@@ -74,7 +74,7 @@
 
               <div class="form-group">
                 <label for="volumeUOM">Volume Unit Of Measurement</label>
-                <select lmis-analytics-directive="volume_uom" id="volumeUOM" class="form-control" ng-model="productProfile.volume_uom" required>
+                <select id="volumeUOM" class="form-control" ng-model="productProfile.volume_uom" required>
                   <option value="">-- select volume unit of measurement --</option>
                   <option ng-repeat="uom in uomList" value="{{uom.uuid}}">
                     {{uom.name}}
@@ -89,7 +89,7 @@
               </div>
 
               <div class="col-sm-4">
-                <button lmis-analytics-directive="product_profile_submit" type="submit" class="btn btn-success btn-lg btn-block">Save</button>
+                <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
               </div>
             </div>
           </div>

@@ -1,45 +1,42 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService, i18n) {
+  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService, i18n, reminderFactory) {
 
     var STOCK_COUNT_DB = storageService.STOCK_COUNT;
-      /**
-       * gets product types object list
-       * @returns {promise}
-       * @public
-       */
-    var productType = function(){
-      //TODO: consider deprecating this
-      var deferred = $q.defer();
-      storageService.get(storageService.PRODUCT_TYPES).then(function(productTypes){
 
-        deferred.resolve(productTypes);
-      });
-      return deferred.promise;
-    };
+    var getStockCountDueDate = function(interval, reminderDay, date){
+      var today = new Date();
+      var currentDate = date || today;
+      var countDate;
+      interval = parseInt(interval);
 
-     /**
-      *
-      * @param _interval
-      * @param _reminderDay
-      * @param _date
-      * @returns {{}}
-      * @private
-      */
-    var getDueDateInfo = function(_interval, _reminderDay, _date){
-      var dateObject = angular.isDefined(_date) ? new Date(_date): new Date();
-      var reminderDateObject = utility.getWeekRangeByDate(dateObject, _reminderDay);
-      var currentReminderDate = angular.isDefined(_date) ? utility.getWeekRangeByDate(new Date(), _reminderDay).reminderDate : angular.copy(reminderDateObject.reminderDate);
-      var interval = 1000 * 60 * 60 * 24 * parseInt(_interval, 10);
-      return {
-        interval: interval,
-        reminderDate: reminderDateObject.reminderDate,
-        lastDay: reminderDateObject.last,
-        firstDay: reminderDateObject.first,
-        currentReminderDate: currentReminderDate,
-        lastCountDate: new Date(currentReminderDate - interval)
-      };
+      switch (interval) {
+        case reminderFactory.DAILY:
+          countDate = new Date(utility.getFullDate(currentDate));
+          break;
+        case reminderFactory.WEEKLY:
+          countDate = utility.getWeekRangeByDate(currentDate, reminderDay).reminderDate;
+          if(currentDate.getTime() < countDate.getTime()){
+            //current week count date is not yet due, return previous week count date..
+            countDate = new Date(countDate.getFullYear(), countDate.getMonth(), countDate.getDate() - interval);
+          }
+          break;
+        case reminderFactory.BI_WEEKLY:
+          countDate = utility.getWeekRangeByDate(currentDate, reminderDay).reminderDate;
+          if (currentDate.getTime() < countDate.getTime()) {
+            //current week count date is not yet due, return last bi-weekly count date
+            countDate = new Date(countDate.getFullYear(), countDate.getMonth(), countDate.getDate() - interval);
+          }
+          break;
+        case reminderFactory.MONTHLY:
+          var monthlyDate = (currentDate.getTime() === today.getTime())? 1 : currentDate.getDate();
+          countDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), monthlyDate);
+          break;
+        default:
+          throw 'unknown stock count interval.';
+      }
+      return countDate
     };
 
     var addRecord={
@@ -114,33 +111,6 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
-    /**
-     *
-     * @param dueDateInfo
-     * @returns {Array}
-     * @private
-     */
-    var getCurrentStockCountDueDate = function (stockCountInterval, reminderDay, date){
-      var dueDateInfo = getDueDateInfo(stockCountInterval, reminderDay, date);
-      if(dueDateInfo.reminderDate.getTime() < new Date().getTime()){
-        return dueDateInfo.reminderDate;
-      }else{
-        return dueDateInfo.lastCountDate;
-      }
-    };
-
-    /**
-     *
-     * @param productObject
-     * @param index
-     * @returns {object}
-     * @private
-     */
-    var currentProductObject = function(productObject, index){
-      var productKey =  (Object.keys(productObject))[index];
-      return productObject[productKey];
-    };
-
       /**
        * returns array of stock count objects sorted by count date.
        * @returns {promise|promise|*|promise|promise}
@@ -164,7 +134,7 @@ angular.module('lmisChromeApp')
       getAllStockCount()
           .then(function (stockCountList) {
             for (var i = 0; i < stockCountList.length; i++) {
-              obj[utility.getFullDate(stockCountList[i].created)] = stockCountList[i];
+              obj[utility.getFullDate(stockCountList[i].countDate)] = stockCountList[i];
             }
             deferred.resolve(obj);
           })
@@ -174,29 +144,32 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
-    var load={
+    var getProductObjectWithCategory = function(appConfig){
+      var deferred = $q.defer();
+      storageService.get(storageService.PRODUCT_CATEGORY)
+          .then(function(productCategory){
+            var facilitySelectedProducts = appConfig.selectedProductProfiles
+                .map(function(product){
+                  product.category =
+                      angular.isDefined(productCategory[product.category]) ? productCategory[product.category] : product.category;
+                  return product;
+                })
+                .sort(function(a, b){
+                  if(angular.isDefined(a.category.name) && angular.isDefined(b.category.name)){
+                    return a.category.name > b.category.name;
+                  }
+                  return a.category > b.category;
+                });
+            var productObject = utility.castArrayToObject(facilitySelectedProducts, 'uuid');
+            deferred.resolve(productObject);
+          })
+          .catch(function(reason){
+            deferred.reject(reason);
+          });
+      return deferred.promise;
+    };
 
-      /**
-       *
-       * @param productObject
-       * @param index
-       * @returns {{}}
-       */
-      productReadableName: function(productObject, index){
-        //TODO: consider deprecating this
-        return currentProductObject(productObject, index);
-      },
-      /**
-       *
-       * @param productObject
-       * @param index
-       * @param productType
-       * @returns {{}}
-       */
-      productTypeCode: function(productObject, index, productType){
-        var currentProductUuid = currentProductObject(productObject, index).product;
-        return productType[currentProductUuid];
-      },
+    var load={
       /**
        *
        * @param scope
@@ -222,6 +195,10 @@ angular.module('lmisChromeApp')
        * @returns {{}}
        */
       productObject: function(array){
+        array = array
+            .sort(function(a, b){
+              return a.category > b.category;
+            });
         return utility.castArrayToObject(array, 'uuid');
       },
       /**
@@ -260,6 +237,7 @@ angular.module('lmisChromeApp')
               if(new Date(mostRecentStockCount.created).getTime() < new Date(stockCount.created).getTime()){
                 mostRecentStockCount = stockCount;
               }
+
             }
             deferred.resolve(mostRecentStockCount);
           })
@@ -269,12 +247,31 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    var isStockCountDue = function(stockCountInterval, reminderDay){
+      var deferred = $q.defer();
+      var isStockCountDue = true;
+      this.getMostRecentStockCount()
+          .then(function (recentStockCount) {
+            var mostRecentDueDate = new Date(getStockCountDueDate(stockCountInterval, reminderDay));
+            
+            isStockCountDue = (typeof recentStockCount === 'undefined' || recentStockCount.isComplete !== 1 ||
+                (new Date(recentStockCount.countDate).getTime()) < mostRecentDueDate.getTime());
+
+            deferred.resolve(isStockCountDue);
+          })
+          .catch(function (reason) {
+            deferred.reject(reason);
+          });
+      return deferred.promise;
+    };
+
     return {
+      getStockCountDueDate: getStockCountDueDate,
+      isStockCountDue: isStockCountDue,
       getMostRecentStockCount: getMostRecentStockCount,
-      getCurrentStockCountDueDate: getCurrentStockCountDueDate,
       getStockCountListByDate: getStockCountListByCreatedDate,
+      getProductObjectWithCategory: getProductObjectWithCategory,
       getAll: getAllStockCount,
-      productType: productType,
       save:addRecord,
       get:load,
       getStockCountByDate: getStockCountByDate,

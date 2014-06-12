@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('uomFactory', function ($q, storageService, trackingService) {
+    .factory('uomFactory', function ($q, storageService) {
 
       var getByUuid = function(uuid) {
         var deferred = $q.defer();
@@ -12,8 +12,6 @@ angular.module('lmisChromeApp')
             })
             .catch(function(reason){
               deferred.reject(reason);
-              //example exception tracker
-              trackingService.getTracker().sendException(reason, false);
             });
         return deferred.promise;
       };

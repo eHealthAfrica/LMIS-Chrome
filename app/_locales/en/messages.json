@@ -530,11 +530,11 @@
   "facilitySurvey": {
     "message": "Facility survey"
   },
-  "daysStock": {
-    "message": "Days of stock"
+  "daysAbove": {
+    "message": "Days above"
   },
-  "daysLeft": {
-    "message": "Days to reorder"
+  "daysBelow": {
+    "message": "Days below"
   },
   "surveySuccessMsg": {
     "message": "$surveyName$ was submitted successfully!",
@@ -629,5 +629,8 @@
   },
   "stockCountSuccessMsg": {
     "message": "You have completed stock count successfully!"
+  },
+  "remoteAppConfigUpdateMsg": {
+    "message": "Application configurations has been updated."
   }
 }
