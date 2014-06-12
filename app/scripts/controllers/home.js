@@ -65,8 +65,9 @@ angular.module('lmisChromeApp')
       views: {
         'activities': {
           templateUrl: 'views/home/main-activity.html',
-          controller: function ($stateParams, i18n, growl) {
-
+          controller: function ($stateParams, i18n, growl, $state) {
+            console.log($stateParams);
+            console.log($state);
             if ($stateParams.storageClear !== null) {
               growl.success(i18n('clearStorageMsg'));
               $stateParams.storageClear = null;
@@ -96,7 +97,9 @@ angular.module('lmisChromeApp')
               growl.success($stateParams.surveySuccessMsg);
               $stateParams.surveySuccessMsg = null;
             }
-
+            //this is to clear page history, set url to pristine state
+            //not like page reload()
+            $state.reload();
           }
         },
         'charts': {
