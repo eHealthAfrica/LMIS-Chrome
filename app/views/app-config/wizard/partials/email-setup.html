@@ -1,4 +1,4 @@
-<div lmis-page-view-report="app-config_partials_email-setup" class="row" ng-show="profileNotFound">
+<div class="row" ng-show="profileNotFound === true">
   <div class="col-md-12">
     <div class="alert alert-danger">
       <span i18n="profileLoadingErrorMsg"></span>
@@ -31,13 +31,14 @@
 
     <div class="btn-group btn-group-justified">
       <div class="btn-group">
-        <a ui-sref="appConfigWelcome" lmis-analytics-directive="app_config_welcome" class="btn btn-default btn-lg btn-left">
+        <a ui-sref="appConfigWelcome" class="btn btn-default btn-lg btn-left">
           <span><i class="fa fa-arrow-circle-left"></i></span>
           <span i18n="back"></span>
         </a>
       </div>
       <div class="btn-group">
-        <button type="submit" lmis-analytics-directive="email_submit" class="btn btn-success btn-lg btn-right" ng-disabled="disableBtn" ng-click="isSubmitted = true">
+        <button type="submit" class="btn btn-success btn-lg btn-right" ng-disabled="disableBtn"
+                ng-click="isSubmitted = true">
           <span ng-show="!disableBtn" i18n="continue"></span>
           <span ng-show="!disableBtn"><i class="fa fa-arrow-circle-right"></i></span>
           <span ng-show="disableBtn" i18n="loading"></span>

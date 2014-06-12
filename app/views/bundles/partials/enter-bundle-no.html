@@ -1,4 +1,4 @@
-<div lmis-page-view-report="bundles_partials_enter-bundle-no" class="col-sm-12" ng-show="!show && clicked">
+<div class="col-sm-12" ng-show="!show && clicked">
   <br/>
 
   <div class="alert alert-danger">
@@ -19,7 +19,7 @@
              type="text" name="bundleNo" id="bundleNo" ng-model="$parent.showBundleNo"
              placeholder="scan or type bundle number" required/>
       <span class="input-group-btn">
-        <button class="btn btn-info" lmis-analytics-directive="bundle" type="submit" i18n="showBundle"></button>
+        <button class="btn btn-info" type="submit" i18n="showBundle"></button>
       </span>
     </div>
   </form>
@@ -33,7 +33,7 @@
       <label for="bundleNo">&nbsp;</label>
     </div>
   </div>
-  <a ui-sref="addNewInventory({bundleNo: $parent.showBundleNo})" lmis-analytics-directive="add_new_inventory" class="btn btn-success">
+  <a ui-sref="addNewInventory({bundleNo: $parent.showBundleNo})" class="btn btn-success">
     <span><i class="fa fa-plus"></i></span>
     <span i18n="addNewInventory"></span>
   </a>

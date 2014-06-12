@@ -1,4 +1,4 @@
-<accordion lmis-page-view-report="home_main_activity" >
+<accordion>
   <accordion-group is-open="true">
     <accordion-heading>
       <span><i class="fa fa-user"></i></span>
@@ -6,28 +6,28 @@
     </accordion-heading>
 
     <div class="col-md-3 col-xs-6 btn">
-      <a lmis-analytics-directive="stock_count" ui-sref="stockCountHome" id="t2">
+      <a ui-sref="stockCountHome">
         <img src="images/dashboard-icons/stock-count.png" class="img-rounded">
         <span i18n="stockCount" class="main-activity-link"></span>
       </a>
     </div>
 
     <div class="col-md-3 col-xs-6 btn">
-      <a lmis-analytics-directive="discard_count_home" ui-sref="discardCountHome">
+      <a ui-sref="wasteCountHome">
         <img src="images/dashboard-icons/add-waste-count.png" class="img-rounded">
         <span i18n="addWasteCount" class="main-activity-link"></span>
       </a>
     </div>
 
     <div class="col-md-3 col-xs-6 btn">
-      <a lmis-analytics-directive="stock_out_alert" ui-sref="broadcastStockOut">
+      <a ui-sref="broadcastStockOut">
         <img src="images/dashboard-icons/stock-out-broadcast.png" class="img-rounded">
         <span i18n="stockOutBroadcast" class="main-activity-link"></span>
       </a>
     </div>
 
     <div class="col-md-3 col-xs-6 btn">
-      <a lmis-analytics-directive="report_ccu_breakdown" ui-sref="reportCcuBreakdown">
+      <a ui-sref="reportCcuBreakdown">
         <img src="images/dashboard-icons/ccu-breakdown.png" class="img-rounded">
         <span i18n="ccuBreakdown" class="main-activity-link"></span>
       </a>
@@ -42,14 +42,14 @@
     </accordion-heading>
 
     <div class="col-md-3 col-xs-6 btn">
-      <a lmis-analytics-directive="app_config" ui-sref="appConfig.edit">
+      <a ui-sref="appConfig.edit">
         <img src="images/dashboard-icons/app-config.png" class="img-rounded">
         <span i18n="appConfig" class="main-activity-link"></span>
       </a>
     </div>
 
     <div class="col-md-3 col-xs-6 btn">
-      <a lmis-analytics-directive="sync_stock_count_detail" ui-sref="syncStockCount.detail">
+      <a ui-sref="syncStockCount.detail">
         <span>
           <i class="fa fa-cloud fa-4x"></i>
         </span>
@@ -58,7 +58,7 @@
     </div>
 
     <div class="col-md-3 col-xs-6 btn">
-      <a lmis-analytics-directive="clear_storage" ui-sref="clearStorage">
+      <a ui-sref="clearStorage">
         <i class="fa fa-trash-o fa-4x btn-danger"></i>
         <span i18n="clearStorage" class="main-activity-link"></span>
       </a>

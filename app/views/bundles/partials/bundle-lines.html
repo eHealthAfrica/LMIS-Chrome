@@ -1,4 +1,4 @@
-<div lmis-page-view-report="bundles_partials_bundle-lines" class="panel-heading">
+<div class="panel-heading">
   <h4 class="panel-title">{{ $index + 1 }}</h4>
 </div>
 <div class="panel-body">
@@ -40,7 +40,7 @@
 
     <div class="col-sm-4">
       <label i18n="storageUnit"></label>
-      <select class="form-control" lmis-analytics-directive="storage_unit" ng-model="logIncomingForm.storage_units[bundleLine.uuid]">
+      <select class="form-control" ng-model="logIncomingForm.storage_units[bundleLine.uuid]">
         <option value="" i18n="addToStorageUnit"></option>
         <option ng-repeat="storageUnit in receivingFacilityStorageUnits"
                 value="{{ storageUnit.uuid }}"
