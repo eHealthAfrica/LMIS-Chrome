@@ -4,7 +4,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider.state('appConfig', {
     parent: 'root.index',
     abstract: true,
-    templateUrl: 'views/home/index.html'
+    templateUrl: 'views/home/index.html',
   }).state('appConfigWelcome', {
     url: '/app-config-welcome',
     parent: 'root.index',
@@ -34,8 +34,21 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       ccuProfilesGroupedByCategory: function(ccuProfileFactory){
         return ccuProfileFactory.getAllGroupedByCategory();
       },
-      productProfilesGroupedByCategory: function(productProfileFactory){
-        return productProfileFactory.getAllGroupedByCategory();
+      productProfilesGroupedByCategory: function(productProfileFactory, syncService, storageService, $q){
+        var deferred = $q.defer();
+        var obj = {};
+        syncService.updateDbFromRemote(storageService.PRODUCT_PROFILE)
+            .finally(function(){
+                productProfileFactory.getAllGroupedByCategory()
+                    .then(function(res){
+                        obj = res;
+                        deferred.resolve(obj);
+                    })
+                    .catch(function(){
+                        deferred.resolve(obj);
+                    });
+            });
+        return deferred.promise;
       }
     },
     controller: 'AppConfigWizard',
