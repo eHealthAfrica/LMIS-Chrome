@@ -48,7 +48,7 @@ angular.module('lmisChromeApp')
       var appConfig = 'app_config';
       var stockOut = 'stock_out';
       var surveyResponse = 'survey_response';
-      var ccuProfile = 'dhis_ccei_fixture';
+      var ccuProfile = 'ccu_profile';
       var ccuBreakdown = 'ccu_breakdown';
       var pendingSyncs = 'pending_syncs';
 
