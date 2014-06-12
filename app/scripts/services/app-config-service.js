@@ -159,12 +159,13 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     return deferred.promise;
   };
 
-  /**
-   * expose private function.
-   *
-   * @type {Function}
-   */
-  this.getCurrentAppConfig = getAppConfigFromCacheOrStorage;
+    /**
+     * expose private function.
+     * @returns {promise|promise|*|promise|promise}
+     */
+  this.getCurrentAppConfig = function(){
+    return getAppConfigFromCacheOrStorage();
+  };
 
   this.getProductTypes = function(){
     var deferred = $q.defer();
