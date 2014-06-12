@@ -236,14 +236,14 @@ tr.disabled, tr.disabled span.text-info{
   font-weight: bold;
 }
 .cold-store-vaccines>.panel-heading{
-  background-color: #808000;
+  background-color: #157085;
   color: #FFFFFF;
 }
 .cold-store-vaccines{
-  border-color: #808000;
+  border-color: #157085;
 }
 .dry-store-safety-boxes>.panel-heading, .dry-store-syringes>.panel-heading{
-  background-color: #4682B4;
+  background-color: #8B4A09;
   color: #FFFFFF;
 }
 .dry-store-safety-boxes, .dry-store-syringes{
