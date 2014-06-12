@@ -1,5 +1,5 @@
 <div>
-  <a ui-sref="{{ reminder.link }}">
+  <a lmis-analytics-directive="reminder" ui-sref="{{ reminder.link }}">
     <div ng-class="{'alert': true, 'col-md-12': true, 'alert-info': reminder.type === 'info',
       'alert-warning': reminder.type === 'warning', 'alert-danger': reminder.type === 'danger',
       'alert-success': reminder.type === 'success' }">
