@@ -206,7 +206,7 @@ angular.module('lmisChromeApp')
                   }
 
                   values.push({
-                    label: product.name,
+                    label: utility.ellipsize(product.name, 7),
                     daysAboveReorder: inventoryRulesFactory.daysAboveReorder(
                       product.daysOfStock, product.daysToReorder
                     ),
@@ -362,9 +362,6 @@ angular.module('lmisChromeApp')
     .state('contact', {
       parent: 'root.index',
       url: '/contact',
-      templateUrl: 'views/home/contact.html',
-      controller: function($scope) {
-
-      }
+      templateUrl: 'views/home/contact.html'
     });
   });

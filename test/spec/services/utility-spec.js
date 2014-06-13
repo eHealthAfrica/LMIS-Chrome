@@ -69,7 +69,18 @@ describe('Service: utility ', function() {
     var expectedResult = 'Ice Land Freezer';
     expect(testStr).not.toEqual(expectedResult);
     testStr = utility.spaceOutUpperCaseWords(testStr);
-    expect(testStr).toEqual(expectedResult)
+    expect(testStr).toEqual(expectedResult);
+  });
+
+  it('should ellipsize a given string', function() {
+    expect(angular.isFunction(utility.ellipsize)).toBe(true);
+    expect(utility.ellipsize('')).toBe('');
+    expect(utility.ellipsize(null)).toBe(null);
+    expect(utility.ellipsize('hut')).toBe('hut');
+    expect(utility.ellipsize('vicar', 4)).toBe('vic…');
+    expect(utility.ellipsize('tutu', 4)).toBe('tutu');
+    expect(utility.ellipsize('the soil', 7)).toBe('the so…');
+    expect(utility.ellipsize('headmaster ritual', -42)).toBe('');
   });
 
 });
