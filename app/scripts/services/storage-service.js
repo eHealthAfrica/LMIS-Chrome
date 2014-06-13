@@ -423,9 +423,7 @@ angular.module('lmisChromeApp')
                 }
                 batch.modified = now;
                 var oldRecord = tableData[batch.uuid];
-                  console.log(oldRecord);
                 tableData[batch.uuid] = utility.copy(oldRecord, batch);//update old copy if it exists.
-                console.log(tableData[batch.uuid]);
                 newBatchList.push(batch);
               }
               obj[table] = tableData;
