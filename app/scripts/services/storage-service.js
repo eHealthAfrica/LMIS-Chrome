@@ -289,50 +289,48 @@ angular.module('lmisChromeApp')
           ccuProfile
         ];
         var isLoading = false;
-        var loadData = function(count){
-
-          if(count >= 0){
-            isLoading = true;
-            $rootScope.$emit('START_LOADING', {started: true});
-            var dbName = database[count];
-            getData(dbName)
-                .then(function(result){
-                  if (angular.isUndefined(result)) {
-                    var fileUrl = 'scripts/fixtures/' + dbName + '.json';
-                    $http.get(fileUrl)
-                        .success(function (data) {
-                          setTable(dbName, data)
-                              .then(function () {
-                                console.log(dbName +' was loaded successfully, remaining '+(count)+' database');
-                                loadData(count - 1);
-                              }, function (reason) {
-                                console.log(reason);
-                                loadData(count - 1);
-                              });
-                        })
-                        .error(function (err) {
-                          console.log(err);
-                          loadData(count - 1);
+        function loadData(dbName) {
+          getData(dbName)
+              .then(function (data) {
+                if (angular.isUndefined(data)) {
+                  var fileUrl = 'scripts/fixtures/' + dbName + '.json';
+                  $http.get(fileUrl)
+                      .success(function (data) {
+                        setTable(dbName, data).then(function (res) {
+                          isLoading = false;
+                        }, function (err) {
+                          isLoading = false;
                         });
-                  }
-                  else{
-                    loadData(count - 1);
-                    console.log(dbName +' already exist, remaining '+(count)+' database to go');
-                  }
+                      })
+                      .error(function (err) {
+                        console.log(err);
+                        isLoading = false;
+                      });
+                }else {
+                  isLoading = false;
+                }
+              })
+              .catch(function (reason) {
+                isLoading = false;
+                console.log('error loading ' + dbName + ' ' + reason);
+              });
+        }
 
-                })
-                .catch(function(reason){
-                  loadData(count - 1);
-                  //console.log(reason); // stop showing logs during test
-                });
-          }else{
-            deferred.resolve(true);
+        var loadNext = function (i) {
+          if (!isLoading) {
+            $rootScope.$emit('START_LOADING', {started: true});
+            isLoading = true;
+            loadData(database[--i]);
+          }
+          if (i > 0) {
+            setTimeout(function () {loadNext(i); }, 10);
+          } else {
+            //this is when the app is actually ready
             $rootScope.$emit('LOADING_COMPLETED', {completed: true});
-            isLoading = false;
+            deferred.resolve(true);
           }
         };
-        loadData(database.length - 1);
-
+        loadNext(database.length);
         return deferred.promise;
       };
 
