@@ -1,7 +1,7 @@
 {
   "name": "LoMIS",
   "description": "Mobile supply and logistics for health facilities",
-  "version": "0.9.6",
+  "version": "0.9.8",
   "manifest_version": 2,
   "permissions": [
     {
