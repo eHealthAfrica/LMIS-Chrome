@@ -114,6 +114,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     REMOTE_URI = encodeURI(REMOTE_URI);
     $http.get(REMOTE_URI)
         .then(function(res){
+          console.log(res);
           var rows = res.data.rows;
           if(rows.length === 1){
             var facilityProfile = rows[0].value;
@@ -135,7 +136,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
           }
 
         })
-        .catch(function(err){
+        .catch(function(reason){
             deferred.reject(reason);
         });
     return deferred.promise;
