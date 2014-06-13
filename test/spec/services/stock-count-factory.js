@@ -336,11 +336,15 @@ describe('Service stockCountFactory', function () {
     var dfd = $q.defer();
     var today = new Date();
     var reminderDay = 5;//
-    var cwrDate = utility.getWeekRangeByDate(today, reminderDay).reminderDate;//current week rem date
-    var lastWkCountDate = new Date(cwrDate.getFullYear(), cwrDate.getMonth(), cwrDate.getDate() - reminderFactory.WEEKLY);//previous week
+    var lastWeekCOuntDate = utility.getWeekRangeByDate(today, reminderDay).reminderDate;//previous week
+    var currentDueDate = new Date(lastWeekCOuntDate.getFullYear(), lastWeekCOuntDate.getMonth(), lastWeekCOuntDate.getDate() + reminderFactory.WEEKLY);//current week.
+
+    spyOn(stockCountFactory, 'getStockCountDueDate').andCallFake(function(){
+     return currentDueDate;
+    });
 
     var stockCount = {
-      countDate: lastWkCountDate,
+      countDate: lastWeekCOuntDate,
       isComplete: 1
     };
     spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
@@ -349,7 +353,7 @@ describe('Service stockCountFactory', function () {
     });
 
     runs(function () {
-      return stockCountFactory.isStockCountDue(reminderFactory.WEEKLY, cwrDate.getDay())
+      return stockCountFactory.isStockCountDue(reminderFactory.WEEKLY, lastWeekCOuntDate.getDay())
           .then(function (result) {
             expect(result).toBeFalsy();
           });
