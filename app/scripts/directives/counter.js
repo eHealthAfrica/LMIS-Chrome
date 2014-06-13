@@ -3,21 +3,7 @@
 angular.module('lmisChromeApp').directive('counter', function (notificationService, $interval, $timeout) {
   return {
     restrict: 'E',
-    template: '<div class="input-group">' +
-        '<span class="input-group-btn">' +
-        '<button id="_$counterMinusBtn" class="btn btn-warning counter-btn" ' +
-        'type="button">' +
-        '<i class="fa fa-minus"></i>' +
-        '</button>' +
-        '</span>' +
-        '<input type="number" min="0" class="form-control input-lg counter-input" ng-change="change" style="padding-right: 0em" ng-model="count" required/>' +
-        '<span class="input-group-btn">' +
-        '<button id="_$counterAddBtn" class="btn btn-info counter-btn" ' +
-        'type="button">' +
-        '<i class="fa fa-plus"></i>' +
-        '</button>' +
-        '</span>' +
-        '</div>',
+    templateUrl: 'views/templates/counter.html',
     scope: {
       count: '=bind',
       change: '=onchange'
