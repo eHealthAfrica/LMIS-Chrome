@@ -635,5 +635,11 @@
   },
   "stockLevel": {
     "message": "Stock Levels"
+  },
+  "clearStorageTitle": {
+    "message": "Clear Storage"
+  },
+  "clearStorageConfirmationMsg": {
+    "message": "this will erase all data on this phone. You will need to set it up again while online. \nAre you ABSOLUTELY sure?"
   }
 }
