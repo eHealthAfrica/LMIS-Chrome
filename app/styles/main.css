@@ -220,7 +220,8 @@ tr.disabled, tr.disabled span.text-info{
 }
 .product-chart {
   margin: 0 auto;
-  padding-left: 40px;
+  padding-left: 0px;
+  max-height: 240px;
 }
 .highlight-selected-item {
   background-color: #449d44;
