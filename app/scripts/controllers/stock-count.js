@@ -58,7 +58,7 @@ angular.module('lmisChromeApp')
             }
           })
           .catch(function () {
-            //TODO: decides what happens if for any reason, retrieving stock count fails.
+            //TODO: decide what happens if for any reason, retrieving stock count fails.
           });
     };
   })

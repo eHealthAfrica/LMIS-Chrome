@@ -99,7 +99,7 @@ describe('Service stockCountFactory', function(){
     expect(stockCount).not.toBeNull();
   });
 
-  it('i expect stockCountFactory.getAll() to return sorted stock count list.', function(){
+  it('i expect stockCountFactory.getMostRecentStockCount() most recent stock count from a list of stock counts..', function(){
     var today = new Date();
     var oneDay = 86400000; //in milli-seconds
     var yesterday = new Date(today.getTime() - oneDay);
