@@ -20,7 +20,8 @@ module.exports = function(config) {
     files: bowerJS.concat([
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
-      'test/spec/**/*.js'
+      'test/spec/**/*.js',
+      'app/views/templates/*.html'
     ]),
 
     // list of files / patterns to exclude
@@ -58,11 +59,15 @@ module.exports = function(config) {
       'coverage'
     ],
     preprocessors: {
-      'app/scripts/**/*.js': 'coverage'
+      'app/scripts/**/*.js': 'coverage',
+      'app/views/templates/*.html': 'ng-html2js'
     },
     coverageReporter: {
       type: 'lcov',
       dir: 'coverage'
+    },
+    ngHtml2JsPreprocessor: {
+      stripPrefix: 'app/',
     },
     plugins: [
       'karma-*'
