@@ -114,10 +114,10 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     REMOTE_URI = encodeURI(REMOTE_URI);
     $http.get(REMOTE_URI)
         .then(function(res){
-          console.log(res);
+
           var rows = res.data.rows;
-          if(rows.length === 1){
-            var facilityProfile = rows[0].value;
+          if(rows.length > 0){
+            var facilityProfile = rows[0].value;//pick the first facility profile.
             var promises = {
                 selectedProductProfiles: productProfileFactory.getBatch(facilityProfile.selectedProductProfiles)
             };
@@ -137,7 +137,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
         })
         .catch(function(reason){
-            deferred.reject(reason);
+          deferred.reject(reason);
         });
     return deferred.promise;
   };
