@@ -66,7 +66,7 @@ angular.module('lmisChromeApp')
  */
 
   .controller('wasteCountFormCtrl', function($scope, wasteCountFactory, $state, growl, $stateParams, appConfig,
-                                              i18n, syncService){
+                                              i18n, syncService, alertFactory){
     var getCountDate = function(){
       return ($stateParams.countDate === null) ? new Date() : new Date($stateParams.countDate);
     };
@@ -122,9 +122,12 @@ angular.module('lmisChromeApp')
             $scope.wasteCount.uuid = uuid;
             syncService.syncItem(wasteCountFactory.DB_NAME, $scope.wasteCount);
             $scope.isSaving = false;
-            var msg = i18n('wasteCountSaved');
-            growl.success(msg);
-            $state.go('home.index.home.mainActivity', {'stockResult': msg});
+            alertFactory.success(i18n('wasteCountSaved'));
+            $state.go('home.index.home.mainActivity');
+          })
+          .catch(function(reason){
+            console.error(reason);
+            growl.error(reason);
           });
     };
 
