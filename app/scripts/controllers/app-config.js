@@ -67,7 +67,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   });
 
 }).controller('AppConfigWizard', function($scope, facilities, appConfigService, growl, $state,
-        i18n, deviceEmail, $log, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory){
+        i18n, deviceEmail, $log, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility){
+
+  $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords
   $scope.isSubmitted = false;
   $scope.preSelectProductProfileCheckBox = {};
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -165,8 +167,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     };
 
 }).controller('EditAppConfigCtrl', function ($scope, facilities, appConfigService, growl, $log,
-                                         i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory) {
+                                         i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility) {
 
+  $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
   $scope.weekDays = appConfigService.weekDays;
   $scope.facilities = facilities;

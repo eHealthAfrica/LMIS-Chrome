@@ -64,4 +64,12 @@ describe('Service: utility ', function() {
     expect(utility.getFullDate(testDate.toJSON())).toEqual(expectedDate);
   });
 
+  it('i expect spaceOutUpperCaseWords() to put space between capitalized words', function(){
+    var testStr = 'IceLandFreezer';
+    var expectedResult = 'Ice Land Freezer';
+    expect(testStr).not.toEqual(expectedResult);
+    testStr = utility.spaceOutUpperCaseWords(testStr);
+    expect(testStr).toEqual(expectedResult)
+  });
+
 });

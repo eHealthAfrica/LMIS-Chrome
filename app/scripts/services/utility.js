@@ -85,4 +85,8 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
     return $filter('date')(date, 'yyyy-MM-dd');
   };
 
+  this.spaceOutUpperCaseWords = function(upperCaseWord){
+    return upperCaseWord.split(/(?=[A-Z])/).join(' ');
+  }
+
 });
