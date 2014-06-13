@@ -21,7 +21,7 @@ angular.module('lmisChromeApp')
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
         }else{
-          $scope.facility = appConfig.appFacility.name;
+          $scope.facility = appConfig.facility.name;
           if (isStockCountReminderDue === true) {
             //FIXME: move stock count reminder object to a factory function, stock count?? or reminderFactory.
             reminderFactory.warning({id: reminderFactory.STOCK_COUNT_REMINDER_ID, text: i18n('stockCountReminderMsg'),
@@ -58,46 +58,22 @@ angular.module('lmisChromeApp')
       templateUrl: 'views/home/home.html'
     })
     .state('home.index.home.mainActivity', {
-      url: '/main-activity?appConfigResult&stockResult&storageClear&stockOutBroadcastResult&surveySuccessMsg&ccuBreakdownReportResult',
+      url: '/main-activity',
       data: {
         label: 'Home'
       },
       views: {
         'activities': {
           templateUrl: 'views/home/main-activity.html',
-          controller: function ($stateParams, i18n, growl, $state) {
-            if ($stateParams.storageClear !== null) {
-              growl.success(i18n('clearStorageMsg'));
-              $stateParams.storageClear = null;
+          controller: function ($stateParams, i18n, growl, alertFactory) {
+
+            var alertQueue = alertFactory.getAll();
+            for(var i in alertQueue){
+              var alert = alertQueue[i];
+              growl.success(alert.msg);
+              alertFactory.remove(alert.id);
             }
 
-            if ($stateParams.ccuBreakdownReportResult !== null) {
-              growl.success(i18n('ccuBreakdownReportSuccessMsg'));
-              $stateParams.ccuBreakdownReportResult = null;
-            }
-
-            if ($stateParams.stockOutBroadcastResult !== null) {
-              growl.success(i18n('stockOutBroadcastSuccessMsg'));
-              $stateParams.stockOutBroadcastResult = null;
-            }
-
-            if ($stateParams.appConfigResult !== null) {
-              growl.success($stateParams.appConfigResult);
-              $stateParams.appConfigResult = null;
-            }
-
-            if($stateParams.stockResult !== null){
-              growl.success($stateParams.stockResult);
-              $stateParams.stockResult = null;
-            }
-
-            if ($stateParams.surveySuccessMsg !== null) {
-              growl.success($stateParams.surveySuccessMsg);
-              $stateParams.surveySuccessMsg = null;
-            }
-            //this is to clear page history, set url to pristine state
-            //not like page reload()
-            $state.reload();
           }
         },
         'charts': {
@@ -110,13 +86,13 @@ angular.module('lmisChromeApp')
           controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
             var keys = [
               {
-                key: 'daysAboveReorder',
-                label: i18n('daysAbove'),
-                color:  '#9954bb'
+                key: 'stockBelowReorder',
+                label: i18n('stockBelow'),
+                color:  '#ff7518'
               },
               {
-                key: 'daysBelowReorder',
-                label: i18n('daysBelow'),
+                key: 'stockAboveReorder',
+                label: i18n('stockAbove'),
                 color: '#666666'
               }
             ];
@@ -130,7 +106,7 @@ angular.module('lmisChromeApp')
                 return deferred.promise;
               }
 
-              var currentFacility = appConfig.appFacility;
+              var currentFacility = appConfig.facility;
               var promises = [];
               promises.push(appConfigService.getProductTypes());
               $q.all(promises)
@@ -144,20 +120,20 @@ angular.module('lmisChromeApp')
                       name: types[i].code
                     };
                     (function (i) {
-                      innerPromises.push(inventoryRulesFactory.daysOfStock(currentFacility, types[i].uuid)
+                      innerPromises.push(inventoryRulesFactory.getStockLevel(currentFacility, types[i].uuid)
                         .then(
                           function (stockLevel) {
                             var uuid = types[i].uuid;
-                            productTypeInfo[uuid].daysOfStock = stockLevel;
+                            productTypeInfo[uuid].stockLevel = stockLevel;
                           },
                           function (err) {
                             deferred.reject(err);
                           })
                       );
-                      innerPromises.push(inventoryRulesFactory.daysToReorderPoint(currentFacility, types[i].uuid)
+                      innerPromises.push(inventoryRulesFactory.bufferStock(currentFacility, types[i].uuid)
                         .then(
-                          function (daysToReorder) {
-                            productTypeInfo[types[i].uuid].daysToReorder = daysToReorder;
+                          function (bufferStock) {
+                            productTypeInfo[types[i].uuid].bufferStock = bufferStock;
                           },
                           function (err) {
                             deferred.reject(err);
@@ -195,21 +171,24 @@ angular.module('lmisChromeApp')
 
                 for(var uuid in productTypeCounts) {
                   product = productTypeCounts[uuid];
+                  //skip prods where we don't have inventory rule information
+                  if(product.bufferStock < 0)
+                    continue;
                   //filter out stock count with no reference to stock out broadcast since the last stock count
                   var filtered = filterStockCountWithNoStockOutRef(stockOutList);
 
                   //create a uuid list of products with zero or less reorder days
-                  if(product.daysToReorder <= 0 && filtered.length === 0){
+                  if(product.stockLevel <= product.bufferStock && filtered.length === 0){
                     stockOutWarning.push(uuid);
                   }
 
                   values.push({
                     label: utility.ellipsize(product.name, 7),
-                    daysAboveReorder: inventoryRulesFactory.daysAboveReorder(
-                      product.daysOfStock, product.daysToReorder
+                    stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
+                      product.stockLevel, product.bufferStock
                     ),
-                    daysBelowReorder: inventoryRulesFactory.daysBelowReorder(
-                      product.daysOfStock, product.daysToReorder
+                    stockBelowReorder: inventoryRulesFactory.stockBelowReorder(
+                      product.stockLevel, product.bufferStock
                     )
                   });
                 }
@@ -243,7 +222,7 @@ angular.module('lmisChromeApp')
           return settingsService.load();
         },
         aggregatedInventory: function($q, $log, appConfig, inventoryFactory, dashboardfactory, settings) {
-          var currentFacility = appConfig.appFacility;
+          var currentFacility = appConfig.facility;
           var deferred = $q.defer();
 
           inventoryFactory.getFacilityInventory(currentFacility.uuid)
@@ -336,7 +315,7 @@ angular.module('lmisChromeApp')
       templateUrl: 'views/home/settings/inventory.html',
       resolve: {
         products: function(appConfig, inventoryFactory) {
-          var currentFacility = appConfig.appFacility;
+          var currentFacility = appConfig.facility;
           return inventoryFactory.getUniqueProducts(currentFacility.uuid);
         }
       },

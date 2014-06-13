@@ -39,7 +39,6 @@ describe('Service: inventoryRulesFactory', function() {
     });
   });
 
-
   describe('lead time', function() {
     it('should calculate the lead time for an order in ms', function() {
       var leadTime = inventoryRulesFactory.leadTime(orders[0]);
@@ -120,15 +119,12 @@ describe('Service: inventoryRulesFactory', function() {
   });
 
   describe('buffer stock', function() {
-    it('should return a list of buffer levels for each product', function() {
-      var serviceLevel = settings.inventory.serviceLevel,
-          serviceFactor = inventoryRulesFactory.serviceFactor(serviceLevel),
-          consumption = inventoryRulesFactory.consumption(facilities[0]);
-
+    it('should return a buffer level relevant to the given product and targetpop', function() {
+      //TODO ensure this works for proper
       var levels = inventoryRulesFactory.bufferStock(
-        inventory, serviceFactor, consumption
+        '', {}
       );
-      expect(angular.isArray(levels)).toBe(true);
+      //TODO test this promise
     });
   });
 

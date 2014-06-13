@@ -3,107 +3,87 @@
 angular.module('lmisChromeApp').directive('counter', function (notificationService, $interval, $timeout) {
   return {
     restrict: 'E',
-    template: '<div class="input-group">' +
-        '<span class="input-group-btn">' +
-        '<button id="_$counterMinusBtn" class="btn btn-warning counter-btn" ' +
-        'type="button">' +
-        '<i class="fa fa-minus"></i>' +
-        '</button>' +
-        '</span>' +
-        '<input type="number" min="0" class="form-control input-lg counter-input" ng-change="change" style="padding-right: 0em" ng-model="count" required/>' +
-        '<span class="input-group-btn">' +
-        '<button id="_$counterAddBtn" class="btn btn-info counter-btn" ' +
-        'type="button">' +
-        '<i class="fa fa-plus"></i>' +
-        '</button>' +
-        '</span>' +
-        '</div>',
+    templateUrl: 'views/templates/counter.html',
     scope: {
       count: '=bind',
       change: '=onchange'
     },
-    link: function (scope, element, attr) {
+    link: function (scope, element) {
       var isDown = false;
-      var shouldCountUp = true;
       var counterBtnList = element.find('button');
       var minusBtnElem = counterBtnList.eq(0);
       var plusBtnElem = counterBtnList.eq(1);
 
-      //attach mouse and touch event listeners, start: is called on touch-start and mouse-down,
-      // end: is called on touch-end or mouse up.
-      minusBtnElem.on('touchstart', function () {
-        scope.$apply(function () {
-          scope.startCounter(!shouldCountUp);
-        });
-        vibrate();
-      });
-      minusBtnElem.on('touchend', function () {
-        scope.$apply(function () {
-          scope.stopCounter();
-        });
-      });
-
-      var vibrate = function(){
+      var vibrate = function() {
         var DURATION_MILLI_SECONDS = 50;
         notificationService.vibrate(DURATION_MILLI_SECONDS);
       };
 
-      //attach touch listener to add button
-      plusBtnElem.on('touchstart', function () {
-        scope.$apply(function () {
-          scope.startCounter(shouldCountUp);
+      var crement = function(upwards) {
+        scope.$apply(function() {
+          scope.startCounter(upwards);
         });
+      };
+
+      var increment = function() {
+        crement(true);
+      };
+
+      var decrement = function() {
+        crement(false);
+      };
+
+      var incrementTouch = function() {
+        increment();
         vibrate();
-      });
-      plusBtnElem.on('touchend', function () {
-        scope.$apply(function () {
-          scope.stopCounter();
-        });
-      });
+      };
 
-      //add mouse listeners for mouse-up and mouse-down events
-      minusBtnElem.on('mousedown', function () {
-        scope.$apply(function () {
-          scope.startCounter(!shouldCountUp);
-        });
-      });
-      minusBtnElem.on('mouseup', function () {
-        scope.$apply(function () {
-          scope.stopCounter();
-        });
-      });
+      var decrementTouch = function() {
+        decrement();
+        vibrate();
+      };
 
-      //attach listener to add button
-      plusBtnElem.on('mousedown', function () {
-        scope.$apply(function () {
-          scope.startCounter(shouldCountUp);
+      scope.stopCounter = function() {
+        scope.$apply(function() {
+          isDown = false;
         });
-      });
-      plusBtnElem.on('mouseup', function () {
-        scope.$apply(function () {
-          scope.stopCounter();
-        });
-      });
+      };
 
-      element.on('$destroy', function () {
-        //remove all listeners on counter destroy
-        plusBtnElem.off('mouseup');
-        plusBtnElem.off('mousedown');
-        plusBtnElem.off('touchstart');
-        plusBtnElem.off('touchend');
+      minusBtnElem.on('touchstart', decrementTouch);
+      plusBtnElem.on('touchstart', incrementTouch);
 
-        minusBtnElem.off('mouseup');
-        minusBtnElem.off('mousedown');
-        minusBtnElem.off('touchstart');
-        minusBtnElem.off('touchend');
+      minusBtnElem.on('mousedown', decrement);
+      plusBtnElem.on('mousedown', increment);
+
+      var stopEvents = [
+        'touchend',
+        'touchmove',
+        'touchcancel',
+        'mouseup',
+        'mouseout',
+        'scroll',
+        'mousewheel'
+      ];
+
+      for(var i = stopEvents.length - 1; i >= 0; i--) {
+        minusBtnElem.on(stopEvents[i], scope.stopCounter);
+        plusBtnElem.on(stopEvents[i], scope.stopCounter);
+      }
+
+      var destroyEvents = stopEvents.concat([
+        'mouseup',
+        'touchstart'
+      ]);
+
+      element.on('$destroy', function() {
+        for(var i = destroyEvents.length - 1; i >= 0; i--) {
+          plusBtnElem.off(destroyEvents[i]);
+          minusBtnElem.off(destroyEvents[i]);
+        }
       });
 
       var isInvalid = function (value) {
         return (isNaN(value) || value === '' || value < 1);
-      };
-
-      scope.stopCounter = function () {
-        isDown = false;
       };
 
       scope.startCounter = function (isIncrement) {

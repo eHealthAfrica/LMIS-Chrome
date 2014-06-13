@@ -5,6 +5,7 @@ describe('Tests Counter Directive', function () {
 
   // Load the LMIS module
   beforeEach(module('lmisChromeApp', 'i18nMocks'));
+  beforeEach(module('views/templates/counter.html'));
 
  // Initialize the state
   beforeEach(inject(function($templateCache) {
@@ -59,8 +60,8 @@ describe('Tests Counter Directive', function () {
   it('i want counter buttons to be accessible via unique ids ', function(){
     var minusBtn = counter.find('button').eq(0);
     var plusBtn = counter.find('button').eq(1);
-    expect(minusBtn.attr('id')).toBe('_$counterMinusBtn');
-    expect(plusBtn.attr('id')).toBe('_$counterAddBtn');
+    expect(minusBtn.attr('id')).toBe('counter-minus-button');
+    expect(plusBtn.attr('id')).toBe('counter-plus-button');
   });
 
   it('i expect count value to be zero when counting down initially', function(){

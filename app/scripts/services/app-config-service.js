@@ -2,7 +2,7 @@
 
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, syncService,
                                                                       productProfileFactory, facilityFactory, utility,
-                                                                      cacheService, $filter, reminderFactory, growl, i18n) {
+                                                                      cacheService, $filter, reminderFactory, growl, i18n, $http) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   var cache = cacheService.getCache();
@@ -26,7 +26,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    */
   this.setup = function (appConfig) {
     var deferred = $q.defer();
-    appConfig.reminderDay = parseInt(appConfig.reminderDay); //cast to integer incase it is a string
+    appConfig.reminderDay = parseInt(appConfig.reminderDay); //cast to integer in case it is a string
     load().then(function (existingAppConfig) {
       if(typeof appConfig.dateActivated === 'undefined'){
         appConfig.dateActivated = new Date().toJSON();
@@ -110,29 +110,33 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
   this.getAppFacilityProfileByEmail = function(email){
     var deferred = $q.defer();
-    var REMOTE = config.api.url + '/' + FACILITY_PROFILE_DB;
-    //TODO: refactor retrieval of remote db record to syncService function.
-    var remoteDB = pouchdb.create(REMOTE);
-    remoteDB.info()
-        .then(function () {
-          remoteDB.get(email)
-              .then(function (appFacilityProfile) {
-                var promises = {
-                  appFacility: facilityFactory.get(appFacilityProfile.appFacility),
-                  selectedProductProfiles: productProfileFactory.getBatch(appFacilityProfile.selectedProductProfiles)
-                };
+    var REMOTE_URI = config.api.url+'/facilities/_design/config/_view/template?key="'+email+'"';
+    REMOTE_URI = encodeURI(REMOTE_URI);
+    $http.get(REMOTE_URI)
+        .then(function(res){
 
-                $q.all(promises).then(function (result) {
-                  for (var key in result) {
-                    appFacilityProfile[key] = result[key];
-                  }
-                  deferred.resolve(appFacilityProfile);
+          var rows = res.data.rows;
+          if(rows.length > 0){
+            var facilityProfile = rows[0].value;//pick the first facility profile.
+            var promises = {
+                selectedProductProfiles: productProfileFactory.getBatch(facilityProfile.selectedProductProfiles)
+            };
+            $q.all(promises)
+                .then(function (result) {
+                    for (var key in result) {
+                        facilityProfile[key] = result[key];
+                    }
+                    deferred.resolve(facilityProfile);
+                })
+                .catch(function(reason){
+                    deferred.reject(reason);
                 });
-              }, function (reason) {
-                deferred.reject(reason);
-              });
+          }else{
+            deferred.reject('profile for given email does not exist.');
+          }
+
         })
-        .catch(function (reason) {
+        .catch(function(reason){
           deferred.reject(reason);
         });
     return deferred.promise;

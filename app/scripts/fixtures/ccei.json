@@ -1163,24 +1163,6 @@
     "_id": "8a529495c6076aed9f1850d53d046aad",
     "_rev": "3-c2e641b7b8beebde3618abd8a6c41214",
     "uuid": "8a529495c6076aed9f1850d53d046aad"
-}, "8a529495c6076aed9f1850d53d04721f": {
-    "name": "steps to add new equipment to catalog before adding to facility",
-    "dhis2_modelid": 19858,
-    "dhis2_modelattributeid": 46,
-    "ModelName": "Sophie",
-    "Manufacturer": "Sophie",
-    "CatalogID": "Test 123",
-    "RefType": "SolarThermalRefrigerator",
-    "DataSource": "Custom",
-    "RefPowerSource": "GasElectric",
-    "RefNetVolume": "65",
-    "FreezeNetVolume": "0",
-    "RefGrossVolume": "100",
-    "FreezeGrossVolume": "20",
-    "ClimateZone": "Hot",
-    "_id": "8a529495c6076aed9f1850d53d04721f",
-    "_rev": "3-f9187892bd6510f200ce658727d133b9",
-    "uuid": "8a529495c6076aed9f1850d53d04721f"
 }, "8a529495c6076aed9f1850d53d047d99": {
     "name": "Common upright domestic refrigerator",
     "dhis2_modelid": 19859,
@@ -1199,17 +1181,4 @@
     "_id": "8a529495c6076aed9f1850d53d047d99",
     "_rev": "3-c26022097c28aab886f9250758663651",
     "uuid": "8a529495c6076aed9f1850d53d047d99"
-}, "8a529495c6076aed9f1850d53d048344": {
-    "name": "Standard RCW 4",
-    "dhis2_modelid": 19860,
-    "dhis2_modelattributeid": 240,
-    "CatalogID": "E0040001",
-    "Cold Box Type": "DayCarrier",
-    "RefType": "VaccineCarrier",
-    "Manufacturer": "Electrolux",
-    "ModelName": "RCW 4 ((need to add Litres unit to left with Net Storage)",
-    "Net Storage": "4",
-    "_id": "8a529495c6076aed9f1850d53d048344",
-    "_rev": "4-cd4731781e906d3c34235d3d64eaaf96",
-    "uuid": "8a529495c6076aed9f1850d53d048344"
 }}

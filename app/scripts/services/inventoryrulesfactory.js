@@ -17,7 +17,7 @@ angular.module('lmisChromeApp')
     };
 
     Number.prototype.clamp = function(min, max) {
-      return Math.max(Math.min(this, min), max);
+      return Math.min(Math.max(this, min), max);
     };
 
     /**
@@ -331,22 +331,52 @@ angular.module('lmisChromeApp')
      * @param {Number} serviceFactor The facility's service factor
      * @return {Number[]} the buffer levels for each product
      */
-    var bufferStock = function(inventories, serviceFactor, consumption) {
-      // var leadTimes = [];
-      // inventories.forEach(function(inventory) {
-      //   leadTimes.push(leadTime(inventory));
-      // });
-      // var avgLeadTime = average(leadTimes);
+    var bufferStock = function(facility, productTypeUuid) {
+      // HACK: Calculates based on some target pop BS and a bunch of back-of-a-napkin calculations
+      // As we add rules for dry goods they will show up in graph also.
+      // TODO: Actual adaptive model
+      
+      // product types:
+      // 251fc8c2-0273-423f-a519-4ea20fc74832    ADS-0.05ml
+      // 367f3f7f-a1cc-4266-8a0a-020722576cc9    SB-2.5L
+      // 401f8608-e232-4c5a-b32d-032d632abf88    Syr-Dil-2ml
+      // db513859-4491-4db7-9343-4980a16c8b04    OPV
+      // 00f987e4-54e1-46f0-820b-b249a6d38759    Measles
+      // 0930b906-4802-4a65-8516-057bd839db3e    HepB
+      // 1203c362-b7a8-499a-b7ba-b842bace7920    Penta
+      // 19e16c20-04b7-4e06-a679-7f7b60d976be    YF
+      // 939d5e05-2aa4-4883-9246-35c60dfa06a5    TT
+      // e55e1452-b0ab-4046-9d7e-3a98f1f968d0    BCG
+      // f7675c7e-856a-45e8-b2af-d50f42950ac1    Men-A
+      // abe41e88-ab4a-4c6f-b7a4-4549e13fb758    HPV
+      // 111fbb51-0c5a-492a-97f6-2c7664e23d01    HepA
+      // f96946be-7dac-438e-9220-efc386276481    Penta
+      // 2fee31f0-7757-4f06-9914-d16c5ca9cc5f    DT
 
-      // var first = Math.pow(avgLeadTime * consumption, 2),
-      //     second = Math.pow(consumption, 2) * Math.pow(avgLeadTime, 2);
-      // var buffer = serviceFactor * Math.sqrt(first + second);
-
-      // TODO: calculate real buffer
-      inventories.forEach(function(inventory) {
-        inventory.buffer = randInterval(100, 300);
-      });
-      return inventories;
+      var deferred = $q.defer();
+      if(typeof facility.bw_target_pop !== 'undefined')
+      {
+        var targetpop = facility.bw_target_pop[productTypeUuid];
+        var targetPopCoverage = targetpop * 0.83;
+        var factors= {
+          'e55e1452-b0ab-4046-9d7e-3a98f1f968d0': { popFactor: 0.5, usageFactor: 0.25}, //bcg
+          '00f987e4-54e1-46f0-820b-b249a6d38759': { popFactor: 0.3, usageFactor: 0.25}, //measles
+          '19e16c20-04b7-4e06-a679-7f7b60d976be': { popFactor: 0.3, usageFactor: 0.25}, //yf
+          'db513859-4491-4db7-9343-4980a16c8b04': { popFactor: 0.75, usageFactor: 1.0}, //opv
+          '939d5e05-2aa4-4883-9246-35c60dfa06a5': { popFactor: 0.75, usageFactor: 0.25}, //tt
+          'f96946be-7dac-438e-9220-efc386276481': { popFactor: 0.75, usageFactor: 0.75}, //penta
+          '0930b906-4802-4a65-8516-057bd839db3e': { popFactor: 0.75, usageFactor: 0.25}  //hbv
+        };
+        //don't need a promise using rule-based hacks but will for proper adaptive rules
+        var factor = factors[productTypeUuid];
+        if(typeof factor !== 'undefined')
+          deferred.resolve(Math.ceil(targetPopCoverage / factor.popFactor * factor.usageFactor)); 
+        else
+          deferred.resolve(-1);
+      } else
+        deferred.resolve(-1);
+      
+      return deferred.promise;
     };
 
     /**
@@ -373,6 +403,16 @@ angular.module('lmisChromeApp')
       return Math.floor(below);
     };
 
+    var stockAboveReorder = function(stockLevel, bufferStock) {
+      var above = (stockLevel - bufferStock).clamp(0, stockLevel);
+      return Math.floor(above);
+    }
+
+    var stockBelowReorder = function(stockLevel, bufferStock) {
+      var below = stockLevel.clamp(0, bufferStock);
+      return Math.floor(below);
+    }
+
     return {
       leadTime: leadTime,
       consumption: consumption,
@@ -385,6 +425,8 @@ angular.module('lmisChromeApp')
       daysOfStock: daysOfStock,
       reorderPointByProductType: reorderPointByProductTypeDays,
       daysAboveReorder: daysAboveReorder,
-      daysBelowReorder: daysBelowReorder
+      daysBelowReorder: daysBelowReorder,
+      stockAboveReorder: stockAboveReorder,
+      stockBelowReorder: stockBelowReorder
     };
   });

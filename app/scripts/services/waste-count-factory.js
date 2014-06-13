@@ -87,8 +87,11 @@ angular.module('lmisChromeApp')
       productObject: function(array){
         array = array
             .filter(function(product){
-               var excludedCategories = getCategoriesExcludeFromCount();
-               return excludedCategories.indexOf(product.category) === -1;
+              var excludedCategories = getCategoriesExcludeFromCount();
+              if(angular.isObject(product.category)){
+                return excludedCategories.indexOf(product.category.uuid) === -1;
+              }
+              return excludedCategories.indexOf(product.category) === -1;
             });
         return utility.castArrayToObject(array, 'uuid');
       },

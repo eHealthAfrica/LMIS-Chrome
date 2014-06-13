@@ -92,7 +92,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     }
   });
 
-}).controller('AppConfigWizard', function($scope, facilities, appConfigService, growl, $state,
+}).controller('AppConfigWizard', function($scope, facilities, appConfigService, growl, $state, alertFactory,
         i18n, deviceEmail, $log, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility){
 
   $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords
@@ -128,12 +128,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           $scope.disableBtn = false;
           $scope.isSubmitted = false;
           $scope.profileNotFound = false;
+
+          $scope.appConfig.facility = result;
           $scope.appConfig.reminderDay = result.reminderDay;
           $scope.appConfig.stockCountInterval = result.stockCountInterval;
-          $scope.appConfig.contactPerson = result.contactPerson;
-          $scope.appConfig.facility = JSON.stringify(result.appFacility);//used to pre-select facility drop down
+          $scope.appConfig.contactPerson.name = result.contact.name;
+          $scope.appConfig.contactPerson.phoneNo = result.contact.oldphone;
           $scope.appConfig.selectedProductProfiles = result.selectedProductProfiles || [];
           $scope.appConfig.selectedCcuProfiles = result.selectedCcuProfiles || [];
+
           $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
           $scope.preSelectProductProfileCheckBox = utility.castArrayToObject($scope.appConfig.selectedProductProfiles, 'uuid');
           $scope.moveTo(nextStep);
@@ -170,13 +173,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   };
 
   $scope.save = function () {
-      $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility);
       $scope.isSaving = true;
       appConfigService.setup($scope.appConfig)
           .then(function (result) {
             if (typeof result !== 'undefined') {
               $scope.appConfig.uuid = result;
-              $state.go('home.index.home.mainActivity', {'appConfigResult': i18n('appConfigSuccessMsg') });
+              alertFactory.success(i18n('appConfigSuccessMsg'));
+              $state.go('home.index.home.mainActivity');
             } else {
               growl.error(i18n('appConfigFailedMsg'));
             }
@@ -188,7 +191,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     };
 
 }).controller('EditAppConfigCtrl', function ($scope, facilities, appConfigService, growl, $log, i18n, $state, appConfig,
-                                             ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility) {
+                                             ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory) {
 
   $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -215,7 +218,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.appConfig.reminderDay = appConfig.reminderDay;
     $scope.appConfig.stockCountInterval = parseInt(appConfig.stockCountInterval);
     $scope.appConfig.facility = appConfig.facility;
-    $scope.appConfig.appFacility = appConfig.appFacility;
     $scope.appConfig.selectedProductProfiles = appConfig.selectedProductProfiles || [];
     $scope.appConfig.selectedCcuProfiles = appConfig.selectedCcuProfiles || [];
     $scope.preSelectCcuProfiles = utility.castArrayToObject(appConfig.selectedCcuProfiles, 'dhis2_modelid');
@@ -239,14 +241,13 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
   $scope.save = function () {
 
-    $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility);
     $scope.isSaving = true;
-
     appConfigService.setup($scope.appConfig)
         .then(function (result) {
           if (typeof result !== 'undefined') {
             $scope.appConfig.uuid = result;
-            $state.go('home.index.home.mainActivity', {'appConfigResult': i18n('appConfigSuccessMsg') });
+            alertFactory.success(i18n('appConfigSuccessMsg'));
+            $state.go('home.index.home.mainActivity');
           } else {
             growl.error(i18n('appConfigFailedMsg'));
           }

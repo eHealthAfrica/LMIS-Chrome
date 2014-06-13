@@ -13,7 +13,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           return appConfigService.getCurrentAppConfig();
         }
     },
-    controller: function ($stateParams, $state, $scope, surveyFactory, growl, appConfig, i18n) {
+    controller: function ($stateParams, $state, $scope, surveyFactory, growl, appConfig, i18n, alertFactory) {
 
       if(!$stateParams.surveyUUID){
         growl.error(i18n('surveyNotFound'), {persistent: true});
@@ -64,7 +64,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             .then(function (result) {
               if (result) {
                 var successMsg = i18n('surveySuccessMsg', $scope.survey.name);
-                $state.go('home.index.home.mainActivity', {surveySuccessMsg: successMsg});
+                alertFactory.success(successMsg);
+                $state.go('home.index.home.mainActivity');
                 $scope.isSaving = false;
               } else {
                 growl.error(i18n('surveyFailedMsg'));
