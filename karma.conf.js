@@ -3,6 +3,11 @@
 // Karma configuration
 // http://karma-runner.github.io/0.10/config/configuration-file.html
 
+var bowerJS = require('wiredep')({
+  exclude: ['pouchdb-nightly', 'jasmine'],
+  devDependencies: true
+}).js;
+
 module.exports = function(config) {
   config.set({
     // base path, that will be used to resolve files and exclude
@@ -12,22 +17,11 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
 
     // list of files / patterns to load in the browser
-    files: [
-      'app/bower_components/angular/angular.js',
-      'app/bower_components/angular-mocks/angular-mocks.js',
-      'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-      'app/bower_components/angular-ui-router/release/angular-ui-router.min.js',
-      'app/bower_components/tv-breadcrumbs/dist/tv-breadcrumbs.min.js',
-      'app/bower_components/angular-pouchdb/angular-pouchdb.js',
-      'app/bower_components/jasmine-as-promised/src/jasmine-as-promised.js',
-      'app/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.min.js',
-      'app/bower_components/queue-async/queue.js',
-      'app/bower_components/angular-growl-v2/build/angular-growl.js',
-      'app/bower_components/angular-animate/angular-animate.js',
+    files: bowerJS.concat([
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
-    ],
+    ]),
 
     // list of files / patterns to exclude
     exclude: [
