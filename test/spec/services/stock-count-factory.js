@@ -242,7 +242,7 @@ describe('Service stockCountFactory', function () {
     });
   });
 
-  it('i expect isStockCountDue() to return True if getMostRecentStockCount returns undefined for all intervals.', function () {
+  it('i expect isStockCountDue() to return True if there is no stock count available and interval is DAILY', function(){
     var dfd = $q.defer();
     var today = new Date();
     var stockCount;//no stock count available.
@@ -251,21 +251,46 @@ describe('Service stockCountFactory', function () {
       return dfd.promise;
     });
 
-    runs(function () {
-      var promises = [];
-      promises.push(stockCountFactory.isStockCountDue(reminderFactory.DAILY, today.getDay()));
-      promises.push(stockCountFactory.isStockCountDue(reminderFactory.WEEKLY, today.getDay()));
-      promises.push(stockCountFactory.isStockCountDue(reminderFactory.BI_WEEKLY, today.getDay()));
-      promises.push(stockCountFactory.isStockCountDue(reminderFactory.MONTHLY, today.getDay()));
+    runs(function(){
+        return stockCountFactory.isStockCountDue(reminderFactory.DAILY, today.getDay())
+            .then(function(res){
+                expect(res).toBeTruthy();
+            });
+    });
+  });
 
-      return $q.all(promises)
-          .then(function (results) {
-            for (var index in results) {
-              expect(results[index]).toBeTruthy();
-            }
-          });
+  it('i expect isStockCountDue() to return True if there is no stock count available and interval is WEEKLY', function(){
+    var dfd = $q.defer();
+    var today = new Date();
+    var stockCount;//no stock count available.
+    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+      dfd.resolve(stockCount);
+      return dfd.promise;
     });
 
+    runs(function(){
+        return stockCountFactory.isStockCountDue(reminderFactory.WEEKLY, today.getDay())
+            .then(function(res){
+                expect(res).toBeTruthy();
+            });
+    });
+  });
+
+  it('i expect isStockCountDue() to return True if there is no stock count available and interval is BI_WEEKLY', function(){
+    var dfd = $q.defer();
+    var today = new Date();
+    var stockCount;//no stock count available.
+    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+      dfd.resolve(stockCount);
+      return dfd.promise;
+    });
+
+    runs(function(){
+        return stockCountFactory.isStockCountDue(reminderFactory.BI_WEEKLY, today.getDay())
+            .then(function(res){
+                expect(res).toBeTruthy();
+            });
+    });
   });
 
   it('i expect isStockCountDue() to return False if stock count exists for given week and has been completed', function () {
@@ -290,11 +315,28 @@ describe('Service stockCountFactory', function () {
     });
   });
 
+  it('i expect isStockCountDue() to return True if there is no stock count available and interval is MONTHLY', function(){
+    var dfd = $q.defer();
+    var today = new Date();
+    var stockCount;//no stock count available.
+    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+      dfd.resolve(stockCount);
+      return dfd.promise;
+    });
+
+    runs(function(){
+        return stockCountFactory.isStockCountDue(reminderFactory.MONTHLY, today.getDay())
+            .then(function(res){
+                expect(res).toBeTruthy();
+            });
+    });
+  });
+
   it('i expect isStockCountDue() to return False if current week stock count is not yet due, but last week stock has been completed.', function () {
     var dfd = $q.defer();
     var today = new Date();
     var reminderDay = 5;//
-    var cwrDate = utility.getWeekRangeByDate(today, reminderDay).reminderDate;//curreny week rem date
+    var cwrDate = utility.getWeekRangeByDate(today, reminderDay).reminderDate;//current week rem date
     var lastWkCountDate = new Date(cwrDate.getFullYear(), cwrDate.getMonth(), cwrDate.getDate() - reminderFactory.WEEKLY);//previous week
 
     var stockCount = {
