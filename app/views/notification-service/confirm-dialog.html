@@ -1,8 +1,5 @@
 <div class="modal-header alert-danger">
-  <span ng-hide="headerMessage === ''" ng-bind="headerMessage"></span>
-  <span ng-show="headerMessage === ''">
-    <span i18n="confirmStockOutHeader2"></span>
-  </span>
+  <span ng-bind="headerMessage"></span>
   <span class="pull-right" ng-click="cancel(dismissMessage)">
     <i class="fa fa-times"></i>
   </span>
@@ -10,25 +7,13 @@
 <div class="modal-body">
   <div class="row">
     <div class="col-md-6">
-      <span ng-show="headerMessage === ''" ng-repeat="msg in headerMessage2 track by $index">{{msg}}<br> </span>
-      <span ng-hide="headerMessage === ''">
-        <span ng-bind="bodyMessage"></span>
-        <button class="btn btn-success" ng-click="confirm(true)">
-          <span ng-bind="confirmBtnMsg"></span>
-        </button>
-        <button class="btn btn-default" ng-click="cancel(dismissMessage)">
-          <span ng-bind="cancelBtnMsg"></span>
-        </button>
-      </span>
+      <span ng-bind="bodyMessage"></span>
+      <button class="btn btn-success" lmis-analytics-directive="dialog_confirm" ng-click="confirm(true)">
+        <span ng-bind="confirmBtnMsg"></span>
+      </button>
+      <button class="btn btn-default" lmis-analytics-directive="dialog_cancel" ng-click="cancel(dismissMessage)">
+        <span ng-bind="cancelBtnMsg"></span>
+      </button>
     </div>
   </div>
-</div>
-<div class="modal-footer" ng-show="headerMessage === ''">
-  <span ng-bind="bodyMessage"></span>
-  <button class="btn btn-success" ng-click="confirm(true)">
-    <span ng-bind="confirmBtnMsg"></span>
-  </button>
-  <button class="btn btn-default" ng-click="cancel(dismissMessage)">
-    <span ng-bind="cancelBtnMsg"></span>
-  </button>
 </div>
