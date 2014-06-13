@@ -63,7 +63,7 @@ angular.module('lmisChromeApp')
           });
     };
   })
-  .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl,
+  .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
                                              $stateParams, appConfig, appConfigService, cacheService, syncService,
                                              utility, $rootScope, i18n, productWithCategories){
     //TODO: refactor entire stock count controller to simpler more readable controller
@@ -170,13 +170,15 @@ angular.module('lmisChromeApp')
             syncService.syncItem(DB_NAME, $scope.stockCount)
                 .then(function (syncResult) {
                   $scope.isSaving = false;
-                  $state.go('home.index.home.mainActivity', {'stockResult': msg});
+                  alertFactory.success(msg);
+                  $state.go('home.index.home.mainActivity');
                   console.info('stock count sync success: ' + syncResult);
                 })
                 .catch(function (reason) {
                   //temporary fix here
                   $scope.isSaving = false;
-                  $state.go('home.index.home.mainActivity', {'stockResult': msg});
+                  alertFactory.success(msg);
+                  $state.go('home.index.home.mainActivity');
                   console.log(reason);
                 });
           }else{

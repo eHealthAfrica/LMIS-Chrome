@@ -3,15 +3,13 @@
 angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider.state('clearStorage', {
     url: '/clear-storage',
-    controller: function (storageService, $state, $rootScope, syncService, cacheService, $q) {
+    controller: function (storageService, $state, $rootScope, syncService, cacheService, $q, alertFactory) {
 
       var clearAndLoadFixture = function(){
         var deferred = $q.defer();
 
         //clear cache
         cacheService.clearCache();
-        $rootScope.isStockCountDue = undefined;
-        $rootScope.showChart = false;
 
         //clear local storage
         storageService.clear()
@@ -21,7 +19,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
               $q.all(promises).then(function (results) {
                 deferred.resolve(results);
-                $state.go('appConfigWelcome', {storageClear: true});
+                alertFactory.success(i18n('clearStorageMsg'));
+                $state.go('appConfigWelcome');
               });
             })
             .catch(function(reason){

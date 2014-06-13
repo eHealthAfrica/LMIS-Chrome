@@ -58,43 +58,20 @@ angular.module('lmisChromeApp')
       templateUrl: 'views/home/home.html'
     })
     .state('home.index.home.mainActivity', {
-      url: '/main-activity?appConfigResult&stockResult&storageClear&stockOutBroadcastResult&surveySuccessMsg&ccuBreakdownReportResult',
+      url: '/main-activity',
       data: {
         label: 'Home'
       },
       views: {
         'activities': {
           templateUrl: 'views/home/main-activity.html',
-          controller: function ($stateParams, i18n, growl, $state) {
+          controller: function ($stateParams, i18n, growl, alertFactory) {
 
-            if ($stateParams.storageClear !== null) {
-              growl.success(i18n('clearStorageMsg'));
-              $stateParams.storageClear = null;
-            }
-
-            if ($stateParams.ccuBreakdownReportResult !== null) {
-              growl.success(i18n('ccuBreakdownReportSuccessMsg'));
-              $stateParams.ccuBreakdownReportResult = null;
-            }
-
-            if ($stateParams.stockOutBroadcastResult !== null) {
-              growl.success(i18n('stockOutBroadcastSuccessMsg'));
-              $stateParams.stockOutBroadcastResult = null;
-            }
-
-            if ($stateParams.appConfigResult !== null) {
-              growl.success($stateParams.appConfigResult);
-              $stateParams.appConfigResult = null;
-            }
-
-            if($stateParams.stockResult !== null){
-              growl.success($stateParams.stockResult);
-              $stateParams.stockResult = null;
-            }
-
-            if ($stateParams.surveySuccessMsg !== null) {
-              growl.success($stateParams.surveySuccessMsg);
-              $stateParams.surveySuccessMsg = null;
+            var alertQueue = alertFactory.getAll();
+            for(var i in alertQueue){
+              var alert = alertQueue[i];
+              growl.success(alert.msg);
+              alertFactory.remove(alert.id);
             }
 
           }

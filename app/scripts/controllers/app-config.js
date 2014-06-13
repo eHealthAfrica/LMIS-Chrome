@@ -92,7 +92,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     }
   });
 
-}).controller('AppConfigWizard', function($scope, facilities, appConfigService, growl, $state,
+}).controller('AppConfigWizard', function($scope, facilities, appConfigService, growl, $state, alertFactory,
         i18n, deviceEmail, $log, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility){
 
   $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords
@@ -178,7 +178,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           .then(function (result) {
             if (typeof result !== 'undefined') {
               $scope.appConfig.uuid = result;
-              $state.go('home.index.home.mainActivity', {'appConfigResult': i18n('appConfigSuccessMsg') });
+              alertFactory.success(i18n('appConfigSuccessMsg'));
+              $state.go('home.index.home.mainActivity');
             } else {
               growl.error(i18n('appConfigFailedMsg'));
             }
@@ -190,7 +191,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     };
 
 }).controller('EditAppConfigCtrl', function ($scope, facilities, appConfigService, growl, $log, i18n, $state, appConfig,
-                                             ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility) {
+                                             ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory) {
 
   $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords
   $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -245,7 +246,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         .then(function (result) {
           if (typeof result !== 'undefined') {
             $scope.appConfig.uuid = result;
-            $state.go('home.index.home.mainActivity', {'appConfigResult': i18n('appConfigSuccessMsg') });
+            alertFactory.success(i18n('appConfigSuccessMsg'));
+            $state.go('home.index.home.mainActivity');
           } else {
             growl.error(i18n('appConfigFailedMsg'));
           }
