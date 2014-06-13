@@ -158,6 +158,10 @@ angular.module('lmisChromeApp')
                   return product;
                 })
                 .sort(function(a, b){
+                  //FIXME: find why category is null some times
+                  if(a.category === null || b.category === null){
+                    return false;
+                  }
                   if(angular.isDefined(a.category.name) && angular.isDefined(b.category.name)){
                     return a.category.name > b.category.name;
                   }
