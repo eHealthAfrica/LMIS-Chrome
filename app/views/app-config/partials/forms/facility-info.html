@@ -4,17 +4,8 @@
       <div class="form-group"
            ng-class="{ 'has-error': (editAppConfigForm.appFacility).$invalid && isSubmitted }">
         <label i18n="facility"></label>
-        <select id="appFacility" name="appFacility" class="form-control" ng-model="appConfig.facility"
-                required>
-          <option value="" i18n="selectFacility"></option>
-          <option ng-repeat="facility in facilities" value="{{ facility }}"
-                  ng-selected="facility.uuid === (appConfig.appFacility).uuid"
-                  ng-bind="facility.name" required>
-          </option>
-        </select>
-                  <span class="alert-danger form-control" i18n="appConfigFacilityErrorMsg"
-                        ng-show="(editAppConfigForm.appFacility).$invalid && isSubmitted">
-                  </span>
+        <input type="text" class="form-control" ng-model="(appConfig.facility).name"
+               name="facilityName" id="facilityName"  disabled="true"/>
       </div>
     </div>
 

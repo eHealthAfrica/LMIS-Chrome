@@ -20,7 +20,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       $scope.facilityCcuList = appConfig.selectedCcuProfiles;
       $scope.ccuBreakdown = {
         ccuProfile: '',
-        facility: appConfig.appFacility,
+        facility: appConfig.facility,
         isSubmitted: false
       };
 
