@@ -241,9 +241,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
   $scope.save = function () {
 
-    $scope.appConfig.appFacility = JSON.parse($scope.appConfig.facility);
     $scope.isSaving = true;
-
     appConfigService.setup($scope.appConfig)
         .then(function (result) {
           if (typeof result !== 'undefined') {
