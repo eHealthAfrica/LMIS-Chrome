@@ -217,7 +217,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.appConfig.reminderDay = appConfig.reminderDay;
     $scope.appConfig.stockCountInterval = parseInt(appConfig.stockCountInterval);
     $scope.appConfig.facility = appConfig.facility;
-    $scope.appConfig.appFacility = appConfig.appFacility;
     $scope.appConfig.selectedProductProfiles = appConfig.selectedProductProfiles || [];
     $scope.appConfig.selectedCcuProfiles = appConfig.selectedCcuProfiles || [];
     $scope.preSelectCcuProfiles = utility.castArrayToObject(appConfig.selectedCcuProfiles, 'dhis2_modelid');
