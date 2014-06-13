@@ -111,7 +111,7 @@ angular.module('lmisChromeApp')
               {
                 key: 'stockBelowReorder',
                 label: i18n('stockBelow'),
-                color:  '#9954bb'
+                color:  '#ff7518'
               },
               {
                 key: 'stockAboveReorder',
