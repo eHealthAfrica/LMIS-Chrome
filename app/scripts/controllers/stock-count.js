@@ -75,7 +75,7 @@ angular.module('lmisChromeApp')
       return categoryName.split(' ').join('-').toLowerCase();
     };
     $scope.step = 0;
-    $scope.facilityObject = appConfig.appFacility;
+    $scope.facilityObject = appConfig.facility;
     $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
     $scope.stockCountDate = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
     $scope.dateInfo = new Date();

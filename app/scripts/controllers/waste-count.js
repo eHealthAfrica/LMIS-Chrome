@@ -76,7 +76,7 @@ angular.module('lmisChromeApp')
       }
       else{
         $scope.wasteCount = {};
-        $scope.wasteCount.facility = appConfig.appFacility.uuid;
+        $scope.wasteCount.facility = appConfig.facility.uuid;
         $scope.wasteCount.reason = {};
         $scope.wasteCount.discarded = {};
       }
