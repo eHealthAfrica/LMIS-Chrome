@@ -36,7 +36,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     controller: 'MultiStockOutBroadcastCtrl'
   });
 }).controller('MultiStockOutBroadcastCtrl', function($scope,appConfig, notificationService, $log, stockOutBroadcastFactory, $state, growl,
-                                                 i18n, facilityStockListProductTypes, $stateParams, inventoryRulesFactory, $q){
+                                                 i18n, facilityStockListProductTypes, $stateParams, inventoryRulesFactory, $q, alertFactory){
 
   $scope.urlParams = ($stateParams.productList !== null) ? ($stateParams.productList).split(',') : $stateParams.productList;
   var stockOutProductTypes = facilityStockListProductTypes.filter(function (element) {
@@ -86,7 +86,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       addNextStockLevelAndSave(productList, productList.length)
           .then(function (result) {
             $scope.isSaving = false;
-            $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
+            alertFactory.success(i18n('stockOutBroadcastSuccessMsg'));
+            $state.go('home.index.home.mainActivity');
           })
           .catch(function (reason) {
             growl.error(i18n('stockOutBroadcastFailedMsg'));
@@ -115,7 +116,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         });
   };
 
-}).controller('StockOutBroadcastCtrl', function($scope,appConfig, $log, stockOutBroadcastFactory, $state, growl,
+}).controller('StockOutBroadcastCtrl', function($scope,appConfig, $log, stockOutBroadcastFactory, $state, growl, alertFactory,
                                                 $modal, i18n, facilityStockListProductTypes, notificationService){
 
   $scope.productTypes = facilityStockListProductTypes;
@@ -145,7 +146,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             stockOutBroadcastFactory.addStockLevelAndSave(stockOut)
                 .then(function (result) {
                   if (typeof result !== 'undefined') {
-                    $state.go('home.index.home.mainActivity', {stockOutBroadcastResult: true });
+                    alertFactory.success(i18n('stockOutBroadcastSuccessMsg'));
+                    $state.go('home.index.home.mainActivity');
                     stockOutBroadcastFactory.broadcast(result)
                         .then(function (result) {
                           $log.info('stock-out broad-casted: ' + result);
