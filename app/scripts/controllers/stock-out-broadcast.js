@@ -48,7 +48,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   //used to hold stock out form data
   $scope.stockOutForm = {
     productType: stockOutProductTypes,
-    facility: appConfig.appFacility,
+    facility: appConfig.facility,
     isSubmitted: false
   };
 
@@ -122,7 +122,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   //used to hold stock out form data
   $scope.stockOutForm = {
     productType: '',
-    facility: appConfig.appFacility,
+    facility: appConfig.facility,
     isSubmitted: false
   };
   $scope.isSaving = false;

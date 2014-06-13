@@ -75,7 +75,7 @@ angular.module('lmisChromeApp')
       return categoryName.split(' ').join('-').toLowerCase();
     };
     $scope.step = 0;
-    $scope.facilityObject = appConfig.appFacility;
+    $scope.facilityObject = appConfig.facility;
     $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
     $scope.stockCountDate = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
     $scope.dateInfo = new Date();
@@ -159,15 +159,24 @@ angular.module('lmisChromeApp')
         saveQueue.awaitAll(function(err, result){
           if(result){
             var msg = i18n('stockCountSuccessMsg');
-            $scope.isSaving = false;
-            $state.go('home.index.home.mainActivity', {'stockResult': msg});
-
             $scope.stockCount.uuid = result[0];//pick one uuid
+            //FIXME: why stock count returns empty array when redirect is called before syncService
+            /*
+             some side effects of this hack
+             1, when device is connected to GPRS network with no data bundle, it takes a much longer time before it
+                redirects to home page as it has to wait for syncService.canConnect to complete
+             2, redirect has to wait for app to finish syncing - success/fail
+            */
             syncService.syncItem(DB_NAME, $scope.stockCount)
                 .then(function (syncResult) {
+                  $scope.isSaving = false;
+                  $state.go('home.index.home.mainActivity', {'stockResult': msg});
                   console.info('stock count sync success: ' + syncResult);
                 })
                 .catch(function (reason) {
+                  //temporary fix here
+                  $scope.isSaving = false;
+                  $state.go('home.index.home.mainActivity', {'stockResult': msg});
                   console.log(reason);
                 });
           }else{

@@ -21,7 +21,7 @@
             <td>
               <span class="text-info">
                 {{ stockCountsByCountDate[countDate].created | date:'MMM dd, yyyy' }}
-                [<span>for: {{ countDate | date:'MMM dd, yyyy' }}</span>]
+                (<span>for {{ countDate | date:'MMM dd' }}</span>)
               </span>
             </td>
             <td class="text-center">

@@ -16,7 +16,8 @@
     "storage",
     "unlimitedStorage",
     "http://lomis.ehealth.org.ng/*",
-    "http://dev.lomis.ehealth.org.ng/*"
+    "http://dev.lomis.ehealth.org.ng/*",
+    "https://www.google-analytics.com/*"
   ],
   "icons": {
     "16": "images/icon-16.png",

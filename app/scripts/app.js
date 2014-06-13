@@ -24,10 +24,6 @@ angular.module('lmisChromeApp', [
     $rootScope.$on('LOADING_COMPLETED', $window.hideSplashScreen);
     $rootScope.$on('START_LOADING', $window.showSplashScreen);
 
-    if(typeof FastClick !== 'undefined'){
-      FastClick.attach(document.body);
-    }
-
     //load fixtures if not loaded yet.
     storageService.loadFixtures().then(function(){
       //update appConfig from remote then trigger background syncing

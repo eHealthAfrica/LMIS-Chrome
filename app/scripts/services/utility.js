@@ -122,4 +122,14 @@ angular.module('lmisChromeApp').service('utility', function ($location, $anchorS
     return des;
   };
 
+  this.ellipsize = function(string, length) {
+    if(length < 1) {
+      return '';
+    }
+    if(string && string.length > length) {
+      string = string.substr(0, length - 1) + '…';
+    }
+    return string;
+  };
+
 });

@@ -21,7 +21,7 @@ angular.module('lmisChromeApp')
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
         }else{
-          $scope.facility = appConfig.appFacility.name;
+          $scope.facility = appConfig.facility.name;
           if (isStockCountReminderDue === true) {
             //FIXME: move stock count reminder object to a factory function, stock count?? or reminderFactory.
             reminderFactory.warning({id: reminderFactory.STOCK_COUNT_REMINDER_ID, text: i18n('stockCountReminderMsg'),
@@ -66,8 +66,7 @@ angular.module('lmisChromeApp')
         'activities': {
           templateUrl: 'views/home/main-activity.html',
           controller: function ($stateParams, i18n, growl, $state) {
-            console.log($stateParams);
-            console.log($state);
+
             if ($stateParams.storageClear !== null) {
               growl.success(i18n('clearStorageMsg'));
               $stateParams.storageClear = null;
@@ -97,9 +96,7 @@ angular.module('lmisChromeApp')
               growl.success($stateParams.surveySuccessMsg);
               $stateParams.surveySuccessMsg = null;
             }
-            //this is to clear page history, set url to pristine state
-            //not like page reload()
-            $state.reload();
+
           }
         },
         'charts': {
@@ -132,7 +129,7 @@ angular.module('lmisChromeApp')
                 return deferred.promise;
               }
 
-              var currentFacility = appConfig.appFacility;
+              var currentFacility = appConfig.facility;
               var promises = [];
               promises.push(appConfigService.getProductTypes());
               $q.all(promises)
@@ -209,7 +206,7 @@ angular.module('lmisChromeApp')
                   }
 
                   values.push({
-                    label: product.name,
+                    label: utility.ellipsize(product.name, 7),
                     stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
                       product.stockLevel, product.bufferStock
                     ),
@@ -248,7 +245,7 @@ angular.module('lmisChromeApp')
           return settingsService.load();
         },
         aggregatedInventory: function($q, $log, appConfig, inventoryFactory, dashboardfactory, settings) {
-          var currentFacility = appConfig.appFacility;
+          var currentFacility = appConfig.facility;
           var deferred = $q.defer();
 
           inventoryFactory.getFacilityInventory(currentFacility.uuid)
@@ -341,7 +338,7 @@ angular.module('lmisChromeApp')
       templateUrl: 'views/home/settings/inventory.html',
       resolve: {
         products: function(appConfig, inventoryFactory) {
-          var currentFacility = appConfig.appFacility;
+          var currentFacility = appConfig.facility;
           return inventoryFactory.getUniqueProducts(currentFacility.uuid);
         }
       },
@@ -365,9 +362,6 @@ angular.module('lmisChromeApp')
     .state('contact', {
       parent: 'root.index',
       url: '/contact',
-      templateUrl: 'views/home/contact.html',
-      controller: function($scope) {
-
-      }
+      templateUrl: 'views/home/contact.html'
     });
   });
