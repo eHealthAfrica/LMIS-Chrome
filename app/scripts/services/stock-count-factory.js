@@ -150,6 +150,9 @@ angular.module('lmisChromeApp')
           .then(function(productCategory){
             var facilitySelectedProducts = appConfig.selectedProductProfiles
                 .map(function(product){
+                  if(angular.isObject(product.category)){
+                    return product;
+                  }
                   product.category =
                       angular.isDefined(productCategory[product.category]) ? productCategory[product.category] : product.category;
                   return product;
