@@ -45,7 +45,7 @@ describe('Service: inventoryRulesFactory', function() {
       expect(typeof leadTime).toBe('number');
       expect(leadTime).toBe(14);
     });
-  }
+  });
 
 
   describe('lead time', function() {
