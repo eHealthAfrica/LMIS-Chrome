@@ -112,13 +112,13 @@ angular.module('lmisChromeApp')
           controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
             var keys = [
               {
-                key: 'daysAboveReorder',
-                label: i18n('daysAbove'),
+                key: 'stockBelowReorder',
+                label: i18n('stockBelow'),
                 color:  '#9954bb'
               },
               {
-                key: 'daysBelowReorder',
-                label: i18n('daysBelow'),
+                key: 'stockAboveReorder',
+                label: i18n('stockAbove'),
                 color: '#666666'
               }
             ];
@@ -146,20 +146,20 @@ angular.module('lmisChromeApp')
                       name: types[i].code
                     };
                     (function (i) {
-                      innerPromises.push(inventoryRulesFactory.daysOfStock(currentFacility, types[i].uuid)
+                      innerPromises.push(inventoryRulesFactory.getStockLevel(currentFacility, types[i].uuid)
                         .then(
                           function (stockLevel) {
                             var uuid = types[i].uuid;
-                            productTypeInfo[uuid].daysOfStock = stockLevel;
+                            productTypeInfo[uuid].stockLevel = stockLevel;
                           },
                           function (err) {
                             deferred.reject(err);
                           })
                       );
-                      innerPromises.push(inventoryRulesFactory.daysToReorderPoint(currentFacility, types[i].uuid)
+                      innerPromises.push(inventoryRulesFactory.bufferStock(currentFacility, types[i].uuid)
                         .then(
-                          function (daysToReorder) {
-                            productTypeInfo[types[i].uuid].daysToReorder = daysToReorder;
+                          function (bufferStock) {
+                            productTypeInfo[types[i].uuid].bufferStock = bufferStock;
                           },
                           function (err) {
                             deferred.reject(err);
@@ -197,21 +197,24 @@ angular.module('lmisChromeApp')
 
                 for(var uuid in productTypeCounts) {
                   product = productTypeCounts[uuid];
+                  //skip prods where we don't have inventory rule information
+                  if(product.bufferStock < 0)
+                    continue;
                   //filter out stock count with no reference to stock out broadcast since the last stock count
                   var filtered = filterStockCountWithNoStockOutRef(stockOutList);
 
                   //create a uuid list of products with zero or less reorder days
-                  if(product.daysToReorder <= 0 && filtered.length === 0){
+                  if(product.stockLevel <= product.bufferStock && filtered.length === 0){
                     stockOutWarning.push(uuid);
                   }
 
                   values.push({
                     label: product.name,
-                    daysAboveReorder: inventoryRulesFactory.daysAboveReorder(
-                      product.daysOfStock, product.daysToReorder
+                    stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
+                      product.stockLevel, product.bufferStock
                     ),
-                    daysBelowReorder: inventoryRulesFactory.daysBelowReorder(
-                      product.daysOfStock, product.daysToReorder
+                    stockBelowReorder: inventoryRulesFactory.stockBelowReorder(
+                      product.stockLevel, product.bufferStock
                     )
                   });
                 }

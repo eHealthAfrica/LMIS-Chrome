@@ -530,11 +530,11 @@
   "facilitySurvey": {
     "message": "Facility survey"
   },
-  "daysAbove": {
-    "message": "Days above"
+  "stockAbove": {
+    "message": "Stock above"
   },
-  "daysBelow": {
-    "message": "Days below"
+  "stockBelow": {
+    "message": "Stock below"
   },
   "surveySuccessMsg": {
     "message": "$surveyName$ was submitted successfully!",
