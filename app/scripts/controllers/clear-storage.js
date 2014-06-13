@@ -20,7 +20,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
               $q.all(promises).then(function (results) {
                 deferred.resolve(results);
-                alertFactory.success(i18n('clearStorageMsg'));
                 $state.go('appConfigWelcome');
               });
             })
