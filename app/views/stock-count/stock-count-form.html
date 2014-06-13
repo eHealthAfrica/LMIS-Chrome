@@ -90,7 +90,7 @@
                 <div class="col-sm-12">
                   <h3 class="center-text">{{ facilityProducts[productKey].name }}</h3>
                   <h3 class="center-text bold-text" ng-show="countValue[productKey] === undefined">
-                    {{ (((productProfileUom).presentation).uom).symbol }}s:
+                    {{ (((productProfileUom).presentation).uom).symbol }}s
                   </h3>
                   <h3 class="center-text bold-text" ng-show="countValue[productKey] >= 0">
                     <ng-pluralize count="countValue[productKey]"
@@ -98,7 +98,7 @@
                       {
                       '1': '{{ (((productProfileUom).presentation).uom).symbol }}',
                       'other': '{{ (((productProfileUom).presentation).uom).symbol }}s'}">
-                    </ng-pluralize>:
+                    </ng-pluralize>
                   </h3>
                 </div>
                 <div class="row">
