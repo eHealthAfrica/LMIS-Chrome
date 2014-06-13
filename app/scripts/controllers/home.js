@@ -18,6 +18,7 @@ angular.module('lmisChromeApp')
         }
       },
       controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope, reminderFactory, i18n) {
+          console.info(appConfig);
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
         }else{
@@ -96,9 +97,7 @@ angular.module('lmisChromeApp')
               growl.success($stateParams.surveySuccessMsg);
               $stateParams.surveySuccessMsg = null;
             }
-            //this is to clear page history, set url to pristine state
-            //not like page reload()
-            $state.reload();
+
           }
         },
         'charts': {
