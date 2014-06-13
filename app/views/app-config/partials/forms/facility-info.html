@@ -17,7 +17,7 @@
                 name="stockCountInterval" required>
           <option value="" i18n="selectStockCountInterval"></option>
           <option ng-repeat="interval in stockCountIntervals" value="{{ interval.value }}"
-                  ng-selected="interval.value === (appConfig.facility).stockCountInterval"
+                  ng-selected="interval.value === appConfig.stockCountInterval"
                   ng-bind="interval.name" required>
           </option>
         </select>
@@ -31,7 +31,7 @@
       <div class="form-group"
            ng-class="{ 'has-error': (editAppConfigForm.stockCountReminderDay).$invalid && isSubmitted }">
         <label for="stockCountReminderDay" i18n="stockCountReminderDay"></label>
-        <select id="stockCountReminderDay" class="form-control" ng-model="(appConfig.facility).reminderDay"
+        <select id="stockCountReminderDay" class="form-control" ng-model="appConfig.reminderDay"
                 name="stockCountReminderDay" required>
           <option value="" i18n="selectStockCountReminderDay"></option>
           <option ng-repeat="day in weekDays" value="{{ $index }}"
