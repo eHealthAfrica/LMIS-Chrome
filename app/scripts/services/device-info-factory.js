@@ -7,7 +7,7 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
 
         if(!('cordova' in $window)) {
-          deferred.reject('Cordova is not supported on this device');
+          deferred.reject('Cordova is not supported on this device.');
           return deferred.promise;
         }
 
@@ -18,12 +18,11 @@ angular.module('lmisChromeApp')
           var emails = result.match(pattern);
 
           if(!emails || !emails.length) {
-            return deferred.reject('No device emails found');
+            deferred.reject('No device emails found');
+          }else{
+            deferred.resolve({ mainAccount: emails[0] });
           }
 
-          deferred.resolve({
-            mainAccount: emails[0]
-          });
         };
 
         var failure = function(reason) {
