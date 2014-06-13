@@ -17,7 +17,7 @@ angular.module('lmisChromeApp')
     };
 
     Number.prototype.clamp = function(min, max) {
-      return Math.max(Math.min(this, min), max);
+      return Math.min(Math.max(this, min), max);
     };
 
     /**
@@ -331,10 +331,13 @@ angular.module('lmisChromeApp')
      * @param {Number} serviceFactor The facility's service factor
      * @return {Number[]} the buffer levels for each product
      */
-    var bufferStock = function(productTypeUuid, facility) {
-      // TODO: calculate real buffer
+    var bufferStock = function(facility, productTypeUuid) {
+      // HACK: Calculates based on some target pop BS and a bunch of back-of-a-napkin calculations
+      // As we add rules for dry goods they will show up in graph also.
+      // TODO: Actual adaptive model
       
-      //       251fc8c2-0273-423f-a519-4ea20fc74832    ADS-0.05ml
+      // product types:
+      // 251fc8c2-0273-423f-a519-4ea20fc74832    ADS-0.05ml
       // 367f3f7f-a1cc-4266-8a0a-020722576cc9    SB-2.5L
       // 401f8608-e232-4c5a-b32d-032d632abf88    Syr-Dil-2ml
       // db513859-4491-4db7-9343-4980a16c8b04    OPV
@@ -350,8 +353,6 @@ angular.module('lmisChromeApp')
       // f96946be-7dac-438e-9220-efc386276481    Penta
       // 2fee31f0-7757-4f06-9914-d16c5ca9cc5f    DT
 
-      // currently rule based, only calc for antigens
-      // TODO: adaptive, and calc for dry goods also. that part should be pretty easy.
       var deferred = $q.defer();
       if(typeof facility.bw_target_pop !== 'undefined')
       {

@@ -531,10 +531,10 @@
     "message": "Facility survey"
   },
   "stockAbove": {
-    "message": "Stock above"
+    "message": "Stock"
   },
   "stockBelow": {
-    "message": "Stock below"
+    "message": "Buffer stock"
   },
   "surveySuccessMsg": {
     "message": "$surveyName$ was submitted successfully!",
@@ -632,5 +632,8 @@
   },
   "remoteAppConfigUpdateMsg": {
     "message": "Application configurations has been updated."
+  },
+  "stockLevel": {
+    "message": "Stock Levels"
   }
 }
