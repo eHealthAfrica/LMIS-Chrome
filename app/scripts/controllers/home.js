@@ -21,7 +21,7 @@ angular.module('lmisChromeApp')
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
         }else{
-          $scope.facility = appConfig.appFacility.name;
+          $scope.facility = appConfig.facility.name;
           if (isStockCountReminderDue === true) {
             //FIXME: move stock count reminder object to a factory function, stock count?? or reminderFactory.
             reminderFactory.warning({id: reminderFactory.STOCK_COUNT_REMINDER_ID, text: i18n('stockCountReminderMsg'),
@@ -129,7 +129,7 @@ angular.module('lmisChromeApp')
                 return deferred.promise;
               }
 
-              var currentFacility = appConfig.appFacility;
+              var currentFacility = appConfig.facility;
               var promises = [];
               promises.push(appConfigService.getProductTypes());
               $q.all(promises)
@@ -242,7 +242,7 @@ angular.module('lmisChromeApp')
           return settingsService.load();
         },
         aggregatedInventory: function($q, $log, appConfig, inventoryFactory, dashboardfactory, settings) {
-          var currentFacility = appConfig.appFacility;
+          var currentFacility = appConfig.facility;
           var deferred = $q.defer();
 
           inventoryFactory.getFacilityInventory(currentFacility.uuid)
@@ -335,7 +335,7 @@ angular.module('lmisChromeApp')
       templateUrl: 'views/home/settings/inventory.html',
       resolve: {
         products: function(appConfig, inventoryFactory) {
-          var currentFacility = appConfig.appFacility;
+          var currentFacility = appConfig.facility;
           return inventoryFactory.getUniqueProducts(currentFacility.uuid);
         }
       },
