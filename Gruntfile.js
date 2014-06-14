@@ -345,6 +345,10 @@ module.exports = function(grunt) {
       options: {
         name: 'config',
         dest: '<%= yeoman.app %>/scripts/config.js',
+        template: grunt.file.read('.ngconstant.tpl.ejs'),
+        serializer: function(obj) {
+          return require('util').inspect(obj);
+        }
       },
       // Targets
       test: {
