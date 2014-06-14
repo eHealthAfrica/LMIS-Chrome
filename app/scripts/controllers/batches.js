@@ -11,7 +11,7 @@ angular.module('lmisChromeApp')
             templateUrl: '/views/batches/index.html',
             controller: 'BatchListCtrl',
             data: {
-              label: "Batch List"
+              label: 'Batch List'
             },
             resolve: {
               batchList: function (batchFactory) {
@@ -23,9 +23,9 @@ angular.module('lmisChromeApp')
             templateUrl: '/views/batches/add-batch-form.html',
             controller: 'AddBatchCtrl',
             data: {
-              label: "Add Batch"
+              label: 'Add Batch'
             }
-          })
+          });
     })
 /**
  * BatchListCtrl - This handles the display of Batches List View
@@ -60,8 +60,9 @@ angular.module('lmisChromeApp')
               params.page() * params.count()
           ));
         }
-      }
+      };
 
+      // jshint newcap: false
       $scope.batches = new ngTableParams(params, resolver);
     })
 /**
@@ -108,7 +109,7 @@ angular.module('lmisChromeApp')
       });
 
       $scope.onProfileSelection = function () {
-        console.log("new profile selected ==> " + $scope.productItem.profile);
+        console.log('new profile selected ==> ' + $scope.productItem.profile);
       };
 
       /**
