@@ -423,12 +423,12 @@ module.exports = function(grunt) {
       options: {
         config: '.eslintrc'
       },
-      all: [
-        'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/{,*/}*.js'
-      ],
+      all: '<%= jshint.all %>',
       test: {
-        src: ['test/{,*/}*.js']
+        options: {
+          config: 'test/.eslintrc'
+        },
+        src: '<%= jshint.test.src %>'
       }
     }
   });
