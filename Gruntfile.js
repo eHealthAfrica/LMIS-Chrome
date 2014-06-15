@@ -532,4 +532,10 @@ module.exports = function(grunt) {
       bump
     ]);
   });
+
+  grunt.registerTask('checkstyle', [
+    'jshint',
+    'eslint',
+    'jsbeautifier'
+  ]);
 };
