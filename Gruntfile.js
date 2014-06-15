@@ -438,6 +438,10 @@ module.exports = function(grunt) {
         jsbeautifyrc: true
       },
       src: '<%= jshint.all %>'
+    },
+
+    jscs: {
+      src: '<%= jshint.all %>'
     }
   });
 
@@ -536,6 +540,7 @@ module.exports = function(grunt) {
   grunt.registerTask('checkstyle', [
     'jshint',
     'eslint',
+    'jscs',
     'jsbeautifier'
   ]);
 };
