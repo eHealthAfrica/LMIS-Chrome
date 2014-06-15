@@ -29,7 +29,7 @@ module.exports = function(grunt) {
         }
       },
       jsTest: {
-        files: ['test/spec/{,*/}*.js'],
+        files: ['test/**/*.js'],
         tasks: ['newer:jshint:test', 'karma']
       },
       styles: {
@@ -96,13 +96,13 @@ module.exports = function(grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/{,*/}*.js'
+        '<%= yeoman.app %>/scripts/**/*.js'
       ],
       test: {
         options: {
           jshintrc: 'test/.jshintrc'
         },
-        src: ['test/{,*/}*.js']
+        src: ['test/**/*.js']
       }
     },
 
