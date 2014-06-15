@@ -430,6 +430,14 @@ module.exports = function(grunt) {
         },
         src: '<%= jshint.test.src %>'
       }
+    },
+
+    jsbeautifier: {
+      options: {
+        mode: 'VERIFY_ONLY',
+        jsbeautifyrc: true
+      },
+      src: '<%= jshint.all %>'
     }
   });
 
