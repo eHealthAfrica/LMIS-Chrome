@@ -102,7 +102,7 @@ module.exports = function(grunt) {
         options: {
           jshintrc: 'test/.jshintrc'
         },
-        src: ['test/spec/{,*/}*.js']
+        src: ['test/{,*/}*.js']
       }
     },
 
@@ -174,7 +174,7 @@ module.exports = function(grunt) {
     usemin: {
       html: [
         '<%= yeoman.dist %>/*.html',
-        '<%= yeoman.dist %>/views/**/*.html',
+        '<%= yeoman.dist %>/views/**/*.html'
       ],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
@@ -337,6 +337,7 @@ module.exports = function(grunt) {
       options: {
         force: true,
         // jshint camelcase: false
+        /*eslint camelcase: 0 */
         coverage_dir: 'coverage'
       }
     },
@@ -416,6 +417,19 @@ module.exports = function(grunt) {
           wiredep: '<%= wiredep.target %>'
         }
       }
+    },
+
+    eslint: {
+      options: {
+        config: '.eslintrc'
+      },
+      all: [
+        'Gruntfile.js',
+        '<%= yeoman.app %>/scripts/{,*/}*.js'
+      ],
+      test: {
+        src: ['test/{,*/}*.js']
+      }
     }
   });
 
@@ -482,10 +496,9 @@ module.exports = function(grunt) {
       'wiredepCopy:snapshot'
     ];
 
-    if(target === 'release') {
+    if (target === 'release') {
       grunt.task.run(common.concat(release));
-    }
-    else {
+    } else {
       grunt.task.run(common.concat(snapshot));
     }
   });
@@ -503,7 +516,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('release', function(versionType) {
     var bump = 'bump';
-    if(versionType) {
+    if (versionType) {
       bump += ':' + versionType;
     }
     grunt.task.run([
