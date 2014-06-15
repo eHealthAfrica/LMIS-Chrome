@@ -1,5 +1,7 @@
 {
   "preset": "google",
   "requireParenthesesAroundIIFE": true,
+  "maximumLineLength": 80,
+  "validateIndentation": 2,
   "validateLineBreaks": "LF"
 }
