@@ -29,7 +29,7 @@ module.exports = function(grunt) {
         }
       },
       jsTest: {
-        files: ['test/spec/{,*/}*.js'],
+        files: ['test/**/*.js'],
         tasks: ['newer:jshint:test', 'karma']
       },
       styles: {
@@ -96,13 +96,13 @@ module.exports = function(grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/{,*/}*.js'
+        '<%= yeoman.app %>/scripts/**/*.js'
       ],
       test: {
         options: {
           jshintrc: 'test/.jshintrc'
         },
-        src: ['test/spec/{,*/}*.js']
+        src: ['test/**/*.js']
       }
     },
 
@@ -174,7 +174,7 @@ module.exports = function(grunt) {
     usemin: {
       html: [
         '<%= yeoman.dist %>/*.html',
-        '<%= yeoman.dist %>/views/**/*.html',
+        '<%= yeoman.dist %>/views/**/*.html'
       ],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
@@ -337,6 +337,7 @@ module.exports = function(grunt) {
       options: {
         force: true,
         // jshint camelcase: false
+        /*eslint camelcase: 0 */
         coverage_dir: 'coverage'
       }
     },
@@ -345,6 +346,10 @@ module.exports = function(grunt) {
       options: {
         name: 'config',
         dest: '<%= yeoman.app %>/scripts/config.js',
+        template: grunt.file.read('.ngconstant.tpl.ejs'),
+        serializer: function(obj) {
+          return require('util').inspect(obj);
+        }
       },
       // Targets
       test: {
@@ -412,6 +417,31 @@ module.exports = function(grunt) {
           wiredep: '<%= wiredep.target %>'
         }
       }
+    },
+
+    eslint: {
+      options: {
+        config: '.eslintrc'
+      },
+      all: '<%= jshint.all %>',
+      test: {
+        options: {
+          config: 'test/.eslintrc'
+        },
+        src: '<%= jshint.test.src %>'
+      }
+    },
+
+    jsbeautifier: {
+      options: {
+        mode: 'VERIFY_ONLY',
+        jsbeautifyrc: true
+      },
+      src: '<%= jshint.all %>'
+    },
+
+    jscs: {
+      src: '<%= jshint.all %>'
     }
   });
 
@@ -478,10 +508,9 @@ module.exports = function(grunt) {
       'wiredepCopy:snapshot'
     ];
 
-    if(target === 'release') {
+    if (target === 'release') {
       grunt.task.run(common.concat(release));
-    }
-    else {
+    } else {
       grunt.task.run(common.concat(snapshot));
     }
   });
@@ -499,7 +528,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('release', function(versionType) {
     var bump = 'bump';
-    if(versionType) {
+    if (versionType) {
       bump += ':' + versionType;
     }
     grunt.task.run([
@@ -507,4 +536,11 @@ module.exports = function(grunt) {
       bump
     ]);
   });
+
+  grunt.registerTask('checkstyle', [
+    'jshint',
+    'eslint',
+    'jscs',
+    'jsbeautifier'
+  ]);
 };
