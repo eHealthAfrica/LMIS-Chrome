@@ -54,5 +54,8 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ , 'discarding unexpected </nvd3-'
   \ ]
 
+let g:syntastic_javascript_checkers = ['eslint', 'jshint', 'jscs']
+autocmd BufNewFile,BufEnter .eslintrc setlocal filetype=yaml
+
 " javascript-libraries-syntax.vim
 let g:used_javascript_libs = 'angularjs,angularui'
