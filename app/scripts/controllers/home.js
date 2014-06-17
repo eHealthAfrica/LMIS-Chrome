@@ -195,7 +195,8 @@ angular.module('lmisChromeApp')
                     var filtered = filterStockCountWithNoStockOutRef(stockOutList, uuid);
 
                     //create a uuid list of products with zero or less reorder days
-                    if (product.stockLevel <= product.bufferStock && filtered.length === 0) {
+                    //TODO: gather those below reorder point and send background alert, if (product.stockLevel <= product.bufferStock && filtered.length === 0) {
+                    if(product.stockLevel <= 0 && filtered.length === 0){
                       stockOutWarning.push(uuid);
                     }
 
