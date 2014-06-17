@@ -15,7 +15,7 @@
                   <div class="form-group" ng-class="{ 'has-error': ((reportCCUBreakdownForm.ccuProfile).$error).required
                       && ccuBreakdown.isSubmitted }">
                     <label for="ccuProfile" i18n="selectCcu"></label>
-                    <select id="ccuProfile" lmis-analytics-directive="ccu_selection" name="ccuProfile" class="form-control" ng-model="ccuBreakdown.ccuProfile"
+                    <select id="ccuProfile" ga-click="ccu_selection" name="ccuProfile" class="form-control" ng-model="ccuBreakdown.ccuProfile"
                             required>
                       <option value="" i18n="selectFacultyCcu"></option>
                       <option ng-repeat="ccuProfile in facilityCcuList" value="{{ ccuProfile }}" required>
@@ -28,7 +28,7 @@
                   <div class="row">
                     <div class="panel-body"></div>
                     <div class="col-md-4 center-block">
-                      <button type="submit" id="send" lmis-analytics-directive="ccu_send" name="send" class="btn btn-lg btn-danger"
+                      <button type="submit" id="send" ga-click="ccu_send" name="send" class="btn btn-lg btn-danger"
                               ng-click="ccuBreakdown.isSubmitted = true" ng-disabled="isSaving">
                         <span ng-show="!isSaving" i18n="send"></span>
                         <span ng-show="!isSaving"><i class="fa fa-bullhorn"></i></span>

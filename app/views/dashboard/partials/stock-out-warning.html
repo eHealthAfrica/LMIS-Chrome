@@ -1,5 +1,5 @@
 <div ng-show="stockOutWarning.length">
-  <a ui-sref="multiStockOutBroadcast({productList: stockOutWarning.join(',')})" lmis-analytics-directive="stock_out">
+  <a ui-sref="multiStockOutBroadcast({productList: stockOutWarning.join(',')})" ga-click="stock_out">
     <div class="col-md-12 alert alert-danger">
       <img src="images/dashboard-icons/stock-out-warning.png" >
       <strong><span>{{ stockOutWarningMsg }}</span></strong>
