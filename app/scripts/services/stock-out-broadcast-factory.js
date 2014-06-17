@@ -34,7 +34,8 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
             uuid:stockOut.uuid,
             facility: stockOut.facility.uuid,
             productType: stockOut.productType.uuid,
-            stockLevel: stockOut.stockLevel
+            stockLevel: stockOut.stockLevel,
+            created: stockOut.created
           };
           notificationService.sendSms(notificationService.alertRecipient, msg, 'stock_out')
               .then(function (result) {
