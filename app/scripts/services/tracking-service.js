@@ -1,15 +1,16 @@
 'use strict';
 
-angular.module('lmisChromeApp').service('trackingService', function ($window) {
-   var _tracker; 
-    angular.element(document).ready(function () {
-        var _service = $window.analytics.getService('LoMIS');
+angular.module('lmisChromeApp').service('trackingService', function($window) {
+  var tracker;
+  angular.element(document).ready(function() {
+    if ('analytics' in $window) {
+      var service = $window.analytics.getService('LoMIS');
       //put your own code here!
-     _tracker = _service.getTracker('UA-51340003-1');
-   });
+      tracker = service.getTracker('UA-51340003-1');
+    }
+  });
 
-
-  this.getTracker =  function(){
-    return _tracker;
+  this.getTracker = function() {
+    return tracker;
   };
 });

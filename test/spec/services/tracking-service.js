@@ -12,6 +12,8 @@ describe('Service: trackingService ', function() {
     trackingService = _trackingService_;
   }));
 
+  it('should define a getTracker function', function() {
+    expect(angular.isFunction(trackingService.getTracker)).toBe(true);
+  });
+
 });
-
-
