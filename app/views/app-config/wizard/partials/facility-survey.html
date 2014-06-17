@@ -1,5 +1,5 @@
 <form lmis-page-view-report="app-config_partials_facility-survey" name="editAppConfigForm" ng-submit="editAppConfigForm.$valid" novalidate>
-  <div class="col-md-15">
+  <div class="col-md-12">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title" i18n="facilitySurvey"></h4>
@@ -7,7 +7,7 @@
 
       <div class="list-group">
         <div class="list-group-item" ng-repeat="question in questions track by $index">
-          <div class="col-md-15">
+          <div class="col-md-12">
             <span ng-bind="question.text"></span>
           </div>
           <div class="row col-md-12 pull-right">

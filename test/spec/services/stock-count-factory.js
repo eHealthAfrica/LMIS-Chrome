@@ -28,7 +28,7 @@ describe('Service stockCountFactory', function () {
     });
   }));
 
-  beforeEach(inject(function (_stockCountFactory_,  $rootScope, stockData, _$q_, i18n, _storageService_, _reminderFactory_, _utility_) {
+  beforeEach(inject(function (_stockCountFactory_, $rootScope, stockData, _$q_, i18n, _storageService_, _reminderFactory_, _utility_) {
     stockCountFactory = _stockCountFactory_;
     scope = $rootScope.$new();
     stockCount = stockData;

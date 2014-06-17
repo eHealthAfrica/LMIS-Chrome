@@ -1,5 +1,5 @@
 <form lmis-page-view-report="survey_take_survey" name="surveyForm" ng-submit="surveyForm.$valid" novalidate>
-  <div class="col-md-15">
+  <div class="col-md-12">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title" ng-bind="survey.name"></h4>
@@ -7,10 +7,10 @@
 
       <div class="list-group">
         <div class="list-group-item" ng-repeat="question in survey.questions track by $index">
-          <div class="col-md-15">
+          <div class="col-md-12">
             <span ng-bind="question.text"></span>
           </div>
-          <div class="col-md-15 pull-right">
+          <div class="col-md-12 pull-right">
             <label class="input-control">
               <input ng-model="surveyResponse[question.uuid]" type="radio" name="{{ question.uuid }}" ng-value="true"
                      ng-change="newValue(question.uuid, true)"/>
