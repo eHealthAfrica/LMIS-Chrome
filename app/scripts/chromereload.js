@@ -1,7 +1,7 @@
 'use strict';
 
 // Reload client for Chrome Apps & Extensions.
-// The relaod client has a compatibility with livereload.
+// The reload client has a compatibility with livereload.
 // WARNING: only supports reload command.
 
 var connection = new WebSocket('ws://localhost:35729/livereload');
@@ -11,9 +11,9 @@ connection.onerror = function(error) {
 };
 
 connection.onmessage = function(e) {
-  if(e.data) {
+  if (e.data) {
     var data = JSON.parse(e.data);
-    if(data && data.command === 'reload') {
+    if (data && data.command === 'reload') {
       chrome.runtime.reload();
     }
   }
