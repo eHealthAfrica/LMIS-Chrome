@@ -18,7 +18,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Parent Program</label>
-                                <select lmis-analytics-directive="parent_program_select" class="form-control" ng-model="program.parent">
+                                <select ga-click="parent_program_select" class="form-control" ng-model="program.parent">
                                     <option value="">-- select parent program</option>
                                     <option ng-repeat="row in programList" value="{{ row.uuid }}">{{ row.name }}</option>
                                 </select>

@@ -31,7 +31,7 @@
 
               <div class="form-group">
                 <label for="productCategory">Product Category</label>
-                <select lmis-analytics-directive="product_category" id="productCategory" class="form-control" ng-model="product.category" required>
+                <select ga-click="product_category" id="productCategory" class="form-control" ng-model="product.category" required>
                   <option value="">-- select product category --</option>
                   <option ng-repeat="category in categories" value="{{ category.uuid }}">
                     {{ category.name }}
@@ -41,7 +41,7 @@
 
               <div class="form-group">
                 <label for="baseUOM">Product Unit Of Measurement</label>
-                <select lmis-analytics-directive="base_UOM" id="baseUOM" class="form-control" ng-model="product.base_uom" required>
+                <select ga-click="base_UOM" id="baseUOM" class="form-control" ng-model="product.base_uom" required>
                   <option value="">-- select product unit of measurement --</option>
                   <option ng-repeat="uom in uomList" value="{{uom.uuid}}">
                     {{uom.name}}
@@ -64,7 +64,7 @@
               </div>
 
               <div class="col-sm-4">
-                <button lmis-analytics-directive="product_save" type="submit" class="btn btn-success btn-lg btn-block">Save</button>
+                <button ga-click="product_save" type="submit" class="btn btn-success btn-lg btn-block">Save</button>
               </div>
             </div>
           </div>

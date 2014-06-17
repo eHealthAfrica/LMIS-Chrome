@@ -19,7 +19,7 @@
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="sendingFacility" i18n="sendingFacility"></label>
-                          <select id="sendingFacility" lmis-analytics-directive="facility_select" class="form-control" ng-model="order.sending_facility"
+                          <select id="sendingFacility" ga-click="facility_select" class="form-control" ng-model="order.sending_facility"
                                   required>
                             <option value="" i18n="selectSendingFacility"></option>
                             <option ng-repeat="facility in storage.facilities" value="{{ facility.uuid }}"
@@ -83,7 +83,7 @@
                           <tr ng-repeat="orderLine in order.order_lines">
                             <td ng-bind="($index + 1)"></td>
                             <td>
-                              <select ng-model="orderLine.productType" lmis-analytics-directive="orderline_product_type" class="form-control" required="">
+                              <select ng-model="orderLine.productType" ga-click="orderline_product_type" class="form-control" required="">
                                 <option value="" i18n="selectProductType"></option>
                                 <option ng-repeat="type in storage.productTypes" value="{{ type.uuid }}"
                                         ng-selected="{{ (orderLine.productType).uuid === type.uuid}}"
@@ -92,7 +92,7 @@
                               </select>
                             </td>
                             <td>
-                              <select ng-model="orderLine.program" lmis-analytics-directive="orderline_program" class="form-control" required>
+                              <select ng-model="orderLine.program" ga-click="orderline_program" class="form-control" required>
                                 <option value="" i18n="selectProgram"></option>
                                 <option ng-repeat="program in storage.programs" value="{{ program.uuid }}"
                                         ng-selected="{{ order.program === program.uuid}}"
@@ -104,7 +104,7 @@
                                      ng-model="orderLine.quantity" required/>
                             </td>
                             <td>
-                              <select class="form-control" lmis-analytics-directive="UOM_select" ng-model="orderLine.uom" required>
+                              <select class="form-control" ga-click="UOM_select" ng-model="orderLine.uom" required>
                                 <option value="" i18n="selectUOM"></option>
                                 <option ng-repeat="uom in storage.uomList" value="{{ uom.uuid }}" ng-bind="uom.name"
                                         ng-selected="{{ (orderLine.uom).uuid === uom.uuid }}"></option>
