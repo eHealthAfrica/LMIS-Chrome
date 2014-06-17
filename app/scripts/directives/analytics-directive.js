@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .directive('lmisAnalyticsDirective', function(trackingService) {
+  .directive('lmisAnalyticsDirective', function(trackingFactory) {
     return {
       restrict: 'AE',
       link: function(scope, element, attr) {
-        var tracker = trackingService.getTracker();
-
+        var tracker = trackingFactory.tracker();
         element.on('click', function() {
           tracker.sendEvent('Click', element.text(), attr.lmisPageViewReport);
         });
@@ -14,9 +13,9 @@ angular.module('lmisChromeApp')
     };
   })
 
-  .directive('lmisPageViewReport', function(trackingService) {
+  .directive('lmisPageViewReport', function(trackingFactory) {
     return function(scope, element, attr) {
-      var tracker = trackingService.getTracker();
+      var tracker = trackingFactory.tracker();
       tracker.sendAppView(attr.lmisPageViewReport);
     };
   });

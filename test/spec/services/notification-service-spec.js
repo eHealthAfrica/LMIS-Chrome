@@ -6,13 +6,11 @@ describe('Service: notificationService ', function () {
   beforeEach(module('lmisChromeApp', 'i18nMocks'));
 
   // instantiate service
-  var notificationService, trackingService, $window, $q;
+  var notificationService, $q;
 
-  beforeEach(inject(function (_notificationService_, _$window_, _$q_, _trackingService_) {
+  beforeEach(inject(function(_notificationService_, _$q_) {
     notificationService = _notificationService_;
-    $window = _$window_;
     $q = _$q_;
-    trackingService = _trackingService_;
   }));
 
   it('as a user, i expect notificationService to be defined ', function () {

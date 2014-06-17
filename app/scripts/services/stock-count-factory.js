@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('stockCountFactory', function ($q, storageService, trackingService,  $http, $filter, utility, syncService, i18n, reminderFactory) {
+  .factory('stockCountFactory', function ($q, storageService, trackingFactory,  $http, $filter, utility, syncService, i18n, reminderFactory) {
 
     var STOCK_COUNT_DB = storageService.STOCK_COUNT;
 
@@ -60,11 +60,11 @@ angular.module('lmisChromeApp')
               storageService.save(storageService.STOCK_COUNT, _stockCount)
                   .then(function (uuid) {
                     deferred.resolve(uuid);
-                    trackingService.getTracker().sendException(uuid, false);
+                    trackingFactory.tracker().sendException(uuid, false);
                   })
                   .catch(function (reason) {
                     deferred.reject(reason);
-                    trackingService.getTracker().sendException(reason, false);
+                    trackingFactory.tracker().sendException(reason, false);
                   });
             })
             .catch(function (reason) {
@@ -258,7 +258,7 @@ angular.module('lmisChromeApp')
       this.getMostRecentStockCount()
           .then(function (recentStockCount) {
             var mostRecentDueDate = new Date(getStockCountDueDate(stockCountInterval, reminderDay));
-            
+
             isStockCountDue = (typeof recentStockCount === 'undefined' || recentStockCount.isComplete !== 1 ||
                 (new Date(recentStockCount.countDate).getTime()) < mostRecentDueDate.getTime());
 

@@ -1,14 +1,13 @@
 'use strict';
 
 describe('chromeStorageApi', function () {
-    var chromeStorageApi, $window, trackingService;
+    var chromeStorageApi, $window;
 
     beforeEach(module('lmisChromeApp', 'chromeStorageMock', 'i18nMocks'));
 
-    beforeEach(inject(function (_trackingService_, _chromeStorageApi_,_$window_) {
+    beforeEach(inject(function(_chromeStorageApi_, _$window_) {
         chromeStorageApi = _chromeStorageApi_;
         $window = _$window_;
-        trackingService = _trackingService_;
     }));
 
     beforeEach(function(){

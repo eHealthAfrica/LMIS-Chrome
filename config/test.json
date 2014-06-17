@@ -1,5 +1,9 @@
 {
   "api": {
     "url": "http://dev.lomis.ehealth.org.ng:5984"
+  },
+  "analytics": {
+    "service": "LoMIS",
+    "propertyID": "UA-51340003-1"
   }
 }

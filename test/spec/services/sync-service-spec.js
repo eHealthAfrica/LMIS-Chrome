@@ -6,15 +6,14 @@ describe('Service: SyncService', function() {
   beforeEach(module('lmisChromeApp', 'i18nMocks'));
 
   // instantiate service
-  var trackingService, syncService, pouchdb, $q, db, dbName, recordWithoutUuid, storageService, recordWithUuid, $window;
+  var syncService, pouchdb, $q, db, dbName, recordWithoutUuid, storageService, recordWithUuid, $window;
 
-  beforeEach(inject(function(_syncService_, _pouchdb_, _$q_, _$window_, _storageService_, _trackingService_) {
+  beforeEach(inject(function(_syncService_, _pouchdb_, _$q_, _$window_, _storageService_) {
     syncService = _syncService_;
     pouchdb = _pouchdb_;
     $q = _$q_;
     $window = _$window_;
     storageService = _storageService_;
-    trackingService = _trackingService_;
     recordWithoutUuid = {name: 'test', date: new Date() };
     recordWithUuid = {uuid: '1234', name: 'test', date: new Date() };
     db = {
