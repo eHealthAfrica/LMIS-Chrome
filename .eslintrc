@@ -25,7 +25,7 @@ rules:
     - 1tbs
   func-style:
     - 2
-    - declaration
+    - expression
   no-nested-ternary: 2
   no-lonely-if: 2
   space-after-keywords: 2

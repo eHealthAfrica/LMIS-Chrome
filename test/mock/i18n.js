@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('i18nMocks', [])
-  .value('i18n', function(){});
+  .value('i18n', function() {});
 
 angular.module('i18nMockedWindow', [])
   .value('$window', {

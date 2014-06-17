@@ -21,16 +21,9 @@ module.exports = function(grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      js: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all'],
-        options: {
-          livereload: true
-        }
-      },
       jsTest: {
         files: ['test/**/*.js'],
-        tasks: ['newer:jshint:test', 'karma']
+        tasks: ['karma']
       },
       styles: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
@@ -50,7 +43,9 @@ module.exports = function(grunt) {
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.app %>/views/**/*.html',
           '<%= yeoman.app %>/manifest.json',
-          '<%= yeoman.app %>/_locales/{,*/}*.json'
+          '<%= yeoman.app %>/_locales/{,*/}*.json',
+          '<%= yeoman.app %>/scripts/{,*/}*.js',
+          '<%= yeoman.app %>/scripts/fixtures/*.json'
         ]
       }
     },
@@ -465,8 +460,7 @@ module.exports = function(grunt) {
     grunt.task.run(['ngconstant:test']);
     if (target === 'unit') {
       return grunt.task.run(['karma:unit']);
-    }
-    else if (target === 'e2e') {
+    } else if (target === 'e2e') {
       return grunt.task.run(['protractor:e2e']);
     }
 

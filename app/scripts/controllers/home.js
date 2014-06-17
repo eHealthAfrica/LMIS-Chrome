@@ -8,11 +8,11 @@ angular.module('lmisChromeApp')
       parent: 'root.index',
       templateUrl: 'views/home/index.html',
       resolve: {
-        appConfig: function(appConfigService){
+        appConfig: function(appConfigService) {
           return appConfigService.getCurrentAppConfig();
         },
-        isStockCountReminderDue: function(stockCountFactory, appConfig){
-          if(typeof appConfig !== 'undefined'){
+        isStockCountReminderDue: function(stockCountFactory, appConfig) {
+          if (typeof appConfig !== 'undefined') {
             return stockCountFactory.isStockCountDue(appConfig.stockCountInterval, appConfig.reminderDay);
           }
         }
@@ -20,12 +20,16 @@ angular.module('lmisChromeApp')
       controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope, reminderFactory, i18n) {
         if (typeof appConfig === 'undefined') {
           $state.go('appConfigWelcome');
-        }else{
+        } else {
           $scope.facility = appConfig.facility.name;
           if (isStockCountReminderDue === true) {
             //FIXME: move stock count reminder object to a factory function, stock count?? or reminderFactory.
-            reminderFactory.warning({id: reminderFactory.STOCK_COUNT_REMINDER_ID, text: i18n('stockCountReminderMsg'),
-              link: 'stockCountForm', icon: 'views/reminder/partial/stock-count-icon.html'});
+            reminderFactory.warning({
+              id: reminderFactory.STOCK_COUNT_REMINDER_ID,
+              text: i18n('stockCountReminderMsg'),
+              link: 'stockCountForm',
+              icon: 'views/reminder/partial/stock-count-icon.html'
+            });
           } else {
             reminderFactory.remove(reminderFactory.STOCK_COUNT_REMINDER_ID);
           }
@@ -37,7 +41,7 @@ angular.module('lmisChromeApp')
       views: {
         'nav': {
           templateUrl: 'views/home/nav.html',
-          controller: function ($scope, $state) {
+          controller: function($scope, $state) {
             $scope.$state = $state;
           }
         },
@@ -68,7 +72,7 @@ angular.module('lmisChromeApp')
           controller: function ($stateParams, i18n, growl, alertFactory, $scope) {
 
             var alertQueue = alertFactory.getAll();
-            for(var i in alertQueue){
+            for (var i in alertQueue) {
               var alert = alertQueue[i];
               growl.success(alert.msg);
               alertFactory.remove(alert.id);
@@ -81,7 +85,7 @@ angular.module('lmisChromeApp')
         'charts': {
           templateUrl: 'views/dashboard/dashboard.html',
           resolve: {
-            stockOutList: function(stockOutBroadcastFactory){
+            stockOutList: function(stockOutBroadcastFactory) {
               return stockOutBroadcastFactory.getAll();
             }
           },
@@ -99,11 +103,11 @@ angular.module('lmisChromeApp')
               }
             ];
 
-            var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
+            var getProductTypeCounts = function($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
               var deferred = $q.defer();
 
               var productTypeInfo = {};
-              if(typeof appConfig === 'undefined'){
+              if (typeof appConfig === 'undefined'){
                 deferred.resolve(productTypeInfo);
                 return deferred.promise;
               }
@@ -113,41 +117,49 @@ angular.module('lmisChromeApp')
               promises.push(appConfigService.getProductTypes());
               $q.all(promises)
                 .then(function(res) {
-                  var types =  res[0];
+                  var types = res[0];
                   var productTypeInfo = [];
                   var innerPromises = [];
-                  // jshint loopfunc: true
-                  for(var i in types) {
+
+                  var collateProductTypeInfo = function(productType) {
+                    var stockLevelPromise = inventoryRulesFactory
+                      .getStockLevel(currentFacility, types[productType].uuid)
+                      .then(function(stockLevel) {
+                        var uuid = types[productType].uuid;
+                        productTypeInfo[uuid].stockLevel = stockLevel;
+                      })
+                      .catch(function(reason) {
+                        deferred.reject(reason);
+                      });
+
+                    var bufferStockPromise = inventoryRulesFactory
+                      .bufferStock(currentFacility, types[productType].uuid)
+                      .then(function(bufferStock) {
+                        productTypeInfo[types[productType].uuid].bufferStock = bufferStock;
+                      })
+                      .catch(function(reason) {
+                        deferred.reject(reason);
+                      });
+
+                    innerPromises.push(stockLevelPromise, bufferStockPromise);
+                  };
+
+                  for (var i in types) {
                     productTypeInfo[types[i].uuid] = {
                       name: types[i].code
                     };
-                    (function (i) {
-                      innerPromises.push(inventoryRulesFactory.getStockLevel(currentFacility, types[i].uuid)
-                        .then(
-                          function (stockLevel) {
-                            var uuid = types[i].uuid;
-                            productTypeInfo[uuid].stockLevel = stockLevel;
-                          },
-                          function (err) {
-                            deferred.reject(err);
-                          })
-                      );
-                      innerPromises.push(inventoryRulesFactory.bufferStock(currentFacility, types[i].uuid)
-                        .then(
-                          function (bufferStock) {
-                            productTypeInfo[types[i].uuid].bufferStock = bufferStock;
-                          },
-                          function (err) {
-                            deferred.reject(err);
-                          })
-                      );
-                    })(i);
+                    collateProductTypeInfo(i);
                   }
-                  $q.all(innerPromises).then(function() {
-                    deferred.resolve(productTypeInfo);
-                  });
+
+                  $q.all(innerPromises)
+                    .then(function() {
+                      deferred.resolve(productTypeInfo);
+                    })
+                    .catch(function(reason) {
+                      deferred.reject(reason);
+                    });
                 })
-                .catch(function (reason) {
+                .catch(function(reason) {
                   $log.error(reason);
                   deferred.reject(reason);
                 });
@@ -155,62 +167,64 @@ angular.module('lmisChromeApp')
             };
 
             $scope.showChart = !isStockCountReminderDue;
-            if($scope.showChart){
-              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory).then(
-                function(productTypeCounts) {
-                var values = [], product = {}, stockOutWarning = [];
-                var filterStockCountWithNoStockOutRef = function(stockOutList){
+            if ($scope.showChart) {
+              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory)
+                .then(function(productTypeCounts) {
+                  var values = [], product = {}, stockOutWarning = [];
 
-                  return stockOutList.filter(function(element){
-                    var dayTest = function () {
-                      var createdTime = new Date(element.created).getTime();
-                      var stockCountDueDate  = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
-                      return stockCountDueDate.getTime() < createdTime;
-                    };
-                    return element.productType.uuid === uuid && dayTest();
-                  });
-                };
+                  var filterStockCountWithNoStockOutRef = function(stockOutList, uuid) {
+                    return stockOutList.filter(function(element) {
+                      var dayTest = function() {
+                        var createdTime = new Date(element.created).getTime();
+                        var stockCountDueDate  = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
+                        return stockCountDueDate.getTime() < createdTime;
+                      };
+                      return element.productType.uuid === uuid && dayTest();
+                    });
+                  };
 
-                for(var uuid in productTypeCounts) {
-                  product = productTypeCounts[uuid];
-                  //skip prods where we don't have inventory rule information
-                  if(product.bufferStock < 0)
-                    continue;
-                  //filter out stock count with no reference to stock out broadcast since the last stock count
-                  var filtered = filterStockCountWithNoStockOutRef(stockOutList);
+                  for (var uuid in productTypeCounts) {
+                    product = productTypeCounts[uuid];
 
-                  //create a uuid list of products with zero or less reorder days
-                  if(product.stockLevel <= product.bufferStock && filtered.length === 0){
-                    stockOutWarning.push(uuid);
+                    //skip prods where we don't have inventory rule information
+                    if (product.bufferStock < 0) {
+                      continue;
+                    }
+
+                    //filter out stock count with no reference to stock out broadcast since the last stock count
+                    var filtered = filterStockCountWithNoStockOutRef(stockOutList, uuid);
+
+                    //create a uuid list of products with zero or less reorder days
+                    if (product.stockLevel <= product.bufferStock && filtered.length === 0) {
+                      stockOutWarning.push(uuid);
+                    }
+
+                    values.push({
+                      label: utility.ellipsize(product.name, 7),
+                      stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
+                        product.stockLevel, product.bufferStock
+                      ),
+                      stockBelowReorder: inventoryRulesFactory.stockBelowReorder(
+                        product.stockLevel, product.bufferStock
+                      )
+                    });
                   }
 
-                  values.push({
-                    label: utility.ellipsize(product.name, 7),
-                    stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
-                      product.stockLevel, product.bufferStock
-                    ),
-                    stockBelowReorder: inventoryRulesFactory.stockBelowReorder(
-                      product.stockLevel, product.bufferStock
-                    )
-                  });
-                }
-                $scope.stockOutWarning = stockOutWarning;
-                var items = (stockOutWarning.length > 1) ? i18n('items') : i18n('item');
-                $scope.stockOutWarningMsg = i18n('stockOutWarningMsg', [(stockOutWarning.length).toString(), items]);
-                //var format = d3.format(',.4f');
-                $scope.roundLegend = function(){
-                  return function(d){
-                    return $window.d3.round(d);
+                  $scope.stockOutWarning = stockOutWarning;
+                  var items = stockOutWarning.length > 1 ? i18n('items') : i18n('item');
+                  $scope.stockOutWarningMsg = i18n('stockOutWarningMsg', [stockOutWarning.length.toString(), items]);
+                  $scope.roundLegend = function() {
+                    return function(d) {
+                      return $window.d3.round(d);
+                    };
                   };
-                };
 
-                $scope.productTypesChart = dashboardfactory.chart(keys, values);
-
-              }, function(err) {
-                console.log('getProductTypeCounts Error: '+err);
-              });
+                  $scope.productTypesChart = dashboardfactory.chart(keys, values);
+                })
+                .catch(function(err) {
+                  console.log('getProductTypeCounts Error: ' + err);
+                });
             }
-
           }
         }
       }
@@ -228,11 +242,11 @@ angular.module('lmisChromeApp')
           var deferred = $q.defer();
 
           inventoryFactory.getFacilityInventory(currentFacility.uuid)
-            .then(function (inventory) {
+            .then(function(inventory) {
               var values = dashboardfactory.aggregateInventory(inventory, settings);
               deferred.resolve(values);
             })
-            .catch(function (reason) {
+            .catch(function(reason) {
               $log.error(reason);
             });
 
@@ -240,7 +254,7 @@ angular.module('lmisChromeApp')
         }
       },
       controller: function($scope, settings) {
-        if(!('inventory' in settings && 'products' in settings.inventory)) {
+        if (!('inventory' in settings && 'products' in settings.inventory)) {
           $scope.productsUnset = true;
         }
       }
@@ -266,7 +280,7 @@ angular.module('lmisChromeApp')
 
             // Get the service level for use in view
             var serviceLevel = 0;
-            for(var i = aggregatedInventory.length - 1; i >= 0; i--) {
+            for (var i = aggregatedInventory.length - 1; i >= 0; i--) {
               serviceLevel = products[aggregatedInventory[i].label].serviceLevel;
               aggregatedInventory[i].serviceLevel = serviceLevel;
             }
@@ -287,8 +301,8 @@ angular.module('lmisChromeApp')
       },
       controller: function($scope, settings, settingsService, growl, i18n) {
         var fields = ['facility', 'inventory'];
-        for(var i = fields.length - 1; i >= 0; i--) {
-          if(!(fields[i] in settings)) {
+        for (var i = fields.length - 1; i >= 0; i--) {
+          if (!(fields[i] in settings)) {
             settings[fields[i]] = {};
           }
         }
@@ -325,13 +339,13 @@ angular.module('lmisChromeApp')
         var inventory = settings.inventory;
 
         // User hasn't made any settings
-        if(!('products' in inventory)) {
+        if (!('products' in inventory)) {
           inventory.products = {};
         }
 
         // Check if a product has been added since the settings were saved
-        for(var code in products) {
-          if(!(code in inventory.products)) {
+        for (var code in products) {
+          if (!(code in inventory.products)) {
             inventory.products[code] = products[code];
           }
         }
