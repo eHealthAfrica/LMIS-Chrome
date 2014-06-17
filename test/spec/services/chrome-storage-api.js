@@ -5,7 +5,7 @@ describe('chromeStorageApi', function () {
 
     beforeEach(module('lmisChromeApp', 'chromeStorageMock', 'i18nMocks'));
 
-    beforeEach(inject(function (_chromeStorageApi_,_$window_) {
+    beforeEach(inject(function(_chromeStorageApi_, _$window_) {
         chromeStorageApi = _chromeStorageApi_;
         $window = _$window_;
     }));

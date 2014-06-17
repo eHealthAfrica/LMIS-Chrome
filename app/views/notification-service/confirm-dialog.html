@@ -25,10 +25,10 @@
 </div>
 <div class="modal-footer" ng-show="headerMessage === ''">
   <span ng-bind="bodyMessage"></span>
-  <button class="btn btn-success" ng-click="confirm(true)">
+  <button class="btn btn-success" lmis-analytics-directive="dialog_confirm" ng-click="confirm(true)">
     <span ng-bind="confirmBtnMsg"></span>
   </button>
-  <button class="btn btn-default" ng-click="cancel(dismissMessage)">
+  <button class="btn btn-default" lmis-analytics-directive="dialog_cancel" ng-click="cancel(dismissMessage)">
     <span ng-bind="cancelBtnMsg"></span>
   </button>
 </div>
