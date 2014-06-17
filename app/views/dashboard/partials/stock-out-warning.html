@@ -1,4 +1,4 @@
-<div lmis-page-view-report="dashboard_partials_stock-out-warning" ng-show="stockOutWarning.length">
+<div ng-show="stockOutWarning.length">
   <a ui-sref="multiStockOutBroadcast({productList: stockOutWarning.join(',')})" lmis-analytics-directive="stock_out">
     <div class="col-md-12 alert alert-danger">
       <img src="images/dashboard-icons/stock-out-warning.png" >

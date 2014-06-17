@@ -1,4 +1,4 @@
-<div lmis-page-view-report="home_partials_survey_reminder" ng-show="pendingSurveys.length !== 0" ng-repeat="survey in pendingSurveys">
+<div ng-show="pendingSurveys.length !== 0" ng-repeat="survey in pendingSurveys">
   <a lmis-analytics-directive="take_survey" ui-sref="takeSurvey({surveyUUID: survey.uuid})" style="display: block">
     <div class="col-md-12 alert alert-warning">
       <i class="fa fa-exclamation-circle"></i>
