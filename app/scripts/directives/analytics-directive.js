@@ -7,7 +7,7 @@ angular.module('lmisChromeApp')
       link: function(scope, element, attr) {
         var tracker = trackingFactory.tracker;
         element.on('click', function() {
-          tracker.sendEvent('Click', element.text(), attr.lmisPageViewReport);
+          tracker.sendEvent('Click', element.text(), attr.lmisAnalyticsDirective);
         });
       }
     };
