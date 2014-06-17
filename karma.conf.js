@@ -4,7 +4,7 @@
 // http://karma-runner.github.io/0.10/config/configuration-file.html
 
 var bowerJS = require('wiredep')({
-  exclude: ['pouchdb-nightly', /jasmine$/],
+  exclude: ['pouchdb-nightly', 'chrome-platform-analytics', /jasmine$/],
   devDependencies: true
 }).js;
 

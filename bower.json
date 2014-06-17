@@ -14,7 +14,9 @@
     "angularjs-nvd3-directives": "~0.0.7",
     "queue-async": "~1.0.7",
     "angular-growl-v2": "~0.6.1",
-    "angular-animate": "~1.2.16"
+    "angular-animate": "~1.2.16",
+    "bower_analytics": "https://github.com/thanasio/chrome-platform-analytics/tree/bower_analytics",
+    "chrome-platform-analytics": "https://github.com/thanasio/chrome-platform-analytics.git#bower_analytics"
   },
   "devDependencies": {
     "angular-mocks": "1.2.14",

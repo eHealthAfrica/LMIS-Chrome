@@ -12,7 +12,6 @@ angular.module('lmisChromeApp')
             })
             .catch(function(reason){
               deferred.reject(reason);
-              //example exception tracker
               trackingService.getTracker().sendException(reason, false);
             });
         return deferred.promise;
