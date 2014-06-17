@@ -24,7 +24,8 @@ angular.module('lmisChromeApp')
         var msg = {
           uuid: ccuBreakdown.uuid,
           facility: ccuBreakdown.facility.uuid,
-          dhis2_modelid: ccuBreakdown.ccuProfile.dhis2_modelid
+          dhis2_modelid: ccuBreakdown.ccuProfile.dhis2_modelid,
+          created: ccuBreakdown.created
         };
         return msg;
       };
