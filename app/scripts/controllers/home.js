@@ -65,7 +65,7 @@ angular.module('lmisChromeApp')
       views: {
         'activities': {
           templateUrl: 'views/home/main-activity.html',
-          controller: function ($stateParams, i18n, growl, alertFactory) {
+          controller: function ($stateParams, i18n, growl, alertFactory, $scope) {
 
             var alertQueue = alertFactory.getAll();
             for(var i in alertQueue){
@@ -73,6 +73,8 @@ angular.module('lmisChromeApp')
               growl.success(alert.msg);
               alertFactory.remove(alert.id);
             }
+
+            $scope.openMain = true;
 
           }
         },
