@@ -416,7 +416,10 @@ module.exports = function(grunt) {
 
     eslint: {
       options: {
-        config: '.eslintrc'
+        config: '.eslintrc',
+        rulesdir: [
+          'node_modules/eslint-no-exclusive-tests/lib/rules'
+        ]
       },
       all: '<%= jshint.all %>',
       test: {
