@@ -5,7 +5,9 @@
 //need to design the priority queue bit based on the storage capacity restriction on the local storage and introduce a table for the lost records count
 
 angular.module('lmisChromeApp')
+
         .factory('trackingFactory', function($window, $rootScope, config, utility, deviceInfoFactory, storageService) {
+
 
             var tracker;
             var online;
