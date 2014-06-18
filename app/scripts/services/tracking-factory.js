@@ -67,7 +67,7 @@ angular.module('lmisChromeApp')
 
                 return deferred.promise;
             }
-
+    
 
             var event = function(category, action, label) {
 
