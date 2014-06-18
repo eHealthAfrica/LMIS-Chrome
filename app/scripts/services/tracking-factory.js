@@ -7,6 +7,7 @@
 angular.module('lmisChromeApp')
         .factory('trackingFactory', function($window, $rootScope, config, utility, syncService, storageService) {
 
+
             var tracker;
 
 
