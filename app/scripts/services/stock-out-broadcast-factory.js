@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, syncService, $window, notificationService, inventoryRulesFactory) {
+angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (storageService, $q, syncService, $window, notificationService, inventoryRulesFactory, appConfigService) {
 
   var saveStockOut = function (stockOut) {
     var deferred = $q.defer();
