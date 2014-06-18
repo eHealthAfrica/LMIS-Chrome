@@ -12,7 +12,7 @@ angular.module('lmisChromeApp')
             })
             .catch(function(reason){
               deferred.reject(reason);
-              trackingFactory.tracker().sendException(reason, false);
+              trackingFactory.tracker.sendException(reason, false);
             });
         return deferred.promise;
       };
