@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('broadcastAlertFactory', function(storageService, $q, notificationService, syncService) {
+  .factory('broadcastAlertFactory', function(storageService, $q, notificationService, syncService, inventoryRulesFactory) {
 
     var TYPES = {
       CCU_BREAKDOWN: 0,
@@ -94,6 +94,28 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    var addStockLevelAndSave = function (stockBcAlert) {
+      var deferred = $q.defer();
+      var processSaveStockOut = function (stckBcAlert) {
+        saveBroadcastAlert(stckBcAlert)
+          .then(function (result) {
+            deferred.resolve(result);
+          })
+          .catch(function (reason) {
+            deferred.reject(reason);
+          });
+      };
+      inventoryRulesFactory.getStockLevel(stockBcAlert.facility, stockBcAlert.productType)
+        .then(function (stockLevel) {
+          stockBcAlert.stockLevel = stockLevel;
+          processSaveStockOut(stockBcAlert);
+        })
+        .catch(function () {
+          processSaveStockOut(stockBcAlert);
+        });
+      return deferred.promise;
+    };
+
 
     return {
       getMessage: getMessage,
@@ -102,6 +124,7 @@ angular.module('lmisChromeApp')
       get: getByUuid,
       getAll: getAllBroadcastAlerts,
       getAllByType: getAllByType,
-      sendAlert: sendAlert
+      sendAlert: sendAlert,
+      addStockLevelAndSave: addStockLevelAndSave
     };
   });
