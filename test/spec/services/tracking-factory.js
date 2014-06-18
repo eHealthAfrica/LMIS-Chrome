@@ -12,8 +12,8 @@ describe('Service: trackingFactory ', function() {
     trackingFactory = _trackingFactory_;
   }));
 
-  it('should define a tracker function', function() {
-    expect(angular.isFunction(trackingFactory.tracker)).toBe(true);
+  iit('should define a tracker property', function() {
+    expect('tracker' in trackingFactory).toBe(true);
   });
 
 });

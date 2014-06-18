@@ -1,17 +1,17 @@
 <div>
-  <ul lmis-page-view-report="home_settings" class="nav nav-pills">
+  <ul class="nav nav-pills">
     <li ui-sref-active="active">
-      <a ui-sref="home.index.settings.facility" lmis-analytics-directive="settings_facility" i18n="facility"></a>
+      <a ui-sref="home.index.settings.facility" ga-click="settings_facility" i18n="facility"></a>
     </li>
     <li ui-sref-active="active">
-      <a ui-sref="home.index.settings.inventory" lmis-analytics-directive="settings_inventory" i18n="inventory"></a>
+      <a ui-sref="home.index.settings.inventory" ga-click="settings_inventory" i18n="inventory"></a>
     </li>
   </ul>
 </div>
 
 <div class="row" ui-view></div>
 <div class="pull-right">
-  <button class="btn btn-default" lmis-analytics-directive="settings_reset" i18n="reset" />
-  <button type="submit" lmis-analytics-directive="settings_submit" class="btn btn-success"
+  <button class="btn btn-default" ga-click="settings_reset" i18n="reset" />
+  <button type="submit" ga-click="settings_submit" class="btn btn-success"
     i18n="submit" ng-click="save(settings)" />
 </div>

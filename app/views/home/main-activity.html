@@ -1,33 +1,33 @@
-<accordion lmis-page-view-report="home_main_activity" >
-  <accordion-group iis-open="openMain">
+<accordion>
+  <accordion-group is-open="openMain">
     <accordion-heading>
       <span><i class="fa fa-user"></i></span>
       <span i18n="mainActivities"></span>
     </accordion-heading>
 
     <div class="col-md-3 col-xs-6 btn">
-      <a lmis-analytics-directive="stock_count" ui-sref="stockCountHome" id="t2">
+      <a ga-click="stock_count" ui-sref="stockCountHome" id="t2">
         <img src="images/dashboard-icons/stock-count.png" class="img-rounded">
         <span i18n="stockCount" class="main-activity-link"></span>
       </a>
     </div>
 
     <div class="col-md-3 col-xs-6 btn">
-      <a lmis-analytics-directive="discard_count_home" ui-sref="discardCountHome">
+      <a ga-click="discard_count_home" ui-sref="discardCountHome">
         <img src="images/dashboard-icons/add-waste-count.png" class="img-rounded">
         <span i18n="addWasteCount" class="main-activity-link"></span>
       </a>
     </div>
 
     <div class="col-md-3 col-xs-6 btn">
-      <a lmis-analytics-directive="stock_out_alert" ui-sref="broadcastStockOut">
+      <a ga-click="stock_out_alert" ui-sref="broadcastStockOut">
         <img src="images/dashboard-icons/stock-out-broadcast.png" class="img-rounded">
         <span i18n="stockOutBroadcast" class="main-activity-link"></span>
       </a>
     </div>
 
     <div class="col-md-3 col-xs-6 btn">
-      <a lmis-analytics-directive="report_ccu_breakdown" ui-sref="reportCcuBreakdown">
+      <a ga-click="report_ccu_breakdown" ui-sref="reportCcuBreakdown">
         <img src="images/dashboard-icons/ccu-breakdown.png" class="img-rounded">
         <span i18n="ccuBreakdown" class="main-activity-link"></span>
       </a>
@@ -42,7 +42,7 @@
     </accordion-heading>
 
     <div class="col-md-3 col-xs-6 btn">
-      <a lmis-analytics-directive="app_config" ui-sref="appConfig.edit">
+      <a ga-click="app_config" ui-sref="appConfig.edit">
         <img src="images/dashboard-icons/app-config.png" class="img-rounded">
         <span i18n="appConfig" class="main-activity-link"></span>
       </a>
