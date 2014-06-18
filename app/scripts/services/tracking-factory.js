@@ -78,6 +78,9 @@ angular.module('lmisChromeApp')
             $rootScope.$on('$stateNotFound', function(state) {
                 exception(state.to, false);
             });
+    
+    //ok so here we need to overload sendAppView, sendException and sendEvent to write on local storage (JSON)
+    //use cache service to get cache to store things temporarilly
 
             return {
                 tracker: tracker,
