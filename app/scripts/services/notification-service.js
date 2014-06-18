@@ -140,12 +140,11 @@ angular.module('lmisChromeApp').service('notificationService', function ($modal,
    * @param msg{String} - message body
    * @returns {promise|Function|promise|promise|promise|*}
    */
-  this.sendSms =  function(phoneNo, msg, type){
+  this.sendSms =  function(phoneNo, msg){
     var deferred = $q.defer();
     var promises = [];
     var intent = "";//leave empty for sending sms using default intent(SMSManager)
     if('sms' in $window){
-      msg.db = type;
       var content = encode(msg);
       for(var i in content)
       {
