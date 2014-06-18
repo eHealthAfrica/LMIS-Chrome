@@ -35,3 +35,5 @@ rules:
   no-else-return: 2
   no-eq-null: 2
   no-floating-decimal: 2
+  # Custom rules
+  no-exclusive-tests: 2
