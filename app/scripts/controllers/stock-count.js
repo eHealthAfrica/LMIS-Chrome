@@ -65,10 +65,11 @@ angular.module('lmisChromeApp')
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
                                              $stateParams, appConfig, appConfigService, cacheService, syncService,
-                                             utility, $rootScope, i18n, productWithCategories){
+                                             utility, $rootScope, i18n, productWithCategories, locationsFactory){
     //TODO: refactor entire stock count controller to simpler more readable controller
 
     $scope.getCategoryColor = function(categoryName){
+      return '';
       if($scope.preview){
         return;
       }
@@ -124,6 +125,7 @@ angular.module('lmisChromeApp')
       $scope.reportDay = new Date(Date.parse(date)).getDate();
     }
     stockCountFactory.getStockCountByDate(date).then(function(stockCount){
+      console.log(stockCount);
       if(stockCount !== null){
         $scope.stockCount = stockCount;
         $scope.dateInfo = $scope.stockCount.created;
@@ -147,6 +149,7 @@ angular.module('lmisChromeApp')
     };
 
     $scope.save = function() {
+
       var DB_NAME = stockCountFactory.STOCK_COUNT_DB;
 
       $scope.stockCount.facility = $scope.facilityObject.uuid;
@@ -204,9 +207,30 @@ angular.module('lmisChromeApp')
       if('stockCount' in $scope) {
         $scope.stockCount.lastPosition = 0;
         $scope.stockCount.isComplete = 1;
+        var geoPos = { latitude: NaN, longitude: NaN, accuracy: NaN };
+        $scope.stockCount.geoPosition = geoPos;
+        //attach position GeoPosition
+        locationsFactory.getCurrentPosition()
+          .then(function (curPos) {
+            geoPos = {
+              latitude: curPos.coords.latitude,
+              longitude: curPos.coords.latitude,
+              accuracy: curPos.coords.accuracy
+            };
+            $scope.stockCount.geoPosition = geoPos;
+            $scope.redirect = true;
+            $scope.save();
+          })
+          .catch(function (err) {
+            console.log(err);
+            $scope.redirect = true;
+            $scope.save();
+          });
+      }else{
+        $scope.redirect = true;
+        $scope.save();
       }
-      $scope.redirect = true;
-      $scope.save();
+
     };
 
     $scope.changeState = function(direction){
