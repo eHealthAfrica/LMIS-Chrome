@@ -148,16 +148,31 @@ angular.module('lmisChromeApp')
 
     var getProductObjectWithCategory = function(appConfig){
       var deferred = $q.defer();
-      storageService.get(storageService.PRODUCT_CATEGORY)
-          .then(function(productCategory){
+      var promises = [];
+      promises.push(storageService.get(storageService.PRODUCT_PROFILE));
+      promises.push(storageService.get(storageService.PRODUCT_PRESENTATION));
+      promises.push(storageService.get(storageService.PRODUCT_TYPES));
+      promises.push(storageService.get(storageService.PRODUCT_CATEGORY));
+      promises.push(storageService.get(storageService.UOM));
+      $q.all(promises)
+          .then(function(resolved){
+            var productProfiles = resolved[0],
+                productPresentation = resolved[1],
+                productTypes = resolved[2],
+                productCategory = resolved[3],
+                uom = resolved[4];
             var facilitySelectedProducts = appConfig.selectedProductProfiles
                 .map(function(product){
-                  if(angular.isObject(product.category)){
-                    return product;
-                  }
-                  product.category =
-                      angular.isDefined(productCategory[product.category]) ? productCategory[product.category] : product.category;
-                  return product;
+                  var newProduct =  productProfiles[product.uuid];
+                  var productType = productTypes[newProduct.product];
+                      productType.base_uom =
+                          angular.isDefined(uom[productType.base_uom]) ? uom[productType.base_uom] : productType.base_uom;
+                  var presentation = productPresentation[newProduct.presentation];
+                      presentation.uom = angular.isDefined(uom[presentation.uom]) ? uom[presentation.uom] : presentation.uom;
+                      newProduct.category = productCategory[newProduct.category];
+                      newProduct.presentation = presentation;
+                      newProduct.product = productType;
+                  return newProduct;
                 })
                 .sort(function(a, b){
                   if(angular.isDefined(a.category.name) && angular.isDefined(b.category.name)){
@@ -170,6 +185,7 @@ angular.module('lmisChromeApp')
           })
           .catch(function(reason){
             deferred.reject(reason);
+            console.error(reason);
           });
       return deferred.promise;
     };
