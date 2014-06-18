@@ -88,7 +88,7 @@ angular.module('lmisChromeApp')
             $rootScope.$on('$stateNotFound', function(state) {
                 exception(state.to, false);
             });
-    
+            
 
 
 
