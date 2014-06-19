@@ -150,6 +150,15 @@ angular.module('lmisChromeApp')
     return string;
   };
 
+  /**
+   * Does the object contain the given key(s)?
+   *
+   * The same as {@link http://underscorejs.org/#has}, but supports nested keys.
+   *
+   * @param {object} obj an object
+   * @param {string} path a key (or keys) in the object, e.g. 'a.b.c'
+   * @return {boolean} true if obj contains path(s), otherwise false
+   */
   this.has = function(obj, path) {
     if (!(obj && path)) { return false; }
 
