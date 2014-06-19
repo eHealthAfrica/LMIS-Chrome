@@ -160,10 +160,9 @@ angular.module('lmisChromeApp')
                   return product;
                 })
                 .sort(function(a, b){
-                //TODO: uncomment when race condition has been fixed.
-//                  if(angular.isDefined(a.category.name) && angular.isDefined(b.category.name)){
-//                    return a.category.name > b.category.name;
-//                  }
+                  if(angular.isDefined(a.category.name) && angular.isDefined(b.category.name)){
+                    return a.category.name > b.category.name;
+                  }
                   return a.category > b.category;
                 });
             var productObject = utility.castArrayToObject(facilitySelectedProducts, 'uuid');

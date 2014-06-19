@@ -69,7 +69,6 @@ angular.module('lmisChromeApp')
     //TODO: refactor entire stock count controller to simpler more readable controller
 
     $scope.getCategoryColor = function(categoryName){
-      return '';
       if($scope.preview){
         return;
       }
