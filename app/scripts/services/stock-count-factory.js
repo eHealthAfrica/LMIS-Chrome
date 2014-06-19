@@ -60,11 +60,11 @@ angular.module('lmisChromeApp')
               storageService.save(storageService.STOCK_COUNT, _stockCount)
                   .then(function (uuid) {
                     deferred.resolve(uuid);
-                    trackingFactory.tracker().sendException(uuid, false);
+                    trackingFactory.tracker.sendException(uuid, false);
                   })
                   .catch(function (reason) {
                     deferred.reject(reason);
-                    trackingFactory.tracker().sendException(reason, false);
+                    trackingFactory.tracker.sendException(reason, false);
                   });
             })
             .catch(function (reason) {
@@ -160,9 +160,10 @@ angular.module('lmisChromeApp')
                   return product;
                 })
                 .sort(function(a, b){
-                  if(angular.isDefined(a.category.name) && angular.isDefined(b.category.name)){
-                    return a.category.name > b.category.name;
-                  }
+                //TODO: uncomment when race condition has been fixed.
+//                  if(angular.isDefined(a.category.name) && angular.isDefined(b.category.name)){
+//                    return a.category.name > b.category.name;
+//                  }
                   return a.category > b.category;
                 });
             var productObject = utility.castArrayToObject(facilitySelectedProducts, 'uuid');
