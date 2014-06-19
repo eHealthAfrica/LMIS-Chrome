@@ -35,7 +35,10 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    var NO_GEO_POS = { latitude: NaN, longitude: NaN, accuracy: NaN };
+
     return {
+      NO_GEO_POS: NO_GEO_POS,
       getCurrentPosition: getCurrentPosition
     };
 
