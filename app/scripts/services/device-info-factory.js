@@ -6,7 +6,7 @@ angular.module('lmisChromeApp')
       getDeviceInfo: function() {
         var deferred = $q.defer();
 
-        if(!utility.hasDeep($window, 'cordova')) {
+        if(!utility.has($window, 'cordova')) {
           deferred.reject('Cordova is not supported on this device.');
           return deferred.promise;
         }

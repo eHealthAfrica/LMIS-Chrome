@@ -255,7 +255,7 @@ angular.module('lmisChromeApp')
         }
       },
       controller: function($scope, settings, utility) {
-        if (!utility.hasDeep(settings, 'inventory.products')) {
+        if (!utility.has(settings, 'inventory.products')) {
           $scope.productsUnset = true;
         }
       }
@@ -303,7 +303,7 @@ angular.module('lmisChromeApp')
       controller: function($scope, settings, settingsService, growl, i18n, utility) {
         var fields = ['facility', 'inventory'];
         for (var i = fields.length - 1; i >= 0; i--) {
-          if (!utility.hasDeep(settings, fields[i])) {
+          if (!utility.has(settings, fields[i])) {
             settings[fields[i]] = {};
           }
         }
@@ -340,13 +340,13 @@ angular.module('lmisChromeApp')
         var inventory = settings.inventory;
 
         // User hasn't made any settings
-        if (!utility.hasDeep(inventory, 'products')) {
+        if (!utility.has(inventory, 'products')) {
           inventory.products = {};
         }
 
         // Check if a product has been added since the settings were saved
         for (var code in products) {
-          if (!utility.hasDeep(inventory.products, code)) {
+          if (!utility.has(inventory.products, code)) {
             inventory.products[code] = products[code];
           }
         }
