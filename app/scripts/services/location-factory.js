@@ -35,11 +35,21 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    var getMiniGeoPosition = function(geoPos){
+      var miniGeoPosInfo  = {
+        latitude: geoPos.coords.latitude,
+        longitude: geoPos.coords.longitude,
+        accuracy: geoPos.coords.accuracy
+      };
+      return miniGeoPosInfo;
+    };
+
     var NO_GEO_POS = { latitude: NaN, longitude: NaN, accuracy: NaN };
 
     return {
       NO_GEO_POS: NO_GEO_POS,
-      getCurrentPosition: getCurrentPosition
+      getCurrentPosition: getCurrentPosition,
+      getMiniGeoPosition: getMiniGeoPosition
     };
 
   });
