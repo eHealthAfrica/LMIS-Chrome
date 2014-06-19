@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('dashboardfactory', function(i18n, inventoryRulesFactory) {
+  .factory('dashboardfactory', function(i18n, inventoryRulesFactory, utility) {
     var keys = [
       {
         key: 'below',
@@ -44,7 +44,7 @@ angular.module('lmisChromeApp')
         key: key.label,
         values: transposeValues(key.key, values)
       };
-      if('color' in key) {
+      if(utility.hasDeep(key, 'color')) {
         series.color = key.color;
       }
       return series;
@@ -66,7 +66,7 @@ angular.module('lmisChromeApp')
       for(var i = buffers.length - 1; i >= 0; i--) {
         inventory = buffers[i];
         code = inventory.batch.product.code;
-        if(!(code in unique)) {
+        if(!utility.hasDeep(unique, code)) {
           unique[code] = {
             label: code,
             below: 0,

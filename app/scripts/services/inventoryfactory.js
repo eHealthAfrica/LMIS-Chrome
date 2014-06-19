@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('inventoryFactory', function ($q, storageService, productTypeFactory, programsFactory, storageUnitFactory, batchFactory, facilityFactory, uomFactory) {
+    .factory('inventoryFactory', function ($q, storageService, productTypeFactory, programsFactory, storageUnitFactory, batchFactory, facilityFactory, uomFactory, utility) {
 
       function getByUUID(uuid) {
         var deferred = $q.defer();
@@ -79,7 +79,7 @@ angular.module('lmisChromeApp')
                   for (var i = inventories.length - 1; i >= 0; i--) {
                     batch = inventories[i].batch;
                     if (typeof batch !== 'string') {
-                      if ('product' in batch) {
+                      if (utility.hasDeep(batch, 'product')) {
                         code = batch.product.code;
                         codes[code] = {};
                       }

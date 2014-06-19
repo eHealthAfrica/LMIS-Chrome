@@ -202,7 +202,7 @@ angular.module('lmisChromeApp')
 
     $scope.finalSave = function(){
       $scope.isSaving = true;
-      if('stockCount' in $scope) {
+      if(utility.hasDeep($scope, 'stockCount')) {
         $scope.stockCount.lastPosition = 0;
         $scope.stockCount.isComplete = 1;
         if(typeof $scope.stockCount.geoPosition === 'undefined'){
