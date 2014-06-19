@@ -4,7 +4,7 @@ angular.module('lmisChromeApp')
   .factory('trackingFactory', function($window, $rootScope, config, utility) {
 
     var tracker;
-    if (utility.hasDeep($window, 'analytics')) {
+    if (utility.has($window, 'analytics')) {
       var service = $window.analytics.getService(config.analytics.service);
       tracker = service.getTracker(config.analytics.propertyID);
 

@@ -4,7 +4,7 @@ angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $
   var chromeStorage;
 
   // Check whether chrome.storage available or not
-  if (utility.hasDeep($window, 'chrome.storage.local')) {
+  if (utility.has($window, 'chrome.storage.local')) {
     chromeStorage = $window.chrome.storage.local;
   } else {
     chromeStorage = null;

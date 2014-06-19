@@ -109,35 +109,35 @@ describe('Service: utility', function() {
     });
   });
 
-  describe('hasDeep', function() {
+  describe('has', function() {
     it('should fail with inherited properties', function() {
-      expect(utility.hasDeep({}, 'constructor')).toBe(false);
+      expect(utility.has({}, 'constructor')).toBe(false);
     });
 
     it('should function even if hasOwnProperty was overridden', function() {
       // jshint -W001
       var mock = {hasOwnProperty: ''};
-      expect(utility.hasDeep(mock, 'constructor')).toBe(false);
+      expect(utility.has(mock, 'constructor')).toBe(false);
     });
 
     it('should fail if path does not exist', function() {
-      expect(utility.hasDeep({}, 'a')).toBe(false);
+      expect(utility.has({}, 'a')).toBe(false);
     });
 
     it('should handle nested paths', function() {
-      expect(utility.hasDeep({a: {}}, 'a')).toBe(true);
-      expect(utility.hasDeep({a: {b: 'c'}}, 'a.b')).toBe(true);
-      expect(utility.hasDeep({a: {}}, 'b')).toBe(false);
+      expect(utility.has({a: {}}, 'a')).toBe(true);
+      expect(utility.has({a: {b: 'c'}}, 'a.b')).toBe(true);
+      expect(utility.has({a: {}}, 'b')).toBe(false);
     });
 
     it('should fail gracefully with invalid arguments', function() {
-      expect(utility.hasDeep('')).toBe(false);
-      expect(utility.hasDeep({})).toBe(false);
-      expect(utility.hasDeep(null)).toBe(false);
-      expect(utility.hasDeep(null, null)).toBe(false);
-      expect(utility.hasDeep(undefined, '')).toBe(false);
-      expect(utility.hasDeep({}, '.')).toBe(false);
-      expect(utility.hasDeep({}, 'a.')).toBe(false);
+      expect(utility.has('')).toBe(false);
+      expect(utility.has({})).toBe(false);
+      expect(utility.has(null)).toBe(false);
+      expect(utility.has(null, null)).toBe(false);
+      expect(utility.has(undefined, '')).toBe(false);
+      expect(utility.has({}, '.')).toBe(false);
+      expect(utility.has({}, 'a.')).toBe(false);
     });
   });
 });
