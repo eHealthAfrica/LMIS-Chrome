@@ -254,8 +254,8 @@ angular.module('lmisChromeApp')
           return deferred.promise;
         }
       },
-      controller: function($scope, settings) {
-        if (!('inventory' in settings && 'products' in settings.inventory)) {
+      controller: function($scope, settings, utility) {
+        if (!utility.has(settings, 'inventory.products')) {
           $scope.productsUnset = true;
         }
       }
@@ -300,10 +300,10 @@ angular.module('lmisChromeApp')
           return settingsService.load();
         }
       },
-      controller: function($scope, settings, settingsService, growl, i18n) {
+      controller: function($scope, settings, settingsService, growl, i18n, utility) {
         var fields = ['facility', 'inventory'];
         for (var i = fields.length - 1; i >= 0; i--) {
-          if (!(fields[i] in settings)) {
+          if (!utility.has(settings, fields[i])) {
             settings[fields[i]] = {};
           }
         }
@@ -336,17 +336,17 @@ angular.module('lmisChromeApp')
           return inventoryFactory.getUniqueProducts(currentFacility.uuid);
         }
       },
-      controller: function($scope, settings, products) {
+      controller: function($scope, settings, products, utility) {
         var inventory = settings.inventory;
 
         // User hasn't made any settings
-        if (!('products' in inventory)) {
+        if (!utility.has(inventory, 'products')) {
           inventory.products = {};
         }
 
         // Check if a product has been added since the settings were saved
         for (var code in products) {
-          if (!(code in inventory.products)) {
+          if (!utility.has(inventory.products, code)) {
             inventory.products[code] = products[code];
           }
         }

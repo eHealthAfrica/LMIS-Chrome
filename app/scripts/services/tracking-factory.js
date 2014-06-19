@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('trackingFactory', function($window, $rootScope, config) {
+  .factory('trackingFactory', function($window, $rootScope, config, utility) {
 
     var tracker;
-    if ('analytics' in $window) {
+    if (utility.has($window, 'analytics')) {
       var service = $window.analytics.getService(config.analytics.service);
       tracker = service.getTracker(config.analytics.propertyID);
 

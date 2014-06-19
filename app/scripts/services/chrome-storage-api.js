@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $q) {
+angular.module('lmisChromeApp').factory('chromeStorageApi', function ($window, $q, utility) {
   var chromeStorage;
 
   // Check whether chrome.storage available or not
-  if ('chrome' in $window && typeof  $window.chrome.storage !== undefined) {
+  if (utility.has($window, 'chrome.storage.local')) {
     chromeStorage = $window.chrome.storage.local;
   } else {
     chromeStorage = null;
