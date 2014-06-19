@@ -65,7 +65,7 @@ angular.module('lmisChromeApp')
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
                                              $stateParams, appConfig, appConfigService, cacheService, syncService,
-                                             utility, $rootScope, i18n, productWithCategories, locationsFactory){
+                                             utility, $rootScope, i18n, productWithCategories, locationFactory){
     //TODO: refactor entire stock count controller to simpler more readable controller
 
     $scope.getCategoryColor = function(categoryName){
@@ -206,13 +206,13 @@ angular.module('lmisChromeApp')
         $scope.stockCount.lastPosition = 0;
         $scope.stockCount.isComplete = 1;
         if(typeof $scope.stockCount.geoPosition === 'undefined'){
-          $scope.stockCount.geoPosition = locationsFactory.NO_GEO_POS;
+          $scope.stockCount.geoPosition = locationFactory.NO_GEO_POS;
         }
 
         //attach position GeoPosition
-        locationsFactory.getCurrentPosition()
+        locationFactory.getCurrentPosition()
           .then(function (curPos) {
-            $scope.stockCount.geoPosition = locationsFactory.getMiniGeoPosition(curPos);
+            $scope.stockCount.geoPosition = locationFactory.getMiniGeoPosition(curPos);
             $scope.redirect = true;
             $scope.save();
           })
