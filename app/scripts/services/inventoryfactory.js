@@ -79,7 +79,7 @@ angular.module('lmisChromeApp')
                   for (var i = inventories.length - 1; i >= 0; i--) {
                     batch = inventories[i].batch;
                     if (typeof batch !== 'string') {
-                      if (utility.hasDeep(batch, 'product')) {
+                      if (utility.has(batch, 'product')) {
                         code = batch.product.code;
                         codes[code] = {};
                       }

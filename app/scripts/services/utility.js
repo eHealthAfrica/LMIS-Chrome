@@ -150,7 +150,7 @@ angular.module('lmisChromeApp')
     return string;
   };
 
-  this.hasDeep = function(obj, path) {
+  this.has = function(obj, path) {
     if (!(obj && path)) { return false; }
 
     path = path.split('.').reverse();
