@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('locationsFactory', function($q, $window, $rootScope) {
+  .factory('locationFactory', function($q, $window, $rootScope) {
 
     var getGeoLocation = function(){
       var deferred = $q.defer();
