@@ -170,7 +170,7 @@ angular.module('lmisChromeApp')
             if ($scope.showChart) {
               getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory)
                 .then(function(productTypeCounts) {
-                  var values = [], product = {}, stockOutWarning = [];
+                  var values = [], product = {}, stockOutWarning = [], stocksBelowReorderPoint = [];
 
                   var filterStockCountWithNoStockOutRef = function(stockOutList, uuid) {
                     return stockOutList.filter(function(element) {
@@ -194,10 +194,11 @@ angular.module('lmisChromeApp')
                     //filter out stock count with no reference to stock out broadcast since the last stock count
                     var filtered = filterStockCountWithNoStockOutRef(stockOutList, uuid);
 
-                    //create a uuid list of products with zero or less reorder days
-                    //TODO: gather those below reorder point and send background alert, if (product.stockLevel <= product.bufferStock && filtered.length === 0) {
+                    //aggregate low stock and stock out items.
                     if(product.stockLevel <= 0 && filtered.length === 0){
                       stockOutWarning.push(uuid);
+                    }else if(product.stockLevel <= product.bufferStock && filtered.length === 0){
+                      stocksBelowReorderPoint.push(uuid);
                     }
 
                     values.push({

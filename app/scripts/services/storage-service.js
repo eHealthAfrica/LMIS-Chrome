@@ -51,6 +51,7 @@ angular.module('lmisChromeApp')
       var ccuProfile = 'ccei';
       var ccuBreakdown = 'ccu_breakdown';
       var pendingSyncs = 'pending_syncs';
+      var broadcastAlert = 'broadcast_alerts';
 
       /**
        * Add new table data to the chrome store.
@@ -496,7 +497,8 @@ angular.module('lmisChromeApp')
         SURVEY_RESPONSE: surveyResponse,
         CCU_PROFILE: ccuProfile,
         CCU_BREAKDOWN: ccuBreakdown,
-        PENDING_SYNCS: pendingSyncs
+        PENDING_SYNCS: pendingSyncs,
+        BROADCAST_ALERT: broadcastAlert
       };
 
     });
