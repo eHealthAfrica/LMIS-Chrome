@@ -207,12 +207,13 @@ angular.module('lmisChromeApp')
       if('stockCount' in $scope) {
         $scope.stockCount.lastPosition = 0;
         $scope.stockCount.isComplete = 1;
-        var geoPos = { latitude: NaN, longitude: NaN, accuracy: NaN };
-        $scope.stockCount.geoPosition = geoPos;
+        if(typeof $scope.stockCount.geoPosition === 'undefined'){
+          $scope.stockCount.geoPosition = locationsFactory.NO_GEO_POS;
+        }
         //attach position GeoPosition
         locationsFactory.getCurrentPosition()
           .then(function (curPos) {
-            geoPos = {
+            var geoPos = {
               latitude: curPos.coords.latitude,
               longitude: curPos.coords.latitude,
               accuracy: curPos.coords.accuracy
