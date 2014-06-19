@@ -210,15 +210,11 @@ angular.module('lmisChromeApp')
         if(typeof $scope.stockCount.geoPosition === 'undefined'){
           $scope.stockCount.geoPosition = locationsFactory.NO_GEO_POS;
         }
+
         //attach position GeoPosition
         locationsFactory.getCurrentPosition()
           .then(function (curPos) {
-            var geoPos = {
-              latitude: curPos.coords.latitude,
-              longitude: curPos.coords.latitude,
-              accuracy: curPos.coords.accuracy
-            };
-            $scope.stockCount.geoPosition = geoPos;
+            $scope.stockCount.geoPosition = locationsFactory.getMiniGeoPosition(curPos);
             $scope.redirect = true;
             $scope.save();
           })
