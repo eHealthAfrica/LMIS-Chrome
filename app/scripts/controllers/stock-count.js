@@ -124,7 +124,6 @@ angular.module('lmisChromeApp')
       $scope.reportDay = new Date(Date.parse(date)).getDate();
     }
     stockCountFactory.getStockCountByDate(date).then(function(stockCount){
-      console.log(stockCount);
       if(stockCount !== null){
         $scope.stockCount = stockCount;
         $scope.dateInfo = $scope.stockCount.created;
