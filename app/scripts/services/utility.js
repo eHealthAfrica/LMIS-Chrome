@@ -31,11 +31,10 @@ angular.module('lmisChromeApp')
 
   /**
    *
-   * @param array
-   * @param id will be the object key
+   * @param {object} array
+   * @param {string} id will be the object key
    * @returns {{}}
    */
-
   this.castArrayToObject = function(array, id) {
     id = angular.isUndefined(id) ? 'uuid' : id;
     var newObject = {};
@@ -149,6 +148,19 @@ angular.module('lmisChromeApp')
       string = string.substr(0, length - 1) + '…';
     }
     return string;
+  };
+
+  this.hasDeep = function(obj, path) {
+    if (!(obj && path)) { return false; }
+
+    path = path.split('.').reverse();
+    for (var i = path.length - 1; i >= 0; i--) {
+      if (!Object.prototype.hasOwnProperty.call(obj, path[i])) {
+        return false;
+      }
+      obj = obj[path[i]];
+    }
+    return true;
   };
 
 });
