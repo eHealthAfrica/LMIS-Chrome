@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('deviceInfoFactory', function($q, $window) {
+  .factory('deviceInfoFactory', function($q, $window, utility) {
     return {
       getDeviceInfo: function() {
         var deferred = $q.defer();
 
-        if(!('cordova' in $window)) {
+        if(!utility.hasDeep($window, 'cordova')) {
           deferred.reject('Cordova is not supported on this device.');
           return deferred.promise;
         }
