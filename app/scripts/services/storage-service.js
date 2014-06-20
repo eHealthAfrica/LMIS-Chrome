@@ -222,6 +222,10 @@ angular.module('lmisChromeApp')
           exceptions,
           clicks,
           pageviews
+          ccuProfile,
+          exceptions,
+          clicks,
+          pageviews
       var uuidGenerator = function () {
         var now = Date.now();
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
