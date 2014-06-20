@@ -89,9 +89,6 @@ angular.module('lmisChromeApp')
                 exception(state.to, false);
             });
 
-
-
-
             return {
                 tracker: tracker,
                 postEvent: event,
