@@ -3,7 +3,7 @@
 //ok so here we need to overload sendAppView, sendException and sendEvent to write on local storage (JSON)
 //use local storage or couchdb service to store hits temporarilly
 angular.module('lmisChromeApp')
-  .factory('trackingFactory', function($window, $rootScope, config, utility) {
+        .factory('trackingFactory', function($window, $rootScope, config, deviceInfoFactory, storageService) {
 
             var tracker;
     if (utility.has($window, 'analytics')) {
@@ -50,7 +50,7 @@ angular.module('lmisChromeApp')
                     tracker.sendException(state.to, false);
                 });
             }
-            
+
 
 
 
