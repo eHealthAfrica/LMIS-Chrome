@@ -51,9 +51,6 @@ angular.module('lmisChromeApp')
                 });
             }
 
-
-
-
             return {
                 tracker: tracker
             };
