@@ -42,6 +42,7 @@ angular.module('lmisChromeApp')
                         })
                         .catch(function(reason) {
 
+                   
                             console.log("offline page: " + page);
                             var _pageview = {
                                 page: page
@@ -66,6 +67,15 @@ angular.module('lmisChromeApp')
                                 opt_fatal: opt_fatal
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
+                        var _event = {
+                            category: category,
+                            action: action,
+                            label: label
+                        };
+                        var clcks = storageService.CLICKS;
+                        console.log("clicks: " + clcks);
+                        storageService.save(storageService.CLICKS, _event);
+
                         }
                         );
             };
@@ -78,9 +88,9 @@ angular.module('lmisChromeApp')
             $rootScope.$on('$stateNotFound', function(state) {
                 exception(state.to, false);
             });
-            
 
-            
+
+
 
             return {
                 tracker: tracker,

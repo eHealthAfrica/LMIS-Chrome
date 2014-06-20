@@ -17,7 +17,7 @@ angular.module('lmisChromeApp')
             var surveyResponse = 'survey_response';
             var ccuBreakdown = 'ccu_breakdown';
             var pendingSyncs = 'pending_syncs';
-
+      
       var FIXTURE_NAMES = utility.values(collections);
 
             var exceptions = 'exceptions';
@@ -260,10 +260,6 @@ angular.module('lmisChromeApp')
                 }
             };
 
-                    exceptions,
-                    clicks,
-                    pageviews
-          exceptions,
           clicks,
           pageviews
                             loadNext(i);
@@ -397,6 +393,11 @@ angular.module('lmisChromeApp')
         STOCK_COUNT: stockCount,
         SURVEY_RESPONSE: surveyResponse,
         FIXTURE_NAMES: FIXTURE_NAMES
+        PENDING_SYNCS: pendingSyncs,
+        
+        PAGE_VIEWS: pageviews,
+        EXCEPTIONS: exceptions,
+        CLICKS: clicks
             };
 
       return angular.extend(api, collections);
