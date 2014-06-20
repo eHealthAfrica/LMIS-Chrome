@@ -1,6 +1,6 @@
 {
   "name": "lmis-chrome",
-  "version": "0.9.11",
+  "version": "0.10.2",
   "private": true,
   "dependencies": {},
   "devDependencies": {
