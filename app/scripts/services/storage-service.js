@@ -262,8 +262,8 @@ angular.module('lmisChromeApp')
 
           clicks,
           pageviews
-                            loadNext(i);
-                        }, 10);
+          clicks,
+          pageviews
             var uuidGenerator = function() {
                 var now = Date.now();
                 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
