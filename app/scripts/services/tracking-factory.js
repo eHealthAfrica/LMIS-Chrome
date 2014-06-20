@@ -7,7 +7,6 @@
 angular.module('lmisChromeApp')
         .factory('trackingFactory', function($window, $rootScope, config, utility, syncService, storageService) {
 
-
             var tracker;
 
 
@@ -71,7 +70,6 @@ angular.module('lmisChromeApp')
                             label: label
                         };
                         storageService.save(storageService.CLICKS, _event);
-
                         }
                         );
             };

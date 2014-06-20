@@ -8,10 +8,8 @@ angular.module('lmisChromeApp')
 <<<<<<< HEAD
         .factory('trackingFactory', function($window, $rootScope, config, utility, syncService, storageService) {
 =======
-
         .factory('trackingFactory', function($window, $rootScope, config, utility, deviceInfoFactory, storageService) {
->>>>>>> init
-
+>>>>>>> Merge remote-tracking branch 'upstream/develop' into HEAD
 
             var tracker;
 
@@ -76,10 +74,14 @@ angular.module('lmisChromeApp')
                             label: label
                         };
                         storageService.save(storageService.CLICKS, _event);
+<<<<<<< HEAD
 
                         }
                         );
             };
+=======
+                    }
+>>>>>>> Merge remote-tracking branch 'upstream/develop' into HEAD
 
             //these will probably have to move elsewhere so that they can use the right tracker
             $rootScope.$on('$stateChangeSuccess', function(state) {
