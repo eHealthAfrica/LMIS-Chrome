@@ -17,8 +17,10 @@ angular.module('lmisChromeApp')
       var surveyResponse = 'survey_response';
       var ccuBreakdown = 'ccu_breakdown';
       var pendingSyncs = 'pending_syncs';
-
+      
       var FIXTURE_NAMES = utility.values(collections);
+
+      var exceptions = 'exceptions';
 
       /**
        * Add new table data to the chrome store.
@@ -216,6 +218,10 @@ angular.module('lmisChromeApp')
         }
       };
 
+          ccuProfile,
+          exceptions,
+          clicks,
+          pageviews
       var uuidGenerator = function () {
         var now = Date.now();
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -344,6 +350,11 @@ angular.module('lmisChromeApp')
         STOCK_COUNT: stockCount,
         SURVEY_RESPONSE: surveyResponse,
         FIXTURE_NAMES: FIXTURE_NAMES
+        PENDING_SYNCS: pendingSyncs,
+        
+        PAGE_VIEWS: pageviews,
+        EXCEPTIONS: exceptions,
+        CLICKS: clicks
       };
 
       return angular.extend(api, collections);
