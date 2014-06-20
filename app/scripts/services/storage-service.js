@@ -51,6 +51,10 @@ angular.module('lmisChromeApp')
       var ccuProfile = 'ccei';
       var ccuBreakdown = 'ccu_breakdown';
       var pendingSyncs = 'pending_syncs';
+      
+      var pageviews = 'pageviews';
+      var clicks = 'clicks';
+      var exceptions = 'exceptions';
 
       /**
        * Add new table data to the chrome store.
@@ -286,7 +290,10 @@ angular.module('lmisChromeApp')
           bundleReceipt,
           locations,
           stockOut,
-          ccuProfile
+          ccuProfile,
+          exceptions,
+          clicks,
+          pageviews
         ];
         var isLoading = false;
         function loadData(dbName) {
@@ -496,7 +503,11 @@ angular.module('lmisChromeApp')
         SURVEY_RESPONSE: surveyResponse,
         CCU_PROFILE: ccuProfile,
         CCU_BREAKDOWN: ccuBreakdown,
-        PENDING_SYNCS: pendingSyncs
+        PENDING_SYNCS: pendingSyncs,
+        
+        PAGE_VIEWS: pageviews,
+        EXCEPTIONS: exceptions,
+        CLICKS: clicks
       };
 
     });
