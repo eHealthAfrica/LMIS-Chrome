@@ -87,9 +87,12 @@ angular.module('lmisChromeApp')
           resolve: {
             stockOutList: function(stockOutBroadcastFactory) {
               return stockOutBroadcastFactory.getAll();
+            },
+            getAllStockCount: function(storageService){
+              return storageService.all(storageService.STOCK_COUNT);
             }
           },
-          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
+          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory, getAllStockCount) {
             var keys = [
               {
                 key: 'stockBelowReorder',
@@ -166,7 +169,7 @@ angular.module('lmisChromeApp')
               return deferred.promise;
             };
 
-            $scope.showChart = !isStockCountReminderDue;
+            $scope.showChart = !(getAllStockCount.length === 0);
             if ($scope.showChart) {
               getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory)
                 .then(function(productTypeCounts) {
