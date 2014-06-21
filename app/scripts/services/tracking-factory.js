@@ -68,12 +68,10 @@ angular.module('lmisChromeApp')
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
                         var _event = {
-                            category: category,
+//                            category: category,
                             action: action,
                             label: label
                         };
-                        var clcks = storageService.CLICKS;
-                        console.log("clicks: " + clcks);
                         storageService.save(storageService.CLICKS, _event);
 
                         }
