@@ -7,7 +7,8 @@ angular.module('lmisChromeApp')
       link: function(scope, element, attr) {
         var tracker = trackingFactory.tracker;
         element.on('click', function() {
-          tracker.sendEvent('Click', element.text().trim(), attr.gaClick);
+            console.log('Click: '+ element.text().trim()+": "+ attr.gaClick.trim());
+          tracker.sendEvent('Click', element.text().trim(), attr.gaClick.trim());
         });
       }
     };

@@ -157,15 +157,15 @@ angular.module('lmisChromeApp')
       return chromeStorageApi.get(null, {collection: true});
     };
 
-    /**
-     * Remove a table from the chrome store.
-     *
-     * @param key - Table name.
-     * @returns {*|boolean|Array|Promise|string}
-     */
-    var removeData = function (key) {
-      return chromeStorageApi.remove(key);
-    };
+      /**
+       * Remove a table from the chrome store.
+       *
+       * @param key - Table name. Is it really table name or uuid?
+       * @returns {*|boolean|Array|Promise|string}
+       */
+      var removeData = function(key) {
+        return chromeStorageApi.remove(key);
+      };
 
     /**
      * Clear all data from the chrome storage (will not work on API).
