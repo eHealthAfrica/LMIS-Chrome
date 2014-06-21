@@ -8,8 +8,11 @@ angular.module('lmisChromeApp')
 <<<<<<< HEAD
         .factory('trackingFactory', function($window, $rootScope, config, utility, syncService, storageService) {
 =======
+        .factory('trackingFactory', function($window, $rootScope, config,utility, deviceInfoFactory, storageService) {
+
+angular.module('lmisChromeApp')
         .factory('trackingFactory', function($window, $rootScope, config, utility, deviceInfoFactory, storageService) {
->>>>>>> Merge remote-tracking branch 'upstream/develop' into HEAD
+>>>>>>> Offline analytics commits: nearly there!
 
             var tracker;
 
@@ -70,18 +73,14 @@ angular.module('lmisChromeApp')
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
                         var _event = {
+//                            category: category,
                             action: action,
                             label: label
                         };
                         storageService.save(storageService.CLICKS, _event);
-<<<<<<< HEAD
-
                         }
                         );
             };
-=======
-                    }
->>>>>>> Merge remote-tracking branch 'upstream/develop' into HEAD
 
             //these will probably have to move elsewhere so that they can use the right tracker
             $rootScope.$on('$stateChangeSuccess', function(state) {
