@@ -2,8 +2,10 @@
 
 //ok so here we need to overload sendAppView, sendException and sendEvent to write on local storage (JSON)
 //use local storage or couchdb service to store hits temporarilly
+//need to design the priority queue bit based on the storage capacity restriction on the local storage and introduce a table for the lost records count
+
 angular.module('lmisChromeApp')
-        .factory('trackingFactory', function($window, $rootScope, config, deviceInfoFactory, storageService) {
+        .factory('trackingFactory', function($window, $rootScope, config,utility, deviceInfoFactory, storageService) {
 
             var tracker;
     if (utility.has($window, 'analytics')) {
@@ -30,12 +32,10 @@ angular.module('lmisChromeApp')
                     sendEvent: function(category, action, label) {
                         console.log("offline click : " + category + ": " + action + ": " + label);
                         var _event = {
-                            category: category,
+//                            category: category,
                             action: action,
                             label: label
                         };
-                        var clcks = storageService.CLICKS;
-                        console.log("clicks: " + clcks);
                         storageService.save(storageService.CLICKS, _event);
 
                     }

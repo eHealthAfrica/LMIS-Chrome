@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, syncService,
+angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, syncService, analyticsSyncService,
                                                                       productProfileFactory, facilityFactory, utility,
                                                                       cacheService, $filter, reminderFactory, growl, i18n, $http, memoryStorageService) {
 
@@ -271,6 +271,21 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
           deferred.reject(reason);
         });
     return deferred.promise;
+  };
+  
+  //analytics syncing bit
+  this.syncOfflineAnalytics = function(){
+      var deferred = $q.defer();
+      
+      syncService.canConnect()
+        .then(function () {
+           analyticsSyncService.syncClicks();
+            analyticsSyncService.syncExceptions();
+            analyticsSyncService.syncPageViews(); 
+      });
+      
+      
+      return deferred.promise;
   };
 
 });

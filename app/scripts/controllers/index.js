@@ -29,6 +29,10 @@ angular.module('lmisChromeApp')
                   label: $scope.states[e.type]
                 };
                 $scope.$digest();
+                
+                appConfigService.syncOfflineAnalytics().finally(function(){
+                      console.log('offline reports send to ga server.');
+                    });
 
                 //trigger background syncing
                 appConfigService.updateAppConfigAndStartBackgroundSync()
