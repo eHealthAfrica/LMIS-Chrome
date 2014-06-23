@@ -128,14 +128,20 @@ angular.module('lmisChromeApp')
   };
 
   this.copy = function (src, des) {
+    if(typeof src !== 'object'){
+      src = {};
+    }
+
+    if(typeof des !== 'object'){
+      des = {};
+    }
+
     if (typeof src === 'object' && typeof des === 'object') {
       //src obj already exists, update des obj.
       for (var key in src) {
         des[key] = src[key];
       }
       return des;
-    }else{
-      throw 'trying to copy non objects. both src and des should be an object.'
     }
 
   };
