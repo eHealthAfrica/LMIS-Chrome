@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('presentationFactory', function ($q, uomFactory, storageService) {
+    .factory('presentationFactory', function ($q, uomFactory, storageService, utility) {
 
       var getByUuid = function(uuid) {
         var deferred = $q.defer();
+        uuid = utility.getStringUuid(uuid);
         storageService.find(storageService.PRODUCT_PRESENTATION, uuid).then(function (data) {
           var productPresentation = data;
           if (productPresentation !== undefined) {

@@ -142,17 +142,6 @@
       "description": "vaccine against hepatitis A virus.",
       "active": true
     },
-    "f96946be-7dac-438e-9220-efc386276481": {
-      "uuid": "f96946be-7dac-438e-9220-efc386276481",
-      "created": "2014-01-16T08:23:10.175Z",
-      "modified": "2014-01-16T08:23:10.194Z",
-      "is_deleted": false,
-      "code": "Penta",
-      "name": "Penta Vaccine",
-      "base_uom": "e5def927-b173-44b6-9112-3103a473a65c",
-      "description": "provides protection against dangerous child-hood diseases.",
-      "active": true
-    },
     "2fee31f0-7757-4f06-9914-d16c5ca9cc5f": {
       "uuid": "2fee31f0-7757-4f06-9914-d16c5ca9cc5f",
       "created": "2014-01-16T08:23:10.175Z",

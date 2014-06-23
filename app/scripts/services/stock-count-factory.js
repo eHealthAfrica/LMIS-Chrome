@@ -160,10 +160,7 @@ angular.module('lmisChromeApp')
                   return product;
                 })
                 .sort(function(a, b){
-                  if(angular.isDefined(a.category.name) && angular.isDefined(b.category.name)){
-                    return a.category.name > b.category.name;
-                  }
-                  return a.category > b.category;
+                  return a.category.name > b.category.name;
                 });
             var productObject = utility.castArrayToObject(facilitySelectedProducts, 'uuid');
             deferred.resolve(productObject);
@@ -214,10 +211,10 @@ angular.module('lmisChromeApp')
      */
       byFacility: function (facility) {
         var deferred = $q.defer();
-        var fUuid = typeof facility === 'string' ? facility : facility.uuid;
+        var fUuid = utility.getStringUuid(facility);
         getAllStockCount().then(function (result) {
           var res = result.filter(function (e) {
-            return e !== 'undefined' && e.facility === fUuid;
+            return e !== 'undefined' && utility.getStringUuid(e.facility) === fUuid;
           });
           deferred.resolve(res);
         }, function (err) {
