@@ -80,6 +80,9 @@ angular.module('lmisChromeApp')
           .then(function(wasteCounts){
             wasteCounts = syncService.addSyncStatus(wasteCounts);
             deferred.resolve(wasteCounts);
+          })
+          .catch(function(reason){
+            deferred.reject(reason);
           });
         return deferred.promise;
       },
