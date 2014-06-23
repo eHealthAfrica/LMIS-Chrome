@@ -7,9 +7,6 @@
 angular.module('lmisChromeApp')
         .factory('trackingFactory', function($window, $rootScope, config, utility, syncService, storageService) {
 
-angular.module('lmisChromeApp')
-        .factory('trackingFactory', function($window, $rootScope, config, utility, deviceInfoFactory, storageService) {
-
             var tracker;
 
 
@@ -69,7 +66,6 @@ angular.module('lmisChromeApp')
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
                         var _event = {
-//                            category: category,
                             action: action,
                             label: label
                         };
