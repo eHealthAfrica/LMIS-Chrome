@@ -5,20 +5,19 @@
 //need to design the priority queue bit based on the storage capacity restriction on the local storage and introduce a table for the lost records count
 
 angular.module('lmisChromeApp')
-        .factory('trackingFactory', function($window, $rootScope, config,utility, deviceInfoFactory, storageService) {
+        .factory('trackingFactory', function($window, $rootScope, config, utility, deviceInfoFactory, storageService) {
 
             var tracker;
-    if (utility.has($window, 'analytics')) {
+            var online;
+            if (utility.has($window, 'analytics')) {
                 var service = $window.analytics.getService(config.analytics.service);
-
-                tracker = (deviceInfoFactory.isOnline()) ? service.getTracker(config.analytics.propertyID) : {
-                   
+                online = deviceInfoFactory.isOnline();
+                tracker = online ? service.getTracker(config.analytics.propertyID) : {
                     sendAppView: function(page) {
                         console.log("offline page: " + page);
-                        var _pageview ={
+                        var _pageview = {
                             page: page
                         };
-//                        storageService.loadTableObject(storageService.PAGE_VIEWS);
                         storageService.save(storageService.PAGE_VIEWS, _pageview);
                     },
                     sendException: function(opt_description, opt_fatal) {
@@ -32,7 +31,6 @@ angular.module('lmisChromeApp')
                     sendEvent: function(category, action, label) {
                         console.log("offline click : " + category + ": " + action + ": " + label);
                         var _event = {
-//                            category: category,
                             action: action,
                             label: label
                         };
@@ -40,7 +38,7 @@ angular.module('lmisChromeApp')
 
                     }
 
-                }
+                };
                 $rootScope.$on('$stateChangeSuccess', function(state) {
                     tracker.sendAppView(state.name);
                 });
@@ -51,6 +49,7 @@ angular.module('lmisChromeApp')
             }
 
             return {
-                tracker: tracker
+                tracker: tracker,
+                online: online
             };
         });
