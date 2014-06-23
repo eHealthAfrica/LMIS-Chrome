@@ -14,6 +14,16 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
                 tracker.sendEvent("Offline Clicks", click.action, click.label)
                 uuids.push(click.uuid);
                 console.log("uuid: " + click.uuid);
+//            console.log("online: "+ trackingFactory.online);
+                if (trackingFactory.online) {
+
+                //best to get a success flag here and delete if event successfuly sent
+                storageService.removeRecord(storageService.CLICKS, click.uuid)
+                            .then(function() {
+                                deferred.resolve();
+                            })
+                            .catch(function() {
+                                deferred.reject();
             });
         }).then(function() {
             storageService.removeRecords(storageService.CLICKS, uuids)

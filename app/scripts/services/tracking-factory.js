@@ -41,8 +41,6 @@ angular.module('lmisChromeApp')
                             tracker.sendAppView(page);
                         })
                         .catch(function(reason) {
-
-                   
                             console.log("offline page: " + page);
                             var _pageview = {
                                 page: page
@@ -68,7 +66,6 @@ angular.module('lmisChromeApp')
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
                         var _event = {
-//                            category: category,
                             action: action,
                             label: label
                         };
