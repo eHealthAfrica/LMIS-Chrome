@@ -5,9 +5,6 @@
 //need to design the priority queue bit based on the storage capacity restriction on the local storage and introduce a table for the lost records count
 
 angular.module('lmisChromeApp')
-        .factory('trackingFactory', function($window, $rootScope, config,utility, deviceInfoFactory, storageService) {
-
-angular.module('lmisChromeApp')
         .factory('trackingFactory', function($window, $rootScope, config, utility, deviceInfoFactory, storageService) {
 
             var tracker;
@@ -34,7 +31,6 @@ angular.module('lmisChromeApp')
                     sendEvent: function(category, action, label) {
                         console.log("offline click : " + category + ": " + action + ": " + label);
                         var _event = {
-//                            category: category,
                             action: action,
                             label: label
                         };
