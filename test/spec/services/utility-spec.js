@@ -162,30 +162,6 @@ describe('Service: utility', function() {
     expect(null).toBe(utility.getStringUuid(null));
   });
 
-  it('i expect copy() to throw an exception if called with non-object src and des parameters.', function(){
-    var src = '12344';
-    var des = 1;
-    expect(function(){
-      utility.copy(src, des);
-    }).toThrow();
-  });
-
-  it(' i expect copy() to throw exception when called with non-object src parameter.', function(){
-    var src = '1234';
-    var des = { uuid: '1234' };
-    expect(function(){
-      utility.copy(src, des);
-    }).toThrow();
-  });
-
-  it('i expect copy() to throw excpetion when called with non-object des parameter.', function(){
-    var src = { uuid: '1234' };
-    var des = '1234';
-    expect(function(){
-      utility.copy(src, des);
-    }).toThrow();
-  });
-
   it('i expect copy() to copy src object properties into des object that is returned.', function(){
     var src = {
       uuid: '12344',
