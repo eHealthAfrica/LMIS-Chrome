@@ -24,7 +24,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * @returns {promise|promise|*|Function|promise}
    */
   this.setup = function (appConfig) {
-    console.info(appConfig);
 
     var deferred = $q.defer();
     appConfig.reminderDay = parseInt(appConfig.reminderDay); //cast to integer in case it is a string
