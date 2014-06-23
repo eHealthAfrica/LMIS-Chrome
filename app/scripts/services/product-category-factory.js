@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('productCategoryFactory', function ($q, storageService) {
+  .factory('productCategoryFactory', function ($q, storageService, utility) {
 
     var getByUuid = function (uuid) {
+      uuid = utility.getStringUuid(uuid);
       var deferred = $q.defer();
       storageService.get(storageService.PRODUCT_CATEGORY)
         .then(function (productCategories) {
