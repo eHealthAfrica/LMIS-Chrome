@@ -24,6 +24,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * @returns {promise|promise|*|Function|promise}
    */
   this.setup = function (appConfig) {
+    console.info(appConfig);
+
     var deferred = $q.defer();
     appConfig.reminderDay = parseInt(appConfig.reminderDay); //cast to integer in case it is a string
     load().then(function (existingAppConfig) {
@@ -45,9 +47,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
             if (typeof existingAppConfig === 'undefined') {
               promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
             } else {
-              //over-write appConfig by using existing appConfig uuid for the new appConfig.
-              //2014-04-11 - it would be more readable for this to apply individual properties to result rather than uuid to appConfig, that ties storage logic to this
               appConfig.uuid = existingAppConfig.uuid;
+              appConfig = utility.copy(appConfig, existingAppConfig);
               promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
             }
 
