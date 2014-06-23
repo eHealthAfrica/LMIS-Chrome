@@ -29,7 +29,7 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
                 }
             });
         }).finally(function() {
-            console.log("pending list cleared! (i wish)");
+            console.log("pending list cleared (i wish!)");
         });
     };
 
