@@ -1,15 +1,17 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('productTypeFactory', function ($q, storageService, uomFactory) {
+    .factory('productTypeFactory', function ($q, storageService, uomFactory, utility) {
 
       var getByUuid = function(uuid) {
         var deferred = $q.defer();
+        uuid = utility.getStringUuid(uuid);
         storageService.find(storageService.PRODUCT_TYPES, uuid)
             .then(function (productType) {
               if (productType !== undefined) {
+                var uom_uuid = utility.getStringUuid(productType.base_uom);
                 var promises = {
-                  base_uom: uomFactory.get(productType.base_uom)
+                  base_uom: uomFactory.get(uom_uuid)
                 };
 
                 $q.all(promises)
@@ -40,7 +42,8 @@ angular.module('lmisChromeApp')
               var promises = [];
               for(var index in data){
                 var productType = data[index];
-                promises.push(getByUuid(productType.uuid));
+                var uuid = utility.getStringUuid(productType);
+                promises.push(getByUuid(uuid));
               }
 
               $q.all(promises)
