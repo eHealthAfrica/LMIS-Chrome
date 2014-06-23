@@ -27,18 +27,16 @@ angular.module('lmisChromeApp', [
     //load fixtures if not loaded yet.
     storageService.loadFixtures().then(function() {
       //update appConfig from remote then trigger background syncing
-      appConfigService.getCurrentAppConfig().then(function(cfg) {
-        if (typeof cfg !== 'undefined') {
-          appConfigService.updateAppConfigAndStartBackgroundSync()
-            .finally(function() {
-              console.log('updateAppConfigAndStartBackgroundSync triggered on start up have been completed!');
-            });
-        }
-      });
+      appConfigService.updateAppConfigAndStartBackgroundSync()
+        .finally(function () {
+          console.log('updateAppConfigAndStartBackgroundSync triggered on start up have been completed!');
+        });
       storageService.getAll().then(function(data) {
         console.log('finished loading: ' + (Object.keys(data)).join('\n'));
       });
+
     });
+
   })
 
   .config(function($compileProvider) {
