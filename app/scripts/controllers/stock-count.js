@@ -169,19 +169,12 @@ angular.module('lmisChromeApp')
              2, redirect has to wait for app to finish syncing - success/fail
             */
             syncService.syncItem(DB_NAME, $scope.stockCount)
-                .then(function (syncResult) {
-                  $scope.isSaving = false;
-                  alertFactory.success(msg);
-                  $state.go('home.index.home.mainActivity');
-                  console.info('stock count sync success: ' + syncResult);
-                })
-                .catch(function (reason) {
-                  //temporary fix here
-                  $scope.isSaving = false;
-                  alertFactory.success(msg);
-                  $state.go('home.index.home.mainActivity');
-                  console.log(reason);
-                });
+              .finally(function () {
+                $scope.isSaving = false;
+                alertFactory.success(msg);
+                $state.go('home.index.home.mainActivity');
+              });
+
           }else{
             console.log(err);
           }
