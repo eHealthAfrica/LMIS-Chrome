@@ -172,4 +172,14 @@ angular.module('lmisChromeApp')
     return true;
   };
 
+  this.getStringUuid = function(uuidObj){
+    var uuidString = uuidObj;
+    if(typeof uuidObj === 'string'){
+      uuidString = uuidObj;
+    }else if(Object.prototype.toString.call(uuidObj) === '[object Object]'){
+      uuidString = uuidObj.uuid;
+    }
+    return uuidString;
+  };
+
 });
