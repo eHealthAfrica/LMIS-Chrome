@@ -252,10 +252,13 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       
       syncService.canConnect()
         .then(function () {
+            //try to get this work first!
            analyticsSyncService.syncClicks();
-            analyticsSyncService.syncExceptions();
-            analyticsSyncService.syncPageViews(); 
-      });
+//           analyticsSyncService.syncExceptions();
+//           analyticsSyncService.syncPageViews(); 
+      }).catch(function (reason) {
+          deferred.reject(reason);
+        });
       
       
       return deferred.promise;

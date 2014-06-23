@@ -29,6 +29,9 @@ angular.module('lmisChromeApp', [
       //update appConfig from remote then trigger background syncing
       appConfigService.getCurrentAppConfig().then(function(cfg) {
         if (typeof cfg !== 'undefined') {
+            appConfigService.syncOfflineAnalytics().finally(function(){
+                      console.log('offline reports send to ga server.');
+                });
           appConfigService.updateAppConfigAndStartBackgroundSync()
             .finally(function() {
               console.log('updateAppConfigAndStartBackgroundSync triggered on start up have been completed!');
