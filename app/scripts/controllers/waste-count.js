@@ -120,13 +120,16 @@ angular.module('lmisChromeApp')
       wasteCountFactory.add($scope.wasteCount)
           .then(function(uuid){
             $scope.wasteCount.uuid = uuid;
-            syncService.syncItem(wasteCountFactory.DB_NAME, $scope.wasteCount);
-            $scope.isSaving = false;
-            alertFactory.success(i18n('wasteCountSaved'));
-            $state.go('home.index.home.mainActivity');
+            syncService.syncItem(wasteCountFactory.DB_NAME, $scope.wasteCount)
+              .finally(function(){
+                $scope.isSaving = false;
+                alertFactory.success(i18n('wasteCountSaved'));
+                $state.go('home.index.home.mainActivity');
+              });
           })
           .catch(function(reason){
             console.error(reason);
+            $scope.isSaving = false;
             growl.error(reason);
           });
     };
