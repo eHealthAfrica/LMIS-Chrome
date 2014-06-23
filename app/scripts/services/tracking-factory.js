@@ -35,7 +35,6 @@ angular.module('lmisChromeApp')
                             label: label
                         };
                         storageService.save(storageService.CLICKS, _event);
-
                     }
 
                 };
