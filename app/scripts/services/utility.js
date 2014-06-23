@@ -127,15 +127,12 @@ angular.module('lmisChromeApp')
     return upperCaseWord.split(/(?=[A-Z])/).join(' ');
   };
 
-  this.copy = function(src, des) {
+  this.copy = function (src, des) {
     if (typeof src !== 'undefined') {
-      //record already exists, update its fields that exist on data
-      var properties = Object.keys(des);
-      for (var index in properties) {
-        var key = properties[index];
-        src[key] = des[key];
+      //src obj already exists, update des obj.
+      for (var key in src) {
+        des[key] = src[key];
       }
-      des = src; //swap after updating fields.
     }
     return des;
   };
