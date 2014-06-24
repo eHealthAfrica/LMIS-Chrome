@@ -90,8 +90,7 @@ angular.module('lmisChromeApp')
         'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  6.8,
         'db513859-4491-4db7-9343-4980a16c8b04':  6.8,
         'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  6.8,
-        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  5.27,
-        'f96946be-7dac-438e-9220-efc386276481':  5.27
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  5.27
       };
 
       return avgLeadTimeMocks[productTypeUuid];
@@ -119,8 +118,7 @@ angular.module('lmisChromeApp')
         'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  2.83,
         'db513859-4491-4db7-9343-4980a16c8b04':  2.83,
         'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  2.83,
-        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  2.64,
-        'f96946be-7dac-438e-9220-efc386276481':  2.64
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  2.64
       };
       return stdLeadTimeMocks[productTypeUuid];
     };
@@ -147,8 +145,7 @@ angular.module('lmisChromeApp')
         'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  187.39,
         'db513859-4491-4db7-9343-4980a16c8b04':  187.39,
         'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  187.39,
-        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  187.29,
-        'f96946be-7dac-438e-9220-efc386276481':  187.29
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  187.29
       };
       return avgConsumptionMocks[productTypeUuid];
     };
@@ -175,8 +172,7 @@ angular.module('lmisChromeApp')
         'abe41e88-ab4a-4c6f-b7a4-4549e13fb758':  150.09,
         'db513859-4491-4db7-9343-4980a16c8b04':  150.09,
         'e55e1452-b0ab-4046-9d7e-3a98f1f968d0':  150.09,
-        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  100,
-        'f96946be-7dac-438e-9220-efc386276481':  100
+        'f7675c7e-856a-45e8-b2af-d50f42950ac1':  100
       };
       return stdConsumptionMocks[productTypeUuid];
     };
@@ -350,7 +346,7 @@ angular.module('lmisChromeApp')
       // f7675c7e-856a-45e8-b2af-d50f42950ac1    Men-A
       // abe41e88-ab4a-4c6f-b7a4-4549e13fb758    HPV
       // 111fbb51-0c5a-492a-97f6-2c7664e23d01    HepA
-      // f96946be-7dac-438e-9220-efc386276481    Penta
+      // f96946be-7dac-438e-9220-efc386276481    Penta //TODO: wrong Penta
       // 2fee31f0-7757-4f06-9914-d16c5ca9cc5f    DT
 
       var deferred = $q.defer();
@@ -364,8 +360,9 @@ angular.module('lmisChromeApp')
           '19e16c20-04b7-4e06-a679-7f7b60d976be': { popFactor: 0.3, usageFactor: 0.25}, //yf
           'db513859-4491-4db7-9343-4980a16c8b04': { popFactor: 0.75, usageFactor: 1.0}, //opv
           '939d5e05-2aa4-4883-9246-35c60dfa06a5': { popFactor: 0.75, usageFactor: 0.25}, //tt
-          'f96946be-7dac-438e-9220-efc386276481': { popFactor: 0.75, usageFactor: 0.75}, //penta
-          '0930b906-4802-4a65-8516-057bd839db3e': { popFactor: 0.75, usageFactor: 0.25}  //hbv
+          //TODO: wrong penta: 'f96946be-7dac-438e-9220-efc386276481': { popFactor: 0.75, usageFactor: 0.75}, //penta
+          '0930b906-4802-4a65-8516-057bd839db3e': { popFactor: 0.75, usageFactor: 0.25},  //hbv
+          '1203c362-b7a8-499a-b7ba-b842bace7920': { popFactor: 0.75, usageFactor: 0.75} //correct penta
         };
         //don't need a promise using rule-based hacks but will for proper adaptive rules
         var factor = factors[productTypeUuid];

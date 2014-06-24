@@ -6,7 +6,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   var cache = cacheService.getCache();
-  var FACILITY_PROFILE_DB = 'app_facility_profile';
 
   this.stockCountIntervals = [
     {name: 'Daily', value: reminderFactory.DAILY},
@@ -25,6 +24,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * @returns {promise|promise|*|Function|promise}
    */
   this.setup = function (appConfig) {
+
     var deferred = $q.defer();
     appConfig.reminderDay = parseInt(appConfig.reminderDay); //cast to integer in case it is a string
     load().then(function (existingAppConfig) {
@@ -32,14 +32,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         appConfig.dateActivated = new Date().toJSON();
       }
 
-      var selectedProductProfileUuids = [];
-      for (var index in appConfig.selectedProductProfiles) {
-        var productProfile = appConfig.selectedProductProfiles[index];
-        selectedProductProfileUuids.push(productProfile.uuid);
-      }
-
       var promise = {
-        selectedProductProfiles: productProfileFactory.getBatch(selectedProductProfileUuids)
+        selectedProductProfiles: productProfileFactory.getBatch(appConfig.selectedProductProfiles)
       };
 
       $q.all(promise)
@@ -52,9 +46,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
             if (typeof existingAppConfig === 'undefined') {
               promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
             } else {
-              //over-write appConfig by using existing appConfig uuid for the new appConfig.
-              //2014-04-11 - it would be more readable for this to apply individual properties to result rather than uuid to appConfig, that ties storage logic to this
               appConfig.uuid = existingAppConfig.uuid;
+              appConfig = utility.copy(appConfig, existingAppConfig);
               promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
             }
 
@@ -62,12 +55,12 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
                 .then(function (result) {
                   //cache app config
                   cache.put(storageService.APP_CONFIG, appConfig);
-                  //clear data used to plot product-type-info graph and stock count reminder
-                  cache.remove(cacheService.PRODUCT_TYPE_INFO);
-                  cache.remove(cacheService.STOCK_COUNT_REMINDER);
-                  deferred.resolve(result[0]);
+
                   //sync app config in the back-ground
-                  syncService.syncItem(storageService.APP_CONFIG, appConfig);
+                  syncService.syncItem(storageService.APP_CONFIG, appConfig)
+                    .finally(function(){
+                      deferred.resolve(result[0]);
+                    });
                 })
                 .catch(function (reason) {
                   console.log(reason);
@@ -180,8 +173,9 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         var DOES_NOT_EXIST = -1;
         for(var index in appConfig.selectedProductProfiles){
           var productType = appConfig.selectedProductProfiles[index].product;
-          if(uuidListOfProductTypesAlreadyRecorded.indexOf(productType.uuid) === DOES_NOT_EXIST ){
-            uuidListOfProductTypesAlreadyRecorded.push(productType.uuid);
+          var uuid = utility.getStringUuid(productType);
+          if(uuidListOfProductTypesAlreadyRecorded.indexOf(uuid) === DOES_NOT_EXIST ){
+            uuidListOfProductTypesAlreadyRecorded.push(uuid);
             facilityStockListProductTypes.push(productType);
           }
         }

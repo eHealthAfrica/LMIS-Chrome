@@ -140,4 +140,50 @@ describe('Service: utility', function() {
       expect(utility.has({}, 'a.')).toBe(false);
     });
   });
+
+  it('getStringUuid should return a string if given a string.', function(){
+    var str = '123453-20302-133';
+    expect(typeof str === 'string').toBeTruthy();
+    var result = utility.getStringUuid(str);
+    expect(result).toBe(str);
+    expect(typeof result === 'string').toBeTruthy();
+  });
+
+  it('i expect getStringUuid to return uuid of a given object.', function(){
+    var obj = {uuid: '123456-6542'};
+     var result = utility.getStringUuid(obj);
+    expect(result).toBe(obj.uuid);
+  });
+
+  it('i expect getStringUuid to return the given value if it is not an object.', function(){
+    var undefinedVal = undefined;
+    expect(undefinedVal).toBe(utility.getStringUuid(undefinedVal));
+    expect(1).toBe(utility.getStringUuid(1));
+    expect(null).toBe(utility.getStringUuid(null));
+  });
+
+  it('i expect copy() to copy src object properties into des object that is returned.', function(){
+    var src = {
+      uuid: '12344',
+      scores: [1, 2, 45, 89],
+      created: new Date('123456')
+    };
+
+    var des = {
+      age: '24',
+      name: 'test student'
+    };
+
+    expect(des.uuid).not.toEqual(src.uuid);
+    expect(des.scores).not.toEqual(src.scores);
+    expect(des.created).not.toEqual(src.created);
+
+    var des = utility.copy(src, des);
+
+    expect(des.uuid).toEqual(src.uuid);
+    expect(des.scores).toEqual(src.scores);
+    expect(des.created).toEqual(src.created);
+
+  });
+
 });

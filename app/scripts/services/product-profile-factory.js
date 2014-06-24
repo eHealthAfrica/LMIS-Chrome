@@ -1,16 +1,17 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('productProfileFactory', function ($q, storageService, presentationFactory, productTypeFactory, productCategoryFactory) {
+  .factory('productProfileFactory', function ($q, storageService, utility, presentationFactory, productTypeFactory, productCategoryFactory) {
 
     var getByUuid = function(uuid) {
+      uuid = utility.getStringUuid(uuid);
       var deferred = $q.defer();
       storageService.find(storageService.PRODUCT_PROFILE, uuid)
           .then(function (productProfile) {
             if (typeof productProfile !== 'undefined') {
               var promises = {
-                presentation: presentationFactory.get(productProfile.presentation),
-                product: productTypeFactory.get(productProfile.product)
+                presentation: presentationFactory.get(utility.getStringUuid(productProfile.presentation)),
+                product: productTypeFactory.get(utility.getStringUuid(productProfile.product))
               };
               $q.all(promises).then(function (results) {
                 for (var key in results) {
@@ -38,7 +39,8 @@ angular.module('lmisChromeApp')
           //attach complete nested object such as presentation to each product profile
           for(var index in productProfiles){
             var productProfile = productProfiles[index];
-            promises.push(getByUuid(productProfile.uuid));
+            var uuid = utility.getStringUuid(productProfile);
+            promises.push(getByUuid(uuid));
           }
 
           $q.all(promises).then(function(productProfiles){
@@ -62,9 +64,9 @@ angular.module('lmisChromeApp')
      */
     var getByProductType = function(productType) {
       var deferred = $q.defer();
-      var ptUuid = typeof productType === 'string' ? productType : productType.uuid;
+      var ptUuid = utility.getStringUuid(productType);
       storageService.all(storageService.PRODUCT_PROFILE).then(function(profiles){
-        profiles = profiles.filter(function(p) { return p.product === ptUuid; });
+        profiles = profiles.filter(function(p) { return utility.getStringUuid(p.product) === ptUuid; });
         deferred.resolve(profiles);
       })
       .catch(function(err) {
@@ -73,13 +75,14 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
-    var getProductProfileBatch = function(uuidList){
-      if(!Array.isArray(uuidList)){
+    var getProductProfileBatch = function(prodProfiles){
+      if(!Array.isArray(prodProfiles)){
         throw 'expected argument to be an array. not array argument passed';
       }
       var deferred = $q.defer(), batchPromises = [];
-      for(var index in uuidList){
-        batchPromises.push(getByUuid(uuidList[index]));
+      for(var index in prodProfiles){
+        var uuid = utility.getStringUuid(prodProfiles[index]);
+        batchPromises.push(getByUuid(uuid));
       }
 
       $q.all(batchPromises)

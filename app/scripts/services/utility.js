@@ -127,17 +127,23 @@ angular.module('lmisChromeApp')
     return upperCaseWord.split(/(?=[A-Z])/).join(' ');
   };
 
-  this.copy = function(src, des) {
-    if (typeof src !== 'undefined') {
-      //record already exists, update its fields that exist on data
-      var properties = Object.keys(des);
-      for (var index in properties) {
-        var key = properties[index];
-        src[key] = des[key];
-      }
-      des = src; //swap after updating fields.
+  this.copy = function (src, des) {
+    if(typeof src !== 'object'){
+      src = {};
     }
-    return des;
+
+    if(typeof des !== 'object'){
+      des = {};
+    }
+
+    if (typeof src === 'object' && typeof des === 'object') {
+      //src obj already exists, update des obj.
+      for (var key in src) {
+        des[key] = src[key];
+      }
+      return des;
+    }
+
   };
 
   this.ellipsize = function(string, length) {
@@ -170,6 +176,16 @@ angular.module('lmisChromeApp')
       obj = obj[path[i]];
     }
     return true;
+  };
+
+  this.getStringUuid = function(uuidObj){
+    var uuidString = uuidObj;
+    if(typeof uuidObj === 'string'){
+      uuidString = uuidObj;
+    }else if(Object.prototype.toString.call(uuidObj) === '[object Object]'){
+      uuidString = uuidObj.uuid;
+    }
+    return uuidString;
   };
 
 });
