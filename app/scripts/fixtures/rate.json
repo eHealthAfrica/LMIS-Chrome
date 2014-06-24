@@ -8,7 +8,8 @@
       "name": "USD-Naira",
       "value": "159.00",
       "date": null,
-      "currency": "a98c81e5-fac9-4bb4-847c-8de33110615a"
+      "currency": "a98c81e5-fac9-4bb4-847c-8de33110615a",
+      "doctype": "rate"
     }
   }
 ]

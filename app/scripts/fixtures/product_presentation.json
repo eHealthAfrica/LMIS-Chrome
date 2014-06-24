@@ -8,7 +8,8 @@
     "name": "Pre-Filled Syringes",
     "value": 1,
     "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
-    "description": "pre-filled vaccine syringes"
+    "description": "pre-filled vaccine syringes",
+    "doctype": "productPresentation"
   },
   "f10d21be-6d62-42a8-b5f8-63984b1f4916": {
     "uuid": "f10d21be-6d62-42a8-b5f8-63984b1f4916",
@@ -19,7 +20,8 @@
     "name": "5 Doses per Vial",
     "value": 5,
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
-    "description": "vaccine product presentation "
+    "description": "vaccine product presentation ",
+    "doctype": "productPresentation"
   },
   "0b3c2b22-7719-488d-b74e-b75124e3c68f": {
     "uuid": "0b3c2b22-7719-488d-b74e-b75124e3c68f",
@@ -30,7 +32,8 @@
     "name": "Uniject",
     "value": 1,
     "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
-    "description": "uniject vaccine product presentation"
+    "description": "uniject vaccine product presentation",
+    "doctype": "productPresentation"
   },
   "299939e1-94d7-4e8e-bfb7-c008af1692af": {
     "uuid": "299939e1-94d7-4e8e-bfb7-c008af1692af",
@@ -41,7 +44,8 @@
     "name": "20 Doses per Vial",
     "value": 20,
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
-    "description": "vaccine product presentation "
+    "description": "vaccine product presentation ",
+    "doctype": "productPresentation"
   },
   "441e1be5-ce61-465c-8b72-8c0bd8ee9749": {
     "uuid": "441e1be5-ce61-465c-8b72-8c0bd8ee9749",
@@ -52,7 +56,8 @@
     "name": "6 Doses Per Vial",
     "value": 6,
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
-    "description": "6 doses per vial vaccine presentation"
+    "description": "6 doses per vial vaccine presentation",
+    "doctype": "productPresentation"
   },
   "623ad47f-a4da-4723-a350-d39bc6b02171": {
     "uuid": "623ad47f-a4da-4723-a350-d39bc6b02171",
@@ -63,7 +68,8 @@
     "name": "50 Doses per Vial",
     "value": 50,
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
-    "description": "vaccine product presentation "
+    "description": "vaccine product presentation ",
+    "doctype": "productPresentation"
   },
   "842aa1d1-9ff5-4aa2-866b-d2c073cc9913": {
     "uuid": "842aa1d1-9ff5-4aa2-866b-d2c073cc9913",
@@ -74,7 +80,8 @@
     "name": "2 Doses Per Vial",
     "value": 2,
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
-    "description": "2 doses per vial vaccine presentation"
+    "description": "2 doses per vial vaccine presentation",
+    "doctype": "productPresentation"
   },
   "8ee9ff30-a9f5-41f9-8054-8257920adf2d": {
     "uuid": "8ee9ff30-a9f5-41f9-8054-8257920adf2d",
@@ -85,7 +92,8 @@
     "name": "1 Dose Per Vial",
     "value": 1,
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
-    "description": "1 dose per vial"
+    "description": "1 dose per vial",
+    "doctype": "productPresentation"
   },
   "bb67c3a1-6719-49d0-832a-16a85f6562e2": {
     "uuid": "bb67c3a1-6719-49d0-832a-16a85f6562e2",
@@ -96,7 +104,8 @@
     "name": "25 Doses per Vial",
     "value": 25,
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
-    "description": "25 doses per vial vaccine presentation"
+    "description": "25 doses per vial vaccine presentation",
+    "doctype": "productPresentation"
   },
   "c0994b0e-c607-445c-b202-4d61b8c6cff0": {
     "uuid": "c0994b0e-c607-445c-b202-4d61b8c6cff0",
@@ -107,7 +116,8 @@
     "name": "10 Doses per Vial",
     "value": 10,
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
-    "description": "vaccine product presentation "
+    "description": "vaccine product presentation ",
+    "doctype": "productPresentation"
   },
   "755b8b10-aa9a-4853-d4a9-1d3b774917a9": {
     "uuid": "755b8b10-aa9a-4853-d4a9-1d3b774917a9",
@@ -118,7 +128,8 @@
     "name": "0.05ml-ADS 1 per unit",
     "value": 1,
     "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
-    "description": "single 0.05ml ADS "
+    "description": "single 0.05ml ADS ",
+    "doctype": "productPresentation"
   },
   "e5924c0c-b029-49ea-bccd-e6355b469f44": {
     "uuid": "e5924c0c-b029-49ea-bccd-e6355b469f44",
@@ -129,7 +140,8 @@
     "name": "2.5L Safety-Box  1 per unit",
     "value": 1,
     "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
-    "description": "single 2.5L Safety-Box"
+    "description": "single 2.5L Safety-Box",
+    "doctype": "productPresentation"
   },
   "c8668405-a6cc-4b57-e3c5-8c33a6251b8e": {
     "uuid": "c8668405-a6cc-4b57-e3c5-8c33a6251b8e",
@@ -140,8 +152,8 @@
     "name": "2ml Dilution Syringe 1 per unit",
     "value": 1,
     "uom": "6240f4fb-1416-4d16-b124-f1641d541dcb",
-    "description": "single 2ml Dilution Syringe"
+    "description": "single 2ml Dilution Syringe",
+    "doctype": "productPresentation"
   }
-
 }
 

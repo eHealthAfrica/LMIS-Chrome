@@ -12,7 +12,8 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 2,
-    "level": 0
+    "level": 0,
+    "doctype": "ccuType"
   },
    "7166c17b-e017-41d4-84c6-8a81e25ac16c": {
     "created_by": null,
@@ -27,7 +28,8 @@
     "lft": 4,
     "rght": 5,
     "tree_id": 1,
-    "level": 1
+    "level": 1,
+    "doctype": "ccuType"
   },
   "dfe5b135-12b8-4da0-ad39-b54e864f5663": {
     "created_by": null,
@@ -42,7 +44,8 @@
     "lft": 2,
     "rght": 3,
     "tree_id": 1,
-    "level": 1
+    "level": 1,
+    "doctype": "ccuType"
   },
   "dfe5b135-12b8-4da0-ad39-b54e864f5663": {
     "created_by": null,
@@ -57,7 +60,8 @@
     "lft": 2,
     "rght": 3,
     "tree_id": 1,
-    "level": 1
+    "level": 1,
+    "doctype": "ccuType"
   },
   "f431494a-6c48-4d85-b6ee-1229f458756c": {
     "created_by": null,
@@ -72,7 +76,7 @@
     "lft": 1,
     "rght": 6,
     "tree_id": 1,
-    "level": 0
+    "level": 0,
+    "doctype": "ccuType"
   }
 }
-

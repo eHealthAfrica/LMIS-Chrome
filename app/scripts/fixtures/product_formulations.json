@@ -7,7 +7,8 @@
     "created_by": 1,
     "modified_by": 1,
     "name": "Liquid+Freeze-Dried",
-    "description": "both liquid and lyophilized form"
+    "description": "both liquid and lyophilized form",
+    "doctype": "productFormulation"
   },
   "ad999cfe-a74d-4f8d-964a-98a40a705ed5": {
     "uuid": "ad999cfe-a74d-4f8d-964a-98a40a705ed5",
@@ -17,7 +18,8 @@
     "created_by": 1,
     "modified_by": 1,
     "name": "Liquid",
-    "description": "in liquid form"
+    "description": "in liquid form",
+    "doctype": "productFormulation"
   },
   "d2a1ae75-8fb0-4c80-80f7-0b05ba445b8a": {
     "uuid": "d2a1ae75-8fb0-4c80-80f7-0b05ba445b8a",
@@ -27,6 +29,7 @@
     "created_by": 1,
     "modified_by": 1,
     "name": "Freeze-Dried",
-    "description": "vaccine stabilized for storage and distribution via dry freezing."
+    "description": "vaccine stabilized for storage and distribution via dry freezing.",
+    "doctype": "productFormulation"
   }
 }

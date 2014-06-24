@@ -13,7 +13,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 1,
@@ -28,7 +29,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "47a85503-d753-4f86-966e-dedf4d4871cb",
     "created": "2014-01-17T08:07:52.084Z",
@@ -41,6 +43,7 @@
     "current_company": "fa3fdb8e-24bb-4ba6-b598-050c6285d08e",
     "main_company": null,
     "category": "c4471904-3f50-43a5-b644-0c27793024b3",
-    "user": 1
+    "user": 1,
+    "doctype": "employee"
   }
 ]

@@ -13,7 +13,8 @@
     "rght": 1,
     "tree_id": 1,
     "level": 1,
-    "partners": []
+    "partners": [],
+    "doctype": "program"
   },
   "edc769e2-b26e-40e0-9b58-b59785cf50f7": {
     "uuid": "edc769e2-b26e-40e0-9b58-b59785cf50f7",
@@ -29,7 +30,8 @@
     "rght": 1,
     "tree_id": 1,
     "level": 1,
-    "partners": []
+    "partners": [],
+    "doctype": "program"
   },
   "dc546df0-9de9-47a2-b15b-0295a0164fa8": {
     "uuid": "dc546df0-9de9-47a2-b15b-0295a0164fa8",
@@ -45,7 +47,7 @@
     "rght": 1,
     "tree_id": 1,
     "level": 1,
-    "partners": []
+    "partners": [],
+    "doctype": "program"
   }
 }
-

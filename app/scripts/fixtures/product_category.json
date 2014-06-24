@@ -1,5 +1,4 @@
 {
-
    "1c761db0-d7f3-4abf-8c12-6c678f862851": {
     "uuid": "1c761db0-d7f3-4abf-8c12-6c678f862851",
     "parent": null,
@@ -12,10 +11,9 @@
     "lft": 1,
     "created": "2014-01-15T14:33:49.266Z",
     "modified_by": 2,
-    "modified": "2014-01-15T14:33:49.317Z"
-  }
-  ,
-
+    "modified": "2014-01-15T14:33:49.317Z",
+    "doctype": "productCategory"
+  },
     "66e1bc4f-1dab-4842-80c5-49f626bde74e": {
       "uuid": "66e1bc4f-1dab-4842-80c5-49f626bde74e",
       "parent": null,
@@ -28,7 +26,8 @@
       "lft": 1,
       "created": "2014-01-15T14:27:28.936Z",
       "modified_by": 2,
-      "modified": "2014-01-15T14:27:29.044Z"
+      "modified": "2014-01-15T14:27:29.044Z",
+      "doctype": "productCategory"
     },
 
     "49f626bde54e-66e1bc4f-1dab-4842-80c5": {
@@ -43,7 +42,8 @@
       "lft": 1,
       "created": "2014-01-15T14:27:28.936Z",
       "modified_by": 2,
-      "modified": "2014-01-15T14:27:29.044Z"
+      "modified": "2014-01-15T14:27:29.044Z",
+      "doctype": "productCategory"
     },
 
     "63e1bc4f-1dab-4842-80c5-49f626bde74e": {
@@ -58,7 +58,8 @@
       "lft": 1,
       "created": "2014-01-15T14:27:28.936Z",
       "modified_by": 2,
-      "modified": "2014-01-15T14:27:29.044Z"
+      "modified": "2014-01-15T14:27:29.044Z",
+      "doctype": "productCategory"
     },
 
     "87a63faf-b035-4ed7-ac59-9d62f3cc4b74": {
@@ -73,7 +74,8 @@
       "lft": 1,
       "created": "2014-01-15T14:29:25.530Z",
       "modified_by": 2,
-      "modified": "2014-01-15T14:29:25.591Z"
+      "modified": "2014-01-15T14:29:25.591Z",
+      "doctype": "productCategory"
     },
 
     "99fde088-7ff2-4545-b0c1-8f2c36911f01": {
@@ -88,7 +90,8 @@
       "lft": 1,
       "created": "2014-01-15T14:33:17.409Z",
       "modified_by": 2,
-      "modified": "2014-01-15T14:33:17.457Z"
+      "modified": "2014-01-15T14:33:17.457Z",
+      "doctype": "productCategory"
     },
 
     "a0f10e2e-cffa-42c4-832b-1ba0e48caa64": {
@@ -103,7 +106,8 @@
       "lft": 1,
       "created": "2014-01-17T11:12:39.631Z",
       "modified_by": 1,
-      "modified": "2014-01-17T11:12:39.765Z"
+      "modified": "2014-01-17T11:12:39.765Z",
+      "doctype": "productCategory"
     },
 
     "d5ffa6bd-58d2-41b5-a688-6a9d6894c5ae": {
@@ -118,6 +122,7 @@
       "lft": 1,
       "created": "2014-01-15T14:29:08.142Z",
       "modified_by": 2,
-      "modified": "2014-01-15T14:29:08.182Z"
+      "modified": "2014-01-15T14:29:08.182Z",
+      "doctype": "productCategory"
     }
 }

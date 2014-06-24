@@ -22,7 +22,8 @@
     "lft": 2,
     "rght": 3,
     "tree_id": 1,
-    "level": 1
+    "level": 1,
+    "doctype": "ccu"
   },
   "1924a368-2b42-4758-b378-a6038d952458": {
     "created_by": null,
@@ -47,7 +48,8 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 9,
-    "level": 0
+    "level": 0,
+    "doctype": "ccu"
   },
   "254a4777-d9ac-4874-a45f-359451df816d": {
     "created_by": null,
@@ -72,7 +74,8 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 3,
-    "level": 0
+    "level": 0,
+    "doctype": "ccu"
   },
   "2376e7de-24c3-46c1-82f3-552fb51ebd85": {
     "created_by": null,
@@ -97,7 +100,8 @@
     "lft": 1,
     "rght": 4,
     "tree_id": 5,
-    "level": 0
+    "level": 0,
+    "doctype": "ccu"
   },
   "53a3f097-dd08-4528-b6f8-e120fd19b671": {
     "created_by": null,
@@ -122,7 +126,8 @@
     "lft": 2,
     "rght": 3,
     "tree_id": 5,
-    "level": 1
+    "level": 1,
+    "doctype": "ccu"
   },
   "5a598304-53c7-46a1-8e71-1055e29bcdac": {
     "created_by": null,
@@ -147,7 +152,8 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 4,
-    "level": 0
+    "level": 0,
+    "doctype": "ccu"
   },
   "961da84c-e6a8-482f-a103-fde6e957742b": {
     "created_by": null,
@@ -172,7 +178,8 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 6,
-    "level": 0
+    "level": 0,
+    "doctype": "ccu"
   },
   "ca3fa2a2-357d-4532-bcea-cca5560f2155": {
     "created_by": null,
@@ -197,7 +204,8 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 11,
-    "level": 0
+    "level": 0,
+    "doctype": "ccu"
   },
   "d6b364e9-2bcd-4db9-b01f-c13d5c353d8a": {
     "created_by": null,
@@ -222,7 +230,8 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 8,
-    "level": 0
+    "level": 0,
+    "doctype": "ccu"
   },
   "d19d74b7-34f8-493b-bc3c-f93e8ab40085": {
     "created_by": null,
@@ -247,7 +256,8 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 12,
-    "level": 0
+    "level": 0,
+    "doctype": "ccu"
   },
   "5667da52-f710-4663-b3fc-ca85676555f7": {
     "created_by": null,
@@ -272,7 +282,8 @@
     "lft": 1,
     "rght": 4,
     "tree_id": 1,
-    "level": 0
+    "level": 0,
+    "doctype": "ccu"
   },
   "e4bc4c66-1d53-4616-bb4a-e7379272a4f5": {
     "created_by": null,
@@ -297,7 +308,8 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 10,
-    "level": 0
+    "level": 0,
+    "doctype": "ccu"
   },
   "02b46f06-8270-4e8f-93df-2d602b61817d": {
     "created_by": null,
@@ -322,7 +334,7 @@
     "lft": 2,
     "rght": 3,
     "tree_id": 1,
-    "level": 1
+    "level": 1,
+    "doctype": "ccu"
   }
 }
-

@@ -13,7 +13,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -28,7 +29,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "30858821-cc2c-4cec-bf35-763fa0e1aa4b",
     "created": "2014-01-16T10:35:41.639Z",
@@ -39,7 +41,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "FR"
+    "country": "FR",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -55,7 +58,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -70,7 +74,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "4db52fee-e9c4-4bf7-b44f-21911095fb2f",
     "created": "2014-01-16T10:36:16.889Z",
@@ -81,7 +86,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "FR"
+    "country": "FR",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -97,7 +103,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -112,7 +119,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "597899d8-c542-412f-9bfd-39ba2a6fde6a",
     "created": "2014-01-16T10:24:45.098Z",
@@ -123,7 +131,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "JP"
+    "country": "JP",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -139,7 +148,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -154,7 +164,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "6c86bc9b-20a5-4e51-8d17-beb3662115c2",
     "created": "2014-01-16T10:10:52.111Z",
@@ -165,7 +176,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "IN"
+    "country": "IN",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -181,7 +193,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -196,7 +209,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "79daf985-7df7-43af-b493-d2f0f84c42c1",
     "created": "2014-01-16T13:06:34.642Z",
@@ -207,7 +221,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "IN"
+    "country": "IN",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -223,7 +238,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -238,7 +254,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "89a23ad6-3624-4acf-8856-4469b1f85901",
     "created": "2014-01-16T10:18:43.573Z",
@@ -249,7 +266,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "IT"
+    "country": "IT",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -265,7 +283,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -280,7 +299,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "8d282981-7e9e-430f-b6dd-004bf5d1951c",
     "created": "2014-01-16T10:40:39.359Z",
@@ -291,7 +311,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "IN"
+    "country": "IN",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -307,7 +328,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -322,7 +344,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "914ad6d6-83ef-42a0-ba9d-5dc7d91173aa",
     "created": "2014-01-16T10:22:31.268Z",
@@ -333,7 +356,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "SN"
+    "country": "SN",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -349,7 +373,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -364,7 +389,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "946d2af5-9a5e-4c21-92a0-33d53afc5764",
     "created": "2014-01-16T10:26:19.663Z",
@@ -375,7 +401,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "KR"
+    "country": "KR",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -391,7 +418,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -406,7 +434,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "a120bf1e-2f23-4caa-b04d-0a58ff9f7001",
     "created": "2014-01-16T10:39:40.048Z",
@@ -417,7 +446,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "DK"
+    "country": "DK",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -433,7 +463,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -448,7 +479,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "a17f3ea4-2613-4212-8075-7382b11f44e8",
     "created": "2014-01-16T10:43:06.193Z",
@@ -459,7 +491,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "RU"
+    "country": "RU",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -475,7 +508,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -490,7 +524,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "a5517ec2-329c-4afb-9f1e-e4e5cfe5238f",
     "created": "2014-01-16T10:31:59.279Z",
@@ -501,7 +536,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "IN"
+    "country": "IN",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -517,7 +553,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -532,7 +569,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "abac9716-9f07-4a9a-9b36-f1e2d7ffa9e7",
     "created": "2014-01-16T10:30:59.842Z",
@@ -543,7 +581,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "BG"
+    "country": "BG",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -559,7 +598,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -574,7 +614,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "b9391beb-c92c-4964-b142-691df0e333c7",
     "created": "2014-01-16T10:17:57.974Z",
@@ -585,7 +626,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "DE"
+    "country": "DE",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -601,7 +643,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -616,7 +659,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "c1bcdee5-0112-4fbe-8e34-02dd851b767f",
     "created": "2014-01-16T10:18:25.476Z",
@@ -627,7 +671,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "IN"
+    "country": "IN",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -643,7 +688,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -658,7 +704,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "c5df5f52-d4a4-4424-a246-eb32ac737b8a",
     "created": "2014-01-16T10:13:55.163Z",
@@ -669,7 +716,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "BR"
+    "country": "BR",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -685,7 +733,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -700,7 +749,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "c7f736a8-6140-4fe7-bd6a-b46bac859fd1",
     "created": "2014-01-16T10:37:34.660Z",
@@ -711,7 +761,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "IN"
+    "country": "IN",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -727,7 +778,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -742,7 +794,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "cbba1fb3-0022-4478-bfde-aa7d660a7223",
     "created": "2014-01-16T13:14:39.373Z",
@@ -753,7 +806,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "KR"
+    "country": "KR",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -769,7 +823,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -784,7 +839,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "ce08979b-2a2e-4251-9970-ef51e1eca1ab",
     "created": "2014-01-16T10:41:38.495Z",
@@ -795,7 +851,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "NL"
+    "country": "NL",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -811,7 +868,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -826,7 +884,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "d07a5e7d-40bd-4ace-a0f5-1d791ab16515",
     "created": "2014-01-16T10:42:13.838Z",
@@ -837,7 +896,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "RU"
+    "country": "RU",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -853,7 +913,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -868,7 +929,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "d73e6382-784c-41b9-a37a-13f19eb3d850",
     "created": "2014-01-16T10:12:28.285Z",
@@ -879,7 +941,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "ID"
+    "country": "ID",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -895,7 +958,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -910,7 +974,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "e73f4d4b-4d5f-4ddc-ad5e-3a795b165a0f",
     "created": "2014-01-16T10:20:40.427Z",
@@ -921,7 +986,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "BE"
+    "country": "BE",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -937,7 +1003,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -963,7 +1030,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "CN"
+    "country": "CN",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -979,7 +1047,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -994,7 +1063,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "fde275a8-1afd-4bef-9013-54373b513032",
     "created": "2014-01-16T10:38:39.948Z",
@@ -1005,7 +1075,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "IN"
+    "country": "IN",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -1021,7 +1092,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -1036,7 +1108,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "06dd0d02-6ca5-4d86-a60b-9a35523eb838",
     "created": "2014-01-16T10:21:23.336Z",
@@ -1047,7 +1120,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "IN"
+    "country": "IN",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -1063,7 +1137,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -1078,7 +1153,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "130bdf55-44db-4122-abef-4af12841f3af",
     "created": "2014-01-16T10:40:59.568Z",
@@ -1089,7 +1165,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "US"
+    "country": "US",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -1105,7 +1182,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -1120,7 +1198,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "22014056-f993-4a50-8c15-8ce9dac655cf",
     "created": "2014-01-16T10:37:08.117Z",
@@ -1131,7 +1210,8 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "SE"
+    "country": "SE",
+    "doctype": "address"
   },
   {
     "created_by": {
@@ -1147,7 +1227,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 2,
@@ -1162,7 +1243,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "2d6bee76-1345-49c1-ae3e-a5c2d3da88e8",
     "created": "2014-01-16T10:27:21.282Z",
@@ -1173,6 +1255,7 @@
     "zip": "",
     "city": "",
     "subdivision": "",
-    "country": "US"
+    "country": "US",
+    "doctype": "address"
   }
 ]

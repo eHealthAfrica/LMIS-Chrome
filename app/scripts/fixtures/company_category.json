@@ -11,7 +11,8 @@
     "tree_id": 1,
     "level": 0,
     "created_by": 2,
-    "modified_by": 2
+    "modified_by": 2,
+    "doctype": "companyCategory"
   },
   "ac2c0f0a-fce8-43cf-9d81-cf6b6085f0f2": {
     "uuid": "ac2c0f0a-fce8-43cf-9d81-cf6b6085f0f2",
@@ -25,7 +26,8 @@
     "tree_id": 3,
     "level": 0,
     "created_by": 2,
-    "modified_by": 2
+    "modified_by": 2,
+    "doctype": "companyCategory"
   },
   "e276a4b5-694a-4f03-94e0-c28ca4894410": {
     "uuid": "e276a4b5-694a-4f03-94e0-c28ca4894410",
@@ -39,6 +41,7 @@
     "tree_id": 2,
     "level": 0,
     "created_by": 2,
-    "modified_by": 2
+    "modified_by": 2,
+    "doctype": "companyCategory"
   }
 }

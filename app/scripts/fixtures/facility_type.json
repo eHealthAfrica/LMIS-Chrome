@@ -13,7 +13,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 1,
@@ -28,7 +29,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "0797ba56-b510-4902-ada3-50b307b2c843",
     "created": "2014-01-17T08:15:24.112Z",
@@ -42,7 +44,8 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 1,
-    "level": 0
+    "level": 0,
+    "doctype": "facilityType"
   },
   {
     "created_by": {
@@ -58,7 +61,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 1,
@@ -73,7 +77,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "52c25937-b932-4b5e-afda-5c28d2759ea1",
     "created": "2014-01-18T13:52:07.838Z",
@@ -87,7 +92,8 @@
     "lft": 4,
     "rght": 7,
     "tree_id": 2,
-    "level": 3
+    "level": 3,
+    "doctype": "facilityType"
   },
   {
     "created_by": {
@@ -103,7 +109,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 1,
@@ -118,7 +125,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "4fc602d4-3e3f-4586-8fe1-e8f274ecf7be",
     "created": "2014-01-18T13:46:17.724Z",
@@ -132,7 +140,8 @@
     "lft": 2,
     "rght": 9,
     "tree_id": 2,
-    "level": 1
+    "level": 1,
+    "doctype": "facilityType"
   },
   {
     "created_by": {
@@ -148,7 +157,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 1,
@@ -163,7 +173,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "780bdc3e-39b3-4947-bff7-e241da5ed4a3",
     "created": "2014-01-18T13:51:17.236Z",
@@ -177,7 +188,8 @@
     "lft": 3,
     "rght": 8,
     "tree_id": 2,
-    "level": 2
+    "level": 2,
+    "doctype": "facilityType"
   },
   {
     "created_by": {
@@ -193,7 +205,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 1,
@@ -208,7 +221,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "19030139-40b7-4495-a6a0-abcb893471fc",
     "created": "2014-01-18T13:52:36.188Z",
@@ -222,7 +236,8 @@
     "lft": 5,
     "rght": 6,
     "tree_id": 2,
-    "level": 4
+    "level": 4,
+    "doctype": "facilityType"
   },
   {
     "created_by": {
@@ -238,7 +253,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 1,
@@ -253,7 +269,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "915c8681-b2d0-4a3c-866f-86f691ef64a4",
     "created": "2014-01-18T13:45:52.242Z",
@@ -267,7 +284,8 @@
     "lft": 1,
     "rght": 12,
     "tree_id": 2,
-    "level": 0
+    "level": 0,
+    "doctype": "facilityType"
   },
   {
     "created_by": {
@@ -283,7 +301,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 1,
@@ -298,7 +317,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "209011bf-27c8-4e9e-a08e-a3a7dd9f56df",
     "created": "2014-01-20T10:19:11.706Z",
@@ -312,6 +332,7 @@
     "lft": 10,
     "rght": 11,
     "tree_id": 2,
-    "level": 1
+    "level": 1,
+    "doctype": "facilityType"
   }
 ]

@@ -11,7 +11,8 @@
     "stockCountInterval": 7,
     "selectedProductProfiles": ["075bd789-4b29-4033-80b6-4f834e602628", "87115282-6a35-42fb-ae2b-860e510b592f",
         "f97be2aa-d5b6-4560-8f31-5a559fb80567", "abf5f2fc-056a-45cc-b7b7-553a09c927d7",
-      "dfe5b135-12b8-4da0-ad39-b54e864f5663"]
+      "dfe5b135-12b8-4da0-ad39-b54e864f5663"],
+    "doctype": "appFacilityProfile"
   },
   "national_store@gmail.com": {
     "uuid": "national_store@gmail.com",
@@ -24,7 +25,8 @@
     "modified": "2014-01-20T15:07:09.860Z",
     "stockCountInterval": 14,
     "selectedProductProfiles": ["075bd789-4b29-4033-80b6-4f834e602628", "87115282-6a35-42fb-ae2b-860e510b592f",
-        "f97be2aa-d5b6-4560-8f31-5a559fb80567"]
+        "f97be2aa-d5b6-4560-8f31-5a559fb80567"],
+    "doctype": "appFacilityProfile"
   },
   "north_west_store@gmail.com": {
     "uuid": "north_west_store@gmail.com",
@@ -37,7 +39,8 @@
     "modified": "2014-01-20T15:07:09.860Z",
     "stockCountInterval": 14,
     "selectedProductProfiles": ["075bd789-4b29-4033-80b6-4f834e602628", "87115282-6a35-42fb-ae2b-860e510b592f",
-        "f97be2aa-d5b6-4560-8f31-5a559fb80567"]
+        "f97be2aa-d5b6-4560-8f31-5a559fb80567"],
+    "doctype": "appFacilityProfile"
   },
   "test_health_facility@gmail.com": {
     "uuid": "test_health_facility@gmail.com",
@@ -50,7 +53,7 @@
     "modified": "2014-01-20T15:07:09.860Z",
     "stockCountInterval": 30,
     "selectedProductProfiles": ["075bd789-4b29-4033-80b6-4f834e602628", "87115282-6a35-42fb-ae2b-860e510b592f",
-        "f97be2aa-d5b6-4560-8f31-5a559fb80567"]
+        "f97be2aa-d5b6-4560-8f31-5a559fb80567"],
+    "doctype": "appFacilityProfile"
   }
-
 }

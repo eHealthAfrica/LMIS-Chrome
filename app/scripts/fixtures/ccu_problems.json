@@ -11,9 +11,9 @@
     "start_date_time": "2014-01-17T09:19:14Z",
     "fixed_date_time": "2014-01-18T10:19:14Z",
     "cost": "150.00",
-    "cost_currency": "a98c81e5-fac9-4bb4-847c-8de33110615a"
+    "cost_currency": "a98c81e5-fac9-4bb4-847c-8de33110615a",
+    "doctype": "ccuProblem"
   },
-
   "d487c322-5484-4295-9e3e-c39c2b689851": {
     "created_by": null,
     "modified_by": null,
@@ -26,7 +26,8 @@
     "start_date_time": "2014-01-11T08:19:14Z",
     "fixed_date_time": "2014-01-11T09:19:14Z",
     "cost": "25.00",
-    "cost_currency": "a98c81e5-fac9-4bb4-847c-8de33110615a"
+    "cost_currency": "a98c81e5-fac9-4bb4-847c-8de33110615a",
+    "doctype": "ccuProblem"
   },
   "b111d797-5b7b-44dd-845a-6b1c2422eeb7": {
     "created_by": null,
@@ -40,7 +41,8 @@
     "start_date_time": "2013-12-11T08:19:14Z",
     "fixed_date_time": "2014-12-16T08:19:14Z",
     "cost": "50.00",
-    "cost_currency": "a98c81e5-fac9-4bb4-847c-8de33110615a"
+    "cost_currency": "a98c81e5-fac9-4bb4-847c-8de33110615a",
+    "doctype": "ccuProblem"
   },
   "a4a62980-a1a0-4caa-b8d2-ad6398522f68": {
     "created_by": null,
@@ -54,7 +56,7 @@
     "start_date_time": "2013-12-11T08:19:14Z",
     "fixed_date_time": "2014-12-16T08:19:14Z",
     "cost": "50.00",
-    "cost_currency": "a98c81e5-fac9-4bb4-847c-8de33110615a"
+    "cost_currency": "a98c81e5-fac9-4bb4-847c-8de33110615a",
+    "doctype": "ccuProblem"
   }
-
 }
