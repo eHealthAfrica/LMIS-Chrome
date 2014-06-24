@@ -10,7 +10,8 @@
     "storage_unit": "02b46f06-8270-4e8f-93df-2d602b61817d",
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
     "uuid": "09U78723-9aef-4f31-9c88-6b1d16f62f6a",
-    "bundle_no": ""
+    "bundle_no": "",
+    "doctype": "inventory"
   },
   "13t18723-3456-4f31-9c98-6b1d16f62f6a": {
     "created": "2014-02-12T09:17:08Z",
@@ -23,7 +24,8 @@
     "storage_unit": "02b46f06-8270-4e8f-93df-2d602b61817d",
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
     "uuid": "13t18723-3456-4f31-9c98-6b1d16f62f6a",
-    "bundle_no": ""
+    "bundle_no": "",
+    "doctype": "inventory"
   },
   "95d18723-9aef-5668-9c77-6b1d16f62f0a": {
     "created": "2014-02-12T09:17:08Z",
@@ -36,7 +38,8 @@
     "storage_unit": "02b46f06-8270-4e8f-93df-2d602b61817d",
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
     "uuid": "95d18723-9aef-5668-9c77-6b1d16f62f0a",
-    "bundle_no": ""
+    "bundle_no": "",
+    "doctype": "inventory"
   },
   "d3f52dc6-5c24-477c-dc01-3b2e22787883": {
     "batch": "1430",
@@ -50,7 +53,8 @@
     "sending_facility": "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
     "storage_unit": "02b46f06-8270-4e8f-93df-2d602b61817d",
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
-    "uuid": "d3f52dc6-5c24-477c-dc01-3b2e22787883"
+    "uuid": "d3f52dc6-5c24-477c-dc01-3b2e22787883",
+    "doctype": "inventory"
   },
   "d3f52dc6-5c24-477c-dc01-3b2e22787882": {
     "batch": "1110007A",
@@ -64,6 +68,7 @@
     "sending_facility": "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
     "storage_unit": "02b46f06-8270-4e8f-93df-2d602b61817d",
     "uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
-    "uuid": "d3f52dc6-5c24-477c-dc01-3b2e22787882"
+    "uuid": "d3f52dc6-5c24-477c-dc01-3b2e22787882",
+    "doctype": "inventory"
   }
 }

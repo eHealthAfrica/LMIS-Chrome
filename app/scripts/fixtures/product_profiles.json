@@ -16,7 +16,8 @@
     "description": "",
     "packed_volume": 1.2,
     "diluent_per_volume": 0.7,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "87115282-6a35-42fb-ae2b-860e510b592f": {
     "uuid": "87115282-6a35-42fb-ae2b-860e510b592f",
@@ -35,7 +36,8 @@
     "description": "",
     "packed_volume": 2.5,
     "diluent_per_volume": 0.7,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "f97be2aa-d5b6-4560-8f31-5a559fb80567": {
     "uuid": "f97be2aa-d5b6-4560-8f31-5a559fb80567",
@@ -54,7 +56,8 @@
     "description": "",
     "packed_volume": 3.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "756fe956-aaad-4114-93fc-43199d86e59d": {
     "uuid": "756fe956-aaad-4114-93fc-43199d86e59d",
@@ -73,7 +76,8 @@
     "description": "",
     "packed_volume": 2.5,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "abf5f2fc-056a-45cc-b7b7-553a09c927d7": {
     "uuid": "abf5f2fc-056a-45cc-b7b7-553a09c927d7",
@@ -92,7 +96,8 @@
     "description": "",
     "packed_volume": 18.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "641a0739-4365-43be-ab5c-ef70ea7be45c": {
     "uuid": "641a0739-4365-43be-ab5c-ef70ea7be45c",
@@ -111,7 +116,8 @@
     "description": "",
     "packed_volume": 13.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "511690ef-23da-4b33-9248-6e9c851277de": {
     "uuid": "511690ef-23da-4b33-9248-6e9c851277de",
@@ -130,7 +136,8 @@
     "description": "",
     "packed_volume": 4.5,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "39a07d76-9d4b-4c9e-b50b-bba827d08f74": {
     "uuid": "39a07d76-9d4b-4c9e-b50b-bba827d08f74",
@@ -149,7 +156,8 @@
     "description": "",
     "packed_volume": 4.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "edc769e2-b26e-40e0-9b58-b59785cf50f7": {
     "uuid": "edc769e2-b26e-40e0-9b58-b59785cf50f7",
@@ -168,7 +176,8 @@
     "description": "",
     "packed_volume": 3.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "dc546df0-9de9-47a2-b15b-0295a0164fa8": {
     "uuid": "dc546df0-9de9-47a2-b15b-0295a0164fa8",
@@ -187,7 +196,8 @@
     "description": "",
     "packed_volume": 30.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
    "399fe9ef-1a00-47e3-a736-7cc371574379":{
     "created_by": 1,
@@ -206,7 +216,8 @@
     "description": "",
     "packed_volume": 2.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
    "7166c17b-e017-41d4-84c6-8a81e25ac16c": {
     "created_by": 1,
@@ -225,7 +236,8 @@
     "description": "",
     "packed_volume": 1.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "dfe5b135-12b8-4da0-ad39-b54e864f5663": {
     "created_by": null,
@@ -244,7 +256,8 @@
     "category": "66e1bc4f-1dab-4842-80c5-49f626bde74e",
     "packed_volume": 2.5,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "f431494a-6c48-4d85-b6ee-1229f458756c": {
     "created_by": null,
@@ -263,7 +276,8 @@
     "description": "",
     "packed_volume": 25.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "217e255d-0dd0-4bcf-aefc-3d7668ba7487": {
     "uuid": "217e255d-0dd0-4bcf-aefc-3d7668ba7487",
@@ -282,7 +296,8 @@
     "description": "",
     "packed_volume": 6.5,
     "diluent_per_volume": 7.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "67855ff4-6897-425b-a3e8-08ff542f2194": {
     "uuid": "67855ff4-6897-425b-a3e8-08ff542f2194",
@@ -301,7 +316,8 @@
     "packed_volume": 2.5,
     "diluent_per_volume": 6.0,
     "category": "66e1bc4f-1dab-4842-80c5-49f626bde74e",
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "cfa527af-105c-46f1-a105-4366a220e9e0": {
     "created_by": null,
@@ -320,7 +336,8 @@
     "packed_volume": 1.0,
     "diluent_per_volume": 3.0,
     "category": "66e1bc4f-1dab-4842-80c5-49f626bde74e",
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "cad886e9-42e2-4797-b6dd-98a339168e96": {
     "created_by": null,
@@ -339,7 +356,8 @@
     "packed_volume": 72.0,
     "diluent_per_volume": 0.0,
     "category": "66e1bc4f-1dab-4842-80c5-49f626bde74e",
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
    "98a339168e96-42e2-4797-b6dd-cad886e9": {
     "created_by": null,
@@ -358,7 +376,8 @@
     "description": "",
     "packed_volume": 72.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "6240f4fb-1416-4d16-b124-f1641d541dcb": {
     "uuid": "6240f4fb-1416-4d16-b124-f1641d541dcb",
@@ -377,7 +396,8 @@
     "packed_volume": 47.0,
     "diluent_per_volume": 0.0,
     "category": "66e1bc4f-1dab-4842-80c5-49f626bde74e",
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "6e2a882b-eeeb-4caf-96e2-46167c0c1aac": {
     "uuid": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
@@ -396,7 +416,8 @@
     "packed_volume": 15.0,
     "diluent_per_volume": 0.0,
     "category": "66e1bc4f-1dab-4842-80c5-49f626bde74e",
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "8471294c0c04-3ac0-46c6-80c3-032404e3": {
     "uuid": "8471294c0c04-3ac0-46c6-80c3-032404e3",
@@ -415,7 +436,8 @@
     "packed_volume": 9.0,
     "category": "66e1bc4f-1dab-4842-80c5-49f626bde74e",
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "d72c2e18-6c9c-447a-83d9-128a168c1cbb": {
     "uuid": "d72c2e18-6c9c-447a-83d9-128a168c1cbb",
@@ -434,7 +456,8 @@
     "packed_volume": 3.5,
     "category": "66e1bc4f-1dab-4842-80c5-49f626bde74e",
     "diluent_per_volume": 4.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "24aba564-45b2-42a0-9545-49d34cdffcaa": {
     "uuid": "24aba564-45b2-42a0-9545-49d34cdffcaa",
@@ -453,7 +476,8 @@
     "description": "",
     "packed_volume": 138.1,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "2fee31f0-7757-4f06-9914-d16c5ca9cc5f": {
     "uuid": "2fee31f0-7757-4f06-9914-d16c5ca9cc5f",
@@ -472,7 +496,8 @@
     "description": "",
     "packed_volume": 3.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "577f3db0-4dec-4495-8a9a-ef42f7cd63a1": {
     "uuid": "577f3db0-4dec-4495-8a9a-ef42f7cd63a1",
@@ -491,7 +516,8 @@
     "description": "",
     "packed_volume": 3.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "73087d12-fbf0-4024-ea3a-14f512076fe8": {
     "uuid": "73087d12-fbf0-4024-ea3a-14f512076fe8",
@@ -510,7 +536,8 @@
     "description": "",
     "packed_volume": 3.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "9da92778-8c81-4d1d-b44f-363eb463843c": {
     "uuid": "9da92778-8c81-4d1d-b44f-363eb463843c",
@@ -529,7 +556,8 @@
     "description": "",
     "packed_volume": 3.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   },
   "4f698a8d-5477-4f55-9811-d1a1d9958b1c": {
     "uuid": "4f698a8d-5477-4f55-9811-d1a1d9958b1c",
@@ -548,6 +576,7 @@
     "description": "",
     "packed_volume": 3.0,
     "diluent_per_volume": 0.0,
-    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac"
+    "volume_uom": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
+    "doctype": "productProfile"
   }
 }

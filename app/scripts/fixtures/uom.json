@@ -9,7 +9,8 @@
     "uom_category": "67855ff4-6897-425b-a3e8-08ff542f2194",
     "rate": 0.0,
     "factor": 0.0,
-    "rounding_precision": 0
+    "rounding_precision": 0,
+    "doctype": "uom"
   },
   "6e2a882b-eeeb-4caf-96e2-46167c0c1aac": {
     "uuid": "6e2a882b-eeeb-4caf-96e2-46167c0c1aac",
@@ -21,7 +22,8 @@
     "uom_category": "cfa527af-105c-46f1-a105-4366a220e9e0",
     "rate": 0.0,
     "factor": 0.0,
-    "rounding_precision": 2
+    "rounding_precision": 2,
+    "doctype": "uom"
   },
   "82cc6fac-d0f6-43da-b0c6-07dc58669431": {
     "uuid": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
@@ -33,7 +35,8 @@
     "uom_category": "67855ff4-6897-425b-a3e8-08ff542f2194",
     "rate": 0.0,
     "factor": 0.0,
-    "rounding_precision": 2
+    "rounding_precision": 2,
+    "doctype": "uom"
   },
   "9264a068-4062-40da-bb3e-fec0d02ad51f": {
     "uuid": "9264a068-4062-40da-bb3e-fec0d02ad51f",
@@ -45,7 +48,8 @@
     "uom_category": "217e255d-0dd0-4bcf-aefc-3d7668ba7487",
     "rate": 0.0,
     "factor": 0.0,
-    "rounding_precision": 2
+    "rounding_precision": 2,
+    "doctype": "uom"
   },
   "e5def927-b173-44b6-9112-3103a473a65c": {
     "uuid": "e5def927-b173-44b6-9112-3103a473a65c",
@@ -57,7 +61,8 @@
     "uom_category": "67855ff4-6897-425b-a3e8-08ff542f2194",
     "rate": 0.0,
     "factor": 0.0,
-    "rounding_precision": 2
+    "rounding_precision": 2,
+    "doctype": "uom"
   },
   "8458a573-152a-4787-89bb-b82cc4c58290": {
     "created_by": null,
@@ -71,7 +76,7 @@
     "uom_category": "cad886e9-42e2-4797-b6dd-98a339168e96",
     "rate": 0.0,
     "factor": 0.0,
-    "rounding_precision": 2
+    "rounding_precision": 2,
+    "doctype": "uom"
   }
 }
-

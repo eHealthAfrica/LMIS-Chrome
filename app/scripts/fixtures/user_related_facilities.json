@@ -1,4 +1,4 @@
-    [
+[
   {
     "address": null,
     "catchment_population": 44296509,
@@ -6,7 +6,6 @@
     "code": "NWZSCS",
     "contact": null,
     "created": "2014-01-20T10:37:21.143Z",
-
     "description": "for North West Zone",
     "facility_operators": [
       "87191ec7-3be6-4b7b-ac0f-be9ce0e80e51"
@@ -28,7 +27,6 @@
     "lft": 2,
     "location": "F87ED3E0-17CF-4F8D-B268-36FD910E4CC8",
     "modified": "2014-01-20T15:07:09.860Z",
-
     "name": "North West Zonal Store",
     "parent": "a6ef2104-45bb-438c-80b8-21b4cb7d43bc",
     "products": [],
@@ -36,7 +34,8 @@
     "supplies_others": true,
     "tree_id": 2,
     "uuid": "902aef31-051d-4a83-9017-6ac9710b5bb5",
-    "virtual_facility": false
+    "virtual_facility": false,
+    "doctype": "userRelatedFacility"
   },
   {
     "address": null,
@@ -72,7 +71,7 @@
     "supplies_others": true,
     "tree_id": 2,
     "uuid": "d48a39fb-6d37-4472-9983-bc0720403719",
-    "virtual_facility": false
+    "virtual_facility": false,
+    "doctype": "userRelatedFacility"
   }
 ]
-

@@ -4,13 +4,15 @@
     "batch": "e90a87f1-6840-4552-9b10-4ac6bd6f8c70",
     "program": "39a07d76-9d4b-4c9e-b50b-bba827d08f74",
     "quantity": 325,
-    "quantity_uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431"
+    "quantity_uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
+    "doctype": "bundleLine"
   },
   "359fe9ef-1a00-47e3-a731-7cc372074379":{
     "uuid": "359fe9ef-1a00-47e3-a731-7cc372074379",
     "batch": "7eb037c1-bd68-4e92-acca-dd4676e64b2d",
     "program": "39a07d76-9d4b-4c9e-b50b-bba827d08f74",
     "quantity": 450,
-    "quantity_uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431"
+    "quantity_uom": "82cc6fac-d0f6-43da-b0c6-07dc58669431",
+    "doctype": "bundleLine"
   }
 }

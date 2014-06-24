@@ -13,7 +13,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "modified_by": {
       "id": 1,
@@ -28,7 +29,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "uuid": "c4471904-3f50-43a5-b644-0c27793024b3",
     "created": "2014-01-17T08:07:15.948Z",
@@ -39,6 +41,7 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 1,
-    "level": 0
+    "level": 0,
+    "doctype": "employeeCategory"
   }
 ]

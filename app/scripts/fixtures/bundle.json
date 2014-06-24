@@ -7,6 +7,7 @@
     "user": "1",
     "date": "2014-02-17",
     "status": 0,
-    "bundle_lines": ["359fe9ef-1a00-47e3-a731-7cc372074379", "399fe9ef-1a00-47e3-a736-7cc371574379"]
+    "bundle_lines": ["359fe9ef-1a00-47e3-a731-7cc372074379", "399fe9ef-1a00-47e3-a736-7cc371574379"],
+    "doctype": "bundle"
   }
 }

@@ -3,12 +3,14 @@
     "uuid": "a3806d0e-2278-4f34-9728-74d12c912cfe",
     "name": "Giginyu",
     "lga": "Nassarawa",
-    "state": "Kano"
+    "state": "Kano",
+    "doctype": "location"
   },
   "F87ED3E0-17CF-4F8D-B268-36FD910E4CC8": {
     "uuid": "F87ED3E0-17CF-4F8D-B268-36FD910E4CC8",
     "name": "Adakawa",
     "lga": "Dala",
-    "state": "Kano"
+    "state": "Kano",
+    "doctype": "location"
   }
 }

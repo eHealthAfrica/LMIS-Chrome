@@ -6,7 +6,8 @@
     "is_deleted": false,
     "code": "SC",
     "name": "Subcutaneous",
-    "description": "an injection under the skin"
+    "description": "an injection under the skin",
+    "doctype": "modeOfAdministration"
   },
   "b439ec20-c3a2-4d5e-bd35-3979045e376a": {
     "uuid": "b439ec20-c3a2-4d5e-bd35-3979045e376a",
@@ -15,7 +16,8 @@
     "is_deleted": false,
     "code": "Oral",
     "name": "Oral",
-    "description": "taken through the mouth"
+    "description": "taken through the mouth",
+    "doctype": "modeOfAdministration"
   },
   "d4957c68-d977-4ff2-a5c2-3e8538d302cd": {
     "uuid": "d4957c68-d977-4ff2-a5c2-3e8538d302cd",
@@ -24,7 +26,8 @@
     "is_deleted": false,
     "code": "ID",
     "name": "Intra-Dermal",
-    "description": "into the skin itself"
+    "description": "into the skin itself",
+    "doctype": "modeOfAdministration"
   },
   "e63bb35d-9a49-4d1d-9be9-5fada6f6d81b": {
     "uuid": "e63bb35d-9a49-4d1d-9be9-5fada6f6d81b",
@@ -33,7 +36,8 @@
     "is_deleted": false,
     "code": "IM",
     "name": "Intra-Muscular",
-    "description": "An injection of a substance directly into a muscle."
+    "description": "An injection of a substance directly into a muscle.",
+    "doctype": "modeOfAdministration"
   },
   "e8c57074-4e19-4483-87b5-5103956538fb": {
     "uuid": "e8c57074-4e19-4483-87b5-5103956538fb",
@@ -42,6 +46,7 @@
     "is_deleted": false,
     "code": "Nasal",
     "name": "Nasal",
-    "description": "given through the nose."
+    "description": "given through the nose.",
+    "doctype": "modeOfAdministration"
   }
 }

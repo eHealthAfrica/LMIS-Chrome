@@ -10,7 +10,8 @@
     "lft": 2,
     "rght": 3,
     "tree_id": 3,
-    "level": 1
+    "level": 1,
+    "doctype": "uomCategory"
   },
   "67855ff4-6897-425b-a3e8-08ff542f2194": {
     "uuid": "67855ff4-6897-425b-a3e8-08ff542f2194",
@@ -23,7 +24,8 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 2,
-    "level": 0
+    "level": 0,
+    "doctype": "uomCategory"
   },
   "cfa527af-105c-46f1-a105-4366a220e9e0": {
     "created_by": null,
@@ -38,7 +40,8 @@
     "lft": 1,
     "rght": 4,
     "tree_id": 3,
-    "level": 0
+    "level": 0,
+    "doctype": "uomCategory"
   },
   "cad886e9-42e2-4797-b6dd-98a339168e96": {
     "created_by": null,
@@ -53,7 +56,7 @@
     "lft": 1,
     "rght": 2,
     "tree_id": 1,
-    "level": 0
+    "level": 0,
+    "doctype": "uomCategory"
   }
 }
-

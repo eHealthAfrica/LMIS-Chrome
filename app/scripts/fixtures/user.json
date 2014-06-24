@@ -12,7 +12,8 @@
       "is_active": true,
       "date_joined": "2014-01-11T11:06:59.920Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     },
     "1": {
       "id": 1,
@@ -27,7 +28,7 @@
       "is_active": true,
       "date_joined": "2014-01-11T10:19:14.431Z",
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "doctype": "user"
     }
-  }
-
+}

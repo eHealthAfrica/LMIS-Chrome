@@ -13,7 +13,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -28,7 +29,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "124d00f9-c2e4-4411-9534-09862b50aaf8",
         "created": "2014-01-29T13:37:21.871Z",
@@ -37,7 +39,8 @@
         "storage_location": "5667da52-f710-4663-b3fc-ca85676555f7",
         "temperature": 3.0,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-15T07:23:45Z"
+        "date_time_logged": "2014-01-15T07:23:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -53,7 +56,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -68,7 +72,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "bc34996d-ca8d-4a9a-9bff-d1bfcbed4796",
         "created": "2014-01-29T13:37:44.655Z",
@@ -77,7 +82,8 @@
         "storage_location": "5667da52-f710-4663-b3fc-ca85676555f7",
         "temperature": 5.0,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-15T16:23:45Z"
+        "date_time_logged": "2014-01-15T16:23:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -93,7 +99,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -108,7 +115,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "588b4e23-a702-4a83-a1f3-3c26c25044f2",
         "created": "2014-01-29T13:37:58.159Z",
@@ -117,7 +125,8 @@
         "storage_location": "5667da52-f710-4663-b3fc-ca85676555f7",
         "temperature": 5.0,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-16T06:23:45Z"
+        "date_time_logged": "2014-01-16T06:23:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -133,7 +142,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -148,7 +158,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "849d85dd-a919-40a3-aefe-cccd496dba1d",
         "created": "2014-01-29T13:38:14.184Z",
@@ -157,7 +168,8 @@
         "storage_location": "5667da52-f710-4663-b3fc-ca85676555f7",
         "temperature": 5.0,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-16T16:01:45Z"
+        "date_time_logged": "2014-01-16T16:01:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -173,7 +185,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -188,7 +201,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "2478b59c-a3ff-4f09-848e-37c05587d0df",
         "created": "2014-01-29T13:38:38.946Z",
@@ -197,7 +211,8 @@
         "storage_location": "5667da52-f710-4663-b3fc-ca85676555f7",
         "temperature": 4.5,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-17T07:51:45Z"
+        "date_time_logged": "2014-01-17T07:51:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -213,7 +228,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -228,7 +244,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "9a8ef606-3883-4adc-b615-408ffdcbe692",
         "created": "2014-01-29T13:39:10.600Z",
@@ -237,7 +254,8 @@
         "storage_location": "5667da52-f710-4663-b3fc-ca85676555f7",
         "temperature": 7.0,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-17T19:01:45Z"
+        "date_time_logged": "2014-01-17T19:01:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -253,7 +271,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -268,7 +287,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "e0317a99-d3a0-46ff-9e16-9700555ae66a",
         "created": "2014-01-29T13:43:16.868Z",
@@ -277,7 +297,8 @@
         "storage_location": "d6b364e9-2bcd-4db9-b01f-c13d5c353d8a",
         "temperature": -20.0,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-12T09:01:45Z"
+        "date_time_logged": "2014-01-12T09:01:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -293,7 +314,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -308,7 +330,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "477f356f-caf0-4124-adb1-8e64d070d8d0",
         "created": "2014-01-29T13:43:38.193Z",
@@ -317,7 +340,8 @@
         "storage_location": "d6b364e9-2bcd-4db9-b01f-c13d5c353d8a",
         "temperature": -16.0,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-12T19:31:45Z"
+        "date_time_logged": "2014-01-12T19:31:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -333,7 +357,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -348,7 +373,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "9793d407-2ba8-47fc-9e89-df8f1a254da1",
         "created": "2014-01-29T13:44:16.576Z",
@@ -357,7 +383,8 @@
         "storage_location": "d6b364e9-2bcd-4db9-b01f-c13d5c353d8a",
         "temperature": -19.0,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-14T06:31:45Z"
+        "date_time_logged": "2014-01-14T06:31:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -373,7 +400,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -388,7 +416,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "a31646ba-f075-4aeb-af5d-706335f1534f",
         "created": "2014-01-29T13:44:40.988Z",
@@ -397,7 +426,8 @@
         "storage_location": "d6b364e9-2bcd-4db9-b01f-c13d5c353d8a",
         "temperature": -10.0,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-14T16:15:45Z"
+        "date_time_logged": "2014-01-14T16:15:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -413,7 +443,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -428,7 +459,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "9fc97210-39bd-4305-b599-2356c6f531ff",
         "created": "2014-01-29T13:45:13.010Z",
@@ -437,7 +469,8 @@
         "storage_location": "d6b364e9-2bcd-4db9-b01f-c13d5c353d8a",
         "temperature": -16.5,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-14T18:15:45Z"
+        "date_time_logged": "2014-01-14T18:15:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -453,7 +486,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -468,7 +502,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "be9df938-2bce-441c-a147-da847bc6bf65",
         "created": "2014-01-29T13:45:57.472Z",
@@ -477,7 +512,8 @@
         "storage_location": "d6b364e9-2bcd-4db9-b01f-c13d5c353d8a",
         "temperature": -21.5,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-19T09:35:45Z"
+        "date_time_logged": "2014-01-19T09:35:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -493,7 +529,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -508,7 +545,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "e0b7c7fb-fd4c-4cea-a961-7e20912aa600",
         "created": "2014-01-29T13:46:14.642Z",
@@ -517,7 +555,8 @@
         "storage_location": "d6b364e9-2bcd-4db9-b01f-c13d5c353d8a",
         "temperature": -22.5,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-19T21:05:45Z"
+        "date_time_logged": "2014-01-19T21:05:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -533,7 +572,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -548,7 +588,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "9cb119e1-e4e9-42ff-b127-ad978a1e03e3",
         "created": "2014-01-29T13:47:03.214Z",
@@ -557,7 +598,8 @@
         "storage_location": "53a3f097-dd08-4528-b6f8-e120fd19b671",
         "temperature": -3.5,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-19T00:05:45Z"
+        "date_time_logged": "2014-01-19T00:05:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -573,7 +615,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -588,7 +631,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "f8c502bd-58b4-4b13-8d05-75c79b01731e",
         "created": "2014-01-29T13:47:21.945Z",
@@ -597,7 +641,8 @@
         "storage_location": "53a3f097-dd08-4528-b6f8-e120fd19b671",
         "temperature": 5.0,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-19T00:07:45Z"
+        "date_time_logged": "2014-01-19T00:07:45Z",
+        "doctype": "ccuTempLog"
     },
     {
         "created_by": {
@@ -613,7 +658,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "modified_by": {
             "id": 1,
@@ -628,7 +674,8 @@
             "is_active": true,
             "date_joined": "2014-01-11T10:19:14.431Z",
             "groups": [],
-            "user_permissions": []
+            "user_permissions": [],
+            "doctype": "user"
         },
         "uuid": "f0f6e64b-e240-4106-b92e-e5d66a5357b7",
         "created": "2014-01-29T13:47:43.511Z",
@@ -637,6 +684,7 @@
         "storage_location": "53a3f097-dd08-4528-b6f8-e120fd19b671",
         "temperature": 7.5,
         "temperature_uom": "8458a573-152a-4787-89bb-b82cc4c58290",
-        "date_time_logged": "2014-01-21T10:07:45Z"
+        "date_time_logged": "2014-01-21T10:07:45Z",
+        "doctype": "ccuTempLog"
     }
 ]

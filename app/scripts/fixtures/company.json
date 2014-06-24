@@ -11,7 +11,8 @@
     "header": "",
     "category": "02ab03c2-2770-444a-83ee-4e989b4f31ab",
     "footer": "",
-    "product_types": ["e55e1452-b0ab-4046-9d7e-3a98f1f968d0", "abe41e88-ab4a-4c6f-b7a4-4549e13fb758", "f96946be-7dac-438e-9220-efc386276481", "6c96fe02-c345-47ff-8bf3-9cdbbabe3701", "7a274913-1ce5-45d2-b438-a62bc9c373c2", "f03be189-4a2b-42ed-b624-822555ada6a6", "f7675c7e-856a-45e8-b2af-d50f42950ac1", "939d5e05-2aa4-4883-9246-35c60dfa06a5"]
+    "product_types": ["e55e1452-b0ab-4046-9d7e-3a98f1f968d0", "abe41e88-ab4a-4c6f-b7a4-4549e13fb758", "f96946be-7dac-438e-9220-efc386276481", "6c96fe02-c345-47ff-8bf3-9cdbbabe3701", "7a274913-1ce5-45d2-b438-a62bc9c373c2", "f03be189-4a2b-42ed-b624-822555ada6a6", "f7675c7e-856a-45e8-b2af-d50f42950ac1", "939d5e05-2aa4-4883-9246-35c60dfa06a5"],
+    "doctype": "company"
   },
   "267db2b3-70a1-49e4-ba41-866ff39a74e1": {
     "uuid": "267db2b3-70a1-49e4-ba41-866ff39a74e1",
@@ -25,7 +26,8 @@
     "header": "",
     "category": "02ab03c2-2770-444a-83ee-4e989b4f31ab",
     "footer": "",
-    "product_types": ["7a274913-1ce5-45d2-b438-a62bc9c373c2"]
+    "product_types": ["7a274913-1ce5-45d2-b438-a62bc9c373c2"],
+    "doctype": "company"
   },
   "09a3d06d-f1f7-4a99-bb1a-d82e8cae0c11": {
     "uuid": "09a3d06d-f1f7-4a99-bb1a-d82e8cae0c11",
@@ -39,7 +41,8 @@
     "header": "",
     "category": "02ab03c2-2770-444a-83ee-4e989b4f31ab",
     "footer": "",
-    "product_types": ["111fbb51-0c5a-492a-97f6-2c7664e23d01", "19e16c20-04b7-4e06-a679-7f7b60d976be"]
+    "product_types": ["111fbb51-0c5a-492a-97f6-2c7664e23d01", "19e16c20-04b7-4e06-a679-7f7b60d976be"],
+    "doctype": "company"
   },
   "396716a4-22af-4df4-a0a6-fc1162327303": {
     "uuid": "396716a4-22af-4df4-a0a6-fc1162327303",
@@ -53,7 +56,8 @@
     "header": "",
     "category": "02ab03c2-2770-444a-83ee-4e989b4f31ab",
     "footer": "",
-    "product_types": ["1a48640e-5eca-46ad-b3e8-e15e913fa5b8", "9a2b7576-860d-45c7-87ae-9d1fd1ec39f2"]
+    "product_types": ["1a48640e-5eca-46ad-b3e8-e15e913fa5b8", "9a2b7576-860d-45c7-87ae-9d1fd1ec39f2"],
+    "doctype": "company"
   },
   "5ab168f0-2c89-4cf6-963f-35dc6d126f94": {
     "uuid": "5ab168f0-2c89-4cf6-963f-35dc6d126f94",
@@ -67,7 +71,8 @@
     "header": "",
     "category": "02ab03c2-2770-444a-83ee-4e989b4f31ab",
     "footer": "",
-    "product_types": ["db513859-4491-4db7-9343-4980a16c8b04"]
+    "product_types": ["db513859-4491-4db7-9343-4980a16c8b04"],
+    "doctype": "company"
   },
   "7049fd5a-dbf9-4e89-a8ec-f02e5c2d0013": {
     "uuid": "7049fd5a-dbf9-4e89-a8ec-f02e5c2d0013",
@@ -81,7 +86,8 @@
     "header": "",
     "category": "02ab03c2-2770-444a-83ee-4e989b4f31ab",
     "footer": "",
-    "product_types": ["73b21b94-4f3f-47aa-8089-0aacdbbe8643", "06c300db-cd21-401d-9bba-71d0b0b0b3b2", "296a7a40-5ae8-4479-b3d9-6baea4800a7f", "db513859-4491-4db7-9343-4980a16c8b04"]
+    "product_types": ["73b21b94-4f3f-47aa-8089-0aacdbbe8643", "06c300db-cd21-401d-9bba-71d0b0b0b3b2", "296a7a40-5ae8-4479-b3d9-6baea4800a7f", "db513859-4491-4db7-9343-4980a16c8b04"],
+    "doctype": "company"
   },
   "7e052c79-61d5-4b32-8aec-fc4d31567832": {
     "uuid": "7e052c79-61d5-4b32-8aec-fc4d31567832",
@@ -95,7 +101,8 @@
     "header": "",
     "category": "02ab03c2-2770-444a-83ee-4e989b4f31ab",
     "footer": "",
-    "product_types": ["1203c362-b7a8-499a-b7ba-b842bace7920", "db513859-4491-4db7-9343-4980a16c8b04", "939d5e05-2aa4-4883-9246-35c60dfa06a5"]
+    "product_types": ["1203c362-b7a8-499a-b7ba-b842bace7920", "db513859-4491-4db7-9343-4980a16c8b04", "939d5e05-2aa4-4883-9246-35c60dfa06a5"],
+    "doctype": "company"
   },
   "834952ee-e04a-47b2-b1c7-19ad37a881e9": {
     "uuid": "834952ee-e04a-47b2-b1c7-19ad37a881e9",
@@ -109,7 +116,8 @@
     "header": "",
     "category": "02ab03c2-2770-444a-83ee-4e989b4f31ab",
     "footer": "",
-    "product_types": ["db513859-4491-4db7-9343-4980a16c8b04"]
+    "product_types": ["db513859-4491-4db7-9343-4980a16c8b04"],
+    "doctype": "company"
   },
   "a52231ab-f053-486c-8a3f-1c883b919556": {
     "uuid": "a52231ab-f053-486c-8a3f-1c883b919556",
@@ -123,7 +131,8 @@
     "header": "",
     "category": "02ab03c2-2770-444a-83ee-4e989b4f31ab",
     "footer": "",
-    "product_types": ["e55e1452-b0ab-4046-9d7e-3a98f1f968d0", "abe41e88-ab4a-4c6f-b7a4-4549e13fb758"]
+    "product_types": ["e55e1452-b0ab-4046-9d7e-3a98f1f968d0", "abe41e88-ab4a-4c6f-b7a4-4549e13fb758"],
+    "doctype": "company"
   },
   "e1b5260d-8d2a-4ada-bfb4-089bd2947294": {
     "uuid": "e1b5260d-8d2a-4ada-bfb4-089bd2947294",
@@ -137,7 +146,8 @@
     "header": "",
     "category": "02ab03c2-2770-444a-83ee-4e989b4f31ab",
     "footer": "",
-    "product_types": ["1203c362-b7a8-499a-b7ba-b842bace7920"]
+    "product_types": ["1203c362-b7a8-499a-b7ba-b842bace7920"],
+    "doctype": "company"
   },
   "e3f15251-1d56-40c3-90bf-f2dda783d7f9": {
     "uuid": "e3f15251-1d56-40c3-90bf-f2dda783d7f9",
@@ -151,7 +161,7 @@
     "header": "",
     "category": "02ab03c2-2770-444a-83ee-4e989b4f31ab",
     "footer": "",
-    "product_types": ["e55e1452-b0ab-4046-9d7e-3a98f1f968d0", "abe41e88-ab4a-4c6f-b7a4-4549e13fb758"]
+    "product_types": ["e55e1452-b0ab-4046-9d7e-3a98f1f968d0", "abe41e88-ab4a-4c6f-b7a4-4549e13fb758"],
+    "doctype": "company"
   }
 }
-
