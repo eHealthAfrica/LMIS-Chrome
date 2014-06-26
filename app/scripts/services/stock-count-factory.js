@@ -84,6 +84,7 @@ angular.module('lmisChromeApp')
       },
       stock: {
         countExist: function(date){
+          //TODO: this not necessary why not call getStockCountByDate(date); directly, remove this.
           return getStockCountByDate(date);
         }
       }
@@ -130,7 +131,7 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
-    var getStockCountListByCreatedDate = function(){
+    var getStockCountListByCountDate = function(){
       var deferred = $q.defer();
       var obj = {};
       getAllStockCount()
@@ -142,31 +143,6 @@ angular.module('lmisChromeApp')
           })
           .catch(function (reason) {
             deferred.resolve(obj);
-          });
-      return deferred.promise;
-    };
-
-    var getProductObjectWithCategory = function(appConfig){
-      var deferred = $q.defer();
-      storageService.get(storageService.PRODUCT_CATEGORY)
-          .then(function(productCategory){
-            var facilitySelectedProducts = appConfig.selectedProductProfiles
-                .map(function(product){
-                  if(angular.isObject(product.category)){
-                    return product;
-                  }
-                  product.category =
-                      angular.isDefined(productCategory[product.category]) ? productCategory[product.category] : product.category;
-                  return product;
-                })
-                .sort(function(a, b){
-                  return a.category.name > b.category.name;
-                });
-            var productObject = utility.castArrayToObject(facilitySelectedProducts, 'uuid');
-            deferred.resolve(productObject);
-          })
-          .catch(function(reason){
-            deferred.reject(reason);
           });
       return deferred.promise;
     };
@@ -271,8 +247,7 @@ angular.module('lmisChromeApp')
       getStockCountDueDate: getStockCountDueDate,
       isStockCountDue: isStockCountDue,
       getMostRecentStockCount: getMostRecentStockCount,
-      getStockCountListByDate: getStockCountListByCreatedDate,
-      getProductObjectWithCategory: getProductObjectWithCategory,
+      getStockCountListByDate: getStockCountListByCountDate,
       getAll: getAllStockCount,
       save:addRecord,
       get:load,
