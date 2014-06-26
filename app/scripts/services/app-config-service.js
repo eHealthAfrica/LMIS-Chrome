@@ -2,10 +2,9 @@
 
 angular.module('lmisChromeApp').service('appConfigService', function ($q, storageService, pouchdb, config, syncService,
                                                                       productProfileFactory, facilityFactory, utility,
-                                                                      cacheService, $filter, reminderFactory, growl, i18n, $http) {
+                                                                      cacheService, $filter, reminderFactory, growl, i18n, $http, memoryStorageService) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
-  var cache = cacheService.getCache();
 
   this.stockCountIntervals = [
     {name: 'Daily', value: reminderFactory.DAILY},
@@ -26,50 +25,39 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   this.setup = function (appConfig) {
 
     var deferred = $q.defer();
-    appConfig.reminderDay = parseInt(appConfig.reminderDay); //cast to integer in case it is a string
-    load().then(function (existingAppConfig) {
-      if(typeof appConfig.dateActivated === 'undefined'){
-        appConfig.dateActivated = new Date().toJSON();
+
+    appConfig.facility.reminderDay = parseInt(appConfig.facility.reminderDay); //cast to integer in case it is a string
+    appConfig.facility.stockCountInterval = parseInt(appConfig.facility.stockCountInterval);
+    var appConfigCopy;
+    getAppConfigFromMemoryOrStorage().then(function (existingAppConfig) {
+      if(typeof existingAppConfig === 'undefined'){
+        appConfigCopy = appConfig;
+      }else{
+        //update app config by merging both fields.
+        appConfigCopy = utility.copy(appConfig, existingAppConfig);
       }
 
-      var promise = {
-        selectedProductProfiles: productProfileFactory.getBatch(appConfig.selectedProductProfiles)
-      };
+      if(typeof appConfigCopy.dateActivated === 'undefined'){
+        appConfigCopy.dateActivated = new Date().toJSON();
+      }
 
-      $q.all(promise)
-          .then(function (result) {
-            for (var key in result) {
-              appConfig[key] = result[key];
-            }
+      console.error(appConfig);
 
-            var promises = [];
-            if (typeof existingAppConfig === 'undefined') {
-              promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
-            } else {
-              appConfig.uuid = existingAppConfig.uuid;
-              appConfig = utility.copy(appConfig, existingAppConfig);
-              promises.push(storageService.save(storageService.APP_CONFIG, appConfig));
-            }
+      storageService.save(storageService.APP_CONFIG, appConfigCopy)
+        .then(function(result){
+          //update memory copy.
+          //TODO: decouple this from every service and factory by broadcasting an event.
+          memoryStorageService.put(storageService.APP_CONFIG, appConfigCopy);
 
-            $q.all(promises)
-                .then(function (result) {
-                  //cache app config
-                  cache.put(storageService.APP_CONFIG, appConfig);
+          deferred.resolve(appConfigCopy);
 
-                  //sync app config in the back-ground
-                  syncService.syncItem(storageService.APP_CONFIG, appConfig)
-                    .finally(function(){
-                      deferred.resolve(result[0]);
-                    });
-                })
-                .catch(function (reason) {
-                  console.log(reason);
-                  deferred.reject(reason);
-                });
-          })
-          .catch(function (reason) {
-            deferred.reject(reason);
-          });
+          //sync app config in the background.
+          syncService.syncItem(storageService.APP_CONFIG, appConfigCopy);
+
+        })
+        .catch(function(reason){
+          deferred.reject(reason);
+        });
     })
     .catch(function(reason){
       deferred.reject(reason);
@@ -77,107 +65,130 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     return deferred.promise;
   };
 
-  var load = function () {
-    var deferred = $q.defer();
-    storageService.get(storageService.APP_CONFIG)
-      .then(function(data){
-          if(typeof data !== 'undefined'){
-            if (Object.keys(data).length === 1) {
-              var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
-              var appConfig = data[appConfigUUID];
-
-              cache.put(storageService.APP_CONFIG, appConfig);
-              deferred.resolve(appConfig);
-            } else {
-              throw 'there are more than one app config on this device.';
-            }
-          }else{
-            deferred.resolve(data);
-          }
-        })
-      .catch(function(err){
-        deferred.reject(err);
-      });
-    return deferred.promise;
+  var getAppConfigFromMemory = function () {
+    var appConfigDb = memoryStorageService.getDatabase(storageService.APP_CONFIG);
+    var appConfig;
+    if(typeof appConfigDb === 'undefined'){
+      return appConfig;
+    }
+    var keys = Object.keys(appConfigDb);
+    if (keys.length === 1) {
+      var key = keys[0];
+      appConfig = appConfigDb[key];
+    } else if (keys.length > 1) {
+      throw 'there should be only one app config on this device.';
+    }
+    return appConfig;
   };
 
-  this.getAppFacilityProfileByEmail = function(email){
+  this.getAppFacilityProfileByEmail = function (email) {
     var deferred = $q.defer();
-    var REMOTE_URI = config.api.url+'/facilities/_design/config/_view/template?key="'+email+'"';
+    var REMOTE_URI = config.api.url + '/facilities/_design/config/_view/template?key="' + email + '"';
     REMOTE_URI = encodeURI(REMOTE_URI);
     $http.get(REMOTE_URI)
-        .then(function(res){
+      .then(function (res) {
+        var rows = res.data.rows;
+        if (rows.length > 0) {
+          var facilityProfile = rows[0].value;//pick the first facility profile.
+          facilityProfile.selectedProductProfiles = productProfileFactory.getBatch(facilityProfile.selectedProductProfiles);
+          deferred.resolve(facilityProfile);
+        } else {
+          deferred.reject('profile for given email does not exist.');
+        }
 
-          var rows = res.data.rows;
-          if(rows.length > 0){
-            var facilityProfile = rows[0].value;//pick the first facility profile.
-            var promises = {
-                selectedProductProfiles: productProfileFactory.getBatch(facilityProfile.selectedProductProfiles)
-            };
-            $q.all(promises)
-                .then(function (result) {
-                    for (var key in result) {
-                        facilityProfile[key] = result[key];
-                    }
-                    deferred.resolve(facilityProfile);
-                })
-                .catch(function(reason){
-                    deferred.reject(reason);
-                });
-          }else{
-            deferred.reject('profile for given email does not exist.');
-          }
-
-        })
-        .catch(function(reason){
-          deferred.reject(reason);
-        });
+      })
+      .catch(function (reason) {
+        deferred.reject(reason);
+      });
     return deferred.promise;
   };
 
-  /**
-   * This returns current app config from cache, if not available, it loads from storageService
-   * @returns {promise|promise|*|promise|promise}
-   */
-  var getAppConfigFromCacheOrStorage = function() {
+  var getAppConfigFromStorage = function(){
     var deferred = $q.defer();
-    var appConfig = cache.get(storageService.APP_CONFIG);
+    storageService.get(storageService.APP_CONFIG)
+      .then(function (data) {
+        if (typeof data !== 'undefined') {
+          if (Object.keys(data).length === 1) {
+            var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
+            var appConfig = data[appConfigUUID];
 
-    if(typeof appConfig !== 'undefined'){
-      deferred.resolve(appConfig);
-    }else{
-      load().then(function(result){
-        deferred.resolve(result);
+
+            if(typeof appConfig !== 'undefined'){
+              appConfig.facility.selectedProductProfiles = productProfileFactory.getBatch(appConfig.facility.selectedProductProfiles);
+              //add app config to memory
+              memoryStorageService.put(storageService.APP_CONFIG, appConfig);
+            }else{
+              console.error('app config is undefined.');
+            }
+            deferred.resolve(appConfig);
+
+          } else {
+            throw 'there are more than one app config on this device.';
+          }
+        } else {
+          deferred.resolve(data);
+        }
       })
-      .catch(function(err){
-        deferred.reject(err);
+      .catch(function(reason){
+        deferred.reject(reason);
       });
+    return deferred.promise;
+  };
+
+  var getAppConfigFromMemoryOrStorage = function(){
+    var deferred = $q.defer();
+    var appConfig = getAppConfigFromMemory();
+    if (typeof appConfig !== 'undefined') {
+      deferred.resolve(appConfig);
+    } else {
+      getAppConfigFromStorage()
+        .then(function (res) {
+          deferred.resolve(res);
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
     }
     return deferred.promise;
   };
 
-    /**
-     * expose private function.
-     * @returns {promise|promise|*|promise|promise}
-     */
   this.getCurrentAppConfig = function(){
-    return getAppConfigFromCacheOrStorage();
+    return getAppConfigFromMemoryOrStorage();
   };
 
+  /**
+   * this returns current app config product types.
+   *
+   * */
   this.getProductTypes = function(){
     var deferred = $q.defer();
-    getAppConfigFromCacheOrStorage()
+    getAppConfigFromMemoryOrStorage()
       .then(function(appConfig){
         var facilityStockListProductTypes = [];
         var uuidListOfProductTypesAlreadyRecorded = [];
         var DOES_NOT_EXIST = -1;
-        for(var index in appConfig.selectedProductProfiles){
-          var productType = appConfig.selectedProductProfiles[index].product;
-          var uuid = utility.getStringUuid(productType);
-          if(uuidListOfProductTypesAlreadyRecorded.indexOf(uuid) === DOES_NOT_EXIST ){
-            uuidListOfProductTypesAlreadyRecorded.push(uuid);
-            facilityStockListProductTypes.push(productType);
+        if (typeof appConfig === 'object') {
+          var facilityProductProfiles = appConfig.facility.selectedProductProfiles;
+          if(angular.isArray(facilityProductProfiles)){
+            for(var index in facilityProductProfiles){
+              var productProfile = facilityProductProfiles[index];
+              var productType = productProfile.product;
+              if(typeof productType !== 'object'){
+                throw 'product profile\'s  product type is not an object.'+productType;
+              }
+              var uuid = utility.getStringUuid(productType);
+
+              if(uuidListOfProductTypesAlreadyRecorded.indexOf(uuid) === DOES_NOT_EXIST){
+                uuidListOfProductTypesAlreadyRecorded.push(uuid);
+                facilityStockListProductTypes.push(productType);
+              }
+            }
+          }else{
+            console.error('facility selected product profile is not an array but: '+(typeof facilityProductProfiles));
           }
+        } else {
+          console.error('app config: '+appConfig+' is not an object.');
+          deferred.resolve(facilityStockListProductTypes);
         }
         deferred.resolve(facilityStockListProductTypes);
       })
@@ -187,26 +198,30 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     return deferred.promise;
   };
 
-  var updateAppConfigFromRemote = function(){
+  var updateAppConfigFromRemote = function () {
+    //TODO: refactor this to pull in facility profile from remote, pull in app config, ccu and product profile,
+    //TODO: let it pull in all the latest, run a check to see that all the entities exist, then update app config, else rollback any transaction already in place.
     var deferred = $q.defer();
-    getAppConfigFromCacheOrStorage()
-        .then(function(appConfig){
-          if(typeof appConfig === 'undefined'){
-            deferred.reject('local copy of appConfig does not exist.');
-          }else{
-           syncService.updateFromRemote(storageService.APP_CONFIG, appConfig)
-               .then(function(result){
-                 cache.remove(storageService.APP_CONFIG);//clear cache
-                 deferred.resolve(result);
-               })
-               .catch(function(reason){
-                 deferred.reject(reason);
-               });
-          }
-        })
-        .catch(function(reason){
-          deferred.reject(reason);
-        });
+    getAppConfigFromMemoryOrStorage()
+      .then(function (appConfig) {
+        if (typeof appConfig === 'undefined') {
+          deferred.reject('local copy of appConfig does not exist.');
+        } else {
+
+          //TODO: get from remote here and use setup to save then
+          syncService.updateFromRemote(storageService.APP_CONFIG, appConfig)
+            .then(function (result) {
+              cache.remove(storageService.APP_CONFIG);//clear cache
+              deferred.resolve(result);
+            })
+            .catch(function (reason) {
+              deferred.reject(reason);
+            });
+        }
+      })
+      .catch(function (reason) {
+        deferred.reject(reason);
+      });
     return deferred.promise;
   };
 
@@ -218,6 +233,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * @returns {promise|Function|promise|promise|promise|*}
    */
   this.updateAppConfigAndStartBackgroundSync = function(){
+    //TODO: set a flag when this starts, and prevent further background sync attempts.
     var deferred = $q.defer();
     var hasCompletedRemoteUpdateAndBackgroundSyncAttempts = true;
     syncService.canConnect()
