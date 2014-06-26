@@ -2,12 +2,18 @@
 
 describe('storageService', function () {
 
-  var deferred, storageService, chromeStorageApi, rootScope, templateCache, resolvedValue, record, $q;
+  var deferred;
+  var storageService;
+  var chromeStorageApi;
+  var rootScope;
+  var resolvedValue;
+  var record;
+  var $q;
 
-  beforeEach(module('lmisChromeApp', 'i18nMocks'));
+  beforeEach(module('lmisChromeApp', 'i18nMocks', 'fixtureLoaderMocks'));
 
     // Initialize the state
-  beforeEach(inject(function($templateCache) {
+  beforeEach(inject(function($templateCache, fixtureLoaderMock) {
     // Mock each template used by the state
     var templates = [
       'index/index',
@@ -27,6 +33,9 @@ describe('storageService', function () {
     angular.forEach(templates, function(template) {
       $templateCache.put('views/' + template + '.html', '');
     });
+
+    fixtureLoaderMock.loadFixtures();
+
   }));
 
   beforeEach(inject(function (_storageService_, _$q_, _$rootScope_, _chromeStorageApi_){
