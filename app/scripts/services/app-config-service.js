@@ -248,20 +248,12 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   
   //analytics syncing bit
   this.syncOfflineAnalytics = function(){
-      var deferred = $q.defer();
-      
-      syncService.canConnect()
-        .then(function () {
+
             //try to get this work first!
            analyticsSyncService.syncClicks();
 //           analyticsSyncService.syncExceptions();
 //           analyticsSyncService.syncPageViews(); 
-      }).catch(function (reason) {
-          deferred.reject(reason);
-        });
-      
-      
-      return deferred.promise;
+
   };
 
 });
