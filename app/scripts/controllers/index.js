@@ -31,12 +31,11 @@ angular.module('lmisChromeApp')
                 $scope.$digest();
 
                 //trigger background syncing
-                //TODO: uncomment later
-//                appConfigService.updateAppConfigAndStartBackgroundSync()
-//                    .finally(function(){
-//                      console.log('updateAppConfigAndStartBackgroundSync  triggered on device connection ' +
-//                          'status change has been completed.');
-//                    });
+                appConfigService.updateAppConfigAndStartBackgroundSync()
+                    .finally(function(){
+                      console.log('updateAppConfigAndStartBackgroundSync  triggered on device connection ' +
+                          'status change has been completed.');
+                    });
 
               }, false);
             };
