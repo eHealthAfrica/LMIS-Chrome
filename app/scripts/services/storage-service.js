@@ -164,15 +164,9 @@ angular.module('lmisChromeApp')
                 return  chromeStorageApi.set(obj);
             };
 
-      /**
-       * Remove a table from the chrome store.
-       *
-       * @param key - Table name.
-       * @returns {*|boolean|Array|Promise|string}
-       */
-      var removeData = function(key) {
-        return chromeStorageApi.remove(key);
-      };
+            var getData = function(key) {
+                return chromeStorageApi.get(key);
+            };
 
             /**
              * Get table data from the chrome store
