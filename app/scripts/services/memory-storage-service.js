@@ -5,11 +5,11 @@ angular.module('lmisChromeApp')
     var MEMORY_STORE = 'memory_store';
 
     this.put = function(dbName, data){
-      if(!('uuid' in data)){
-        throw 'data should have a uuid that serves as its key.';
+      if(typeof data.uuid !== 'string' || data.uuid === ''){
+        throw 'data.uuid is NOT a non-empty string..';
       }
-      if(typeof dbName !== 'string' || dbName.length === 0){
-        throw ['dbName is not a string or is an empty string. db name: ', JSON.stringify(dbName)].join(' ');
+      if(typeof dbName !== 'string' || dbName === ''){
+        throw ['dbName is NOT a non-empty string. db name: ', String(dbName)].join(' ');
       }
       if(typeof $rootScope.memoryStore[dbName] === 'undefined'){
         $rootScope.memoryStore[dbName] = {};
