@@ -13,13 +13,13 @@ angular.module('lmisChromeApp')
         },
         isStockCountReminderDue: function(stockCountFactory, appConfig) {
           if (typeof appConfig !== 'undefined') {
-            return stockCountFactory.isStockCountDue(appConfig.stockCountInterval, appConfig.reminderDay);
+            return stockCountFactory.isStockCountDue(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
           }
         }
       },
       controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope, reminderFactory, i18n) {
         if (typeof appConfig === 'undefined') {
-          $state.go('appConfigWelcome');
+          $state.go('loadingFixture');
         } else {
           $scope.facility = appConfig.facility.name;
           if (isStockCountReminderDue === true) {
@@ -70,16 +70,13 @@ angular.module('lmisChromeApp')
         'activities': {
           templateUrl: 'views/home/main-activity.html',
           controller: function ($stateParams, i18n, growl, alertFactory, $scope) {
-
             var alertQueue = alertFactory.getAll();
             for (var i in alertQueue) {
               var alert = alertQueue[i];
               growl.success(alert.msg);
               alertFactory.remove(alert.id);
             }
-
             $scope.openMain = true;
-
           }
         },
         'charts': {
@@ -171,7 +168,7 @@ angular.module('lmisChromeApp')
 
             $scope.showChart = !(getAllStockCount.length === 0);
             if ($scope.showChart) {
-              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory)
+              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService)
                 .then(function(productTypeCounts) {
                   var values = [], product = {}, stockOutWarning = [];
 
@@ -179,7 +176,7 @@ angular.module('lmisChromeApp')
                     return stockOutList.filter(function(element) {
                       var dayTest = function() {
                         var createdTime = new Date(element.created).getTime();
-                        var stockCountDueDate  = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
+                        var stockCountDueDate  = stockCountFactory.getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
                         return stockCountDueDate.getTime() < createdTime;
                       };
                       return element.productType.uuid === uuid && dayTest();
