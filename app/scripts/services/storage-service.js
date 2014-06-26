@@ -298,85 +298,12 @@ angular.module('lmisChromeApp')
       }
     };
 
-    /**
-     * loads fixtures on app startup
-     *
-     * @returns {promise|promise|*|promise|promise}
-     */
-    var loadFixtures = function () {
-
-        var deferred = $q.defer();
-
-        var isLoading = false;
-        function loadData(dbName) {
-          getData(dbName)
-              .then(function (data) {
-                if (angular.isUndefined(data)) {
-                  var fileUrl = 'scripts/fixtures/' + dbName + '.json';
-                  $http.get(fileUrl)
-                      .success(function (data) {
-                        setTable(dbName, data).then(function (res) {
-                          isLoading = false;
-                        }, function (err) {
-                          isLoading = false;
-                        });
-                      })
-                      .error(function (err) {
-                        console.log(err);
-                        isLoading = false;
-                      });
-                }else {
-                  isLoading = false;
-                });
-            } else {
-              isLoading = false;
-            }
-          })
-          .catch(function (reason) {
-            isLoading = false;
-            console.log('error loading ' + dbName + ' ' + reason);
-          });
-      }
-
-        var loadNext = function (i) {
-          if (!isLoading) {
-            $rootScope.$emit('START_LOADING', {started: true});
-            isLoading = true;
-            loadData(FIXTURE_NAMES[--i]);
-          }
-          if (i > 0) {
-            setTimeout(function () {loadNext(i); }, 10);
-          } else {
-            //this is when the app is actually ready
-            $rootScope.$emit('LOADING_COMPLETED', {completed: true});
-            deferred.resolve(true);
-          }
-        };
-        loadNext(FIXTURE_NAMES.length);
-        return deferred.promise;
-      };
-      loadNext(database.length);
-      return deferred.promise;
-    };
-
-    var uuidGenerator = function () {
-      var now = Date.now();
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = (now + Math.random() * 16) % 16 | 0;
-        now = Math.floor(now / 16);
-        return (c === 'x' ? r : (r & 0x7 | 0x8)).toString(16);
-      });
-    };
-
-    var getFromTableByKey = function (tableName, _key) {
-      var deferred = $q.defer();
-      var key = String(_key);//force conversion to string
-      getData(tableName)
-        .then(function (data) {
-          deferred.resolve(data[key]);
-        })
-        .catch(function (reason) {
-          deferred.reject(reason);
+      var uuidGenerator = function () {
+        var now = Date.now();
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+          var r = (now + Math.random() * 16) % 16 | 0;
+          now = Math.floor(now / 16);
+          return (c === 'x' ? r : (r & 0x7 | 0x8)).toString(16);
         });
       return deferred.promise;
     };
@@ -473,7 +400,6 @@ angular.module('lmisChromeApp')
         remove: removeData, // removeFromChrome,
         clear: clearStorage, // clearChrome */
         uuid: uuidGenerator,
-        loadFixtures: loadFixtures,
         insert: insertData,
         update: updateData,
         save: saveData,
