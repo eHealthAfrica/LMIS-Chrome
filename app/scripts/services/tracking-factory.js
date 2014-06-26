@@ -5,13 +5,14 @@
 //need to design the priority queue bit based on the storage capacity restriction on the local storage and introduce a table for the lost records count
 
 angular.module('lmisChromeApp')
-        .factory('trackingFactory', function($window, $rootScope, config, utility, deviceInfoFactory, storageService) {
+        .factory('trackingFactory', function($window, $rootScope, config, utility, syncService, storageService) {
 
             var tracker;
             var online;
             if (utility.has($window, 'analytics')) {
                 var service = $window.analytics.getService(config.analytics.service);
-                online = deviceInfoFactory.isOnline();
+                online = syncService.canConnect();
+                console.log("online: "+online);
                 tracker = online ? service.getTracker(config.analytics.propertyID) : {
                     sendAppView: function(page) {
                         console.log("offline page: " + page);
@@ -38,6 +39,8 @@ angular.module('lmisChromeApp')
                     }
 
                 };
+                
+                //these will probably have to move elsewhere so that they can use the right tracker
                 $rootScope.$on('$stateChangeSuccess', function(state) {
                     tracker.sendAppView(state.name);
                 });
