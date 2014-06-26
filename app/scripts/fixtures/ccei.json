@@ -16,6 +16,24 @@
     "_id": "8a529495c6076aed9f1850d53d02696b",
     "_rev": "6-7febf38de0db42347522e9e06adc0ef0",
     "uuid": "8a529495c6076aed9f1850d53d02696b"
+},"8a529495c6076aed9f1850d46f7efd3a": {
+    "name": "E003035 + TCW 2000 SDD",
+    "dhis2_modelid": 0,
+    "dhis2_modelattributeid": 0,
+    "CatalogID": "E003035",
+    "ModelName": "TCW 2000 SDD",
+    "Manufacturer": "Dometic",
+    "RefPowerSource": "Solar",
+    "RefType": "UprightRefrigerator",
+    "ClimateZone": "Hot",
+    "DataSource": "",
+    "RefGrossVolume": "",
+    "RefNetVolume": "",
+    "FreezeGrossVolume": "",
+    "FreezeNetVolume": "",
+    "_id": "8a529495c6076aed9f1850d46f7efd3a",
+    "_rev": "1-7febf38de0db42347522e9e06adc0baf",
+    "uuid": "8a529495c6076aed9f1850d46f7efd3a"
 }, "8a529495c6076aed9f1850d53d02789f": {
     "_id": "8a529495c6076aed9f1850d53d02789f",
     "_rev": "5-aba1183f3a5d3d6e70a2482fab6b1578",
@@ -1181,4 +1199,23 @@
     "_id": "8a529495c6076aed9f1850d53d047d99",
     "_rev": "3-c26022097c28aab886f9250758663651",
     "uuid": "8a529495c6076aed9f1850d53d047d99"
-}}
+}, "8a529495c6076aed9f1850d5e7ab89f8": {
+    "name": "VC65 Solar Medical Refrigerator",
+    "dhis2_modelid": 0,
+    "dhis2_modelattributeid": 0,
+    "ModelName": "VEC65-2",
+    "Manufacturer": "Dulas Solar",
+    "CatalogID": "",
+    "RefType": "UprightRefrigerator",
+    "DataSource": "",
+    "RefPowerSource": "Solar",
+    "RefNetVolume": "",
+    "FreezeNetVolume": "",
+    "RefGrossVolume": "48.3",
+    "FreezeGrossVolume": "24.3",
+    "ClimateZone": "Hot",
+    "_id": "8a529495c6076aed9f1850d5e7ab89f8",
+    "_rev": "1-c26022097c28aab886f9250758663abe",
+    "uuid": "8a529495c6076aed9f1850d5e7ab89f8"
+}
+}

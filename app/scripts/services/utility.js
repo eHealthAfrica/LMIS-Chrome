@@ -131,25 +131,24 @@ angular.module('lmisChromeApp')
       return upperCaseWord.split(/(?=[A-Z])/).join(' ');
     };
 
-    this.copy = function (src, des) {
-      if (typeof src !== 'undefined') {
-        //src obj already exists, update des obj.
-        for (var key in src) {
-          des[key] = src[key];
-        }
+  this.copy = function (src, des) {
+    if(typeof src !== 'object'){
+      src = {};
+    }
+
+    if(typeof des !== 'object'){
+      des = {};
+    }
+
+    if (typeof src === 'object' && typeof des === 'object') {
+      //src obj already exists, update des obj.
+      for (var key in src) {
+        des[key] = src[key];
       }
       return des;
-    };
+    }
 
-    this.ellipsize = function (string, length) {
-      if (length < 1) {
-        return '';
-      }
-      if (string && string.length > length) {
-        string = string.substr(0, length - 1) + '…';
-      }
-      return string;
-    };
+  };
 
     /**
      * Does the object contain the given key(s)?

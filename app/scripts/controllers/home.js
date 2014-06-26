@@ -183,10 +183,11 @@ angular.module('lmisChromeApp')
                     for (var uuid in productTypeCounts) {
                       product = productTypeCounts[uuid];
 
-                      //skip prods where we don't have inventory rule information
-                      if (product.bufferStock < 0) {
-                        continue;
-                      }
+            $scope.showChart = !isStockCountReminderDue;
+            if ($scope.showChart) {
+              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory)
+                .then(function(productTypeCounts) {
+                  var values = [], product = {}, stockOutWarning = [];
 
                       //filter out stock count with no reference to stock out broadcast since the last stock count
                       var filtered = filterStockCountWithNoStockOutRef(stockOutList, uuid);
