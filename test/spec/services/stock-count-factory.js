@@ -1,12 +1,19 @@
 'use strict';
 
 describe('Service stockCountFactory', function () {
-  beforeEach(module('lmisChromeApp', 'stockCountMocks', 'i18nMocks'));
+  beforeEach(module('lmisChromeApp', 'stockCountMocks', 'i18nMocks', 'fixtureLoaderMocks'));
 
-  var stockCountFactory, stockCount, scope, _i18n, storageService, $q, reminderFactory, utility;
+  var stockCountFactory;
+  var stockCount;
+  var scope;
+  var _i18n;
+  var storageService;
+  var $q;
+  var reminderFactory;
+  var utility;
 
   // Initialize the state
-  beforeEach(inject(function ($templateCache) {
+  beforeEach(inject(function ($templateCache, fixtureLoaderMock) {
     // Mock each template used by the state
     var templates = [
       'index/index',
@@ -26,6 +33,9 @@ describe('Service stockCountFactory', function () {
     angular.forEach(templates, function (template) {
       $templateCache.put('views/' + template + '.html', '');
     });
+
+    fixtureLoaderMock.loadFixtures();
+
   }));
 
   beforeEach(inject(function (_stockCountFactory_, $rootScope, stockData, _$q_, i18n, _storageService_, _reminderFactory_, _utility_) {
@@ -52,7 +62,6 @@ describe('Service stockCountFactory', function () {
       } else {
         return $q.when(null);
       }
-
     });
   }));
 
