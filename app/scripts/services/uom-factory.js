@@ -1,40 +1,25 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('uomFactory', function ($q, storageService, trackingFactory, utility) {
+    .factory('uomFactory', function ($q, storageService, utility, memoryStorageService) {
 
       var getByUuid = function(uuid) {
-        var deferred = $q.defer();
-        //TODO: attach nested objects
         var uuid = utility.getStringUuid(uuid);
-        storageService.find(storageService.UOM, uuid)
-            .then(function (data) {
-              deferred.resolve(data);
-            })
-            .catch(function(reason){
-              deferred.reject(reason);
-              trackingFactory.tracker.sendException(reason, false);
-            });
-        return deferred.promise;
+        var uom = memoryStorageService.get(storageService.UOM, uuid);
+        if(typeof uom !== 'object'){
+          console.error('uom with uuid'+uuid+', does not exist. or is not and object but: '+uom);
+        }
+        return uom;
       };
 
       var getAllUom = function () {
-        var deferred = $q.defer(), uomList = [];
-        storageService.all(storageService.UOM).then(function (data) {
-          for(var index in data){
-            var uom = data[index];
-            var uuid =  utility.getStringUuid(uom);
-            uomList.push(getByUuid(uuid));
-          }
-
-          $q.all(uomList)
-              .then(function (results) {
-                deferred.resolve(results);
-              }).catch(function (reason) {
-                deferred.reject(reason);
-              });
-        });
-        return deferred.promise;
+        var uomDb = memoryStorageService.getDatabase(storageService.UOM);
+        var uomList = [];
+        for(var key in uomDb){
+          var uom = getByUuid(key);
+          uomList.push(uom);
+        }
+        return uomList;
       };
 
       // Public API here
