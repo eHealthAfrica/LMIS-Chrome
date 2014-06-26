@@ -1,67 +1,34 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('productTypeFactory', function ($q, storageService, uomFactory, utility) {
+    .factory('productTypeFactory', function ($q, storageService, memoryStorageService, uomFactory, utility) {
 
-      var getByUuid = function(uuid) {
-        var deferred = $q.defer();
-        uuid = utility.getStringUuid(uuid);
-        storageService.find(storageService.PRODUCT_TYPES, uuid)
-            .then(function (productType) {
-              if (productType !== undefined) {
-                var uom_uuid = utility.getStringUuid(productType.base_uom);
-                var promises = {
-                  base_uom: uomFactory.get(uom_uuid)
-                };
-
-                $q.all(promises)
-                    .then(function(result){
-                      for(var key in result) {
-                        productType[key] = result[key];
-                      }
-                      deferred.resolve(productType);
-                    })
-                    .catch(function(reason){
-                      deferred.reject(reason);
-                    });
-              } else {
-                deferred.resolve(productType);
-              }
-            })
-            .catch(function (reason) {
-              deferred.reject(reason);
-            });
-        return deferred.promise;
+      var getByUuid = function(key) {
+        var uuid = utility.getStringUuid(key);
+        var productType = memoryStorageService.get(storageService.PRODUCT_TYPES, uuid);
+        //attach nested objects if it exists.
+        if(typeof productType === 'object'){
+          productType.base_uom = uomFactory.get(productType.base_uom);
+        }else{
+          console.error('product type accessed with key: '+uuid+', does not exist.');
+        }
+        return productType;
       };
 
-      var getProductTypeList = function(){
-        var deferred = $q.defer();
-
-        storageService.all(storageService.PRODUCT_TYPES)
-            .then(function (data) {
-              var promises = [];
-              for(var index in data){
-                var productType = data[index];
-                var uuid = utility.getStringUuid(productType);
-                promises.push(getByUuid(uuid));
-              }
-
-              $q.all(promises)
-                  .then(function(results){
-                    deferred.resolve(results);
-                  })
-                  .catch(function(reason){
-                    deferred.reject(reason);
-                  });
-            })
-            .catch(function(reason){
-              deferred.reject(reason);
-            });
-        return deferred.promise;
+      var getProductTypes = function(){
+        var productTypes = [];
+        var productTypeDB = memoryStorageService.getDatabase(storageService.PRODUCT_TYPES);
+        for(var key in productTypeDB){
+          var pType = getByUuid(key);
+          if(typeof pType === 'object'){
+            productTypes.push(pType);
+          }
+        }
+        return productTypes;
       };
 
       return {
-        getAll: getProductTypeList,
+        getAll: getProductTypes,
         get: getByUuid
       };
 
