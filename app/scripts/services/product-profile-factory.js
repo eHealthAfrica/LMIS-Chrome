@@ -5,7 +5,7 @@ angular.module('lmisChromeApp')
 
     var getByUuid = function(uuid) {
       uuid = utility.getStringUuid(uuid);
-      var prodProfile = memoryStorageService.get(storageService.PRODUCT_PROFILE, uuid);
+      var prodProfile = memoryStorageService.get(storageService.PRODUCT_PROFILES, uuid);
       if(typeof prodProfile === 'object'){
         prodProfile.presentation = presentationFactory.get(prodProfile.presentation);
         prodProfile.product = productTypeFactory.get(prodProfile.product);
@@ -17,7 +17,7 @@ angular.module('lmisChromeApp')
     };
 
     var getAll = function() {
-      var prodProfileDb = memoryStorageService.getDatabase(storageService.PRODUCT_PROFILE);
+      var prodProfileDb = memoryStorageService.getDatabase(storageService.PRODUCT_PROFILES);
       var productProfiles = [];
       for(var key in prodProfileDb){
         var prodProfile = getByUuid(key);
@@ -57,7 +57,7 @@ angular.module('lmisChromeApp')
     };
 
     var getAllGroupedByProductCategory = function(){
-      var db = memoryStorageService.getDatabase(storageService.PRODUCT_PROFILE);
+      var db = memoryStorageService.getDatabase(storageService.PRODUCT_PROFILES);
       var keys = Object.keys(db);
       return getBatchGroupedByProductCategory(keys);
     };

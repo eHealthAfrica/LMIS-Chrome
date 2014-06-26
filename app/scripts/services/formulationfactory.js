@@ -3,13 +3,13 @@
 angular.module('lmisChromeApp').factory('formulationFactory', function ($q, storageService) {
 
   var getByUuid = function(uuid) {
-    return storageService.find(storageService.PRODUCT_FORMULATION, uuid);
+    return storageService.find(storageService.PRODUCT_FORMULATIONS, uuid);
   };
 
   var getAll = function(){
     var deferred = $q.defer();
     var promises = [];
-    storageService.all(storageService.PRODUCT_FORMULATION)
+    storageService.all(storageService.PRODUCT_FORMULATIONS)
         .then(function(result){
           for(var index in result){
             var formulation = result[index];

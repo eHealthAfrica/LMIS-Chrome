@@ -2,7 +2,7 @@
 
 angular.module('lmisChromeApp')
   .controller('ProgramsCtrl', function($scope, storageService) {
-    storageService.get(storageService.PROGRAM).then(function(programs) {
+    storageService.get(storageService.PROGRAMS).then(function(programs) {
       $scope.programList = programs;
     });
   })
@@ -12,7 +12,7 @@ angular.module('lmisChromeApp')
     $scope.uuid = ($location.search()).uuid;
 
     if ($scope.uuid) {
-      storageService.loadTableObject(storageService.PROGRAM).then(function(
+      storageService.loadTableObject(storageService.PROGRAMS).then(function(
         programs) {
         $scope.program = programs[$scope.uuid];
       });
@@ -21,7 +21,7 @@ angular.module('lmisChromeApp')
 
     $scope.saveProgram = function() {
       if (Object.keys($scope.program).length > 0) {
-        storageService.save(storageService.PROGRAM, $scope.program).then(
+        storageService.save(storageService.PROGRAMS, $scope.program).then(
           function() {
             var msg = ($scope.uuid) ? {
               message: 'Program update was successful'
@@ -36,18 +36,18 @@ angular.module('lmisChromeApp')
       }
     };
 
-    storageService.get(storageService.PROGRAM).then(function(programs) {
+    storageService.get(storageService.PROGRAMS).then(function(programs) {
       $scope.programList = programs;
     });
 
     $scope.removeProgram = function(uuid) {
       console.log(uuid);
-      utility.loadTableObject(storageService.PROGRAM).then(function(programs) {
+      utility.loadTableObject(storageService.PROGRAMS).then(function(programs) {
         $scope.program = programs[uuid];
         // jshint camelcase: false
         var index = $scope.program.array_index;
         $scope.programList.splice(index, 1);
-        storageService.add(storageService.PROGRAM, $scope.programList);
+        storageService.add(storageService.PROGRAMS, $scope.programList);
       });
     };
   })
@@ -58,7 +58,7 @@ angular.module('lmisChromeApp')
       programProducts) {
       $scope.programProductList = programProducts;
     });
-    storageService.loadTableObject(storageService.PROGRAM).then(function(
+    storageService.loadTableObject(storageService.PROGRAMS).then(function(
       programs) {
       $scope.programs_object = programs;
     });
@@ -66,7 +66,7 @@ angular.module('lmisChromeApp')
       products) {
       $scope.products_object = products;
     });
-    storageService.loadTableObject(storageService.CURRENCY).then(function(
+    storageService.loadTableObject(storageService.CURRENCIES).then(function(
       currency) {
       $scope.currency_object = currency;
     });
@@ -78,7 +78,7 @@ angular.module('lmisChromeApp')
 
   .controller('programProductFormCtrl', function($scope, storageService, $location, growl) {
 
-    storageService.get(storageService.PROGRAM).then(function(programs) {
+    storageService.get(storageService.PROGRAMS).then(function(programs) {
       $scope.programList = programs;
     });
 
@@ -140,7 +140,7 @@ angular.module('lmisChromeApp')
 
   .controller('ProductProfileListCtrl', function($scope, storageService, $filter,
     ngTableParams) {
-    storageService.get(storageService.PRODUCT_PROFILE).then(function(data) {
+    storageService.get(storageService.PRODUCT_PROFILES).then(function(data) {
       // Table defaults
       var params = {
         page: 1,
@@ -176,7 +176,7 @@ angular.module('lmisChromeApp')
       $scope.uomList = data;
     });
 
-    storageService.get(storageService.PRODUCT_FORMULATION).then(function(data) {
+    storageService.get(storageService.PRODUCT_FORMULATIONS).then(function(data) {
       $scope.formulations = data;
     });
 
@@ -200,7 +200,7 @@ angular.module('lmisChromeApp')
         $scope.presentations = data;
       });
 
-    storageService.loadTableObject(storageService.PRODUCT_FORMULATION).then(
+    storageService.loadTableObject(storageService.PRODUCT_FORMULATIONS).then(
       function(data) {
         $scope.formulations = data;
       });

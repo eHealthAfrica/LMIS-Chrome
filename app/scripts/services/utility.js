@@ -196,4 +196,14 @@ angular.module('lmisChromeApp')
 
     };
 
+    this.values = function(obj) {
+      var values = [];
+      for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          values.push(obj[key]);
+        }
+      }
+      return values;
+    };
+
   });

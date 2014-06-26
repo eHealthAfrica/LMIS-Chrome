@@ -12,7 +12,7 @@ angular.module('lmisChromeApp')
         //TODO: replace nested attributes such as partners, parent with their complete JSON object(Jideobi)
       function getByUUID(uuid) {
         var deferred = $q.defer();
-        storageService.find(storageService.PROGRAM, uuid).then(function (data) {
+        storageService.find(storageService.PROGRAMS, uuid).then(function (data) {
           var program = data;
           deferred.resolve(program);
         });
@@ -22,7 +22,7 @@ angular.module('lmisChromeApp')
       function getAllProgram() {
         var deferred = $q.defer(), programs = [];
 
-        storageService.all(storageService.PROGRAM).then(function (data) {
+        storageService.all(storageService.PROGRAMS).then(function (data) {
           angular.forEach(data, function (datum) {
             programs.push(getByUUID(datum.uuid).then(function (program) {
               deferred.notify(datum);

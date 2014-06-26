@@ -31,7 +31,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
             return userFactory.getLoggedInUser();
           },
           programs: function (storageService) {
-            return storageService.get(storageService.PROGRAM);
+            return storageService.get(storageService.PROGRAMS);
           },
         },
         controller: function ($scope, $filter, currentFacility, uomList, productTypes, facilities, loggedInUser, programs, $stateParams, $state, ordersFactory) {

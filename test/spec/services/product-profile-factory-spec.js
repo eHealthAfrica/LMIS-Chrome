@@ -49,13 +49,13 @@ describe('Factory: productProfileFactory', function () {
     expect(memoryStorageService.get).not.toHaveBeenCalled();
     var uuid = '075bd789-4b29-4033-80b6-4f834e602628';//BCG 20
     productProfileFactory.get(uuid);
-    expect(memoryStorageService.get).toHaveBeenCalledWith(storageService.PRODUCT_PROFILE, uuid);
+    expect(memoryStorageService.get).toHaveBeenCalledWith(storageService.PRODUCT_PROFILES, uuid);
   });
 
   it('i expect productProfileFactory.get() to return product profile if record exist.', function () {
     var uuid = '075bd789-4b29-4033-80b6-4f834e602628';//BCG 20
     var result = productProfileFactory.get(uuid);
-    var expectedResult = memoryStore[storageService.PRODUCT_PROFILE][uuid];
+    var expectedResult = memoryStore[storageService.PRODUCT_PROFILES][uuid];
     expect(result).toBeDefined();
     expect(result).toEqual(expectedResult);
   });
@@ -63,7 +63,7 @@ describe('Factory: productProfileFactory', function () {
   it('i expect productProfileFactory.getAll() to call memoryStorageService.getDatabase() with the right parameter.', function () {
     expect(memoryStorageService.getDatabase).not.toHaveBeenCalled();
     productProfileFactory.getAll();
-    expect(memoryStorageService.getDatabase).toHaveBeenCalledWith(storageService.PRODUCT_PROFILE);
+    expect(memoryStorageService.getDatabase).toHaveBeenCalledWith(storageService.PRODUCT_PROFILES);
   });
 
   it('i expect productProfileFactory.getAll() to return an array of product profile.', function () {
