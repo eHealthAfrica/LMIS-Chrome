@@ -42,6 +42,7 @@ angular.module('lmisChromeApp', [
     $rootScope.$on('LOADING_COMPLETED', $window.hideSplashScreen);
     $rootScope.$on('START_LOADING', $window.showSplashScreen);
 
+    //TODO: show splash screen while loading fixture into cache
     fixtureLoaderService.loadFiles(storageService.FIXTURE_NAMES)
       .catch(function(reason){
         console.log(reason);

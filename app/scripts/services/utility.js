@@ -46,19 +46,15 @@ angular.module('lmisChromeApp')
       return newObject;
     };
 
-    /**
-     * This takes a date and weekday, then uses the that to return first date, last date and reminderDay date
-     * of the given date week.
-     * First day of the week is assumed to be Sunday.
-     * @param date{{Date}}
-     * @param reminderDay{{Integer}}
-     * @returns {{first: Date, last: Date, reminderDate: Date}}
-     */
     this.getWeekRangeByDate = function (date, reminderDay) {
-      var currentDate = new Date(date);
+      var currentDate = date;
+      // First day of current week is assumed to be Sunday, if current date is
+      // 19-12-2014, which is Thursday = 4, then date of first day of current week
+      // = 19 - 4 = 15-12-2014 which is Sunday
       var firstDayOfCurrentWeek = currentDate.getDate() - currentDate.getDay();
       var FIRST_DAY_AND_LAST_DAY_DIFF = 6;
-      var lastDayOfCurrentWeek = firstDayOfCurrentWeek + FIRST_DAY_AND_LAST_DAY_DIFF;
+      var lastDayOfCurrentWeek = firstDayOfCurrentWeek +
+        FIRST_DAY_AND_LAST_DAY_DIFF;
 
       var firstDayDateOfCurrentWeek = new Date(
         currentDate.getFullYear(),
@@ -131,24 +127,25 @@ angular.module('lmisChromeApp')
       return upperCaseWord.split(/(?=[A-Z])/).join(' ');
     };
 
-  this.copy = function (src, des) {
-    if(typeof src !== 'object'){
-      src = {};
-    }
-
-    if(typeof des !== 'object'){
-      des = {};
-    }
-
-    if (typeof src === 'object' && typeof des === 'object') {
-      //src obj already exists, update des obj.
-      for (var key in src) {
-        des[key] = src[key];
+    this.copy = function (src, des) {
+      if (typeof src !== 'undefined') {
+        //src obj already exists, update des obj.
+        for (var key in src) {
+          des[key] = src[key];
+        }
       }
       return des;
-    }
+    };
 
-  };
+    this.ellipsize = function (string, length) {
+      if (length < 1) {
+        return '';
+      }
+      if (string && string.length > length) {
+        string = string.substr(0, length - 1) + '…';
+      }
+      return string;
+    };
 
     /**
      * Does the object contain the given key(s)?
@@ -196,6 +193,7 @@ angular.module('lmisChromeApp')
         uuidString = uuidObj.uuid;
       }
       return uuidString;
+
     };
 
   });

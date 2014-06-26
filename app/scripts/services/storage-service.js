@@ -98,11 +98,14 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         var obj = {};
         getData(table).then(function(tableData){
-          if(angular.isUndefined(tableData)){
+          if(typeof tableData === 'undefined'){
             tableData = {};
           }
           var oldRecord = tableData[data.uuid];
-          data = utility.copy(oldRecord, data);
+          if(typeof oldRecord !== 'undefined'){
+            data = utility.copy(data, oldRecord);
+          }
+
           tableData[data.uuid] = data;
           obj[table] = tableData;
           chromeStorageApi.set(obj)
