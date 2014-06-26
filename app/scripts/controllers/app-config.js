@@ -107,29 +107,19 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     appConfigService.getAppFacilityProfileByEmail($scope.appConfig.uuid)
         .then(function (result) {
 
-        console.log(result);
-
           $scope.disableBtn = false;
           $scope.isSubmitted = false;
           $scope.profileNotFound = false;
 
           $scope.appConfig.facility = result;
-
-          console.info($scope.appConfig.facility);
-
           $scope.appConfig.facility.reminderDay = result.reminderDay;
           $scope.appConfig.facility.stockCountInterval = result.stockCountInterval;
-          //TODO: unify facility product profile and app config contact person info.
           $scope.appConfig.contactPerson.name = $scope.appConfig.facility.contact.name;
           $scope.appConfig.contactPerson.phoneNo = $scope.appConfig.facility.contact.oldphone;
-
-          //$scope.appConfig.selectedProductProfiles = result.selectedProductProfiles || [];
           $scope.appConfig.selectedCcuProfiles = result.selectedCcuProfiles || [];
 
           $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
           $scope.preSelectProductProfileCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedProductProfiles, 'uuid');
-
-          console.warn($scope.appConfig);
 
           $scope.moveTo(nextStep);
 
@@ -193,7 +183,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
   $scope.ccuProfilesGroupedByCategory = ccuProfilesGroupedByCategory;
   $scope.productProfileCategories = Object.keys(productProfilesGroupedByCategory);
   $scope.productProfilesGroupedByCategory = productProfilesGroupedByCategory;
-  console.info(productProfilesGroupedByCategory);
   //used to hold check box selection for both ccu and product profile
   $scope.productProfileCheckBoxes = [];
   $scope.ccuProfileCheckBoxes = [];
