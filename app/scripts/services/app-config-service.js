@@ -199,6 +199,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   };
 
   var updateAppConfigFromRemote = function () {
+    //throw 'exception, you should not be calling this function until implementation is completed.'
     //TODO: refactor this to pull in facility profile from remote, pull in app config, ccu and product profile,
     //TODO: let it pull in all the latest, run a check to see that all the entities exist, then update app config, else rollback any transaction already in place.
     var deferred = $q.defer();
@@ -211,7 +212,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
           //TODO: get from remote here and use setup to save then
           syncService.updateFromRemote(storageService.APP_CONFIG, appConfig)
             .then(function (result) {
-              cache.remove(storageService.APP_CONFIG);//clear cache
+              //TODO: update memory store after changing this.
               deferred.resolve(result);
             })
             .catch(function (reason) {
@@ -233,7 +234,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * @returns {promise|Function|promise|promise|promise|*}
    */
   this.updateAppConfigAndStartBackgroundSync = function(){
-    //TODO: set a flag when this starts, and prevent further background sync attempts.
+    //TODO: add set a flag when this starts, and prevent further background sync attempts.
     var deferred = $q.defer();
     var hasCompletedRemoteUpdateAndBackgroundSyncAttempts = true;
     syncService.canConnect()

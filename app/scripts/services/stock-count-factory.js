@@ -175,11 +175,10 @@ angular.module('lmisChromeApp')
      */
       byFacility: function (facility) {
         var deferred = $q.defer();
-        var fUuid = utility.getStringUuid(facility);
+        var fUuid = typeof facility === 'string' ? facility : facility.uuid;
         getAllStockCount().then(function (result) {
           var res = result.filter(function (e) {
-            var stkCountFacUuid = utility.getStringUuid(e.facility);
-            return e !== 'undefined' && stkCountFacUuid === fUuid;
+            return e !== 'undefined' && e.facility === fUuid;
           });
           deferred.resolve(res);
         }, function (err) {
