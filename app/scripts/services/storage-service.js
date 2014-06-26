@@ -52,12 +52,42 @@ angular.module('lmisChromeApp')
       var ccuBreakdown = 'ccu_breakdown';
       var pendingSyncs = 'pending_syncs';
 
+    var FIXTURE_NAMES = [
+      productTypes,
+      uom,
+      uomCategory,
+      facility,
+      program,
+      employeeCategory,
+      company,
+      companyCategory,
+      currency,
+      ccuType,
+      ccu,
+      inventory,
+      ccuProblem,
+      user,
+      productCategory,
+      productPresentation,
+      productProfile,
+      productFormulation,
+      modeOfAdministration,
+      batches,
+      orders,
+      bundles,
+      bundleLines,
+      bundleReceipt,
+      locations,
+      stockOut,
+      ccuProfile
+    ];
+
       /**
        * Add new table data to the chrome store.
        *
        * @param {string} table - Table name.
        * @param {mixed} data - rows of the table (all values are stored as JSON.)
-       * @return {Promise} Promise object
+       * @return {promise|Function|promise|promise|promise|*}
        * @private
        */
 
@@ -68,11 +98,14 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         var obj = {};
         getData(table).then(function(tableData){
-          if(angular.isUndefined(tableData)){
+          if(typeof tableData === 'undefined'){
             tableData = {};
           }
           var oldRecord = tableData[data.uuid];
-          data = utility.copy(oldRecord, data);
+          if(typeof oldRecord !== 'undefined'){
+            data = utility.copy(data, oldRecord);
+          }
+
           tableData[data.uuid] = data;
           obj[table] = tableData;
           chromeStorageApi.set(obj)
@@ -253,41 +286,7 @@ angular.module('lmisChromeApp')
       var loadFixtures = function() {
 
         var deferred = $q.defer();
-        var database = [
-          productTypes,
-          address,
-          uom,
-          uomCategory,
-          facility,
-          program,
-          programProducts,
-          facilityType,
-          employeeCategory,
-          company,
-          companyCategory,
-          currency,
-          employee,
-          rate,
-          ccuType,
-          ccu,
-          inventory,
-          ccuProblem,
-          ccuTemperatureLog,
-          user,
-          productCategory,
-          productPresentation,
-          productProfile,
-          productFormulation,
-          modeOfAdministration,
-          batches,
-          orders,
-          bundles,
-          bundleLines,
-          bundleReceipt,
-          locations,
-          stockOut,
-          ccuProfile
-        ];
+
         var isLoading = false;
         function loadData(dbName) {
           getData(dbName)
@@ -320,7 +319,7 @@ angular.module('lmisChromeApp')
           if (!isLoading) {
             $rootScope.$emit('START_LOADING', {started: true});
             isLoading = true;
-            loadData(database[--i]);
+            loadData(FIXTURE_NAMES[--i]);
           }
           if (i > 0) {
             setTimeout(function () {loadNext(i); }, 10);
@@ -330,7 +329,7 @@ angular.module('lmisChromeApp')
             deferred.resolve(true);
           }
         };
-        loadNext(database.length);
+        loadNext(FIXTURE_NAMES.length);
         return deferred.promise;
       };
 
@@ -496,7 +495,8 @@ angular.module('lmisChromeApp')
         SURVEY_RESPONSE: surveyResponse,
         CCU_PROFILE: ccuProfile,
         CCU_BREAKDOWN: ccuBreakdown,
-        PENDING_SYNCS: pendingSyncs
+        PENDING_SYNCS: pendingSyncs,
+        FIXTURE_NAMES: FIXTURE_NAMES
       };
 
     });
