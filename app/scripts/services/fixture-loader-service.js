@@ -18,7 +18,11 @@ angular.module('lmisChromeApp')
           var resultSet = {};
           for (var fileName in result) {
             var data = result[fileName].data;
+            if(angular.isArray(data)){
+              continue; //skip array fictures, we dont use them currently
+            }
             resultSet[fileName] = data;
+            console.log('loaded: '+fileName);
             memoryStorageService.setDatabase(fileName, data);
           }
           $rootScope.$emit('LOADING_COMPLETED', {completed: true});
