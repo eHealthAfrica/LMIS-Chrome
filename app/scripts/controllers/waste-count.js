@@ -130,7 +130,6 @@ angular.module('lmisChromeApp')
           })
           .catch(function(reason){
             console.error(reason);
-            $scope.isSaving = false;
             growl.error(reason);
           });
     };
