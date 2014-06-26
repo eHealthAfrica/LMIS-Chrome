@@ -1,25 +1,25 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .config(function($urlRouterProvider, $stateProvider) {
+  .config(function ($urlRouterProvider, $stateProvider) {
     // Initial state
     $urlRouterProvider.otherwise('/main-activity');
     $stateProvider.state('home', {
       parent: 'root.index',
       templateUrl: 'views/home/index.html',
       resolve: {
-        appConfig: function(appConfigService) {
+        appConfig: function (appConfigService) {
           return appConfigService.getCurrentAppConfig();
         },
-        isStockCountReminderDue: function(stockCountFactory, appConfig) {
+        isStockCountReminderDue: function (stockCountFactory, appConfig) {
           if (typeof appConfig !== 'undefined') {
             return stockCountFactory.isStockCountDue(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
           }
         }
       },
-      controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope, reminderFactory, i18n) {
+      controller: function (appConfig, $state, $scope, isStockCountReminderDue, $rootScope, reminderFactory, i18n) {
         if (typeof appConfig === 'undefined') {
-          $state.go('loadingFixture');
+          $state.go('appConfigWelcome');
         } else {
           $scope.facility = appConfig.facility.name;
           if (isStockCountReminderDue === true) {
@@ -36,323 +36,323 @@ angular.module('lmisChromeApp')
         }
       }
     })
-    .state('home.index', {
-      abstract: true,
-      views: {
-        'nav': {
-          templateUrl: 'views/home/nav.html',
-          controller: function($scope, $state) {
-            $scope.$state = $state;
-          }
-        },
-        'sidebar': {
-          templateUrl: 'views/home/sidebar.html'
-        }
-      }
-    })
-    .state('home.index.controlPanel', {
-      url: '/control-panel',
-      templateUrl: 'views/home/control-panel.html',
-      data: {
-        label: 'Home'
-      }
-    })
-    .state('home.index.home', {
-      abstract: true,
-      templateUrl: 'views/home/home.html'
-    })
-    .state('home.index.home.mainActivity', {
-      url: '/main-activity',
-      data: {
-        label: 'Home'
-      },
-      views: {
-        'activities': {
-          templateUrl: 'views/home/main-activity.html',
-          controller: function ($stateParams, i18n, growl, alertFactory, $scope) {
-            var alertQueue = alertFactory.getAll();
-            for (var i in alertQueue) {
-              var alert = alertQueue[i];
-              growl.success(alert.msg);
-              alertFactory.remove(alert.id);
-            }
-            $scope.openMain = true;
-          }
-        },
-        'charts': {
-          templateUrl: 'views/dashboard/dashboard.html',
-          resolve: {
-            stockOutList: function(stockOutBroadcastFactory) {
-              return stockOutBroadcastFactory.getAll();
+      .state('home.index', {
+        abstract: true,
+        views: {
+          'nav': {
+            templateUrl: 'views/home/nav.html',
+            controller: function ($scope, $state) {
+              $scope.$state = $state;
             }
           },
-          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
-            var keys = [
-              {
-                key: 'stockBelowReorder',
-                label: i18n('stockBelow'),
-                color:  '#ff7518'
-              },
-              {
-                key: 'stockAboveReorder',
-                label: i18n('stockAbove'),
-                color: '#666666'
+          'sidebar': {
+            templateUrl: 'views/home/sidebar.html'
+          }
+        }
+      })
+      .state('home.index.controlPanel', {
+        url: '/control-panel',
+        templateUrl: 'views/home/control-panel.html',
+        data: {
+          label: 'Home'
+        }
+      })
+      .state('home.index.home', {
+        abstract: true,
+        templateUrl: 'views/home/home.html'
+      })
+      .state('home.index.home.mainActivity', {
+        url: '/main-activity',
+        data: {
+          label: 'Home'
+        },
+        views: {
+          'activities': {
+            templateUrl: 'views/home/main-activity.html',
+            controller: function ($stateParams, i18n, growl, alertFactory, $scope) {
+              var alertQueue = alertFactory.getAll();
+              for (var i in alertQueue) {
+                var alert = alertQueue[i];
+                growl.success(alert.msg);
+                alertFactory.remove(alert.id);
               }
-            ];
-
-            var getProductTypeCounts = function($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
-              var deferred = $q.defer();
-
-              var productTypeInfo = {};
-              if (typeof appConfig === 'undefined'){
-                deferred.resolve(productTypeInfo);
-                return deferred.promise;
+              $scope.openMain = true;
+            }
+          },
+          'charts': {
+            templateUrl: 'views/dashboard/dashboard.html',
+            resolve: {
+              stockOutList: function (stockOutBroadcastFactory) {
+                return stockOutBroadcastFactory.getAll();
               }
+            },
+            controller: function ($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
+              var keys = [
+                {
+                  key: 'stockBelowReorder',
+                  label: i18n('stockBelow'),
+                  color: '#ff7518'
+                },
+                {
+                  key: 'stockAboveReorder',
+                  label: i18n('stockAbove'),
+                  color: '#666666'
+                }
+              ];
 
-              var currentFacility = appConfig.facility;
-              var promises = [];
-              promises.push(appConfigService.getProductTypes());
-              $q.all(promises)
-                .then(function(res) {
-                  var types = res[0];
-                  var productTypeInfo = [];
-                  var innerPromises = [];
+              var getProductTypeCounts = function ($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService) {
+                var deferred = $q.defer();
 
-                  var collateProductTypeInfo = function(productType) {
-                    var stockLevelPromise = inventoryRulesFactory
-                      .getStockLevel(currentFacility, types[productType].uuid)
-                      .then(function(stockLevel) {
-                        var uuid = types[productType].uuid;
-                        productTypeInfo[uuid].stockLevel = stockLevel;
-                      })
-                      .catch(function(reason) {
-                        deferred.reject(reason);
-                      });
+                var productTypeInfo = {};
+                if (typeof appConfig === 'undefined') {
+                  deferred.resolve(productTypeInfo);
+                  return deferred.promise;
+                }
 
-                    var bufferStockPromise = inventoryRulesFactory
-                      .bufferStock(currentFacility, types[productType].uuid)
-                      .then(function(bufferStock) {
-                        productTypeInfo[types[productType].uuid].bufferStock = bufferStock;
-                      })
-                      .catch(function(reason) {
-                        deferred.reject(reason);
-                      });
+                var currentFacility = appConfig.facility;
+                var promises = [];
+                promises.push(appConfigService.getProductTypes());
+                $q.all(promises)
+                  .then(function (res) {
+                    var types = res[0];
+                    var productTypeInfo = [];
+                    var innerPromises = [];
 
-                    innerPromises.push(stockLevelPromise, bufferStockPromise);
-                  };
+                    var collateProductTypeInfo = function (productType) {
+                      var stockLevelPromise = inventoryRulesFactory
+                        .getStockLevel(currentFacility, types[productType].uuid)
+                        .then(function (stockLevel) {
+                          var uuid = types[productType].uuid;
+                          productTypeInfo[uuid].stockLevel = stockLevel;
+                        })
+                        .catch(function (reason) {
+                          deferred.reject(reason);
+                        });
 
-                  for (var i in types) {
-                    productTypeInfo[types[i].uuid] = {
-                      name: types[i].code
+                      var bufferStockPromise = inventoryRulesFactory
+                        .bufferStock(currentFacility, types[productType].uuid)
+                        .then(function (bufferStock) {
+                          productTypeInfo[types[productType].uuid].bufferStock = bufferStock;
+                        })
+                        .catch(function (reason) {
+                          deferred.reject(reason);
+                        });
+
+                      innerPromises.push(stockLevelPromise, bufferStockPromise);
                     };
-                    collateProductTypeInfo(i);
-                  }
 
-                  $q.all(innerPromises)
-                    .then(function() {
-                      deferred.resolve(productTypeInfo);
-                    })
-                    .catch(function(reason) {
-                      deferred.reject(reason);
-                    });
-                })
-                .catch(function(reason) {
-                  $log.error(reason);
-                  deferred.reject(reason);
-                });
-              return deferred.promise;
-            };
-
-            $scope.showChart = !isStockCountReminderDue;
-            if ($scope.showChart) {
-              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService)
-                .then(function(productTypeCounts) {
-                  var values = [], product = {}, stockOutWarning = [];
-
-                  var filterStockCountWithNoStockOutRef = function(stockOutList, uuid) {
-                    return stockOutList.filter(function(element) {
-                      var dayTest = function() {
-                        var createdTime = new Date(element.created).getTime();
-                        var stockCountDueDate  = stockCountFactory.getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
-                        return stockCountDueDate.getTime() < createdTime;
+                    for (var i in types) {
+                      productTypeInfo[types[i].uuid] = {
+                        name: types[i].code
                       };
-                      return element.productType.uuid === uuid && dayTest();
-                    });
-                  };
-
-                  for (var uuid in productTypeCounts) {
-                    product = productTypeCounts[uuid];
-
-                    //skip prods where we don't have inventory rule information
-                    if (product.bufferStock < 0) {
-                      continue;
+                      collateProductTypeInfo(i);
                     }
 
-                    //filter out stock count with no reference to stock out broadcast since the last stock count
-                    var filtered = filterStockCountWithNoStockOutRef(stockOutList, uuid);
+                    $q.all(innerPromises)
+                      .then(function () {
+                        deferred.resolve(productTypeInfo);
+                      })
+                      .catch(function (reason) {
+                        deferred.reject(reason);
+                      });
+                  })
+                  .catch(function (reason) {
+                    $log.error(reason);
+                    deferred.reject(reason);
+                  });
+                return deferred.promise;
+              };
 
-                    //create a uuid list of products with zero or less reorder days
-                    //TODO: gather those below reorder point and send background alert, if (product.stockLevel <= product.bufferStock && filtered.length === 0) {
-                    if(product.stockLevel <= 0 && filtered.length === 0){
-                      stockOutWarning.push(uuid);
-                    }
+              $scope.showChart = !isStockCountReminderDue;
+              if ($scope.showChart) {
+                getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService)
+                  .then(function (productTypeCounts) {
+                    var values = [], product = {}, stockOutWarning = [];
 
-                    values.push({
-                      label: utility.ellipsize(product.name, 7),
-                      stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
-                        product.stockLevel, product.bufferStock
-                      ),
-                      stockBelowReorder: inventoryRulesFactory.stockBelowReorder(
-                        product.stockLevel, product.bufferStock
-                      )
-                    });
-                  }
-
-                  $scope.stockOutWarning = stockOutWarning;
-                  var items = stockOutWarning.length > 1 ? i18n('items') : i18n('item');
-                  $scope.stockOutWarningMsg = i18n('stockOutWarningMsg', [stockOutWarning.length.toString(), items]);
-                  $scope.roundLegend = function() {
-                    return function(d) {
-                      return $window.d3.round(d);
+                    var filterStockCountWithNoStockOutRef = function (stockOutList, uuid) {
+                      return stockOutList.filter(function (element) {
+                        var dayTest = function () {
+                          var createdTime = new Date(element.created).getTime();
+                          var stockCountDueDate = stockCountFactory.getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+                          return stockCountDueDate.getTime() < createdTime;
+                        };
+                        return element.productType.uuid === uuid && dayTest();
+                      });
                     };
-                  };
 
-                  $scope.productTypesChart = dashboardfactory.chart(keys, values);
-                })
-                .catch(function(err) {
-                  console.log('getProductTypeCounts Error: ' + err);
-                });
+                    for (var uuid in productTypeCounts) {
+                      product = productTypeCounts[uuid];
+
+                      //skip prods where we don't have inventory rule information
+                      if (product.bufferStock < 0) {
+                        continue;
+                      }
+
+                      //filter out stock count with no reference to stock out broadcast since the last stock count
+                      var filtered = filterStockCountWithNoStockOutRef(stockOutList, uuid);
+
+                      //create a uuid list of products with zero or less reorder days
+                      //TODO: gather those below reorder point and send background alert, if (product.stockLevel <= product.bufferStock && filtered.length === 0) {
+                      if (product.stockLevel <= 0 && filtered.length === 0) {
+                        stockOutWarning.push(uuid);
+                      }
+
+                      values.push({
+                        label: utility.ellipsize(product.name, 7),
+                        stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
+                          product.stockLevel, product.bufferStock
+                        ),
+                        stockBelowReorder: inventoryRulesFactory.stockBelowReorder(
+                          product.stockLevel, product.bufferStock
+                        )
+                      });
+                    }
+
+                    $scope.stockOutWarning = stockOutWarning;
+                    var items = stockOutWarning.length > 1 ? i18n('items') : i18n('item');
+                    $scope.stockOutWarningMsg = i18n('stockOutWarningMsg', [stockOutWarning.length.toString(), items]);
+                    $scope.roundLegend = function () {
+                      return function (d) {
+                        return $window.d3.round(d);
+                      };
+                    };
+
+                    $scope.productTypesChart = dashboardfactory.chart(keys, values);
+                  })
+                  .catch(function (err) {
+                    console.log('getProductTypeCounts Error: ' + err);
+                  });
+              }
             }
           }
         }
-      }
-    })
-    .state('home.index.dashboard', {
-      url: '/dashboard',
-      templateUrl: 'views/home/dashboard.html',
-      abstract: true,
-      resolve: {
-        settings: function(settingsService) {
-          return settingsService.load();
-        },
-        aggregatedInventory: function($q, $log, appConfig, inventoryFactory, dashboardfactory, settings) {
-          var currentFacility = appConfig.facility;
-          var deferred = $q.defer();
+      })
+      .state('home.index.dashboard', {
+        url: '/dashboard',
+        templateUrl: 'views/home/dashboard.html',
+        abstract: true,
+        resolve: {
+          settings: function (settingsService) {
+            return settingsService.load();
+          },
+          aggregatedInventory: function ($q, $log, appConfig, inventoryFactory, dashboardfactory, settings) {
+            var currentFacility = appConfig.facility;
+            var deferred = $q.defer();
 
-          inventoryFactory.getFacilityInventory(currentFacility.uuid)
-            .then(function(inventory) {
-              var values = dashboardfactory.aggregateInventory(inventory, settings);
-              deferred.resolve(values);
-            })
-            .catch(function(reason) {
-              $log.error(reason);
-            });
+            inventoryFactory.getFacilityInventory(currentFacility.uuid)
+              .then(function (inventory) {
+                var values = dashboardfactory.aggregateInventory(inventory, settings);
+                deferred.resolve(values);
+              })
+              .catch(function (reason) {
+                $log.error(reason);
+              });
 
-          return deferred.promise;
-        }
-      },
-      controller: function($scope, settings, utility) {
-        if (!utility.has(settings, 'inventory.products')) {
-          $scope.productsUnset = true;
-        }
-      }
-    })
-    .state('home.index.dashboard.chart', {
-      url: '',
-      resolve: {
-        keys: function(dashboardfactory) {
-          return dashboardfactory.keys;
-        }
-      },
-      views: {
-        'chart': {
-          templateUrl: 'views/home/dashboard/chart.html',
-          controller: function($scope, $log, dashboardfactory, keys, aggregatedInventory) {
-            $scope.inventoryChart = dashboardfactory.chart(keys, aggregatedInventory);
+            return deferred.promise;
           }
         },
-        'table': {
-          templateUrl: 'views/home/dashboard/table.html',
-          controller: function($scope, settings, aggregatedInventory) {
-            var products = settings.inventory.products;
-
-            // Get the service level for use in view
-            var serviceLevel = 0;
-            for (var i = aggregatedInventory.length - 1; i >= 0; i--) {
-              serviceLevel = products[aggregatedInventory[i].label].serviceLevel;
-              aggregatedInventory[i].serviceLevel = serviceLevel;
+        controller: function ($scope, settings, utility) {
+          if (!utility.has(settings, 'inventory.products')) {
+            $scope.productsUnset = true;
+          }
+        }
+      })
+      .state('home.index.dashboard.chart', {
+        url: '',
+        resolve: {
+          keys: function (dashboardfactory) {
+            return dashboardfactory.keys;
+          }
+        },
+        views: {
+          'chart': {
+            templateUrl: 'views/home/dashboard/chart.html',
+            controller: function ($scope, $log, dashboardfactory, keys, aggregatedInventory) {
+              $scope.inventoryChart = dashboardfactory.chart(keys, aggregatedInventory);
             }
+          },
+          'table': {
+            templateUrl: 'views/home/dashboard/table.html',
+            controller: function ($scope, settings, aggregatedInventory) {
+              var products = settings.inventory.products;
 
-            $scope.products = aggregatedInventory;
+              // Get the service level for use in view
+              var serviceLevel = 0;
+              for (var i = aggregatedInventory.length - 1; i >= 0; i--) {
+                serviceLevel = products[aggregatedInventory[i].label].serviceLevel;
+                aggregatedInventory[i].serviceLevel = serviceLevel;
+              }
+
+              $scope.products = aggregatedInventory;
+            }
           }
         }
-      }
-    })
-    .state('home.index.settings', {
-      url: '/settings',
-      abstract: true,
-      templateUrl: 'views/home/settings.html',
-      resolve: {
-        settings: function(settingsService) {
-          return settingsService.load();
-        }
-      },
-      controller: function($scope, settings, settingsService, growl, i18n, utility) {
-        var fields = ['facility', 'inventory'];
-        for (var i = fields.length - 1; i >= 0; i--) {
-          if (!utility.has(settings, fields[i])) {
-            settings[fields[i]] = {};
+      })
+      .state('home.index.settings', {
+        url: '/settings',
+        abstract: true,
+        templateUrl: 'views/home/settings.html',
+        resolve: {
+          settings: function (settingsService) {
+            return settingsService.load();
           }
-        }
-
-        $scope.settings = settings;
-        $scope.save = function(settings) {
-          settingsService.save(settings)
-            .then(function() {
-              growl.success(i18n('settingsSaved'));
-            })
-            .catch(function() {
-              growl.success(i18n('settingsFailed'));
-            });
-        };
-      }
-    })
-    .state('home.index.settings.facility', {
-      url: '/facility',
-      templateUrl: 'views/home/settings/facility.html',
-      controller: function($scope, settings) {
-        $scope.facility = settings.facility;
-      }
-    })
-    .state('home.index.settings.inventory', {
-      url: '/inventory',
-      templateUrl: 'views/home/settings/inventory.html',
-      resolve: {
-        products: function(appConfig, inventoryFactory) {
-          var currentFacility = appConfig.facility;
-          return inventoryFactory.getUniqueProducts(currentFacility.uuid);
-        }
-      },
-      controller: function($scope, settings, products, utility) {
-        var inventory = settings.inventory;
-
-        // User hasn't made any settings
-        if (!utility.has(inventory, 'products')) {
-          inventory.products = {};
-        }
-
-        // Check if a product has been added since the settings were saved
-        for (var code in products) {
-          if (!utility.has(inventory.products, code)) {
-            inventory.products[code] = products[code];
+        },
+        controller: function ($scope, settings, settingsService, growl, i18n, utility) {
+          var fields = ['facility', 'inventory'];
+          for (var i = fields.length - 1; i >= 0; i--) {
+            if (!utility.has(settings, fields[i])) {
+              settings[fields[i]] = {};
+            }
           }
+
+          $scope.settings = settings;
+          $scope.save = function (settings) {
+            settingsService.save(settings)
+              .then(function () {
+                growl.success(i18n('settingsSaved'));
+              })
+              .catch(function () {
+                growl.success(i18n('settingsFailed'));
+              });
+          };
         }
-        $scope.inventory = inventory;
-      }
-    })
-    .state('contact', {
-      parent: 'root.index',
-      url: '/contact',
-      templateUrl: 'views/home/contact.html'
-    });
+      })
+      .state('home.index.settings.facility', {
+        url: '/facility',
+        templateUrl: 'views/home/settings/facility.html',
+        controller: function ($scope, settings) {
+          $scope.facility = settings.facility;
+        }
+      })
+      .state('home.index.settings.inventory', {
+        url: '/inventory',
+        templateUrl: 'views/home/settings/inventory.html',
+        resolve: {
+          products: function (appConfig, inventoryFactory) {
+            var currentFacility = appConfig.facility;
+            return inventoryFactory.getUniqueProducts(currentFacility.uuid);
+          }
+        },
+        controller: function ($scope, settings, products, utility) {
+          var inventory = settings.inventory;
+
+          // User hasn't made any settings
+          if (!utility.has(inventory, 'products')) {
+            inventory.products = {};
+          }
+
+          // Check if a product has been added since the settings were saved
+          for (var code in products) {
+            if (!utility.has(inventory.products, code)) {
+              inventory.products[code] = products[code];
+            }
+          }
+          $scope.inventory = inventory;
+        }
+      })
+      .state('contact', {
+        parent: 'root.index',
+        url: '/contact',
+        templateUrl: 'views/home/contact.html'
+      });
   });
