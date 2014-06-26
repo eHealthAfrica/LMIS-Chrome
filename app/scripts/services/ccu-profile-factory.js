@@ -1,57 +1,37 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('ccuProfileFactory', function ($q, storageService) {
+angular.module('lmisChromeApp')
+  .factory('ccuProfileFactory', function ($q, storageService, memoryStorageService, utility) {
 
-  var getByModelId = function (modelId) {
-    var deferred = $q.defer();
-    storageService.get(storageService.CCU_PROFILE)
-        .then(function (ccuProfile) {
-          deferred.resolve(ccuProfile[modelId]);
-        })
-        .catch(function(reason){
-          deferred.reject(reason);
-        });
-    return deferred.promise;
-  };
+    var getByUuid = function (uuid) {
+      var ccuProfile = memoryStorageService.get(storageService.CCU_PROFILE, uuid);
+      return ccuProfile;
+    };
 
-  var getCcuProfiles = function () {
-    var deferred = $q.defer();
+    var getCcuProfiles = function () {
+      var ccuProfileDb = memoryStorageService.getDatabase(storageService.CCU_PROFILE);
+      var ccuProfiles = utility.convertObjectToArray(ccuProfileDb);
+      return ccuProfiles;
+    };
 
-    storageService.all(storageService.CCU_PROFILE)
-        .then(function (ccuProfiles) {
-          deferred.resolve(ccuProfiles);
-        })
-        .catch(function (error) {
-          deferred.reject(error);
-        });
-    return deferred.promise;
-  };
+    var getAllGroupedByCategory = function () {
+      var ccuProfiles = getCcuProfiles();
+      var groupedList = {};
+      var NOT_FOUND = -1;
+      for (var index in ccuProfiles) {
+        var ccuProfile = ccuProfiles[index];
+        var existingGroups = Object.keys(groupedList);
+        if (existingGroups.indexOf(ccuProfile.RefType) === NOT_FOUND) {
+          groupedList[ccuProfile.RefType] = [];
+        }
+        groupedList[ccuProfile.RefType].push(ccuProfile);
+      }
+      return groupedList;
+    };
 
-  var getAllGroupedByCategory = function () {
-    var deferred = $q.defer();
-    var groupedList = {};
-    storageService.all(storageService.CCU_PROFILE)
-        .then(function (result) {
-          for (var index in result) {
-            var ccuProfile = result[index];
-            var NOT_FOUND = -1;
-            var existingGroups = Object.keys(groupedList);
-            if (existingGroups.indexOf(ccuProfile.RefType) === NOT_FOUND) {
-              groupedList[ccuProfile.RefType] = [];
-            }
-            groupedList[ccuProfile.RefType].push(ccuProfile);
-          }
-          deferred.resolve(groupedList);
-        })
-        .catch(function (reason) {
-          deferred.reject(reason);
-        });
-    return deferred.promise;
-  };
-
-  return {
-    getAllGroupedByCategory: getAllGroupedByCategory,
-    getAll: getCcuProfiles,
-    get: getByModelId
-  };
-});
+    return {
+      getAllGroupedByCategory: getAllGroupedByCategory,
+      getAll: getCcuProfiles,
+      get: getByUuid
+    };
+  });
