@@ -52,14 +52,44 @@ angular.module('lmisChromeApp')
     var ccuBreakdown = 'ccu_breakdown';
     var pendingSyncs = 'pending_syncs';
 
-    /**
-     * Add new table data to the chrome store.
-     *
-     * @param {string} table - Table name.
-     * @param {mixed} data - rows of the table (all values are stored as JSON.)
-     * @return {Promise} Promise object
-     * @private
-     */
+    var FIXTURE_NAMES = [
+      productTypes,
+      uom,
+      uomCategory,
+      facility,
+      program,
+      employeeCategory,
+      company,
+      companyCategory,
+      currency,
+      ccuType,
+      ccu,
+      inventory,
+      ccuProblem,
+      user,
+      productCategory,
+      productPresentation,
+      productProfile,
+      productFormulation,
+      modeOfAdministration,
+      batches,
+      orders,
+      bundles,
+      bundleLines,
+      bundleReceipt,
+      locations,
+      stockOut,
+      ccuProfile
+    ];
+
+      /**
+       * Add new table data to the chrome store.
+       *
+       * @param {string} table - Table name.
+       * @param {mixed} data - rows of the table (all values are stored as JSON.)
+       * @return {promise|Function|promise|promise|promise|*}
+       * @private
+       */
 
     var setData = function (table, data) {
       if (!data.hasOwnProperty('uuid')) {
@@ -71,6 +101,26 @@ angular.module('lmisChromeApp')
         if (angular.isUndefined(tableData)) {
           tableData = {};
         }
+        var deferred = $q.defer();
+        var obj = {};
+        getData(table).then(function(tableData){
+          if(typeof tableData === 'undefined'){
+            tableData = {};
+          }
+          var oldRecord = tableData[data.uuid];
+          if(typeof oldRecord !== 'undefined'){
+            data = utility.copy(data, oldRecord);
+          }
+
+          tableData[data.uuid] = data;
+          obj[table] = tableData;
+          chromeStorageApi.set(obj)
+              .then(function(){
+                deferred.resolve(data.uuid);
+              })
+              .catch(function(reason){
+                deferred.reject(reason);
+              });
 
         var oldRecord = tableData[data.uuid];
         if (typeof oldRecord !== 'undefined') {
@@ -255,59 +305,27 @@ angular.module('lmisChromeApp')
      */
     var loadFixtures = function () {
 
-      var deferred = $q.defer();
-      var database = [
-        productTypes,
-        address,
-        uom,
-        uomCategory,
-        facility,
-        program,
-        programProducts,
-        facilityType,
-        employeeCategory,
-        company,
-        companyCategory,
-        currency,
-        employee,
-        rate,
-        ccuType,
-        ccu,
-        inventory,
-        ccuProblem,
-        ccuTemperatureLog,
-        user,
-        productCategory,
-        productPresentation,
-        productProfile,
-        productFormulation,
-        modeOfAdministration,
-        batches,
-        orders,
-        bundles,
-        bundleLines,
-        bundleReceipt,
-        locations,
-        stockOut,
-        ccuProfile
-      ];
-      var isLoading = false;
+        var deferred = $q.defer();
 
-      function loadData(dbName) {
-        getData(dbName)
-          .then(function (data) {
-            if (angular.isUndefined(data)) {
-              var fileUrl = 'scripts/fixtures/' + dbName + '.json';
-              $http.get(fileUrl)
-                .success(function (data) {
-                  setTable(dbName, data).then(function (res) {
-                    isLoading = false;
-                  }, function (err) {
-                    isLoading = false;
-                  });
-                })
-                .error(function (err) {
-                  console.log(err);
+        var isLoading = false;
+        function loadData(dbName) {
+          getData(dbName)
+              .then(function (data) {
+                if (angular.isUndefined(data)) {
+                  var fileUrl = 'scripts/fixtures/' + dbName + '.json';
+                  $http.get(fileUrl)
+                      .success(function (data) {
+                        setTable(dbName, data).then(function (res) {
+                          isLoading = false;
+                        }, function (err) {
+                          isLoading = false;
+                        });
+                      })
+                      .error(function (err) {
+                        console.log(err);
+                        isLoading = false;
+                      });
+                }else {
                   isLoading = false;
                 });
             } else {
@@ -320,21 +338,22 @@ angular.module('lmisChromeApp')
           });
       }
 
-      var loadNext = function (i) {
-        if (!isLoading) {
-          $rootScope.$emit('START_LOADING', {started: true});
-          isLoading = true;
-          loadData(database[--i]);
-        }
-        if (i > 0) {
-          setTimeout(function () {
-            loadNext(i);
-          }, 10);
-        } else {
-          //this is when the app is actually ready
-          $rootScope.$emit('LOADING_COMPLETED', {completed: true});
-          deferred.resolve(true);
-        }
+        var loadNext = function (i) {
+          if (!isLoading) {
+            $rootScope.$emit('START_LOADING', {started: true});
+            isLoading = true;
+            loadData(FIXTURE_NAMES[--i]);
+          }
+          if (i > 0) {
+            setTimeout(function () {loadNext(i); }, 10);
+          } else {
+            //this is when the app is actually ready
+            $rootScope.$emit('LOADING_COMPLETED', {completed: true});
+            deferred.resolve(true);
+          }
+        };
+        loadNext(FIXTURE_NAMES.length);
+        return deferred.promise;
       };
       loadNext(database.length);
       return deferred.promise;
@@ -445,63 +464,64 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
-    return {
-      all: getAllFromTable,
-      add: setData,
-      get: getData,
-      removeRecord: removeRecordFromTable,
-      getAll: getAllFromStore,
-      remove: removeData, // removeFromChrome,
-      clear: clearStorage, // clearChrome */
-      uuid: uuidGenerator,
-      loadFixtures: loadFixtures,
-      insert: insertData,
-      update: updateData,
-      save: saveData,
-      where: getFromTableByLambda,
-      find: getFromTableByKey,
-      insertBatch: insertBatch,
-      getDateTime: getDateTime,
-      PRODUCT_TYPES: productTypes,
-      PRODUCT_CATEGORY: productCategory,
-      ADDRESS: address,
-      UOM: uom,
-      UOM_CATEGORY: uomCategory,
-      FACILITY: facility,
-      PROGRAM: program,
-      PROGRAM_PRODUCTS: programProducts,
-      FACILITY_TYPE: facilityType,
-      EMPLOYEE_CATEGORY: employeeCategory,
-      COMPANY: company,
-      COMPANY_CATEGORY: companyCategory,
-      CURRENCY: currency,
-      EMPLOYEE: employee,
-      RATE: rate,
-      CCU_TYPE: ccuType,
-      CCU: ccu,
-      USER: user,
-      PRODUCT_PRESENTATION: productPresentation,
-      PRODUCT_FORMULATION: productFormulation,
-      MODE_OF_ADMINISTRATION: modeOfAdministration,
-      BATCH: batches,
-      CCU_PROBLEM: ccuProblem,
-      CCU_TEMPERATURE_LOG: ccuTemperatureLog,
-      PRODUCT_PROFILE: productProfile,
-      INVENTORY: inventory,
-      ORDERS: orders,
-      BUNDLE: bundles,
-      BUNDLE_LINES: bundleLines,
-      BUNDLE_RECEIPT: bundleReceipt,
-      BUNDLE_RECEIPT_LINES: bundleReceiptLines,
-      LOCATIONS: locations,
-      STOCK_COUNT: stockCount,
-      DISCARD_COUNT: discardCount,
-      APP_CONFIG: appConfig,
-      STOCK_OUT: stockOut,
-      SURVEY_RESPONSE: surveyResponse,
-      CCU_PROFILE: ccuProfile,
-      CCU_BREAKDOWN: ccuBreakdown,
-      PENDING_SYNCS: pendingSyncs
-    };
+      return {
+        all: getAllFromTable,
+        add: setData,
+        get: getData,
+        removeRecord: removeRecordFromTable,
+        getAll: getAllFromStore,
+        remove: removeData, // removeFromChrome,
+        clear: clearStorage, // clearChrome */
+        uuid: uuidGenerator,
+        loadFixtures: loadFixtures,
+        insert: insertData,
+        update: updateData,
+        save: saveData,
+        where: getFromTableByLambda,
+        find: getFromTableByKey,
+        insertBatch: insertBatch,
+        getDateTime: getDateTime,
+        PRODUCT_TYPES: productTypes,
+        PRODUCT_CATEGORY: productCategory,
+        ADDRESS: address,
+        UOM: uom,
+        UOM_CATEGORY: uomCategory,
+        FACILITY: facility,
+        PROGRAM: program,
+        PROGRAM_PRODUCTS: programProducts,
+        FACILITY_TYPE: facilityType,
+        EMPLOYEE_CATEGORY: employeeCategory,
+        COMPANY: company,
+        COMPANY_CATEGORY: companyCategory,
+        CURRENCY: currency,
+        EMPLOYEE: employee,
+        RATE: rate,
+        CCU_TYPE: ccuType,
+        CCU: ccu,
+        USER: user,
+        PRODUCT_PRESENTATION: productPresentation,
+        PRODUCT_FORMULATION: productFormulation,
+        MODE_OF_ADMINISTRATION: modeOfAdministration,
+        BATCH: batches,
+        CCU_PROBLEM: ccuProblem,
+        CCU_TEMPERATURE_LOG: ccuTemperatureLog,
+        PRODUCT_PROFILE: productProfile,
+        INVENTORY: inventory,
+        ORDERS: orders,
+        BUNDLE: bundles,
+        BUNDLE_LINES: bundleLines,
+        BUNDLE_RECEIPT: bundleReceipt,
+        BUNDLE_RECEIPT_LINES: bundleReceiptLines,
+        LOCATIONS: locations,
+        STOCK_COUNT: stockCount,
+        DISCARD_COUNT: discardCount,
+        APP_CONFIG: appConfig,
+        STOCK_OUT: stockOut,
+        SURVEY_RESPONSE: surveyResponse,
+        CCU_PROFILE: ccuProfile,
+        CCU_BREAKDOWN: ccuBreakdown,
+        PENDING_SYNCS: pendingSyncs,
+        FIXTURE_NAMES: FIXTURE_NAMES
+      };
 
   });
