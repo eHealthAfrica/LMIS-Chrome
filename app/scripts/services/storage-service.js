@@ -17,9 +17,11 @@ angular.module('lmisChromeApp')
             var surveyResponse = 'survey_response';
             var ccuBreakdown = 'ccu_breakdown';
             var pendingSyncs = 'pending_syncs';
-      
+
       var FIXTURE_NAMES = utility.values(collections);
 
+            var pageviews = 'pageviews';
+            var clicks = 'clicks';
             var exceptions = 'exceptions';
 
             /**
@@ -27,7 +29,7 @@ angular.module('lmisChromeApp')
              *
              * @param {string} table - Table name.
              * @param {mixed} data - rows of the table (all values are stored as JSON.)
-       * @return {promise|Function|promise|promise|promise|*}
+             * @return {Promise} Promise object
              * @private
              */
 
@@ -38,7 +40,7 @@ angular.module('lmisChromeApp')
                 var deferred = $q.defer();
                 var obj = {};
                 getData(table).then(function(tableData) {
-          if(typeof tableData === 'undefined'){
+          if(angular.isUndefined(tableData)){
                         tableData = {};
                     }
                     var oldRecord = tableData[data.uuid];
@@ -260,10 +262,12 @@ angular.module('lmisChromeApp')
                 }
             };
 
+                    clicks,
+                    pageviews
           clicks,
           pageviews
-          clicks,
-          pageviews
+                            loadNext(i);
+                        }, 10);
             var uuidGenerator = function() {
                 var now = Date.now();
                 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -393,11 +397,10 @@ angular.module('lmisChromeApp')
         STOCK_COUNT: stockCount,
         SURVEY_RESPONSE: surveyResponse,
         FIXTURE_NAMES: FIXTURE_NAMES
-        PENDING_SYNCS: pendingSyncs,
-        
-        PAGE_VIEWS: pageviews,
-        EXCEPTIONS: exceptions,
-        CLICKS: clicks
+                PENDING_SYNCS: pendingSyncs,
+                PAGE_VIEWS: pageviews,
+                EXCEPTIONS: exceptions,
+                CLICKS: clicks
             };
 
       return angular.extend(api, collections);

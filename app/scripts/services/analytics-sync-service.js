@@ -14,22 +14,29 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
                 tracker.sendEvent("Offline Clicks", click.action, click.label)
                 uuids.push(click.uuid);
                 console.log("uuid: " + click.uuid);
-//            console.log("online: "+ trackingFactory.online);
                 if (trackingFactory.online) {
 
-                //best to get a success flag here and delete if event successfuly sent
-                storageService.removeRecord(storageService.CLICKS, click.uuid)
-                            .then(function() {
-                                deferred.resolve();
-                            })
-                            .catch(function() {
-                                deferred.reject();
+                    //best to get a success flag here and delete if event successfuly sent
+                    console.log(tracker.sendEvent("Offline Clicks", click.action, click.label));
+                    uuids.push(click.uuid);
+
+                }
+            });
+        }).finally(function() {
+            console.log("pending list cleared (i wish!)");
+        });
+
+        console.log("uuids: " + uuids.length);
+        storageService.removeRecords(storageService.CLICKS, uuids)
+                .then(function() {
+                    deferred.resolve();
+                })
+                .catch(function() {
+                    deferred.reject();
             });
         }).then(function() {
             storageService.removeRecords(storageService.CLICKS, uuids)
-        }).finally(function() {
             console.log("pending clicks list cleared ");
-        });
     };
 
     //not final yet. Work in progress
@@ -43,15 +50,29 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
 
                 console.log("except uuid: " + exception.uuid);
                 //best to get a success flag here and delete if event successfuly sent
-                tracker.sendException(exception.opt_description, exception.opt_fatal);
+                    //best to get a success flag here and delete if event successfuly sent
                 uuids.push(exception.uuid);
 
+                    uuids.push(exception.uuid);
+
+                }
             });
         }).then(function() {
             storageService.removeRecords(storageService.EXCEPTIONS, uuids);
         }).finally(function() {
             console.log("pending excepts list cleared (i wish!)");
+                    .then(function() {
+                        deferred.resolve();
+                    })
+                    .catch(function() {
+                        deferred.reject();
+                    });
+
+
+        }).finally(function() {
+            console.log("pending list cleared (i wish!)");
         });
+
     };
 
     //not final yet. Worki in progress
@@ -67,11 +88,24 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
                 console.log("page uuid: " + pageView.uuid);
 
                 //best to get a success flag here and delete if event successfuly sent
-                tracker.sendAppView(pageView.page);
+
+                    //best to get a success flag here and delete if event successfuly sent
+                    tracker.sendAppView(pageView.page);
                 console.log(tracker.sendEvent("Offline views", pageView.page));
                 uuids.push(pageView.uuid);
 
+                }
             });
+
+            console.log("uuids: " + uuids.length);
+            var deferred = $q.defer();
+            storageService.removeRecords(storageService.EXCEPTIONS, uuids)
+                    .then(function() {
+                        deferred.resolve();
+                    })
+                    .catch(function() {
+                        deferred.reject();
+                    });
         }).then(function() {
             console.log("page uuids: " + uuids.length);
             storageService.removeRecords(storageService.PAGE_VIEWS, uuids);

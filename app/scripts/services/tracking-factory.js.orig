@@ -5,19 +5,14 @@
 //need to design the priority queue bit based on the storage capacity restriction on the local storage and introduce a table for the lost records count
 
 angular.module('lmisChromeApp')
-<<<<<<< HEAD
         .factory('trackingFactory', function($window, $rootScope, config, utility, syncService, storageService) {
-
-angular.module('lmisChromeApp')
-=======
->>>>>>> Offline analytics commits: nearly there!
-        .factory('trackingFactory', function($window, $rootScope, config, utility, deviceInfoFactory, storageService) {
 
             var tracker;
 
 
             if (utility.has($window, 'analytics')) {
                 var service = $window.analytics.getService(config.analytics.service);
+<<<<<<< HEAD
                 tracker = service.getTracker(config.analytics.propertyID);
             }
 
@@ -71,6 +66,28 @@ angular.module('lmisChromeApp')
                                 opt_fatal: opt_fatal
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
+=======
+                online = syncService.canConnect();
+                console.log("online: "+online);
+                tracker = online ? service.getTracker(config.analytics.propertyID) : {
+                    sendAppView: function(page) {
+                        console.log("offline page: " + page);
+                        var _pageview = {
+                            page: page
+                        };
+                        storageService.save(storageService.PAGE_VIEWS, _pageview);
+                    },
+                    sendException: function(opt_description, opt_fatal) {
+                        console.log("offline exception : " + opt_description + ": " + opt_fatal);
+                        var _exception = {
+                            opt_description: opt_description,
+                            opt_fatal: opt_fatal
+                        };
+                        storageService.save(storageService.EXCEPTIONS, _exception);
+                    },
+                    sendEvent: function(category, action, label) {
+                        console.log("offline click : " + category + ": " + action + ": " + label);
+>>>>>>> Offline analytics commits: nearly there!
                         var _event = {
                             action: action,
                             label: label
@@ -80,10 +97,19 @@ angular.module('lmisChromeApp')
                         );
             };
 
+<<<<<<< HEAD
             //these will probably have to move elsewhere so that they can use the right tracker
             $rootScope.$on('$stateChangeSuccess', function(state) {
                 appView(state.name);
             });
+=======
+                };
+                
+                //these will probably have to move elsewhere so that they can use the right tracker
+                $rootScope.$on('$stateChangeSuccess', function(state) {
+                    tracker.sendAppView(state.name);
+                });
+>>>>>>> Offline analytics commits: nearly there!
 
             $rootScope.$on('$stateNotFound', function(state) {
                 exception(state.to, false);

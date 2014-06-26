@@ -6,6 +6,7 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
     var tracker = trackingFactory.tracker;
     this.syncClicks = function() {
         var uuids = [];
+<<<<<<< HEAD
         console.log("Loopin Clicks");
         storageService.all(storageService.CLICKS).then(function(clicksData) {
             clicksData.forEach(function(click) {
@@ -24,16 +25,38 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
                             })
                             .catch(function() {
                                 deferred.reject();
+=======
+        console.log("Loopin")
+        storageService.all(storageService.CLICKS).then(function(clicksData) {
+            clicksData.forEach(function(click) {
+
+                console.log("uuid: " + click.uuid);
+                console.log("online: " + trackingFactory.online);
+                if (trackingFactory.online) {
+
+                    //best to get a success flag here and delete if event successfuly sent
+                    tracker.sendEvent("Offline Clicks", click.action, click.label);
+                    console.log(tracker.sendEvent("Offline Clicks", click.action, click.label));
+                    uuids.push(click.uuid);
+
+                }
+>>>>>>> Offline analytics commits: nearly there!
             });
         }).then(function() {
             storageService.removeRecords(storageService.CLICKS, uuids)
         }).finally(function() {
-<<<<<<< HEAD
             console.log("pending clicks list cleared ");
-=======
-            console.log("pending list cleared (i wish!)");
->>>>>>> Offline analytics commits: nearly there!
         });
+
+        console.log("uuids: " + uuids.length);
+        var deferred = $q.defer();
+        storageService.removeRecords(storageService.CLICKS, uuids)
+                .then(function() {
+                    deferred.resolve();
+                })
+                .catch(function() {
+                    deferred.reject();
+                });
     };
 
     //not final yet. Work in progress
@@ -45,6 +68,7 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
         storageService.all(storageService.EXCEPTIONS).then(function(exceptionData) {
             exceptionData.forEach(function(exception) {
 
+<<<<<<< HEAD
                 console.log("except uuid: " + exception.uuid);
                 //best to get a success flag here and delete if event successfuly sent
                 tracker.sendException(exception.opt_description, exception.opt_fatal);
@@ -55,19 +79,54 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
             storageService.removeRecords(storageService.EXCEPTIONS, uuids);
         }).finally(function() {
             console.log("pending excepts list cleared (i wish!)");
+=======
+                console.log("uuid: " + exception.uuid);
+                console.log("online: " + trackingFactory.online);
+                if (trackingFactory.online) {
+
+                    //best to get a success flag here and delete if event successfuly sent
+                    tracker.sendEvent(exception.opt_description, exception.opt_fatal);
+                    console.log(tracker.sendEvent("Offline excepts", exception.opt_description, exception.opt_fatal));
+                    uuids.push(exception.uuid);
+
+                }
+            });
+
+            console.log("uuids: " + uuids.length);
+            var deferred = $q.defer();
+            storageService.removeRecords(storageService.EXCEPTIONS, uuids)
+                    .then(function() {
+                        deferred.resolve();
+                    })
+                    .catch(function() {
+                        deferred.reject();
+                    });
+
+
+        }).finally(function() {
+            console.log("pending list cleared (i wish!)");
+>>>>>>> Offline analytics commits: nearly there!
         });
+
     };
 
     //not final yet. Worki in progress
     this.syncPageViews = function() {
 
+<<<<<<< HEAD
 
         var uuids = [];
         console.log("Loopin Pages");
+=======
+        
+        var uuids = [];
+        console.log("Loopin Excepts")
+>>>>>>> Offline analytics commits: nearly there!
 
         storageService.all(storageService.PAGE_VIEWS).then(function(pageViewData) {
             pageViewData.forEach(function(pageView) {
 
+<<<<<<< HEAD
                 console.log("page uuid: " + pageView.uuid);
 
                 //best to get a success flag here and delete if event successfuly sent
@@ -84,5 +143,34 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
         });
         ;
 
+=======
+                console.log("uuid: " + pageView.uuid);
+                console.log("online: " + trackingFactory.online);
+                if (trackingFactory.online) {
+
+                    //best to get a success flag here and delete if event successfuly sent
+                    tracker.sendAppView(pageView.page);
+                    console.log(tracker.sendEvent("Offline views", pageView.page));
+                    uuids.push(pageView.uuid);
+
+                }
+            });
+
+            console.log("uuids: " + uuids.length);
+            var deferred = $q.defer();
+            storageService.removeRecords(storageService.EXCEPTIONS, uuids)
+                    .then(function() {
+                        deferred.resolve();
+                    })
+                    .catch(function() {
+                        deferred.reject();
+                    });
+
+
+        }).finally(function() {
+            console.log("pending list cleared (i wish!)");
+        });
+        
+>>>>>>> Offline analytics commits: nearly there!
     };
 });

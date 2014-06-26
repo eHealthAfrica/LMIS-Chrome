@@ -17,9 +17,17 @@ angular.module('lmisChromeApp')
             var surveyResponse = 'survey_response';
             var ccuBreakdown = 'ccu_breakdown';
             var pendingSyncs = 'pending_syncs';
+<<<<<<< HEAD
       
       var FIXTURE_NAMES = utility.values(collections);
 
+=======
+
+      var FIXTURE_NAMES = utility.values(collections);
+
+            var pageviews = 'pageviews';
+            var clicks = 'clicks';
+>>>>>>> Offline analytics commits: nearly there!
             var exceptions = 'exceptions';
 
             /**
@@ -27,7 +35,11 @@ angular.module('lmisChromeApp')
              *
              * @param {string} table - Table name.
              * @param {mixed} data - rows of the table (all values are stored as JSON.)
+<<<<<<< HEAD
        * @return {promise|Function|promise|promise|promise|*}
+=======
+             * @return {Promise} Promise object
+>>>>>>> Offline analytics commits: nearly there!
              * @private
              */
 
@@ -38,7 +50,11 @@ angular.module('lmisChromeApp')
                 var deferred = $q.defer();
                 var obj = {};
                 getData(table).then(function(tableData) {
+<<<<<<< HEAD
           if(typeof tableData === 'undefined'){
+=======
+          if(angular.isUndefined(tableData)){
+>>>>>>> Offline analytics commits: nearly there!
                         tableData = {};
                     }
                     var oldRecord = tableData[data.uuid];
@@ -164,21 +180,9 @@ angular.module('lmisChromeApp')
              * @private
              */
 
-<<<<<<< HEAD
             var getData = function(key) {
                 return chromeStorageApi.get(key);
             };
-=======
-      /**
-       * Remove a table from the chrome store.
-       *
-       * @param key - Table name.
-       * @returns {*|boolean|Array|Promise|string}
-       */
-      var removeData = function(key) {
-        return chromeStorageApi.remove(key);
-      };
->>>>>>> Offline analytics commits: nearly there!
 
             /**
              * Get All data from the chrome store.
@@ -233,6 +237,7 @@ angular.module('lmisChromeApp')
                 data.created = data.modified = getDateTime();
                 return setData(table, data);
             };
+<<<<<<< HEAD
 
             /**
              * Update database table row.
@@ -276,6 +281,57 @@ angular.module('lmisChromeApp')
           pageviews
           clicks,
           pageviews
+=======
+
+            /**
+             * Update database table row.
+             *
+             * @param table
+             * @param data
+             * @returns {Promise}
+             */
+            var updateData = function(table, data, updateDateModified) {
+                if (!data.hasOwnProperty('uuid')) {
+                    throw 'update should only be called with data that has UUID or primary key already.';
+                }
+                if (updateDateModified !== false) {
+                    data.modified = getDateTime();
+                }
+                return setData(table, data);
+            };
+
+            /**
+             *  Encapsulates insert/update database table row operations.
+             *
+             * @param table
+             * @param data
+             * @returns {*}
+             */
+            var saveData = function(table, data) {
+                if ((typeof data === 'object') && (data !== null)) {
+                    if (Object.keys(data).indexOf('uuid') !== -1 && data.uuid.length > 0) {
+                        return updateData(table, data);
+                    } else {
+                        return insertData(table, data);
+                    }
+                } else {
+                    var deferred = $q.defer();
+                    deferred.reject(data + ' is null or non-object data.');
+                    return deferred.promise;
+                }
+            };
+
+                    ccuProfile,
+                    exceptions,
+                    clicks,
+                    pageviews
+          ccuProfile,
+          exceptions,
+          clicks,
+          pageviews
+                            loadNext(i);
+                        }, 10);
+>>>>>>> Offline analytics commits: nearly there!
             var uuidGenerator = function() {
                 var now = Date.now();
                 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -405,11 +461,18 @@ angular.module('lmisChromeApp')
         STOCK_COUNT: stockCount,
         SURVEY_RESPONSE: surveyResponse,
         FIXTURE_NAMES: FIXTURE_NAMES
+<<<<<<< HEAD
         PENDING_SYNCS: pendingSyncs,
         
         PAGE_VIEWS: pageviews,
         EXCEPTIONS: exceptions,
         CLICKS: clicks
+=======
+                PENDING_SYNCS: pendingSyncs,
+                PAGE_VIEWS: pageviews,
+                EXCEPTIONS: exceptions,
+                CLICKS: clicks
+>>>>>>> Offline analytics commits: nearly there!
             };
 
       return angular.extend(api, collections);
