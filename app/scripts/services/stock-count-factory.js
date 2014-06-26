@@ -168,18 +168,6 @@ angular.module('lmisChromeApp')
         }
       },
       /**
-       *
-       * @param array
-       * @returns {{}}
-       */
-      productObject: function(array){
-        array = array
-            .sort(function(a, b){
-              return a.category > b.category;
-            });
-        return utility.castArrayToObject(array, 'uuid');
-      },
-      /**
      * This function returns stock counts by the given facility
      *
      * @param facility
@@ -190,7 +178,8 @@ angular.module('lmisChromeApp')
         var fUuid = utility.getStringUuid(facility);
         getAllStockCount().then(function (result) {
           var res = result.filter(function (e) {
-            return e !== 'undefined' && utility.getStringUuid(e.facility) === fUuid;
+            var stkCountFacUuid = utility.getStringUuid(e.facility);
+            return e !== 'undefined' && stkCountFacUuid === fUuid;
           });
           deferred.resolve(res);
         }, function (err) {
