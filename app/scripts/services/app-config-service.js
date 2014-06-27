@@ -22,8 +22,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * @param appConfig
    * @returns {promise|promise|*|Function|promise}
    */
-  this.setup = function (appConfig) {
-
+  var saveAppConfig = function (appConfig) {
     var deferred = $q.defer();
 
     appConfig.facility.reminderDay = parseInt(appConfig.facility.reminderDay); //cast to integer in case it is a string
@@ -41,12 +40,9 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         appConfigCopy.dateActivated = new Date().toJSON();
       }
 
-      console.error(appConfig);
-
       storageService.save(storageService.APP_CONFIG, appConfigCopy)
-        .then(function(result){
+        .then(function(){
           //update memory copy.
-          //TODO: decouple this from every service and factory by broadcasting an event.
           memoryStorageService.put(storageService.APP_CONFIG, appConfigCopy);
 
           deferred.resolve(appConfigCopy);
@@ -63,6 +59,10 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       deferred.reject(reason);
     });
     return deferred.promise;
+  };
+
+  this.setup = function(appConfig){
+    return saveAppConfig(appConfig);
   };
 
   var getAppConfigFromMemory = function () {
@@ -111,7 +111,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
           if (Object.keys(data).length === 1) {
             var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
             var appConfig = data[appConfigUUID];
-
 
             if(typeof appConfig !== 'undefined'){
               appConfig.facility.selectedProductProfiles = productProfileFactory.getBatch(appConfig.facility.selectedProductProfiles);
@@ -209,11 +208,24 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
           deferred.reject('local copy of appConfig does not exist.');
         } else {
 
-          //TODO: get from remote here and use setup to save then
+          //TODO: get from remote here and use saveAppConfig to save remote app config.
           syncService.updateFromRemote(storageService.APP_CONFIG, appConfig)
-            .then(function (result) {
-              //TODO: update memory store after changing this.
-              deferred.resolve(result);
+            .then(function () {
+              getAppConfigFromStorage()
+                .then(function(appCfg){
+                  saveAppConfig(appCfg)
+                    .then(function(res){
+                      deferred.resolve(res);
+                    })
+                    .catch(function (reason) {
+                      console.log(reason);
+                      deferred.reject(reason);
+                    });
+                })
+                .catch(function(reason){
+                  console.error(reason);
+                  deferred.reject(reason);
+                });
             })
             .catch(function (reason) {
               deferred.reject(reason);
@@ -241,8 +253,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         .then(function () {
           updateAppConfigFromRemote()
               .then(function(){
-                var DELAY_BEFORE_REMOVAL = 10000;//10 secs
-                growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: DELAY_BEFORE_REMOVAL });
+                growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: -1 });
               })
               .finally(function () {
                 syncService.backgroundSync()
