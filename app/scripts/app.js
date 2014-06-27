@@ -8,7 +8,8 @@ angular.module('lmisChromeApp', [
   'config',
   'nvd3ChartDirectives',
   'angular-growl',
-  'ngAnimate'
+  'ngAnimate',
+  'db'
 ])
   .run(function(storageService, $rootScope, $state, $window, appConfigService, fixtureLoaderService, growl) {
 

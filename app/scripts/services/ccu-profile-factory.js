@@ -4,12 +4,12 @@ angular.module('lmisChromeApp').factory('ccuProfileFactory', function ($q, stora
 
   var getByModelId = function (modelId) {
     //TODO: refactor to work with uuid.
-    var ccuProfile = memoryStorageService.get(storageService.CCU_PROFILE, modelId);
+    var ccuProfile = memoryStorageService.get(storageService.CCEI, modelId);
     return ccuProfile;
   };
 
   var getCcuProfiles = function () {
-    var ccuProfileDb = memoryStorageService.getDatabase(storageService.CCU_PROFILE);
+    var ccuProfileDb = memoryStorageService.getDatabase(storageService.CCEI);
     var ccuProfiles = utility.convertObjectToArray(ccuProfileDb);
     return ccuProfiles;
   };
