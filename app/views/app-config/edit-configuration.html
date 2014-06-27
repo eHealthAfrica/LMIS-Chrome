@@ -1,51 +1,57 @@
 <div class="row">
-  <form name="editAppConfigForm" ng-submit="editAppConfigForm.$valid && save()" novalidate>
-
     <div class="col-sm-12">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title" i18n="facilityInfo"></h4>
+        <div class="alert alert-info">
+            <span ng-bind="lastUpdated"></span>
         </div>
-        <div class="panel-body">
-          <div ng-include="'views/app-config/partials/forms/facility-info.html'"></div>
-        </div>
-      </div>
     </div>
+    <form name="editAppConfigForm" ng-submit="editAppConfigForm.$valid && save()" novalidate>
 
-    <div class="col-sm-12">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title" i18n="contactPersonInfo"></h4>
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title" i18n="facilityInfo"></h4>
+                </div>
+                <div class="panel-body">
+                    <div ng-include="'views/app-config/partials/forms/facility-info.html'"></div>
+                </div>
+            </div>
         </div>
-        <div class="panel-body">
-          <div ng-include="'views/app-config/partials/forms/contact-person.html'"></div>
+
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title" i18n="contactPersonInfo"></h4>
+                </div>
+                <div class="panel-body">
+                    <div ng-include="'views/app-config/partials/forms/contact-person.html'"></div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div class="col-sm-15">
-      <div ng-include="'views/app-config/partials/forms/product-profile.html'"></div>
-    </div>
-
-    <div class="col-sm-15">
-      <div ng-include="'views/app-config/partials/forms/ccu-profile.html'"></div>
-    </div>
-
-    <div class="row">
-      <div class="panel-body"></div>
-      <div class="col-sm-12">
-        <div class="col-md-4 pull-left">
-          <button type="submit" ga-click="save" id="save" name="save" class="btn btn-success btn-lg" ng-click="isSubmitted = true"
-                  ng-disabled="isSaving">
-            <span ng-show="!isSaving" i18n="save"></span>
-            <span ng-show="!isSaving"><i class="fa fa-floppy-o"></i></i></span>
-            <span ng-show="isSaving" i18n="saving"></span>
-            <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
-          </button>
+        <div class="col-sm-15">
+            <div ng-include="'views/app-config/partials/forms/product-profile.html'"></div>
         </div>
-      </div>
-    </div>
-    <div class="panel-body"></div>
-  </form>
+
+        <div class="col-sm-15">
+            <div ng-include="'views/app-config/partials/forms/ccu-profile.html'"></div>
+        </div>
+
+        <div class="row">
+            <div class="panel-body"></div>
+            <div class="col-sm-12">
+                <div class="col-md-4 pull-left">
+                    <button type="submit" ga-click="save" id="save" name="save" class="btn btn-success btn-lg"
+                            ng-click="isSubmitted = true"
+                            ng-disabled="isSaving">
+                        <span ng-show="!isSaving" i18n="save"></span>
+                        <span ng-show="!isSaving"><i class="fa fa-floppy-o"></i></i></span>
+                        <span ng-show="isSaving" i18n="saving"></span>
+                        <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body"></div>
+    </form>
 </div>
 

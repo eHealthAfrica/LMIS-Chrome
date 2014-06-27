@@ -22,7 +22,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * @param appConfig
    * @returns {promise|promise|*|Function|promise}
    */
-  this.setup = function (appConfig) {
+  var saveAppConfig = function (appConfig, shouldSync) {
     var deferred = $q.defer();
 
     appConfig.facility.reminderDay = parseInt(appConfig.facility.reminderDay); //cast to integer in case it is a string
@@ -40,18 +40,18 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         appConfigCopy.dateActivated = new Date().toJSON();
       }
 
-      console.error(appConfig);
-
       storageService.save(storageService.APP_CONFIG, appConfigCopy)
-        .then(function(result){
+        .then(function(){
           //update memory copy.
           //TODO: decouple this from every service and factory by broadcasting an event.
           memoryStorageService.put(storageService.APP_CONFIG, appConfigCopy);
 
           deferred.resolve(appConfigCopy);
 
-          //sync app config in the background.
-          syncService.syncItem(storageService.APP_CONFIG, appConfigCopy);
+          if (shouldSync !== false) {
+            //sync app config in the background.
+            syncService.syncItem(storageService.APP_CONFIG, appConfigCopy);
+          }
 
         })
         .catch(function(reason){
@@ -62,6 +62,10 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       deferred.reject(reason);
     });
     return deferred.promise;
+  };
+
+  this.setup = function(appConfig, shouldSync){
+    return saveAppConfig(appConfig, shouldSync);
   };
 
   var getAppConfigFromMemory = function () {
@@ -110,7 +114,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
           if (Object.keys(data).length === 1) {
             var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
             var appConfig = data[appConfigUUID];
-
 
             if(typeof appConfig !== 'undefined'){
               appConfig.facility.selectedProductProfiles = productProfileFactory.getBatch(appConfig.facility.selectedProductProfiles);
@@ -198,7 +201,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
   };
 
   var updateAppConfigFromRemote = function () {
-    //throw 'exception, you should not be calling this function until implementation is completed.'
     //TODO: refactor this to pull in facility profile from remote, pull in app config, ccu and product profile,
     //TODO: let it pull in all the latest, run a check to see that all the entities exist, then update app config, else rollback any transaction already in place.
     var deferred = $q.defer();
@@ -208,10 +210,12 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
           deferred.reject('local copy of appConfig does not exist.');
         } else {
 
-          //TODO: get from remote here and use setup to save then
+          //TODO: get from remote here and use saveAppConfig to save remote app config.
+          //TODO: create a transaction that makes sure remote app config required product type, ccu and product profile
+          //TODO: exists locally, else rollback because it will break the app. also watch out for sync loop.
           syncService.updateFromRemote(storageService.APP_CONFIG, appConfig)
             .then(function (result) {
-              //TODO: update memory store after changing this.
+              cache.remove(storageService.APP_CONFIG);//clear cache
               deferred.resolve(result);
             })
             .catch(function (reason) {
@@ -233,15 +237,14 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * @returns {promise|Function|promise|promise|promise|*}
    */
   this.updateAppConfigAndStartBackgroundSync = function(){
-    //TODO: add set a flag when this starts, and prevent further background sync attempts.
+    //TODO: set a flag when this starts, and prevent further background sync attempts.
     var deferred = $q.defer();
     var hasCompletedRemoteUpdateAndBackgroundSyncAttempts = true;
     syncService.canConnect()
         .then(function () {
           updateAppConfigFromRemote()
               .then(function(){
-                var DELAY_BEFORE_REMOVAL = 10000;//10 secs
-                growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: DELAY_BEFORE_REMOVAL });
+                growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: -1 });
               })
               .finally(function () {
                 syncService.backgroundSync()
