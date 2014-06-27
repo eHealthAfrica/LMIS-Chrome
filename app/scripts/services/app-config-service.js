@@ -43,7 +43,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
       storageService.save(storageService.APP_CONFIG, appConfigCopy)
         .then(function(){
           //update memory copy.
-          //TODO: decouple this from every service and factory by broadcasting an event.
           memoryStorageService.put(storageService.APP_CONFIG, appConfigCopy);
 
           deferred.resolve(appConfigCopy);
@@ -214,9 +213,24 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
           //TODO: create a transaction that makes sure remote app config required product type, ccu and product profile
           //TODO: exists locally, else rollback because it will break the app. also watch out for sync loop.
           syncService.updateFromRemote(storageService.APP_CONFIG, appConfig)
-            .then(function (result) {
-              cache.remove(storageService.APP_CONFIG);//clear cache
-              deferred.resolve(result);
+            .then(function () {
+              getAppConfigFromStorage()
+                .then(function(appCfg){
+                  appCfg.lastUpdated = new Date().toJSON();
+                  var shouldSync = false;
+                  saveAppConfig(appCfg, shouldSync)
+                    .then(function(res){
+                      deferred.resolve(res);
+                    })
+                    .catch(function (reason) {
+                      console.log(reason);
+                      deferred.reject(reason);
+                    });
+                })
+                .catch(function(reason){
+                  console.error(reason);
+                  deferred.reject(reason);
+                });
             })
             .catch(function (reason) {
               deferred.reject(reason);
