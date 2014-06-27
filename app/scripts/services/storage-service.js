@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('storageService', function ($q, $rootScope, $http, $window, chromeStorageApi, utility, collections) {
+    .factory('storageService', function ($q, $rootScope, $http, $window, chromeStorageApi, utility, collections, pouchStorageService) {
 
       /**
        *  Global variables used to define table names, with this there will be one
@@ -28,111 +28,31 @@ angular.module('lmisChromeApp')
        * @return {promise|Function|promise|promise|promise|*}
        * @private
        */
-
       var setData = function (table, data) {
         if(!data.hasOwnProperty('uuid')){
           throw 'data should have a uuid or primary key field.';
         }
-        var deferred = $q.defer();
-        var obj = {};
-        getData(table).then(function(tableData){
-          if(typeof tableData === 'undefined'){
-            tableData = {};
-          }
-          var oldRecord = tableData[data.uuid];
-          if(typeof oldRecord !== 'undefined'){
-            data = utility.copy(data, oldRecord);
-          }
+        return pouchStorageService.put(table, data);
+      };
 
-          tableData[data.uuid] = data;
-          obj[table] = tableData;
-          chromeStorageApi.set(obj)
-              .then(function(){
-                deferred.resolve(data.uuid);
-              })
-              .catch(function(reason){
-                deferred.reject(reason);
-              });
-
-        }).catch(function(reason){
-          deferred.reject(reason);
-        });
-        return deferred.promise;
+      var getData = function(key) {
+        return pouchStorageService.allDocs(key);
       };
 
       /**
-       * This function removes a given record with the given uuid from the given tableName and returns True
-       * if it was done successfully else rejects with reason why removeData failed.
+       * This function removes a given record with the given uuid from the given
+       * tableName and returns True if it was done successfully else rejects
+       * with reason why removeData failed.
        *
        * @param tableName
        * @param uuid
        * @returns {promise|Function|promise|promise|promise|*}
        */
       var removeRecordFromTable = function(tableName, uuid){
-        var deferred = $q.defer();
-        var tableObj = {};
-        getData(tableName)
-            .then(function(tableData){
-              if(typeof tableData !== 'undefined'){
-                if(typeof tableData[uuid] !== 'undefined'){
-                  delete tableData[uuid];
-                  tableObj[tableName] = tableData;
-                  chromeStorageApi.set(tableObj)
-                      .then(function () {
-                        deferred.resolve(true);
-                      })
-                      .catch(function (reason) {
-                        deferred.reject(reason);
-                      });
-                }else{
-                  deferred.reject('record with given uuid does not exist.');
-                }
-              }else{
-                deferred.reject('table does not exist.');
-              }
-            })
-            .catch(function(reason){
-              deferred.reject(reason);
-            });
-        return deferred.promise;
-      };
-
-      /**
-       * Load init table data to the chrome store.
-       *
-       * @param {string} table - Table name.
-       * @param {mixed} data - object of table rows
-       * @return {Promise} Promise object
-       * @private
-       */
-      var setTable = function (table, data) {
-        var obj = {};
-        obj[table] = data;
-        return  chromeStorageApi.set(obj);
-      };
-
-
-      /**
-       * Get table data from the chrome store
-       *
-       * @param {string} key - Table name.
-       * @return {Promise} Promise to be resolved with the settings object
-       * @private
-       */
-
-      var getData = function(key) {
-        return chromeStorageApi.get(key);
-      };
-
-      /**
-       * Get All data from the chrome store.
-       *
-       * @return {Promise} Promise to be resolved with the settings object
-       * @private
-       */
-        // TODO - consider to deprecate
-      var getAllFromStore = function() {
-        return chromeStorageApi.get(null, {collection:true});
+        return pouchStorageService.get(tableName, uuid)
+          .then(function(doc) {
+            return pouchStorageService.remove(tableName, uuid, doc._rev);
+          });
       };
 
       /**
@@ -142,7 +62,7 @@ angular.module('lmisChromeApp')
        * @returns {*|boolean|Array|Promise|string}
        */
       var removeData = function(key) {
-        return chromeStorageApi.remove(key);
+        return pouchStorageService.destroy(key);
       };
 
       /**
@@ -173,7 +93,7 @@ angular.module('lmisChromeApp')
         if(data.hasOwnProperty('uuid')){
           throw 'insert should only be called with fresh record that has not uuid or primary key field.';
         }
-        data.uuid = uuidGenerator();
+        data.uuid = utility.uuidGenerator();
         data.created = data.modified = getDateTime();
         return setData(table, data);
       };
@@ -216,15 +136,6 @@ angular.module('lmisChromeApp')
         }
       };
 
-      var uuidGenerator = function () {
-        var now = Date.now();
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-          var r = (now + Math.random() * 16) % 16 | 0;
-          now = Math.floor(now / 16);
-          return (c === 'x' ? r : (r & 0x7 | 0x8)).toString(16);
-        });
-      };
-
       var getFromTableByKey = function (tableName, _key) {
         var deferred = $q.defer();
         var key = String(_key);//force conversion to string
@@ -262,8 +173,9 @@ angular.module('lmisChromeApp')
       };
 
       /**
-       * This returns an array or collection of rows in the given table name, this collection can not be
-       * indexed via key, to get table rows that can be accessed via keys use all() or getData()
+       * This returns an array or collection of rows in the given table name,
+       * this collection can not be indexed via key, to get table rows that can
+       * be accessed via keys use all() or getData()
        */
       var getAllFromTable = function (tableName) {
         var deferred = $q.defer();
@@ -297,7 +209,7 @@ angular.module('lmisChromeApp')
                 var batch = batchList[i];
                 var now = getDateTime();
                 if(batch.hasOwnProperty('uuid') === false){
-                  batch.uuid = uuidGenerator();
+                  batch.uuid = utility.uuidGenerator();
                   batch.created = now;
                 }
                 batch.modified = now;
@@ -326,10 +238,9 @@ angular.module('lmisChromeApp')
         add: setData,
         get: getData,
         removeRecord: removeRecordFromTable,
-        getAll: getAllFromStore,
         remove: removeData, // removeFromChrome,
-        clear: clearStorage, // clearChrome */
-        uuid: uuidGenerator,
+        clear: clearStorage, // clearChrome */:
+        uuid: utility.uuidGenerator,
         insert: insertData,
         update: updateData,
         save: saveData,
@@ -337,7 +248,6 @@ angular.module('lmisChromeApp')
         where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,
-        getDateTime: getDateTime,
         APP_CONFIG: appConfig,
         CCU_BREAKDOWN: ccuBreakdown,
         DISCARD_COUNT: discardCount,
