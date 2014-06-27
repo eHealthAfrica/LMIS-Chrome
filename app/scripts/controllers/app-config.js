@@ -155,7 +155,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         });
     };
 
-  }).controller('EditAppConfigCtrl', function ($scope, appConfigService, growl, $log, i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory) {
+  }).controller('EditAppConfigCtrl', function ($scope, appConfigService, growl, $log, i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory, $filter) {
 
     $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords;
     $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -173,10 +173,20 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     //used to hold config form data
     $scope.appConfig = appConfig;
 
+    var setAppConfigLastUpdatedViewInfo = function(appConfig){
+      if(typeof appConfig === 'object' && typeof appConfig.lastUpdated !== 'undefined'){
+        var updatedDate = $filter('date')(new Date(appConfig.lastUpdated), 'yyyy-MM-dd HH:mm:ss');
+        $scope.lastUpdated = i18n('lastUpdated', updatedDate);
+      }else{
+        $scope.lastUpdated = i18n('lastUpdated', 'N/A');
+      }
+    };
+
     function preLoadConfigForm(appConfig) {
       if (appConfig === undefined) {
         return;
       }
+      setAppConfigLastUpdatedViewInfo(appConfig);
 
       $scope.appConfig.contactPerson = appConfig.contactPerson;
       $scope.appConfig.facility = appConfig.facility;

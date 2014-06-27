@@ -22,7 +22,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
    * @param appConfig
    * @returns {promise|promise|*|Function|promise}
    */
-  var saveAppConfig = function (appConfig) {
+  var saveAppConfig = function (appConfig, shouldSync) {
     var deferred = $q.defer();
 
     appConfig.facility.reminderDay = parseInt(appConfig.facility.reminderDay); //cast to integer in case it is a string
@@ -47,8 +47,10 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
           deferred.resolve(appConfigCopy);
 
-          //sync app config in the background.
-          syncService.syncItem(storageService.APP_CONFIG, appConfigCopy);
+          if (shouldSync !== false) {
+            //sync app config in the background.
+            syncService.syncItem(storageService.APP_CONFIG, appConfigCopy);
+          }
 
         })
         .catch(function(reason){
@@ -61,8 +63,8 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     return deferred.promise;
   };
 
-  this.setup = function(appConfig){
-    return saveAppConfig(appConfig);
+  this.setup = function(appConfig, shouldSync){
+    return saveAppConfig(appConfig, shouldSync);
   };
 
   var getAppConfigFromMemory = function () {
@@ -209,11 +211,15 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         } else {
 
           //TODO: get from remote here and use saveAppConfig to save remote app config.
+          //TODO: create a transaction that makes sure remote app config required product type, ccu and product profile
+          //TODO: exists locally, else rollback because it will break the app. also watch out for sync loop.
           syncService.updateFromRemote(storageService.APP_CONFIG, appConfig)
             .then(function () {
               getAppConfigFromStorage()
                 .then(function(appCfg){
-                  saveAppConfig(appCfg)
+                  appCfg.lastUpdated = new Date().toJSON();
+                  var shouldSync = false;
+                  saveAppConfig(appCfg, shouldSync)
                     .then(function(res){
                       deferred.resolve(res);
                     })
