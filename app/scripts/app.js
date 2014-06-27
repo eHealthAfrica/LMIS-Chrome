@@ -10,8 +10,7 @@ angular.module('lmisChromeApp', [
   'angular-growl',
   'ngAnimate'
 ])
-  // Load fixture data
-  .run(function(storageService, $rootScope, $state, $window, appConfigService, fixtureLoaderService) {
+  .run(function(storageService, $rootScope, $state, $window, appConfigService, fixtureLoaderService, growl) {
 
     $window.showSplashScreen = function() {
       $state.go('loadingFixture');
@@ -34,7 +33,6 @@ angular.module('lmisChromeApp', [
           }
         })
         .catch(function (reason) {
-          //TODO: if error occur here, what next?? error display screen???
           console.error(reason);
         });
     };
@@ -45,7 +43,7 @@ angular.module('lmisChromeApp', [
     fixtureLoaderService.loadFiles(storageService.FIXTURE_NAMES)
       .catch(function(reason){
         console.log(reason);
-        //TODO: if loading of fixture fails, WHAT NEXT??????, maybe an error page??
+        growl.error('Fixture loading failed', {ttl: -1});
       });
 
   })
