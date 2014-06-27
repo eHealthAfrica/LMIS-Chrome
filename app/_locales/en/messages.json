@@ -641,5 +641,13 @@
   },
   "clearStorageConfirmationMsg": {
     "message": "this will erase all data on this phone. You will need to set it up again while online. \nAre you ABSOLUTELY sure?"
+  },
+  "lastUpdated": {
+    "message": "Last updated: $dateUpdated$",
+    "placeholders": {
+      "dateUpdated": {
+        "content": "$1"
+      }
+    }
   }
 }
