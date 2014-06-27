@@ -174,7 +174,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.appConfig = appConfig;
 
     var setAppConfigLastUpdatedViewInfo = function(appConfig){
-      if(typeof appConfig === 'object' && typeof appConfig.lastUpdated !== 'undefined'){
+      if(utility.has(appConfig, 'lastUpdated')){
         var updatedDate = $filter('date')(new Date(appConfig.lastUpdated), 'yyyy-MM-dd HH:mm:ss');
         $scope.lastUpdated = i18n('lastUpdated', updatedDate);
       }else{
