@@ -19,7 +19,7 @@ angular.module('lmisChromeApp')
       },
       controller: function(appConfig, $state, $scope, isStockCountReminderDue, $rootScope, reminderFactory, i18n) {
         if (typeof appConfig === 'undefined') {
-          $state.go('loadingFixture');
+          $state.go('appConfigWelcome');
         } else {
           $scope.facility = appConfig.facility.name;
           if (isStockCountReminderDue === true) {
