@@ -1,55 +1,30 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('presentationFactory', function ($q, uomFactory, storageService, utility) {
+    .factory('presentationFactory', function ($q, uomFactory, storageService, memoryStorageService, utility) {
 
-      var getByUuid = function(uuid) {
-        var deferred = $q.defer();
-        uuid = utility.getStringUuid(uuid);
-        storageService.find(storageService.PRODUCT_PRESENTATION, uuid).then(function (data) {
-          var productPresentation = data;
-          if (productPresentation !== undefined) {
-            var promises = {
-              uom: uomFactory.get(productPresentation.uom)
-            };
-
-            $q.all(promises).then(function (result) {
-              for (var key in result) {
-                productPresentation[key] = result[key];
-              }
-              deferred.resolve(productPresentation);
-            })
-                .catch(function (err) {
-                  deferred.reject(err);
-                });
-          } else {
-            deferred.resolve();
-          }
-        }).catch(function (err) {
-              deferred.reject(err);
-            });
-        return deferred.promise;
+      var getByUuid = function(key) {
+        var uuid = utility.getStringUuid(key);
+        var presentation = memoryStorageService.get(storageService.PRODUCT_PRESENTATION, uuid);
+        if(typeof presentation === 'object'){
+          presentation.uom = uomFactory.get(presentation.uom);
+        }
+        return presentation;
       };
 
       var getAllPresentation = function () {
-        var deferred = $q.defer();
-        storageService.get(storageService.PRODUCT_PRESENTATION).then(function (data) {
-          var presentations = [];
-          for (var uuid in data) {
-            presentations.push(getByUuid(uuid));
+        var presentationDb = memoryStorageService.getDatabase(storageService.PRODUCT_PRESENTATION);
+        var presentations = [];
+        for(var key in presentationDb){
+          var presentation = presentationDb[key];
+          if(typeof presentation === 'object'){
+            var uuid = utility.getStringUuid(presentation);
+            presentations.push(uuid);
+          }else{
+            console.error('presentation is not an object: '+presentation);
           }
-
-          $q.all(presentations)
-              .then(function (results) {
-                deferred.resolve(results);
-              })
-              .catch(function (reason) {
-                deferred.reject(reason);
-              });
-        }).catch(function (err) {
-              deferred.reject(err);
-            });
-        return deferred.promise;
+        }
+        return presentations;
       };
 
       return {

@@ -1,54 +1,58 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('productCategoryFactory', function ($q, storageService, utility) {
+    .factory('productCategoryFactory', function ($q, storageService, memoryStorageService, utility) {
 
-    var getByUuid = function (uuid) {
-      uuid = utility.getStringUuid(uuid);
-      var deferred = $q.defer();
-      storageService.get(storageService.PRODUCT_CATEGORY)
-        .then(function (productCategories) {
-          var productCategory = productCategories[uuid];
-          if (typeof productCategory !== 'undefined') {
-            productCategory.parent = productCategories[productCategory.parent];
+      var getByUuid = function(uuid){
+        var uuid = utility.getStringUuid(uuid);
+        var categories = memoryStorageService.getDatabase(storageService.PRODUCT_CATEGORY);
+        var prodCategory = categories[uuid];
+        if(typeof prodCategory === 'object'){
+          prodCategory.parent = categories[prodCategory.parent];
+        }else{
+          console.error('product category is not an object: '+prodCategory);
+        }
+        return prodCategory;
+      };
+
+
+      var getProductCategories = function(){
+        var productCategories = [];
+        var categories = memoryStorageService.getDatabase(storageService.PRODUCT_CATEGORY);
+        for(var key in categories){
+          var prodCategory = getByUuid(key);
+          if(typeof prodCategory === 'object'){
+            productCategories.push(prodCategory);
+          }else{
+            console.log('product category is not an object: '+prodCategory);
           }
-          deferred.resolve(productCategory);
-        })
-        .catch(function (reason) {
-          deferred.reject(reason);
-        });
-      return deferred.promise;
-    };
+        }
+        return productCategories;
+      };
 
+      var getAllKeyValuePairs = function(){
+        var keyValue = {};
+        var categories = getProductCategories();
+        for(var index in getProductCategories()){
+          var prodCategory = categories[index];
 
-    var getProductCategories = function () {
-      var deferred = $q.defer();
-      var productCategoryList = [];
-      storageService.get(storageService.PRODUCT_CATEGORY)
-        .then(function (productCategories) {
-          for (var uuid in productCategories) {
-            var productCategory = productCategories[uuid];
-            if (typeof productCategory !== 'undefined') {
-              productCategory.parent = productCategories[productCategory.parent];
-              productCategoryList.push(productCategory);
-            }
+          if(typeof prodCategory !== 'object'){
+            throw 'product category does not exist.'
           }
-          deferred.resolve(productCategoryList);
-        })
-        .catch(function (reason) {
-          deferred.reject(reason);
-        });
-      return deferred.promise;
-    };
 
-    var getAllKeyValuePairs = function () {
-      return storageService.get(storageService.PRODUCT_CATEGORY);
-    };
+          if(!('uuid' in prodCategory)){
+            throw 'product category does not have uuid.'
+          }
 
-    return {
-      getAll: getProductCategories,
-      get: getByUuid,
-      getKeyValuePairs: getAllKeyValuePairs
-    };
+          keyValue[prodCategory.uuid] = prodCategory;
+        }
+        return keyValue;
+      };
 
-  });
+      return {
+        getAll: getProductCategories,
+        get: getByUuid,
+        getKeyValuePairs: getAllKeyValuePairs
+      };
+
+    });

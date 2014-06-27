@@ -13,7 +13,7 @@ angular.module('lmisChromeApp')
         },
         isStockCountReminderDue: function(stockCountFactory, appConfig) {
           if (typeof appConfig !== 'undefined') {
-            return stockCountFactory.isStockCountDue(appConfig.stockCountInterval, appConfig.reminderDay);
+            return stockCountFactory.isStockCountDue(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
           }
         }
       },
@@ -87,12 +87,9 @@ angular.module('lmisChromeApp')
           resolve: {
             stockOutList: function(stockOutBroadcastFactory) {
               return stockOutBroadcastFactory.getAll();
-            },
-            getAllStockCount: function(storageService){
-              return storageService.all(storageService.STOCK_COUNT);
             }
           },
-          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory, getAllStockCount) {
+          controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
             var keys = [
               {
                 key: 'stockBelowReorder',
@@ -169,9 +166,9 @@ angular.module('lmisChromeApp')
               return deferred.promise;
             };
 
-            $scope.showChart = !(getAllStockCount.length === 0);
+            $scope.showChart = !isStockCountReminderDue;
             if ($scope.showChart) {
-              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, stockCountFactory)
+              getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService)
                 .then(function(productTypeCounts) {
                   var values = [], product = {}, stockOutWarning = [];
 
@@ -179,7 +176,7 @@ angular.module('lmisChromeApp')
                     return stockOutList.filter(function(element) {
                       var dayTest = function() {
                         var createdTime = new Date(element.created).getTime();
-                        var stockCountDueDate  = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
+                        var stockCountDueDate  = stockCountFactory.getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
                         return stockCountDueDate.getTime() < createdTime;
                       };
                       return element.productType.uuid === uuid && dayTest();
