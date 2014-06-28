@@ -5,6 +5,7 @@
 //need to design the priority queue bit based on the storage capacity restriction on the local storage and introduce a table for the lost records count
 
 angular.module('lmisChromeApp')
+<<<<<<< HEAD
         .factory('trackingFactory', function($window, $rootScope, config, utility, syncService, storageService) {
 
             var tracker;
@@ -14,6 +15,7 @@ angular.module('lmisChromeApp')
                 var service = $window.analytics.getService(config.analytics.service);
                 tracker = service.getTracker(config.analytics.propertyID);
             }
+<<<<<<< HEAD
 
 
             var event = function(category, action, label) {
@@ -65,11 +67,50 @@ angular.module('lmisChromeApp')
                                 opt_fatal: opt_fatal
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
+=======
+<<<<<<< HEAD
+        .factory('trackingFactory', function($window, $rootScope, config,utility, deviceInfoFactory, storageService) {
+
+            var tracker;
+    if (utility.has($window, 'analytics')) {
+                var service = $window.analytics.getService(config.analytics.service);
+
+                tracker = (deviceInfoFactory.isOnline()) ? service.getTracker(config.analytics.propertyID) : {
+                   
+=======
+        .factory('trackingFactory', function($window, $rootScope, config, utility, deviceInfoFactory, storageService) {
+
+            var tracker;
+            var online;
+            if (utility.has($window, 'analytics')) {
+                var service = $window.analytics.getService(config.analytics.service);
+                online = deviceInfoFactory.isOnline();
+                tracker = online ? service.getTracker(config.analytics.propertyID) : {
+>>>>>>> Offline analytics commits: nearly there!
+                    sendAppView: function(page) {
+                        console.log("offline page: " + page);
+                        var _pageview = {
+                            page: page
+                        };
+                        storageService.save(storageService.PAGE_VIEWS, _pageview);
+                    },
+                    sendException: function(opt_description, opt_fatal) {
+                        console.log("offline exception : " + opt_description + ": " + opt_fatal);
+                        var _exception = {
+                            opt_description: opt_description,
+                            opt_fatal: opt_fatal
+                        };
+                        storageService.save(storageService.EXCEPTIONS, _exception);
+                    },
+                    sendEvent: function(category, action, label) {
+                        console.log("offline click : " + category + ": " + action + ": " + label);
+>>>>>>> Merge upstream/develop into feature/offline_analytics
                         var _event = {
                             action: action,
                             label: label
                         };
                         storageService.save(storageService.CLICKS, _event);
+<<<<<<< HEAD
                         }
                         );
             };
@@ -158,3 +199,23 @@ angular.module('lmisChromeApp')
             };
         });
 
+=======
+
+                    }
+
+                };
+                $rootScope.$on('$stateChangeSuccess', function(state) {
+                    tracker.sendAppView(state.name);
+                });
+
+                $rootScope.$on('$stateNotFound', function(state) {
+                    tracker.sendException(state.to, false);
+                });
+            }
+
+            return {
+                tracker: tracker,
+                online: online
+            };
+        });
+>>>>>>> Merge upstream/develop into feature/offline_analytics
