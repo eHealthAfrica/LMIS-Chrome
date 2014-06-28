@@ -119,48 +119,6 @@ angular.module('lmisChromeApp')
              * @param uuid
              * @returns {promise|Function|promise|promise|promise|*}
              */
-            var removeRecordsFromTable = function(tableName, uuids) {
-                console.log("removin: "+tableName);
-                var deferred = $q.defer();
-                var tableObj = {};
-                getData(tableName)
-                        .then(function(tableData) {
-                            if (typeof tableData !== 'undefined') {
-                                uuids.forEach(function(uuid) {
-                                    console.log(uuid);
-                                    if (typeof tableData[uuid] !== 'undefined') {
-                                        delete tableData[uuid];
-                                    } else {
-                                        deferred.reject('record with given uuid does not exist.');
-                                    }
-                                });
-                                tableObj[tableName] = tableData;
-                                chromeStorageApi.set(tableObj)
-                                        .then(function() {
-                                            deferred.resolve(true);
-                                        })
-                                        .catch(function(reason) {
-                                            deferred.reject(reason);
-                                        });
-
-                            } else {
-                                deferred.reject('table does not exist.');
-                            }
-                        })
-                        .catch(function(reason) {
-                            deferred.reject(reason);
-                        });
-                return deferred.promise;
-            };
-
-            /**
-             * This function removes a given record with the given uuid from the given tableName and returns True
-             * if it was done successfully else rejects with reason why removeData failed.
-             *
-             * @param tableName
-             * @param uuid
-             * @returns {promise|Function|promise|promise|promise|*}
-             */
             var removeRecordFromTable = function(tableName, uuid) {
                 var deferred = $q.defer();
                 var tableObj = {};
@@ -309,11 +267,6 @@ angular.module('lmisChromeApp')
                 }
             };
 
-                    exceptions,
-                    clicks,
-                    pageviews
-                            loadNext(i);
-                        }, 10);
             var uuidGenerator = function() {
                 var now = Date.now();
                 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
