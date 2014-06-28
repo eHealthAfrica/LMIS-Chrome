@@ -6,34 +6,20 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
     var tracker = trackingFactory.tracker;
     this.syncClicks = function() {
         var uuids = [];
-        console.log("Loopin")
+        console.log("Loopin Clicks");
         storageService.all(storageService.CLICKS).then(function(clicksData) {
             clicksData.forEach(function(click) {
 
+                //need to find a way to get a success flag here and delete if event successfuly sent
+                tracker.sendEvent("Offline Clicks", click.action, click.label)
+                uuids.push(click.uuid);
                 console.log("uuid: " + click.uuid);
-                console.log("online: " + trackingFactory.online);
-                if (trackingFactory.online) {
-
-                    //best to get a success flag here and delete if event successfuly sent
-                    tracker.sendEvent("Offline Clicks", click.action, click.label);
-                    console.log(tracker.sendEvent("Offline Clicks", click.action, click.label));
-                    uuids.push(click.uuid);
-
-                }
             });
+        }).then(function() {
+            storageService.removeRecords(storageService.CLICKS, uuids)
         }).finally(function() {
-            console.log("pending list cleared (i wish!)");
+            console.log("pending clicks list cleared ");
         });
-
-        console.log("uuids: " + uuids.length);
-        var deferred = $q.defer();
-        storageService.removeRecords(storageService.CLICKS, uuids)
-                .then(function() {
-                    deferred.resolve();
-                })
-                .catch(function() {
-                    deferred.reject();
-                });
     };
 
     //not final yet. Work in progress
@@ -45,71 +31,44 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
         storageService.all(storageService.EXCEPTIONS).then(function(exceptionData) {
             exceptionData.forEach(function(exception) {
 
-                console.log("uuid: " + exception.uuid);
-                console.log("online: " + trackingFactory.online);
-                if (trackingFactory.online) {
+                console.log("except uuid: " + exception.uuid);
+                //best to get a success flag here and delete if event successfuly sent
+                tracker.sendException(exception.opt_description, exception.opt_fatal);
+                uuids.push(exception.uuid);
 
-                    //best to get a success flag here and delete if event successfuly sent
-                    tracker.sendEvent(exception.opt_description, exception.opt_fatal);
-                    console.log(tracker.sendEvent("Offline excepts", exception.opt_description, exception.opt_fatal));
-                    uuids.push(exception.uuid);
-
-                }
             });
-
-            console.log("uuids: " + uuids.length);
-            var deferred = $q.defer();
-            storageService.removeRecords(storageService.EXCEPTIONS, uuids)
-                    .then(function() {
-                        deferred.resolve();
-                    })
-                    .catch(function() {
-                        deferred.reject();
-                    });
-
-
+        }).then(function() {
+            storageService.removeRecords(storageService.EXCEPTIONS, uuids);
         }).finally(function() {
-            console.log("pending list cleared (i wish!)");
+            console.log("pending excepts list cleared (i wish!)");
         });
-
     };
 
     //not final yet. Worki in progress
     this.syncPageViews = function() {
 
-        
+
         var uuids = [];
-        console.log("Loopin Excepts")
+        console.log("Loopin Pages");
 
         storageService.all(storageService.PAGE_VIEWS).then(function(pageViewData) {
             pageViewData.forEach(function(pageView) {
 
-                console.log("uuid: " + pageView.uuid);
-                console.log("online: " + trackingFactory.online);
-                if (trackingFactory.online) {
+                console.log("page uuid: " + pageView.uuid);
 
-                    //best to get a success flag here and delete if event successfuly sent
-                    tracker.sendAppView(pageView.page);
-                    console.log(tracker.sendEvent("Offline views", pageView.page));
-                    uuids.push(pageView.uuid);
+                //best to get a success flag here and delete if event successfuly sent
+                tracker.sendAppView(pageView.page);
+                console.log(tracker.sendEvent("Offline views", pageView.page));
+                uuids.push(pageView.uuid);
 
-                }
             });
-
-            console.log("uuids: " + uuids.length);
-            var deferred = $q.defer();
-            storageService.removeRecords(storageService.EXCEPTIONS, uuids)
-                    .then(function() {
-                        deferred.resolve();
-                    })
-                    .catch(function() {
-                        deferred.reject();
-                    });
-
-
+        }).then(function() {
+            console.log("page uuids: " + uuids.length);
+            storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
         }).finally(function() {
-            console.log("pending list cleared (i wish!)");
+            console.log("pending pages list cleared (i wish!)");
         });
-        
+        ;
+
     };
 });
