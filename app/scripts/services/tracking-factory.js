@@ -41,6 +41,7 @@ angular.module('lmisChromeApp')
                             tracker.sendAppView(page);
                         })
                         .catch(function(reason) {
+
                             console.log("offline page: " + page);
                             var _pageview = {
                                 page: page
@@ -65,11 +66,6 @@ angular.module('lmisChromeApp')
                                 opt_fatal: opt_fatal
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
-                        var _event = {
-                            action: action,
-                            label: label
-                        };
-                        storageService.save(storageService.CLICKS, _event);
                         }
                         );
             };
