@@ -8,43 +8,50 @@ angular.module('lmisChromeApp', [
   'config',
   'nvd3ChartDirectives',
   'angular-growl',
-  'ngAnimate'
+  'ngAnimate',
+  'db'
 ])
-  // Load fixture data
-  .run(function(storageService, $rootScope, $state, $window, appConfigService) {
+  .run(function(storageService, $rootScope, $state, $window, appConfigService, fixtureLoaderService, growl) {
 
     $window.showSplashScreen = function() {
       $state.go('loadingFixture');
     };
 
     $window.hideSplashScreen = function() {
-      $state.go('home.index.home.mainActivity');
+      appConfigService.getCurrentAppConfig()
+        .then(function (cfg) {
+          if (typeof cfg === 'object') {
+            $state.go('home.index.home.mainActivity');
+    
+            appConfigService.syncOfflineAnalytics().finally(function(){
+                      console.log('offline reports send to ga server.');
+                });
+
+            //trigger background syncing on start up
+            appConfigService.updateAppConfigAndStartBackgroundSync()
+              .finally(function () {
+                console.log('updateAppConfigAndStartBackgroundSync triggered on start up have been completed!');
+              });
+
+          } else {
+            $state.go('appConfigWelcome');
+          }
+        })
+        .catch(function (reason) {
+          console.error(reason);
+        });
     };
 
     $rootScope.$on('LOADING_COMPLETED', $window.hideSplashScreen);
-            appConfigService.syncOfflineAnalytics().finally(function(){
-                      console.log('offline reports send to ga server.');
-                });
     $rootScope.$on('START_LOADING', $window.showSplashScreen);
 
-    //load fixtures if not loaded yet.
-    storageService.loadFixtures().then(function() {
-      //update appConfig from remote then trigger background syncing
-      appConfigService.getCurrentAppConfig().then(function(cfg) {
-        if (typeof cfg !== 'undefined') {
-            appConfigService.syncOfflineAnalytics().finally(function(){
-                      console.log('offline reports send to ga server.');
-                });
-          appConfigService.updateAppConfigAndStartBackgroundSync()
-            .finally(function() {
-              console.log('updateAppConfigAndStartBackgroundSync triggered on start up have been completed!');
-            });
-        }
+    //TODO: show splash screen while loading fixture into cache
+    fixtureLoaderService.loadFiles(storageService.FIXTURE_NAMES)
+      .catch(function(reason){
+        console.log(reason);
+        growl.error('Fixture loading failed', {ttl: -1});
       });
-      storageService.getAll().then(function(data) {
-        console.log('finished loading: ' + (Object.keys(data)).join('\n'));
-      });
-    });
+
   })
 
   .config(function($compileProvider) {

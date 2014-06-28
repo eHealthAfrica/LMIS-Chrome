@@ -17,7 +17,8 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
                 console.log("uuid: " + click.uuid);
             });
         }).then(function() {
-            storageService.removeRecords(storageService.CLICKS, uuids)
+            if (uuids)
+                storageService.removeRecords(storageService.CLICKS, uuids);
         }).finally(function() {
             console.log("pending clicks list cleared ");
             });
@@ -70,16 +71,15 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
 
                 //best to get a success flag here and delete if event successfuly sent
                 tracker.sendAppView(pageView.page);
-                console.log(tracker.sendEvent("Offline views", pageView.page));
                 uuids.push(pageView.uuid);
 
             });
         }).then(function() {
             console.log("page uuids: " + uuids.length);
             storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
-    }).then(function() {
-                console.log("page uuids: " + uuids.length);
-            storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
+        }).then(function() {
+            if (uuids)
+                storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
         }).finally(function() {
             console.log("pending pages list cleared (i wish!)");
         });;
