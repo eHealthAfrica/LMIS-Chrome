@@ -2,34 +2,18 @@
 
 describe('StockOutBroadcast Factory', function () {
   // Load the controller's module
-  beforeEach(module('lmisChromeApp', 'i18nMocks', 'memoryStoreMocks'));
+  beforeEach(module('lmisChromeApp', 'i18nMocks'));
 
   var stockOutBroadcastFactory, storageService, syncService, notificationService, stockOut, $q, inventoryRulesFactory;
 
   beforeEach(inject(function(_stockOutBroadcastFactory_, _storageService_, _syncService_, _notificationService_, _$q_
-      , _inventoryRulesFactory_, memoryStoreMock, memoryStorageService, cacheService) {
-
+      , _inventoryRulesFactory_) {
     stockOutBroadcastFactory = _stockOutBroadcastFactory_;
     storageService = _storageService_;
     syncService = _syncService_;
     notificationService = _notificationService_;
     $q = _$q_;
     inventoryRulesFactory = _inventoryRulesFactory_;
-
-    spyOn(cacheService, 'get').andCallFake(function () {
-      return memoryStoreMock.memoryStore
-    });
-
-    spyOn(memoryStorageService, 'get').andCallFake(function (dbName, key) {
-      var db = memoryStoreMock.memoryStore[dbName];
-      var record = db[key];
-      return record;
-    });
-
-    spyOn(memoryStorageService, 'getDatabase').andCallFake(function (dbName) {
-      return memoryStoreMock.memoryStore[dbName];
-    });
-
     stockOut = { uuid: '1234', facility: { uuid: '123-88766' } , stockLevel: 121, productType: { uuid: '3214' } };
   }));
 

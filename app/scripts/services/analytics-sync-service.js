@@ -20,6 +20,11 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
         }).finally(function() {
             console.log("pending clicks list cleared ");
         });
+
+
+
+
+
     };
 
     //not final yet. Work in progress
@@ -36,12 +41,12 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
                 tracker.sendException(exception.opt_description, exception.opt_fatal);
                 uuids.push(exception.uuid);
 
-            });
-        }).then(function() {
+            }).then(function() {
             storageService.removeRecords(storageService.EXCEPTIONS, uuids);
         }).finally(function() {
             console.log("pending excepts list cleared (i wish!)");
         });
+    });
     };
 
     //not final yet. Worki in progress
@@ -62,13 +67,12 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
                 uuids.push(pageView.uuid);
 
             });
-        }).then(function() {
-            console.log("page uuids: " + uuids.length);
+    }).then(function() {
+                console.log("page uuids: " + uuids.length);
             storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
         }).finally(function() {
             console.log("pending pages list cleared (i wish!)");
-        });
-        ;
+        });;
 
     };
 });

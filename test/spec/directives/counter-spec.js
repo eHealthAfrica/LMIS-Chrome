@@ -1,19 +1,14 @@
 'use strict';
 
 describe('Tests Counter Directive', function () {
-  var scope;
-  var html;
-  var counter;
-  var counterScope;
-  var $timeout;
-  var shouldCountUp;
+  var scope, html, counter,  counterScope, $timeout, shouldCountUp;
 
   // Load the LMIS module
-  beforeEach(module('lmisChromeApp', 'i18nMocks', 'fixtureLoaderMocks'));
+  beforeEach(module('lmisChromeApp', 'i18nMocks'));
   beforeEach(module('views/templates/counter.html'));
 
  // Initialize the state
-  beforeEach(inject(function($templateCache, $httpBackend, storageService, fixtureLoaderMock) {
+  beforeEach(inject(function($templateCache) {
     // Mock each template used by the state
     var templates = [
       'index/index',
@@ -33,9 +28,6 @@ describe('Tests Counter Directive', function () {
     angular.forEach(templates, function(template) {
       $templateCache.put('views/' + template + '.html', '');
     });
-
-    fixtureLoaderMock.loadFixtures();
-
   }));
 
   beforeEach(inject(function ($compile, $rootScope, _$timeout_) {

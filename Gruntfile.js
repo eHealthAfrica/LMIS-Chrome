@@ -6,9 +6,6 @@ module.exports = function(grunt) {
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
-  // Load custom tasks
-  grunt.loadTasks('tasks');
-
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
@@ -50,10 +47,6 @@ module.exports = function(grunt) {
           '<%= yeoman.app %>/scripts/{,*/}*.js',
           '<%= yeoman.app %>/scripts/fixtures/*.json'
         ]
-      },
-      fixtures: {
-        files: ['<%= yeoman.app %>/scripts/fixtures/*.json'],
-        tasks: ['fixtures']
       }
     },
 
@@ -447,18 +440,6 @@ module.exports = function(grunt) {
 
     jscs: {
       src: '<%= jshint.all %>'
-    },
-
-    fixtures: {
-      all: {
-        options: {
-          dest: '<%= yeoman.app %>/scripts/db.js'
-        },
-        files: [{
-          expand: true,
-          src: '<%= yeoman.app %>/scripts/fixtures/*.json'
-        }]
-      }
     }
   });
 
@@ -471,7 +452,6 @@ module.exports = function(grunt) {
       'clean:server',
       'wiredep',
       'ngconstant:development',
-      'fixtures',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -501,8 +481,7 @@ module.exports = function(grunt) {
       'clean:dist',
       'wiredep',
       'ngconstant:production',
-      'chromeManifest:dist',
-      'fixtures'
+      'chromeManifest:dist'
     ];
 
     var release = [
