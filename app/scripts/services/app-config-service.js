@@ -258,7 +258,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
         }).catch(function (reason) {
           deferred.reject(reason);
         });
-
+        return deferred.promise;
   };
 
 });

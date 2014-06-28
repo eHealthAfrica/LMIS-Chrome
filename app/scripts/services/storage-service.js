@@ -75,12 +75,14 @@ angular.module('lmisChromeApp')
              * @returns {promise|Function|promise|promise|promise|*}
              */
             var removeRecordsFromTable = function(tableName, uuids) {
-                console.log("removin: " + tableName);
                 var deferred = $q.defer();
+                if(uuids.length>0){
+                console.log("removin: "+tableName + "num recs: " + uuids.length);
+                
                 var tableObj = {};
                 getData(tableName)
                         .then(function(tableData) {
-                            if (typeof tableData !== 'undefined') {
+                            if (typeof tableData !== 'undefined'  ) {
                                 uuids.forEach(function(uuid) {
                                     console.log(uuid);
                                     if (typeof tableData[uuid] !== 'undefined') {
@@ -105,6 +107,7 @@ angular.module('lmisChromeApp')
                         .catch(function(reason) {
                             deferred.reject(reason);
                         });
+                    }
                 return deferred.promise;
             };
 
