@@ -84,11 +84,11 @@ angular.module('lmisChromeApp')
         $scope.companies = companyList;
       });
 
-      storageService.get(storageService.CURRENCIES).then(function (currencyList) {
+      storageService.get(storageService.CURRENCY).then(function (currencyList) {
         $scope.currencies = currencyList;
       });
 
-      storageService.get(storageService.CURRENCIES).then(function (currencyList) {
+      storageService.get(storageService.CURRENCY).then(function (currencyList) {
         $scope.currencies = currencyList;
       });
 
@@ -96,7 +96,7 @@ angular.module('lmisChromeApp')
         $scope.modes = modeOfAdministrationList;
       });
 
-      storageService.get(storageService.PRODUCT_FORMULATIONS).then(function (formulationList) {
+      storageService.get(storageService.PRODUCT_FORMULATION).then(function (formulationList) {
         $scope.formulations = formulationList;
       });
 
@@ -104,7 +104,7 @@ angular.module('lmisChromeApp')
         $scope.uomList = uomList;
       });
 
-      storageService.get(storageService.PRODUCT_PROFILES).then(function (data) {
+      storageService.get(storageService.PRODUCT_PROFILE).then(function (data) {
         $scope.profileList = data;
       });
 
@@ -117,7 +117,7 @@ angular.module('lmisChromeApp')
        * local storage.
        */
       $scope.save = function () {
-        storageService.save(storageService.BATCHES, $scope.productItem).then(function () {
+        storageService.save(storageService.BATCH, $scope.productItem).then(function () {
           $location.path('/batches/');
         });
       };

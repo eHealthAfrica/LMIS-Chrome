@@ -13,38 +13,26 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
                 //need to find a way to get a success flag here and delete if event successfuly sent
                 tracker.sendEvent("Offline Clicks", click.action, click.label)
                 uuids.push(click.uuid);
+                uuids.push(click.uuid);
                 console.log("uuid: " + click.uuid);
-<<<<<<< HEAD
-                if (trackingFactory.online) {
-
-                    //best to get a success flag here and delete if event successfuly sent
-                    console.log(tracker.sendEvent("Offline Clicks", click.action, click.label));
-                    uuids.push(click.uuid);
-
-                }
-=======
->>>>>>> Offline analytics commits: works now!
             });
         }).then(function() {
             storageService.removeRecords(storageService.CLICKS, uuids)
         }).finally(function() {
             console.log("pending clicks list cleared ");
-        });
 <<<<<<< HEAD
-
-        console.log("uuids: " + uuids.length);
-        storageService.removeRecords(storageService.CLICKS, uuids)
-                .then(function() {
-                    deferred.resolve();
-                })
-                .catch(function() {
-                    deferred.reject();
             });
         }).then(function() {
             storageService.removeRecords(storageService.CLICKS, uuids)
             console.log("pending clicks list cleared ");
 =======
->>>>>>> Offline analytics commits: works now!
+        });
+
+
+
+
+
+>>>>>>> Merge upstream/develop into feature/offline_analytics
     };
 
     //not final yet. Work in progress
@@ -58,35 +46,19 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
 
                 console.log("except uuid: " + exception.uuid);
                 //best to get a success flag here and delete if event successfuly sent
-<<<<<<< HEAD
                     //best to get a success flag here and delete if event successfuly sent
                 uuids.push(exception.uuid);
 
-                    uuids.push(exception.uuid);
-=======
-                tracker.sendException(exception.opt_description, exception.opt_fatal);
                 uuids.push(exception.uuid);
->>>>>>> Offline analytics commits: works now!
 
-            });
-        }).then(function() {
+            }).then(function() {
             storageService.removeRecords(storageService.EXCEPTIONS, uuids);
-<<<<<<< HEAD
         }).finally(function() {
             console.log("pending excepts list cleared (i wish!)");
-                    .then(function() {
-                        deferred.resolve();
-                    })
-                    .catch(function() {
-                        deferred.reject();
-                    });
-
-
-=======
->>>>>>> Offline analytics commits: works now!
         }).finally(function() {
             console.log("pending excepts list cleared (i wish!)");
         });
+    });
     };
 
     //not final yet. Worki in progress
@@ -100,41 +72,24 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
             pageViewData.forEach(function(pageView) {
 
                 console.log("page uuid: " + pageView.uuid);
-<<<<<<< HEAD
 
                 //best to get a success flag here and delete if event successfuly sent
-
-                    //best to get a success flag here and delete if event successfuly sent
-                    tracker.sendAppView(pageView.page);
-=======
 
                 //best to get a success flag here and delete if event successfuly sent
                 tracker.sendAppView(pageView.page);
->>>>>>> Offline analytics commits: works now!
                 console.log(tracker.sendEvent("Offline views", pageView.page));
                 uuids.push(pageView.uuid);
 
             });
-<<<<<<< HEAD
-
-            console.log("uuids: " + uuids.length);
-            var deferred = $q.defer();
-            storageService.removeRecords(storageService.EXCEPTIONS, uuids)
-                    .then(function() {
-                        deferred.resolve();
-                    })
-                    .catch(function() {
-                        deferred.reject();
-                    });
-=======
->>>>>>> Offline analytics commits: works now!
+    }).then(function() {
+                console.log("page uuids: " + uuids.length);
+            storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
         }).then(function() {
             console.log("page uuids: " + uuids.length);
             storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
         }).finally(function() {
             console.log("pending pages list cleared (i wish!)");
-        });
-        ;
+        });;
 
     };
 });

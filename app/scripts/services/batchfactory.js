@@ -6,7 +6,7 @@ angular.module('lmisChromeApp')
       function getByUUID(uuid) {
         var deferred = $q.defer();
 
-        storageService.find(storageService.BATCHES, uuid).then(function(batch) {
+        storageService.find(storageService.BATCH, uuid).then(function(batch) {
           var promises = {
             product: productTypeFactory.get(batch.product),
             presentation: presentationFactory.get(batch.presentation),
@@ -39,7 +39,7 @@ angular.module('lmisChromeApp')
       function getBatchesByProductType(productTypeUUID) {
         var deferred = $q.defer(), productTypeBatches = [];
 
-        storageService.all(storageService.BATCHES).then(function (data) {
+        storageService.all(storageService.BATCH).then(function (data) {
 
           angular.forEach(data, function (datum) {
             if (angular.equals(datum.product, productTypeUUID)) {
@@ -69,7 +69,7 @@ angular.module('lmisChromeApp')
           });
         };
 
-        storageService.all(storageService.BATCHES).then(function(datum) {
+        storageService.all(storageService.BATCH).then(function(datum) {
           for(var i = datum.length - 1; i >= 0; i--) {
             if(angular.equals(datum[i].batch_no, batchNo)) {
               resolveBatch(datum[i]);
@@ -87,7 +87,7 @@ angular.module('lmisChromeApp')
       return {
         getAll: function () {
           var deferred = $q.defer(), batches = [];
-          storageService.all(storageService.BATCHES).then(function (data) {
+          storageService.all(storageService.BATCH).then(function (data) {
             angular.forEach(data, function (datum) {
               if (!angular.equals(datum, undefined)) {
                 batches.push(getByUUID(datum.uuid).then(function (batch) {

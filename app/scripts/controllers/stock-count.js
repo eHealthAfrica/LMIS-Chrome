@@ -34,6 +34,9 @@ angular.module('lmisChromeApp')
         resolve:{
           appConfig: function(appConfigService){
             return appConfigService.getCurrentAppConfig();
+          },
+          productWithCategories: function(stockCountFactory, appConfig){
+            return stockCountFactory.getProductObjectWithCategory(appConfig);
           }
         }
       });
@@ -62,8 +65,9 @@ angular.module('lmisChromeApp')
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
                                              $stateParams, appConfig, appConfigService, cacheService, syncService,
-                                             utility, $rootScope, i18n, locationFactory){
+                                             utility, $rootScope, i18n, productWithCategories, locationFactory){
     //TODO: refactor entire stock count controller to simpler more readable controller
+
     $scope.getCategoryColor = function(categoryName){
       if($scope.preview){
         return;
@@ -72,8 +76,8 @@ angular.module('lmisChromeApp')
     };
     $scope.step = 0;
     $scope.facilityObject = appConfig.facility;
-    $scope.selectedProductProfiles = appConfig.facility.selectedProductProfiles;
-    $scope.stockCountDate = stockCountFactory.getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+    $scope.selectedProductProfiles = appConfig.selectedProductProfiles;
+    $scope.stockCountDate = stockCountFactory.getStockCountDueDate(appConfig.stockCountInterval, appConfig.reminderDay);
     $scope.dateInfo = new Date();
     $scope.preview = $scope.detailView = $stateParams.detailView;
     $scope.editOn = false;
@@ -81,7 +85,7 @@ angular.module('lmisChromeApp')
     $scope.countValue = {};
     $scope.stockCount = {};
     $scope.stockCount.unopened = {};
-    $scope.facilityProducts = utility.castArrayToObject($scope.selectedProductProfiles, 'uuid');
+    $scope.facilityProducts = productWithCategories; // selected products for current facility
     $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
     $scope.productKey = $scope.facilityProductsKeys[$scope.step];
 
@@ -94,7 +98,8 @@ angular.module('lmisChromeApp')
     }
 
     var updateUIModel = function(){
-      $scope.productProfileUom = $scope.facilityProducts[$scope.productKey];
+      $scope.productProfileUom =
+          $scope.facilityProducts[$scope.productKey];
     };
 
     var updateCountValue = function(){
@@ -164,12 +169,19 @@ angular.module('lmisChromeApp')
              2, redirect has to wait for app to finish syncing - success/fail
             */
             syncService.syncItem(DB_NAME, $scope.stockCount)
-              .finally(function () {
-                $scope.isSaving = false;
-                alertFactory.success(msg);
-                $state.go('home.index.home.mainActivity');
-              });
-
+                .then(function (syncResult) {
+                  $scope.isSaving = false;
+                  alertFactory.success(msg);
+                  $state.go('home.index.home.mainActivity');
+                  console.info('stock count sync success: ' + syncResult);
+                })
+                .catch(function (reason) {
+                  //temporary fix here
+                  $scope.isSaving = false;
+                  alertFactory.success(msg);
+                  $state.go('home.index.home.mainActivity');
+                  console.log(reason);
+                });
           }else{
             console.log(err);
           }

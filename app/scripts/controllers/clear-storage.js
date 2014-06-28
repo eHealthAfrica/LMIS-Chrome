@@ -1,48 +1,48 @@
 'use strict';
 
-angular.module('lmisChromeApp').config(function ($stateProvider) {
+angular.module('lmisChromeApp').config(function($stateProvider) {
   $stateProvider.state('clearStorage', {
     url: '/clear-storage',
-    controller: function (storageService, $state, cacheService, $q, alertFactory, notificationService, i18n, memoryStorageService, fixtureLoaderService) {
+    controller: function(storageService, $state, $rootScope, syncService, cacheService, $q, alertFactory,
+                          notificationService, i18n) {
 
-      var clearAndLoadFixture = function () {
+      var clearAndLoadFixture = function() {
         var deferred = $q.defer();
-        //clear storage, cache and memory store.
+
+        //clear cache
         cacheService.clearCache();
-        memoryStorageService.clearAll();
+
+        //clear local storage
         storageService.clear()
-          .then(function () {
-            //reload fixtures into memory store.
-            fixtureLoaderService.loadFiles(storageService.FIXTURE_NAMES)
-              .then(function () {
+            .then(function() {
+              var promises = [];
+              promises.push(storageService.loadFixtures());
+
+              $q.all(promises).then(function(results) {
+                deferred.resolve(results);
                 $state.go('appConfigWelcome');
-              })
-              .catch(function(reason){
-                console.error(reason);
               });
-          })
-          .catch(function (reason) {
-            console.error(reason);
-          });
+            })
+            .catch(function(reason) {
+              console.log(reason);
+            });
         return deferred.promise;
       };
-
       var confirmationTitle = i18n('clearStorageTitle');
       var confirmationQuestion = i18n('clearStorageConfirmationMsg');
       var buttonLabels = [i18n('yes'), i18n('no')];
       notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
-        .then(function (isConfirmed) {
+        .then(function(isConfirmed) {
           if (isConfirmed === true) {
             clearAndLoadFixture();
           } else {
             $state.go('home.index.home.mainActivity');
           }
         })
-        .catch(function (reason) {
+        .catch(function(reason) {
           console.error(reason);
           $state.go('home.index.home.mainActivity');
         });
-
     }
   });
 });

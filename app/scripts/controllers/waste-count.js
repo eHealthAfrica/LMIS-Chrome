@@ -36,10 +36,9 @@ angular.module('lmisChromeApp')
       });
   })
   .controller('wasteCountHomeCtrl', function($scope, wasteCountFactory, wasteCountList, appConfig, $state, $filter){
-
     $scope.wasteCountList = wasteCountList;
     $scope.today = $filter('date')(new Date(), 'yyyy-MM-dd');
-    $scope.facilityProducts = wasteCountFactory.get.productObject(appConfig.facility.selectedProductProfiles);
+    $scope.facilityProducts = wasteCountFactory.get.productObject(appConfig.selectedProductProfiles);
 
     $scope.takeAction = function(date){
       wasteCountFactory.getWasteCountByDate(date).then(function(wasteCount){
@@ -68,7 +67,6 @@ angular.module('lmisChromeApp')
 
   .controller('wasteCountFormCtrl', function($scope, wasteCountFactory, $state, growl, $stateParams, appConfig,
                                               i18n, syncService, alertFactory){
-
     var getCountDate = function(){
       return ($stateParams.countDate === null) ? new Date() : new Date($stateParams.countDate);
     };
@@ -92,7 +90,7 @@ angular.module('lmisChromeApp')
 
     initWasteCount();
     $scope.wasteReasons = wasteCountFactory.wasteReasons;
-    $scope.facilityProducts = wasteCountFactory.get.productObject(appConfig.facility.selectedProductProfiles); // selected products for current facility
+    $scope.facilityProducts = wasteCountFactory.get.productObject(appConfig.selectedProductProfiles); // selected products for current facility
 
     wasteCountFactory.getWasteCountByDate(getCountDate())
         .then(function(wasteCount){
@@ -111,6 +109,7 @@ angular.module('lmisChromeApp')
       initReason();
       $scope.reasonQuantity = $scope.wasteCount.reason[$scope.productKey][$scope.selectedReason];
       var uom = $scope.productKey !== ''?$scope.facilityProducts[$scope.productKey].presentation.uom.symbol : '';
+
       $scope.enterQuantityLabel = i18n('enterQuantity', uom);
     };
 
@@ -121,12 +120,10 @@ angular.module('lmisChromeApp')
       wasteCountFactory.add($scope.wasteCount)
           .then(function(uuid){
             $scope.wasteCount.uuid = uuid;
-            syncService.syncItem(wasteCountFactory.DB_NAME, $scope.wasteCount)
-              .finally(function(){
-                $scope.isSaving = false;
-                alertFactory.success(i18n('wasteCountSaved'));
-                $state.go('home.index.home.mainActivity');
-              });
+            syncService.syncItem(wasteCountFactory.DB_NAME, $scope.wasteCount);
+            $scope.isSaving = false;
+            alertFactory.success(i18n('wasteCountSaved'));
+            $state.go('home.index.home.mainActivity');
           })
           .catch(function(reason){
             console.error(reason);

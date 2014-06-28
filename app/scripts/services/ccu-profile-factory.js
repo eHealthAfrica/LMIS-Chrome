@@ -1,32 +1,52 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('ccuProfileFactory', function ($q, storageService, memoryStorageService, utility) {
+angular.module('lmisChromeApp').factory('ccuProfileFactory', function ($q, storageService) {
 
   var getByModelId = function (modelId) {
-    //TODO: refactor to work with uuid.
-    var ccuProfile = memoryStorageService.get(storageService.CCEI, modelId);
-    return ccuProfile;
+    var deferred = $q.defer();
+    storageService.get(storageService.CCU_PROFILE)
+        .then(function (ccuProfile) {
+          deferred.resolve(ccuProfile[modelId]);
+        })
+        .catch(function(reason){
+          deferred.reject(reason);
+        });
+    return deferred.promise;
   };
 
   var getCcuProfiles = function () {
-    var ccuProfileDb = memoryStorageService.getDatabase(storageService.CCEI);
-    var ccuProfiles = utility.convertObjectToArray(ccuProfileDb);
-    return ccuProfiles;
+    var deferred = $q.defer();
+
+    storageService.all(storageService.CCU_PROFILE)
+        .then(function (ccuProfiles) {
+          deferred.resolve(ccuProfiles);
+        })
+        .catch(function (error) {
+          deferred.reject(error);
+        });
+    return deferred.promise;
   };
 
   var getAllGroupedByCategory = function () {
-    var ccuProfiles = getCcuProfiles();
+    var deferred = $q.defer();
     var groupedList = {};
-    var NOT_FOUND = -1;
-    for (var index in ccuProfiles) {
-      var ccuProfile = ccuProfiles[index];
-      var existingGroups = Object.keys(groupedList);
-      if (existingGroups.indexOf(ccuProfile.RefType) === NOT_FOUND) {
-        groupedList[ccuProfile.RefType] = [];
-      }
-      groupedList[ccuProfile.RefType].push(ccuProfile);
-    }
-    return groupedList;
+    storageService.all(storageService.CCU_PROFILE)
+        .then(function (result) {
+          for (var index in result) {
+            var ccuProfile = result[index];
+            var NOT_FOUND = -1;
+            var existingGroups = Object.keys(groupedList);
+            if (existingGroups.indexOf(ccuProfile.RefType) === NOT_FOUND) {
+              groupedList[ccuProfile.RefType] = [];
+            }
+            groupedList[ccuProfile.RefType].push(ccuProfile);
+          }
+          deferred.resolve(groupedList);
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
+    return deferred.promise;
   };
 
   return {
