@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-        .factory('storageService', function($q, $rootScope, $http, $window, chromeStorageApi, utility) {
+        .factory('storageService', function($q, $rootScope, $http, $window, chromeStorageApi, utility, collections) {
 
             /**
              *  Global variables used to define table names, with this there will be one
@@ -11,61 +11,26 @@ angular.module('lmisChromeApp')
              *  folder that holds data used to pre-fill local storage if it is empty.
              *
              */
-            var productTypes = 'product_types';
-            var productCategory = 'product_category';
-            var address = 'address';
-            var uom = 'uom';
-            var uomCategory = 'uom_category';
-            var facility = 'facility';
-            var program = 'programs';
-            var programProducts = 'program_products';
-            var facilityType = 'facility_type';
-            var employeeCategory = 'employee_category';
-            var company = 'company';
-            var companyCategory = 'company_category';
-            var currency = 'currencies';
-            var employee = 'employee';
-            var rate = 'rate';
-            var ccuType = 'ccu_type';
-            var ccu = 'ccu';
-            var user = 'user';
-            var productPresentation = 'product_presentation';
-            var productFormulation = 'product_formulations';
-            var modeOfAdministration = 'mode_of_administration';
-            var batches = 'batches';
-            var ccuProblem = 'ccu_problems';
-            var ccuTemperatureLog = 'ccu_temp_log';
-            var productProfile = 'product_profiles';
-            var inventory = 'inventory';
-            var orders = 'orders';
-            var bundles = 'bundle';
-            var bundleLines = 'bundle_lines';
-            var bundleReceipt = 'bundle_receipts';
-            var bundleReceiptLines = 'bundle_receipt_lines';
-            var locations = 'locations';
             var stockCount = 'stockcount';
             var discardCount = 'discard_count';
             var appConfig = 'app_config';
-            var stockOut = 'stock_out';
             var surveyResponse = 'survey_response';
-            var ccuProfile = 'ccei';
             var ccuBreakdown = 'ccu_breakdown';
             var pendingSyncs = 'pending_syncs';
 
+            //analytics
             var pageviews = 'pageviews';
             var clicks = 'clicks';
             var exceptions = 'exceptions';
 
-            var pageviews = 'pageviews';
-            var clicks = 'clicks';
-            var exceptions = 'exceptions';
+            var FIXTURE_NAMES = utility.values(collections);
 
             /**
              * Add new table data to the chrome store.
              *
              * @param {string} table - Table name.
              * @param {mixed} data - rows of the table (all values are stored as JSON.)
-             * @return {Promise} Promise object
+             * @return {promise|Function|promise|promise|promise|*}
              * @private
              */
 
@@ -76,11 +41,14 @@ angular.module('lmisChromeApp')
                 var deferred = $q.defer();
                 var obj = {};
                 getData(table).then(function(tableData) {
-          if(typeof tableData === 'undefined'){
+                    if (typeof tableData === 'undefined') {
                         tableData = {};
                     }
                     var oldRecord = tableData[data.uuid];
-                    data = utility.copy(oldRecord, data);
+                    if (typeof oldRecord !== 'undefined') {
+                        data = utility.copy(data, oldRecord);
+                    }
+
                     tableData[data.uuid] = data;
                     obj[table] = tableData;
                     chromeStorageApi.set(obj)
@@ -97,6 +65,7 @@ angular.module('lmisChromeApp')
                 return deferred.promise;
             };
 
+
             /**
              * This function removes a given record with the given uuid from the given tableName and returns True
              * if it was done successfully else rejects with reason why removeData failed.
@@ -106,7 +75,7 @@ angular.module('lmisChromeApp')
              * @returns {promise|Function|promise|promise|promise|*}
              */
             var removeRecordsFromTable = function(tableName, uuids) {
-                console.log("removin: "+tableName);
+                console.log("removin: " + tableName);
                 var deferred = $q.defer();
                 var tableObj = {};
                 getData(tableName)
@@ -295,91 +264,6 @@ angular.module('lmisChromeApp')
                 }
             };
 
-                    address,
-                    uom,
-                    uomCategory,
-                    facility,
-                    program,
-                    programProducts,
-                    facilityType,
-                    employeeCategory,
-                    company,
-                    companyCategory,
-                    currency,
-                    employee,
-                    rate,
-                    ccuType,
-                    ccu,
-                    inventory,
-                    ccuProblem,
-                    ccuTemperatureLog,
-                    user,
-                    productCategory,
-                    productPresentation,
-                    productProfile,
-                    productFormulation,
-                    modeOfAdministration,
-                    batches,
-                    orders,
-                    bundles,
-                    bundleLines,
-                    bundleReceipt,
-                    locations,
-                    stockOut,
-                    ccuProfile,
-                    exceptions,
-                    clicks,
-                    pageviews
-                ];
-                var isLoading = false;
-                function loadData(dbName) {
-                    getData(dbName)
-                            .then(function(data) {
-                                if (angular.isUndefined(data)) {
-                                    var fileUrl = 'scripts/fixtures/' + dbName + '.json';
-                                    $http.get(fileUrl)
-                                            .success(function(data) {
-                                                setTable(dbName, data).then(function(res) {
-                                                    isLoading = false;
-                                                }, function(err) {
-                                                    isLoading = false;
-                                                });
-                                            })
-                                            .error(function(err) {
-                                                console.log(err);
-                                                isLoading = false;
-                                            });
-                                } else {
-                                    isLoading = false;
-                                }
-                            })
-                            .catch(function(reason) {
-                                isLoading = false;
-                                console.log('error loading ' + dbName + ' ' + reason);
-                            });
-                }
-
-                var loadNext = function(i) {
-                    if (!isLoading) {
-                        $rootScope.$emit('START_LOADING', {started: true});
-                        isLoading = true;
-                        loadData(database[--i]);
-                    }
-                    if (i > 0) {
-                        setTimeout(function() {
-                            loadNext(i);
-                        }, 10);
-                    } else {
-                        //this is when the app is actually ready
-                        $rootScope.$emit('LOADING_COMPLETED', {completed: true});
-                        deferred.resolve(true);
-                    }
-                };
-                loadNext(database.length);
-                return deferred.promise;
-            };
-
-
             var uuidGenerator = function() {
                 var now = Date.now();
                 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -485,7 +369,7 @@ angular.module('lmisChromeApp')
                 return deferred.promise;
             };
 
-            return {
+            var api = {
                 all: getAllFromTable,
                 add: setData,
                 get: getData,
@@ -495,7 +379,6 @@ angular.module('lmisChromeApp')
                 remove: removeData, // removeFromChrome,
                 clear: clearStorage, // clearChrome */
                 uuid: uuidGenerator,
-                loadFixtures: loadFixtures,
                 insert: insertData,
                 update: updateData,
                 save: saveData,
@@ -503,53 +386,17 @@ angular.module('lmisChromeApp')
                 find: getFromTableByKey,
                 insertBatch: insertBatch,
                 getDateTime: getDateTime,
-                PRODUCT_TYPES: productTypes,
-                PRODUCT_CATEGORY: productCategory,
-                ADDRESS: address,
-                UOM: uom,
-                UOM_CATEGORY: uomCategory,
-                FACILITY: facility,
-                PROGRAM: program,
-                PROGRAM_PRODUCTS: programProducts,
-                FACILITY_TYPE: facilityType,
-                EMPLOYEE_CATEGORY: employeeCategory,
-                COMPANY: company,
-                COMPANY_CATEGORY: companyCategory,
-                CURRENCY: currency,
-                EMPLOYEE: employee,
-                RATE: rate,
-                CCU_TYPE: ccuType,
-                CCU: ccu,
-                USER: user,
-                PRODUCT_PRESENTATION: productPresentation,
-                PRODUCT_FORMULATION: productFormulation,
-                MODE_OF_ADMINISTRATION: modeOfAdministration,
-                BATCH: batches,
-                CCU_PROBLEM: ccuProblem,
-                CCU_TEMPERATURE_LOG: ccuTemperatureLog,
-                PRODUCT_PROFILE: productProfile,
-                INVENTORY: inventory,
-                ORDERS: orders,
-                BUNDLE: bundles,
-                BUNDLE_LINES: bundleLines,
-                BUNDLE_RECEIPT: bundleReceipt,
-                BUNDLE_RECEIPT_LINES: bundleReceiptLines,
-                LOCATIONS: locations,
-                STOCK_COUNT: stockCount,
-                DISCARD_COUNT: discardCount,
                 APP_CONFIG: appConfig,
-                STOCK_OUT: stockOut,
-                SURVEY_RESPONSE: surveyResponse,
-                CCU_PROFILE: ccuProfile,
                 CCU_BREAKDOWN: ccuBreakdown,
+                DISCARD_COUNT: discardCount,
                 PENDING_SYNCS: pendingSyncs,
+                STOCK_COUNT: stockCount,
+                SURVEY_RESPONSE: surveyResponse,
                 PAGE_VIEWS: pageviews,
                 EXCEPTIONS: exceptions,
-                CLICKS: clicks
-                PENDING_SYNCS: pendingSyncs,
-                PAGE_VIEWS: pageviews,
-                EXCEPTIONS: exceptions,
-                CLICKS: clicks
+                CLICKS: clicks,
+                FIXTURE_NAMES: FIXTURE_NAMES
             };
 
+            return angular.extend(api, collections);
         });
