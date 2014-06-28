@@ -245,7 +245,7 @@ angular.module('lmisChromeApp').service('syncService', function ($q, storageServ
    *
    * @returns {promise|Function|promise|promise|promise|*}
    */
-  //shall we implement this with a param for analytics?
+  //shall we implement this with a param so that it can test for analytics connection?
   var canConnect = function () {
     //TODO: move to deviceInfoFactory
     var deferred = $q.defer();
