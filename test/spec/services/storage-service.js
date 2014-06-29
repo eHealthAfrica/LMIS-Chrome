@@ -159,7 +159,7 @@ describe('storageService', function () {
   });
 
   it('i expect insertBatch to throw an exception', function(){
-    expect(function(){ storageService.insertBatch('test', 'non-array') }).toThrow();
+    expect(function(){ storageService.insertBatch('test', 'non-array'); }).toThrow();
   });
 
   it('i expect updateData NOT to update record dateModified if called with updateDateModified set to false', function(){
