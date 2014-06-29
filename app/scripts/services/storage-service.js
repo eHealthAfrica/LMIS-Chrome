@@ -65,14 +65,14 @@ angular.module('lmisChromeApp')
         return pouchStorageService.destroy(key);
       };
 
-    /**
-     * Clear all data from the chrome storage (will not work on API).
-     *
-     * @returns {*|boolean|!Promise|Promise}
-     */
-    var clearStorage = function () {
-      return chromeStorageApi.clear();
-    };
+      /**
+       * Clear all data from the chrome storage (will not work on API).
+       *
+       * @returns {*|boolean|!Promise|Promise}
+       */
+      var clearStorage = function() {
+        return pouchStorageService.clear();
+      };
 
     /**
      * returns current date time string
