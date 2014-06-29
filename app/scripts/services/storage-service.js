@@ -71,7 +71,7 @@ angular.module('lmisChromeApp')
        * @returns {*|boolean|!Promise|Promise}
        */
       var clearStorage = function() {
-        return chromeStorageApi.clear();
+        return pouchStorageService.clear();
       };
 
       /**
