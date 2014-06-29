@@ -29,7 +29,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     appConfig.facility.stockCountInterval = parseInt(appConfig.facility.stockCountInterval);
     var appConfigCopy;
     getAppConfigFromMemoryOrStorage().then(function (existingAppConfig) {
-      if(typeof existingAppConfig === 'undefined'){
+      if(angular.isArray(existingAppConfig) && existingAppConfig.length === 0){
         appConfigCopy = appConfig;
       }else{
         //update app config by merging both fields.
