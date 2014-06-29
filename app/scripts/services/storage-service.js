@@ -75,14 +75,6 @@ angular.module('lmisChromeApp')
       };
 
       /**
-       * returns current date time string
-       * @returns {string|*}
-       */
-      var getDateTime = function() {
-        return new Date().toJSON();
-      };
-
-      /**
        * Insert new database table row.
        *
        * @param table
@@ -94,7 +86,7 @@ angular.module('lmisChromeApp')
           throw 'insert should only be called with fresh record that has not uuid or primary key field.';
         }
         data.uuid = utility.uuidGenerator();
-        data.created = data.modified = getDateTime();
+        data.created = data.modified = utility.getDateTime();
         return setData(table, data);
       };
 
@@ -110,7 +102,7 @@ angular.module('lmisChromeApp')
           throw 'update should only be called with data that has UUID or primary key already.';
         }
         if(updateDateModified !== false){
-           data.modified = getDateTime();
+           data.modified = utility.getDateTime();
         }
         return setData(table, data);
       };
@@ -207,7 +199,7 @@ angular.module('lmisChromeApp')
               }
               for(var i=0; i < batchList.length; i++){
                 var batch = batchList[i];
-                var now = getDateTime();
+                var now = utility.getDateTime();
                 if(batch.hasOwnProperty('uuid') === false){
                   batch.uuid = utility.uuidGenerator();
                   batch.created = now;

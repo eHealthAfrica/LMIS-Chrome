@@ -224,4 +224,8 @@ angular.module('lmisChromeApp')
         return e[key];
       });
     };
+
+    this.getDateTime = function() {
+      return new Date().toJSON();
+    };
   });
