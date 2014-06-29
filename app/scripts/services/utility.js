@@ -218,4 +218,10 @@ angular.module('lmisChromeApp')
         return (c === 'x' ? r : (r & 0x7 | 0x8)).toString(16);
       });
     };
+
+    this.pluck = function(arr, key) {
+      return arr.map(function(e) {
+        return e[key];
+      });
+    };
   });

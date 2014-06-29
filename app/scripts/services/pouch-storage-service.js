@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('pouchStorageService', function(pouchdb, idbService) {
+  .service('pouchStorageService', function(pouchdb, idbService, utility) {
     this.put = function(db, data) {
       db = pouchdb.create(db);
       return db.put(data, data.uuid);
@@ -11,10 +11,10 @@ angular.module('lmisChromeApp')
       db = pouchdb.create(db);
       return db.allDocs({
         // jshint camelcase: false
-        inlude_docs: true
+        include_docs: true
       })
         .then(function(result) {
-          return result.rows;
+          return utility.pluck(result.rows, 'doc');
         });
     };
 
