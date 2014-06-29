@@ -39,4 +39,9 @@ angular.module('lmisChromeApp')
       return idbService.clear('_pouch_');
     };
 
+    this.bulkDocs = function(db, docs) {
+      db = pouchdb.create(db);
+      return db.bulkDocs(docs);
+    };
+
   });
