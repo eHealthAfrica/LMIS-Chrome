@@ -19,8 +19,8 @@ angular.module('lmisChromeApp', [
 
     $window.hideSplashScreen = function() {
       appConfigService.getCurrentAppConfig()
-        .then(function(cfg) {
-          if (typeof cfg === 'object') {
+        .then(function (cfg) {
+          if (angular.isObject(cfg) && !angular.isArray(cfg)) {
             $state.go('home.index.home.mainActivity');
             //trigger background syncing on start up
             appConfigService.updateAppConfigAndStartBackgroundSync()
