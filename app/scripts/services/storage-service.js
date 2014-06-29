@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('storageService', function ($q, $rootScope, $http, $window, chromeStorageApi, utility, collections, pouchStorageService) {
+    .factory('storageService', function ($q, $rootScope, $http, $window, utility, collections, pouchStorageService) {
 
       /**
        *  Global variables used to define table names, with this there will be one
@@ -21,7 +21,7 @@ angular.module('lmisChromeApp')
       var FIXTURE_NAMES = utility.values(collections);
 
       /**
-       * Add new table data to the chrome store.
+       * Add new table data to the store.
        *
        * @param {string} table - Table name.
        * @param {mixed} data - rows of the table (all values are stored as JSON.)
@@ -56,7 +56,7 @@ angular.module('lmisChromeApp')
       };
 
       /**
-       * Remove a table from the chrome store.
+       * Remove a table from the store.
        *
        * @param key - Table name.
        * @returns {*|boolean|Array|Promise|string}
@@ -66,7 +66,7 @@ angular.module('lmisChromeApp')
       };
 
       /**
-       * Clear all data from the chrome storage (will not work on API).
+       * Clear all data from the storage (will not work on API).
        *
        * @returns {*|boolean|!Promise|Promise}
        */
@@ -216,8 +216,8 @@ angular.module('lmisChromeApp')
         add: setData,
         get: getData,
         removeRecord: removeRecordFromTable,
-        remove: removeData, // removeFromChrome,
-        clear: clearStorage, // clearChrome */:
+        remove: removeData,
+        clear: clearStorage,
         uuid: utility.uuidGenerator,
         insert: insertData,
         update: updateData,
