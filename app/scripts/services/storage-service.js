@@ -184,44 +184,31 @@ angular.module('lmisChromeApp')
               deferred.reject(reason);
             });
 
-      var insertBatch = function (table, batchList){
-        var deferred = $q.defer();
-        var obj = {};
-        var newBatchList = [];
-        if(Object.prototype.toString.call(batchList) !== '[object Array]'){
-          throw 'batchList is not an array';
+      var validateBatch = function(batch) {
+        var now = utility.getDateTime();
+        if (!utility.has(batch, 'uuid')) {
+          batch.uuid = utility.uuidGenerator();
+          batch.created = now;
         }
-        getData(table)
-            .then(function(tableData){
-              if(angular.isUndefined(tableData)){
-                tableData = {};
-              }
-              for(var i=0; i < batchList.length; i++){
-                var batch = batchList[i];
-                var now = utility.getDateTime();
-                if(batch.hasOwnProperty('uuid') === false){
-                  batch.uuid = utility.uuidGenerator();
-                  batch.created = now;
-                }
-                batch.modified = now;
-                var oldRecord = tableData[batch.uuid];
-                tableData[batch.uuid] = utility.copy(oldRecord, batch);//update old copy if it exists.
-                newBatchList.push(batch);
-              }
-              obj[table] = tableData;
-              chromeStorageApi.set(obj)
-                  .then(function(){
-                    deferred.resolve(newBatchList);
-                  })
-                  .catch(function(reason){
-                    deferred.reject(reason);
-                  });
+        batch.modified = now;
+        return batch;
+      };
 
-            })
-            .catch(function(reason){
-              deferred.reject(reason);
-            });
-        return deferred.promise;
+      var insertBatch = function(table, batches) {
+        if (!angular.isArray(batches)) {
+          throw 'batches is not an array';
+        }
+
+        var _batches = [];
+        for (var i = batches.length - 1; i >= 0; i--) {
+          _batches.push(validateBatch(batches[i]));
+        }
+
+        return pouchStorageService.bulkDocs(_batches);
+      };
+
+      var setDatabase = function(table, data) {
+        return pouchStorageService.bulkDocs(table, data);
       };
 
       var api = {
@@ -235,7 +222,7 @@ angular.module('lmisChromeApp')
         insert: insertData,
         update: updateData,
         save: saveData,
-        setDatabase: setTable,
+        setDatabase: setDatabase,
         where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,
