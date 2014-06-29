@@ -74,14 +74,6 @@ angular.module('lmisChromeApp')
         return pouchStorageService.clear();
       };
 
-    /**
-     * returns current date time string
-     * @returns {string|*}
-     */
-    var getDateTime = function () {
-      return new Date().toJSON();
-    };
-
       /**
        * Insert new database table row.
        *
@@ -94,26 +86,26 @@ angular.module('lmisChromeApp')
           throw 'insert should only be called with fresh record that has not uuid or primary key field.';
         }
         data.uuid = utility.uuidGenerator();
-        data.created = data.modified = getDateTime();
+        data.created = data.modified = utility.getDateTime();
         return setData(table, data);
       };
 
-    /**
-     * Update database table row.
-     *
-     * @param table
-     * @param data
-     * @returns {Promise}
-     */
-    var updateData = function (table, data, updateDateModified) {
-      if (!data.hasOwnProperty('uuid')) {
-        throw 'update should only be called with data that has UUID or primary key already.';
-      }
-      if (updateDateModified !== false) {
-        data.modified = getDateTime();
-      }
-      return setData(table, data);
-    };
+      /**
+       * Update database table row.
+       *
+       * @param table
+       * @param data
+       * @returns {Promise}
+       */
+      var updateData = function(table, data, updateDateModified) {
+        if(!data.hasOwnProperty('uuid')){
+          throw 'update should only be called with data that has UUID or primary key already.';
+        }
+        if(updateDateModified !== false){
+           data.modified = utility.getDateTime();
+        }
+        return setData(table, data);
+      };
 
     /**
      *  Encapsulates insert/update database table row operations.
@@ -206,7 +198,7 @@ angular.module('lmisChromeApp')
               }
               for(var i=0; i < batchList.length; i++){
                 var batch = batchList[i];
-                var now = getDateTime();
+                var now = utility.getDateTime();
                 if(batch.hasOwnProperty('uuid') === false){
                   batch.uuid = utility.uuidGenerator();
                   batch.created = now;
