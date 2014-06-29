@@ -204,7 +204,7 @@ angular.module('lmisChromeApp')
           _batches.push(validateBatch(batches[i]));
         }
 
-        return pouchStorageService.bulkDocs(_batches);
+        return pouchStorageService.bulkDocs(table, _batches);
       };
 
       var setDatabase = function(table, data) {
