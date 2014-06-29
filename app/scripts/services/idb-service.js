@@ -5,6 +5,9 @@ angular.module('lmisChromeApp')
     var qify = function(idbFun, args) {
       var deferred = $q.defer();
       var request = $window.indexedDB[idbFun](args);
+      request.onblocked = function(reason) {
+        return deferred.notify(reason);
+      };
       request.onerror = function(reason) {
         return deferred.reject(reason);
       };
