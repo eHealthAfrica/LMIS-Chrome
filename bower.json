@@ -11,7 +11,6 @@
     "angular-pouchdb": "tlvince/angular-pouchdb#0.1.1",
     "bootstrap-theme-cosmo": "tlvince/bootstrap-theme-cosmo#4c161a6bf5bebe0ecfbef0771e053c8c5c2698c9",
     "angularjs-nvd3-directives": "~0.0.7",
-    "queue-async": "~1.0.7",
     "angular-growl-v2": "~0.6.1",
     "angular-animate": "~1.2.17",
     "chrome-platform-analytics": "https://github.com/thanasio/chrome-platform-analytics.git#bower_analytics"

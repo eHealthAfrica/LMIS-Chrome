@@ -34,7 +34,8 @@ angular.module('lmisChromeApp')
         }
         return pouchStorageService.put(table, data)
           .then(function(result) {
-            return result._id;
+            // FIXME: item:710
+            return result.id;
           });
       };
 
@@ -107,7 +108,17 @@ angular.module('lmisChromeApp')
         if(updateDateModified !== false){
            data.modified = utility.getDateTime();
         }
-        return setData(table, data);
+
+        // FIXME: This is a workaround to maintain interface compatibility with
+        // a previous implementation (which did not try to prevent collisions).
+        // Rather than introducing an intermediary `get`, the callee should pass
+        // `_rev` itself; it should be considered a first-class citizen as with
+        // `uuid/_id`, see item:710.
+        return pouchStorageService.get(table, data.uuid)
+          .then(function(doc) {
+            data._rev = doc._rev;
+            return setData(table, data);
+          });
       };
 
     /**
