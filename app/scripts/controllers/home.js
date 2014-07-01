@@ -3,7 +3,7 @@
 angular.module('lmisChromeApp')
   .config(function($urlRouterProvider, $stateProvider) {
     // Initial state
-    $urlRouterProvider.otherwise('/main-activity');
+    $urlRouterProvider.otherwise('/loadingFixture');
     $stateProvider.state('home', {
       parent: 'root.index',
       templateUrl: 'views/home/index.html',
