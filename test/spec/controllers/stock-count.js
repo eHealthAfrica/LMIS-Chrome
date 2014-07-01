@@ -3,10 +3,15 @@
 describe('Controller: StockCountFormCtrl', function(){
   var scope, ctrl, state, stockCount, appConfig, productType, _i18n;
 
-  beforeEach(module('lmisChromeApp', 'appConfigMocks', 'stockCountMocks', 'i18nMocks', 'productWithCategoryMocks', function($provide){
+  beforeEach(module('lmisChromeApp', 'appConfigMocks', 'stockCountMocks', 'i18nMocks', 'productWithCategoryMocks', 'fixtureLoaderMocks', function($provide){
     //$provide.value('appConfig',{});
     $provide.value('productType', {});
   }));
+
+  beforeEach((inject(function($templateCache, $httpBackend, fixtureLoaderMock) {
+    $templateCache.put('views/index/loading-fixture-screen.html', '');
+    fixtureLoaderMock.loadFixtures();
+  })));
 
   beforeEach(inject(function($controller, $state, _stockCountFactory_, _productType_, appConfigMock,
                              stockData, i18n, productWithCategoryMock){
