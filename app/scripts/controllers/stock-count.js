@@ -180,6 +180,9 @@ angular.module('lmisChromeApp')
           }else{
             $scope.isSaving = false;
             var reason = i18n('stockCountSavingFailed');
+            if (utility.has(err, 'message')) {
+              reason += '. ' + err.message;
+            }
             growl.error(reason);
             $log.error(err);
           }
