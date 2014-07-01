@@ -69,7 +69,7 @@ angular.module('lmisChromeApp')
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
                                              $stateParams, appConfig, appConfigService, cacheService, syncService,
-                                             utility, $rootScope, i18n, locationFactory){
+                                             utility, $rootScope, i18n, locationFactory, $window){
     //TODO: refactor entire stock count controller to simpler more readable controller
     $scope.getCategoryColor = function(categoryName){
       if($scope.preview){
@@ -137,7 +137,7 @@ angular.module('lmisChromeApp')
       }
     });
 
-    var saveQueue = queue(1);//use 1 to serialize the asynchronous task.
+    var saveQueue = $window.queue(1);//use 1 to serialize the asynchronous task.
     var saveTask = function(callback){
       stockCountFactory.save.stock($scope.stockCount)
         .then(function(result){
