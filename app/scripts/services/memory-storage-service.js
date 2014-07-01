@@ -47,8 +47,8 @@ angular.module('lmisChromeApp')
      *  WARNING: call this only during app start up i.e inside fixture-loader-service.loadFiles
      *  else you risk over-writing a database;
      *
-     * @param dbName
-     * @param db
+     * @param {String} dbName
+     * @param {Object} db
      */
     this.setDatabase = function(dbName, db){
       //TODO:(discuss) check if db is set already, if set throw an exception that you might over-write the db.
@@ -56,11 +56,13 @@ angular.module('lmisChromeApp')
       cacheService.put(MEMORY_STORE, $rootScope.memoryStore);
     };
 
-    this.getDatabase = function(dbName){
+    this.getDatabase = function(dbName) {
       var db = $rootScope.memoryStore[dbName];
-      if(typeof db !== 'object'){
+      if (typeof db !== 'object') {
         var mem = cacheService.get(MEMORY_STORE);
-        db = mem[dbName];
+        if (typeof mem !== 'undefined') {
+          db = mem[dbName];
+        }
       }
       return db;
     };
