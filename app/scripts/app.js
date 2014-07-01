@@ -32,14 +32,13 @@ angular.module('lmisChromeApp', [
           }
         })
         .catch(function(reason) {
-          growl.error('loading app config failed, please contact support.');
+          growl.error('loading of App. Config. failed, please contact support.');
           console.error(reason);
         });
     };
 
     $rootScope.$on('LOADING_COMPLETED', $window.hideSplashScreen);
     $rootScope.$on('START_LOADING', $window.showSplashScreen);
-
 
     //TODO: figure out a better way of knowing if the app has been configured or not.
     storageService.all(storageService.APP_CONFIG)
@@ -58,12 +57,12 @@ angular.module('lmisChromeApp', [
           fixtureLoaderService.setupLocalAndMemoryStore(fixtureLoaderService.REMOTE_FIXTURES)
             .catch(function(reason) {
               console.log(reason);
-              growl.error(reason, {ttl: -1});
+              growl.error('Local databases and memory storage setup failed, contact support.', {ttl: -1});
             });
         }
       })
       .catch(function(error) {
-        growl.error('loading app config failed, please contact support.');
+        growl.error('loading of App. Config. failed, please contact support.', {ttl: -1});
         console.error(error);
       });
   })
