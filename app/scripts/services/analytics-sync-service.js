@@ -45,13 +45,13 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
 
                 uuids.push(exception.uuid);
 
-            }).then(function() {
+            })
+        }).then(function() {
             storageService.removeRecords(storageService.EXCEPTIONS, uuids);
         }).finally(function() {
-            console.log("pending excepts list cleared (i wish!)");
+            console.log("pending excepts list cleared (i wish!)");;
         }).finally(function() {
             console.log("pending excepts list cleared (i wish!)");
-        });
     });
     };
 

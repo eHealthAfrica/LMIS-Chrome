@@ -22,6 +22,7 @@ angular.module('lmisChromeApp')
             var pageviews = 'pageviews';
             var clicks = 'clicks';
             var exceptions = 'exceptions';
+            var analyticsLostRecords = 'analytics_lost_records';
 
             var FIXTURE_NAMES = utility.values(collections);
 
@@ -122,6 +123,7 @@ angular.module('lmisChromeApp')
             var removeRecordFromTable = function(tableName, uuid) {
                 var deferred = $q.defer();
                 var tableObj = {};
+                console.log("deleting: "+ uuid)
                 getData(tableName)
                         .then(function(tableData) {
                             if (typeof tableData !== 'undefined') {
@@ -398,7 +400,8 @@ angular.module('lmisChromeApp')
                 PAGE_VIEWS: pageviews,
                 EXCEPTIONS: exceptions,
                 CLICKS: clicks,
-                FIXTURE_NAMES: FIXTURE_NAMES
+                FIXTURE_NAMES: FIXTURE_NAMES,
+                ANALYTICS_LOST_RECORDS: analyticsLostRecords
             };
 
             return angular.extend(api, collections);

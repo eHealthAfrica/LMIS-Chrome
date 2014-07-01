@@ -45,13 +45,18 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
 
                 uuids.push(exception.uuid);
 
-            }).then(function() {
+            })
+        }).then(function() {
             storageService.removeRecords(storageService.EXCEPTIONS, uuids);
         }).finally(function() {
+<<<<<<< HEAD
             console.log("pending excepts list cleared (i wish!)");
         }).finally(function() {
             console.log("pending excepts list cleared (i wish!)");
         });
+=======
+            console.log("pending excepts list cleared (i wish!)");;
+>>>>>>> Merge upstream/develop into feature/offline_analytics
     });
     };
 
@@ -75,16 +80,11 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
 
             });
         }).then(function() {
-<<<<<<< HEAD
             console.log("page uuids: " + uuids.length);
             storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
-    }).then(function() {
-                console.log("page uuids: " + uuids.length);
-            storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
-=======
+        }).then(function() {
             if (uuids)
                 storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
->>>>>>> Merge upstream/develop into feature/offline_analytics
         }).finally(function() {
             console.log("pending pages list cleared (i wish!)");
         });;
