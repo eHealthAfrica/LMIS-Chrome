@@ -333,6 +333,7 @@ angular.module('lmisChromeApp')
         insert: insertData,
         update: updateData,
         save: saveData,
+        setDatabase: setTable,
         where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,
