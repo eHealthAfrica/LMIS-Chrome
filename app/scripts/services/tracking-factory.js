@@ -5,14 +5,67 @@
 //need to design the priority queue bit based on the storage capacity restriction on the local storage and introduce a table for the lost records count
 
 angular.module('lmisChromeApp')
-        .factory('trackingFactory', function($window, $rootScope, config, utility, syncService, storageService) {
+        .factory('trackingFactory', function($q, $window, $rootScope, config, utility, syncService, storageService) {
 
             var tracker;
 
+            var events_limit = config.analytics.events_limit;
+            var exceptions_limit = config.analytics.exceptions_limit;
+            var pages_limit = config.analytics.pages_limit;
+
+
+//            console.log("limits: " + storageLimit);
+            console.log("analytics: " + config.analytics.propertyID);
 
             if (utility.has($window, 'analytics')) {
                 var service = $window.analytics.getService(config.analytics.service);
                 tracker = service.getTracker(config.analytics.propertyID);
+            }
+
+//            var tableSize = 
+
+            var removeExcessRecords = function(table, limit) {
+
+                console.log("Loopin table");
+                var uuids = [];
+                var sizes = [];
+                var toDelete = [];
+                var deferred = $q.defer();
+
+                storageService.all(table).then(function(tableData) {
+
+                    tableData.forEach(function(data) {
+
+                        var count = JSON.stringify(data).length;
+                        uuids.push(data.uuid);
+                        sizes.push(count);
+
+                        console.log("uuid: " + data.uuid + ": " + count);
+                    });
+
+                }).catch(function(reason) {
+
+                }).then(function() {
+                    var total = 0;
+                    for (var i = 0; i < uuids.length; i++) {
+
+                        if (total > limit) {
+                            console.log("deletin: " + uuids[i])
+                            toDelete.push(uuids[i])
+                        } else {
+                            total += sizes[i];
+                            console.log("total: " + total);
+                        }
+
+                    }
+                    storageService.removeRecords(table, toDelete);
+                    deferred.resolve(toDelete.length);
+
+                })
+
+
+
+                return deferred.promise;
             }
 
 
@@ -30,6 +83,17 @@ angular.module('lmisChromeApp')
                                 label: label
                             };
                             storageService.save(storageService.CLICKS, _event);
+                            removeExcessRecords(storageService.CLICKS, events_limit).then(function(removed){
+                                console.log("removed: " + removed);
+                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords){
+                                    lostRecords[0].events++;
+                                    console.log("lrs: "+ lostRecords[0].events)
+                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
+                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
+                                    
+                                });
+                                
+                            });
                         }
                         );
             };
@@ -47,6 +111,9 @@ angular.module('lmisChromeApp')
                                 page: page
                             };
                             storageService.save(storageService.PAGE_VIEWS, _pageview);
+                            removeExcessRecords(storageService.PAGE_VIEWS, pages_limit).then(function(removed){
+                                console.log("removed: " + removed);
+                            });
                         }
                         );
 
@@ -66,6 +133,9 @@ angular.module('lmisChromeApp')
                                 opt_fatal: opt_fatal
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
+                            removeExcessRecords(storageService.EXCEPTIONS, exceptions_limit).then(function(removed){
+                                console.log("removed: " + removed);
+                            });
                         }
                         );
             };
