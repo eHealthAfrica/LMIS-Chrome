@@ -32,7 +32,10 @@ angular.module('lmisChromeApp')
         if(!data.hasOwnProperty('uuid')){
           throw 'data should have a uuid or primary key field.';
         }
-        return pouchStorageService.put(table, data);
+        return pouchStorageService.put(table, data)
+          .then(function(result) {
+            return result._id;
+          });
       };
 
       var getData = function(key) {
