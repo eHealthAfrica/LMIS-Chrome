@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('lmisChromeApp', [
-  'ui.bootstrap',
-  'ui.router',
-  'tv.breadcrumbs',
-  'pouchdb',
-  'config',
-  'nvd3ChartDirectives',
-  'angular-growl',
-  'ngAnimate',
-  'db'
-])
+    'ui.bootstrap',
+    'ui.router',
+    'tv.breadcrumbs',
+    'pouchdb',
+    'config',
+    'nvd3ChartDirectives',
+    'angular-growl',
+    'ngAnimate',
+    'db'
+  ])
   .run(function(storageService, $rootScope, $state, $window, appConfigService, fixtureLoaderService, growl) {
 
     $window.showSplashScreen = function() {
@@ -19,21 +19,20 @@ angular.module('lmisChromeApp', [
 
     $window.hideSplashScreen = function() {
       appConfigService.getCurrentAppConfig()
-        .then(function (cfg) {
+        .then(function(cfg) {
           if (typeof cfg === 'object') {
             $state.go('home.index.home.mainActivity');
-
             //trigger background syncing on start up
             appConfigService.updateAppConfigAndStartBackgroundSync()
-              .finally(function () {
+              .finally(function() {
                 console.log('updateAppConfigAndStartBackgroundSync triggered on start up have been completed!');
               });
-
           } else {
             $state.go('appConfigWelcome');
           }
         })
-        .catch(function (reason) {
+        .catch(function(reason) {
+          growl.error('loading app config failed, please contact support.');
           console.error(reason);
         });
     };
@@ -41,20 +40,37 @@ angular.module('lmisChromeApp', [
     $rootScope.$on('LOADING_COMPLETED', $window.hideSplashScreen);
     $rootScope.$on('START_LOADING', $window.showSplashScreen);
 
-    //TODO: show splash screen while loading fixture into cache
-    fixtureLoaderService.loadFiles(storageService.FIXTURE_NAMES)
-      .catch(function(reason){
-        console.log(reason);
-        growl.error('Fixture loading failed', {ttl: -1});
+
+    //TODO: figure out a better way of knowing if the app has been configured or not.
+    storageService.all(storageService.APP_CONFIG)
+      .then(function(res) {
+        if (res.length > 0) {
+          fixtureLoaderService.loadLocalDatabasesIntoMemory(fixtureLoaderService.REMOTE_FIXTURES)
+            .then(function() {
+              $state.go('home.index.home.mainActivity');
+            })
+            .catch(function(reason) {
+              console.log(reason);
+              growl.error('loading storage into memory failed, contact support.', {ttl: -1});
+            });
+        } else {
+          //fresh install, download remote dbs
+          fixtureLoaderService.setupLocalAndMemoryStore(fixtureLoaderService.REMOTE_FIXTURES)
+            .catch(function(reason) {
+              console.log(reason);
+              growl.error(reason, {ttl: -1});
+            });
+        }
+      })
+      .catch(function(error) {
+        growl.error('loading app config failed, please contact support.');
+        console.error(error);
       });
-
   })
-
   .config(function($compileProvider) {
     // to bypass Chrome app CSP for images.
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);
   })
-
   .config(function(growlProvider) {
     growlProvider.globalTimeToLive({
       success: 2000,
