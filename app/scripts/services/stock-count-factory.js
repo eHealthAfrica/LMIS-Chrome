@@ -84,7 +84,6 @@ angular.module('lmisChromeApp')
       },
       stock: {
         countExist: function(date){
-          //TODO: this not necessary why not call getStockCountByDate(date); directly, remove this.
           return getStockCountByDate(date);
         }
       }
@@ -131,7 +130,7 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
-    var getStockCountListByCountDate = function(){
+    var getStockCountListByCreatedDate = function(){
       var deferred = $q.defer();
       var obj = {};
       getAllStockCount()
@@ -143,6 +142,34 @@ angular.module('lmisChromeApp')
           })
           .catch(function (reason) {
             deferred.resolve(obj);
+          });
+      return deferred.promise;
+    };
+
+    var getProductObjectWithCategory = function(appConfig){
+      var deferred = $q.defer();
+      storageService.get(storageService.PRODUCT_CATEGORY)
+          .then(function(productCategory){
+            var facilitySelectedProducts = appConfig.selectedProductProfiles
+                .map(function(product){
+                  if(angular.isObject(product.category)){
+                    return product;
+                  }
+                  product.category =
+                      angular.isDefined(productCategory[product.category]) ? productCategory[product.category] : product.category;
+                  return product;
+                })
+                .sort(function(a, b){
+                  if(angular.isDefined(a.category.name) && angular.isDefined(b.category.name)){
+                    return a.category.name > b.category.name;
+                  }
+                  return a.category > b.category;
+                });
+            var productObject = utility.castArrayToObject(facilitySelectedProducts, 'uuid');
+            deferred.resolve(productObject);
+          })
+          .catch(function(reason){
+            deferred.reject(reason);
           });
       return deferred.promise;
     };
@@ -166,6 +193,18 @@ angular.module('lmisChromeApp')
           scope.productError = false;
           scope.productErrorMsg = '';
         }
+      },
+      /**
+       *
+       * @param array
+       * @returns {{}}
+       */
+      productObject: function(array){
+        array = array
+            .sort(function(a, b){
+              return a.category > b.category;
+            });
+        return utility.castArrayToObject(array, 'uuid');
       },
       /**
      * This function returns stock counts by the given facility
@@ -235,7 +274,8 @@ angular.module('lmisChromeApp')
       getStockCountDueDate: getStockCountDueDate,
       isStockCountDue: isStockCountDue,
       getMostRecentStockCount: getMostRecentStockCount,
-      getStockCountListByDate: getStockCountListByCountDate,
+      getStockCountListByDate: getStockCountListByCreatedDate,
+      getProductObjectWithCategory: getProductObjectWithCategory,
       getAll: getAllStockCount,
       save:addRecord,
       get:load,

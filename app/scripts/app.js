@@ -22,6 +22,15 @@ angular.module('lmisChromeApp', [
         .then(function (cfg) {
           if (typeof cfg === 'object') {
             $state.go('home.index.home.mainActivity');
+    
+            appConfigService.syncOfflineAnalytics().finally(function(){
+                      console.log('offline reports send to ga server.');
+                });
+
+    $rootScope.$on('LOADING_COMPLETED', $window.hideSplashScreen);
+            appConfigService.syncOfflineAnalytics().finally(function(){
+                      console.log('offline reports send to ga server.');
+                });
 
             //trigger background syncing on start up
             appConfigService.updateAppConfigAndStartBackgroundSync()

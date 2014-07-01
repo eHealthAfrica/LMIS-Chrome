@@ -5,7 +5,7 @@ angular.module('lmisChromeApp')
 
       var saveBundleReceipt =  function(bundleReceipt) {
         var deferred = $q.defer(), batches = [];
-        storageService.save(storageService.BUNDLE_RECEIPTS, bundleReceipt).then(function (data) {
+        storageService.save(storageService.BUNDLE_RECEIPT, bundleReceipt).then(function (data) {
           if (data !== undefined) {
             angular.forEach(bundleReceipt.bundle_receipt_lines, function (receiptLine) {
               var newInventory = {
@@ -86,11 +86,11 @@ angular.module('lmisChromeApp')
         var productTypes = {};
         var uomList = {};
 
-        storageService.get(storageService.BATCHES).then(function (data) {
+        storageService.get(storageService.BATCH).then(function (data) {
           batches = data;
         });
 
-        storageService.get(storageService.PROGRAMS).then(function (data) {
+        storageService.get(storageService.PROGRAM).then(function (data) {
           programs = data;
         });
 
@@ -138,11 +138,11 @@ angular.module('lmisChromeApp')
         var uomList = {};
         var bundleLines = [];
 
-        storageService.get(storageService.BATCHES).then(function (data) {
+        storageService.get(storageService.BATCH).then(function (data) {
           batches = data;
         });
 
-        storageService.get(storageService.PROGRAMS).then(function (data) {
+        storageService.get(storageService.PROGRAM).then(function (data) {
           programs = data;
         });
 
