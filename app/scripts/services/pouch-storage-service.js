@@ -20,10 +20,7 @@ angular.module('lmisChromeApp')
 
     this.get = function(db, id) {
       db = pouchdb.create(db);
-      return db.get(id)
-        .then(function(result) {
-          return result.rows;
-        });
+      return db.get(id);
     };
 
     this.remove = function(db, id, rev) {
