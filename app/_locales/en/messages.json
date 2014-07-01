@@ -661,5 +661,8 @@
   },
   "clearStorageFailed": {
     "message": "Clear storage failed, contact support."
+  },
+  "stockCountSavingFailed": {
+    "message": "Stock count saving failed"
   }
 }
