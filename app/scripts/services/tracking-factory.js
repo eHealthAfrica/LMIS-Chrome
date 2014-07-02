@@ -13,20 +13,13 @@ angular.module('lmisChromeApp')
             var exceptions_limit = config.analytics.exceptions_limit;
             var pages_limit = config.analytics.pages_limit;
 
-
-//            console.log("limits: " + storageLimit);
-            console.log("analytics: " + config.analytics.propertyID);
-
             if (utility.has($window, 'analytics')) {
                 var service = $window.analytics.getService(config.analytics.service);
                 tracker = service.getTracker(config.analytics.propertyID);
             }
 
-//            var tableSize = 
-
             var removeExcessRecords = function(table, limit) {
 
-                console.log("Loopin table");
                 var uuids = [];
                 var sizes = [];
                 var toDelete = [];
@@ -40,7 +33,6 @@ angular.module('lmisChromeApp')
                         uuids.push(data.uuid);
                         sizes.push(count);
 
-                        console.log("uuid: " + data.uuid + ": " + count);
                     });
 
                 }).catch(function(reason) {
@@ -50,21 +42,14 @@ angular.module('lmisChromeApp')
                     for (var i = 0; i < uuids.length; i++) {
 
                         if (total > limit) {
-                            console.log("deletin: " + uuids[i])
                             toDelete.push(uuids[i])
                         } else {
                             total += sizes[i];
-                            console.log("total: " + total);
                         }
-
                     }
                     storageService.removeRecords(table, toDelete);
                     deferred.resolve(toDelete.length);
-
                 })
-
-
-
                 return deferred.promise;
             }
 
@@ -76,23 +61,21 @@ angular.module('lmisChromeApp')
                             tracker.sendEvent(category, action, label);
                         })
                         .catch(function(reason) {
-
-                            console.log("offline click : " + category + ": " + action + ": " + label + " reason: " + reason);
+//                            console.log("offline click : " + category + ": " + action + ": " + label + " reason: " + reason);
                             var _event = {
                                 action: action,
                                 label: label
                             };
                             storageService.save(storageService.CLICKS, _event);
-                            removeExcessRecords(storageService.CLICKS, events_limit).then(function(removed){
-                                console.log("removed: " + removed);
-                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords){
-                                    lostRecords[0].events++;
-                                    console.log("lrs: "+ lostRecords[0].events)
+                            removeExcessRecords(storageService.CLICKS, events_limit).then(function(removed) {
+                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
+                                    lostRecords[0].events += removed;
+//                                    console.log("lrs: "+ lostRecords[0].events)
                                     storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
                                     storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
-                                    
+
                                 });
-                                
+
                             });
                         }
                         );
@@ -105,16 +88,22 @@ angular.module('lmisChromeApp')
                             tracker.sendAppView(page);
                         })
                         .catch(function(reason) {
-
-                            console.log("offline page: " + page);
+//                            console.log("offline page: " + page);
                             var _pageview = {
                                 page: page
                             };
                             storageService.save(storageService.PAGE_VIEWS, _pageview);
-                        console.log("offline page: "+page);
-                                console.log("removed: " + removed);
+                            removeExcessRecords(storageService.PAGE_VIEWS, pages_limit).then(function(removed) {
+                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
+                                    lostRecords[0].pages += removed;
+
+                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
+                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
+
+                                });
+                                
                             });
-                        );
+                        });
 
             };
 
@@ -132,14 +121,17 @@ angular.module('lmisChromeApp')
                                 opt_fatal: opt_fatal
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
-                            removeExcessRecords(storageService.EXCEPTIONS, exceptions_limit).then(function(removed){
-                                console.log("removed: " + removed);
+                            removeExcessRecords(storageService.EXCEPTIONS, exceptions_limit).then(function(removed) {
+                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
+                                    lostRecords[0].exceptions += removed;
+                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
+                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
+                                });
                             });
                         }
                         );
             };
 
-            //these will probably have to move elsewhere so that they can use the right tracker
             $rootScope.$on('$stateChangeSuccess', function(state) {
                 appView(state.name);
             });
