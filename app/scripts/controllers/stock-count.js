@@ -137,6 +137,15 @@ angular.module('lmisChromeApp')
       }
     });
 
+    var errorHandler = function(i18nMessage, reason) {
+      var msg = i18n(i18nMessage);
+      if (utility.has(reason, 'message')) {
+        msg += '. ' + reason.message;
+      }
+      growl.error(msg);
+      $log.error(reason);
+    };
+
     var syncStockCount = function(stockCountUUID) {
       var db = stockCountFactory.STOCK_COUNT_DB;
       var msg = i18n('stockCountSuccessMsg');
@@ -154,6 +163,9 @@ angular.module('lmisChromeApp')
        * 2. redirect has to wait for app to finish syncing - success/fail
        */
       return syncService.syncItem(db, $scope.stockCount)
+        .catch(function(reason) {
+          return errorHandler('syncLater', reason);
+        })
         .finally(function() {
           $scope.isSaving = false;
           alertFactory.success(msg);
@@ -172,13 +184,7 @@ angular.module('lmisChromeApp')
           }
         })
         .catch(function(reason) {
-          $scope.isSaving = false;
-          var msg = i18n('stockCountSavingFailed');
-          if (utility.has(reason, 'message')) {
-            msg += '. ' + reason.message;
-          }
-          growl.error(msg);
-          $log.error(reason);
+          return errorHandler('stockCountSavingFailed', reason);
         });
     };
 
