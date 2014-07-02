@@ -68,13 +68,13 @@ angular.module('lmisChromeApp')
                             };
                             storageService.save(storageService.CLICKS, _event);
                             removeExcessRecords(storageService.CLICKS, events_limit).then(function(removed) {
-                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
-                                    lostRecords[0].events += removed;
-//                                    console.log("lrs: "+ lostRecords[0].events)
-                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
-                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
+//                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
+//                                    lostRecords[0].events += removed;
+////                                    console.log("lrs: "+ lostRecords[0].events)
+//                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
+//                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
 
-                                });
+//                                });
 
                             });
                         }
@@ -94,13 +94,12 @@ angular.module('lmisChromeApp')
                             };
                             storageService.save(storageService.PAGE_VIEWS, _pageview);
                             removeExcessRecords(storageService.PAGE_VIEWS, pages_limit).then(function(removed) {
-                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
-                                    lostRecords[0].pages += removed;
+//                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
+//                                    lostRecords[0].pages += removed;
+//                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
+//                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
 
-                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
-                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
-
-                                });
+//                                });
                                 
                             });
                         });
@@ -122,11 +121,11 @@ angular.module('lmisChromeApp')
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
                             removeExcessRecords(storageService.EXCEPTIONS, exceptions_limit).then(function(removed) {
-                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
-                                    lostRecords[0].exceptions += removed;
-                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
-                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
-                                });
+//                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
+//                                    lostRecords[0].exceptions += removed;
+//                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
+//                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
+//                                });
                             });
                         }
                         );
