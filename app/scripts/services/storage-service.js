@@ -118,6 +118,9 @@ angular.module('lmisChromeApp')
           .then(function(doc) {
             data._rev = doc._rev;
             return setData(table, data);
+          })
+          .catch(function() {
+            return setData(table, data);
           });
       };
 
