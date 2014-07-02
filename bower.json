@@ -14,7 +14,7 @@
     "queue-async": "~1.0.7",
     "angular-growl-v2": "~0.6.1",
     "angular-animate": "~1.2.17",
-    "chrome-platform-analytics": "https://github.com/thanasio/chrome-platform-analytics.git#bower_analytics"
+    "chrome-platform-analytics": "GoogleChrome/chrome-platform-analytics#3bb4416ad04896c10833ac104b912a75c948b092"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.17",
