@@ -73,13 +73,13 @@ angular.module('lmisChromeApp')
         var productProfile = getByUuid(uuid);
 
         //TODO: for debugging checks, remove later.
-        if(typeof productProfile === 'undefined' || typeof productProfile === 'null'){
+        if(typeof productProfile === 'undefined' || productProfile === null){
           console.error('product profile is undefined');
           continue;
         }
 
         //TODO: add check for null or undefined category
-        if(typeof productProfile.category === 'undefined' || typeof productProfile.category === 'null'){
+        if(typeof productProfile.category === 'undefined' || productProfile.category === null){
           console.error('category is : '+productProfile);
           continue;
         }
@@ -96,7 +96,7 @@ angular.module('lmisChromeApp')
           var group = {
             category: categoryObj,
             productProfiles: []
-          }
+          };
           existingGroups.push(productProfile.category.uuid);
           groupedList[productProfile.category.uuid] = group;
         }
