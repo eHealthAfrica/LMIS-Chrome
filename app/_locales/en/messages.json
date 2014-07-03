@@ -658,5 +658,8 @@
   },
   "localDbAndMemorySetFailed": {
     "message": "Local databases and memory storage setup failed, contact support."
+  },
+  "clearStorageFailed": {
+    "message": "Clear storage failed, contact support."
   }
 }

@@ -2,6 +2,7 @@
 
 angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider.state('clearStorage', {
+    parent: 'root.index',
     url: '/clear-storage',
     controller: function (storageService, $state, cacheService, $q, alertFactory, notificationService, i18n, memoryStorageService, fixtureLoaderService, growl) {
 
@@ -18,11 +19,12 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
                 $state.go('appConfigWelcome');
               })
               .catch(function(reason) {
-                console.log(reason);
+                console.error(reason);
                 growl.error(reason, {ttl: -1});
               });
           })
           .catch(function (reason) {
+            growl.error(i18n('clearStorageFailed'), {ttl: -1});
             console.error(reason);
           });
         return deferred.promise;
@@ -35,6 +37,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         .then(function (isConfirmed) {
           if (isConfirmed === true) {
             clearAndLoadFixture();
+            $state.go('loadingFixture');
           } else {
             $state.go('home.index.home.mainActivity');
           }
