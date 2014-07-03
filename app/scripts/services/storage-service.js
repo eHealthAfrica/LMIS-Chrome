@@ -145,22 +145,10 @@ angular.module('lmisChromeApp')
       }
     };
 
-      var getFromTableByKey = function (tableName, _key) {
-        var deferred = $q.defer();
-        var key = String(_key);//force conversion to string
-        getData(tableName)
-          .then(function (data) {
-            results = data.filter(fn);
-            deferred.resolve(results);
-          }).catch(function (reason) {
-            deferred.reject(reason);
-          });
-      } catch (e) {
-        deferred.reject(e);
-      } finally {
-        return deferred.promise;
-      }
-    };
+      var getFromTableByKey = function(table, key) {
+        key = String(key);//force conversion to string
+        return pouchStorageService.get(table, key);
+      };
 
     /**
      * This returns an array or collection of rows in the given table name, this collection can not be
