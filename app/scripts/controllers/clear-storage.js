@@ -2,8 +2,9 @@
 
 angular.module('lmisChromeApp').config(function ($stateProvider) {
   $stateProvider.state('clearStorage', {
+    parent: 'root.index',
     url: '/clear-storage',
-    controller: function (storageService, $state, cacheService, $q, alertFactory, notificationService, i18n, memoryStorageService, fixtureLoaderService) {
+    controller: function (storageService, $state, cacheService, $q, alertFactory, notificationService, i18n, memoryStorageService, fixtureLoaderService, growl) {
 
       var clearAndLoadFixture = function () {
         var deferred = $q.defer();
@@ -13,15 +14,17 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         storageService.clear()
           .then(function () {
             //reload fixtures into memory store.
-            fixtureLoaderService.loadFiles(storageService.FIXTURE_NAMES)
-              .then(function () {
+            fixtureLoaderService.setupLocalAndMemoryStore(fixtureLoaderService.REMOTE_FIXTURES)
+              .then(function(){
                 $state.go('appConfigWelcome');
               })
-              .catch(function(reason){
+              .catch(function(reason) {
                 console.error(reason);
+                growl.error(reason, {ttl: -1});
               });
           })
           .catch(function (reason) {
+            growl.error(i18n('clearStorageFailed'), {ttl: -1});
             console.error(reason);
           });
         return deferred.promise;
@@ -34,6 +37,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         .then(function (isConfirmed) {
           if (isConfirmed === true) {
             clearAndLoadFixture();
+            $state.go('loadingFixture');
           } else {
             $state.go('home.index.home.mainActivity');
           }

@@ -649,5 +649,17 @@
         "content": "$1"
       }
     }
+  },
+  "loadingAppConfigFailed": {
+    "message": "loading of App. Config. failed, please contact support."
+  },
+  "loadingStorageIntoMemoryFail": {
+    "message": "loading storage into memory failed, contact support."
+  },
+  "localDbAndMemorySetFailed": {
+    "message": "Local databases and memory storage setup failed, contact support."
+  },
+  "clearStorageFailed": {
+    "message": "Clear storage failed, contact support."
   }
 }

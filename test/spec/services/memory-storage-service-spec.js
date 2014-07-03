@@ -11,7 +11,7 @@ describe('Service: memoryStorageService ', function () {
   var dbName = 'testdb';
   var obj = {uuid: '2345'};
 
-  beforeEach(inject(function (_cacheService_, _memoryStorageService_, $rootScope) {
+  beforeEach(inject(function (_cacheService_, _memoryStorageService_) {
     cacheService = _cacheService_;
     memoryStorageService = _memoryStorageService_;
   }));

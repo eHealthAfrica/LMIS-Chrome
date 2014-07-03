@@ -9,6 +9,7 @@ angular.module('lmisChromeApp')
      * @returns {XML|string}
      */
     this.getReadableProfileName = function (name) {
+      //TODO: deprecate
       return name
         .replace(/\-/g, ' - ')
         .replace(/([0-9])([a-zA-Z])/g, '$1 $2')
@@ -19,6 +20,8 @@ angular.module('lmisChromeApp')
      * this returns the local time-zone difference from GMT.
      */
     this.getTimeZone = function () {
+      //TODO: deprecate, no longer in use.
+
       //TODO: this needs to be a global function with better timezone calculation
       //TODO: ref https://bitbucket.org/pellepim/jstimezonedetect
       var tz = new Date().getTimezoneOffset() / 60;
