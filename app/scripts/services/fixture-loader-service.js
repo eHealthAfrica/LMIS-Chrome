@@ -1,5 +1,5 @@
 angular.module('lmisChromeApp')
-  .service('fixtureLoaderService', function($q, $http, $rootScope, memoryStorageService, config, storageService, utility, pouchdb, syncService) {
+  .service('fixtureLoaderService', function($q, $http, $rootScope, memoryStorageService, config, storageService, utility, pouchdb, syncService, $window) {
 
     var PATH = 'scripts/fixtures/';
     var REMOTE_URI = config.api.url;
@@ -21,7 +21,6 @@ angular.module('lmisChromeApp')
      * @returns {*}
      */
     var loadDatabaseFromRemote = function(dbName) {
-      var deferred = $q.defer();
       var dbUrl = [REMOTE_URI, '/', dbName].join('');
       var db = pouchdb.create(dbUrl);
       var map = function(doc) {
@@ -29,9 +28,9 @@ angular.module('lmisChromeApp')
           emit(doc);
         }
       };
-      db.info()
+      return db.info()
         .then(function(){
-          db.query({map: map}, {reduce: false})
+          return db.query({map: map}, {reduce: false})
             .then(function(res) {
               var data = res.rows;
               var dbRecords = [];
@@ -39,51 +38,38 @@ angular.module('lmisChromeApp')
                 var record = data[i].key;
                 dbRecords.push(record);
               }
-              var dbObj = utility.castArrayToObject(dbRecords, 'uuid');
-              deferred.resolve(dbObj);
-            })
-            .catch(function(reason){
-              deferred.reject(reason);
+              return utility.castArrayToObject(dbRecords, 'uuid');
             });
-        })
-        .catch(function(reason){
-          deferred.reject(reason);
         });
-      return deferred.promise;
     };
 
     /**
      *  This loads databases from remote server.
+     *  
+     * @private
      * @param {Array} dbNames - collection of dbNames to be loaded from remote.
      * @returns {Promise}
      */
     var loadDatabasesFromRemote = function(dbNames) {
-      var deferred = $q.defer();
       var promises = {};
-      for(var i in dbNames){
+      for (var i in dbNames) {
         var dbName = dbNames[i];
         console.log(dbName);
         promises[dbName] = loadDatabaseFromRemote(dbName);
       }
-      $q.all(promises)
-        .then(function(result){
-          console.info(result);
-          deferred.resolve(result);
-        })
-        .catch(function(reason){
-          deferred.reject(reason);
-        });
-      return deferred.promise;
+      return $q.all(promises);
     };
 
     /**
-     *  This saves databases to the local storage.
+     * This saves databases to the local storage.
+     *
+     * @private
      * @param {Object} databases - nested key-value pairs object, where the key is the database name, pair is the database records.
      * @returns {Promise}
      */
     var saveDatabasesToLocalStorage = function(databases) {
       var deferred = $q.defer();
-      var saveQueue = queue(1);//use 1 to run tasks in turns.
+      var saveQueue = $window.queue(1);//use 1 to run tasks in turns.
       var dbNames = Object.keys(databases);
       dbNames.forEach(function(dbName) {
         var db = databases[dbName];
@@ -107,15 +93,27 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    this.saveDatabases = function(databases){
+      return saveDatabasesToLocalStorage(databases);
+    };
+
     /**
      * loads given databases into memory store.
+     * @private
      * @param {Object} databases - nested object, dbName is the key, values are nested database records.
      */
     var loadDatabasesIntoMemoryStorage = function(databases) {
+      if(Object.prototype.toString.call(databases) !== '[object Object]'){
+        throw 'databases should be nested object.';
+      }
       for (var dbName in databases) {
         var db = databases[dbName];
         memoryStorageService.setDatabase(dbName, db);
       }
+    };
+
+    this.loadDatabasesIntoMemoryStorage = function(databases){
+      return loadDatabasesIntoMemoryStorage(databases);
     };
 
     var loadDataToRemote = function(dbName, batch){
@@ -188,7 +186,7 @@ angular.module('lmisChromeApp')
      * @param {Array} dbNames - collection of database names(strings).
      * @returns {Promise|*}
      */
-    var setupLocalAndMemoryStorageFromRemoteDb = function(dbNames) {
+    this.setupLocalAndMemoryStore = function(dbNames) {
       $rootScope.$emit('START_LOADING', {started: true});
       return loadDatabasesFromRemote(dbNames)
         .then(function(result) {
@@ -236,10 +234,6 @@ angular.module('lmisChromeApp')
     this.loadFiles = function(fileNames) {
       //TODO: deprecate ASAP
       return loadFilesIntoCache(fileNames);
-    };
-
-    this.setupLocalAndMemoryStore = function(dbNames) {
-      return setupLocalAndMemoryStorageFromRemoteDb(dbNames);
     };
 
   });
