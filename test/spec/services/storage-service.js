@@ -140,10 +140,10 @@ describe('storageService', function () {
     //expect(pouchStorageService.set).toHaveBeenCalled();
   });
 
-  it('should be able to get data from a table by key and return promise', function () {
-    spyOn(pouchStorageService, 'allDocs').andReturn(deferred.promise);
+  it('should find a doc by a given key', function () {
+    spyOn(pouchStorageService, 'get').andReturn(deferred.promise);
     storageService.find('test', 'key');
-    expect(pouchStorageService.allDocs).toHaveBeenCalled();
+    expect(pouchStorageService.get).toHaveBeenCalled();
   });
 
 

@@ -145,17 +145,9 @@ angular.module('lmisChromeApp')
         }
       };
 
-      var getFromTableByKey = function (tableName, _key) {
-        var deferred = $q.defer();
-        var key = String(_key);//force conversion to string
-        getData(tableName)
-            .then(function (data) {
-              deferred.resolve(data[key]);
-            })
-            .catch(function (reason) {
-              deferred.reject(reason);
-            });
-        return deferred.promise;
+      var getFromTableByKey = function(table, key) {
+        key = String(key);//force conversion to string
+        return pouchStorageService.get(table, key);
       };
 
       /**
