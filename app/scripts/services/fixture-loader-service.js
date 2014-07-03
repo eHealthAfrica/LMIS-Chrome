@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('lmisChromeApp')
   .service('fixtureLoaderService', function($q, $http, $rootScope, memoryStorageService, config, storageService, utility, pouchdb, syncService, $window) {
 
@@ -25,6 +27,9 @@ angular.module('lmisChromeApp')
       var db = pouchdb.create(dbUrl);
       var map = function(doc) {
         if (doc) {
+          /* globals emit: false */
+          // PouchDB injects this, see:
+          // http://pouchdb.com/api.html#query_database
           emit(doc);
         }
       };
@@ -141,7 +146,7 @@ angular.module('lmisChromeApp')
             if (!angular.isArray(db)) {
               db = utility.values(db);
             }
-            promises.push(loadDataToRemote(dbName, db))
+            promises.push(loadDataToRemote(dbName, db));
           }
           $q.all(promises)
             .then(function(result) {
