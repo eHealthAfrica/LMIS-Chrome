@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('fixtureLoaderService', function($q, $http, $rootScope, memoryStorageService, config, storageService, utility, pouchdb, syncService, $window) {
+  .service('fixtureLoaderService', function($q, $http, $rootScope, memoryStorageService, config, storageService, utility, pouchdb, syncService) {
 
     var PATH = 'scripts/fixtures/';
     var REMOTE_URI = config.api.url;
@@ -72,29 +72,16 @@ angular.module('lmisChromeApp')
      * @returns {Promise}
      */
     var saveDatabasesToLocalStorage = function(databases) {
-      var deferred = $q.defer();
-      var saveQueue = $window.queue(1);//use 1 to run tasks in turns.
+      var promises = [], promise, db;
       var dbNames = Object.keys(databases);
       dbNames.forEach(function(dbName) {
-        var db = databases[dbName];
-        saveQueue.defer(function(callback) {
-          storageService.setDatabase(dbName, db)
-            .then(function(result) {
-              callback(undefined, result);
-            })
-            .catch(function(reason) {
-              callback(reason);
-            });
-        });
+        db = databases[dbName];
+        // TODO: change callee's return value to an array
+        db = utility.values(db);
+        promise = storageService.setDatabase(dbName, db);
+        promises.push(promise);
       });
-      saveQueue.awaitAll(function(err, res) {
-        if (res) {
-          deferred.resolve(res);
-        } else {
-          deferred.reject(err);
-        }
-      });
-      return deferred.promise;
+      return $q.all(promises);
     };
 
     this.saveDatabases = function(databases) {
