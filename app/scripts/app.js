@@ -49,14 +49,14 @@ angular.module('lmisChromeApp', [
               $state.go('home.index.home.mainActivity');
             })
             .catch(function(reason) {
-              console.log(reason);
+              console.error(reason);
               growl.error('loading storage into memory failed, contact support.', {ttl: -1});
             });
         } else {
           //fresh install, download remote dbs
           fixtureLoaderService.setupLocalAndMemoryStore(fixtureLoaderService.REMOTE_FIXTURES)
             .catch(function(reason) {
-              console.log(reason);
+              console.error(reason);
               growl.error('Local databases and memory storage setup failed, contact support.', {ttl: -1});
             });
         }
