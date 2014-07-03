@@ -13,7 +13,8 @@
     "angularjs-nvd3-directives": "~0.0.7",
     "angular-growl-v2": "~0.6.1",
     "angular-animate": "~1.2.17",
-    "chrome-platform-analytics": "https://github.com/thanasio/chrome-platform-analytics.git#bower_analytics"
+    "chrome-platform-analytics": "https://github.com/thanasio/chrome-platform-analytics.git#bower_analytics",
+    "pouchdb": "~2.2.3"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.17",
@@ -35,6 +36,7 @@
   "license": "ISC",
   "private": true,
   "resolutions": {
-    "d3": "~3.4.1"
+    "d3": "~3.4.1",
+    "pouchdb": "~2.2.3"
   }
 }
