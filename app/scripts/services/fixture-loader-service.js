@@ -29,7 +29,7 @@ angular.module('lmisChromeApp')
         }
       };
       return db.info()
-        .then(function(){
+        .then(function() {
           return db.query({map: map}, {reduce: false})
             .then(function(res) {
               var data = res.rows;
@@ -45,7 +45,7 @@ angular.module('lmisChromeApp')
 
     /**
      *  This loads databases from remote server.
-     *  
+     *
      * @private
      * @param {Array} dbNames - collection of dbNames to be loaded from remote.
      * @returns {Promise}
@@ -54,7 +54,6 @@ angular.module('lmisChromeApp')
       var promises = {};
       for (var i in dbNames) {
         var dbName = dbNames[i];
-        console.log(dbName);
         promises[dbName] = loadDatabaseFromRemote(dbName);
       }
       return $q.all(promises);
@@ -93,7 +92,7 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
-    this.saveDatabases = function(databases){
+    this.saveDatabases = function(databases) {
       return saveDatabasesToLocalStorage(databases);
     };
 
@@ -103,7 +102,7 @@ angular.module('lmisChromeApp')
      * @param {Object} databases - nested object, dbName is the key, values are nested database records.
      */
     var loadDatabasesIntoMemoryStorage = function(databases) {
-      if(Object.prototype.toString.call(databases) !== '[object Object]'){
+      if (Object.prototype.toString.call(databases) !== '[object Object]') {
         throw 'databases should be nested object.';
       }
       for (var dbName in databases) {
@@ -112,14 +111,14 @@ angular.module('lmisChromeApp')
       }
     };
 
-    this.loadDatabasesIntoMemoryStorage = function(databases){
+    this.loadDatabasesIntoMemoryStorage = function(databases) {
       return loadDatabasesIntoMemoryStorage(databases);
     };
 
-    var loadDataToRemote = function(dbName, batch){
+    var loadDataToRemote = function(dbName, batch) {
       //TODO: utility function used to load fixtures into remote DB deprecated if not necessary later.
       var promises = [];
-      for(var key in batch){
+      for (var key in batch) {
         var record = batch[key];
         promises.push(syncService.syncItem(dbName, record, true));
       }
@@ -131,28 +130,28 @@ angular.module('lmisChromeApp')
      * @param {Array} fixtureNames
      * @returns {*|Promise|Promise|!Promise.<R>}
      */
-    this.loadFixturesIntoRemoteDb = function(fixtureNames){
+    this.loadFixturesIntoRemoteDb = function(fixtureNames) {
       //TODO: utility function created for loading fixtures into remote db. deprecate when no longer needed.
       var deferred = $q.defer();
       loadFilesIntoCache(fixtureNames)
-        .then(function(result){
+        .then(function(result) {
           var promises = [];
-          for(var dbName in result){
+          for (var dbName in result) {
             var db = result[dbName];
-            if(!angular.isArray(db)){
-             db = utility.values(db);
+            if (!angular.isArray(db)) {
+              db = utility.values(db);
             }
             promises.push(loadDataToRemote(dbName, db))
           }
           $q.all(promises)
-            .then(function(result){
+            .then(function(result) {
               deferred.resolve(result);
             })
-            .catch(function(reason){
+            .catch(function(reason) {
               deferred.reject(reason);
             });
         })
-        .catch(function(reason){
+        .catch(function(reason) {
           deferred.reject(reason);
         });
       return deferred.promise;
