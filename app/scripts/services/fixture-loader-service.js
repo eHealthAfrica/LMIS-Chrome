@@ -149,6 +149,23 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    // TODO: deprecate. Pouch returns an array of docs by sequence, whereas
+    // we're expecting a nested object by ID. Consider rewriting callers, or
+    // perhaps using a persisted Pouch view?
+    var indexByID = function(results) {
+      var table, _results = {}, _table;
+      var byID = function(doc) {
+        _table[doc.uuid] = doc;
+      };
+      for (var db in results) {
+        table = results[db];
+        _table = {};
+        table.forEach(byID);
+        _results[db] = _table;
+      }
+      return _results;
+    };
+
     /**
      *  This reads databases from local storage into memory storage.
      *
@@ -162,6 +179,7 @@ angular.module('lmisChromeApp')
         promises[dbName] = storageService.get(dbName);
       }
       return $q.all(promises)
+        .then(indexByID)
         .then(function(results) {
           loadDatabasesIntoMemoryStorage(results);
           return results;
