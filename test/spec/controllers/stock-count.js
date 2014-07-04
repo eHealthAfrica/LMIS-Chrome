@@ -3,9 +3,36 @@
 describe('Controller: StockCountFormCtrl', function(){
   var scope, ctrl, state, stockCount, appConfig, productType, _i18n;
 
-  beforeEach(module('lmisChromeApp', 'appConfigMocks', 'stockCountMocks', 'i18nMocks', 'productWithCategoryMocks', function($provide){
+  beforeEach(module('lmisChromeApp', 'appConfigMocks', 'stockCountMocks', 'i18nMocks', 'productWithCategoryMocks', 'fixtureLoaderMocks', function($provide){
     //$provide.value('appConfig',{});
     $provide.value('productType', {});
+  }));
+
+  beforeEach((inject(function($templateCache, $httpBackend, fixtureLoaderMock) {
+    $templateCache.put('views/index/loading-fixture-screen.html', '');
+    fixtureLoaderMock.loadFixtures();
+  })));
+
+  beforeEach(inject(function ($templateCache) {
+    // Mock each template used by the state
+    var templates = [
+      'index/index',
+      'index/header',
+      'index/breadcrumbs',
+      'index/footer',
+      'home/index',
+      'home/nav',
+      'home/sidebar',
+      'home/control-panel',
+      'home/main-activity',
+      'home/home',
+      'dashboard/dashboard',
+      'index/loading-fixture-screen'
+    ];
+
+    angular.forEach(templates, function (template) {
+      $templateCache.put('views/' + template + '.html', '');
+    });
   }));
 
   beforeEach(inject(function($controller, $state, _stockCountFactory_, _productType_, appConfigMock,

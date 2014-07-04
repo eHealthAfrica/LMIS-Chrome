@@ -1,5 +1,7 @@
+'use strict';
+
 angular.module('lmisChromeApp')
-  .service('fixtureLoaderService', function($q, $http, $rootScope, memoryStorageService, config, storageService, utility, pouchdb, syncService, $window) {
+  .service('fixtureLoaderService', function($q, $http, $rootScope, memoryStorageService, config, storageService, utility, pouchdb, syncService) {
 
     var PATH = 'scripts/fixtures/';
     var REMOTE_URI = config.api.url;
@@ -25,6 +27,9 @@ angular.module('lmisChromeApp')
       var db = pouchdb.create(dbUrl);
       var map = function(doc) {
         if (doc) {
+          /* globals emit: false */
+          // PouchDB injects this, see:
+          // http://pouchdb.com/api.html#query_database
           emit(doc);
         }
       };
@@ -67,29 +72,16 @@ angular.module('lmisChromeApp')
      * @returns {Promise}
      */
     var saveDatabasesToLocalStorage = function(databases) {
-      var deferred = $q.defer();
-      var saveQueue = $window.queue(1);//use 1 to run tasks in turns.
+      var promises = [], promise, db;
       var dbNames = Object.keys(databases);
       dbNames.forEach(function(dbName) {
-        var db = databases[dbName];
-        saveQueue.defer(function(callback) {
-          storageService.setDatabase(dbName, db)
-            .then(function(result) {
-              callback(undefined, result);
-            })
-            .catch(function(reason) {
-              callback(reason);
-            });
-        });
+        db = databases[dbName];
+        // TODO: change callee's return value to an array
+        db = utility.values(db);
+        promise = storageService.setDatabase(dbName, db);
+        promises.push(promise);
       });
-      saveQueue.awaitAll(function(err, res) {
-        if (res) {
-          deferred.resolve(res);
-        } else {
-          deferred.reject(err);
-        }
-      });
-      return deferred.promise;
+      return $q.all(promises);
     };
 
     this.saveDatabases = function(databases) {
@@ -141,7 +133,7 @@ angular.module('lmisChromeApp')
             if (!angular.isArray(db)) {
               db = utility.values(db);
             }
-            promises.push(loadDataToRemote(dbName, db))
+            promises.push(loadDataToRemote(dbName, db));
           }
           $q.all(promises)
             .then(function(result) {
@@ -157,6 +149,23 @@ angular.module('lmisChromeApp')
       return deferred.promise;
     };
 
+    // TODO: deprecate. Pouch returns an array of docs by sequence, whereas
+    // we're expecting a nested object by ID. Consider rewriting callers, or
+    // perhaps using a persisted Pouch view?
+    var indexByID = function(results) {
+      var table, _results = {}, _table;
+      var byID = function(doc) {
+        _table[doc.uuid] = doc;
+      };
+      for (var db in results) {
+        table = results[db];
+        _table = {};
+        table.forEach(byID);
+        _results[db] = _table;
+      }
+      return _results;
+    };
+
     /**
      *  This reads databases from local storage into memory storage.
      *
@@ -170,6 +179,7 @@ angular.module('lmisChromeApp')
         promises[dbName] = storageService.get(dbName);
       }
       return $q.all(promises)
+        .then(indexByID)
         .then(function(results) {
           loadDatabasesIntoMemoryStorage(results);
           return results;

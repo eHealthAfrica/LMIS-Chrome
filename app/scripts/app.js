@@ -11,7 +11,7 @@ angular.module('lmisChromeApp', [
     'ngAnimate',
     'db'
   ])
-  .run(function(storageService, $rootScope, $state, $window, appConfigService, fixtureLoaderService, growl) {
+  .run(function(storageService, $rootScope, $state, $window, appConfigService, fixtureLoaderService, growl, utility) {
 
     $window.showSplashScreen = function() {
       $state.go('loadingFixture');
@@ -19,8 +19,8 @@ angular.module('lmisChromeApp', [
 
     $window.hideSplashScreen = function() {
       appConfigService.getCurrentAppConfig()
-        .then(function(cfg) {
-          if (typeof cfg === 'object') {
+        .then(function (cfg) {
+          if (angular.isObject(cfg) && !angular.isArray(cfg)) {
             $state.go('home.index.home.mainActivity');
             //trigger background syncing on start up
             appConfigService.updateAppConfigAndStartBackgroundSync()
@@ -39,6 +39,13 @@ angular.module('lmisChromeApp', [
 
     $rootScope.$on('LOADING_COMPLETED', $window.hideSplashScreen);
     $rootScope.$on('START_LOADING', $window.showSplashScreen);
+
+    // TODO: see item:680
+    if (!utility.has($window, 'PouchDB')) {
+      // Short-circuit as PouchDB has not been sourced. Likely running in test
+      // environment.
+      return;
+    }
 
     //TODO: figure out a better way of knowing if the app has been configured or not.
     storageService.all(storageService.APP_CONFIG)

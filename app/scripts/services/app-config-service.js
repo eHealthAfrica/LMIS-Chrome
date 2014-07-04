@@ -29,7 +29,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     appConfig.facility.stockCountInterval = parseInt(appConfig.facility.stockCountInterval);
     var appConfigCopy;
     getAppConfigFromMemoryOrStorage().then(function (existingAppConfig) {
-      if(typeof existingAppConfig === 'undefined'){
+      if(angular.isArray(existingAppConfig) && existingAppConfig.length === 0){
         appConfigCopy = appConfig;
       }else{
         //update app config by merging both fields.
@@ -109,11 +109,9 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     var deferred = $q.defer();
     storageService.get(storageService.APP_CONFIG)
       .then(function (data) {
-        if (typeof data !== 'undefined') {
-          if (Object.keys(data).length === 1) {
-            var appConfigUUID = Object.keys(data)[0];//get key of the first and only app config
-            var appConfig = data[appConfigUUID];
-
+        if (angular.isArray(data) && data.length > 0) {
+          if (data.length === 1) {
+            var appConfig = data[0];
             if(typeof appConfig !== 'undefined'){
               appConfig.facility.selectedProductProfiles = productProfileFactory.getBatch(appConfig.facility.selectedProductProfiles);
               //add app config to memory
@@ -122,7 +120,6 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
               console.error('app config is undefined.');
             }
             deferred.resolve(appConfig);
-
           } else {
             throw 'there are more than one app config on this device.';
           }

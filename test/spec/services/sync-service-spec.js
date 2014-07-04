@@ -19,10 +19,11 @@ describe('Service: SyncService', function() {
     db = {
       destroy: function(){ return $q.when(true); },
       info: function(){ return $q.when({}); },
-      get: function(uuid){ return $q.when({ _rev: '1234', _id: uuid, name: 'test', date: new Date() }); }
+      get: function(uuid){ return $q.when({ _rev: '1234', _id: uuid, name: 'test', date: new Date() }); },
+      allDocs: function() { return $q.when([]); }
     };
     dbName = 'testdb';
-    spyOn(pouchdb, 'create').andCallFake(function(dbName){ return db });
+    spyOn(pouchdb, 'create').andCallFake(function(){ return db; });
   }));
 
   it('i expect sync-service to be defined ', function(){
@@ -30,7 +31,7 @@ describe('Service: SyncService', function() {
   });
 
   it('i expect addSyncStatus to throw an exception when called with non-array parameter', function(){
-    expect(function(){ syncService.addSyncStatus('non-array')}).toThrow();
+    expect(function(){ syncService.addSyncStatus('non-array');}).toThrow();
   });
 
   it('i expect addSyncStatus return an array where each object has its correct sync status', function(){
@@ -56,7 +57,7 @@ describe('Service: SyncService', function() {
 
   it('i expect clearPouchDB(dbName) to clear local pouchDb copy of dbName', function(){
     spyOn(db, 'destroy').andCallThrough();
-    syncService.clearPouchDB(dbName)
+    syncService.clearPouchDB(dbName);
     expect(pouchdb.create).toHaveBeenCalledWith(dbName);
     expect(db.destroy).toHaveBeenCalled();
   });
@@ -75,7 +76,7 @@ describe('Service: SyncService', function() {
 
   it('i expect addToPendingSync to throw exception when called with pendingSync that has undefined dbName', function(){
     var pendingSync = {dbName: undefined, uuid: recordWithUuid.uuid};
-    expect(function(){syncService.addToPendingSync(pendingSync)}).toThrow();
+    expect(function(){syncService.addToPendingSync(pendingSync);}).toThrow();
   });
 
   it('i expect addToPendingSync to throw exception when called with non-string dbName', function(){

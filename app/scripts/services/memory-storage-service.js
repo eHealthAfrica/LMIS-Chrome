@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('lmisChromeApp')
   .service('memoryStorageService', function ($rootScope, cacheService) {
 
