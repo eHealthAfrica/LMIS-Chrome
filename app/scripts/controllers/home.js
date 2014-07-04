@@ -11,9 +11,11 @@ angular.module('lmisChromeApp')
         appConfig: function(appConfigService) {
           return appConfigService.getCurrentAppConfig();
         },
-        isStockCountReminderDue: function(stockCountFactory, appConfig) {
-          if (typeof appConfig !== 'undefined') {
+        isStockCountReminderDue: function(stockCountFactory, appConfig, $q) {
+          if (angular.isObject(appConfig)) {
             return stockCountFactory.isStockCountDue(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+          }else{
+            return $q.when(false);
           }
         }
       },

@@ -13,6 +13,15 @@ angular.module('lmisChromeApp', [
   ])
   .run(function(storageService, $rootScope, $state, $window, appConfigService, fixtureLoaderService, growl, utility) {
 
+    function navigateToHome() {
+      $state.go('home.index.home.mainActivity');
+      //trigger background syncing on start up
+      appConfigService.updateAppConfigAndStartBackgroundSync()
+        .finally(function() {
+          console.log('updateAppConfigAndStartBackgroundSync triggered on start up has been completed!');
+        });
+    }
+
     $window.showSplashScreen = function() {
       $state.go('loadingFixture');
     };
@@ -21,12 +30,7 @@ angular.module('lmisChromeApp', [
       appConfigService.getCurrentAppConfig()
         .then(function (cfg) {
           if (angular.isObject(cfg) && !angular.isArray(cfg)) {
-            $state.go('home.index.home.mainActivity');
-            //trigger background syncing on start up
-            appConfigService.updateAppConfigAndStartBackgroundSync()
-              .finally(function() {
-                console.log('updateAppConfigAndStartBackgroundSync triggered on start up have been completed!');
-              });
+            navigateToHome();
           } else {
             $state.go('appConfigWelcome');
           }
@@ -53,7 +57,7 @@ angular.module('lmisChromeApp', [
         if (res.length > 0) {
           fixtureLoaderService.loadLocalDatabasesIntoMemory(fixtureLoaderService.REMOTE_FIXTURES)
             .then(function() {
-              $state.go('home.index.home.mainActivity');
+              navigateToHome();
             })
             .catch(function(reason) {
               console.error(reason);

@@ -29,7 +29,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
     appConfig.facility.stockCountInterval = parseInt(appConfig.facility.stockCountInterval);
     var appConfigCopy;
     getAppConfigFromMemoryOrStorage().then(function (existingAppConfig) {
-      if(angular.isArray(existingAppConfig) && existingAppConfig.length === 0){
+      if(!angular.isObject(existingAppConfig)){
         appConfigCopy = appConfig;
       }else{
         //update app config by merging both fields.
@@ -107,6 +107,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
 
   var getAppConfigFromStorage = function(){
     var deferred = $q.defer();
+    var appConfig;
     storageService.get(storageService.APP_CONFIG)
       .then(function (data) {
         if (angular.isArray(data) && data.length > 0) {
@@ -124,7 +125,7 @@ angular.module('lmisChromeApp').service('appConfigService', function ($q, storag
             throw 'there are more than one app config on this device.';
           }
         } else {
-          deferred.resolve(data);
+          deferred.resolve(appConfig);
         }
       })
       .catch(function(reason){
