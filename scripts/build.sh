@@ -7,7 +7,7 @@ build="$pwd/build"
 
 have() { command -v "$1" >/dev/null; }
 info() { echo "$0: $1"; }
-error() { info "$1"; exit 1;}
+error() { info "$1"; exit 1; }
 
 [[ "$TAVIS_TAG" ]] && type="release" || type="snapshot"
 info "Performing $type build"
