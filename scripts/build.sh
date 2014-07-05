@@ -34,7 +34,6 @@ if [[ "$TRAVIS_TAG" ]]; then
   echo -n $id_rsa_{00..30} >> ~/.ssh/id_rsa_base64
   base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
   chmod 600 ~/.ssh/id_rsa
-  md5sum ~/.ssh/id_rsa
   eha="79.125.119.180"
   echo -e "Host $eha\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   scp -r travisci@$eha:android-keystore/\* "$android"
