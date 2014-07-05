@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('storageService', function ($q, $rootScope, $http, $window, utility, collections, pouchStorageService) {
+    .factory('storageService', function ($q, $window, utility, collections, pouchStorageService) {
 
       /**
        *  Global variables used to define table names, with this there will be one
