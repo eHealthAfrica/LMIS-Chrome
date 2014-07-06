@@ -38,11 +38,11 @@ if [[ "$TRAVIS_TAG" ]]; then
   echo -e "Host $eha\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   scp -r travisci@$eha:android-keystore/\* "$android"
   cca build --release
-  apk="$android/bin/LoMIS-release.apk"
+  apk="$android/ant-build/LoMIS-release.apk"
   out="$releases/$app-$TRAVIS_TAG.apk"
 else
   cca build
-  apk="$android/bin/LoMIS-debug.apk"
+  apk="$android/ant-build/LoMIS-debug.apk"
   now="$(date -u +"%Y%m%d%H%M%S")"
   out="$snapshots/$app-$now.apk"
 fi
