@@ -100,6 +100,7 @@ angular.module('lmisChromeApp')
       }
       return deviceInfoFactory.canConnect()
         .then(function() {
+          backgroundSyncInProgress = true;
           return fixtureLoaderService.loadRemoteAndUpdateStorageAndMemory(fixtureLoaderService.REMOTE_FIXTURES)
             .then(function() {
               return updateAppConfigFromRemote()
