@@ -50,6 +50,7 @@ angular.module('lmisChromeApp')
      * @returns {Boolean}
      */
    $scope.isEditable = function(stockCount){
+     //TODO: disable most recent for edit if stock count is due.
      return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid === stockCount.uuid);
    };
 
@@ -153,7 +154,7 @@ angular.module('lmisChromeApp')
        *
        * 2. redirect has to wait for app to finish syncing - success/fail
        */
-      return syncService.syncItem(db, $scope.stockCount)
+      return syncService.syncUpRecord(db, $scope.stockCount)
         .catch(function(reason) {
           $log.error(reason);
         })
