@@ -121,7 +121,7 @@ angular.module('lmisChromeApp')
       wasteCountFactory.add($scope.wasteCount)
           .then(function(uuid){
             $scope.wasteCount.uuid = uuid;
-            syncService.syncItem(wasteCountFactory.DB_NAME, $scope.wasteCount)
+            syncService.syncUpRecord(wasteCountFactory.DB_NAME, $scope.wasteCount)
               .finally(function(){
                 $scope.isSaving = false;
                 alertFactory.success(i18n('wasteCountSaved'));
