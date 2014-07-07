@@ -222,7 +222,6 @@ angular.module('lmisChromeApp')
       };
 
     var compactDatabases = function() {
-      console.error('compact databases called.');
       var dbNames = FIXTURE_NAMES;
       var localDbs = [
         stockCount,
