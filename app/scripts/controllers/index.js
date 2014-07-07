@@ -30,6 +30,11 @@ angular.module('lmisChromeApp')
                 };
                 $scope.$digest();
 
+                //this one sends when toggle from on to off and vice versa. I think we only need from off to on and on app start!
+                appConfigService.syncOfflineAnalytics().finally(function(){
+                      console.log('offline reports send to ga server.');
+                });
+
                 //trigger background syncing
                 appConfigService.updateAppConfigAndStartBackgroundSync()
                     .finally(function(){
