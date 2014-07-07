@@ -32,8 +32,7 @@ angular.module('lmisChromeApp')
 
       var broadcastCcuBreakdown = function (ccuBreakdown) {
         var deferred = $q.defer();
-        var allowMultipleSync = true;
-        syncService.syncItem(storageService.CCU_BREAKDOWN, ccuBreakdown, allowMultipleSync)
+        syncService.syncUpRecord(storageService.CCU_BREAKDOWN, ccuBreakdown)
             .then(function (syncResult) {
               deferred.resolve(syncResult);
             }).catch(function () {
