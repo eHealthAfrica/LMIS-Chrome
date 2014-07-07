@@ -1,58 +1,65 @@
 'use strict';
 
-angular.module('lmisChromeApp')
-        .service('analyticsSyncService', function($q, storageService, trackingFactory) {
-            var tracker = trackingFactory.tracker;
+angular.module('lmisChromeApp').service('analyticsSyncService', function($q, storageService, trackingFactory) {
 
-            //syncs analytics table
-            this.syncAnalyticsTable = function(table, code) {
-                var uuids = [];
-                storageService.all(table)
-                        .then(function(tableData) {
-                            tableData.forEach(function(data) {
-                                if (code === 0)
-                                    tracker.sendEvent('Offline Clicks', data.action, data.label);//clicks
-                                if (code === 1)
-                                    tracker.sendAppView(data.page);//pages
-                                if (code === 2)
-                                    tracker.sendException(data.opt_description, data.opt_fatal);//exceptions
 
-                                uuids.push(data.uuid);
-                            });
-                        })
-                        .then(function() {
-                            if (uuids.length > 0) {
-                                storageService.removeRecords(table, uuids);
-                            }
-                        })
-                        .finally(function() {
-                            console.log('pending table list cleared');
-                        });
+    var tracker = trackingFactory.tracker;
+    this.syncClicks = function() {
+        var uuids = [];
+//        console.log("Loopin Clicks");
+        storageService.all(storageService.CLICKS).then(function(clicksData) {
+            clicksData.forEach(function(click) {
+                //need to find a way to get a success flag here and delete if event successfuly sent
+                tracker.sendEvent("Offline Clicks", click.action, click.label)
+                uuids.push(click.uuid);
+//                console.log("uuid: " + click.uuid);
+            });
+        }).then(function() {
+            if (uuids)
+                storageService.removeRecords(storageService.CLICKS, uuids);
+        }).finally(function() {
+            console.log("pending clicks list cleared ");
+            });
+    };
 
-            };
+    //not final yet. Work in progress
+    this.syncExceptions = function() {
 
-            //syncs analytics lost records
-            this.syncLostRecords = function(table, string) {
-                storageService.all(table)
-                        .then(function(data) {
+        var uuids = [];
+//        console.log("Loopin Excepts")
+        storageService.all(storageService.EXCEPTIONS).then(function(exceptionData) {
+            exceptionData.forEach(function(exception) {
 
-                            if (data.length > 0) {
-                                var obj = data[0];
-                                var records = obj.records;
-                                tracker.sendEvent("lost data", string, "", records);
-                                
-                                return obj;
-                            }
+                console.log("except uuid: " + exception.uuid);
+                    //best to get a success flag here and delete if event successfuly sent
+                uuids.push(exception.uuid);
 
-                        })
-                        .then(function(obj) {
-                            if (obj)
-                                storageService.removeRecord(table, obj.uuid);
-                        })
-                        .finally(function() {
-                            console.log('pending lost analytics list cleared');
-                        });
+            })
+        }).then(function() {
+            storageService.removeRecords(storageService.EXCEPTIONS, uuids);
+        }).finally(function() {
+            console.log("pending excepts list cleared");
+    });
+    };
 
-            };
+    //not final yet. Worki in progress
+    this.syncPageViews = function() {
+        var uuids = [];
+        console.log("Loopin Pages");
 
-        });
+        storageService.all(storageService.PAGE_VIEWS).then(function(pageViewData) {
+            pageViewData.forEach(function(pageView) {
+                tracker.sendAppView(pageView.page);
+                uuids.push(pageView.uuid);
+            });
+        }).then(function() {
+            storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
+        }).then(function() {
+            if (uuids)
+                storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
+        }).finally(function() {
+            console.log("pending pages list cleared");
+        });;
+
+    };
+});
