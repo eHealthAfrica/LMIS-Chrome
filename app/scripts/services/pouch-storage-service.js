@@ -46,4 +46,9 @@ angular.module('lmisChromeApp')
       return pouchdb.create(REMOTE_URI);
     };
 
+    this.compact = function(dbName){
+      var db = pouchdb.create(dbName);
+      return db.compact();
+    };
+
   });
