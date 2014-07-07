@@ -1,9 +1,8 @@
-[
-    {
-        "lost_records": {
-            "events": 0,
-            "pages": 0,
-            "exceptions": 0
-        }
+{
+    "analytics_lost_records": {
+        "uuid": "8becd626-009a-11e4-9f70-b2227cce2b54",
+        "events": 0,
+        "pages": 0,
+        "exceptions": 0
     }
-]
+}

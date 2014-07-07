@@ -20,24 +20,13 @@ angular.module('lmisChromeApp')
 //            var pageViews = 'pageviews';
             var FIXTURE_NAMES = utility.values(collections);
 
-            /**
-             * Add new table data to the store.
-             *
-             * @param {string} table - Table name.
-             * @param {mixed} data - rows of the table (all values are stored as JSON.)
-             * @return {promise|Function|promise|promise|promise|*}
-             * @private
-             */
-            var setData = function(table, data) {
-                if (!data.hasOwnProperty('uuid')) {
-                    throw 'data should have a uuid or primary key field.';
-                }
-                return pouchStorageService.put(table, data)
-//                        .then(function(result) {
-//                            // FIXME: item:710
-//                            return result.id;
-//                        });
-            };
+      //analytics
+      var pageviews = 'pageviews';
+      var clicks = 'clicks';
+      var exceptions = 'exceptions';
+      var analyticsLostRecords = 'analytics_lost_records';
+
+      var FIXTURE_NAMES = utility.values(collections);
 
             var getData = function(key) {
                 return pouchStorageService.allDocs(key);
@@ -236,31 +225,31 @@ angular.module('lmisChromeApp')
                 return pouchStorageService.bulkDocs(table, data);
             };
 
-            var api = {
-                all: getAllFromTable,
-                add: setData,
-                get: getData,
-                removeRecord: removeRecordFromTable,
-                removeRecords: removeRecordsFromTable,
-                remove: removeData,
-                clear: clearStorage,
-                uuid: utility.uuidGenerator,
-                insert: insertData,
-                update: updateData,
-                save: saveData,
-                setDatabase: setDatabase,
-                where: getFromTableByLambda,
-                find: getFromTableByKey,
-                insertBatch: insertBatch,
-                APP_CONFIG: appConfig,
-                CCU_BREAKDOWN: ccuBreakdown,
-                DISCARD_COUNT: discardCount,
-                PENDING_SYNCS: pendingSyncs,
-//                PAGEVIEWS: pageViews,
-                STOCK_COUNT: stockCount,
-                SURVEY_RESPONSE: surveyResponse,
-                FIXTURE_NAMES: FIXTURE_NAMES
-            };
+      var api = {
+        all: getAllFromTable,
+        add: setData,
+        get: getData,
+        removeRecord: removeRecordFromTable,
+        remove: removeData,
+        clear: clearStorage,
+        uuid: utility.uuidGenerator,
+        insert: insertData,
+        update: updateData,
+        save: saveData,
+        setDatabase: setDatabase,
+        compactDatabases: compactDatabases,
+        where: getFromTableByLambda,
+        find: getFromTableByKey,
+        insertBatch: insertBatch,
+        APP_CONFIG: appConfig,
+        CCU_BREAKDOWN: ccuBreakdown,
+        DISCARD_COUNT: discardCount,
+        PENDING_SYNCS: pendingSyncs,
+        STOCK_COUNT: stockCount,
+        SURVEY_RESPONSE: surveyResponse,
+        FIXTURE_NAMES: FIXTURE_NAMES,
+        ANALYTICS_LOST_RECORDS: analyticsLostRecords
+      };
 
             return angular.extend(api, collections);
         });
