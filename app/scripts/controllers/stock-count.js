@@ -19,6 +19,13 @@ angular.module('lmisChromeApp')
           },
           mostRecentStockCount: function(stockCountFactory){
             return stockCountFactory.getMostRecentStockCount();
+          },
+          isStockCountReminderDue: function(stockCountFactory, appConfig, $q) {
+            if (angular.isObject(appConfig)) {
+              return stockCountFactory.isStockCountDue(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+            } else {
+              return $q.when(false);
+            }
           }
         },
         controller: 'StockCountHomeCtrl'
@@ -38,21 +45,21 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state, mostRecentStockCount){
+  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state, mostRecentStockCount, isStockCountReminderDue){
     $scope.stockCountsByCountDate = stockCountByDate;
     $scope.stockCountCountDates =  Object.keys($scope.stockCountsByCountDate).sort(function(dateOne, dateTwo){
       return new Date(dateOne) < new Date(dateTwo);//descending order
     });
 
     /**
+     *  stock count is editable if it is most recent and next stock count is not yet due.
      *
      * @param {Object} stockCount
      * @returns {Boolean}
      */
-   $scope.isEditable = function(stockCount){
-     //TODO: disable most recent for edit if stock count is due.
-     return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid === stockCount.uuid);
-   };
+    $scope.isEditable = function(stockCount) {
+      return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid === stockCount.uuid) && !isStockCountReminderDue;
+    };
 
     $scope.showStockCountFormByDate = function(date){
       stockCountFactory.getStockCountByDate(date)
