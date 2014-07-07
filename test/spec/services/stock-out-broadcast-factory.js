@@ -44,12 +44,12 @@ describe('StockOutBroadcast Factory', function () {
     expect(storageService.save).toHaveBeenCalledWith(storageService.STOCK_OUT, stockOut);
   });
 
-  it('i expect stockOutBroadcastFactory.broadcast() to call syncService.syncItem(). with multipleSync = true', function(){
-    spyOn(syncService, 'syncItem').andCallThrough();
-    expect(syncService.syncItem).not.toHaveBeenCalled();
+  it('i expect stockOutBroadcastFactory.broadcast() to call syncService.syncUpRecord(). with multipleSync = true', function(){
+    spyOn(syncService, 'syncUpRecord').andCallThrough();
+    expect(syncService.syncUpRecord).not.toHaveBeenCalled();
     stockOutBroadcastFactory.broadcast(stockOut);
     var allowMultipleSync =  true;
-    expect(syncService.syncItem).toHaveBeenCalledWith(storageService.STOCK_OUT, stockOut, allowMultipleSync);
+    expect(syncService.syncUpRecord).toHaveBeenCalledWith(storageService.STOCK_OUT, stockOut, allowMultipleSync);
   });
 
   it('i expect stockOutBroadcastFactory.getAll() to call storageService.all()', function(){
