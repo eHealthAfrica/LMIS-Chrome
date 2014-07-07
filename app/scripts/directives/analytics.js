@@ -5,9 +5,10 @@ angular.module('lmisChromeApp')
     return {
       restrict: 'A',
       link: function(scope, element, attr) {
-        var tracker = trackingService.tracker;
+//        var tracker = tracker;
         element.on('click', function() {
-          tracker.sendEvent('Click', element.text().trim(), attr.gaClick);
+            console.log('Click: '+ element.text().trim()+": "+ attr.gaClick.trim());
+          trackingFactory.postEvent('Click', element.text().trim(), attr.gaClick.trim());
         });
       }
     };
