@@ -47,7 +47,6 @@ angular.module('lmisChromeApp')
                             total += sizes[i];
                         }
                     }
-                    console.log("deleting: "+ toDelete.length)
                     storageService.removeRecords(table, toDelete);
                     deferred.resolve(toDelete.length);
                 })
@@ -62,7 +61,7 @@ angular.module('lmisChromeApp')
                             tracker.sendEvent(category, action, label);
                         })
                         .catch(function(reason) {
-                            console.log("offline click : " + category + ": " + action + ": " + label + " reason: " + reason);
+//                            console.log("offline click : " + category + ": " + action + ": " + label + " reason: " + reason);
                             var _event = {
                                 action: action,
                                 label: label
@@ -70,12 +69,11 @@ angular.module('lmisChromeApp')
                             storageService.save(storageService.CLICKS, _event);
                             removeExcessRecords(storageService.CLICKS, events_limit).then(function(removed) {
 //                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
-//                                    console.log("removed: " + removed);
 //                                    lostRecords[0].events += removed;
-//                                    console.log("lrs: "+ lostRecords[0].events)
+////                                    console.log("lrs: "+ lostRecords[0].events)
 //                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
 //                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
-//
+
 //                                });
 
                             });
@@ -90,21 +88,18 @@ angular.module('lmisChromeApp')
                             tracker.sendAppView(page);
                         })
                         .catch(function(reason) {
-                            console.log("offline page: " + page);
+//                            console.log("offline page: " + page);
                             var _pageview = {
                                 page: page
                             };
-                            storageService.save(storageService.PAGEVIEWS, _pageview);
-                            removeExcessRecords(storageService.PAGEVIEWS, pages_limit).then(function(removed) {
-                                storageService.get(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
-                                    console.log("removed: " + removed);
-                                    console.log("lost_recs: " + lostRecords);
-                                    console.log("lost_recs: " + lostRecords.length);
-                                    lostRecords[0].pages += removed;
-                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
-                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
+                            storageService.save(storageService.PAGE_VIEWS, _pageview);
+                            removeExcessRecords(storageService.PAGE_VIEWS, pages_limit).then(function(removed) {
+//                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
+//                                    lostRecords[0].pages += removed;
+//                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
+//                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
 
-                                });
+//                                });
 
                             });
                         });
