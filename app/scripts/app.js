@@ -11,12 +11,11 @@ angular.module('lmisChromeApp', [
     'ngAnimate',
     'db'
   ])
-  .run(function(storageService, $rootScope, $state, $window, appConfigService, fixtureLoaderService, growl, utility) {
+  .run(function(storageService, $rootScope, $state, $window, appConfigService, backgroundSyncService, fixtureLoaderService, growl, utility) {
 
     function navigateToHome() {
       $state.go('home.index.home.mainActivity');
-      //trigger background syncing on start up
-      appConfigService.updateAppConfigAndStartBackgroundSync()
+      backgroundSyncService.startBackgroundSync()
         .finally(function() {
           console.log('updateAppConfigAndStartBackgroundSync triggered on start up has been completed!');
         });
@@ -28,7 +27,7 @@ angular.module('lmisChromeApp', [
 
     $window.hideSplashScreen = function() {
       appConfigService.getCurrentAppConfig()
-        .then(function (cfg) {
+        .then(function(cfg) {
           if (angular.isObject(cfg) && !angular.isArray(cfg)) {
             navigateToHome();
           } else {
