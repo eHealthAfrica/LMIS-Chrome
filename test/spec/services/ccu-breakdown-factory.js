@@ -40,8 +40,7 @@ describe('Factory: ccuBreakdownFactory', function() {
   it('i expect ccuBreakdownFactory.broadcast() to call syncService.syncUpRecord().', function(){
     expect(syncService.syncUpRecord).not.toHaveBeenCalled();
     ccuBreakdownFactory.broadcast(ccuBreakdownReport);
-    var allowMultipleSync = true;
-     expect(syncService.syncUpRecord).toHaveBeenCalledWith(storageService.CCU_BREAKDOWN, ccuBreakdownReport, allowMultipleSync);
+     expect(syncService.syncUpRecord).toHaveBeenCalledWith(storageService.CCU_BREAKDOWN, ccuBreakdownReport);
   });
 
 });
