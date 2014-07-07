@@ -162,5 +162,18 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
       });
   };
 
-  
+  //analytics syncing bit
+  this.syncOfflineAnalytics = function(){
+      var deferred = $q.defer();
+      syncService.canConnect()
+        .then(function () {
+
+           analyticsSyncService.syncClicks();
+           analyticsSyncService.syncExceptions();
+           analyticsSyncService.syncPageViews();
+        }).catch(function (reason) {
+          deferred.reject(reason);
+        });
+        return deferred.promise;
+  };
 });

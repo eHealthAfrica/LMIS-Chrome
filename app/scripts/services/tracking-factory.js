@@ -5,7 +5,7 @@
 //need to design the priority queue bit based on the storage capacity restriction on the local storage and introduce a table for the lost records count
 
 angular.module('lmisChromeApp')
-        .factory('trackingFactory', function($q, $window, $rootScope, config, utility, deviceInfoFactory, storageService, pouchStorageService) {
+        .factory('trackingFactory', function($q, $window, $rootScope, config, utility, syncService, storageService) {
 
             var tracker;
 
@@ -18,37 +18,6 @@ angular.module('lmisChromeApp')
                 tracker = service.getTracker(config.analytics.propertyID);
             }
 
-            var updateLostRecords = function(table, localObject, removed, event, size) {
-                //table data object
-                var newObject;
-
-                if (size === 0) {
-                    newObject = {
-                        clicks: 0,
-                        exceptions: 0,
-                        pages: 0
-                    };
-                    return storageService.save(table, newObject)
-                } else {
-                    newObject = {
-                        clicks: localObject.clicks,
-                        exceptions: localObject.exceptions,
-                        pages: localObject.pages
-                    };
-                }
-                if (event === 0)
-                    newObject.clicks += removed;
-                if (event === 1)
-                    newObject.pages += removed;
-                if (event === 2)
-                    newObject.exceptions += removed;
-
-                storageService.compact(table)
-                return storageService.removeRecord(table, localObject.uuid).then(function() {
-                    storageService.save(table, newObject)
-                });
-            }
-
             var removeExcessRecords = function(table, limit) {
 
                 var uuids = [];
@@ -57,33 +26,33 @@ angular.module('lmisChromeApp')
                 var deferred = $q.defer();
 
                 storageService.all(table).then(function(tableData) {
+
                     tableData.forEach(function(data) {
+
                         var count = JSON.stringify(data).length;
                         uuids.push(data.uuid);
                         sizes.push(count);
+
                     });
+
                 }).catch(function(reason) {
-                    //cathc exception
+
                 }).then(function() {
                     var total = 0;
                     for (var i = 0; i < uuids.length; i++) {
+
                         if (total > limit) {
-                            toDelete.push(uuids[i]);
+                            toDelete.push(uuids[i])
                         } else {
                             total += sizes[i];
                         }
                     }
                     storageService.removeRecords(table, toDelete);
                     deferred.resolve(toDelete.length);
-                });
-                pouchStorageService.compact(table);
-                return deferred.promise;
-            };
 
 
             var event = function(category, action, label) {
 
-                deviceInfoFactory.canConnect()
                         .then(function() {
                             tracker.sendEvent(category, action, label);
                         })
@@ -94,50 +63,41 @@ angular.module('lmisChromeApp')
                             };
                             storageService.save(storageService.CLICKS, _event);
                             removeExcessRecords(storageService.CLICKS, events_limit).then(function(removed) {
-                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
-                                    updateLostRecords(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0], removed, 0, lostRecords.length);
-                                });
-
-                            });
-                        });
-            };
-
-            var appView = function(page) {
-                deviceInfoFactory.canConnect()
+                })
+                return deferred.promise;
+            }
                         .then(function() {
                             tracker.sendAppView(page);
                         })
                         .catch(function(reason) {
-                            var _pageview = {
-                                page: page
-                            };
-                            storageService.save(storageService.PAGEVIEWS, _pageview);
-                            removeExcessRecords(storageService.PAGEVIEWS, pages_limit).then(function(removed) {
-                                storageService.get(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
-                                    updateLostRecords(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0], removed, 1, lostRecords.length);
-                                });
-
-                            });
-                        });
-            };
-
-            var exception = function(opt_description, opt_fatal) {
-                deviceInfoFactory.canConnect()
+                syncService.canConnect()
                         .then(function() {
                             tracker.sendException(opt_description, opt_fatal);
                         })
                         .catch(function(reason) {
+//                            console.log("offline click : " + category + ": " + action + ": " + label + " reason: " + reason);
                             var _exception = {
                                 opt_description: opt_description,
                                 opt_fatal: opt_fatal
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
                             removeExcessRecords(storageService.EXCEPTIONS, exceptions_limit).then(function(removed) {
-                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
-                                    updateLostRecords(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0], removed, 2, lostRecords.length);
-                                });
+//                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
+//                                    lostRecords[0].events += removed;
+////                                    console.log("lrs: "+ lostRecords[0].events)
+//                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
+//                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
+
+//                                });
+
                             });
-                        });
+                        }
+                        );
+            };
+
+
+            var appView = function(page) {
+                syncService.canConnect()
             };
 
             $rootScope.$on('$stateChangeSuccess', function(state) {
@@ -155,4 +115,24 @@ angular.module('lmisChromeApp')
                 postException: exception
 
             };
-        });
+//                            console.log("offline page: " + page);
+                            var _pageview = {
+                                page: page
+                            };
+                            storageService.save(storageService.PAGE_VIEWS, _pageview);
+                            removeExcessRecords(storageService.PAGE_VIEWS, pages_limit).then(function(removed) {
+//                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
+//                                    lostRecords[0].pages += removed;
+//                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
+//                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
+
+//                                });
+
+                            });
+                        });
+
+            };
+
+            var exception = function(opt_description, opt_fatal) {
+
+                syncService.canConnect()
