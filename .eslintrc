@@ -53,5 +53,8 @@ rules:
   no-eq-null: 2
   no-floating-decimal: 2
   radix: 2
+  no-unused-vars:
+    - 2
+    - {vars: all, args: all}
   # Custom rules
   no-exclusive-tests: 2
