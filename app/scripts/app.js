@@ -29,7 +29,7 @@ angular.module('lmisChromeApp', [
       appConfigService.getCurrentAppConfig()
         .then(function(cfg) {
           if (angular.isObject(cfg) && !angular.isArray(cfg)) {
-            navigateToHome();
+            $state.go('home.index.home.mainActivity');
           } else {
             $state.go('appConfigWelcome');
           }

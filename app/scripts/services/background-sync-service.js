@@ -87,6 +87,7 @@ angular.module('lmisChromeApp')
      *  1. updates local copy of remote fixture from remote db,
      *  2. updates local copy of app config.
      *  3. sync up pending syncs.
+     *  4. runs database compactions.
      *  returns True when an attempt has been made to perform all the steps stated above..
      *
      * @returns {*|Promise}
@@ -106,7 +107,10 @@ angular.module('lmisChromeApp')
               return updateAppConfigFromRemote()
                 .then(function() {
                   growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: -1 });
-                  return syncPendingRecords();
+                  return syncPendingRecords()
+                    .finally(function(){
+                      return storageService.compactDatabases();
+                    });
                 });
             });
         })
