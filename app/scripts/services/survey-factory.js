@@ -113,7 +113,7 @@ angular.module('lmisChromeApp')
                 deferred.resolve(result);
                 if (typeof result !== 'undefined') {
                   surveyResponse.uuid = result;
-                  syncService.syncItem(storageService.SURVEY_RESPONSE, surveyResponse)
+                  syncService.syncUpRecord(storageService.SURVEY_RESPONSE, surveyResponse)
                       .then(function (result) {
                         console.log('survey response sync result ' +result);
                       }, function (reason) {
