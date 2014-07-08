@@ -664,5 +664,8 @@
   },
   "stockCountSavingFailed": {
     "message": "Stock count saving failed"
+  },
+  "getStockCountByDateError": {
+    "message": "Get stock count by date failed. contact support."
   }
 }
