@@ -45,7 +45,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state, mostRecentStockCount, isStockCountReminderDue){
+  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, growl, i18n, stockCountByDate, appConfig, $state, mostRecentStockCount, isStockCountReminderDue){
     $scope.stockCountsByCountDate = stockCountByDate;
     $scope.stockCountCountDates =  Object.keys($scope.stockCountsByCountDate).sort(function(dateOne, dateTwo){
       return new Date(dateOne) < new Date(dateTwo);//descending order
@@ -61,18 +61,18 @@ angular.module('lmisChromeApp')
       return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid === stockCount.uuid) && !isStockCountReminderDue;
     };
 
-    $scope.showStockCountFormByDate = function(date){
+    $scope.showStockCountFormByDate = function(date) {
       stockCountFactory.getStockCountByDate(date)
-          .then(function (stockCount) {
-            if (stockCount !== null) {
-              $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !$scope.isEditable(stockCount) });
-            } else {
-              $state.go('stockCountForm', {countDate: date});
-            }
-          })
-          .catch(function () {
-            //TODO: decide what happens if for any reason, retrieving stock count fails.
-          });
+        .then(function(stockCount) {
+          if (stockCount !== null) {
+            $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !$scope.isEditable(stockCount) });
+          } else {
+            $state.go('stockCountForm', {countDate: date});
+          }
+        })
+        .catch(function() {
+          growl.error(i18n('getStockCountByDateError'));
+        });
     };
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
