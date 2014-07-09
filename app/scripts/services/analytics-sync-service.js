@@ -34,9 +34,7 @@ angular.module('lmisChromeApp')
           });
         })
         .then(function() {
-            if (uuids){
           storageService.removeRecords(storageService.EXCEPTIONS, uuids);
-            }
         })
         .finally(function() {
           console.log('pending excepts list cleared');
