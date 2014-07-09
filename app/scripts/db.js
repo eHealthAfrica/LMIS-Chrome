@@ -4,9 +4,7 @@ angular.module('db', [])
 
 .constant('collections', {
 	ADDRESS: 'address',
-	ANALYTICS_LOST_CLICKS: 'analytics_lost_clicks',
-        ANALYTICS_LOST_EXCEPTIONS: 'analytics_lost_exceptions',
-        ANALYTICS_LOST_PAGEVIEWS: 'analytics_lost_pageviews',
+	ANALYTICS_LOST_RECORDS: 'analytics_lost_records',
 	APP_FACILITY_PROFILE: 'app_facility_profile',
 	BATCHES: 'batches',
 	BUNDLE: 'bundle',
