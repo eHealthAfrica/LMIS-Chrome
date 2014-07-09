@@ -40,10 +40,17 @@ angular.module('lmisChromeApp')
   })
   .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state, mostRecentStockCount){
     $scope.stockCountsByCountDate = stockCountByDate;
-    $scope.stockCountCountDates =  Object.keys($scope.stockCountsByCountDate).reverse();
+    $scope.stockCountCountDates =  Object.keys($scope.stockCountsByCountDate).sort(function(dateOne, dateTwo){
+      return new Date(dateOne) < new Date(dateTwo);//descending order
+    });
 
+    /**
+     *
+     * @param {Object} stockCount
+     * @returns {Boolean}
+     */
    $scope.isEditable = function(stockCount){
-     return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid=== stockCount.uuid);
+     return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid === stockCount.uuid);
    };
 
     $scope.showStockCountFormByDate = function(date){
