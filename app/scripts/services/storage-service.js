@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('storageService', function ($q, $rootScope, $http, $window, utility, collections, pouchStorageService) {
+    .factory('storageService', function ($q, $window, utility, collections, pouchStorageService) {
 
       /**
        *  Global variables used to define table names, with this there will be one
@@ -221,6 +221,24 @@ angular.module('lmisChromeApp')
         return pouchStorageService.bulkDocs(table, data);
       };
 
+    var compactDatabases = function() {
+      var dbNames = FIXTURE_NAMES;
+      var localDbs = [
+        stockCount,
+        discardCount,
+        appConfig,
+        ccuBreakdown,
+        pendingSyncs
+      ];
+      dbNames.concat(localDbs);
+      var promises = [];
+      for (var i in dbNames) {
+        var dbName = dbNames[i];
+        promises.push(pouchStorageService.compact(dbName))
+      }
+      return $q.all(promises);
+    };
+
       var api = {
         all: getAllFromTable,
         add: setData,
@@ -233,6 +251,7 @@ angular.module('lmisChromeApp')
         update: updateData,
         save: saveData,
         setDatabase: setDatabase,
+        compactDatabases: compactDatabases,
         where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,

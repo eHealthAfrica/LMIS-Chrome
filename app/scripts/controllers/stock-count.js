@@ -19,6 +19,13 @@ angular.module('lmisChromeApp')
           },
           mostRecentStockCount: function(stockCountFactory){
             return stockCountFactory.getMostRecentStockCount();
+          },
+          isStockCountReminderDue: function(stockCountFactory, appConfig, $q) {
+            if (angular.isObject(appConfig)) {
+              return stockCountFactory.isStockCountDue(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+            } else {
+              return $q.when(false);
+            }
           }
         },
         controller: 'StockCountHomeCtrl'
@@ -38,33 +45,34 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, stockCountByDate, appConfig, $state, mostRecentStockCount){
+  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, growl, i18n, stockCountByDate, appConfig, $state, mostRecentStockCount, isStockCountReminderDue){
     $scope.stockCountsByCountDate = stockCountByDate;
     $scope.stockCountCountDates =  Object.keys($scope.stockCountsByCountDate).sort(function(dateOne, dateTwo){
       return new Date(dateOne) < new Date(dateTwo);//descending order
     });
 
     /**
+     *  stock count is editable if it is most recent and next stock count is not yet due.
      *
      * @param {Object} stockCount
      * @returns {Boolean}
      */
-   $scope.isEditable = function(stockCount){
-     return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid === stockCount.uuid);
-   };
+    $scope.isEditable = function(stockCount) {
+      return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid === stockCount.uuid) && !isStockCountReminderDue;
+    };
 
-    $scope.showStockCountFormByDate = function(date){
+    $scope.showStockCountFormByDate = function(date) {
       stockCountFactory.getStockCountByDate(date)
-          .then(function (stockCount) {
-            if (stockCount !== null) {
-              $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !$scope.isEditable(stockCount) });
-            } else {
-              $state.go('stockCountForm', {countDate: date});
-            }
-          })
-          .catch(function () {
-            //TODO: decide what happens if for any reason, retrieving stock count fails.
-          });
+        .then(function(stockCount) {
+          if (stockCount !== null) {
+            $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !$scope.isEditable(stockCount) });
+          } else {
+            $state.go('stockCountForm', {countDate: date});
+          }
+        })
+        .catch(function() {
+          growl.error(i18n('getStockCountByDateError'));
+        });
     };
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
@@ -153,7 +161,7 @@ angular.module('lmisChromeApp')
        *
        * 2. redirect has to wait for app to finish syncing - success/fail
        */
-      return syncService.syncItem(db, $scope.stockCount)
+      return syncService.syncUpRecord(db, $scope.stockCount)
         .catch(function(reason) {
           $log.error(reason);
         })

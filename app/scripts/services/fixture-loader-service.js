@@ -112,7 +112,7 @@ angular.module('lmisChromeApp')
       var promises = [];
       for (var key in batch) {
         var record = batch[key];
-        promises.push(syncService.syncItem(dbName, record, true));
+        promises.push(syncService.syncUpRecord(dbName, record, true));
       }
       return $q.all(promises);
     };
@@ -186,6 +186,21 @@ angular.module('lmisChromeApp')
         });
     };
 
+    var loadRemoteAndUpdateStorageAndMemory = function(dbNames) {
+      return loadDatabasesFromRemote(dbNames)
+        .then(function(result) {
+          return saveDatabasesToLocalStorage(result)
+            .then(function(res) {
+              loadDatabasesIntoMemoryStorage(result);
+              return res;
+            });
+        });
+    };
+
+    this.loadRemoteAndUpdateStorageAndMemory = function(dbNames){
+      return loadRemoteAndUpdateStorageAndMemory(dbNames);
+    };
+
     /**
      *  This function does the following:
      *  1. loads databases from remote.
@@ -197,14 +212,9 @@ angular.module('lmisChromeApp')
      */
     this.setupLocalAndMemoryStore = function(dbNames) {
       $rootScope.$emit('START_LOADING', {started: true});
-      return loadDatabasesFromRemote(dbNames)
-        .then(function(result) {
-          return saveDatabasesToLocalStorage(result)
-            .then(function(res) {
-              loadDatabasesIntoMemoryStorage(result);
-              $rootScope.$emit('LOADING_COMPLETED', {completed: true});
-              return res;
-            });
+      return loadRemoteAndUpdateStorageAndMemory(dbNames)
+        .finally(function(){
+          $rootScope.$emit('LOADING_COMPLETED', {completed: true});
         });
     };
 

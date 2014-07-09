@@ -16,15 +16,14 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
 
   /**
    * This function tries to sync stock-out alert if it fails, it sends sms alert.
-   * NB: syncItem updates pending sync record if sync fails #see syncService.syncItem for more detail.
+   * NB: syncUpRecord updates pending sync record if sync fails #see syncService.syncUpRecord for more detail.
    *
    * @param stockOut
    * @returns {promise|Function|promise|promise|promise|*}
    */
   var broadcastStockOut = function (stockOut) {
     var deferred = $q.defer();
-    var allowMultipleSync = true;
-    syncService.syncItem(storageService.STOCK_OUT, stockOut, allowMultipleSync).
+    syncService.syncUpRecord(storageService.STOCK_OUT, stockOut).
         then(function (result) {
           deferred.resolve(result);
         })
