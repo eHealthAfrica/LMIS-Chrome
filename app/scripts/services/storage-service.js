@@ -293,8 +293,7 @@ angular.module('lmisChromeApp')
         PENDING_SYNCS: pendingSyncs,
         STOCK_COUNT: stockCount,
         SURVEY_RESPONSE: surveyResponse,
-        FIXTURE_NAMES: FIXTURE_NAMES,
-        ANALYTICS_LOST_RECORDS: analyticsLostRecords
+        FIXTURE_NAMES: FIXTURE_NAMES
       };
 
       return angular.extend(api, collections);
