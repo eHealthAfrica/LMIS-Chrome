@@ -16,7 +16,7 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
             });
         }).then(function() {
             if (uuids)
-                storageService.removeRecords(storageService.CLICKS, uuids);
+                storageService.removeRecord(storageService.CLICKS, uuids);
         }).finally(function() {
             console.log("pending clicks list cleared ");
             });
