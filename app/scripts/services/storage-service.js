@@ -17,7 +17,6 @@ angular.module('lmisChromeApp')
       var surveyResponse = 'survey_response';
       var ccuBreakdown = 'ccu_breakdown';
       var pendingSyncs = 'pending_syncs';
-
       var FIXTURE_NAMES = utility.values(collections);
 
       /**
