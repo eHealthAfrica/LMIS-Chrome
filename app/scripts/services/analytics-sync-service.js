@@ -34,7 +34,9 @@ angular.module('lmisChromeApp')
           });
         })
         .then(function() {
+            if (uuids){
           storageService.removeRecords(storageService.EXCEPTIONS, uuids);
+            }
         })
         .finally(function() {
           console.log('pending excepts list cleared');
@@ -44,7 +46,7 @@ angular.module('lmisChromeApp')
     //not final yet. Work in progress
     this.syncPageViews = function() {
       var uuids = [];
-      storageService.all(storageService.PAGE_VIEWS)
+      storageService.all(storageService.PAGEVIEWS)
         .then(function(pageViewData) {
           pageViewData.forEach(function(pageView) {
             tracker.sendAppView(pageView.page);
@@ -52,11 +54,8 @@ angular.module('lmisChromeApp')
           });
         })
         .then(function() {
-          storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
-        })
-        .then(function() {
           if (uuids) {
-            storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
+            storageService.removeRecords(storageService.PAGEVIEWS, uuids);
           }
         })
         .finally(function() {
