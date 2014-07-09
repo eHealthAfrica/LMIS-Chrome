@@ -36,7 +36,8 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
 
             })
         }).then(function() {
-            storageService.removeRecords(storageService.EXCEPTIONS, uuids);
+            if (uuids)
+                storageService.removeRecords(storageService.EXCEPTIONS, uuids);
         }).finally(function() {
             console.log("pending excepts list cleared");
     });
@@ -52,8 +53,6 @@ angular.module('lmisChromeApp').service('analyticsSyncService', function($q, sto
                 tracker.sendAppView(pageView.page);
                 uuids.push(pageView.uuid);
             });
-        }).then(function() {
-            storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
         }).then(function() {
             if (uuids)
                 storageService.removeRecords(storageService.PAGE_VIEWS, uuids);
