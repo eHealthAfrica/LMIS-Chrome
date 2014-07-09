@@ -1,31 +1,22 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-        .factory('storageService', function($q, $rootScope, $http, $window, utility, collections, pouchStorageService) {
+    .factory('storageService', function ($q, $window, utility, collections, pouchStorageService) {
 
-            /**
-             *  Global variables used to define table names, with this there will be one
-             *  point in the code to add and/or update local storage table names.
-             *
-             *  table names are matched to the corresponding json file at fixtures
-             *  folder that holds data used to pre-fill local storage if it is empty.
-             *
-             */
-            var stockCount = 'stockcount';
-            var discardCount = 'discard_count';
-            var appConfig = 'app_config';
-            var surveyResponse = 'survey_response';
-            var ccuBreakdown = 'ccu_breakdown';
-            var pendingSyncs = 'pending_syncs';
-//            var pageViews = 'pageviews';
-            var FIXTURE_NAMES = utility.values(collections);
-
-      //analytics
-      var pageviews = 'pageviews';
-      var clicks = 'clicks';
-      var exceptions = 'exceptions';
-      var analyticsLostRecords = 'analytics_lost_records';
-
+      /**
+       *  Global variables used to define table names, with this there will be one
+       *  point in the code to add and/or update local storage table names.
+       *
+       *  table names are matched to the corresponding json file at fixtures
+       *  folder that holds data used to pre-fill local storage if it is empty.
+       *
+       */
+      var stockCount = 'stockcount';
+      var discardCount = 'discard_count';
+      var appConfig = 'app_config';
+      var surveyResponse = 'survey_response';
+      var ccuBreakdown = 'ccu_breakdown';
+      var pendingSyncs = 'pending_syncs';
       var FIXTURE_NAMES = utility.values(collections);
 
             var getData = function(key) {
@@ -247,8 +238,7 @@ angular.module('lmisChromeApp')
         PENDING_SYNCS: pendingSyncs,
         STOCK_COUNT: stockCount,
         SURVEY_RESPONSE: surveyResponse,
-        FIXTURE_NAMES: FIXTURE_NAMES,
-        ANALYTICS_LOST_RECORDS: analyticsLostRecords
+        FIXTURE_NAMES: FIXTURE_NAMES
       };
 
             return angular.extend(api, collections);
