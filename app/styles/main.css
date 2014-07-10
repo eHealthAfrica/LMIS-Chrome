@@ -255,3 +255,9 @@ tr.disabled, tr.disabled span.text-info{
   width: 90%;
   max-width: 400px;
 }
+.padded-label{
+    padding: 10px 15px;
+}
+.no-padding{
+    padding: 0px;
+}

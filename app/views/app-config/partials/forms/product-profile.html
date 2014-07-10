@@ -14,10 +14,10 @@
             <h4 class="panel-title">{{ (productProfilesGroupedByCategory[ppCategory].category).name }}</h4>
           </div>
         </div>
-        <div ng-class="{
+        <div class="no-padding" ng-class="{
           'highlight-selected-item': preSelectProductProfileCheckBox[productProfile.uuid], 'list-group-item': true }"
                 ng-repeat="productProfile in productProfilesGroupedByCategory[ppCategory].productProfiles | filter:search track by productProfile.uuid">
-          <label>
+          <label class="new-line padded-label pointer">
             <input type="checkbox" ng-model="productProfileCheckBoxes[productProfile.uuid]"
                    ng-true-value="{{ productProfile }}"
                    ng-false-value="{{ {'uuid': productProfile.uuid, deSelected: true} }}"
