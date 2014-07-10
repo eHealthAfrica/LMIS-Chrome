@@ -15,7 +15,7 @@ info "Performing $type build"
 [[ "$TRAVIS_TAG" ]] && grunt build:release || grunt build
 
 info "Building Mobile Chrome App"
-have "cca" || npm install -g cca@0.1.0
+have "cca" || npm install -g cca@0.1.1
 have "android" || error "Android SDK required"
 
 [[ -d "$build/$app" ]] && rm -rf "$build/$app"
@@ -38,11 +38,11 @@ if [[ "$TRAVIS_TAG" ]]; then
   echo -e "Host $eha\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   scp -r travisci@$eha:android-keystore/\* "$android"
   cca build --release
-  apk="$android/ant-build/LoMIS-release.apk"
+  apk="$android/bin/LoMIS-release.apk"
   out="$releases/$app-$TRAVIS_TAG.apk"
 else
   cca build
-  apk="$android/ant-build/LoMIS-debug.apk"
+  apk="$android/bin/LoMIS-debug.apk"
   now="$(date -u +"%Y%m%d%H%M%S")"
   out="$snapshots/$app-$now.apk"
 fi
