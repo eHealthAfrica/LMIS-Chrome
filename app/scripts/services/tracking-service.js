@@ -29,10 +29,9 @@ angular.module('lmisChromeApp')
     if (utility.has($window, 'analytics')) {
       var service = $window.analytics.getService(config.analytics.service);
       tracker = service.getTracker(config.analytics.propertyID);
-
+      registerListeners();
       appConfigService.getCurrentAppConfig()
-        .then(setUUID)
-        .then(registerListeners);
+        .then(setUUID);
     }
 
     this.tracker = tracker;
