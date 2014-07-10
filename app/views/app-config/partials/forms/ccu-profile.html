@@ -16,7 +16,7 @@
         </div>
         <div ng-repeat="ccuProfile in ccuProfilesGroupedByCategory[ccuCategory] | filter:search" ng-class="{
           'highlight-selected-item': preSelectCcuProfiles[ccuProfile.dhis2_modelid], 'list-group-item': true }">
-          <label>
+          <label class="new-line">
             <input type="checkbox" ng-model="ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]"
                    ng-true-value="{{ ccuProfile }}"
                    ng-false-value="{{ {'dhis2_modelid': ccuProfile.dhis2_modelid, deSelected: true} }}"

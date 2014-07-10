@@ -17,7 +17,7 @@
         <div ng-class="{
           'highlight-selected-item': preSelectProductProfileCheckBox[productProfile.uuid], 'list-group-item': true }"
                 ng-repeat="productProfile in productProfilesGroupedByCategory[ppCategory].productProfiles | filter:search track by productProfile.uuid">
-          <label>
+          <label class="new-line">
             <input type="checkbox" ng-model="productProfileCheckBoxes[productProfile.uuid]"
                    ng-true-value="{{ productProfile }}"
                    ng-false-value="{{ {'uuid': productProfile.uuid, deSelected: true} }}"
