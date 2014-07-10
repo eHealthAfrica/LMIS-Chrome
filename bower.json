@@ -13,7 +13,7 @@
     "angularjs-nvd3-directives": "~0.0.7",
     "angular-growl-v2": "~0.6.1",
     "angular-animate": "~1.2.17",
-    "chrome-platform-analytics": "https://github.com/thanasio/chrome-platform-analytics.git#bower_analytics",
+    "chrome-platform-analytics": "GoogleChrome/chrome-platform-analytics#ea84600d1251fee9dd3fe274780f385d5d1c03f1",
     "pouchdb": "~2.2.3"
   },
   "devDependencies": {
