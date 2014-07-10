@@ -1,4 +1,5 @@
 {
   "packageId": "com.ehealthafrica.lomis",
-  "versionCode": 32
+  "versionCode": 32,
+  "webview": "system"
 }
