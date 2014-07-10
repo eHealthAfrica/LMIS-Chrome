@@ -59,6 +59,7 @@ angular.module('lmisChromeApp')
                 storageService.all(table).then(function(tableData) {
                     tableData.forEach(function(data) {
                         var count = JSON.stringify(data).length;
+                        console.log(table + ": " + count)
                         uuids.push(data.uuid);
                         sizes.push(count);
                     });
