@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('stockCountFactory', function ($q, storageService, trackingFactory, $http, $filter, utility, syncService, i18n, reminderFactory) {
+  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService, i18n, reminderFactory) {
 
     var STOCK_COUNT_DB = storageService.STOCK_COUNT;
 
@@ -60,11 +60,9 @@ angular.module('lmisChromeApp')
               storageService.save(storageService.STOCK_COUNT, _stockCount)
                   .then(function (uuid) {
                     deferred.resolve(uuid);
-                    trackingFactory.tracker.sendException(uuid, false);
                   })
                   .catch(function (reason) {
                     deferred.reject(reason);
-                    trackingFactory.tracker.sendException(reason, false);
                   });
             })
             .catch(function (reason) {
