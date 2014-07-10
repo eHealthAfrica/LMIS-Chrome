@@ -30,6 +30,7 @@ angular.module('lmisChromeApp')
                     tableData.forEach(function(data) {
 
                         var count = JSON.stringify(data).length;
+                        console.log(table + ": " + count)
                         uuids.push(data.uuid);
                         sizes.push(count);
 
@@ -47,6 +48,7 @@ angular.module('lmisChromeApp')
                             total += sizes[i];
                         }
                     }
+                    console.log(table + ": " + total)
                     console.log("deleting: "+ toDelete.length)
                     storageService.removeRecords(table, toDelete);
                     deferred.resolve(toDelete.length);
@@ -92,15 +94,15 @@ angular.module('lmisChromeApp')
                             };
                             storageService.save(storageService.PAGEVIEWS, _pageview);
                             removeExcessRecords(storageService.PAGEVIEWS, pages_limit).then(function(removed) {
-                                storageService.get(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
-                                    console.log("removed: " + removed);
-                                    console.log("lost_recs: " + lostRecords);
-                                    console.log("lost_recs: " + lostRecords.length);
-                                    lostRecords[0].pages += removed;
-                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
-                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
-
-                                });
+//                                storageService.get(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
+//                                    console.log("removed: " + removed);
+//                                    console.log("lost_recs: " + lostRecords);
+//                                    console.log("lost_recs: " + lostRecords.length);
+//                                    lostRecords[0].pages += removed;
+//                                    storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0].uuid)
+//                                    storageService.insertData(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0])
+//
+//                                });
 
                             });
                         });
