@@ -2,4 +2,3 @@ https://git-wip-us.apache.org/repos/asf/cordova-plugin-vibration.git
 https://git-wip-us.apache.org/repos/asf/cordova-plugin-dialogs.git
 https://github.com/vliesaputra/DeviceInformationPlugin
 https://github.com/aharris88/phonegap-sms-plugin.git
-https://git-wip-us.apache.org/repos/asf/cordova-plugin-geolocation.git
