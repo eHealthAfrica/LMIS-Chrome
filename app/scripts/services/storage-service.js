@@ -54,8 +54,21 @@ angular.module('lmisChromeApp')
       var removeRecordFromTable = function(tableName, uuid){
         return pouchStorageService.get(tableName, uuid)
           .then(function(doc) {
+              console.log("removing: " + tableName + ": " + uuid);
             return pouchStorageService.remove(tableName, uuid, doc._rev);
           });
+      };
+      
+      /**
+       * clears the records of corresponding ids (no synchronization probs)
+       * @param tableName the table name
+       * @param uuids the uuids list
+       */
+      var removeRecordsFromTable = function(tableName, uuids){
+          uuids.forEach(function(uuid){
+              removeRecordFromTable(tableName, uuid);
+          });
+
       };
 
       /**
@@ -219,6 +232,10 @@ angular.module('lmisChromeApp')
       var setDatabase = function(table, data) {
         return pouchStorageService.bulkDocs(table, data);
       };
+      
+      var compactDb = function(table){
+          return pouchStorageService.compact(table)
+      }
 
     var compactDatabases = function() {
       var dbNames = FIXTURE_NAMES;
@@ -243,6 +260,7 @@ angular.module('lmisChromeApp')
         add: setData,
         get: getData,
         removeRecord: removeRecordFromTable,
+        removeRecords: removeRecordsFromTable,
         remove: removeData,
         clear: clearStorage,
         uuid: utility.uuidGenerator,
@@ -251,6 +269,7 @@ angular.module('lmisChromeApp')
         save: saveData,
         setDatabase: setDatabase,
         compactDatabases: compactDatabases,
+        compact: compactDb,
         where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,
