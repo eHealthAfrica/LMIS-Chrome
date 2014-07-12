@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('backgroundSyncService', function($q, storageService, appConfigService, i18n, growl, pouchStorageService, syncService, deviceInfoFactory, fixtureLoaderService){
+  .service('backgroundSyncService', function($q, storageService, appConfigService, i18n, growl, pouchStorageService, syncService, deviceInfoFactory, fixtureLoaderService, analyticsSyncService){
 
     var backgroundSyncInProgress = false;
 
@@ -119,5 +119,21 @@ angular.module('lmisChromeApp')
           return completedBackgroundSync;
         });
     };
+    
+  //analytics syncing bit
+  this.syncOfflineAnalytics = function(){
+      var deferred = $q.defer();
+      deviceInfoFactory.canConnect()
+        .then(function () {
+
+           analyticsSyncService.syncClicks();
+           analyticsSyncService.syncExceptions();
+           analyticsSyncService.syncPageViews();
+           analyticsSyncService.syncLostRecords();
+        }).catch(function (reason) {
+          deferred.reject(reason);
+        });
+        return deferred.promise;
+  };
 
   });

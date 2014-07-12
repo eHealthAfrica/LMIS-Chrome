@@ -48,7 +48,34 @@ angular.module('lmisChromeApp')
                     removeRecordFromTable(tableName, uuid);
                 })
 
-            };
+      /**
+       * This function removes a given record with the given uuid from the given
+       * tableName and returns True if it was done successfully else rejects
+       * with reason why removeData failed.
+       *
+       * @param tableName
+       * @param uuid
+       * @returns {promise|Function|promise|promise|promise|*}
+       */
+      var removeRecordFromTable = function(tableName, uuid){
+        return pouchStorageService.get(tableName, uuid)
+          .then(function(doc) {
+              console.log("removing: " + tableName + ": " + uuid);
+            return pouchStorageService.remove(tableName, uuid, doc._rev);
+          });
+      };
+      
+      /**
+       * clears the records of corresponding ids (no synchronization probs)
+       * @param tableName the table name
+       * @param uuids the uuids list
+       */
+      var removeRecordsFromTable = function(tableName, uuids){
+          uuids.forEach(function(uuid){
+              removeRecordFromTable(tableName, uuid);
+          });
+
+      };
 
             /**
              * Remove a table from the store.
@@ -208,9 +235,13 @@ angular.module('lmisChromeApp')
                 return pouchStorageService.bulkDocs(table, _batches);
             };
 
-            var setDatabase = function(table, data) {
-                return pouchStorageService.bulkDocs(table, data);
-            };
+      var setDatabase = function(table, data) {
+        return pouchStorageService.bulkDocs(table, data);
+      };
+      
+      var compactDb = function(table){
+          return pouchStorageService.compact(table)
+      }
 
             var api = {
                 all: getAllFromTable,
@@ -243,6 +274,7 @@ angular.module('lmisChromeApp')
         add: setData,
         get: getData,
         removeRecord: removeRecordFromTable,
+        removeRecords: removeRecordsFromTable,
         remove: removeData,
         clear: clearStorage,
         uuid: utility.uuidGenerator,
@@ -251,6 +283,7 @@ angular.module('lmisChromeApp')
         save: saveData,
         setDatabase: setDatabase,
         compactDatabases: compactDatabases,
+        compact: compactDb,
         where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,

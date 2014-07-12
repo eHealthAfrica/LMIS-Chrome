@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .directive('gaClick', function(trackingService) {
+  .directive('gaClick', function(trackingFactory) {
     return {
       restrict: 'A',
       link: function(scope, element, attr) {
