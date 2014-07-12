@@ -3,6 +3,8 @@
 angular.module('lmisChromeApp')
   .service('analyticsSyncService', function($q, storageService, trackingFactory) {
     var tracker = trackingFactory.tracker;
+    
+    //syncs clicks events
     this.syncClicks = function() {
       var uuids = [];
       storageService.all(storageService.CLICKS)
@@ -13,8 +15,8 @@ angular.module('lmisChromeApp')
           });
         })
         .then(function() {
-          if (uuids) {
-            storageService.removeRecord(storageService.CLICKS, uuids);
+          if (uuids.length>0) {
+            storageService.removeRecords(storageService.CLICKS, uuids);
           }
         })
         .finally(function() {
@@ -22,7 +24,7 @@ angular.module('lmisChromeApp')
         });
     };
 
-    //not final yet. Work in progress
+    //syncs analytics exceptions
     this.syncExceptions = function() {
       var uuids = [];
       storageService.all(storageService.EXCEPTIONS)
@@ -34,7 +36,7 @@ angular.module('lmisChromeApp')
           });
         })
         .then(function() {
-            if (uuids){
+            if (uuids.length>0){
           storageService.removeRecords(storageService.EXCEPTIONS, uuids);
             }
         })
@@ -43,7 +45,7 @@ angular.module('lmisChromeApp')
         });
     };
 
-    //not final yet. Work in progress
+    //syncs analytics page views
     this.syncPageViews = function() {
       var uuids = [];
       storageService.all(storageService.PAGEVIEWS)
@@ -54,7 +56,7 @@ angular.module('lmisChromeApp')
           });
         })
         .then(function() {
-          if (uuids) {
+          if (uuids.length>0) {
             storageService.removeRecords(storageService.PAGEVIEWS, uuids);
           }
         })
@@ -63,4 +65,28 @@ angular.module('lmisChromeApp')
         });
 
     };
+    
+    //syncs analytics lost records
+    this.syncLostRecords = function() {
+      storageService.all(storageService.ANALYTICS_LOST_RECORDS)
+        .then(function(data) {
+            var obj = data[0];
+            var clicks = obj.clicks;
+            var exceptions = obj.exceptions;
+            var pages = obj.pages;
+
+            tracker.sendEvent("lost data","clicks", "",  clicks);
+            tracker.sendEvent("lost data","exceptions", "",  exceptions);
+            tracker.sendEvent("lost data","pages", "",  pages);
+            return obj;
+        })
+        .then(function(obj) {
+          storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, obj.uuid)
+        })
+        .finally(function() {
+          console.log('pending pages list cleared');
+        });
+
+    };
+    
   });
