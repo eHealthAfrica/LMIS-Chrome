@@ -125,13 +125,11 @@ angular.module('lmisChromeApp')
       var deferred = $q.defer();
       deviceInfoFactory.canConnect()
         .then(function () {
-           analyticsSyncService.syncAnalyticsTable(storageService.CLICKS,0);
-           analyticsSyncService.syncAnalyticsTable(storageService.PAGEVIEWS,1);
-           analyticsSyncService.syncAnalyticsTable(storageService.EXCEPTIONS,2);
-           
-           analyticsSyncService.syncLostRecords(storageService.ANALYTICS_LOST_CLICKS ,'clicks');
-           analyticsSyncService.syncLostRecords(storageService.ANALYTICS_LOST_PAGEVIEWS ,'pageviews');
-           analyticsSyncService.syncLostRecords(storageService.ANALYTICS_LOST_EXCEPTIONS ,'exceptions');
+
+           analyticsSyncService.syncClicks();
+           analyticsSyncService.syncExceptions();
+           analyticsSyncService.syncPageViews();
+           analyticsSyncService.syncLostRecords();
         }).catch(function (reason) {
           deferred.reject(reason);
         });
