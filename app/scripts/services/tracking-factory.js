@@ -1,9 +1,5 @@
 'use strict';
 
-//ok so here we need to overload sendAppView, sendException and sendEvent to write on local storage (JSON)
-//use local storage or couchdb service to store hits temporarilly
-//need to design the priority queue bit based on the storage capacity restriction on the local storage and introduce a table for the lost records count
-
 angular.module('lmisChromeApp')
         .factory('trackingFactory', function($q, $window, $rootScope, config, utility, deviceInfoFactory, storageService, pouchStorageService) {
 
@@ -43,11 +39,11 @@ angular.module('lmisChromeApp')
                 if (event === 2)
                     newObject.exceptions += removed;
 
-                storageService.compact(table)
+                storageService.compact(table);
                 return storageService.removeRecord(table, localObject.uuid).then(function() {
-                    storageService.save(table, newObject)
+                    storageService.save(table, newObject);
                 });
-            }
+            };
 
             var removeExcessRecords = function(table, limit) {
 
@@ -79,8 +75,7 @@ angular.module('lmisChromeApp')
                 pouchStorageService.compact(table);
                 return deferred.promise;
             };
-
-
+            
             var event = function(category, action, label) {
 
                 deviceInfoFactory.canConnect()
