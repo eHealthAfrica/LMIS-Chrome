@@ -70,6 +70,8 @@ angular.module('lmisChromeApp')
     this.syncLostRecords = function() {
       storageService.all(storageService.ANALYTICS_LOST_RECORDS)
         .then(function(data) {
+          
+          if(data.length>0){
             var obj = data[0];
             var clicks = obj.clicks;
             var exceptions = obj.exceptions;
@@ -79,12 +81,15 @@ angular.module('lmisChromeApp')
             tracker.sendEvent("lost data","exceptions", "",  exceptions);
             tracker.sendEvent("lost data","pages", "",  pages);
             return obj;
+          }
+            
         })
         .then(function(obj) {
-          storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, obj.uuid)
+          if (obj)
+            storageService.removeRecord(storageService.ANALYTICS_LOST_RECORDS, obj.uuid);
         })
         .finally(function() {
-          console.log('pending pages list cleared');
+          console.log('pending lost analytics list cleared');
         });
 
     };
