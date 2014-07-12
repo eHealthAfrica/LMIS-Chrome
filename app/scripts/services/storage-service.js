@@ -54,7 +54,6 @@ angular.module('lmisChromeApp')
       var removeRecordFromTable = function(tableName, uuid){
         return pouchStorageService.get(tableName, uuid)
           .then(function(doc) {
-              console.log("removing: " + tableName + ": " + uuid);
             return pouchStorageService.remove(tableName, uuid, doc._rev);
           });
       };

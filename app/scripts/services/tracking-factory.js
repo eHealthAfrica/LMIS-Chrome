@@ -32,6 +32,9 @@ angular.module('lmisChromeApp')
                         pages: localObject.pages
                     };
                 }
+//                console.log("===================== code: " +event +" ==================================");
+//                console.log(table + ": " + localObject.uuid + ": " + newObject.pages);
+//                console.log("=======================================================");
                 if (event === 0)
                     newObject.clicks += removed;
                 if (event === 1)
@@ -40,6 +43,8 @@ angular.module('lmisChromeApp')
                     newObject.exceptions += removed;
 
                 storageService.compact(table);
+//                console.log(table + ": " + localObject.uuid + ": " + newObject.pages);
+//                console.log("=======================================================");
                 return storageService.removeRecord(table, localObject.uuid).then(function() {
                     storageService.save(table, newObject);
                 });
