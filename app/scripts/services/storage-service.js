@@ -77,6 +77,18 @@ angular.module('lmisChromeApp')
 
       };
 
+      /**
+       * clears the records of corresponding ids (no synchronization probs)
+       * @param tableName the table name
+       * @param uuids the uuids list
+       */
+      var removeRecordsFromTable = function(tableName, uuids){
+          uuids.forEach(function(uuid){
+              removeRecordFromTable(tableName, uuid);
+          });
+
+      };
+
             /**
              * Remove a table from the store.
              *
@@ -241,6 +253,22 @@ angular.module('lmisChromeApp')
       
       var compactDb = function(table){
           return pouchStorageService.compact(table)
+      }
+
+    var compactDatabases = function() {
+      var dbNames = FIXTURE_NAMES;
+      var localDbs = [
+        stockCount,
+        discardCount,
+        appConfig,
+        ccuBreakdown,
+        pendingSyncs
+      ];
+      dbNames.concat(localDbs);
+      var promises = [];
+      for (var i in dbNames) {
+        var dbName = dbNames[i];
+        promises.push(pouchStorageService.compact(dbName))
       }
 
             var api = {
