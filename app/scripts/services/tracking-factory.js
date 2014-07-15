@@ -35,15 +35,18 @@ angular.module('lmisChromeApp')
                 //table data object
                 var newObject = (size === 0) ? {records: 0} : {records: localObject.records};
 
+//                if(size !==0){
 //                console.log("===================== table: " + table + " ==================================");
 //                console.log(localObject.uuid + ": " + newObject.records + "::" + localObject.records);
 //                console.log("=======================updated================================");
-
+//                }
                 newObject.records += removed;
                 storageService.compact(table);
 
+//                if(size !==0){
 //                console.log(localObject.uuid + ": " + newObject.records + "::" + localObject.records);
 //                console.log("=======================end================================");
+//            }
                 return (size === 0) ? storageService.save(table, newObject) : storageService.removeRecord(table, localObject.uuid).then(function() {
                     storageService.save(table, newObject);
                 });
