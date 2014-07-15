@@ -7,7 +7,7 @@ angular.module('lmisChromeApp')
         parent: 'root.index',
         url: '/clear-storage',
         controller: 'ClearStorage'
-      })
+      });
   })
   .controller('ClearStorage', function($scope, storageService, $state, backgroundSyncService, cacheService, $q, alertFactory, notificationService, i18n, memoryStorageService, fixtureLoaderService, growl) {
     $scope.clearAndLoadFixture = function() {

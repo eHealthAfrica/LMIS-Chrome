@@ -46,7 +46,7 @@ angular.module('lmisChromeApp')
           innerDeferred.resolve(true);//completed
         }
         return innerDeferred.promise;
-      };
+      }
       //load pending syncs and attempt to sync all of them.
       return storageService.all(storageService.PENDING_SYNCS)
         .then(function(pendingSyncs) {
@@ -80,7 +80,7 @@ angular.module('lmisChromeApp')
           } else {
             return 'app config is not an object.';
           }
-        })
+        });
     };
 
     /**
