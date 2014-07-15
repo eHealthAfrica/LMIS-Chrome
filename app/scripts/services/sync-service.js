@@ -25,10 +25,10 @@ angular.module('lmisChromeApp')
      */
     var syncUp = function(dbName, doc) {
       if (typeof doc.uuid !== 'string') {
-        throw 'document\'s uuid is not a string.';
+        throw new Error('document\'s uuid is not a string.');
       }
       if (typeof dbName !== 'string') {
-        throw 'database name is not a string.'
+        throw new Error('database name is not a string.');
       }
       doc.dateSynced = new Date().toJSON();//update sync date
       var db = pouchStorageService.getRemoteDB(dbName);
@@ -57,10 +57,10 @@ angular.module('lmisChromeApp')
 
     var addToPendingSyncList = function(pendingSync) {
       if (!angular.isString(pendingSync.dbName)) {
-        throw 'dbName is undefined or not a string';
+        throw new Error('dbName is undefined or not a string');
       }
       if (!angular.isString(pendingSync.uuid)) {
-        throw 'record.uuid is undefined or not a string.';
+        throw new Error('record.uuid is undefined or not a string.');
       }
       return storageService.save(storageService.PENDING_SYNCS, pendingSync);
     };
@@ -96,7 +96,7 @@ angular.module('lmisChromeApp')
 
     this.addSyncStatus = function(objList) {
       if (!angular.isArray(objList)) {
-        throw 'an array parameter is expected.';
+        throw new Error('an array parameter is expected.');
       }
       return objList.map(function(obj) {
         if (obj !== 'undefined') {
