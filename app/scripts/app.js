@@ -15,11 +15,7 @@ angular.module('lmisChromeApp', [
 
     function navigateToHome() {
       $state.go('home.index.home.mainActivity');
-      appConfigService.syncOfflineAnalytics().finally(function(){
-        console.log('offline reports send to ga server.');
-      });
-      //trigger background syncing on start up
-      appConfigService.updateAppConfigAndStartBackgroundSync()
+      backgroundSyncService.startBackgroundSync()
         .finally(function() {
           console.log('updateAppConfigAndStartBackgroundSync triggered on start up has been completed!');
         });
