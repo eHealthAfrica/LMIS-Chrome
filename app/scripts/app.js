@@ -84,9 +84,14 @@ angular.module('lmisChromeApp', [
       $log.error(err);
     }
 
-    pouchMigrationService.migrate()
-      .then(loadAppConfig)
-      .catch(migrationErrorHandler);
+    // TODO: see item:680
+    if (utility.has($window, 'chrome')) {
+      pouchMigrationService.migrate()
+        .then(loadAppConfig)
+        .catch(migrationErrorHandler);
+    } else {
+      loadAppConfig();
+    }
 
   })
   .config(function($compileProvider) {
