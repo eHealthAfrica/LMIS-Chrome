@@ -11,7 +11,7 @@ angular.module('lmisChromeApp', [
     'ngAnimate',
     'db'
   ])
-  .run(function(storageService, $rootScope, $state, $window, appConfigService, backgroundSyncService, fixtureLoaderService, growl, utility) {
+  .run(function(storageService, $rootScope, $state, $window, appConfigService, backgroundSyncService, fixtureLoaderService, growl, utility, pouchMigrationService, $log, i18n) {
 
     function navigateToHome() {
       $state.go('home.index.home.mainActivity');
@@ -50,8 +50,9 @@ angular.module('lmisChromeApp', [
       return;
     }
 
-    //TODO: figure out a better way of knowing if the app has been configured or not.
-    storageService.all(storageService.APP_CONFIG)
+    function loadAppConfig() {
+      //TODO: figure out a better way of knowing if the app has been configured or not.
+      storageService.all(storageService.APP_CONFIG)
       .then(function(res) {
         if (res.length > 0) {
           fixtureLoaderService.loadLocalDatabasesIntoMemory(fixtureLoaderService.REMOTE_FIXTURES)
@@ -75,6 +76,18 @@ angular.module('lmisChromeApp', [
         growl.error('loading of App. Config. failed, please contact support.', {ttl: -1});
         console.error(error);
       });
+    }
+
+    function migrationErrorHandler(err) {
+      var msg = i18n('migrationFailed');
+      growl.error(msg);
+      $log.error(err);
+    }
+
+    pouchMigrationService.migrate()
+      .then(loadAppConfig)
+      .catch(migrationErrorHandler);
+
   })
   .config(function($compileProvider) {
     // to bypass Chrome app CSP for images.
