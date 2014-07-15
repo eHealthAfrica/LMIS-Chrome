@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('backgroundSyncService', function($q, storageService, appConfigService, i18n, growl, pouchStorageService, syncService, deviceInfoFactory, fixtureLoaderService){
+  .service('backgroundSyncService', function($q, storageService, appConfigService, i18n, growl, pouchStorageService, syncService, deviceInfoFactory, fixtureLoaderService, $timeout){
 
     var backgroundSyncInProgress = false;
+    var sync;
 
     /**
      * @private
@@ -77,7 +78,7 @@ angular.module('lmisChromeApp')
                 return appConfigService.save(remoteAppConfig);
               });
           } else {
-            return 'app config is not an object.'
+            return 'app config is not an object.';
           }
         })
     };
@@ -99,25 +100,35 @@ angular.module('lmisChromeApp')
         deferred.reject('background sync in progress.');
         return deferred.promise;
       }
-      return deviceInfoFactory.canConnect()
-        .then(function() {
-          backgroundSyncInProgress = true;
-          return fixtureLoaderService.loadRemoteAndUpdateStorageAndMemory(fixtureLoaderService.REMOTE_FIXTURES)
-            .then(function() {
-              return updateAppConfigFromRemote()
-                .then(function() {
-                  growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: -1 });
-                  return syncPendingRecords()
-                    .finally(function(){
-                      return storageService.compactDatabases();
-                    });
-                });
-            });
-        })
-        .finally(function() {
-          backgroundSyncInProgress = false;
-          return completedBackgroundSync;
-        });
+
+      sync = $timeout(function() {
+        return deviceInfoFactory.canConnect()
+          .then(function() {
+            backgroundSyncInProgress = true;
+            return fixtureLoaderService.loadRemoteAndUpdateStorageAndMemory(fixtureLoaderService.REMOTE_FIXTURES)
+              .then(function() {
+                return updateAppConfigFromRemote()
+                  .then(function() {
+                    growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: -1 });
+                    return syncPendingRecords()
+                      .finally(function() {
+                        return storageService.compactDatabases();
+                      });
+                  });
+              });
+          })
+          .finally(function() {
+            backgroundSyncInProgress = false;
+            $timeout.cancel(sync);
+            return completedBackgroundSync;
+          });
+      }, 1);
+
+      return sync;
+    };
+
+    this.cancel = function(){
+      $timeout.cancel(sync);
     };
 
   });
