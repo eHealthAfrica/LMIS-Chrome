@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-        .factory('trackingFactory', function($q, $window, $rootScope, config, utility, deviceInfoFactory, storageService, pouchStorageService) {
+        .factory('trackingFactory', function($q, $window, $rootScope, config, utility, deviceInfoFactory, storageService, pouchStorageService, appConfigService) {
 
             var tracker;
 
@@ -9,43 +9,42 @@ angular.module('lmisChromeApp')
             var exceptions_limit = config.analytics.exceptions_limit;
             var pages_limit = config.analytics.pages_limit;
 
+            function setUUID(config) {
+                tracker.set('userId', config.uuid);
+            }
+
+            function registerListeners() {
+                $rootScope.$on('$stateChangeSuccess', function(event, state) {
+                    tracker.sendAppView(state.name);
+                });
+                $rootScope.$on('$stateNotFound', function(event, state) {
+                    tracker.sendException(state.to, false);
+                });
+            }
+
             if (utility.has($window, 'analytics')) {
                 var service = $window.analytics.getService(config.analytics.service);
                 tracker = service.getTracker(config.analytics.propertyID);
+                registerListeners();
+//                appConfigService.getCurrentAppConfig()
+//                        .then(setUUID);
             }
 
-            var updateLostRecords = function(table, localObject, removed, event, size) {
+
+            var updateLostRecords = function(table, localObject, removed, size) {
                 //table data object
-                var newObject;
+                var newObject = (size === 0) ? {records: 0} : {records: localObject.records};
 
-                if (size === 0) {
-                    newObject = {
-                        clicks: 0,
-                        exceptions: 0,
-                        pages: 0
-                    };
-                    return storageService.save(table, newObject)
-                } else {
-                    newObject = {
-                        clicks: localObject.clicks,
-                        exceptions: localObject.exceptions,
-                        pages: localObject.pages
-                    };
-                }
-//                console.log("===================== code: " +event +" ==================================");
-//                console.log(table + ": " + localObject.uuid + ": " + newObject.pages);
-//                console.log("=======================================================");
-                if (event === 0)
-                    newObject.clicks += removed;
-                if (event === 1)
-                    newObject.pages += removed;
-                if (event === 2)
-                    newObject.exceptions += removed;
+//                console.log("===================== table: " + table + " ==================================");
+//                console.log(localObject.uuid + ": " + newObject.records + "::" + localObject.records);
+//                console.log("=======================updated================================");
 
+                newObject.records += removed;
                 storageService.compact(table);
-//                console.log(table + ": " + localObject.uuid + ": " + newObject.pages);
-//                console.log("=======================================================");
-                return storageService.removeRecord(table, localObject.uuid).then(function() {
+
+//                console.log(localObject.uuid + ": " + newObject.records + "::" + localObject.records);
+//                console.log("=======================end================================");
+                return (size === 0) ? storageService.save(table, newObject) : storageService.removeRecord(table, localObject.uuid).then(function() {
                     storageService.save(table, newObject);
                 });
             };
@@ -80,7 +79,7 @@ angular.module('lmisChromeApp')
                 pouchStorageService.compact(table);
                 return deferred.promise;
             };
-            
+
             var event = function(category, action, label) {
 
                 deviceInfoFactory.canConnect()
@@ -94,9 +93,10 @@ angular.module('lmisChromeApp')
                             };
                             storageService.save(storageService.CLICKS, _event);
                             removeExcessRecords(storageService.CLICKS, events_limit).then(function(removed) {
-                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
-                                    updateLostRecords(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0], removed, 0, lostRecords.length);
-                                });
+                                if (removed > 0)
+                                    storageService.all(storageService.ANALYTICS_LOST_CLICKS).then(function(lostRecords) {
+                                        updateLostRecords(storageService.ANALYTICS_LOST_CLICKS, lostRecords[0], removed, lostRecords.length);
+                                    });
 
                             });
                         });
@@ -113,9 +113,10 @@ angular.module('lmisChromeApp')
                             };
                             storageService.save(storageService.PAGEVIEWS, _pageview);
                             removeExcessRecords(storageService.PAGEVIEWS, pages_limit).then(function(removed) {
-                                storageService.get(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
-                                    updateLostRecords(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0], removed, 1, lostRecords.length);
-                                });
+                                if (removed > 0)
+                                    storageService.get(storageService.ANALYTICS_LOST_PAGEVIEWS).then(function(lostRecords) {
+                                        updateLostRecords(storageService.ANALYTICS_LOST_PAGEVIEWS, lostRecords[0], removed, lostRecords.length);
+                                    });
 
                             });
                         });
@@ -133,9 +134,11 @@ angular.module('lmisChromeApp')
                             };
                             storageService.save(storageService.EXCEPTIONS, _exception);
                             removeExcessRecords(storageService.EXCEPTIONS, exceptions_limit).then(function(removed) {
-                                storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
-                                    updateLostRecords(storageService.ANALYTICS_LOST_RECORDS, lostRecords[0], removed, 2, lostRecords.length);
-                                });
+                                if (removed > 0)
+                                    storageService.all(storageService.ANALYTICS_LOST_EXCEPTIONS).then(function(lostRecords) {
+
+                                        updateLostRecords(storageService.ANALYTICS_LOST_EXCEPTIONS, lostRecords[0], removed, lostRecords.length);
+                                    });
                             });
                         });
             };

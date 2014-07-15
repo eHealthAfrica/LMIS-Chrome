@@ -5,8 +5,8 @@
 //need to design the priority queue bit based on the storage capacity restriction on the local storage and introduce a table for the lost records count
 
 angular.module('lmisChromeApp')
-  .service('trackingService', function trackingService($window, $rootScope, config, utility, appConfigService) {
-    var tracker = {
+  .service('trackingService', function trackingService($q, $window, $rootScope, config, utility, deviceInfoFactory, storageService, pouchStorageService, appConfigService) {
+    var tracker = { 
       sendAppView: function() {},
       sendException: function() {},
       sendEvent: function() {},
@@ -35,4 +35,5 @@ angular.module('lmisChromeApp')
     }
 
     this.tracker = tracker;
+    
   });
