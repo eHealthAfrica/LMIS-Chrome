@@ -60,9 +60,11 @@ angular.module('lmisChromeApp')
               storageService.save(storageService.STOCK_COUNT, _stockCount)
                   .then(function (uuid) {
                     deferred.resolve(uuid);
+                    trackingFactory.postException(uuid, false);
                   })
                   .catch(function (reason) {
                     deferred.reject(reason);
+                    trackingFactory.postException(reason, false);
                   });
             })
             .catch(function (reason) {

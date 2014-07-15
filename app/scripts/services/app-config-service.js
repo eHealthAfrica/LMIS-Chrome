@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').service('appConfigService', function($q, storageService, pouchdb, config, syncService, productProfileFactory, facilityFactory, utility, cacheService, $filter, reminderFactory, growl, i18n, $http, memoryStorageService) {
+angular.module('lmisChromeApp').service('appConfigService', function($q, storageService, pouchdb, config, syncService, productProfileFactory, deviceInfoFactory, utility,  $filter, reminderFactory, growl, i18n, $http, memoryStorageService) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   this.stockCountIntervals = [
@@ -162,4 +162,5 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
       });
   };
 
+  
 });

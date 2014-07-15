@@ -30,7 +30,14 @@ angular.module('lmisChromeApp')
                   };
                   $scope.$digest();
 
-                  //trigger background syncing
+                  //trigger analytics syncing
+                  backgroundSyncService.syncOfflineAnalytics()
+                    .finally(function() {
+                      console.log('analytics sync  triggered on device connection ' +
+                        'status change has been completed.');
+                    });
+                    
+                    //trigger analytics syncing
                   backgroundSyncService.startBackgroundSync()
                     .finally(function() {
                       console.log('updateAppConfigAndStartBackgroundSync  triggered on device connection ' +
