@@ -36,7 +36,6 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
         .then(function() {
           //update memory copy.
           memoryStorageService.put(storageService.APP_CONFIG, appConfigCopy);
-
           return appConfigCopy;
         });
     });
@@ -64,7 +63,7 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
       var key = keys[0];
       appConfig = appConfigDb[key];
     } else if (keys.length > 1) {
-      throw 'there should be only one app config on this device.';
+      throw new Error('there should be only one app config on this device.');
     }
     return appConfig;
   };
@@ -97,7 +96,7 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
       .then(function(data) {
         if (angular.isArray(data) && data.length > 0) {
           if (data.length > 1) {
-            throw 'there are more than one app config on this device.';
+            throw new Error('there are more than one app config on this device.');
           }
           appConfig = data[0];
           if (angular.isObject(appConfig)) {
@@ -130,7 +129,6 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
    *
    * */
   this.getProductTypes = function() {
-    var deferred = $q.defer();
     return getAppConfigFromMemoryOrStorage()
       .then(function(appConfig) {
         var facilityStockListProductTypes = [];
@@ -143,7 +141,7 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
               var productProfile = facilityProductProfiles[index];
               var productType = productProfile.product;
               if (!angular.isObject(productType)) {
-                throw 'product profile\'s  product type is not an object.' + productType;
+                throw new Error('product profile\'s  product type is not an object.' + productType);
               }
               var uuid = utility.getStringUuid(productType);
 
