@@ -500,12 +500,12 @@ module.exports = function(grunt) {
     var common = [
       'clean:dist',
       'wiredep',
-      'ngconstant:production',
       'chromeManifest:dist',
       'fixtures'
     ];
 
     var release = [
+      'ngconstant:production',
       'useminPrepare',
       'concurrent:dist',
       'autoprefixer',
@@ -521,6 +521,7 @@ module.exports = function(grunt) {
     ];
 
     var snapshot = [
+      'ngconstant:development',
       'autoprefixer',
       'copy:snapshot',
       'wiredepCopy:snapshot'
