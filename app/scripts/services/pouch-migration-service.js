@@ -2,8 +2,7 @@
 
 // TODO: remove. See item:751
 angular.module('lmisChromeApp')
-  .service('pouchMigrationService', function($q, $log, $window, growl, i18n, chromeStorageApi, storageService, utility) {
-    var versionNeedingMigration = '0.10.4';
+  .service('pouchMigrationService', function($q, $log, growl, i18n, chromeStorageApi, storageService, utility) {
     var migrationFlag = '_hasMigrated';
 
     function setMigratedFlag() {
@@ -18,15 +17,8 @@ angular.module('lmisChromeApp')
       });
     }
 
-    function isMigratable() {
-      var manifest = $window.chrome.runtime.getManifest();
-      return manifest.version === versionNeedingMigration;
-    }
-
     function isMigrationRequired(doc) {
-      if (!utility.has(doc, migrationFlag)) {
-        return isMigratable();
-      }
+      return !utility.has(doc, migrationFlag);
     }
 
     function migrationRequired() {
