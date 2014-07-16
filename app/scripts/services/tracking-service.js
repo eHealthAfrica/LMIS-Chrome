@@ -10,7 +10,10 @@ angular.module('lmisChromeApp')
     };
 
     function setUUID(config) {
-      tracker.set('userId', config.uuid);
+      // Workaround item:750
+      if (utility.has(config, 'uuid')) {
+        tracker.set('userId', config.uuid);
+      }
     }
 
     function registerListeners() {

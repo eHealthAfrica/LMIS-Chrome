@@ -221,20 +221,20 @@ angular.module('lmisChromeApp')
         return pouchStorageService.bulkDocs(table, data);
       };
 
+    // Union of fixtures and internal collections
+    var _collections = [
+      stockCount,
+      discardCount,
+      appConfig,
+      ccuBreakdown,
+      pendingSyncs
+    ].concat(FIXTURE_NAMES);
+
     var compactDatabases = function() {
-      var dbNames = FIXTURE_NAMES;
-      var localDbs = [
-        stockCount,
-        discardCount,
-        appConfig,
-        ccuBreakdown,
-        pendingSyncs
-      ];
-      dbNames.concat(localDbs);
       var promises = [];
-      for (var i in dbNames) {
-        var dbName = dbNames[i];
-        promises.push(pouchStorageService.compact(dbName))
+      for (var i in _collections) {
+        var dbName = _collections[i];
+        promises.push(pouchStorageService.compact(dbName));
       }
       return $q.all(promises);
     };
@@ -261,7 +261,9 @@ angular.module('lmisChromeApp')
         PENDING_SYNCS: pendingSyncs,
         STOCK_COUNT: stockCount,
         SURVEY_RESPONSE: surveyResponse,
-        FIXTURE_NAMES: FIXTURE_NAMES
+        FIXTURE_NAMES: FIXTURE_NAMES,
+        // TODO: remove, see item:751
+        _COLLECTIONS: _collections
       };
 
       return angular.extend(api, collections);
