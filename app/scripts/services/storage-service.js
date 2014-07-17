@@ -75,7 +75,12 @@ angular.module('lmisChromeApp')
        * @returns {*|boolean|!Promise|Promise}
        */
       var clearStorage = function() {
-        return pouchStorageService.clear();
+        var promises = [];
+        for(var i in _collections){
+          var dbName  = _collections[i];
+          promises.push(pouchStorageService.destroy(dbName));
+        }
+        return $q.all(promises);
       };
 
       /**
