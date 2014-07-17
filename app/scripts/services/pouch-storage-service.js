@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('pouchStorageService', function(pouchdb, idbService, utility, config, $q) {
+  .service('pouchStorageService', function(pouchdb, utility, config) {
     this.put = function(db, data) {
       db = pouchdb.create(db);
       return db.put(data, data.uuid);
