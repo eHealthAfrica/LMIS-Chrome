@@ -37,10 +37,31 @@ angular.module('lmisChromeApp')
       return utility.pick(collections, storageService._COLLECTIONS);
     }
 
+    function uuidToID(doc) {
+      if (!utility.has(doc, '_id')) {
+        if (utility.has(doc, 'uuid')) {
+          doc._id = doc.uuid;
+        } else {
+          throw new Error('Document does not have a UUID property');
+        }
+      }
+      return doc;
+    }
+
+    function batchUUIDToID(docs) {
+      var _docs = [];
+      docs.forEach(function(doc) {
+        doc = uuidToID(doc);
+        _docs.push(doc);
+      });
+      return _docs;
+    }
+
     function chromeToPouch(collections) {
       var promises = [];
       for (var table in collections) {
         var docs = utility.values(collections[table]);
+        docs = batchUUIDToID(docs);
         promises.push(storageService.setDatabase(table, docs));
       }
       return $q.all(promises);
