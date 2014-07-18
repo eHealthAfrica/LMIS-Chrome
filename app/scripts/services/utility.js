@@ -252,7 +252,7 @@ angular.module('lmisChromeApp')
     this.pick = function(obj, needles) {
       var picked = {};
       var haystack = Object.keys(obj);
-      var intersection = this.intersection(haystack, needles.sort());
+      var intersection = this.intersection(haystack.sort(), needles.sort());
       intersection.forEach(function(key) {
         picked[key] = obj[key];
       });
