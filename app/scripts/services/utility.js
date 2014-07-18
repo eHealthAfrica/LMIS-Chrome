@@ -251,9 +251,7 @@ angular.module('lmisChromeApp')
     // TODO: remove. See item:751
     this.pick = function(obj, needles) {
       var picked = {};
-      var haystack = Object.keys(obj);
-      var intersection = this.intersection(haystack, needles.sort());
-      intersection.forEach(function(key) {
+      needles.forEach(function(key) {
         picked[key] = obj[key];
       });
       return picked;

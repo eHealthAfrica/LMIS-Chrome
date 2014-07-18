@@ -6,6 +6,18 @@ angular.module('lmisChromeApp')
     $rootScope.memoryStore = {};
     var MEMORY_STORE = 'memory_store';
 
+    var initialize = function(dbName){
+      if(typeof $rootScope.memoryStore[dbName] === 'undefined'){
+        $rootScope.memoryStore[dbName] = {};
+      }
+    };
+
+    var initMemoryStore = function(){
+      if(typeof $rootScope.memoryStore === 'undefined'){
+        $rootScope.memoryStore = {};
+      }
+    };
+
     this.put = function(dbName, data){
       if(typeof data.uuid !== 'string' || data.uuid === ''){
         throw 'data.uuid is NOT a non-empty string..';
@@ -13,9 +25,7 @@ angular.module('lmisChromeApp')
       if(typeof dbName !== 'string' || dbName === ''){
         throw ['dbName is NOT a non-empty string. db name: ', String(dbName)].join(' ');
       }
-      if(typeof $rootScope.memoryStore[dbName] === 'undefined'){
-        $rootScope.memoryStore[dbName] = {};
-      }
+      initialize(dbName);
       $rootScope.memoryStore[dbName][data.uuid] = data;
       cacheService.put(MEMORY_STORE, $rootScope.memoryStore);
     };
@@ -53,7 +63,7 @@ angular.module('lmisChromeApp')
      * @param {Object} db
      */
     this.setDatabase = function(dbName, db){
-      //TODO:(discuss) check if db is set already, if set throw an exception that you might over-write the db.
+      initMemoryStore();
       $rootScope.memoryStore[dbName] = db;
       cacheService.put(MEMORY_STORE, $rootScope.memoryStore);
     };
