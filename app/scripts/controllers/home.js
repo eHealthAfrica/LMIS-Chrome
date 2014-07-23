@@ -132,7 +132,7 @@ angular.module('lmisChromeApp')
                     });
                 };
 
-                function processProductTypes(productTypes, facility) {
+                function getProductTypesInfo(productTypes, facility) {
                   var promises = {};
                   for (var i in productTypes) {
                     var productType = productTypes[i];
@@ -144,7 +144,7 @@ angular.module('lmisChromeApp')
                 var currentFacility = appConfig.facility;
                 return appConfigService.getProductTypes()
                   .then(function(res) {
-                    return processProductTypes(res, currentFacility);
+                    return getProductTypesInfo(res, currentFacility);
                   });
               };
 
