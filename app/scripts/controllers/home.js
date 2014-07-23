@@ -127,7 +127,7 @@ angular.module('lmisChromeApp')
                         name: productType.code,
                         stockLevel: res[stockLevel],
                         bufferStock: res[bufferStock]
-                      }
+                      };
                       return productTypeInfo;
                     });
                 };
@@ -144,7 +144,7 @@ angular.module('lmisChromeApp')
                 var currentFacility = appConfig.facility;
                 return appConfigService.getProductTypes()
                   .then(function(res) {
-                    return processProductTypes(res, currentFacility)
+                    return processProductTypes(res, currentFacility);
                   });
               };
 
