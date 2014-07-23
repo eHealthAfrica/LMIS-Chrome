@@ -42,7 +42,8 @@ angular.module('lmisChromeApp')
         if (utility.has(doc, 'uuid')) {
           doc._id = doc.uuid;
         } else {
-          throw new Error('Document does not have a UUID property');
+          $log.debug('Doc did not contain a UUID. Generating anew', doc);
+          doc._id = utility.uuidGenerator();
         }
       }
       return doc;
