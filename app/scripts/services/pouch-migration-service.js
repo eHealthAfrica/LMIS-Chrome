@@ -42,7 +42,7 @@ angular.module('lmisChromeApp')
         if (utility.has(doc, 'uuid')) {
           doc._id = doc.uuid;
         } else {
-          throw new Error('Document does not have a UUID property');
+          doc._id = utility.uuidGenerator();
         }
       }
       return doc;
@@ -57,10 +57,25 @@ angular.module('lmisChromeApp')
       return _docs;
     }
 
+    function flattenNestedDocs(docs) {
+      var _docs = [];
+      docs.forEach(function(doc) {
+        for (var key in doc) {
+          _docs.push(doc[key]);
+        }
+      });
+      return _docs;
+    }
+
     function chromeToPouch(collections) {
       var promises = [];
       for (var table in collections) {
         var docs = utility.values(collections[table]);
+
+        if (table === 'rate') {
+          docs = flattenNestedDocs(docs);
+        }
+
         docs = batchUUIDToID(docs);
         promises.push(storageService.setDatabase(table, docs));
       }
