@@ -74,11 +74,12 @@ angular.module('lmisChromeApp')
               .then(function(remoteAppConfig) {
                 //TODO: should we just update local copy with remote or update only if they are different???.
                 //NB: at this point we already have both remote and local copies.
+                // SEE: item #776
                 remoteAppConfig.lastUpdated = new Date().toJSON();
                 return appConfigService.save(remoteAppConfig);
               });
           } else {
-            return 'app config is not an object.';
+            return $q.reject('app config is not an object.');
           }
         });
     };
@@ -113,6 +114,9 @@ angular.module('lmisChromeApp')
                     return syncPendingRecords()
                       .finally(function() {
                         return storageService.compactDatabases();
+                      })
+                      .finally(function(){
+                        return storageService.viewCleanups();
                       });
                   });
               });
