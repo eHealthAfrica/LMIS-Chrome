@@ -174,8 +174,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.appConfig = appConfig;
 
     $scope.enterDeveloperMode = function(){
-      $rootScope.isEditable = true;
-      $scope.isEditable = true;
+      $rootScope.developerMode = true;
+      $scope.developerMode = true;
     };
 
     var setAppConfigLastUpdatedViewInfo = function(appConfig){

@@ -244,6 +244,15 @@ angular.module('lmisChromeApp')
       return $q.all(promises);
     };
 
+    var viewCleanups = function() {
+      var promises = [];
+      for (var i in _collections) {
+        var dbName = _collections[i];
+        promises.push(pouchStorageService.viewCleanup(dbName));
+      }
+      return $q.all(promises)
+    };
+
       var api = {
         all: getAllFromTable,
         add: setData,
@@ -257,6 +266,7 @@ angular.module('lmisChromeApp')
         save: saveData,
         setDatabase: setDatabase,
         compactDatabases: compactDatabases,
+        viewCleanups: viewCleanups,
         where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,
