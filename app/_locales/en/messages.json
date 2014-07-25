@@ -675,6 +675,6 @@
     "message": "Data migration failed. Please contact support."
   },
   "migrating": {
-    "message": "Database migration in progress."
+    "message": "Your App is updating."
   }
 }
