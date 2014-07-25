@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').service('appConfigService', function($q, storageService, pouchdb, config, syncService, productProfileFactory, facilityFactory, utility, cacheService, $filter, reminderFactory, growl, i18n, $http, memoryStorageService) {
+angular.module('lmisChromeApp').service('appConfigService', function($q, storageService, pouchdb, config, syncService, productProfileFactory, facilityFactory, utility, cacheService, $filter, reminderFactory, growl, i18n, $http, memoryStorageService, analyticsSyncService) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   this.stockCountIntervals = [
@@ -160,4 +160,17 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
       });
   };
 
+  this.syncOfflineAnalytics = function() {
+    var deferred = $q.defer();
+    syncService.canConnect()
+      .then(function() {
+         analyticsSyncService.syncClicks();
+         analyticsSyncService.syncExceptions();
+         analyticsSyncService.syncPageViews();
+      })
+      .catch(function (reason) {
+        deferred.reject(reason);
+      });
+    return deferred.promise;
+  };
 });

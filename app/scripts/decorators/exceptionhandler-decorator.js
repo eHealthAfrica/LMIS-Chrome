@@ -3,11 +3,11 @@
 angular.module('lmisChromeApp')
   .config(function($provide) {
     $provide.decorator('$exceptionHandler', function($delegate, $injector) {
-      var trackingService;
+      var trackingFactory;
       return function(exception, cause) {
         $delegate(exception, cause);
-        trackingService = trackingService || $injector.get('trackingService');
-        trackingService.tracker.sendException(exception.message, false);
+        trackingFactory = trackingFactory || $injector.get('trackingFactory');
+        trackingFactory.postException(exception.message, false);
       };
     });
   });

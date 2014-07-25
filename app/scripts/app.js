@@ -19,6 +19,11 @@ angular.module('lmisChromeApp', [
         .finally(function() {
           console.log('updateAppConfigAndStartBackgroundSync triggered on start up has been completed!');
         });
+
+      appConfigService.syncOfflineAnalytics()
+        .finally(function() {
+          console.log('offline reports send to ga server.');
+      });
     }
 
     $window.showSplashScreen = function() {
