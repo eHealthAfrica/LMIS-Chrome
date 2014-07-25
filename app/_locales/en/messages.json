@@ -673,5 +673,8 @@
   },
   "migrationFailed": {
     "message": "Data migration failed. Please contact support."
+  },
+  "migrating": {
+    "message": "Your app is updating."
   }
 }
