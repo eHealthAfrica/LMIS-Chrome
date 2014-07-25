@@ -110,7 +110,8 @@ angular.module('lmisChromeApp')
               .then(function() {
                 return updateAppConfigFromRemote()
                   .then(function() {
-                    growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: -1 });
+                    var TEN_SECS = 10000;
+                    growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: TEN_SECS });
                     return syncPendingRecords()
                       .finally(function() {
                         return storageService.compactDatabases();
