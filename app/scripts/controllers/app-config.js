@@ -155,7 +155,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         });
     };
 
-  }).controller('EditAppConfigCtrl', function ($scope, appConfigService, growl, $log, i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory, $filter) {
+  }).controller('EditAppConfigCtrl', function ($scope, $rootScope, appConfigService, growl, $log, i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory, $filter) {
 
     $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords;
     $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -172,6 +172,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.isSubmitted = false;
     //used to hold config form data
     $scope.appConfig = appConfig;
+
+    $scope.enterDeveloperMode = function(){
+      $rootScope.isEditable = true;
+      $scope.isEditable = true;
+    };
 
     var setAppConfigLastUpdatedViewInfo = function(appConfig){
       if(utility.has(appConfig, 'lastUpdated')){

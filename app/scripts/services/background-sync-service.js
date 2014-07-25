@@ -78,6 +78,7 @@ angular.module('lmisChromeApp')
                 return appConfigService.save(remoteAppConfig);
               });
           } else {
+            //TODO: resolve or reject here. discuss.
             return 'app config is not an object.';
           }
         });
@@ -109,7 +110,8 @@ angular.module('lmisChromeApp')
               .then(function() {
                 return updateAppConfigFromRemote()
                   .then(function() {
-                    growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: -1 });
+                    var TEN_SECS = 10000;
+                    growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: TEN_SECS });
                     return syncPendingRecords()
                       .finally(function() {
                         return storageService.compactDatabases();
