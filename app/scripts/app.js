@@ -11,7 +11,7 @@ angular.module('lmisChromeApp', [
     'ngAnimate',
     'db'
   ])
-  .run(function(storageService, $rootScope, $state, $window, appConfigService, backgroundSyncService, fixtureLoaderService, growl, utility, pouchMigrationService, $log, i18n) {
+  .run(function(storageService, $rootScope, $state, $window, appConfigService, backgroundSyncService, fixtureLoaderService, growl, utility, pouchMigrationService, $log, i18n, syncService) {
 
     function navigateToHome() {
       $state.go('home.index.home.mainActivity');
@@ -20,7 +20,7 @@ angular.module('lmisChromeApp', [
           console.log('updateAppConfigAndStartBackgroundSync triggered on start up has been completed!');
         });
 
-      appConfigService.syncOfflineAnalytics()
+      syncService.syncOfflineAnalytics()
         .finally(function() {
           console.log('offline reports send to ga server.');
       });

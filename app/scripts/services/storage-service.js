@@ -255,7 +255,7 @@ angular.module('lmisChromeApp')
         var dbName = _collections[i];
         promises.push(pouchStorageService.viewCleanup(dbName));
       }
-      return $q.all(promises)
+      return $q.all(promises);
     };
 
       var api = {
