@@ -8,9 +8,9 @@ angular.module('lmisChromeApp')
   .factory('trackingFactory', function($q, $window, $rootScope, config, utility, syncService, storageService) {
     var tracker;
 
-    var events_limit = config.analytics.events_limit;
-    var exceptions_limit = config.analytics.exceptions_limit;
-    var pages_limit = config.analytics.pages_limit;
+    var eventsLimit = config.analytics.eventsLimit;
+    var exceptionsLimit = config.analytics.exceptionsLimit;
+    var pagesLimit = config.analytics.pagesLimit;
 
     if (utility.has($window, 'analytics')) {
       var service = $window.analytics.getService(config.analytics.service);
@@ -65,7 +65,7 @@ angular.module('lmisChromeApp')
             label: label
           };
           storageService.save(storageService.CLICKS, _event);
-          removeExcessRecords(storageService.CLICKS, events_limit).then(
+          removeExcessRecords(storageService.CLICKS, eventsLimit).then(
             function(removed) {
               // storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
               // lostRecords[0].events += removed;
@@ -88,7 +88,7 @@ angular.module('lmisChromeApp')
             page: page
           };
           storageService.save(storageService.PAGE_VIEWS, _pageview);
-          removeExcessRecords(storageService.PAGE_VIEWS, pages_limit).then(
+          removeExcessRecords(storageService.PAGE_VIEWS, pagesLimit).then(
             function(removed) {
               // storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
               // lostRecords[0].pages += removed;
@@ -112,7 +112,7 @@ angular.module('lmisChromeApp')
             opt_fatal: opt_fatal
           };
           storageService.save(storageService.EXCEPTIONS, _exception);
-          removeExcessRecords(storageService.EXCEPTIONS, exceptions_limit)
+          removeExcessRecords(storageService.EXCEPTIONS, exceptionsLimit)
             .then(function(removed) {
               // storageService.all(storageService.ANALYTICS_LOST_RECORDS).then(function(lostRecords) {
               // lostRecords[0].exceptions += removed;
