@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('syncService', function($q, storageService, pouchStorageService, utility, deviceInfoFactory, analyticsSyncService) {
+  .service('syncService', function($q, storageService, pouchStorageService, utility, deviceInfoFactory) {
 
     /**
      * @private
@@ -116,22 +116,5 @@ angular.module('lmisChromeApp')
      */
     this.addToPendingSync = function(pendingSync) {
       return addToPendingSyncList(pendingSync);
-    };
-
-    this.syncOfflineAnalytics = function() {
-      var deferred = $q.defer();
-      deviceInfoFactory.canConnect()
-        .then(function() {
-          var promises = [
-             analyticsSyncService.syncClicks(),
-             analyticsSyncService.syncExceptions(),
-             analyticsSyncService.syncPageViews()
-          ];
-          return $q.all(promises);
-        })
-        .catch(function(reason) {
-          deferred.reject(reason);
-        });
-      return deferred.promise;
     };
   });

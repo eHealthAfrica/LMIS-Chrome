@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('analyticsSyncService', function($q, $log, storageService, trackingService) {
+  .service('analyticsSyncService', function($q, $log, storageService, trackingService, deviceInfoFactory) {
     var tracker = trackingService.tracker;
 
     function sync(type, syncFunction) {
@@ -19,26 +19,43 @@ angular.module('lmisChromeApp')
         });
     }
 
-    this.syncClicks = function() {
+    function syncClicks() {
       function syncClick(click) {
         // TODO: find a way to get a success flag here and delete if event
         //       successfuly sent
         tracker.sendEvent('Offline clicks', click.action, click.label);
       }
       return sync('CLICKS', syncClick);
-    };
+    }
 
-    this.syncExceptions = function() {
+    function syncExceptions() {
       function syncException(exception) {
         $log.info('Exception UUID: ' + exception.uuid);
       }
       return sync('EXCEPTIONS', syncException);
-    };
+    }
 
-    this.syncPageViews = function() {
+    function syncPageViews () {
       function syncPageView(pageView) {
         tracker.sendAppView(pageView.page);
       }
       return sync('PAGE_VIEWS', syncPageView);
+    }
+
+    this.syncOfflineAnalytics = function() {
+      var deferred = $q.defer();
+      deviceInfoFactory.canConnect()
+        .then(function() {
+          var promises = [
+             syncClicks(),
+             syncExceptions(),
+             syncPageViews()
+          ];
+          return $q.all(promises);
+        })
+        .catch(function(reason) {
+          deferred.reject(reason);
+        });
+      return deferred.promise;
     };
   });
