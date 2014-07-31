@@ -135,8 +135,6 @@ angular.module('lmisChromeApp')
           }
           updateCountValue();
         }
-      }).catch(function(error){
-        console.error(error);
       });
 
     var syncStockCount = function(stockCountUUID) {
