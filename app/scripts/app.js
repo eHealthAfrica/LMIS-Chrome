@@ -62,6 +62,7 @@ angular.module('lmisChromeApp', [
         if (res.length > 0) {
           fixtureLoaderService.loadLocalDatabasesIntoMemory(fixtureLoaderService.REMOTE_FIXTURES)
             .then(function() {
+              $rootScope.$emit('MEMORY_STORAGE_LOADED');
               navigateToHome();
             })
             .catch(function(reason) {
