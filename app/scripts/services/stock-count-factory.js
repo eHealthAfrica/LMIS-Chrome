@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService, i18n, reminderFactory) {
+  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService, i18n, reminderFactory, trackingFactory) {
 
     var STOCK_COUNT_DB = storageService.STOCK_COUNT;
 

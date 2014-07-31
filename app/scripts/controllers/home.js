@@ -92,7 +92,8 @@ angular.module('lmisChromeApp')
             }
           },
           controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
-            var keys = [
+
+              var keys = [
               {
                 key: 'stockBelowReorder',
                 label: i18n('stockBelow'),
@@ -200,17 +201,18 @@ angular.module('lmisChromeApp')
                     //TODO: gather those below reorder point and send background alert, if (product.stockLevel <= product.bufferStock && filtered.length === 0) {
                     if(product.stockLevel <= 0 && filtered.length === 0){
                       stockOutWarning.push(uuid);
-                    }
 
-                    values.push({
-                      label: utility.ellipsize(product.name, 7),
-                      stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
-                        product.stockLevel, product.bufferStock
-                      ),
-                      stockBelowReorder: inventoryRulesFactory.stockBelowReorder(
-                        product.stockLevel, product.bufferStock
-                      )
-                    });
+                    }else if (product.stockLevel > 0){
+                        values.push({
+                          label: utility.ellipsize(product.name, 7),
+                          stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
+                            product.stockLevel, product.bufferStock
+                          ),
+                          stockBelowReorder: inventoryRulesFactory.stockBelowReorder(
+                            product.stockLevel, product.bufferStock
+                          )
+                        });
+                    }
                   }
 
                   $scope.stockOutWarning = stockOutWarning;
@@ -243,7 +245,7 @@ angular.module('lmisChromeApp')
         aggregatedInventory: function($q, $log, appConfig, inventoryFactory, dashboardfactory, settings) {
           var currentFacility = appConfig.facility;
           var deferred = $q.defer();
-
+          
           inventoryFactory.getFacilityInventory(currentFacility.uuid)
             .then(function(inventory) {
               var values = dashboardfactory.aggregateInventory(inventory, settings);
