@@ -159,5 +159,4 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
         return facilityStockListProductTypes;
       });
   };
-
 });

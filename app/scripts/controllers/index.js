@@ -12,7 +12,7 @@ angular.module('lmisChromeApp')
         views: {
           'header': {
             templateUrl: 'views/index/header.html',
-            controller: function($scope, $window, i18n, appConfigService, deviceInfoFactory, backgroundSyncService) {
+            controller: function($scope, $window, i18n, appConfigService, deviceInfoFactory, backgroundSyncService, analyticsSyncService) {
 
               $scope.states = {
                 online: i18n('online'),
@@ -29,6 +29,11 @@ angular.module('lmisChromeApp')
                     label: $scope.states[e.type]
                   };
                   $scope.$digest();
+
+                  //this one sends when toggle from on to off and vice versa. I think we only need from off to on and on app start!
+                  analyticsSyncService.syncOfflineAnalytics().finally(function(){
+                    console.log('offline reports send to ga server.');
+                  });
 
                   //trigger background syncing
                   backgroundSyncService.startBackgroundSync()
