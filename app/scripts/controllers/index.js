@@ -2,12 +2,7 @@
 
 angular.module('lmisChromeApp')
   .config(function($stateProvider) {
-    $stateProvider.state('root', {
-      url: '',
-      abstract: true,
-      templateUrl: 'views/index/index.html'
-    })
-      .state('root.index', {
+    $stateProvider.state('root.index', {
         abstract: true,
         views: {
           'header': {
