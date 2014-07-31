@@ -79,6 +79,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
     $scope.ccuProfileCheckBoxes = [];
     $scope.preSelectCcuProfiles = {};
+    $scope.developerMode = true;
 
     $scope.currentStep = $scope.STEP_ONE; //set initial step
     $scope.moveTo = function (step) {
