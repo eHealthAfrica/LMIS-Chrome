@@ -24,5 +24,15 @@ angular.module('lmisChromeApp')
           controller: 'FooterCtrl'
         }
       }
+    })
+    .state('loadingFixture', {
+      parent: 'root.index',
+      templateUrl: 'root/loading-fixture-screen.html',
+      url: '/loading-fixture',
+    })
+    .state('migrationScreen', {
+      parent: 'root.index',
+      templateUrl: 'root/migration-screen.html',
+      url: '/migration-screen'
     });
   });
