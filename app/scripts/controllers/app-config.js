@@ -79,6 +79,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
     $scope.ccuProfileCheckBoxes = [];
     $scope.preSelectCcuProfiles = {};
+    $scope.developerMode = true;
 
     $scope.currentStep = $scope.STEP_ONE; //set initial step
     $scope.moveTo = function (step) {
@@ -172,10 +173,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.isSubmitted = false;
     //used to hold config form data
     $scope.appConfig = appConfig;
+    var noOfAttempts = 0;
 
     $scope.enterDeveloperMode = function(){
-      $rootScope.developerMode = true;
-      $scope.developerMode = true;
+      var MAX_ATTEMPTS = 5;
+      noOfAttempts = noOfAttempts + 1;
+      if(MAX_ATTEMPTS <= noOfAttempts){
+        $rootScope.developerMode = true;
+        $scope.developerMode = true;
+        noOfAttempts = 0;
+      }
     };
 
     var setAppConfigLastUpdatedViewInfo = function(appConfig){

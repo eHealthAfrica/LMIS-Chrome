@@ -5,7 +5,7 @@
                       && isSubmitted }">
         <label for="contactPerson" i18n="name"></label>
         <input type="text" class="form-control" ng-model="(appConfig.contactPerson).name"
-               name="contactPersonName" id="contactPerson" required/>
+               name="contactPersonName" id="contactPerson" ng-disabled="!developerMode" required/>
                       <span class="alert-danger form-control" i18n="contactPersonNameErrorMsg"
                             ng-show="((editAppConfigForm.contactPersonName).$error).required && isSubmitted">
                       </span>
@@ -17,7 +17,7 @@
            ng-class="{ 'has-error': (editAppConfigForm.contactPhoneNo).$invalid && isSubmitted }">
         <label for="contactPhoneNo" i18n="phoneNo"></label>
         <input type="tel" class="form-control" ng-model="(appConfig.contactPerson).phoneNo"
-               name="contactPhoneNo" id="contactPhoneNo" required/>
+               name="contactPhoneNo" id="contactPhoneNo" ng-disabled="!developerMode" required/>
                   <span class="alert-danger form-control" i18n="contactPersonPhoneNoErrorMsg"
                         ng-show="(editAppConfigForm.contactPhoneNo).$invalid && isSubmitted">
                   </span>
