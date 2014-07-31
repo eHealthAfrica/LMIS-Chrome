@@ -676,5 +676,8 @@
   },
   "migrating": {
     "message": "Your app is updating."
+  },
+  "add": {
+    "message": "Add"
   }
 }
