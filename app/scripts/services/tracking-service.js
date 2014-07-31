@@ -4,7 +4,7 @@
 //       on the local storage
 // TODO: introduce a table for the lost records count
 angular.module('lmisChromeApp')
-  .service('trackingService', function trackingService($q, $window, $rootScope, config, utility, storageService, deviceInfoFactory) {
+  .service('trackingService', function trackingService($q, $log, $window, $rootScope, config, utility, storageService, deviceInfoFactory, appConfigService) {
     var tracker = {
       sendAppView: function() {},
       sendException: function() {},
@@ -106,21 +106,30 @@ angular.module('lmisChromeApp')
       });
     }
 
-    // function setUUID(config) {
-    //   // Workaround item:750
-    //   if (utility.has(config, 'uuid')) {
-    //     tracker.set('userId', config.uuid);
-    //   }
-    // }
+    function setUUID() {
+      appConfigService.getCurrentAppConfig()
+        .then(function(config) {
+          // Workaround item:750
+          if (utility.has(config, 'uuid')) {
+            console.log(config);
+            tracker.set('userId', config.uuid);
+          }
+        })
+        .catch(function() {
+          var msg = [
+            'Could not get current app config.',
+            'Proceeding to track anonymously.'
+          ].join('\n');
+          $log.info(msg);
+        });
+    }
 
     if (utility.has($window, 'analytics')) {
       var service = $window.analytics.getService(config.analytics.service);
       tracker = service.getTracker(config.analytics.propertyID);
       registerListeners();
 
-      // TODO: resolve circular dependency, see item:785
-      // appConfigService.getCurrentAppConfig()
-      //   .then(setUUID);
+      $rootScope.$on('MEMORY_STORAGE_LOADED', setUUID);
     }
 
     this.tracker = tracker;
