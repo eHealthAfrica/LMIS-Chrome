@@ -53,7 +53,9 @@ angular.module('lmisChromeApp')
     $scope.sortedStockCount = stockCounts.sort(sortByCreatedDateDesc);
 
     $scope.isEditable = function(stockCount) {
-      return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid === stockCount.uuid) && !isStockCountReminderDue;
+      var nextStockCountDueDate = stockCountFactory.getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+      var isMostRecentStockCount = (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid === stockCount.uuid);
+      return isMostRecentStockCount && new Date(stockCount.countDate).getTime() >= new Date(nextStockCountDueDate).getTime();
     };
 
     $scope.showStockCountFormByDate = function(stockCount) {
