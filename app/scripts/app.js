@@ -11,7 +11,7 @@ angular.module('lmisChromeApp', [
     'ngAnimate',
     'db'
   ])
-  .run(function(storageService, $rootScope, $state, $window, appConfigService, backgroundSyncService, fixtureLoaderService, growl, utility, pouchMigrationService, $log, i18n) {
+  .run(function(storageService, $rootScope, $state, $window, appConfigService, backgroundSyncService, fixtureLoaderService, growl, utility, pouchMigrationService, $log, i18n, analyticsSyncService) {
 
     function navigateToHome() {
       $state.go('home.index.home.mainActivity');
@@ -19,6 +19,11 @@ angular.module('lmisChromeApp', [
         .finally(function() {
           console.log('updateAppConfigAndStartBackgroundSync triggered on start up has been completed!');
         });
+
+      analyticsSyncService.syncOfflineAnalytics()
+        .finally(function() {
+          console.log('offline reports send to ga server.');
+      });
     }
 
     $window.showSplashScreen = function() {
@@ -57,6 +62,7 @@ angular.module('lmisChromeApp', [
         if (res.length > 0) {
           fixtureLoaderService.loadLocalDatabasesIntoMemory(fixtureLoaderService.REMOTE_FIXTURES)
             .then(function() {
+              $rootScope.$emit('MEMORY_STORAGE_LOADED');
               navigateToHome();
             })
             .catch(function(reason) {

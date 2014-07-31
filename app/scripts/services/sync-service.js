@@ -117,5 +117,4 @@ angular.module('lmisChromeApp')
     this.addToPendingSync = function(pendingSync) {
       return addToPendingSyncList(pendingSync);
     };
-
   });
