@@ -122,7 +122,7 @@ describe('Controller: StockCountFormCtrl', function() {
         ctrlData = {
           $scope: scope,
           appConfig: appConfig,
-          stockCountByDate: {},
+          stockCounts: [],
           mostRecentStockCount: mostRecentStockCount,
           isStockCountReminderDue: false
         };
