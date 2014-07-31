@@ -10,7 +10,6 @@ describe('Controller: StockCountFormCtrl', function() {
   var _i18n;
   var $controller;
   var mostRecentStockCount = {};
-  var homeCtrlData =
 
   beforeEach(module('lmisChromeApp', 'appConfigMocks', 'stockCountMocks', 'i18nMocks', 'productWithCategoryMocks', 'fixtureLoaderMocks', function($provide) {
     //$provide.value('appConfig',{});
@@ -122,7 +121,7 @@ describe('Controller: StockCountFormCtrl', function() {
         ctrlData = {
           $scope: scope,
           appConfig: appConfig,
-          stockCountByDate: {},
+          stockCounts: [],
           mostRecentStockCount: mostRecentStockCount,
           isStockCountReminderDue: false
         };

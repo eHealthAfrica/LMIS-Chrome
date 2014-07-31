@@ -3,6 +3,14 @@
     <h1 class="panel-title" i18n="stockCountHistory"></h1>
   </div>
   <div class="panel-body">
+    <div class="row" ng-hide="detailView">
+      <div class="col-sm-12">
+        <a class="btn btn-default" ui-sref="stockCountForm({newStockCount: true})">
+            <i class="fa fa-plus"></i>
+            <span i18n="add"></span>
+        </a>
+      </div>
+    </div>
     <div class="row">
       <div class="col-sm-12">
         <table class="table table-bordered" ng-hide="detailView">
@@ -15,21 +23,21 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="countDate in stockCountCountDates" ng-class="{ 'disabled': !isEditable(stockCountsByCountDate[countDate]) }"
-              ng-click="showStockCountFormByDate(countDate)">
+          <tr ng-repeat="stockCount in sortedStockCount" ng-class="{ 'disabled': !isEditable(stockCount) }"
+              ng-click="showStockCountFormByDate(stockCount)">
             <td> {{ $index + 1 }}</td>
             <td>
               <span class="text-info">
-                {{ stockCountsByCountDate[countDate].modified | date:'MMM dd, yyyy' }}
-                (<span>for {{ countDate | date:'MMM dd' }}</span>)
+                {{ stockCount.modified | date:'MMM dd, yyyy' }}
+                (<span>for {{ stockCount.countDate | date:'MMM dd' }}</span>)
               </span>
             </td>
             <td class="text-center">
               <i class="fa "
-                 ng-class="{'fa-check-circle text-success': stockCountsByCountDate[countDate].isComplete, 'fa-times-circle text-danger': !stockCountsByCountDate[countDate].isComplete}"></i>
+                 ng-class="{'fa-check-circle text-success': stockCount.isComplete, 'fa-times-circle text-danger': !stockCount.isComplete}"></i>
             </td>
-            <td class="text-center"><i class="fa "
-                                       ng-class="{'fa-check-circle text-success': stockCountsByCountDate[countDate].synced, 'fa-times-circle text-danger': !stockCountsByCountDate[countDate].synced}"></i>
+            <td class="text-center">
+                <i class="fa " ng-class="{'fa-check-circle text-success': stockCount.synced, 'fa-times-circle text-danger': !stockCount.synced}"></i>
             </td>
           </tr>
           </tbody>

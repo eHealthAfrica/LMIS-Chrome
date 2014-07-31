@@ -94,20 +94,24 @@ angular.module('lmisChromeApp')
       return syncUpDoc(dbName, doc);
     };
 
+    this.getSyncStatus = function(obj) {
+      if (obj !== 'undefined') {
+        if ((obj.dateSynced && obj.modified) && (new Date(obj.dateSynced) >= new Date(obj.modified))) {
+          obj.synced = true;
+        } else {
+          obj.synced = false;
+        }
+        return obj;
+      }else{
+        throw new Error('Object is undefined.');
+      }
+    };
+
     this.addSyncStatus = function(objList) {
       if (!angular.isArray(objList)) {
         throw new Error('an array parameter is expected.');
       }
-      return objList.map(function(obj) {
-        if (obj !== 'undefined') {
-          if ((obj.dateSynced && obj.modified) && (new Date(obj.dateSynced) >= new Date(obj.modified))) {
-            obj.synced = true;
-          } else {
-            obj.synced = false;
-          }
-          return obj;
-        }
-      });
+      return objList.map(this.getSyncStatus);
     };
 
     /**

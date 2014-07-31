@@ -14,8 +14,8 @@ angular.module('lmisChromeApp')
           appConfig: function(appConfigService){
             return appConfigService.getCurrentAppConfig();
           },
-          stockCountByDate: function(stockCountFactory){
-            return stockCountFactory.getStockCountListByDate();
+          stockCounts: function(stockCountFactory){
+            return stockCountFactory.getAll();
           },
           mostRecentStockCount: function(stockCountFactory){
             return stockCountFactory.getMostRecentStockCount();
@@ -35,7 +35,7 @@ angular.module('lmisChromeApp')
         data:{
           label:'Stock Count Form'
         },
-        url:'/stockCountForm?facility&reportMonth&reportYear&reportDay&countDate&productKey&detailView&editOff',
+        url:'/stockCountForm?newStockCount&facility&reportMonth&reportYear&reportDay&uuid&productKey&detailView&editOff',
         templateUrl: 'views/stock-count/stock-count-form.html',
         controller: 'StockCountFormCtrl',
         resolve:{
@@ -45,39 +45,27 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, growl, i18n, stockCountByDate, appConfig, $state, mostRecentStockCount, isStockCountReminderDue){
-    $scope.stockCountsByCountDate = stockCountByDate;
-    $scope.stockCountCountDates =  Object.keys($scope.stockCountsByCountDate).sort(function(dateOne, dateTwo){
-      return new Date(dateOne) < new Date(dateTwo);//descending order
-    });
+  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, growl, i18n, utility, stockCounts, appConfig, $state, mostRecentStockCount, isStockCountReminderDue){
 
-    /**
-     *  stock count is editable if it is most recent and next stock count is not yet due.
-     *
-     * @param {Object} stockCount
-     * @returns {Boolean}
-     */
+    var sortByCreatedDateDesc = function(scA, scB){
+      return new Date(scA.created) < new Date(scB.created);
+    };
+    $scope.sortedStockCount = stockCounts.sort(sortByCreatedDateDesc);
+
     $scope.isEditable = function(stockCount) {
       return (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid === stockCount.uuid) && !isStockCountReminderDue;
     };
 
-    $scope.showStockCountFormByDate = function(date) {
-      stockCountFactory.getStockCountByDate(date)
-        .then(function(stockCount) {
-          if (stockCount !== null) {
-            $state.go('stockCountForm', {detailView: true, countDate: date, editOff: !$scope.isEditable(stockCount) });
-          } else {
-            $state.go('stockCountForm', {countDate: date});
-          }
-        })
-        .catch(function() {
-          growl.error(i18n('getStockCountByDateError'));
-        });
+    $scope.showStockCountFormByDate = function(stockCount) {
+      if(utility.has(stockCount, 'uuid') && utility.has(stockCount, 'countDate')){
+         $state.go('stockCountForm', {detailView: true, uuid: stockCount.uuid, editOff: !$scope.isEditable(stockCount) });
+      }else{
+        growl.error(i18n('showStockCountFailed'));
+      }
     };
-  })
-  .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
+  }).controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
                                              $stateParams, appConfig, appConfigService, cacheService, syncService,
-                                             utility, $rootScope, i18n, locationFactory, $window, $log){
+                                             utility, $rootScope, i18n){
     //TODO: refactor entire stock count controller to simpler more readable controller
     $scope.getCategoryColor = function(categoryName){
       if($scope.preview){
@@ -85,6 +73,8 @@ angular.module('lmisChromeApp')
       }
       return categoryName.split(' ').join('-').toLowerCase();
     };
+    $scope.isNew = ($stateParams.newStockCount === 'true');
+    $scope.uuid = $stateParams.uuid;
     $scope.step = 0;
     $scope.facilityObject = appConfig.facility;
     $scope.selectedProductProfiles = appConfig.facility.selectedProductProfiles;
@@ -133,17 +123,19 @@ angular.module('lmisChromeApp')
       date = $stateParams.countDate;
       $scope.reportDay = new Date(Date.parse(date)).getDate();
     }
-    stockCountFactory.getStockCountByDate(date).then(function(stockCount){
-      if(stockCount !== null){
-        $scope.stockCount = stockCount;
-        $scope.dateInfo = $scope.stockCount.created;
-        $scope.editOn = true; // enable edit mode
-        if(angular.isUndefined($scope.stockCount.lastPosition)){
-          $scope.stockCount.lastPosition = 0;
+
+    stockCountFactory.getByUuid($scope.uuid)
+      .then(function(stockCount) {
+        if ($scope.isNew !== true && stockCount !== null) {
+          $scope.stockCount = stockCount;
+          $scope.dateInfo = $scope.stockCount.created;
+          $scope.editOn = true; // enable edit mode
+          if (angular.isUndefined($scope.stockCount.lastPosition)) {
+            $scope.stockCount.lastPosition = 0;
+          }
+          updateCountValue();
         }
-        updateCountValue();
-      }
-    });
+      });
 
     var syncStockCount = function(stockCountUUID) {
       var db = stockCountFactory.STOCK_COUNT_DB;
@@ -163,7 +155,7 @@ angular.module('lmisChromeApp')
        */
       return syncService.syncUpRecord(db, $scope.stockCount)
         .catch(function(reason) {
-          $log.error(reason);
+          console.error(reason);
         })
         .finally(function() {
           $scope.isSaving = false;
@@ -185,7 +177,7 @@ angular.module('lmisChromeApp')
         .catch(function(reason) {
           var msg = i18n('stockCountSavingFailed');
           growl.error(msg);
-          $log.error(reason);
+          console.error(reason);
         });
     };
 
@@ -208,12 +200,12 @@ angular.module('lmisChromeApp')
         $scope.redirect = true;
         $scope.save();
 
-// TODO: uncomment after fixing item:791
+
+        //TODO: uncomment after fixing item:791.
+        //attach position GeoPosition
 //        if(typeof $scope.stockCount.geoPosition === 'undefined'){
 //          $scope.stockCount.geoPosition = locationFactory.NO_GEO_POS;
 //        }
-//
-//        //attach position GeoPosition
 //        locationFactory.getCurrentPosition()
 //          .then(function (curPos) {
 //            $scope.stockCount.geoPosition = locationFactory.getMiniGeoPosition(curPos);
@@ -225,7 +217,6 @@ angular.module('lmisChromeApp')
 //            $scope.redirect = true;
 //            $scope.save();
 //          });
-
       }else{
         $scope.redirect = true;
         $scope.save();
