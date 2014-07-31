@@ -10,16 +10,16 @@ angular.module('lmisChromeApp')
     .state('root.index', {
       abstract: true,
       views: {
-        'header': {
+        header: {
           templateUrl: 'root/header.html',
           controller: 'HeaderCtrl'
         },
-        'breadcrumbs': {
+        breadcrumbs: {
           templateUrl: 'root/breadcrumbs.html',
           controller: 'BreadcrumbsCtrl'
         },
-        'content': {},
-        'footer': {
+        content: {},
+        footer: {
           templateUrl: 'root/footer.html',
           controller: 'FooterCtrl'
         }
