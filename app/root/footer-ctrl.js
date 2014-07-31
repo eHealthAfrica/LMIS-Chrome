@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp')
+angular.module('lomis.root')
   .controller('FooterCtrl', function($scope, $window) {
     var manifest = $window.chrome.runtime.getManifest();
     $scope.year = new Date().getFullYear();

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp')
+angular.module('lomis.root')
   .controller('HeaderCtrl', function($scope, $window, i18n, appConfigService, deviceInfoFactory, backgroundSyncService, analyticsSyncService) {
     $scope.states = {
       online: i18n('online'),

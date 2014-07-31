@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('lmisChromeApp')
+angular.module('lomis.root', [
+  'ui.router'
+])
   .config(function($stateProvider) {
     $stateProvider.state('root', {
       url: '',
