@@ -205,22 +205,27 @@ angular.module('lmisChromeApp')
       if(utility.has($scope, 'stockCount')) {
         $scope.stockCount.lastPosition = 0;
         $scope.stockCount.isComplete = 1;
-        if(typeof $scope.stockCount.geoPosition === 'undefined'){
-          $scope.stockCount.geoPosition = locationFactory.NO_GEO_POS;
-        }
+        $scope.redirect = true;
+        $scope.save();
 
-        //attach position GeoPosition
-        locationFactory.getCurrentPosition()
-          .then(function (curPos) {
-            $scope.stockCount.geoPosition = locationFactory.getMiniGeoPosition(curPos);
-            $scope.redirect = true;
-            $scope.save();
-          })
-          .catch(function (err) {
-            console.log(err);
-            $scope.redirect = true;
-            $scope.save();
-          });
+// TODO: uncomment after fixing item:791
+//        if(typeof $scope.stockCount.geoPosition === 'undefined'){
+//          $scope.stockCount.geoPosition = locationFactory.NO_GEO_POS;
+//        }
+//
+//        //attach position GeoPosition
+//        locationFactory.getCurrentPosition()
+//          .then(function (curPos) {
+//            $scope.stockCount.geoPosition = locationFactory.getMiniGeoPosition(curPos);
+//            $scope.redirect = true;
+//            $scope.save();
+//          })
+//          .catch(function (err) {
+//            console.log(err);
+//            $scope.redirect = true;
+//            $scope.save();
+//          });
+
       }else{
         $scope.redirect = true;
         $scope.save();
