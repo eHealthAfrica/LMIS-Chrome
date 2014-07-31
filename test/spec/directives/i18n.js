@@ -17,7 +17,8 @@ describe('i18n directive', function() {
       'home/main-activity',
       'home/home',
       'dashboard/dashboard',
-      'index/loading-fixture-screen'
+      'index/loading-fixture-screen',
+      'index/migration-screen'
     ];
 
     angular.forEach(templates, function(template) {
