@@ -126,7 +126,6 @@ angular.module('lmisChromeApp')
 
     stockCountFactory.getByUuid($scope.uuid)
       .then(function(stockCount) {
-        console.warn(stockCount);
         if ($scope.isNew !== true && stockCount !== null) {
           $scope.stockCount = stockCount;
           $scope.dateInfo = $scope.stockCount.created;
@@ -171,7 +170,7 @@ angular.module('lmisChromeApp')
       $scope.stockCount.facility = $scope.facilityObject.uuid;
       $scope.stockCount.countDate = $scope.stockCountDate;
 
-      stockCountFactory.save.stock($scope.stockCount, $scope.isNew)
+      stockCountFactory.save.stock($scope.stockCount)
         .then(function(stockCountUUID) {
           if ($scope.redirect) {
             return syncStockCount(stockCountUUID);

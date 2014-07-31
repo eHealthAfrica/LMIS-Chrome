@@ -43,15 +43,15 @@ angular.module('lmisChromeApp')
       /**
        * Add/Update Stock count
        *
-       * @param {object} _stockCount Data object.
+       * @param {object} stockCount Data object.
        * @return {Promise} return promise object
        * @public
        */
-      stock: function(_stockCount, isNew) {
-        if (_stockCount.countDate instanceof Date) {
-          _stockCount.countDate = _stockCount.countDate.toJSON();
+      stock: function(stockCount) {
+        if (stockCount.countDate instanceof Date) {
+          stockCount.countDate = stockCount.countDate.toJSON();
         }
-        return storageService.save(storageService.STOCK_COUNT, _stockCount);
+        return storageService.save(storageService.STOCK_COUNT, stockCount);
       }
     };
 
