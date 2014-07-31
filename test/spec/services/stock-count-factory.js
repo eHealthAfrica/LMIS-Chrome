@@ -414,9 +414,9 @@ describe('Service stockCountFactory', function () {
     });
   });
 
-  it('i expect isStockCountDue() to return True if interval is MONTHLY and no stock count exist for teh given month.', function () {
+  it('i expect isStockCountDue() to return True if interval is MONTHLY and no stock count exist for the given month.', function () {
     var dfd = $q.defer();
-    var today = new Date();
+    var today = new Date('204-06-30');
     var stockCountDate = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());//previous month date
     var stockCount = {
       countDate: stockCountDate,
