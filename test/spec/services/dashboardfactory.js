@@ -8,17 +8,24 @@ describe('Service: dashboardfactory', function() {
   beforeEach(inject(function($templateCache) {
     // Mock each template used by the state
     var templates = [
-      'index',
-      'nav',
-      'sidebar',
-      'control-panel',
-      'main-activity'
+      'index/index',
+      'index/header',
+      'index/breadcrumbs',
+      'index/footer',
+      'home/index',
+      'home/nav',
+      'home/sidebar',
+      'home/control-panel',
+      'home/main-activity',
+      'home/home',
+      'dashboard/dashboard',
+      'index/loading-fixture-screen',
+      'index/migration-screen'
     ];
 
     angular.forEach(templates, function(template) {
-      $templateCache.put('views/home/' + template + '.html', '');
+      $templateCache.put('views/' + template + '.html', '');
     });
-
   }));
 
   // instantiate service
@@ -34,7 +41,9 @@ describe('Service: dashboardfactory', function() {
   it('should plot the required keys', function() {
     var required = ['below', 'buffer', 'safety', 'max'];
     var result = dashboardfactory.keys;
-    result = result.map(function(e) { return e.key; });
+    result = result.map(function(e) {
+      return e.key;
+    });
     expect(result).toEqual(required);
   });
 

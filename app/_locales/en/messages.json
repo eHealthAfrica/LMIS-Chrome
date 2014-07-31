@@ -676,5 +676,11 @@
   },
   "migrating": {
     "message": "Your app is updating."
+  },
+  "add": {
+    "message": "Add"
+  },
+  "showStockCountFailed": {
+    "message": "Could not show Stock Count form, please contact support."
   }
 }
