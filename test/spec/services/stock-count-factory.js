@@ -107,7 +107,7 @@ describe('Service stockCountFactory', function () {
     expect(stockCount).not.toBeNull();
   });
 
-  it('i expect stockCountFactory.getMostRecentStockCount() most recent stock count from a list of stock counts..', function () {
+  it('i expect stockCountFactory.getMostRecentStockCount() most recent stock count from a list of stock counts.', function () {
     var today = new Date();
     var oneDay = 86400000; //in milli-seconds
     var yesterday = new Date(today.getTime() - oneDay);
@@ -189,14 +189,14 @@ describe('Service stockCountFactory', function () {
     expect(expectedStockCountDate).toBe(stockCountDueDate);
   });
 
-  it('i expect isStockCountDue return FALSE if Interval is daily and stock count for current date bas been completed.', function () {
+  it('i expect isStockCountDue to return FALSE if Interval is daily and stock count for current date has been completed.', function () {
     var dfd = $q.defer();
     var today = new Date();
     var stockCount = {
       countDate: today,
       isComplete: 1
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -218,7 +218,7 @@ describe('Service stockCountFactory', function () {
       countDate: countDate,
       isComplete: 1
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -239,7 +239,7 @@ describe('Service stockCountFactory', function () {
       countDate: today,
       isComplete: 0
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -256,7 +256,7 @@ describe('Service stockCountFactory', function () {
     var dfd = $q.defer();
     var today = new Date();
     var stockCount;//no stock count available.
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -273,7 +273,7 @@ describe('Service stockCountFactory', function () {
     var dfd = $q.defer();
     var today = new Date();
     var stockCount;//no stock count available.
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -290,7 +290,7 @@ describe('Service stockCountFactory', function () {
     var dfd = $q.defer();
     var today = new Date();
     var stockCount;//no stock count available.
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -312,7 +312,7 @@ describe('Service stockCountFactory', function () {
       countDate: weeklyStockCountDateInfo.reminderDate,
       isComplete: 1
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -329,7 +329,7 @@ describe('Service stockCountFactory', function () {
     var dfd = $q.defer();
     var today = new Date();
     var stockCount;//no stock count available.
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -358,7 +358,7 @@ describe('Service stockCountFactory', function () {
       countDate: lastWeekCOuntDate,
       isComplete: 1
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -382,7 +382,7 @@ describe('Service stockCountFactory', function () {
       countDate: lastWkCountDate,
       isComplete: 0
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -402,7 +402,7 @@ describe('Service stockCountFactory', function () {
       countDate: today,
       isComplete: 1
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -423,7 +423,7 @@ describe('Service stockCountFactory', function () {
       countDate: stockCountDate,
       isComplete: 1
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -446,7 +446,7 @@ describe('Service stockCountFactory', function () {
       countDate: weeklyStockCountDateInfo.reminderDate,
       isComplete: 1
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -468,7 +468,7 @@ describe('Service stockCountFactory', function () {
       countDate: weeklyStockCountDateInfo.reminderDate,
       isComplete: 0
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -493,7 +493,7 @@ describe('Service stockCountFactory', function () {
       countDate: new Date(rmDate.getFullYear(), rmDate.getMonth(), rmDate.getDate() + reminderDay), //a day after due date
       isComplete: 1
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -520,7 +520,7 @@ describe('Service stockCountFactory', function () {
       countDate: new Date(rmDate.getFullYear(), rmDate.getMonth(), rmDate.getDate() - reminderFactory.BI_WEEKLY), //two weeks ago
       isComplete: 0
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -545,7 +545,7 @@ describe('Service stockCountFactory', function () {
       countDate: new Date(rmDate.getFullYear(), rmDate.getMonth(), rmDate.getDate() + 1), //last week
       isComplete: 1
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
@@ -570,7 +570,7 @@ describe('Service stockCountFactory', function () {
       countDate: new Date(rmDate.getFullYear(), rmDate.getMonth(), rmDate.getDate() - reminderFactory.WEEKLY), //last week
       isComplete: 0
     };
-    spyOn(stockCountFactory, 'getMostRecentStockCount').andCallFake(function () {
+    spyOn(stockCountFactory, 'getLatestCompleteStockCount').andCallFake(function () {
       dfd.resolve(stockCount);
       return dfd.promise;
     });
