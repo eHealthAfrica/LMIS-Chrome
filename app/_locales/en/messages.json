@@ -667,5 +667,20 @@
   },
   "getStockCountByDateError": {
     "message": "Get stock count by date failed. contact support."
+  },
+  "migrationRequired": {
+    "message": "Applying application update"
+  },
+  "migrationFailed": {
+    "message": "Data migration failed. Please contact support."
+  },
+  "migrating": {
+    "message": "Your app is updating."
+  },
+  "add": {
+    "message": "Add"
+  },
+  "showStockCountFailed": {
+    "message": "Could not show Stock Count form, please contact support."
   }
 }

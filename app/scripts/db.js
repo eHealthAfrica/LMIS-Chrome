@@ -17,7 +17,6 @@ angular.module('db', [])
 	CCU_TYPE: 'ccu_type',
 	COMPANY: 'company',
 	COMPANY_CATEGORY: 'company_category',
-	CURRENCIES: 'currencies',
 	EMPLOYEE: 'employee',
 	EMPLOYEE_CATEGORY: 'employee_category',
 	FACILITY: 'facility',
@@ -33,10 +32,8 @@ angular.module('db', [])
 	PRODUCT_TYPES: 'product_types',
 	PROGRAM_PRODUCTS: 'program_products',
 	PROGRAMS: 'programs',
-	RATE: 'rate',
 	STOCK_OUT: 'stock_out',
 	UOM: 'uom',
 	UOM_CATEGORY: 'uom_category',
-	USER: 'user',
 	USER_RELATED_FACILITIES: 'user_related_facilities'
 });

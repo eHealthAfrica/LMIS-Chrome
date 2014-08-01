@@ -17,6 +17,12 @@ angular.module('lmisChromeApp')
       var surveyResponse = 'survey_response';
       var ccuBreakdown = 'ccu_breakdown';
       var pendingSyncs = 'pending_syncs';
+       //analytics
+      var pageviews = 'pageviews';
+      var clicks = 'clicks';
+      var exceptions = 'exceptions';
+      var analyticsLostRecords = 'analytics_lost_records';
+
       var FIXTURE_NAMES = utility.values(collections);
 
       /**
@@ -59,18 +65,6 @@ angular.module('lmisChromeApp')
       };
       
       /**
-       * clears the records of corresponding ids (no synchronization probs)
-       * @param tableName the table name
-       * @param uuids the uuids list
-       */
-      var removeRecordsFromTable = function(tableName, uuids){
-          uuids.forEach(function(uuid){
-              removeRecordFromTable(tableName, uuid);
-          });
-
-      };
-
-      /**
        * Remove a table from the store.
        *
        * @param key - Table name.
@@ -86,7 +80,12 @@ angular.module('lmisChromeApp')
        * @returns {*|boolean|!Promise|Promise}
        */
       var clearStorage = function() {
-        return pouchStorageService.clear();
+        var promises = [];
+        for(var i in _collections){
+          var dbName  = _collections[i];
+          promises.push(pouchStorageService.destroy(dbName));
+        }
+        return $q.all(promises);
       };
 
       /**
@@ -231,25 +230,30 @@ angular.module('lmisChromeApp')
       var setDatabase = function(table, data) {
         return pouchStorageService.bulkDocs(table, data);
       };
-      
-      var compactDb = function(table){
-          return pouchStorageService.compact(table)
-      }
+
+    // Union of fixtures and internal collections
+    var _collections = [
+      stockCount,
+      discardCount,
+      appConfig,
+      ccuBreakdown,
+      pendingSyncs
+    ].concat(FIXTURE_NAMES);
 
     var compactDatabases = function() {
-      var dbNames = FIXTURE_NAMES;
-      var localDbs = [
-        stockCount,
-        discardCount,
-        appConfig,
-        ccuBreakdown,
-        pendingSyncs
-      ];
-      dbNames.concat(localDbs);
       var promises = [];
-      for (var i in dbNames) {
-        var dbName = dbNames[i];
-        promises.push(pouchStorageService.compact(dbName))
+      for (var i in _collections) {
+        var dbName = _collections[i];
+        promises.push(pouchStorageService.compact(dbName));
+      }
+      return $q.all(promises);
+    };
+
+    var viewCleanups = function() {
+      var promises = [];
+      for (var i in _collections) {
+        var dbName = _collections[i];
+        promises.push(pouchStorageService.viewCleanup(dbName));
       }
       return $q.all(promises);
     };
@@ -259,7 +263,6 @@ angular.module('lmisChromeApp')
         add: setData,
         get: getData,
         removeRecord: removeRecordFromTable,
-        removeRecords: removeRecordsFromTable,
         remove: removeData,
         clear: clearStorage,
         uuid: utility.uuidGenerator,
@@ -268,7 +271,7 @@ angular.module('lmisChromeApp')
         save: saveData,
         setDatabase: setDatabase,
         compactDatabases: compactDatabases,
-        compact: compactDb,
+        viewCleanups: viewCleanups,
         where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,
@@ -278,7 +281,13 @@ angular.module('lmisChromeApp')
         PENDING_SYNCS: pendingSyncs,
         STOCK_COUNT: stockCount,
         SURVEY_RESPONSE: surveyResponse,
-        FIXTURE_NAMES: FIXTURE_NAMES
+        PAGE_VIEWS: pageviews,
+        CLICKS: clicks,
+        EXCEPTIONS: exceptions,
+        ANALYTICS_LOST_RECORDS: analyticsLostRecords,
+        FIXTURE_NAMES: FIXTURE_NAMES,
+        // TODO: remove, see item:751
+        _COLLECTIONS: _collections
       };
 
       return angular.extend(api, collections);

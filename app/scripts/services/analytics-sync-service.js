@@ -1,58 +1,61 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-        .service('analyticsSyncService', function($q, storageService, trackingFactory) {
-            var tracker = trackingFactory.tracker;
+  .service('analyticsSyncService', function($q, $log, storageService, trackingService, deviceInfoFactory) {
+    var tracker = trackingService.tracker;
 
-            //syncs analytics table
-            this.syncAnalyticsTable = function(table, code) {
-                var uuids = [];
-                storageService.all(table)
-                        .then(function(tableData) {
-                            tableData.forEach(function(data) {
-                                if (code === 0)
-                                    tracker.sendEvent('Offline Clicks', data.action, data.label);//clicks
-                                if (code === 1)
-                                    tracker.sendAppView(data.page);//pages
-                                if (code === 2)
-                                    tracker.sendException(data.opt_description, data.opt_fatal);//exceptions
-
-                                uuids.push(data.uuid);
-                            });
-                        })
-                        .then(function() {
-                            if (uuids.length > 0) {
-                                storageService.removeRecords(table, uuids);
-                            }
-                        })
-                        .finally(function() {
-                            console.log('pending table list cleared');
-                        });
-
-            };
-
-            //syncs analytics lost records
-            this.syncLostRecords = function(table, string) {
-                storageService.all(table)
-                        .then(function(data) {
-
-                            if (data.length > 0) {
-                                var obj = data[0];
-                                var records = obj.records;
-                                tracker.sendEvent("lost data", string, "", records);
-                                
-                                return obj;
-                            }
-
-                        })
-                        .then(function(obj) {
-                            if (obj)
-                                storageService.removeRecord(table, obj.uuid);
-                        })
-                        .finally(function() {
-                            console.log('pending lost analytics list cleared');
-                        });
-
-            };
-
+    function sync(type, syncFunction) {
+      return storageService.all(storageService[type])
+        .then(function(data) {
+          data.forEach(function(datum) {
+            syncFunction(datum);
+          });
+        })
+        .then(function() {
+          return storageService.remove(storageService[type]);
+        })
+        .then(function() {
+          $log.info('pending ' + type.toLowerCase() + ' list cleared');
         });
+    }
+
+    function syncClicks() {
+      function syncClick(click) {
+        // TODO: find a way to get a success flag here and delete if event
+        //       successfuly sent
+        tracker.sendEvent('Offline clicks', click.action, click.label);
+      }
+      return sync('CLICKS', syncClick);
+    }
+
+    function syncExceptions() {
+      function syncException(exception) {
+        $log.info('Exception UUID: ' + exception.uuid);
+      }
+      return sync('EXCEPTIONS', syncException);
+    }
+
+    function syncPageViews () {
+      function syncPageView(pageView) {
+        tracker.sendAppView(pageView.page);
+      }
+      return sync('PAGE_VIEWS', syncPageView);
+    }
+
+    this.syncOfflineAnalytics = function() {
+      var deferred = $q.defer();
+      deviceInfoFactory.canConnect()
+        .then(function() {
+          var promises = [
+             syncClicks(),
+             syncExceptions(),
+             syncPageViews()
+          ];
+          return $q.all(promises);
+        })
+        .catch(function(reason) {
+          deferred.reject(reason);
+        });
+      return deferred.promise;
+    };
+  });

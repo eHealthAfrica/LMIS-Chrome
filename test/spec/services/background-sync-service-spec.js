@@ -12,13 +12,38 @@ describe('Service: BackgroundSyncService', function() {
   var $q;
   var deviceInfoFactory;
   var pendingSync = { dbName: 'testdb', uuid: '1234567' };
+  var $timeout;
 
-  beforeEach(inject(function(_backgroundSyncService_, _storageService_, _syncService_, _$q_, _deviceInfoFactory_) {
+  beforeEach(inject(function($templateCache) {
+    // Mock each template used by the state
+    var templates = [
+      'index/index',
+      'index/header',
+      'index/breadcrumbs',
+      'index/footer',
+      'home/index',
+      'home/nav',
+      'home/sidebar',
+      'home/control-panel',
+      'home/main-activity',
+      'home/home',
+      'dashboard/dashboard',
+      'index/loading-fixture-screen',
+      'index/migration-screen'
+    ];
+
+    angular.forEach(templates, function(template) {
+      $templateCache.put('views/' + template + '.html', '');
+    });
+  }));
+
+  beforeEach(inject(function(_backgroundSyncService_, _storageService_, _$timeout_, _syncService_, _$q_, _deviceInfoFactory_) {
     backgroundSyncService = _backgroundSyncService_;
     storageService = _storageService_;
     syncService = _syncService_;
     $q =_$q_;
     deviceInfoFactory = _deviceInfoFactory_;
+    $timeout = _$timeout_;
     spyOn(storageService, 'find').andCallThrough();
   }));
 
@@ -49,10 +74,11 @@ describe('Service: BackgroundSyncService', function() {
   });
 
   describe('startBackgroundSync', function(){
-    it('should call deviceInfo.canConnect()', function(){
+    it('should call deviceInfoFactory.canConnect()', function(){
       spyOn(deviceInfoFactory, 'canConnect').andCallThrough();
       expect(deviceInfoFactory.canConnect).not.toHaveBeenCalled();
       backgroundSyncService.startBackgroundSync();
+      $timeout.flush(1);
       expect(deviceInfoFactory.canConnect).toHaveBeenCalled();
     });
 
@@ -63,6 +89,15 @@ describe('Service: BackgroundSyncService', function() {
             expect(reason).toBeDefined();
           });
       });
+    });
+  });
+
+  describe('cancel', function(){
+    it('should call $timeout.cancel()', function(){
+      spyOn($timeout, 'cancel').andCallThrough();
+      expect($timeout.cancel).not.toHaveBeenCalled();
+      backgroundSyncService.cancel();
+      expect($timeout.cancel).toHaveBeenCalled();
     });
   });
 

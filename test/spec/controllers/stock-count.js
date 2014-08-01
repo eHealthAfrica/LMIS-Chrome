@@ -10,7 +10,7 @@ describe('Controller: StockCountFormCtrl', function() {
   var _i18n;
   var $controller;
   var mostRecentStockCount = {};
-  var homeCtrlData =
+  var stockCountFactory;
 
   beforeEach(module('lmisChromeApp', 'appConfigMocks', 'stockCountMocks', 'i18nMocks', 'productWithCategoryMocks', 'fixtureLoaderMocks', function($provide) {
     //$provide.value('appConfig',{});
@@ -46,6 +46,7 @@ describe('Controller: StockCountFormCtrl', function() {
 
   beforeEach(inject(function(_$controller_, $state, _stockCountFactory_, _productType_, appConfigMock, stockData, i18n, productWithCategoryMock) {
     $controller = _$controller_;
+    stockCountFactory = _stockCountFactory_;
     scope = {};
     _i18n = i18n;
     stockCount = stockData;
@@ -122,7 +123,7 @@ describe('Controller: StockCountFormCtrl', function() {
         ctrlData = {
           $scope: scope,
           appConfig: appConfig,
-          stockCountByDate: {},
+          stockCounts: [],
           mostRecentStockCount: mostRecentStockCount,
           isStockCountReminderDue: false
         };
@@ -130,36 +131,56 @@ describe('Controller: StockCountFormCtrl', function() {
 
       }));
 
-      it('should be True if stock count is most recent stock count and stock count is not due.', function() {
+      it('should be Editable, if it is most recent stock count and count date is Greater than next count date.', function() {
         expect(stockCount.uuid).toBe(mostRecentStockCount.uuid);
-        expect(ctrlData.isStockCountReminderDue).toBeFalsy();
+        var sc = stockCount;
+        var nextDueDate = stockCountFactory.getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+        sc.countDate = new Date(nextDueDate.getFullYear(), nextDueDate.getMonth(), nextDueDate.getDate() + 1);
+
+        expect(nextDueDate.getTime()).toBeLessThan(sc.countDate.getTime());
         var result = scope.isEditable(stockCount);
         expect(result).toBeTruthy();
       });
 
-      it('should return False if stockCount is not most recent and stock count reminder is not due.', function() {
+      it('should NOT be editable, if it is NOT most recent and count date is Greater than next count date.', function() {
         stockCount.uuid = '1266272';//alter stock count
         expect(stockCount.uuid).not.toBe(mostRecentStockCount.uuid);
-        expect(ctrlData.isStockCountReminderDue).toBeFalsy();
+
+        var sc = stockCount;
+        var nextDueDate = stockCountFactory.getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+        sc.countDate = new Date(nextDueDate.getFullYear(), nextDueDate.getMonth(), nextDueDate.getDate() + 1);
+
+        expect(nextDueDate.getTime()).toBeLessThan(sc.countDate.getTime());
         var result = scope.isEditable(stockCount);
         expect(result).toBeFalsy();
       });
 
-      it('should return False if stock count reminder is True(i.e Due). and stock count is most recent stock count.', function(){
+      it('should NOT be editable, if it is most recent stock count and count date is Less Than next count date.', function(){
         ctrlData.isStockCountReminderDue = true;
         stockCountHomeCtrl = $controller('StockCountHomeCtrl', ctrlData);
-        expect(ctrlData.isStockCountReminderDue).toBeTruthy();
+
         expect(stockCount.uuid).toBe(mostRecentStockCount.uuid);
+        var sc = stockCount;
+        var nextDueDate = stockCountFactory.getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+        sc.countDate = new Date(nextDueDate.getFullYear(), nextDueDate.getMonth(), nextDueDate.getDate() - 1);
+
+        expect(sc.countDate.getTime()).toBeLessThan(nextDueDate.getTime());
         var result = scope.isEditable(stockCount);
         expect(result).toBeFalsy();
       });
 
-      it('should return False if stock count is not most recent and stock count is due.', function(){
+      it('should NOT be editable, if stock is not most recent and count date is Less Than next count date.', function(){
         ctrlData.isStockCountReminderDue = true;
         stockCount.uuid = '356271'; //alter stock count.
         stockCountHomeCtrl = $controller('StockCountHomeCtrl', ctrlData);
         expect(ctrlData.isStockCountReminderDue).toBeTruthy();
         expect(stockCount.uuid).not.toBe(mostRecentStockCount.uuid);
+
+        var sc = stockCount;
+        var nextDueDate = stockCountFactory.getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+        sc.countDate = new Date(nextDueDate.getFullYear(), nextDueDate.getMonth(), nextDueDate.getDate() - 1);
+        expect(sc.countDate.getTime()).toBeLessThan(nextDueDate.getTime());
+
         var result = scope.isEditable(stockCount);
         expect(result).toBeFalsy();
       });

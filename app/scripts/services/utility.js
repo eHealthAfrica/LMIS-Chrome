@@ -228,4 +228,34 @@ angular.module('lmisChromeApp')
     this.getDateTime = function() {
       return new Date().toJSON();
     };
+
+    // http://stackoverflow.com/a/1885660
+    // Expects arrays `a` and `b` to be sorted
+    // TODO: remove. See item:751
+    this.intersection = function(a, b) {
+      var ai=0, bi=0;
+      var result = [];
+      while(ai < a.length && bi < b.length) {
+         if      (a[ai] < b[bi] ){ ai++; }
+         else if (a[ai] > b[bi] ){ bi++; }
+         else {
+           result.push(a[ai]);
+           ai++;
+           bi++;
+         }
+      }
+      return result;
+    };
+
+    // http://underscorejs.org/#pick
+    // TODO: remove. See item:751
+    this.pick = function(obj, needles) {
+      var picked = {};
+      var haystack = Object.keys(obj);
+      var intersection = this.intersection(haystack.sort(), needles.sort());
+      intersection.forEach(function(key) {
+        picked[key] = obj[key];
+      });
+      return picked;
+    };
   });

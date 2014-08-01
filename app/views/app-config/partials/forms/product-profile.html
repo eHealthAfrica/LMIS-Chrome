@@ -19,6 +19,7 @@
                 ng-repeat="productProfile in productProfilesGroupedByCategory[ppCategory].productProfiles | filter:search track by productProfile.uuid">
           <label class="new-line padded-label pointer">
             <input type="checkbox" ng-model="productProfileCheckBoxes[productProfile.uuid]"
+                   ng-disabled="!developerMode"
                    ng-true-value="{{ productProfile }}"
                    ng-false-value="{{ {'uuid': productProfile.uuid, deSelected: true} }}"
                    ng-change="onProductProfileSelection(productProfileCheckBoxes[productProfile.uuid])"

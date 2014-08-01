@@ -28,7 +28,8 @@ describe('storageService', function () {
       'home/main-activity',
       'home/home',
       'dashboard/dashboard',
-      'index/loading-fixture-screen'
+      'index/loading-fixture-screen',
+      'index/migration-screen'
     ];
 
     angular.forEach(templates, function(template) {
@@ -53,7 +54,7 @@ describe('storageService', function () {
     spyOn(pouchStorageService, 'put').andReturn(deferred.promise);
     storageService.add('table', {uuid: 'value'});
     //FIXME: this doesnt if value was stored in table // set is called outside storageService add function scope;
-    //expect(pouchStorageService.set).toHaveBeenCalled();
+    //expect(pouchStorageService.put).toHaveBeenCalled();
   });
 
   it('should be able to get data from the table in the pouch storage', function(){
@@ -100,9 +101,9 @@ describe('storageService', function () {
   });
 
   it('should be able to clear all data from the pouch storage', function(){
-    spyOn(pouchStorageService, 'clear').andReturn(deferred.promise);
+    spyOn(pouchStorageService, 'destroy').andReturn(deferred.promise);
     storageService.clear();
-    expect(pouchStorageService.clear).toHaveBeenCalled();
+    expect(pouchStorageService.destroy).toHaveBeenCalled();
   });
 
   xit('should be able to resolve promise when clearing all data from the pouch storage', function(){

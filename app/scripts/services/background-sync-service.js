@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('backgroundSyncService', function($q, storageService, appConfigService, i18n, growl, pouchStorageService, syncService, deviceInfoFactory, fixtureLoaderService, analyticsSyncService){
+  .service('backgroundSyncService', function($q, storageService, appConfigService, i18n, growl, pouchStorageService, syncService, deviceInfoFactory, fixtureLoaderService, $timeout){
 
     var backgroundSyncInProgress = false;
+    var sync;
 
     /**
      * @private
@@ -45,7 +46,7 @@ angular.module('lmisChromeApp')
           innerDeferred.resolve(true);//completed
         }
         return innerDeferred.promise;
-      };
+      }
       //load pending syncs and attempt to sync all of them.
       return storageService.all(storageService.PENDING_SYNCS)
         .then(function(pendingSyncs) {
@@ -73,13 +74,14 @@ angular.module('lmisChromeApp')
               .then(function(remoteAppConfig) {
                 //TODO: should we just update local copy with remote or update only if they are different???.
                 //NB: at this point we already have both remote and local copies.
+                // SEE: item #776
                 remoteAppConfig.lastUpdated = new Date().toJSON();
                 return appConfigService.save(remoteAppConfig);
               });
           } else {
-            return 'app config is not an object.'
+            return $q.reject('app config is not an object.');
           }
-        })
+        });
     };
 
     /**
@@ -99,43 +101,39 @@ angular.module('lmisChromeApp')
         deferred.reject('background sync in progress.');
         return deferred.promise;
       }
-      return deviceInfoFactory.canConnect()
-        .then(function() {
-          backgroundSyncInProgress = true;
-          return fixtureLoaderService.loadRemoteAndUpdateStorageAndMemory(fixtureLoaderService.REMOTE_FIXTURES)
-            .then(function() {
-              return updateAppConfigFromRemote()
-                .then(function() {
-                  growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: -1 });
-                  return syncPendingRecords()
-                    .finally(function(){
-                      return storageService.compactDatabases();
-                    });
-                });
-            });
-        })
-        .finally(function() {
-          backgroundSyncInProgress = false;
-          return completedBackgroundSync;
-        });
+
+      sync = $timeout(function() {
+        return deviceInfoFactory.canConnect()
+          .then(function() {
+            backgroundSyncInProgress = true;
+            return fixtureLoaderService.loadRemoteAndUpdateStorageAndMemory(fixtureLoaderService.REMOTE_FIXTURES)
+              .then(function() {
+                return updateAppConfigFromRemote()
+                  .then(function() {
+                    var TEN_SECS = 10000;
+                    growl.success(i18n('remoteAppConfigUpdateMsg'), { ttl: TEN_SECS });
+                    return syncPendingRecords()
+                      .finally(function() {
+                        return storageService.compactDatabases();
+                      })
+                      .finally(function(){
+                        return storageService.viewCleanups();
+                      });
+                  });
+              });
+          })
+          .finally(function() {
+            backgroundSyncInProgress = false;
+            $timeout.cancel(sync);
+            return completedBackgroundSync;
+          });
+      }, 1);
+
+      return sync;
     };
-    
-  //analytics syncing bit
-  this.syncOfflineAnalytics = function(){
-      var deferred = $q.defer();
-      deviceInfoFactory.canConnect()
-        .then(function () {
-           analyticsSyncService.syncAnalyticsTable(storageService.CLICKS,0);
-           analyticsSyncService.syncAnalyticsTable(storageService.PAGEVIEWS,1);
-           analyticsSyncService.syncAnalyticsTable(storageService.EXCEPTIONS,2);
-           
-           analyticsSyncService.syncLostRecords(storageService.ANALYTICS_LOST_CLICKS ,'clicks');
-           analyticsSyncService.syncLostRecords(storageService.ANALYTICS_LOST_PAGEVIEWS ,'pageviews');
-           analyticsSyncService.syncLostRecords(storageService.ANALYTICS_LOST_EXCEPTIONS ,'exceptions');
-        }).catch(function (reason) {
-          deferred.reject(reason);
-        });
-        return deferred.promise;
-  };
+
+    this.cancel = function(){
+      $timeout.cancel(sync);
+    };
 
   });

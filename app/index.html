@@ -1,11 +1,12 @@
 <!doctype html>
-<html ng-app="lmisChromeApp">
+<html ng-app="lmisChromeApp" ng-csp>
 <head>
   <meta charset="utf-8">
   <title>Nigeria LMIS</title>
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height">
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/angular/angular-csp.css" />
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
   <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css" />
   <link rel="stylesheet" href="bower_components/bootstrap-theme-cosmo/cosmo.min.css" />
@@ -90,13 +91,13 @@
   <script src="scripts/services/alert-factory.js"></script>
   <script src="scripts/services/cache-service.js"></script>
   <script src="scripts/services/ccu-profile-factory.js"></script>
-  <script src="scripts/services/tracking-factory.js"></script>
+  <script src="scripts/services/tracking-service.js"></script>
   <script src="scripts/services/fixture-loader-service.js"></script>
   <script src="scripts/services/pouch-storage-service.js"></script>
-  <script src="scripts/services/idb-service.js"></script>
   <script src="scripts/services/memory-storage-service.js"></script>
-  <script src="scripts/services/analytics-sync-service.js"></script>
   <script src="scripts/services/background-sync-service.js"></script>
+  <script src="scripts/services/pouch-migration-service.js"></script>
+  <script src="scripts/services/chrome-storage-api.js"></script>
   <script src="scripts/services/analytics-sync-service.js"></script>
   <script src="scripts/directives/counter.js"></script>
   <script src="scripts/directives/i18n.js"></script>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('pouchStorageService', function(pouchdb, idbService, utility, config) {
+  .service('pouchStorageService', function(pouchdb, utility, config) {
     this.put = function(db, data) {
       db = pouchdb.create(db);
       return db.put(data, data.uuid);
@@ -29,11 +29,8 @@ angular.module('lmisChromeApp')
     };
 
     this.destroy = function(db) {
-      return pouchdb.destroy(db);
-    };
-
-    this.clear = function() {
-      return idbService.clear('_pouch_');
+      db = pouchdb.create(db);
+      return db.destroy();
     };
 
     this.bulkDocs = function(db, docs) {
@@ -46,9 +43,14 @@ angular.module('lmisChromeApp')
       return pouchdb.create(REMOTE_URI);
     };
 
-    this.compact = function(dbName){
-      var db = pouchdb.create(dbName);
+    this.compact = function(db){
+      db = pouchdb.create(db);
       return db.compact();
+    };
+
+    this.viewCleanup = function(db){
+      db = pouchdb.create(db);
+      return db.viewCleanup();
     };
 
   });

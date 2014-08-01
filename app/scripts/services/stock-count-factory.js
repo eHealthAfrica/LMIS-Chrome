@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService, i18n, reminderFactory, trackingFactory) {
+  .factory('stockCountFactory', function ($q, storageService, $http, $filter, utility, syncService, i18n, reminderFactory) {
 
     var STOCK_COUNT_DB = storageService.STOCK_COUNT;
 
@@ -43,34 +43,15 @@ angular.module('lmisChromeApp')
       /**
        * Add/Update Stock count
        *
-       * @param {object} _stockCount Data object.
+       * @param {object} stockCount Data object.
        * @return {Promise} return promise object
        * @public
        */
-      stock: function(_stockCount){
-        var deferred = $q.defer();
-        if(_stockCount.countDate instanceof Date){
-          _stockCount.countDate = _stockCount.countDate.toJSON();
+      stock: function(stockCount) {
+        if (stockCount.countDate instanceof Date) {
+          stockCount.countDate = stockCount.countDate.toJSON();
         }
-        validate.stock.countExist(_stockCount.countDate)
-            .then(function (stockCount) {
-              if (stockCount !== null) {
-                _stockCount.uuid = stockCount.uuid;
-              }
-              storageService.save(storageService.STOCK_COUNT, _stockCount)
-                  .then(function (uuid) {
-                    deferred.resolve(uuid);
-                    trackingFactory.postException(uuid, false);
-                  })
-                  .catch(function (reason) {
-                    deferred.reject(reason);
-                    trackingFactory.postException(reason, false);
-                  });
-            })
-            .catch(function (reason) {
-              deferred.reject(reason);
-            });
-        return deferred.promise;
+        return storageService.save(storageService.STOCK_COUNT, stockCount);
       }
     };
 
@@ -96,56 +77,31 @@ angular.module('lmisChromeApp')
        * @returns {promise}
        * @public
        */
-    var getStockCountByDate = function (date) {
-      var deferred = $q.defer();
-      storageService.all(storageService.STOCK_COUNT).then(function (stockCounts) {
-        var stockCount = null;
-        for (var index in stockCounts) {
-          var row = stockCounts[index];
-          if (utility.getFullDate(date) === utility.getFullDate(row.countDate)) {
-            stockCount = row;
-            break;
-          }
-        }
-        deferred.resolve(stockCount);
-      }).catch(function(reason){
-        deferred.reject(reason);
-      });
-      return deferred.promise;
-    };
+      var getStockCountByDate = function(date) {
+        return storageService.all(storageService.STOCK_COUNT)
+          .then(function(stockCounts) {
+            var stockCount = null;
+            for (var index in stockCounts) {
+              var row = stockCounts[index];
+              if (utility.getFullDate(date) === utility.getFullDate(row.countDate)) {
+                stockCount = row;
+                break;
+              }
+            }
+            return stockCount;
+          });
+      };
 
       /**
        * returns array of stock count objects sorted by count date.
        * @returns {promise|promise|*|promise|promise}
        */
-    var getAllStockCount = function(){
-      var deferred = $q.defer();
-      storageService.all(storageService.STOCK_COUNT)
-          .then(function (stockCounts) {
-            stockCounts = syncService.addSyncStatus(stockCounts);
-            deferred.resolve(stockCounts);
-          })
-          .catch(function (reason) {
-            deferred.reject(reason);
+      var getAllStockCount = function() {
+        return storageService.all(storageService.STOCK_COUNT)
+          .then(function(stockCounts) {
+            return syncService.addSyncStatus(stockCounts);
           });
-      return deferred.promise;
-    };
-
-    var getStockCountListByCountDate = function(){
-      var deferred = $q.defer();
-      var obj = {};
-      getAllStockCount()
-          .then(function (stockCountList) {
-            for (var i = 0; i < stockCountList.length; i++) {
-              obj[utility.getFullDate(stockCountList[i].countDate)] = stockCountList[i];
-            }
-            deferred.resolve(obj);
-          })
-          .catch(function (reason) {
-            deferred.resolve(obj);
-          });
-      return deferred.promise;
-    };
+      };
 
     var load={
       /**
@@ -154,15 +110,13 @@ angular.module('lmisChromeApp')
        * @param error
        */
       errorAlert: function(scope, error){
-        if(error === 1){
+        if (error === 1) {
           scope.productError = true;
           scope.productErrorMsg = i18n('stockCountErrorMsg');
-        }
-        else if (error === 2){
+        } else if (error === 2) {
           scope.productError = true;
           scope.productErrorMsg = i18n('discardErrorMsg');
-        }
-        else{
+        } else {
           scope.productError = false;
           scope.productErrorMsg = '';
         }
@@ -173,70 +127,63 @@ angular.module('lmisChromeApp')
      * @param facility
      * @returns {promise|promise|*|Function|promise}
      */
-      byFacility: function (facility) {
-        var deferred = $q.defer();
+      byFacility: function(facility) {
         var fUuid = typeof facility === 'string' ? facility : facility.uuid;
-        getAllStockCount().then(function (result) {
-          var res = result.filter(function (e) {
+        return getAllStockCount().then(function(result) {
+          var res = result.filter(function(e) {
             return e !== 'undefined' && e.facility === fUuid;
           });
-          deferred.resolve(res);
-        }, function (err) {
-          deferred.reject(err);
+          return res;
         });
-        return deferred.promise;
       }
     };
 
-    var getMostRecentStockCount = function(){
-      var deferred = $q.defer();
+    var getMostRecentStockCount = function() {
       var mostRecentStockCount;
-      getAllStockCount()
-          .then(function(result){
-            for(var index in result){
-              var stockCount = result[index];
-              if(typeof mostRecentStockCount === 'undefined'){
-                mostRecentStockCount = stockCount;
-                continue;
-              }
-
-              if(new Date(mostRecentStockCount.created).getTime() < new Date(stockCount.created).getTime()){
-                mostRecentStockCount = stockCount;
-              }
-
+      return getAllStockCount()
+        .then(function(result) {
+          for (var index in result) {
+            var stockCount = result[index];
+            if (typeof mostRecentStockCount === 'undefined') {
+              mostRecentStockCount = stockCount;
+              continue;
             }
-            deferred.resolve(mostRecentStockCount);
-          })
-          .catch(function(){
-            deferred.resolve(mostRecentStockCount);
-          });
-      return deferred.promise;
+
+            if (new Date(mostRecentStockCount.created).getTime() < new Date(stockCount.created).getTime()) {
+              mostRecentStockCount = stockCount;
+            }
+
+          }
+          return mostRecentStockCount;
+        });
     };
 
-    var isStockCountDue = function(stockCountInterval, reminderDay){
-      var deferred = $q.defer();
+    var isStockCountDue = function(stockCountInterval, reminderDay) {
       var isStockCountDue = true;
-      this.getMostRecentStockCount()
-          .then(function (recentStockCount) {
-            var mostRecentDueDate = new Date(getStockCountDueDate(stockCountInterval, reminderDay));
+      return this.getMostRecentStockCount()
+        .then(function(recentStockCount) {
+          var mostRecentDueDate = new Date(getStockCountDueDate(stockCountInterval, reminderDay));
 
-            isStockCountDue = (typeof recentStockCount === 'undefined' || recentStockCount.isComplete !== 1 ||
-                (new Date(recentStockCount.countDate).getTime()) < mostRecentDueDate.getTime());
+          isStockCountDue = (typeof recentStockCount === 'undefined' || recentStockCount.isComplete !== 1 ||
+            (new Date(recentStockCount.countDate).getTime()) < mostRecentDueDate.getTime());
 
-            deferred.resolve(isStockCountDue);
-          })
-          .catch(function (reason) {
-            deferred.reject(reason);
-          });
-      return deferred.promise;
+          return isStockCountDue;
+        });
+    };
+
+    var getByUuid = function(uuid){
+      return storageService.find(STOCK_COUNT_DB, uuid)
+        .then(function(stockCount){
+          return syncService.getSyncStatus(stockCount);
+        });
     };
 
     return {
       getStockCountDueDate: getStockCountDueDate,
       isStockCountDue: isStockCountDue,
       getMostRecentStockCount: getMostRecentStockCount,
-      getStockCountListByDate: getStockCountListByCountDate,
       getAll: getAllStockCount,
+      getByUuid: getByUuid,
       save:addRecord,
       get:load,
       getStockCountByDate: getStockCountByDate,
