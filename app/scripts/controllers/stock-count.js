@@ -19,13 +19,6 @@ angular.module('lmisChromeApp')
           },
           mostRecentStockCount: function(stockCountFactory){
             return stockCountFactory.getMostRecentStockCount();
-          },
-          isStockCountReminderDue: function(stockCountFactory, appConfig, $q) {
-            if (angular.isObject(appConfig)) {
-              return stockCountFactory.isStockCountDue(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
-            } else {
-              return $q.when(false);
-            }
           }
         },
         controller: 'StockCountHomeCtrl'
@@ -41,33 +34,50 @@ angular.module('lmisChromeApp')
         resolve:{
           appConfig: function(appConfigService){
             return appConfigService.getCurrentAppConfig();
+          },
+          mostRecentStockCount: function(stockCountFactory){
+            return stockCountFactory.getMostRecentStockCount();
           }
         }
       });
   })
-  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, growl, i18n, utility, stockCounts, appConfig, $state, mostRecentStockCount, isStockCountReminderDue){
+  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, growl, i18n, utility, stockCounts, appConfig, $state, mostRecentStockCount){
 
     var sortByCreatedDateDesc = function(scA, scB){
       return new Date(scA.created) < new Date(scB.created);
     };
+    var scInterval = appConfig.facility.stockCountInterval;
+    var reminderDay = appConfig.facility.reminderDay;
+
     $scope.sortedStockCount = stockCounts.sort(sortByCreatedDateDesc);
 
     $scope.isEditable = function(stockCount) {
-      var nextStockCountDueDate = stockCountFactory.getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
-      var isMostRecentStockCount = (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid === stockCount.uuid);
-      return isMostRecentStockCount && new Date(stockCount.countDate).getTime() >= new Date(nextStockCountDueDate).getTime();
+      return stockCountFactory.isEditable(stockCount, mostRecentStockCount, scInterval, reminderDay);
     };
+    var isMostRecentEditable = stockCountFactory.isEditable(mostRecentStockCount, mostRecentStockCount, scInterval, reminderDay);
+
+    $scope.enableAdd = !angular.isObject(mostRecentStockCount) || (isMostRecentEditable && mostRecentStockCount.isComplete);
 
     $scope.showStockCountFormByDate = function(stockCount) {
-      if(utility.has(stockCount, 'uuid') && utility.has(stockCount, 'countDate')){
-         $state.go('stockCountForm', {detailView: true, uuid: stockCount.uuid, editOff: !$scope.isEditable(stockCount) });
-      }else{
+      if (utility.has(stockCount, 'uuid') && utility.has(stockCount, 'countDate')) {
+        if (stockCount.isComplete === 1) {
+          $state.go('stockCountForm', { detailView: true, uuid: stockCount.uuid, editOff: !$scope.isEditable(stockCount) });
+        } else {
+          $state.go('stockCountForm', { detailView: false, uuid: stockCount.uuid, editOff: !$scope.isEditable(stockCount) });
+        }
+      } else {
         growl.error(i18n('showStockCountFailed'));
       }
     };
-  }).controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
+  })
+  .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
                                              $stateParams, appConfig, appConfigService, cacheService, syncService,
-                                             utility, $rootScope, i18n){
+                                             utility, $rootScope, i18n, mostRecentStockCount){
+
+    var scInterval = appConfig.facility.stockCountInterval;
+    var reminderDay = appConfig.facility.reminderDay;
+    var isMostRecentEditable = stockCountFactory.isEditable(mostRecentStockCount, mostRecentStockCount, scInterval, reminderDay);
+
     //TODO: refactor entire stock count controller to simpler more readable controller
     $scope.getCategoryColor = function(categoryName){
       if($scope.preview){
@@ -76,7 +86,16 @@ angular.module('lmisChromeApp')
       return categoryName.split(' ').join('-').toLowerCase();
     };
     $scope.isNew = ($stateParams.newStockCount === 'true');
-    $scope.uuid = $stateParams.uuid;
+
+    function getUuid() {
+      if (!angular.isString($stateParams.uuid) && isMostRecentEditable) {
+        return mostRecentStockCount.uuid;
+      }
+      return $stateParams.uuid;
+    }
+
+    $scope.uuid = getUuid();
+
     $scope.step = 0;
     $scope.facilityObject = appConfig.facility;
     $scope.selectedProductProfiles = appConfig.facility.selectedProductProfiles;
@@ -126,6 +145,7 @@ angular.module('lmisChromeApp')
       $scope.reportDay = new Date(Date.parse(date)).getDate();
     }
 
+    //TODO: call pickStockCOunt here.
     stockCountFactory.getByUuid($scope.uuid)
       .then(function(stockCount) {
         if ($scope.isNew !== true && stockCount !== null) {
