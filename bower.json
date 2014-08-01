@@ -16,6 +16,7 @@
     "chrome-platform-analytics": "GoogleChrome/chrome-platform-analytics#ea84600d1251fee9dd3fe274780f385d5d1c03f1"
   },
   "devDependencies": {
+    "angular-mocks": "~1.2.20",
     "jasmine-as-promised": "~0.0.8",
     "es5-shim": "~3.4.0"
   },
