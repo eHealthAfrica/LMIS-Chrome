@@ -192,6 +192,7 @@ angular.module('lmisChromeApp')
                           )
                         });
                     }
+                    
                     }
 
                     $scope.stockOutWarning = stockOutWarning;
