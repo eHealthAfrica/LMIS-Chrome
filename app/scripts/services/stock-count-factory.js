@@ -138,12 +138,17 @@ angular.module('lmisChromeApp')
       }
     };
 
-    var getMostRecentStockCount = function() {
+    var getLatestStockCount = function(complete) {
       var mostRecentStockCount;
       return getAllStockCount()
         .then(function(result) {
           for (var index in result) {
             var stockCount = result[index];
+
+            if (complete === true && stockCount.isComplete !== 1) {
+              continue;
+            }
+
             if (typeof mostRecentStockCount === 'undefined') {
               mostRecentStockCount = stockCount;
               continue;
@@ -158,9 +163,14 @@ angular.module('lmisChromeApp')
         });
     };
 
+    var getMostRecentStockCount = function() {
+      var shouldBeComplete = false;
+      return getLatestStockCount(shouldBeComplete);
+    };
+
     var isStockCountDue = function(stockCountInterval, reminderDay) {
       var isStockCountDue = true;
-      return this.getMostRecentStockCount()
+      return this.getLatestCompleteStockCount()
         .then(function(recentStockCount) {
           var mostRecentDueDate = new Date(getStockCountDueDate(stockCountInterval, reminderDay));
 
@@ -178,12 +188,28 @@ angular.module('lmisChromeApp')
         });
     };
 
+    var isEditable = function(stockCount, mostRecentStockCount, scInterval, reminderDay) {
+      scInterval = parseInt(scInterval);
+      reminderDay = parseInt(reminderDay);
+
+      var nextStockCountDueDate = getStockCountDueDate(scInterval, reminderDay);
+      var isMostRecentStockCount = (typeof mostRecentStockCount !== 'undefined') && (mostRecentStockCount.uuid === stockCount.uuid);
+      return isMostRecentStockCount && new Date(stockCount.countDate).getTime() >= new Date(nextStockCountDueDate).getTime();
+    };
+
+    var getLatestCompleteStockCount = function() {
+      var shouldBeComplete = true;
+      return getLatestStockCount(shouldBeComplete);
+    };
+
     return {
       getStockCountDueDate: getStockCountDueDate,
       isStockCountDue: isStockCountDue,
       getMostRecentStockCount: getMostRecentStockCount,
+      getLatestCompleteStockCount: getLatestCompleteStockCount,
       getAll: getAllStockCount,
       getByUuid: getByUuid,
+      isEditable: isEditable,
       save:addRecord,
       get:load,
       getStockCountByDate: getStockCountByDate,

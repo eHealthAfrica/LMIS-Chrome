@@ -5,7 +5,7 @@
   <div class="panel-body">
     <div class="row" ng-hide="detailView">
       <div class="col-sm-12">
-        <a class="btn btn-default" ui-sref="stockCountForm({newStockCount: true})">
+        <a class="btn btn-default" ui-sref="stockCountForm({newStockCount: true})" ng-disabled="!enableAdd">
             <i class="fa fa-plus"></i>
             <span i18n="add"></span>
         </a>

@@ -42,7 +42,7 @@
                 <div class="col-md-4 pull-left">
                     <button type="submit" ga-click="save" id="save" name="save" class="btn btn-success btn-lg"
                             ng-click="isSubmitted = true"
-                            ng-disabled="isSaving">
+                            ng-disabled="isSaving || !developerMode">
                         <span ng-show="!isSaving" i18n="save"></span>
                         <span ng-show="!isSaving"><i class="fa fa-floppy-o"></i></i></span>
                         <span ng-show="isSaving" i18n="saving"></span>

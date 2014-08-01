@@ -44,13 +44,13 @@ angular.module('lmisChromeApp')
           if(typeof stockCounts !== 'undefined')
           {
             stockCounts = stockCounts.filter(function(stockCount) {
-              return Object.keys(stockCount.unopened).some(function (ppid) { return profileIds.indexOf(ppid) !== -1; });
+              return stockCount.isComplete === 1;
             });
             if(stockCounts.length > 0)
             {
               stockCounts = stockCounts
                 .sort(function(a, b) {
-                  return (new Date(a.countDate).getTime() < new Date(b.countDate).getTime());
+                  return (new Date(a.created).getTime() < new Date(b.created).getTime());
                 });
               var mostRecent = stockCounts[0];
               if(typeof mostRecent !== 'undefined')

@@ -57,6 +57,7 @@ angular.module('lmisChromeApp', [
 
     function loadAppConfig() {
       //TODO: figure out a better way of knowing if the app has been configured or not.
+      $state.go('loadingFixture');
       storageService.all(storageService.APP_CONFIG)
       .then(function(res) {
         if (res.length > 0) {
@@ -70,11 +71,18 @@ angular.module('lmisChromeApp', [
               growl.error('loading storage into memory failed, contact support.', {ttl: -1});
             });
         } else {
-          //fresh install, download remote dbs
-          fixtureLoaderService.setupLocalAndMemoryStore(fixtureLoaderService.REMOTE_FIXTURES)
-            .catch(function(reason) {
-              console.error(reason);
-              growl.error('Local databases and memory storage setup failed, contact support.', {ttl: -1});
+          var loadRemoteFixture = function() {
+            return fixtureLoaderService.setupLocalAndMemoryStore(fixtureLoaderService.REMOTE_FIXTURES)
+              .catch(function(reason) {
+                console.error(reason);
+                growl.error('Local databases and memory storage setup failed, contact support.', {ttl: -1});
+              });
+          }
+          storageService.clear()
+            .then(loadRemoteFixture)
+            .catch(function(error){
+              growl.error('Fresh install setup failed, please contact support.', {ttl: -1});
+              console.error(error);
             });
         }
       })
