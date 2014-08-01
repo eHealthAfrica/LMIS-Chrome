@@ -34,9 +34,6 @@
   "license": "ISC",
   "private": true,
   "resolutions": {
-    "angular-mocks": "~1.2.20",
-  }
-}
     "d3": "~3.4.1"
   },
   "overrides": {
@@ -46,3 +43,5 @@
         "angular-csp.css"
       ]
     }
+  }
+}
