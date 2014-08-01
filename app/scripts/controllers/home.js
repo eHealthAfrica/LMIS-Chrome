@@ -192,16 +192,6 @@ angular.module('lmisChromeApp')
                           )
                         });
                     }
-
-                      values.push({
-                        label: utility.ellipsize(product.name, 7),
-                        stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
-                          product.stockLevel, product.bufferStock
-                        ),
-                        stockBelowReorder: inventoryRulesFactory.stockBelowReorder(
-                          product.stockLevel, product.bufferStock
-                        )
-                      });
                     }
 
                     $scope.stockOutWarning = stockOutWarning;
