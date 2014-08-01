@@ -49,10 +49,10 @@ angular.module('lmisChromeApp')
         return keyValue;
       };
 
-      return {
-        getAll: getProductCategories,
-        get: getByUuid,
-        getKeyValuePairs: getAllKeyValuePairs
-      };
+    return {
+      getAll: getProductCategories,
+      get: getByUuid,
+      getKeyValuePairs: getAllKeyValuePairs
+    };
 
-    });
+  });

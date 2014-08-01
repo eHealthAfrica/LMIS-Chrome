@@ -63,7 +63,7 @@ angular.module('lmisChromeApp')
             return pouchStorageService.remove(tableName, uuid, doc._rev);
           });
       };
-
+      
       /**
        * Remove a table from the store.
        *

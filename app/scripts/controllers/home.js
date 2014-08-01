@@ -180,17 +180,18 @@ angular.module('lmisChromeApp')
                       //TODO: gather those below reorder point and send background alert, if (product.stockLevel <= product.bufferStock && filtered.length === 0) {
                       if (product.stockLevel <= 0 && filtered.length === 0) {
                         stockOutWarning.push(uuid);
-                      }
+                      } else if (product.stockLevel > 0){
 
-                      values.push({
-                        label: utility.ellipsize(product.name, 7),
-                        stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
-                          product.stockLevel, product.bufferStock
-                        ),
-                        stockBelowReorder: inventoryRulesFactory.stockBelowReorder(
-                          product.stockLevel, product.bufferStock
-                        )
-                      });
+                        values.push({
+                          label: utility.ellipsize(product.name, 7),
+                          stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
+                            product.stockLevel, product.bufferStock
+                          ),
+                          stockBelowReorder: inventoryRulesFactory.stockBelowReorder(
+                            product.stockLevel, product.bufferStock
+                          )
+                        });
+                    }
                     }
 
                     $scope.stockOutWarning = stockOutWarning;
