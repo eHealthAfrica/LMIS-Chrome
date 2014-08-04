@@ -1,7 +1,16 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('locationFactory', function($q, $window, $rootScope) {
+  .factory('locationFactory', function($q, $window) {
+
+    var HALF_A_MIN = 30000;
+    var TEN_MINUTES = 600000;
+
+    var geoOptions = {
+      timeout: HALF_A_MIN,
+      maximumAge: TEN_MINUTES,
+      enableHighAccuracy: false
+    };
 
     var getGeoLocation = function(){
       var deferred = $q.defer();
@@ -16,7 +25,6 @@ angular.module('lmisChromeApp')
 
     var getCurrentPosition = function () {
       var deferred = $q.defer();
-
       getGeoLocation()
         .then(function (geoLocation) {
           var onSuccess = function (position) {
@@ -27,10 +35,7 @@ angular.module('lmisChromeApp')
             deferred.reject(error);
           };
 
-          geoLocation.getCurrentPosition(onSuccess, onError);
-        })
-        .catch(function (reason) {
-          deferred.reject(reason);
+          geoLocation.getCurrentPosition(onSuccess, onError, geoOptions);
         });
       return deferred.promise;
     };
