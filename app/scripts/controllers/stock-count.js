@@ -72,7 +72,7 @@ angular.module('lmisChromeApp')
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
                                              $stateParams, appConfig, appConfigService, cacheService, syncService,
-                                             utility, $rootScope, i18n, mostRecentStockCount){
+                                             utility, $rootScope, i18n, mostRecentStockCount, locationFactory){
 
     var scInterval = appConfig.facility.stockCountInterval;
     var reminderDay = appConfig.facility.reminderDay;
@@ -219,26 +219,22 @@ angular.module('lmisChromeApp')
       if(utility.has($scope, 'stockCount')) {
         $scope.stockCount.lastPosition = 0;
         $scope.stockCount.isComplete = 1;
-        $scope.redirect = true;
-        $scope.save();
 
-
-        //TODO: uncomment after fixing item:791.
         //attach position GeoPosition
-//        if(typeof $scope.stockCount.geoPosition === 'undefined'){
-//          $scope.stockCount.geoPosition = locationFactory.NO_GEO_POS;
-//        }
-//        locationFactory.getCurrentPosition()
-//          .then(function (curPos) {
-//            $scope.stockCount.geoPosition = locationFactory.getMiniGeoPosition(curPos);
-//            $scope.redirect = true;
-//            $scope.save();
-//          })
-//          .catch(function (err) {
-//            console.log(err);
-//            $scope.redirect = true;
-//            $scope.save();
-//          });
+        if(!angular.isObject($scope.stockCount.geoPosition)){
+          $scope.stockCount.geoPosition = locationFactory.NO_GEO_POS;
+        }
+        locationFactory.getCurrentPosition()
+          .then(function (curPos) {
+            $scope.stockCount.geoPosition = locationFactory.getMiniGeoPosition(curPos);
+            $scope.redirect = true;
+            $scope.save();
+          })
+          .catch(function (err) {
+            alert(JSON.stringify(err));
+            $scope.redirect = true;
+            $scope.save();
+          });
       }else{
         $scope.redirect = true;
         $scope.save();
