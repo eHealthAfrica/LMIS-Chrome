@@ -230,8 +230,7 @@ angular.module('lmisChromeApp')
             $scope.redirect = true;
             $scope.save();
           })
-          .catch(function (err) {
-            alert(JSON.stringify(err));
+          .catch(function () {
             $scope.redirect = true;
             $scope.save();
           });
