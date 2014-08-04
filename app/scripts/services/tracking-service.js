@@ -111,7 +111,6 @@ angular.module('lmisChromeApp')
         .then(function(config) {
           // Workaround item:750
           if (utility.has(config, 'uuid')) {
-            console.log(config);
             tracker.set('userId', config.uuid);
           }
         })
