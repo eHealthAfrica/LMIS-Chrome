@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default"  ng-show="!previewForm">
+            <div class="panel-heading">
+                <h4 class="panel-title">Log Incoming - 06 August, 2014</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row" ng-include="'views/bundles/partials/facility-info.html'"></div>
+            </div>
+            <div class="panel panel-default" ng-repeat="bundleLine in bundle.bundleLines"
+                 ng-include="'views/bundles/partials/bundle-line.html'">
+            </div>
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-default btn-lg btn-block" ng-click="addNewLine()">
+                    <i class="fa fa-plus"></i>
+                    <span>Add More</span>
+                </button>
+            </div>
+            <br/><br/>
+
+            <div class="col-sm-12">
+                <button type="button"
+                        class="btn btn-success btn-lg btn-block"
+                        ng-disabled="disableSave()"
+                        ng-click="preview()">
+                    <span i18n="save"></span>
+                    <i class="fa fa-save"></i>
+                </button>
+            </div>
+            <br/>
+        </div>
+
+        <div class="panel-body">
+            <div class="row" ng-if="previewForm" ng-include="'views/bundles/partials/preview-log-bundle.html'"></div>
+        </div>
+    </div>
+</div>
+
