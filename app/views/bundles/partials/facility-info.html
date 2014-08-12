@@ -21,8 +21,11 @@
 </div>
 <br/>
 <div class="col-sm-12">
-    <select class="form-control" ga-click="sending_facility" ng-model="bundle.sendingFacility">
-        <option value="">Select Sending Facility</option>
+    <select class="form-control"
+            ga-click="select_facility"
+            ng-model="placeholder.selectedFacility"
+            ng-change="setFacility()">
+        <option value="" ng-bind="selectFacility"></option>
         <option ng-repeat="facility in facilities"
                 value="{{ facility }}"
                 ng-selected="isSelectedFacility(facility)">

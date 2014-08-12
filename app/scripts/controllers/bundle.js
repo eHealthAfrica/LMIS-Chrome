@@ -3,37 +3,62 @@
 angular.module('lmisChromeApp')
   .config(function($stateProvider) {
     $stateProvider
-      .state('logIncomingHome', {
+      .state('logBundleHome', {
         parent: 'root.index',
-        url: '/log-incoming-home',
+        url: '/log-bundle-home?type',
         templateUrl: '/views/bundles/index.html',
-        controller: 'LogIncomingHomeCtrl',
+        controller: 'LogBundleHomeCtrl',
         resolve: {
-          incomingBundles: function(bundleService){
+          bundles: function(bundleService) {
             return bundleService.getAll();
           }
-        },
-        data: {
-          label: 'Incoming Home'
         }
       })
-      .state('logIncoming', {
-      parent: 'root.index',
-      url: '/log-incoming?preview&uuid',
-      templateUrl: '/views/bundles/log-incoming.html',
-      controller: 'LogIncomingCtrl',
-      resolve: {
-        appConfig: function(appConfigService){
-          return appConfigService.getCurrentAppConfig();
+      .state('logBundle', {
+        parent: 'root.index',
+        url: '/log-bundle?type&preview&uuid',
+        templateUrl: '/views/bundles/log-incoming.html',
+        controller: 'LogBundleCtrl',
+        resolve: {
+          appConfig: function(appConfigService) {
+            return appConfigService.getCurrentAppConfig();
+          }
         }
-      },
-      data: {
-        label: 'Log Incoming'
-      }
-    });
+      });
   })
-  .controller('LogIncomingHomeCtrl', function($scope, incomingBundles, $state, utility, productProfileFactory){
-    $scope.incomingBundles = utility.castArrayToObject(incomingBundles, '_id');
+  .controller('LogBundleHomeCtrl', function($scope, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n) {
+
+    var logIncoming = bundleService.INCOMING;
+    var logOutgoing = bundleService.OUTGOING;
+    if ($stateParams.type !== logIncoming && $stateParams.type !== logOutgoing) {
+      $state.go('home.index.home.mainActivity');
+      growl.error(i18n('specifyBundleType'));
+      return;
+    }
+
+    function setUITexts(type) {
+      if ($stateParams.type === logIncoming) {
+        $scope.logBundleTitle = i18n('logIncoming');
+        $scope.facilityHeader = i18n('sentTo');
+        $scope.previewFacilityLabel = i18n('previewSendingFacilityLabel');
+      } else if ($stateParams.type === logOutgoing) {
+        $scope.logBundleTitle = i18n('logOutgoing');
+        $scope.facilityHeader = i18n('receivedFrom');
+        $scope.previewFacilityLabel = i18n('previewReceivingFacilityLabel');
+      } else {
+        $scope.logFormTitle = i18n('unknownBundleType');
+      }
+    };
+
+    setUITexts($stateParams.type);
+
+    $scope.showLogBundleForm = function() {
+      $state.go('logBundle', { type: $stateParams.type });
+    };
+    $scope.bundles = bundles.filter(function(e) {
+      return e.type === $stateParams.type;
+    });
+    $scope.bundles = utility.castArrayToObject($scope.bundles, '_id');
     $scope.previewBundle = {};
     $scope.preview = false;
 
@@ -43,15 +68,49 @@ angular.module('lmisChromeApp')
         bundle.bundleLines[i].productProfile = productProfileFactory.get(ppUuid);
       }
       $scope.previewBundle = bundle;
+      if ($stateParams.type === logIncoming) {
+        $scope.previewBundle.facility = bundle.sendingFacility;
+      } else if ($stateParams.type === logOutgoing) {
+        $scope.previewBundle.facility = bundle.receivingFacility;
+      }
       $scope.preview = true;
     };
 
-    $scope.hidePreview = function(){
+    $scope.hidePreview = function() {
       $scope.preview = false;
     };
 
   })
-  .controller('LogIncomingCtrl', function($scope, appConfig, productProfileFactory, bundleService, growl, $state, alertFactory, $stateParams) {
+  .controller('LogBundleCtrl', function($scope, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, $stateParams, $filter) {
+
+    var logIncoming = bundleService.INCOMING;
+    var logOutgoing = bundleService.OUTGOING;
+    if ($stateParams.type !== logIncoming && $stateParams.type !== logOutgoing) {
+      $state.go('home.index.home.mainActivity');
+      growl.error(i18n('specifyBundleType'));
+      return;
+    }
+    $scope.placeholder = {
+      selectedFacility: ''
+    };
+    $scope.previewFacilityLabel = '';
+
+    function setUIText(type) {
+      var today = $filter('date')(new Date(), 'dd MMM, yyyy')
+      if ($stateParams.type === logIncoming) {
+        $scope.logBundleTitle = [i18n('logIncoming'), '-', today].join(' ');
+        $scope.selectFacility = i18n('selectSender');
+        $scope.previewFacilityLabel = i18n('previewSendingFacilityLabel');
+      } else if ($stateParams.type === logOutgoing) {
+        $scope.logBundleTitle = [i18n('logOutgoing'), '-', today].join(' ');
+        $scope.selectFacility = i18n('selectReceiver');
+        $scope.previewFacilityLabel = i18n('previewReceivingFacilityLabel');
+      } else {
+        $scope.logFormTitle = i18n('unknownBundleType');
+      }
+    }
+
+    setUIText($stateParams.type);
 
     $scope.productProfiles = productProfileFactory.getAll();
     $scope.batches = [];
@@ -60,11 +119,17 @@ angular.module('lmisChromeApp')
     $scope.previewForm = false;
     //TODO: pull real facility list
     $scope.facilities = [
-      appConfig.facility
+      appConfig.facility,
+      {
+        uuid: '123029292',
+        name: 'Nearby Facility'
+      }
     ];
+
     $scope.bundle = {
+      type: $stateParams.type,
       receivedOn: new Date().toJSON(),
-      receivingFacility: appConfig.facility,
+      receivingFacility: {},
       bundleLines: []
     };
 
@@ -82,10 +147,11 @@ angular.module('lmisChromeApp')
       });
     };
 
-    $scope.isSelectedFacility =  function(fac){
+    $scope.isSelectedFacility = function(fac) {
+      //TODO: refactor
       var sendingFacObj = $scope.bundle.sendingFacility;
-      if(angular.isDefined(sendingFacObj) && angular.isDefined(fac)){
-        if(angular.isString(sendingFacObj) && sendingFacObj.length > 0){
+      if (angular.isDefined(sendingFacObj) && angular.isDefined(fac)) {
+        if (angular.isString(sendingFacObj) && sendingFacObj.length > 0) {
           sendingFacObj = JSON.parse(sendingFacObj);
         }
         return sendingFacObj.uuid === fac.uuid;
@@ -101,26 +167,45 @@ angular.module('lmisChromeApp')
       return bundle;
     };
 
-    $scope.preview = function(){
+    $scope.preview = function() {
       //TODO: Validate bundle obj and show preview if valid.
       //TODO: create new facility obj for preview from uuid, hence no need to track currently selected facility.
       $scope.previewForm = true;
       $scope.previewBundle = angular.copy($scope.bundle);
-      $scope.previewBundle.sendingFacility = JSON.parse($scope.previewBundle.sendingFacility);
+      if ($stateParams.type === logIncoming) {
+        $scope.previewBundle.facility = $scope.bundle.sendingFacility;
+      } else if ($stateParams.type === logOutgoing) {
+        $scope.previewBundle.facility = $scope.bundle.receivingFacility;
+      }
       updateBundleLines($scope.previewBundle);
     };
 
-    $scope.disableSave = function(){
-      return $scope.bundle.bundleLines.length === 0 || $scope.bundle.sendingFacility.length === 0;
+    $scope.setFacility = function() {
+      var selectedFacility = $scope.placeholder.selectedFacility;
+      if (selectedFacility === '') {
+        return;
+      }
+      if ($stateParams.type === logIncoming) {
+        $scope.bundle.sendingFacility = JSON.parse(selectedFacility);
+        $scope.bundle.receivingFacility = appConfig.facility;
+      } else if ($stateParams.type === logOutgoing) {
+        $scope.bundle.receivingFacility = JSON.parse(selectedFacility);
+        $scope.bundle.sendingFacility = appConfig.facility;
+      } else {
+        growl.error(i18n('unknownBundleType'));
+      }
     };
 
-    $scope.showForm = function(){
+    $scope.disableSave = function() {
+      return $scope.bundle.bundleLines.length === 0 || $scope.placeholder.selectedFacility === '';
+    };
+
+    $scope.showForm = function() {
       $scope.previewForm = false;
     };
 
-    $scope.finalSave = function(){
+    $scope.finalSave = function() {
       var bundle = angular.copy($scope.bundle);
-      bundle.sendingFacility = JSON.parse(bundle.sendingFacility);
       bundleService.save(bundle)
         .then(function() {
           alertFactory.success('Incoming bundle logged successfully.');
