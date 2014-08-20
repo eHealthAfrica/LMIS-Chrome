@@ -7,11 +7,16 @@
             <div class="panel-body">
                 <div class="row" ng-include="'views/bundles/partials/facility-info.html'"></div>
             </div>
-            <div class="panel panel-default" ng-repeat="bundleLine in bundle.bundleLines"
-                 ng-include="'views/bundles/partials/bundle-line.html'">
-            </div>
+            <form name="bundleLineForm" class="css-form" novalidate>
+                <div class="panel panel-default" ng-repeat="bundleLine in bundle.bundleLines"
+                     ng-include="'views/bundles/partials/bundle-line.html'">
+                </div>
+            </form>
             <div class="col-sm-12">
-                <button type="button" class="btn btn-default btn-lg btn-block" ng-click="addNewLine()">
+                <button type="button"
+                        class="btn btn-default btn-lg btn-block"
+                        ng-click="addNewLine()"
+                        ng-disabled="bundleLineForm.$invalid">
                     <i class="fa fa-plus"></i>
                     <span i18n="addStockItem"></span>
                 </button>
@@ -21,7 +26,7 @@
             <div class="col-sm-12">
                 <button type="button"
                         class="btn btn-success btn-lg btn-block"
-                        ng-disabled="disableSave()"
+                        ng-disabled="bundleLineForm.$invalid"
                         ng-click="preview()">
                     <span i18n="save"></span>
                     <i class="fa fa-save"></i>

@@ -1,22 +1,15 @@
 <div class="col-sm-12">
-    <select class="form-control" ga-click="select_sender_lga">
-        <option value="">Select LGA</option>
-        <option value="LGA 1">LGA 1</option>
-        <option value="LGA 2">LGA 2</option>
-        <option value="LGA 3">LGA 3</option>
-        <option value="LGA 4">LGA 4</option>
-        <option value="LGA 5">LGA 5</option>
+    <select class="form-control" ga-click="select_sender_lga" ng-model="selectedLGA" ng-change="getWards(selectedLGA)">
+        <option value="" ng-bind="LGALabel"></option>
+        <option value="{{lga._id}}" ng-repeat="lga in lgas">{{lga.name}}</option>
+
     </select>
 </div>
 <br/>
 <div class="col-sm-12">
-    <select class="form-control" ga-click="select_sender_Ward">
-        <option value="">Select Ward</option>
-        <option value="LGA 1">Ward 1</option>
-        <option value="LGA 2">Ward 2</option>
-        <option value="LGA 3">Ward 3</option>
-        <option value="LGA 4">Ward 4</option>
-        <option value="LGA 5">Ward 5</option>
+    <select class="form-control" ga-click="select_sender_Ward" ng-model="selectedWard" ng-change="getFacilities(selectedWard)">
+        <option value="" ng-bind="WardLabel">Select  Ward</option>
+        <option value="{{ward._id}}" ng-repeat=" ward in wards ">{{ward.name}}</option>
     </select>
 </div>
 <br/>

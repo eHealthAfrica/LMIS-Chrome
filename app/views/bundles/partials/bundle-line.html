@@ -1,6 +1,6 @@
 <div class="panel-heading">
     <h4 class="panel-title">{{ $index + 1 }}</h4>
-    <span class="removeIcon">
+    <span class="removeIcon" ng-show="$index > 0">
         <i ng-click="removeLine(bundleLine)" class="pull-center text-muted fa fa-times"></i>
     </span>
 </div>
@@ -27,3 +27,4 @@
     <counter bind="bundleLine.quantity"></counter>
 </div>
 <br/>
+<div ng-show="goodTogo(bundlineForm,'batchNo')">Please enter valid batch number!</div>

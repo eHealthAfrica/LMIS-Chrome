@@ -689,6 +689,12 @@
   "logOutgoing": {
     "message": "Log Outgoing"
   },
+  "OutgoingDelivery": {
+    "message": "Outgoing Delivery"
+  },
+  "IncomingDelivery": {
+    "message": "Incoming Delivery"
+  },
   "specifyBundleType": {
     "message": "Specify bundle type."
   },
@@ -714,7 +720,7 @@
     "message": "Receiving facility"
   },
   "addStockItem": {
-    "message": "Add stock item"
+    "message": "Add Another Stock Item"
   },
   "selectLga": {
     "message": "Select $whom$  LGA",

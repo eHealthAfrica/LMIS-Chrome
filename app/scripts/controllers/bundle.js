@@ -30,6 +30,7 @@ angular.module('lmisChromeApp')
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
+
     if ($stateParams.type !== logIncoming && $stateParams.type !== logOutgoing) {
       $state.go('home.index.home.mainActivity');
       growl.error(i18n('specifyBundleType'));
@@ -38,12 +39,12 @@ angular.module('lmisChromeApp')
 
     function setUITexts(type) {
       if ($stateParams.type === logIncoming) {
-        $scope.logBundleTitle = i18n('logIncoming');
-        $scope.facilityHeader = i18n('sentTo');
+        $scope.logBundleTitle = i18n('IncomingDelivery');
+        $scope.facilityHeader = i18n('receivedFrom');
         $scope.previewFacilityLabel = i18n('previewSendingFacilityLabel');
       } else if ($stateParams.type === logOutgoing) {
-        $scope.logBundleTitle = i18n('logOutgoing');
-        $scope.facilityHeader = i18n('receivedFrom');
+        $scope.logBundleTitle = i18n('OutgoingDelivery');
+        $scope.facilityHeader = i18n('sentTo');
         $scope.previewFacilityLabel = i18n('previewReceivingFacilityLabel');
       } else {
         $scope.logFormTitle = i18n('unknownBundleType');
@@ -85,6 +86,43 @@ angular.module('lmisChromeApp')
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
+
+    $scope.lgas = bundleService.lga;
+    var wards = bundleService.wards;
+    var facilities = bundleService.fac;
+    $scope.selectedLGA = '';
+    $scope.selectedWard = '';
+    $scope.wards = [];
+    $scope.facilities =[];
+
+    $scope.getWards = function(lga){
+        var i =0;
+        $scope.wards = [];
+        while( i < wards.length){
+
+            if (wards[i].lga_id === lga) {
+
+                $scope.wards.push(wards[i]);
+             }
+            i++;
+        };
+
+    };
+    $scope.goodToGo = function(bundlineForm,field){
+        return bundlineForm.$error[field]
+    }
+    $scope.getFacilities = function(ward){
+        var i =0;
+        $scope.facilities = [];
+        while( i < facilities.length){
+
+            if (facilities[i].ward_id === ward) {
+
+                $scope.facilities.push(facilities[i]);
+             }
+            i++;
+        };
+    }
     if ($stateParams.type !== logIncoming && $stateParams.type !== logOutgoing) {
       $state.go('home.index.home.mainActivity');
       growl.error(i18n('specifyBundleType'));
@@ -96,15 +134,22 @@ angular.module('lmisChromeApp')
     $scope.previewFacilityLabel = '';
 
     function setUIText(type) {
+        //_id ===
       var today = $filter('date')(new Date(), 'dd MMM, yyyy')
       if ($stateParams.type === logIncoming) {
-        $scope.logBundleTitle = [i18n('logIncoming'), '-', today].join(' ');
+        $scope.logBundleTitle = [i18n('IncomingDelivery'), '-', today].join(' ');
         $scope.selectFacility = i18n('selectSender');
         $scope.previewFacilityLabel = i18n('previewSendingFacilityLabel');
+        $scope.LGALabel = "Select sending LGA";
+        $scope.WardLabel = "Select sending ward";
+
       } else if ($stateParams.type === logOutgoing) {
-        $scope.logBundleTitle = [i18n('logOutgoing'), '-', today].join(' ');
+        $scope.logBundleTitle = [i18n('OutgoingDelivery'), '-', today].join(' ');
         $scope.selectFacility = i18n('selectReceiver');
         $scope.previewFacilityLabel = i18n('previewReceivingFacilityLabel');
+        $scope.LGALabel = "Select receiving lga";
+        $scope.WardLabel = "Select receiving ward";
+
       } else {
         $scope.logFormTitle = i18n('unknownBundleType');
       }
@@ -118,13 +163,13 @@ angular.module('lmisChromeApp')
     $scope.previewBundle = {};
     $scope.previewForm = false;
     //TODO: pull real facility list
-    $scope.facilities = [
+   /* $scope.facilities = [
       appConfig.facility,
       {
         uuid: '123029292',
         name: 'Nearby Facility'
       }
-    ];
+    ];*/
 
     $scope.bundle = {
       type: $stateParams.type,
@@ -132,8 +177,16 @@ angular.module('lmisChromeApp')
       receivingFacility: {},
       bundleLines: []
     };
+     $scope.bundle.bundleLines.push({
+        id: id++,
+        batchNo: '',
+        productProfile: ''
+      });
+
 
     $scope.addNewLine = function() {
+
+      //console.log($scope.bundleLine);
       $scope.bundle.bundleLines.push({
         id: id++,
         batchNo: '',
@@ -197,6 +250,9 @@ angular.module('lmisChromeApp')
     };
 
     $scope.disableSave = function() {
+
+      //angular.forEach($scope.bundle.bundleLines)
+
       return $scope.bundle.bundleLines.length === 0 || $scope.placeholder.selectedFacility === '';
     };
 
