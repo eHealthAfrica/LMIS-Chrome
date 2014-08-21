@@ -9,6 +9,12 @@ angular.module('lmisChromeApp')
              {_id : "3526", name : "Albasu"},
              {_id : "3527", name : "Bagwai"},
              {_id : "3528", name : "Bebeji"},
+            {_id : "3529", name : "Bichi" },
+            {_id : "3530", name : "Bunkure"  },
+            {_id : "3531", name : "Dala"  },
+            {_id : "3532", name : "Dambatta "},
+            {_id : "3533", name : "Dawakin Kudu "},
+
         ]
         this.wards = [
             {_id : "3525-1", name : "Ward-5-1", lga_id : "3525"},
