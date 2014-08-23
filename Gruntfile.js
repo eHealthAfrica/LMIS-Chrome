@@ -348,9 +348,8 @@ module.exports = function(grunt) {
       options: {
         name: 'config',
         dest: '<%= yeoman.app %>/scripts/config.js',
-        template: grunt.file.read('.ngconstant.tpl.ejs'),
-        serializer: function(obj) {
-          return require('util').inspect(obj);
+        serializerOptions: {
+          indent: ' '
         }
       },
       // Targets
@@ -391,24 +390,16 @@ module.exports = function(grunt) {
         files: [
           'package.json',
           'bower.json',
-          'app/manifest.json'
+          'app/manifest.json',
+          'app/manifest.mobile.json'
         ],
         commitFiles: '<%= bump.options.files %>',
         pushTo: 'origin'
       }
     },
 
-    bumpAndroid: {
-      options: {
-        files: [
-          'app/manifest.mobile.json'
-        ],
-        commit: true,
-        commitMessage: 'Bump Android version code to v%VERSION%',
-        commitFiles: '<%= bumpAndroid.options.files %>',
-        createTag: false,
-        push: false
-      }
+    bumpCCA: {
+      target: {}
     },
 
     wiredepCopy: {
@@ -551,7 +542,7 @@ module.exports = function(grunt) {
       bump += ':' + versionType;
     }
     grunt.task.run([
-      'bumpAndroid',
+      'bumpCCA',
       bump
     ]);
   });
