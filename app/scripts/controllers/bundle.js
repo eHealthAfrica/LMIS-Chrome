@@ -62,7 +62,7 @@ angular.module('lmisChromeApp')
     $scope.bundles = utility.castArrayToObject($scope.bundles, '_id');
     $scope.previewBundle = {};
     $scope.preview = false;
-
+    console.log(bundles)
     $scope.showBundle = function(bundle) {
       for (var i in bundle.bundleLines) {
         var ppUuid = bundle.bundleLines[i].productProfile;
@@ -82,7 +82,7 @@ angular.module('lmisChromeApp')
     };
 
   })
-  .controller('LogBundleCtrl', function($scope, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, $stateParams, $filter) {
+  .controller('LogBundleCtrl', function($scope, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter) {
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
@@ -225,6 +225,7 @@ angular.module('lmisChromeApp')
       //TODO: create new facility obj for preview from uuid, hence no need to track currently selected facility.
       $scope.previewForm = true;
       $scope.previewBundle = angular.copy($scope.bundle);
+
       if ($stateParams.type === logIncoming) {
         $scope.previewBundle.facility = $scope.bundle.sendingFacility;
       } else if ($stateParams.type === logOutgoing) {
@@ -264,9 +265,11 @@ angular.module('lmisChromeApp')
       var bundle = angular.copy($scope.bundle);
       bundleService.save(bundle)
         .then(function() {
-          alertFactory.success('Incoming bundle logged successfully.');
-          $state.go('home.index.home.mainActivity');
-          //TODO: sync
+          syncService.syncUpRecord(bundleService.BUNDLE_DB, bundle)
+              .finally(function(){
+                  alertFactory.success('Incoming bundle logged successfully.');
+                  $state.go('home.index.home.mainActivity');
+              });
         })
         .catch(function(error) {
           console.error(error);
