@@ -1,0 +1,45 @@
+<div class="panel panel-default" ng-if="preview === false">
+    <div class="panel-heading">
+        <h1 class="panel-title" ng-bind="logBundleTitle"></h1>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <a class="btn btn-default" ng-click="showLogBundleForm()">
+                    <i class="fa fa-plus"></i>
+                    <span i18n="add"></span>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center" ng-bind="facilityHeader"></th>
+                        <th class="text-center" i18n="date"></th>
+                        <th class="text-center" i18n="synced"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="bundle in bundles"  ng-click="showBundle(bundle)">
+                        <td class="text-center">{{ $index + 1 }}</td>
+                        <td class="text-center" ng-bind="bundle.sendingFacility.name"></td>
+                        <td class="text-center">{{ bundle.receivedOn |  date:'MMM dd, yyyy' }}</td>
+                        <td class="text-center">
+                            <i class="fa " ng-class="{'fa-check-circle text-success': bundle.synced, 'fa-times-circle text-danger': !bundle.synced}"></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="col-sm-15"
+     ng-if="preview !== false"
+     ng-include="'views/bundles/partials/preview-log-bundle.html'">
+</div>

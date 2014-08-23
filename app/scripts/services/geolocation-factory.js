@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .factory('locationFactory', function($q, $window) {
+  .factory('geolocationFactory', function($q, $window, $rootScope) {
 
     var HALF_A_MIN = 30000;
     var TEN_MINUTES = 600000;
@@ -25,6 +25,7 @@ angular.module('lmisChromeApp')
 
     var getCurrentPosition = function () {
       var deferred = $q.defer();
+
       getGeoLocation()
         .then(function (geoLocation) {
           var onSuccess = function (position) {

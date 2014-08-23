@@ -1,24 +1,24 @@
 'use strict';
 
-describe('Locations factory', function() {
+describe('Geo-Locations factory', function() {
 
   beforeEach(module('lmisChromeApp', 'i18nMocks'));
 
-  var locationFactory;
+  var geolocationFactory;
 
-  beforeEach(inject(function (_locationFactory_) {
-    locationFactory = _locationFactory_;
+  beforeEach(inject(function (_geolocationFactory_) {
+    geolocationFactory = _geolocationFactory_;
   }));
 
-  it('i expect locationFactory to be defined.', function(){
-    expect(locationFactory).toBeDefined();
+  it('i expect geolocationFactory to be defined.', function(){
+    expect(geolocationFactory).toBeDefined();
   });
 
-  it('i expect locationFactory to have a NO_GEO_POS object.', function(){
-    expect(locationFactory.NO_GEO_POS).toBeDefined();
+  it('i expect geolocationFactory to have a NO_GEO_POS object.', function(){
+    expect(geolocationFactory.NO_GEO_POS).toBeDefined();
   });
 
-   it('i expect locationFactory.getCurrentGeoPosition() to return geoPosition.', function(){
+   it('i expect geolocationFactory.getCurrentGeoPosition() to return geoPosition.', function(){
      var currentPosition = {
       coords: {
         accuracy: 22,
@@ -38,7 +38,7 @@ describe('Locations factory', function() {
        longitude: currentPosition.coords.longitude
      };
 
-     var miniGeoPosInfo = locationFactory.getMiniGeoPosition(currentPosition);
+     var miniGeoPosInfo = geolocationFactory.getMiniGeoPosition(currentPosition);
 
      expect(miniGeoPosInfo).toEqual(expectedResult);
    });

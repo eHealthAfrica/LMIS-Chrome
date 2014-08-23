@@ -87,7 +87,7 @@ angular.module('lmisChromeApp')
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
                                              $stateParams, appConfig, appConfigService, cacheService, syncService,
-                                             utility, $rootScope, i18n, mostRecentStockCount, locationFactory){
+                                             utility, $rootScope, i18n, mostRecentStockCount, geolocationFactory){
 
     var scInterval = appConfig.facility.stockCountInterval;
     var reminderDay = appConfig.facility.reminderDay;
@@ -237,11 +237,11 @@ angular.module('lmisChromeApp')
 
         //attach position GeoPosition
         if(!angular.isObject($scope.stockCount.geoPosition)){
-          $scope.stockCount.geoPosition = locationFactory.NO_GEO_POS;
+          $scope.stockCount.geoPosition = geolocationFactory.NO_GEO_POS;
         }
-        locationFactory.getCurrentPosition()
+        geolocationFactory.getCurrentPosition()
           .then(function (curPos) {
-            $scope.stockCount.geoPosition = locationFactory.getMiniGeoPosition(curPos);
+            $scope.stockCount.geoPosition = geolocationFactory.getMiniGeoPosition(curPos);
             $scope.redirect = true;
             $scope.save();
           })
