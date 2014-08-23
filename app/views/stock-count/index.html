@@ -5,7 +5,7 @@
   <div class="panel-body">
     <div class="row" ng-hide="detailView">
       <div class="col-sm-12">
-        <a class="btn btn-default" ui-sref="stockCountForm({newStockCount: true})" ng-disabled="!enableAdd">
+        <a class="btn btn-default" ui-sref="stockCountForm({newStockCount: true})" ng-disabled="disableAddButton()">
             <i class="fa fa-plus"></i>
             <span i18n="add"></span>
         </a>
@@ -24,7 +24,7 @@
           </thead>
           <tbody>
           <tr ng-repeat="stockCount in sortedStockCount" ng-class="{ 'disabled': !isEditable(stockCount) }"
-              ng-click="showStockCountFormByDate(stockCount)">
+              ng-click="showStockCount(stockCount)">
             <td> {{ $index + 1 }}</td>
             <td>
               <span class="text-info">

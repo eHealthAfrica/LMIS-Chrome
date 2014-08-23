@@ -17,7 +17,14 @@ angular.module('lmisChromeApp')
           stockCounts: function(stockCountFactory){
             return stockCountFactory.getAll();
           },
-          mostRecentStockCount: function(stockCountFactory){
+          isStockCountDue: function(stockCountFactory, appConfig, $q) {
+            if (angular.isObject(appConfig)) {
+              return stockCountFactory.isStockCountDue(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+            } else {
+              $q.when(false);
+            }
+          },
+          mostRecentStockCount: function(stockCountFactory) {
             return stockCountFactory.getMostRecentStockCount();
           }
         },
@@ -41,7 +48,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, growl, i18n, utility, stockCounts, appConfig, $state, mostRecentStockCount){
+  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, growl, i18n, utility, stockCounts, appConfig, $state, mostRecentStockCount, isStockCountDue){
 
     var sortByCreatedDateDesc = function(scA, scB){
       return new Date(scA.created) < new Date(scB.created);
@@ -54,16 +61,24 @@ angular.module('lmisChromeApp')
     $scope.isEditable = function(stockCount) {
       return stockCountFactory.isEditable(stockCount, mostRecentStockCount, scInterval, reminderDay);
     };
-    var isMostRecentEditable = stockCountFactory.isEditable(mostRecentStockCount, mostRecentStockCount, scInterval, reminderDay);
 
-    $scope.enableAdd = !angular.isObject(mostRecentStockCount) || (isMostRecentEditable && mostRecentStockCount.isComplete);
 
-    $scope.showStockCountFormByDate = function(stockCount) {
+
+    $scope.disableAddButton = function(){
+      if(isStockCountDue){
+        return stockCountFactory.isEditable(mostRecentStockCount, mostRecentStockCount, scInterval, reminderDay);
+      }else{
+        return mostRecentStockCount.isComplete !== 1;
+      }
+    };
+
+    $scope.showStockCount = function(stockCount) {
+      var isEditable = $scope.isEditable(stockCount);
       if (utility.has(stockCount, 'uuid') && utility.has(stockCount, 'countDate')) {
-        if (stockCount.isComplete === 1) {
-          $state.go('stockCountForm', { detailView: true, uuid: stockCount.uuid, editOff: !$scope.isEditable(stockCount) });
+        if ((stockCount.isComplete === 1 && isEditable === true) || (stockCount.isComplete !== 1 && isEditable !== true)) {
+          $state.go('stockCountForm', { detailView: true, uuid: stockCount.uuid, editOff: !isEditable });
         } else {
-          $state.go('stockCountForm', { detailView: false, uuid: stockCount.uuid, editOff: !$scope.isEditable(stockCount) });
+          $state.go('stockCountForm', { detailView: false, uuid: stockCount.uuid, editOff: !isEditable });
         }
       } else {
         growl.error(i18n('showStockCountFailed'));
