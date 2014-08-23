@@ -393,7 +393,7 @@
     "message": "Continue"
   },
   "appConfigWelcomeMsg": {
-     "message": "Welcome to LoMIS"
+    "message": "Welcome to LoMIS"
   },
   "welcomeMsgBody": {
     "message": "Please take a few minutes to tell us about your facility."
@@ -422,7 +422,7 @@
   "appConfig": {
     "message": "App Config"
   },
-  "stockOutBroadcast":  {
+  "stockOutBroadcast": {
     "message": "Stock-out Alert"
   },
   "quantityNeeded": {
@@ -517,7 +517,7 @@
     "message": "Enter Quantity in $Quantity$s",
     "placeholders": {
       "Quantity": {
-       "content": "$1"
+        "content": "$1"
       }
     }
   },
@@ -613,7 +613,7 @@
     "message": "CCU breakdown report sent successfully!"
   },
   "ccuBreakdownReportFailedMsg": {
-    "message":  "CCU breakdown report failed, please contact support"
+    "message": "CCU breakdown report failed, please contact support"
   },
   "stockCountHistory": {
     "message": "Stock Count History"
@@ -682,5 +682,46 @@
   },
   "showStockCountFailed": {
     "message": "Could not show Stock Count form, please contact support."
+  },
+  "logIncoming": {
+    "message": "Log Incoming"
+  },
+  "logOutgoing": {
+    "message": "Log Outgoing"
+  },
+  "specifyBundleType": {
+    "message": "Specify bundle type."
+  },
+  "unknownBundleType": {
+    "message": "Unknown bundle type."
+  },
+  "sentTo": {
+    "message": "Sent to"
+  },
+  "receivedFrom": {
+    "message": "Received from"
+  },
+  "selectSender": {
+    "message": "Select sending facility"
+  },
+  "selectReceiver": {
+    "message": "Select receiving facility"
+  },
+  "previewSendingFacilityLabel": {
+    "message": "Sending facility"
+  },
+  "previewReceivingFacilityLabel": {
+    "message": "Receiving facility"
+  },
+  "addStockItem": {
+    "message": "Add stock item"
+  },
+  "selectLga": {
+    "message": "Select $whom$  LGA",
+    "placeholders": {
+      "whom": {
+        "content": "$1"
+      }
+    }
   }
 }
