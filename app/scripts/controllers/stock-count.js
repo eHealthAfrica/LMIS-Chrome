@@ -17,7 +17,14 @@ angular.module('lmisChromeApp')
           stockCounts: function(stockCountFactory){
             return stockCountFactory.getAll();
           },
-          mostRecentStockCount: function(stockCountFactory){
+          isStockCountDue: function(stockCountFactory, appConfig, $q) {
+            if (angular.isObject(appConfig)) {
+              return stockCountFactory.isStockCountDue(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+            } else {
+              $q.when(false);
+            }
+          },
+          mostRecentStockCount: function(stockCountFactory) {
             return stockCountFactory.getMostRecentStockCount();
           }
         },
@@ -41,7 +48,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, growl, i18n, utility, stockCounts, appConfig, $state, mostRecentStockCount){
+  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, growl, i18n, utility, stockCounts, appConfig, $state, mostRecentStockCount, isStockCountDue){
 
     var sortByCreatedDateDesc = function(scA, scB){
       return new Date(scA.created) < new Date(scB.created);
@@ -54,16 +61,24 @@ angular.module('lmisChromeApp')
     $scope.isEditable = function(stockCount) {
       return stockCountFactory.isEditable(stockCount, mostRecentStockCount, scInterval, reminderDay);
     };
-    var isMostRecentEditable = stockCountFactory.isEditable(mostRecentStockCount, mostRecentStockCount, scInterval, reminderDay);
 
-    $scope.enableAdd = !angular.isObject(mostRecentStockCount) || (isMostRecentEditable && mostRecentStockCount.isComplete);
 
-    $scope.showStockCountFormByDate = function(stockCount) {
+
+    $scope.disableAddButton = function(){
+      if(isStockCountDue){
+        return stockCountFactory.isEditable(mostRecentStockCount, mostRecentStockCount, scInterval, reminderDay);
+      }else{
+        return mostRecentStockCount.isComplete !== 1;
+      }
+    };
+
+    $scope.showStockCount = function(stockCount) {
+      var isEditable = $scope.isEditable(stockCount);
       if (utility.has(stockCount, 'uuid') && utility.has(stockCount, 'countDate')) {
-        if (stockCount.isComplete === 1) {
-          $state.go('stockCountForm', { detailView: true, uuid: stockCount.uuid, editOff: !$scope.isEditable(stockCount) });
+        if ((stockCount.isComplete === 1 && isEditable === true) || (stockCount.isComplete !== 1 && isEditable !== true)) {
+          $state.go('stockCountForm', { detailView: true, uuid: stockCount.uuid, editOff: !isEditable });
         } else {
-          $state.go('stockCountForm', { detailView: false, uuid: stockCount.uuid, editOff: !$scope.isEditable(stockCount) });
+          $state.go('stockCountForm', { detailView: false, uuid: stockCount.uuid, editOff: !isEditable });
         }
       } else {
         growl.error(i18n('showStockCountFailed'));
@@ -72,7 +87,7 @@ angular.module('lmisChromeApp')
   })
   .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory,
                                              $stateParams, appConfig, appConfigService, cacheService, syncService,
-                                             utility, $rootScope, i18n, mostRecentStockCount){
+                                             utility, $rootScope, i18n, mostRecentStockCount, locationFactory){
 
     var scInterval = appConfig.facility.stockCountInterval;
     var reminderDay = appConfig.facility.reminderDay;
@@ -219,26 +234,21 @@ angular.module('lmisChromeApp')
       if(utility.has($scope, 'stockCount')) {
         $scope.stockCount.lastPosition = 0;
         $scope.stockCount.isComplete = 1;
-        $scope.redirect = true;
-        $scope.save();
 
-
-        //TODO: uncomment after fixing item:791.
         //attach position GeoPosition
-//        if(typeof $scope.stockCount.geoPosition === 'undefined'){
-//          $scope.stockCount.geoPosition = locationFactory.NO_GEO_POS;
-//        }
-//        locationFactory.getCurrentPosition()
-//          .then(function (curPos) {
-//            $scope.stockCount.geoPosition = locationFactory.getMiniGeoPosition(curPos);
-//            $scope.redirect = true;
-//            $scope.save();
-//          })
-//          .catch(function (err) {
-//            console.log(err);
-//            $scope.redirect = true;
-//            $scope.save();
-//          });
+        if(!angular.isObject($scope.stockCount.geoPosition)){
+          $scope.stockCount.geoPosition = locationFactory.NO_GEO_POS;
+        }
+        locationFactory.getCurrentPosition()
+          .then(function (curPos) {
+            $scope.stockCount.geoPosition = locationFactory.getMiniGeoPosition(curPos);
+            $scope.redirect = true;
+            $scope.save();
+          })
+          .catch(function () {
+            $scope.redirect = true;
+            $scope.save();
+          });
       }else{
         $scope.redirect = true;
         $scope.save();
