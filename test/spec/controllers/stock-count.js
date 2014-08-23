@@ -126,7 +126,7 @@ describe('Controller: StockCountFormCtrl', function() {
           appConfig: appConfig,
           stockCounts: [],
           mostRecentStockCount: mostRecentStockCount,
-          isStockCountReminderDue: false
+          isStockCountDue: false
         };
         stockCountHomeCtrl = $controller('StockCountHomeCtrl', ctrlData);
 

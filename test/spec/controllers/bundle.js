@@ -31,9 +31,8 @@ describe('Inventory controller', function () {
     $state = _$state_;
   }));
 
-  it('as a user, i want to log incoming bundle url to be "incoming-log"', function() {
-    var state = $state.get('incomingLog');
-    expect($state.href(state)).toEqual('#/incoming-log');
-    expect($state.href(state)).not.toEqual('#/log-incoming-test');
+  it('logBundleHome state should point to log-bundle-home url', function() {
+    var state = $state.get('logBundleHome');
+    expect($state.href(state)).toEqual('#/log-bundle-home');
   });
 });
