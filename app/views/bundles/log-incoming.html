@@ -26,10 +26,10 @@
             <div class="col-sm-12">
                 <button type="button"
                         class="btn btn-success btn-lg btn-block"
-                        ng-disabled="bundleLineForm.$invalid"
+                        ng-disabled="bundleLineForm.$invalid && isSaving"
                         ng-click="preview()">
-                    <span i18n="save"></span>
-                    <i class="fa fa-save"></i>
+                     <span i18n="save"></span>
+                     <i class="fa fa-save"></i>
                 </button>
             </div>
             <br/>
