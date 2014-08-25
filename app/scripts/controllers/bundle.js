@@ -94,6 +94,7 @@ angular.module('lmisChromeApp')
     $scope.selectedWard = '';
     $scope.wards = [];
     $scope.facilities =[];
+    $scope.isSaving = false;
 
     $scope.getWards = function(lga){
         var i =0;
@@ -263,12 +264,15 @@ angular.module('lmisChromeApp')
 
     $scope.finalSave = function() {
       var bundle = angular.copy($scope.bundle);
+      $scope.isSaving = true;
       bundleService.save(bundle)
         .then(function() {
           syncService.syncUpRecord(bundleService.BUNDLE_DB, bundle)
               .finally(function(){
+
                   alertFactory.success('Incoming bundle logged successfully.');
                   $state.go('home.index.home.mainActivity');
+                  $scope.isSaving = true;
               });
         })
         .catch(function(error) {
