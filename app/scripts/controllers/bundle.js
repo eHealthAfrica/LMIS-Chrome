@@ -272,12 +272,13 @@ angular.module('lmisChromeApp')
 
                   alertFactory.success('Incoming bundle logged successfully.');
                   $state.go('home.index.home.mainActivity');
-                  $scope.isSaving = true;
+                  $scope.isSaving = false;
               });
         })
         .catch(function(error) {
           console.error(error);
           growl.error('Save incoming bundle failed, contact support.');
+          $scope.isSaving= false;
         });
     };
 
