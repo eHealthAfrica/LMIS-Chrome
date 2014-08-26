@@ -82,7 +82,7 @@ angular.module('lmisChromeApp')
     };
 
   })
-  .controller('LogBundleCtrl', function($scope, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter) {
+  .controller('LogBundleCtrl', function($scope, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter,locationService) {
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
@@ -109,9 +109,6 @@ angular.module('lmisChromeApp')
         };
 
     };
-    $scope.goodToGo = function(bundlineForm,field){
-        return bundlineForm.$error[field]
-    }
     $scope.getFacilities = function(ward){
         var i =0;
         $scope.facilities = [];
@@ -124,6 +121,11 @@ angular.module('lmisChromeApp')
             i++;
         };
     }
+
+    $scope.goodToGo = function(bundlineForm,field){
+        return bundlineForm.$error[field]
+    }
+
     if ($stateParams.type !== logIncoming && $stateParams.type !== logOutgoing) {
       $state.go('home.index.home.mainActivity');
       growl.error(i18n('specifyBundleType'));

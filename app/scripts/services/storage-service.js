@@ -257,7 +257,13 @@ angular.module('lmisChromeApp')
       }
       return $q.all(promises);
     };
+    var getWhere = function(db,key,value){
+        var db = pouchdb.db.create(db);
 
+       return db.query(function(item){
+            return item[key] === value;
+        })
+    }
       var api = {
         all: getAllFromTable,
         add: setData,
@@ -265,6 +271,7 @@ angular.module('lmisChromeApp')
         removeRecord: removeRecordFromTable,
         remove: removeData,
         clear: clearStorage,
+        query : getWhere,
         uuid: utility.uuidGenerator,
         insert: insertData,
         update: updateData,
