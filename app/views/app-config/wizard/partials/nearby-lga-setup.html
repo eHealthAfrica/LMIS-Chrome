@@ -1,0 +1,26 @@
+<div class="row">
+  <div ng-include="'views/app-config/partials/forms/lga-profile.html'"></div>
+  <div ng-include="'views/app-config/wizard/partials/sequence-map.html'"></div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel"></div>
+    <div class="btn-group btn-group-justified">
+          <div class="btn-group">
+            <button ga-click="facility_setup" type="button" class="btn btn-default btn-lg btn-left" ng-click="moveTo(STEP_FIVE)">
+              <span><i class="fa fa-arrow-circle-left"></i></span>
+              <span i18n="back"></span>
+            </button>
+          </div>
+          <div class="btn-group">
+            <button type="submit" ga-click="ccu_setup" class="btn btn-success btn-lg btn-right" ng-click="save()" ng-disabled="isSaving">
+              <span ng-if="!isSaving" i18n="save"></span>
+              <span ng-if="!isSaving"><i class="fa fa-floppy-o"></i></i></span>
+              <span ng-if="isSaving" i18n="saving"></span>
+              <span ng-if="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </div>
+    <div class="panel"></div>
+  </div>
+</div>
