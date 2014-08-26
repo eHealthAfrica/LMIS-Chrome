@@ -121,7 +121,6 @@ angular.module('lmisChromeApp')
             i++;
         };
     }
-
     $scope.goodToGo = function(bundlineForm,field){
         return bundlineForm.$error[field]
     }
