@@ -92,6 +92,7 @@ angular.module('lmisChromeApp')
     $scope.lgas = bundleService.lga;
     var wards = bundleService.wards;
     var facilities = bundleService.fac;
+    $scope.loadProductPage = false;
     $scope.selectedLGA = '';
     $scope.selectedWard = '';
     $scope.wards = [];
@@ -214,6 +215,14 @@ angular.module('lmisChromeApp')
         return sendingFacObj.uuid === fac.uuid;
       }
       return false;
+    };
+
+    $scope.enterProducts = function() {
+      $scope.openMain = true;
+      $scope.loadProductPage = true;
+      if ($scope.bundle.bundleLines.length === 0) {
+        $scope.addNewLine();
+      }
     };
 
     var updateBundleLines = function(bundle) {
