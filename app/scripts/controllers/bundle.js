@@ -16,7 +16,7 @@ angular.module('lmisChromeApp')
       })
       .state('logBundle', {
         parent: 'root.index',
-        url: '/log-bundle?type&preview&uuid',
+        url: '/log-bundle?type&preview&uuid&wizard',
         templateUrl: '/views/bundles/log-incoming.html',
         controller: 'LogBundleCtrl',
         resolve: {
@@ -27,7 +27,9 @@ angular.module('lmisChromeApp')
       });
   })
   .controller('LogBundleHomeCtrl', function($scope, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n) {
-
+    $scope.bundleFormType = {
+      wizard: false
+    };
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
 
@@ -49,12 +51,12 @@ angular.module('lmisChromeApp')
       } else {
         $scope.logFormTitle = i18n('unknownBundleType');
       }
-    };
+    }
 
     setUITexts($stateParams.type);
 
     $scope.showLogBundleForm = function() {
-      $state.go('logBundle', { type: $stateParams.type });
+      $state.go('logBundle', { type: $stateParams.type, wizard: $scope.bundleFormType.wizard });
     };
     $scope.bundles = bundles.filter(function(e) {
       return e.type === $stateParams.type;
@@ -62,7 +64,7 @@ angular.module('lmisChromeApp')
     $scope.bundles = utility.castArrayToObject($scope.bundles, '_id');
     $scope.previewBundle = {};
     $scope.preview = false;
-    console.log(bundles)
+
     $scope.showBundle = function(bundle) {
       for (var i in bundle.bundleLines) {
         var ppUuid = bundle.bundleLines[i].productProfile;
@@ -86,7 +88,7 @@ angular.module('lmisChromeApp')
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
-
+    $scope.wizard = ($stateParams.wizard === 'true');
     $scope.lgas = bundleService.lga;
     var wards = bundleService.wards;
     var facilities = bundleService.fac;
@@ -106,12 +108,12 @@ angular.module('lmisChromeApp')
                 $scope.wards.push(wards[i]);
              }
             i++;
-        };
+        }
 
     };
     $scope.goodToGo = function(bundlineForm,field){
         return bundlineForm.$error[field]
-    }
+    };
     $scope.getFacilities = function(ward){
         var i =0;
         $scope.facilities = [];
@@ -122,8 +124,9 @@ angular.module('lmisChromeApp')
                 $scope.facilities.push(facilities[i]);
              }
             i++;
-        };
-    }
+        }
+    };
+
     if ($stateParams.type !== logIncoming && $stateParams.type !== logOutgoing) {
       $state.go('home.index.home.mainActivity');
       growl.error(i18n('specifyBundleType'));
@@ -136,7 +139,7 @@ angular.module('lmisChromeApp')
 
     function setUIText(type) {
         //_id ===
-      var today = $filter('date')(new Date(), 'dd MMM, yyyy')
+      var today = $filter('date')(new Date(), 'dd MMM, yyyy');
       if ($stateParams.type === logIncoming) {
         $scope.logBundleTitle = [i18n('IncomingDelivery'), '-', today].join(' ');
         $scope.selectFacility = i18n('selectSender');
