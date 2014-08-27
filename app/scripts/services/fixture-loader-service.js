@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('fixtureLoaderService', function($q, $http, $rootScope, memoryStorageService, config, storageService, utility, pouchdb, syncService) {
+  .service('fixtureLoaderService', function($q, $http, locationService, facilityFactory, $rootScope, memoryStorageService, config, storageService, utility, pouchdb, syncService) {
 
     var PATH = 'scripts/fixtures/';
     var REMOTE_URI = config.api.url;
@@ -187,8 +187,16 @@ angular.module('lmisChromeApp')
     };
 
     var loadRemoteAndUpdateStorageAndMemory = function(dbNames) {
-      return loadDatabasesFromRemote(dbNames)
-        .then(function(result) {
+      var promises = {};
+      //TODO: refactor this later.
+      var databases = 'DATABASES';
+      var lgas = 'LGAS'
+      promises[databases] = loadDatabasesFromRemote(dbNames);
+      promises[lgas] = getLgasByState("f87ed3e017cf4f8db26836fd910e4cc8");
+      return $q.all(promises)
+        .then(function(res) {
+          var result = res[databases];
+          result[storageService.LOCATIONS] = res[lgas];
           return saveDatabasesToLocalStorage(result)
             .then(function(res) {
               loadDatabasesIntoMemoryStorage(result);
@@ -197,7 +205,7 @@ angular.module('lmisChromeApp')
         });
     };
 
-    this.loadRemoteAndUpdateStorageAndMemory = function(dbNames){
+    this.loadRemoteAndUpdateStorageAndMemory = function(dbNames) {
       return loadRemoteAndUpdateStorageAndMemory(dbNames);
     };
 
@@ -213,7 +221,7 @@ angular.module('lmisChromeApp')
     this.setupLocalAndMemoryStore = function(dbNames) {
       $rootScope.$emit('START_LOADING', {started: true});
       return loadRemoteAndUpdateStorageAndMemory(dbNames)
-        .finally(function(){
+        .finally(function() {
           $rootScope.$emit('LOADING_COMPLETED', {completed: true});
         });
     };
@@ -253,6 +261,96 @@ angular.module('lmisChromeApp')
     this.loadFiles = function(fileNames) {
       //TODO: deprecate ASAP
       return loadFilesIntoCache(fileNames);
+    };
+
+    var getLgasByState = function(stateId) {
+      var db = pouchdb.create(config.api.url + '/' + storageService.LOCATIONS);
+      var lgaView = 'lga/by_id';
+      var options = {
+        include_docs: true
+      };
+      return db.get(stateId)
+        .then(function(state) {
+          options.keys = state.lgas;
+          return db.query(lgaView, options)
+            .then(function(res) {
+              return res.rows
+                .map(function(row) {
+                  var lga = row.value;
+                  if (utility.has(lga, '_id')) {
+                    return lga;
+                  }
+                });
+            });
+        });
+    };
+
+    this.getLgas = getLgasByState;
+
+    this.getWardsByLgas = function(lgas) {
+      var db = pouchdb.create(config.api.url + '/' + storageService.LOCATIONS);
+      var lgaView = 'lga/by_id';
+      var wardView = 'ward/by_id'
+      var options = {
+        include_docs: true,
+        keys: lgas
+      };
+      var wardIds = [];
+      return db.query(lgaView, options)
+        .then(function(res) {
+          res.rows.forEach(function(row) {
+            var lga = row.value;
+            if (utility.has(lga, 'wards') && angular.isArray(lga.wards)) {
+              wardIds = wardIds.concat(lga.wards);
+            }
+          });
+          options.keys = wardIds;
+          return db.query(wardView, options)
+            .then(function(res) {
+              return res.rows
+                .map(function(row) {
+                  var ward = row.value;
+                  if (utility.has(ward, '_id')) {
+                    return ward;
+                  }
+                });
+            });
+        });
+    };
+
+    var getFacilities = function(facilityIds) {
+      var view = 'facilities/by_id';
+      var db = pouchdb.create(config.api.url + '/facilities');
+      var options = {
+        include_docs: true,
+        keys: facilityIds
+      };
+      return db.query(view, options)
+        .then(function(res) {
+          return res.rows
+            .map(function(row) {
+              return row.value;
+            });
+        });
+    };
+
+    this.setupWardsAndFacilitesByLgas = function(lgas) {
+      return this.getWardsByLgas(lgas)
+        .then(function(wards) {
+          return locationService.saveBatch(wards)
+            .then(function() {
+              var wardFacilityIds = [];
+              wards.forEach(function(w) {
+                if (angular.isArray(w.heath_facilities)) {
+                  wardFacilityIds = wardFacilityIds.concat(w.heath_facilities);
+                }
+              });
+              return getFacilities(wardFacilityIds)
+                .then(function(facilities){
+                  return facilityFactory.saveBatch(facilities);
+                });
+            });
+        });
     };
 
   });

@@ -17,6 +17,7 @@ angular.module('lmisChromeApp')
       var surveyResponse = 'survey_response';
       var ccuBreakdown = 'ccu_breakdown';
       var pendingSyncs = 'pending_syncs';
+      var locations = 'locations';
        //analytics
       var pageviews = 'pageviews';
       var clicks = 'clicks';
@@ -237,7 +238,8 @@ angular.module('lmisChromeApp')
       discardCount,
       appConfig,
       ccuBreakdown,
-      pendingSyncs
+      pendingSyncs,
+      locations
     ].concat(FIXTURE_NAMES);
 
     var compactDatabases = function() {
@@ -258,7 +260,12 @@ angular.module('lmisChromeApp')
       return $q.all(promises);
     };
 
+    var query = function(dbName, k, v){
+      return pouchStorageService.query(dbName, k, v);
+    };
+
       var api = {
+        query: query,
         all: getAllFromTable,
         add: setData,
         get: getData,
