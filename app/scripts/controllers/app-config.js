@@ -66,7 +66,7 @@ angular.module('lmisChromeApp')
       });
 
   })
-  .controller('AppConfigWizard', function($scope, locationService, appConfigService, growl, $state, alertFactory, i18n, deviceEmail, $log, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility) {
+  .controller('AppConfigWizard', function($scope, locationService, fixtureLoaderService, appConfigService, growl, $state, alertFactory, i18n, deviceEmail, $log, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility) {
     $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords;
     $scope.isSubmitted = false;
     $scope.preSelectProductProfileCheckBox = {};
@@ -90,7 +90,7 @@ angular.module('lmisChromeApp')
     $scope.developerMode = true;
     $scope.lgaList = [];
     //TODO: load state id dynamically.
-    locationService.getLgasByState("f87ed3e017cf4f8db26836fd910e4cc8")
+    locationService.getLgas("f87ed3e017cf4f8db26836fd910e4cc8")
       .then(function(res) {
         $scope.lgaList = res;
       })
@@ -164,24 +164,32 @@ angular.module('lmisChromeApp')
 
     $scope.save = function() {
       $scope.isSaving = true;
-      appConfigService.setup($scope.appConfig)
-        .then(function(result) {
-          if (typeof result !== 'undefined') {
-            $scope.appConfig = result;
-            alertFactory.success(i18n('appConfigSuccessMsg'));
-            $state.go('home.index.home.mainActivity');
-          } else {
-            growl.error(i18n('appConfigFailedMsg'));
+      var nearbyLgas = $scope.appConfig.facility.selectedLgas
+        .map(function(lga) {
+          if (lga._id) {
+            return lga._id;
           }
-        }).catch(function() {
-          growl.error(i18n('appConfigFailedMsg'));
-        }).finally(function() {
-          $scope.isSaving = false;
+        });
+      fixtureLoaderService.setupWardsAndFacilitesByLgas(nearbyLgas)
+        .finally(function() {
+          appConfigService.setup($scope.appConfig)
+            .then(function(result) {
+              if (typeof result !== 'undefined') {
+                $scope.appConfig = result;
+                alertFactory.success(i18n('appConfigSuccessMsg'));
+                $state.go('home.index.home.mainActivity');
+              } else {
+                growl.error(i18n('appConfigFailedMsg'));
+              }
+            }).catch(function() {
+              growl.error(i18n('appConfigFailedMsg'));
+            }).finally(function() {
+              $scope.isSaving = false;
+            });
         });
     };
-
   })
-  .controller('EditAppConfigCtrl', function($scope, locationService, $rootScope, appConfigService, growl, $log, i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory, $filter) {
+  .controller('EditAppConfigCtrl', function($scope, fixtureLoaderService, locationService, $rootScope, appConfigService, growl, $log, i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory, $filter) {
 
     $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords;
     $scope.stockCountIntervals = appConfigService.stockCountIntervals;
@@ -190,7 +198,6 @@ angular.module('lmisChromeApp')
     $scope.ccuProfilesGroupedByCategory = ccuProfilesGroupedByCategory;
     $scope.productProfileCategories = Object.keys(productProfilesGroupedByCategory);
     $scope.productProfilesGroupedByCategory = productProfilesGroupedByCategory;
-
     //used to hold check box selection for both ccu and product profile
     $scope.productProfileCheckBoxes = [];
     $scope.ccuProfileCheckBoxes = [];
@@ -199,14 +206,6 @@ angular.module('lmisChromeApp')
     //used to hold config form data
     $scope.appConfig = appConfig;
     var noOfAttempts = 0;
-    //TODO: load state id dynamically.
-    locationService.getLgasByState("f87ed3e017cf4f8db26836fd910e4cc8")
-      .then(function(res) {
-        $scope.lgaList = res;
-      })
-      .catch(function(err) {
-        console.error(err);
-      });
 
     $scope.enterDeveloperMode = function() {
       var MAX_ATTEMPTS = 5;
@@ -245,6 +244,14 @@ angular.module('lmisChromeApp')
 
     //pre-load edit app facility profile config form with existing config.
     preLoadConfigForm(appConfig);
+    //TODO: load state id dynamically.
+    locationService.getLgas("f87ed3e017cf4f8db26836fd910e4cc8")
+      .then(function(res) {
+        $scope.lgaList = res;
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
 
     $scope.onCcuSelection = function(ccuProfile) {
       $scope.appConfig.facility.selectedCcuProfiles =
@@ -265,23 +272,32 @@ angular.module('lmisChromeApp')
     };
 
     $scope.save = function() {
-
       $scope.isSaving = true;
-      appConfigService.setup($scope.appConfig)
-        .then(function(result) {
-          if (typeof result !== 'undefined') {
-            $scope.appConfig = result;
-            alertFactory.success(i18n('appConfigSuccessMsg'));
-            $state.go('home.index.home.mainActivity');
-          } else {
-            growl.error(i18n('appConfigFailedMsg'));
+      var nearbyLgas = $scope.appConfig.facility.selectedLgas
+        .map(function(lga) {
+          if (lga._id) {
+            return lga._id;
           }
-        })
-        .catch(function(reason) {
-          growl.error(i18n('appConfigFailedMsg'));
-          $log.error(reason);
-        }).finally(function() {
-          $scope.isSaving = false;
+        });
+      fixtureLoaderService.setupWardsAndFacilitesByLgas(nearbyLgas)
+        .finally(function() {
+          appConfigService.setup($scope.appConfig)
+            .then(function(result) {
+              if (typeof result !== 'undefined') {
+                $scope.appConfig = result;
+                alertFactory.success(i18n('appConfigSuccessMsg'));
+                $state.go('home.index.home.mainActivity');
+              } else {
+                growl.error(i18n('appConfigFailedMsg'));
+              }
+            })
+            .catch(function(reason) {
+              growl.error(i18n('appConfigFailedMsg'));
+              $log.error(reason);
+            })
+            .finally(function() {
+              $scope.isSaving = false;
+            });
         });
     };
 
