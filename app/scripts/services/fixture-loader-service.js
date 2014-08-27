@@ -341,8 +341,8 @@ angular.module('lmisChromeApp')
             .then(function() {
               var wardFacilityIds = [];
               wards.forEach(function(w) {
-                if (angular.isArray(w.heath_facilities)) {
-                  wardFacilityIds = wardFacilityIds.concat(w.heath_facilities);
+                if (angular.isArray(w.facilities)) {
+                  wardFacilityIds = wardFacilityIds.concat(w.facilities);
                 }
               });
               return getFacilities(wardFacilityIds)
