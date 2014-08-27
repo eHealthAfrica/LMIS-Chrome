@@ -685,5 +685,11 @@
   },
   "selectNearbyLgas": {
     "message": "Select Nearby LGAs"
+  },
+  "incomingDelivery": {
+    "message": "Log Incoming"
+  },
+  "outGoingDelivery": {
+    "message": "Log Outgoing"
   }
 }
