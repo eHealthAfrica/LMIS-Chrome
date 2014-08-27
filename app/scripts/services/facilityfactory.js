@@ -1,45 +1,34 @@
 'use strict';
 
-angular.module('lmisChromeApp').factory('facilityFactory', function ($q, $rootScope, storageService) {
+angular.module('lmisChromeApp')
+  .factory('facilityFactory', function(storageService) {
 
-  /**
-   * This returns facility object of a given facility uuid.
-   *
-   * @param uuid
-   * @returns {promise|promise|*|Function|promise}
-   */
-  var getByUUID = function (uuid) {
-    var deferred = $q.defer();
-    storageService.find(storageService.FACILITY, uuid).then(function (data) {
-      var facility = data;
-      if (facility !== undefined) {
-        //TODO: add nested attributes such as facility type, location etc when their factories are ready
-      }
-      deferred.resolve(facility);
-    });
-    return deferred.promise;
-  };
+    var getByUUID = function(uuid) {
+      return storageService.find(storageService.FACILITY, uuid);
+    };
 
-  /**
-   * This function returns a collection of facility objects.
-   *
-   * @returns {promise|promise|*|Function|promise}
-   */
-  var getAllFacilities = function () {
-    var deferred = $q.defer();
+    var getAllFacilities = function() {
+      return storageService.all(storageService.FACILITY);
+    };
 
-    storageService.all(storageService.FACILITY).then(function (facilities) {
-      deferred.resolve(facilities);
-    }, function(error){
-      deferred.reject(error);
-    });
+    var saveBatch = function(facilities) {
+      return storageService.setDatabase(storageService.FACILITY, facilities);
+    };
 
-    return deferred.promise;
-  };
+    var getFacilities = function(facilityIds) {
+      return getAllFacilities()
+        .then(function(hfs) {
+          return hfs.filter(function(hf) {
+            return facilityIds.indexOf(hf.uuid) !== -1;
+          });
+        });
+    };
 
-  // Public API here
-  return {
-    getAll: getAllFacilities,
-    get: getByUUID
-  };
-});
+    return {
+      getAll: getAllFacilities,
+      get: getByUUID,
+      saveBatch: saveBatch,
+      getFacilities: getFacilities
+    };
+
+  });

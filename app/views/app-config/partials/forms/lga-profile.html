@@ -1,0 +1,24 @@
+<div class="col-md-12">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title" i18n="selectNearbyLgas"></h4>
+    </div>
+    <div ng-include="'views/partials/search.html'"></div>
+    <div class="panel-body"></div>
+      <div class="list-group" ng-repeat="lga in lgaList | filter:search track by $index">
+        <div class="no-padding"
+             ng-class="{'highlight-selected-item': preSelectLgaCheckBox[lga._id], 'list-group-item': true }">
+          <label class="new-line padded-label pointer">
+            <input type="checkbox" ng-model="lgaCheckBoxes[lga._id]"
+                   ng-disabled="!developerMode"
+                   ng-true-value="{{ lga }}"
+                   ng-false-value="{{ {'_id': lga._id, deSelected: true} }}"
+                   ng-change="onLgaSelection(lgaCheckBoxes[lga._id])"
+                   ng-checked="preSelectLgaCheckBox[lga._id]"/>
+            {{ lga.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+</div>

@@ -17,6 +17,7 @@ angular.module('lmisChromeApp')
       var surveyResponse = 'survey_response';
       var ccuBreakdown = 'ccu_breakdown';
       var pendingSyncs = 'pending_syncs';
+      var locations = 'locations';
        //analytics
       var pageviews = 'pageviews';
       var clicks = 'clicks';
@@ -257,13 +258,7 @@ angular.module('lmisChromeApp')
       }
       return $q.all(promises);
     };
-    var getWhere = function(db,key,value){
-        var db = pouchdb.db.create(db);
 
-       return db.query(function(item){
-            return item[key] === value;
-        })
-    }
       var api = {
         all: getAllFromTable,
         add: setData,
@@ -271,7 +266,6 @@ angular.module('lmisChromeApp')
         removeRecord: removeRecordFromTable,
         remove: removeData,
         clear: clearStorage,
-        query : getWhere,
         uuid: utility.uuidGenerator,
         insert: insertData,
         update: updateData,

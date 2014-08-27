@@ -1,25 +1,45 @@
 'use strict';
 
-/*
+angular.module('lmisChromeApp')
+  .service('locationService', function(storageService) {
 
- */
-angular.module("lmisChromeApp").service("locationService", function(storageService){
+    this.getLgas = function(stateId) {
+      //TODO: refactor later run query in view.
+      return storageService.all(storageService.LOCATIONS)
+        .then(function(locs) {
+          return locs
+            .filter(function(l) {
+              return l.doc_type === 'lga' && l.parent === stateId;
+            })
+            .sort(sort);
+        });
+    };
 
-        var DBNAME = "locations"
+    this.getWards = function(lgaId) {
+      return storageService.all(storageService.LOCATIONS)
+        .then(function(locs) {
+          return locs
+            .filter(function(l) {
+              return l.doc_type === 'ward' && l.parent === lgaId;
+            })
+            .sort(sort);
+        });
+    };
 
-        this.get = function(location_id){
-            return storageService.get(DBNAME,location_id);
-        }
-        this.getLgas = function(state_id){
-            return storageService.query(DBNAME,'parent', state_id);
-        }
-        this.getWards = function(lga_id){
-            return storageService.query(DBNAME, 'parent', lga_id);
-        }
-        this.getFacilities = function(ward_id){
-            return storageService.query(DBNAME, 'parent', ward_id);
-        }
+    this.saveBatch = function(locations) {
+      return storageService.setDatabase(storageService.LOCATIONS, locations);
+    };
 
-})
+    var sort = function(a, b) {
+      var aName = a.name.toLowerCase();
+      var bName = b.name.toLowerCase();
+      if (aName < bName) {
+        return -1;
+      } else if (aName > bName) {
+        return  1;
+      } else {
+        return 0;
+      }
+    };
 
-
+  });
