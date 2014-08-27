@@ -270,8 +270,12 @@ angular.module('lmisChromeApp')
         .then(function() {
           syncService.syncUpRecord(bundleService.BUNDLE_DB, bundle)
               .finally(function(){
-
-                  alertFactory.success('Incoming bundle logged successfully.');
+                  if($stateParams === logIncoming){
+                      var success_msg = 'Incoming bundle logged successfully.'
+                  }else{
+                     var success_msg = 'Outgoing bundle logged successfully.'
+                  }
+                  alertFactory.success(success_msg);
                   $state.go('home.index.home.mainActivity');
                   $scope.isSaving = false;
               });
