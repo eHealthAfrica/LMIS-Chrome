@@ -1,0 +1,57 @@
+<accordion>
+  <accordion-group is-open="openMain" ng-repeat="bundleLine in bundle.bundleLines" >
+    <accordion-heading>
+      <span> {{ bundleLine.batchNo }}</span>
+
+       <span class="removeIcon block pull-right" ng-if="$index !== 0">
+        <i ng-click="removeLine(bundleLine)" class="pull-center text-muted fa fa-times"></i>
+       </span>
+      <div class="clearfix"></div>
+    </accordion-heading>
+    <!-- list starts here -->
+    <div class="col-sm-12">
+      <label i18n="batchNo"></label>
+      <input required class="form-control" type="text" name="batchNo" ng-model="bundleLine.batchNo"/>
+    </div>
+    <br/>
+    <div class="col-sm-12">
+      <label>Product profile</label>
+      <select class="form-control" ga-click="product_profile" ng-model="bundleLine.productProfile">
+        <option value="">- Select product profile -</option>
+        <option ng-repeat="pp in productProfiles" value="{{ pp.uuid }}">{{ pp.name }}</option>
+      </select>
+    </div>
+    <br/>
+    <div class="col-sm-12">
+      <label>Expiry date <i class="fa fa-calendar"></i></label>
+      <input ng-model="bundleLine.expiryDate" class="form-control" type="date" name="expiryDate" required/>
+    </div>
+    <br/>
+    <div class="col-sm-12">
+      <label>Verify Quantity</label>
+      <counter bind="bundleLine.quantity"></counter>
+    </div>
+    <br/>
+    <!-- list ends here -->
+  </accordion-group>
+</accordion>
+
+<div class="col-sm-12">
+  <button type="button" class="btn btn-default btn-lg btn-block"
+          ng-disabled="ledgerForm.$invalid"
+          ng-click="addNewLine()">
+    <i class="fa fa-plus"></i>
+    <span i18n="addStockItem"></span>
+  </button>
+</div>
+<br/>
+<div class="col-sm-12">
+  <button type="button"
+          class="btn btn-success btn-lg btn-block"
+          ng-disabled="ledgerForm.$invalid"
+          ng-click="preview()">
+    <span i18n="save"></span>
+    <i class="fa fa-save"></i>
+  </button>
+</div>
+<br/>

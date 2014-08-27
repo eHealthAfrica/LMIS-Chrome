@@ -40,3 +40,38 @@
         </div>
     </div>
 </div>
+
+<form novalidate name="ledgerForm" ng-if="wizard">
+  <div class="row">
+    <div class="col-sm-12">
+
+      <div class="panel panel-default"  ng-if="!loadProductPage">
+        <div class="panel-heading">
+          <h4 class="panel-title" ng-bind="logBundleTitle"></h4>
+        </div>
+        <div class="panel-body">
+          <div class="row" ng-include="'views/bundles/partials/facility-info.html'"></div>
+        </div>
+        <div class="panel panel-default" ng-repeat="bundleLine in bundle.bundleLines"
+             ng-include="'views/bundles/partials/bundle-line.html'">
+        </div>
+      </div>
+      <div class="panel panel-default" ng-if="!loadProductPage">
+        <button class="btn btn-block btn-lg text-center btn-success"
+                ng-disabled="placeholder.selectedFacility === ''"
+                ng-click="enterProducts()"> Continue </button>
+      </div>
+
+      <div ng-if="loadProductPage &&  !previewForm">
+        <div ng-include="'views/bundles/partials/log-bundle-wizard.html'"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div  ng-if="previewForm">
+    <div class="panel-body">
+      <div class="row" ng-include="'views/bundles/partials/preview-log-bundle.html'"></div>
+    </div>
+  </div>
+</form>
