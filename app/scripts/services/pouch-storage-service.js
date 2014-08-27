@@ -60,7 +60,7 @@ angular.module('lmisChromeApp')
         .then(function(res){
           return res.rows
             .map(function(r){
-              if(r.doc[key] === value){
+              if(r.doc[key] === value && r.doc){
                return r.doc;
               }
             });
