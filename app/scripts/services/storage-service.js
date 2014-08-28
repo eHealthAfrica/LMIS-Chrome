@@ -238,8 +238,7 @@ angular.module('lmisChromeApp')
       discardCount,
       appConfig,
       ccuBreakdown,
-      pendingSyncs,
-      locations
+      pendingSyncs
     ].concat(FIXTURE_NAMES);
 
     var compactDatabases = function() {
@@ -260,12 +259,7 @@ angular.module('lmisChromeApp')
       return $q.all(promises);
     };
 
-    var query = function(dbName, k, v){
-      return pouchStorageService.query(dbName, k, v);
-    };
-
       var api = {
-        query: query,
         all: getAllFromTable,
         add: setData,
         get: getData,

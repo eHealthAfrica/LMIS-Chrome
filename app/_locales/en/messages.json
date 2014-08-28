@@ -691,5 +691,17 @@
   },
   "outGoingDelivery": {
     "message": "Log Outgoing"
+  },
+  "addStockItem" : {
+      "message" : "Add Stock Item"
+  },
+  "receivedFrom" :{
+      "message" : "Received From"
+  },
+  "sentTo" :{
+      "message" : "Sent To"
+  },
+  "previewSendingFacilityLabel" :{
+      "message" : "Sent To"
   }
 }
