@@ -50,7 +50,8 @@ angular.module('lmisChromeApp')
             if (stockCounts.length > 0) {
               stockCounts = stockCounts
                 .sort(function(a, b) {
-                  return (new Date(a.created).getTime() - new Date(b.created).getTime());
+                  //desc
+                  return -(new Date(a.created).getTime() - new Date(b.created).getTime());
                 });
               var mostRecent = stockCounts[0];
               if (typeof mostRecent !== 'undefined') {
