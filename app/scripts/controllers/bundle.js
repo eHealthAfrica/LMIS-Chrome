@@ -115,6 +115,7 @@ angular.module('lmisChromeApp')
         };
         getLGAs();
         $scope.getFacilities = function (ward) {
+            
             ward = JSON.parse(ward);
             var defer = facilityFactory.getFacilities(ward.facilities);
             defer.then(function (facilities) {
@@ -230,6 +231,7 @@ angular.module('lmisChromeApp')
             $scope.previewBundle = angular.copy($scope.bundle);
 
             if ($stateParams.type === logIncoming) {
+
                 $scope.previewBundle.facility = $scope.bundle.sendingFacility;
             } else if ($stateParams.type === logOutgoing) {
                 $scope.previewBundle.facility = $scope.bundle.receivingFacility;
@@ -267,6 +269,9 @@ angular.module('lmisChromeApp')
         $scope.finalSave = function () {
             var bundle = angular.copy($scope.bundle);
             $scope.isSaving = true;
+            bundle.receivingFacility = bundle.receivingFacility.uuid;
+            bundle.sendingFacility = bundle.sendingFacility.uuid;
+           // console.log(bundle);
             bundleService.save(bundle)
                 .then(function () {
                     syncService.syncUpRecord(bundleService.BUNDLE_DB, bundle)
