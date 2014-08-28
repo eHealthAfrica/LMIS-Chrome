@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('backgroundSyncService', function($q, storageService, appConfigService, i18n, growl, pouchStorageService, syncService, deviceInfoFactory, fixtureLoaderService, $timeout){
+  .service('backgroundSyncService', function($q, storageService, appConfigService, i18n, growl, pouchStorageService, syncService, deviceInfoFactory, fixtureLoaderService, $timeout) {
 
     var backgroundSyncInProgress = false;
     var sync;
@@ -47,6 +47,7 @@ angular.module('lmisChromeApp')
         }
         return innerDeferred.promise;
       }
+
       //load pending syncs and attempt to sync all of them.
       return storageService.all(storageService.PENDING_SYNCS)
         .then(function(pendingSyncs) {
@@ -76,7 +77,16 @@ angular.module('lmisChromeApp')
                 //NB: at this point we already have both remote and local copies.
                 // SEE: item #776
                 remoteAppConfig.lastUpdated = new Date().toJSON();
-                return appConfigService.save(remoteAppConfig);
+                var nearbyLgas = remoteAppConfig.facility.selectedLgas
+                  .map(function(lga) {
+                    if (lga._id) {
+                      return lga._id;
+                    }
+                  });
+                return fixtureLoaderService.setupWardsAndFacilitesByLgas(nearbyLgas)
+                  .then(function() {
+                    return appConfigService.save(remoteAppConfig);
+                  });
               });
           } else {
             return $q.reject('app config is not an object.');
@@ -116,7 +126,7 @@ angular.module('lmisChromeApp')
                       .finally(function() {
                         return storageService.compactDatabases();
                       })
-                      .finally(function(){
+                      .finally(function() {
                         return storageService.viewCleanups();
                       });
                   });
@@ -132,7 +142,7 @@ angular.module('lmisChromeApp')
       return sync;
     };
 
-    this.cancel = function(){
+    this.cancel = function() {
       $timeout.cancel(sync);
     };
 
