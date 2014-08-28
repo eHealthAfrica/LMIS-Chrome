@@ -2,6 +2,7 @@
 
 angular.module('lmisChromeApp')
   .service('locationService', function(storageService) {
+    this.KANO_UUID = 'f87ed3e017cf4f8db26836fd910e4cc8';
 
     this.getLgas = function(stateId) {
       //TODO: refactor later run query in view.
@@ -18,6 +19,7 @@ angular.module('lmisChromeApp')
     this.getWards = function(lgaId) {
       return storageService.all(storageService.LOCATIONS)
         .then(function(locs) {
+
           return locs
             .filter(function(l) {
               return l.doc_type === 'ward' && l.parent === lgaId;
