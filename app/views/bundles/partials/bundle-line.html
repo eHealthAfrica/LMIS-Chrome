@@ -12,10 +12,11 @@
     <br/>
     <div class="col-sm-12">
         <label>Product profile</label>
-        <select class="form-control" ga-click="product_profile" ng-model="bundleLine.productProfile" ng-change="getUnitQty(bundleLine.productProfile)">
+        <select class="form-control" ga-click="product_profile" ng-model="bundleLine.productProfile" ng-change="getUnitQty(bundleLine)">
             <option value="">- Select product profile -</option>
             <option ng-repeat="pp in productProfiles" value="{{ pp.uuid }}">{{ pp.name }}</option>
         </select>
+
     </div>
     <br/>
     <div class="col-sm-12">
@@ -24,10 +25,19 @@
     </div>
     <br/>
     <div class="col-sm-12">
-        <label>Verify Quantity : {{selectedProductUOMName[bundleLine.productProfile]}}</label>
-        <counter bind="bundleLine.quantity"></counter>
-        <div ng-show="bundleLine.quantity === undefined">0 {{selectedProductBaseUOM[bundleLine.productProfile]}}s</div>
-         <div ng-show="bundleLine.quantity !== undefined">{{selectedProductUOMVal[bundleLine.productProfile] * bundleLine.quantity }} {{selectedProductBaseUOM[bundleLine.productProfile]}}s</div>
+        <label>Verify Quantity : {{selectedProductUOMName[bundleLine.id]}}</label>
+        <counter bind="bundleLine.count" onchange="updateUnitQty(selectedProductUOMVal[bundleLine.id],  bundleLine.count, bundleLine)"></counter>
+
+        <!--<div ng-show="bundleLine.count === undefined">0 {{selectedProductBaseUOM[bundleLine.id]}}s</div>-->
+
+         <ng-pluralize
+                 count="bundleLine.quantity"
+                 when ="{
+                        0 :'',
+                        '1' :' 1 {{selectedProductBaseUOM[bundleLine.id]}}',
+                        'other':'{{bundleLine.quantity}} {{selectedProductBaseUOM[bundleLine.id]}}s'
+                        }">
+        </ng-pluralize>
     </div>
     <br/>
     <div ng-show="goodTogo(bundlineForm,'batchNo')">Please enter valid batch number!</div>

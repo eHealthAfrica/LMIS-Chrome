@@ -1,3 +1,4 @@
+<form name="bundleLineForm" class="css-form" novalidate>
 <div class="row">
     <div class="col-sm-12">
         <div class="panel panel-default"  ng-show="!previewForm">
@@ -7,11 +8,11 @@
             <div class="panel-body">
                 <div class="row" ng-include="'views/bundles/partials/facility-info.html'"></div>
             </div>
-            <form name="bundleLineForm" class="css-form" novalidate>
+
                 <div class="panel panel-default" ng-repeat="bundleLine in bundle.bundleLines"
                      ng-include="'views/bundles/partials/bundle-line.html'">
                 </div>
-            </form>
+
             <div class="col-sm-12">
                 <button type="button"
                         class="btn btn-default btn-lg btn-block"
@@ -40,4 +41,4 @@
         </div>
     </div>
 </div>
-
+</form>
