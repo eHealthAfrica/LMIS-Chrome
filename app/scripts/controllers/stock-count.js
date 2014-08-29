@@ -62,8 +62,6 @@ angular.module('lmisChromeApp')
       return stockCountFactory.isEditable(stockCount, mostRecentStockCount, scInterval, reminderDay);
     };
 
-
-
     $scope.disableAddButton = function(){
       if(isStockCountDue){
         return stockCountFactory.isEditable(mostRecentStockCount, mostRecentStockCount, scInterval, reminderDay);

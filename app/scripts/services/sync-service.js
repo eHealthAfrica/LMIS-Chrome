@@ -76,11 +76,16 @@ angular.module('lmisChromeApp')
       if (deviceInfoFactory.isOnline()) {
         return syncUpAndUpdateLocal(dbName, doc)
           .catch(function(reason) {
-            console.error(reason);
-            return addToPendingSyncList(pendingSync);
+            return addToPendingSyncList(pendingSync)
+              .finally(function() {
+                return $q.reject(reason);
+              });
           });
       } else {
-        return addToPendingSyncList(pendingSync);
+        return addToPendingSyncList(pendingSync)
+          .finally(function() {
+            return $q.reject('Device is offline.');
+          });
       }
     };
 
@@ -102,7 +107,7 @@ angular.module('lmisChromeApp')
           obj.synced = false;
         }
         return obj;
-      }else{
+      } else {
         throw new Error('Object is undefined.');
       }
     };
