@@ -3,6 +3,8 @@
 angular.module('lmisChromeApp')
   .service('bundleService', function(storageService, syncService, utility) {
 
+
+
     this.INCOMING = '0';
     this.OUTGOING = '1';
     this.BUNDLE_DB = storageService.BUNDLE;
