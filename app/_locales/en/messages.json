@@ -700,5 +700,11 @@
   },
   "sentTo" :{
       "message" : "Sent To"
+  },
+  "selectSender": {
+    "message": "Select sending facility"
+  },
+  "selectReceiver": {
+    "message": "Select receiving facility"
   }
 }

@@ -22,6 +22,12 @@ angular.module('lmisChromeApp')
         resolve: {
           appConfig: function(appConfigService) {
             return appConfigService.getCurrentAppConfig();
+          },
+          batchStore: function(batchService) {
+            return batchService.getBatchNos()
+              .catch(function() {
+                return {};
+              });
           }
         }
       });
@@ -56,7 +62,9 @@ angular.module('lmisChromeApp')
     $scope.showLogBundleForm = function() {
       $state.go('logBundle', { type: $stateParams.type });
     };
+
     $scope.bundles = bundles.filter(function(e) {
+      //TODO: move to service getByType()
       return e.type === $stateParams.type;
     });
     $scope.bundles = utility.castArrayToObject($scope.bundles, '_id');
@@ -82,7 +90,21 @@ angular.module('lmisChromeApp')
     };
 
   })
-  .controller('LogBundleCtrl', function($scope, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory) {
+  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory) {
+
+    $scope.batchNos = Object.keys(batchStore);
+
+    $scope.updateBatchInfo = function(bundleLine) {
+      var batch;
+      if (bundleLine.batchNo) {
+        batch = batchStore[bundleLine.batchNo];
+        if (angular.isObject(batch)) {
+          bundleLine.productProfile = batch.profile;
+          bundleLine.expiryDate = batch.expiryDate;
+          $scope.getUnitQty(bundleLine.productProfile, bundleLine.quantity);
+        }
+      }
+    };
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
@@ -148,13 +170,13 @@ angular.module('lmisChromeApp')
       if ($stateParams.type === logIncoming) {
         $scope.logBundleTitle = [i18n('IncomingDelivery'), '-', today].join(' ');
         $scope.selectFacility = i18n('selectSender');
-        $scope.previewFacilityLabel = i18n('sentTo');
+        $scope.previewFacilityLabel = i18n('receivedFrom');
         $scope.LGALabel = "Select sending LGA";
         $scope.WardLabel = "Select sending ward";
       } else if ($stateParams.type === logOutgoing) {
         $scope.logBundleTitle = [i18n('OutgoingDelivery'), '-', today].join(' ');
         $scope.selectFacility = i18n('selectReceiver');
-        $scope.previewFacilityLabel = i18n('receivedFrom');
+        $scope.previewFacilityLabel = i18n('sentTo');
         $scope.LGALabel = "Select receiving lga";
         $scope.WardLabel = "Select receiving ward";
       } else {
@@ -270,6 +292,7 @@ angular.module('lmisChromeApp')
               alertFactory.success(successMsg);
               $state.go('home.index.home.mainActivity');
               $scope.isSaving = false;
+              updateBatchInfo(bundle.bundleLines);
             });
         })
         .catch(function(error) {
@@ -278,8 +301,23 @@ angular.module('lmisChromeApp')
           $scope.isSaving = false;
         });
     };
-    $scope.spit = function(d) {
-      console.log(d)
+
+    var updateBatchInfo = function(bundleLines) {
+      var batches = batchService.extractBatch(bundleLines);
+      var updatedBatches = batches
+        .map(function(b) {
+          var oldBatch = batchStore[b.batchNo];
+          if (oldBatch) {
+            b._id = oldBatch._id;
+            b._rev = oldBatch._rev
+            b.uuid = oldBatch.uuid
+          }
+          return b;
+        });
+      batchService.saveBatches(updatedBatches)
+        .catch(function(err) {
+          console.error(err);
+        });
     }
 
   });
