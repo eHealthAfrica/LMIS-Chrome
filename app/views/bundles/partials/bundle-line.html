@@ -11,7 +11,8 @@
                type="text"
                name="batchNo"
                ng-model="bundleLine.batchNo"
-               typeahead="bNo for bNo in batchNos | filter:$viewValue | limitTo:10"/>
+               typeahead="bNo for bNo in batchNos | filter:$viewValue | limitTo:10"
+               ng-blur="updateBatchInfo(bundleLine)"/>
     </div>
     <br/>
     <div class="col-sm-12">

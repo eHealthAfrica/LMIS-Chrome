@@ -56,7 +56,9 @@ angular.module('lmisChromeApp')
     $scope.showLogBundleForm = function() {
       $state.go('logBundle', { type: $stateParams.type });
     };
+
     $scope.bundles = bundles.filter(function(e) {
+      //TODO: move to service getByType()
       return e.type === $stateParams.type;
     });
     $scope.bundles = utility.castArrayToObject($scope.bundles, '_id');
@@ -82,7 +84,26 @@ angular.module('lmisChromeApp')
     };
 
   })
-  .controller('LogBundleCtrl', function($scope, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory) {
+  .controller('LogBundleCtrl', function($scope, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory) {
+
+    $scope.batchNos = [];
+    var batchStore = {};
+    batchService.getBatchNos()
+      .then(function(res) {
+        batchStore = res;
+        $scope.batchNos = Object.keys(res);
+      });
+
+    $scope.updateBatchInfo = function(bundleLine){
+      var batch;
+      if(bundleLine.batchNo){
+        batch = batchStore[bundleLine.batchNo];
+        if(angular.isObject(batch)){
+          bundleLine.productProfile = batch.profile;
+          bundleLine.expiryDate = batch.expiryDate;
+        }
+      }
+    };
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
@@ -148,13 +169,13 @@ angular.module('lmisChromeApp')
       if ($stateParams.type === logIncoming) {
         $scope.logBundleTitle = [i18n('IncomingDelivery'), '-', today].join(' ');
         $scope.selectFacility = i18n('selectSender');
-        $scope.previewFacilityLabel = i18n('sentTo');
+        $scope.previewFacilityLabel = i18n('receivedFrom');
         $scope.LGALabel = "Select sending LGA";
         $scope.WardLabel = "Select sending ward";
       } else if ($stateParams.type === logOutgoing) {
         $scope.logBundleTitle = [i18n('OutgoingDelivery'), '-', today].join(' ');
         $scope.selectFacility = i18n('selectReceiver');
-        $scope.previewFacilityLabel = i18n('receivedFrom');
+        $scope.previewFacilityLabel = i18n('sentTo');
         $scope.LGALabel = "Select receiving lga";
         $scope.WardLabel = "Select receiving ward";
       } else {
@@ -270,6 +291,16 @@ angular.module('lmisChromeApp')
               alertFactory.success(successMsg);
               $state.go('home.index.home.mainActivity');
               $scope.isSaving = false;
+
+              //TODO: update batch list here.
+              var batches = batchService.extractBatch(bundle.bundleLines);
+              batchService.saveBatches(batches)
+                .then(function(res) {
+                  console.info(res);
+                })
+                .catch(function(err) {
+                  console.error(err);
+                });
             });
         })
         .catch(function(error) {
