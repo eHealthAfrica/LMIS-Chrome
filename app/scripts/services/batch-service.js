@@ -7,6 +7,10 @@ angular.module('lmisChromeApp')
       return storageService.save(storageService.BATCHES, batch);
     };
 
+    this.saveBatches =  function(batches){
+      return storageService.insertBatch(storageService.BATCHES, batches);
+    };
+
     this.get = function(uuid){
       return storageService.find(storageService.BATCHES, uuid);
     };
@@ -30,12 +34,31 @@ angular.module('lmisChromeApp')
     };
 
     this.getBatchNos = function(){
+      var batchNos = {};
       return this.getAll()
         .then(function(batches){
-          return batches.map(function(b){
-            return b.batchNo;
+          batches.forEach(function(b){
+            batchNos[b.batchNo] = b;
           });
+          return batchNos;
         });
+    };
+
+    this.extractBatch = function(bundleLines){
+      var batches = [];
+      var bl;
+      var batch;
+      console.info(bundleLines);
+      for(var i in bundleLines){
+        bl = bundleLines[i];
+        batch = {
+          batchNo: bl.batchNo,
+          expiryDate: bl.expiryDate,
+          profile: bl.productProfile
+        };
+        batches.push(batch);
+      }
+      return batches;
     };
 
   });
