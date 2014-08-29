@@ -86,10 +86,8 @@ angular.module('lmisChromeApp')
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
-
     $scope.lgas = [];
     $scope.wards = [];
-
     $scope.selectedLGA = '';
     $scope.selectedWard = '';
     $scope.wards = [];
@@ -102,46 +100,38 @@ angular.module('lmisChromeApp')
 
     $scope.getUnitQty = function(selectedUUID, qty) {
       $scope.productProfiles.map(function(product) {
-
         if (product.uuid === selectedUUID) {
-
           $scope.selectedProductBaseUOM[product.uuid] = product.product.base_uom.name;
           $scope.selectedProductUOMName[product.uuid] = product.presentation.uom.name;
           $scope.selectedProductUOMVal[product.uuid] = product.presentation.value;
-
         }
-      })
-    }
+      });
+    };
+
     $scope.getWards = function(lga) {
-
-      var defer = locationService.getWards(lga);
-      defer.then(function(wards) {
-        $scope.wards = wards;
-      })
-
+      locationService.getWards(lga)
+        .then(function(wards) {
+          $scope.wards = wards;
+        });
     };
 
     var getLGAs = function() {
       $scope.lgas = appConfig.facility.selectedLgas;
-//
-//            var defer = locationService.getLgas(locationService.KANO_UUID);
-//            defer.then(function (lgas) {
-//                $scope.lgas = lgas;
-//            })
     };
+
     getLGAs();
+
     $scope.getFacilities = function(ward) {
-
       ward = JSON.parse(ward);
-      var defer = facilityFactory.getFacilities(ward.facilities);
-      defer.then(function(facilities) {
+      facilityFactory.getFacilities(ward.facilities)
+        .then(function(facilities) {
+          $scope.facilities = facilities;
+        });
+    };
 
-        $scope.facilities = facilities;
-      })
-    }
     $scope.goodToGo = function(bundlineForm, field) {
       return bundlineForm.$error[field]
-    }
+    };
 
     if ($stateParams.type !== logIncoming && $stateParams.type !== logOutgoing) {
       $state.go('home.index.home.mainActivity');
@@ -154,7 +144,6 @@ angular.module('lmisChromeApp')
     $scope.previewFacilityLabel = '';
 
     function setUIText(type) {
-      //_id ===
       var today = $filter('date')(new Date(), 'dd MMM, yyyy')
       if ($stateParams.type === logIncoming) {
         $scope.logBundleTitle = [i18n('IncomingDelivery'), '-', today].join(' ');
@@ -162,14 +151,12 @@ angular.module('lmisChromeApp')
         $scope.previewFacilityLabel = i18n('sentTo');
         $scope.LGALabel = "Select sending LGA";
         $scope.WardLabel = "Select sending ward";
-
       } else if ($stateParams.type === logOutgoing) {
         $scope.logBundleTitle = [i18n('OutgoingDelivery'), '-', today].join(' ');
         $scope.selectFacility = i18n('selectReceiver');
         $scope.previewFacilityLabel = i18n('receivedFrom');
         $scope.LGALabel = "Select receiving lga";
         $scope.WardLabel = "Select receiving ward";
-
       } else {
         $scope.logFormTitle = i18n('unknownBundleType');
       }
@@ -193,7 +180,6 @@ angular.module('lmisChromeApp')
       batchNo: '',
       productProfile: ''
     });
-
 
     $scope.addNewLine = function() {
       $scope.bundle.bundleLines.push({
@@ -275,12 +261,13 @@ angular.module('lmisChromeApp')
         .then(function() {
           syncService.syncUpRecord(bundleService.BUNDLE_DB, bundle)
             .finally(function() {
+              var successMsg = '';
               if ($stateParams === logIncoming) {
-                var success_msg = 'Incoming bundle logged successfully.'
+                successMsg = 'Incoming bundle logged successfully.'
               } else {
-                var success_msg = 'Outgoing bundle logged successfully.'
+                successMsg = 'Outgoing bundle logged successfully.'
               }
-              alertFactory.success(success_msg);
+              alertFactory.success(successMsg);
               $state.go('home.index.home.mainActivity');
               $scope.isSaving = false;
             });
