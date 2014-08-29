@@ -1,14 +1,18 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('batchService', function(storageService) {
+  .service('batchService', function(storageService, $q) {
 
     this.save = function(batch){
       return storageService.save(storageService.BATCHES, batch);
     };
 
     this.saveBatches =  function(batches){
-      return storageService.insertBatch(storageService.BATCHES, batches);
+      var promises = [];
+      batches.forEach(function(b){
+        promises.push(storageService.save(storageService.BATCHES, b));
+      });
+     return $q.all(promises);
     };
 
     this.get = function(uuid){
@@ -48,7 +52,6 @@ angular.module('lmisChromeApp')
       var batches = [];
       var bl;
       var batch;
-      console.info(bundleLines);
       for(var i in bundleLines){
         bl = bundleLines[i];
         batch = {

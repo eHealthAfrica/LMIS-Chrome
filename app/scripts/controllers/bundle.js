@@ -22,6 +22,12 @@ angular.module('lmisChromeApp')
         resolve: {
           appConfig: function(appConfigService) {
             return appConfigService.getCurrentAppConfig();
+          },
+          batchStore: function(batchService) {
+            return batchService.getBatchNos()
+              .catch(function() {
+                return {};
+              });
           }
         }
       });
@@ -84,23 +90,18 @@ angular.module('lmisChromeApp')
     };
 
   })
-  .controller('LogBundleCtrl', function($scope, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory) {
+  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory) {
 
-    $scope.batchNos = [];
-    var batchStore = {};
-    batchService.getBatchNos()
-      .then(function(res) {
-        batchStore = res;
-        $scope.batchNos = Object.keys(res);
-      });
+    $scope.batchNos = Object.keys(batchStore);
 
-    $scope.updateBatchInfo = function(bundleLine){
+    $scope.updateBatchInfo = function(bundleLine) {
       var batch;
-      if(bundleLine.batchNo){
+      if (bundleLine.batchNo) {
         batch = batchStore[bundleLine.batchNo];
-        if(angular.isObject(batch)){
+        if (angular.isObject(batch)) {
           bundleLine.productProfile = batch.profile;
           bundleLine.expiryDate = batch.expiryDate;
+          $scope.getUnitQty(bundleLine.productProfile, bundleLine.quantity);
         }
       }
     };
@@ -291,16 +292,7 @@ angular.module('lmisChromeApp')
               alertFactory.success(successMsg);
               $state.go('home.index.home.mainActivity');
               $scope.isSaving = false;
-
-              //TODO: update batch list here.
-              var batches = batchService.extractBatch(bundle.bundleLines);
-              batchService.saveBatches(batches)
-                .then(function(res) {
-                  console.info(res);
-                })
-                .catch(function(err) {
-                  console.error(err);
-                });
+              updateBatchInfo(bundle.bundleLines);
             });
         })
         .catch(function(error) {
@@ -309,8 +301,23 @@ angular.module('lmisChromeApp')
           $scope.isSaving = false;
         });
     };
-    $scope.spit = function(d) {
-      console.log(d)
+
+    var updateBatchInfo = function(bundleLines) {
+      var batches = batchService.extractBatch(bundleLines);
+      var updatedBatches = batches
+        .map(function(b) {
+          var oldBatch = batchStore[b.batchNo];
+          if (oldBatch) {
+            b._id = oldBatch._id;
+            b._rev = oldBatch._rev
+            b.uuid = oldBatch.uuid
+          }
+          return b;
+        });
+      batchService.saveBatches(updatedBatches)
+        .catch(function(err) {
+          console.error(err);
+        });
     }
 
   });
