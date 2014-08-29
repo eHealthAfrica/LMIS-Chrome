@@ -95,7 +95,23 @@ angular.module('lmisChromeApp')
         $scope.wards = [];
         $scope.facilities = [];
         $scope.isSaving = false;
+        $scope.selectedProductBaseUOM ={};
+        $scope.selectedProductUOMName = {};
+        $scope.calcedQty = {};
+        $scope.selectedProductUOMVal ={};
 
+        $scope.getUnitQty = function(selectedUUID, qty){
+             $scope.productProfiles.map(function(product){
+
+                if(product.uuid === selectedUUID){
+
+                    $scope.selectedProductBaseUOM[product.uuid] = product.product.base_uom.name;
+                    $scope.selectedProductUOMName[product.uuid] = product.presentation.uom.name;
+                    $scope.selectedProductUOMVal[product.uuid]  = product.presentation.value;
+
+                }
+            })
+        }
         $scope.getWards = function (lga) {
 
             var defer = locationService.getWards(lga);
@@ -115,7 +131,7 @@ angular.module('lmisChromeApp')
         };
         getLGAs();
         $scope.getFacilities = function (ward) {
-            
+
             ward = JSON.parse(ward);
             var defer = facilityFactory.getFacilities(ward.facilities);
             defer.then(function (facilities) {
@@ -292,6 +308,9 @@ angular.module('lmisChromeApp')
                     $scope.isSaving = false;
                 });
         };
+        $scope.spit = function(d){
+            console.log(d)
+        }
 
     });
 

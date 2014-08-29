@@ -4,27 +4,30 @@
         <i ng-click="removeLine(bundleLine)" class="pull-center text-muted fa fa-times"></i>
     </span>
 </div>
-<div class="col-sm-12">
-    <label i18n="batchNo"></label>
-    <input class="form-control" type="text" name="batchNo" ng-model="bundleLine.batchNo"/>
-</div>
-<br/>
-<div class="col-sm-12">
-    <label>Product profile</label>
-    <select class="form-control" ga-click="product_profile" ng-model="bundleLine.productProfile">
-        <option value="">- Select product profile -</option>
-        <option ng-repeat="pp in productProfiles" value="{{ pp.uuid }}">{{ pp.name }}</option>
-    </select>
-</div>
-<br/>
-<div class="col-sm-12">
-    <label>Expiry date <i class="fa fa-calendar"></i></label>
-    <input ng-model="bundleLine.expiryDate" class="form-control" type="date" name="expiryDate" required/>
-</div>
-<br/>
-<div class="col-sm-12">
-    <label>Verify Quantity</label>
-    <counter bind="bundleLine.quantity"></counter>
-</div>
-<br/>
-<div ng-show="goodTogo(bundlineForm,'batchNo')">Please enter valid batch number!</div>
+
+    <div class="col-sm-12">
+        <label i18n="batchNo"></label>
+        <input class="form-control" type="text" name="batchNo" ng-model="bundleLine.batchNo"/>
+    </div>
+    <br/>
+    <div class="col-sm-12">
+        <label>Product profile</label>
+        <select class="form-control" ga-click="product_profile" ng-model="bundleLine.productProfile" ng-change="getUnitQty(bundleLine.productProfile)">
+            <option value="">- Select product profile -</option>
+            <option ng-repeat="pp in productProfiles" value="{{ pp.uuid }}">{{ pp.name }}</option>
+        </select>
+    </div>
+    <br/>
+    <div class="col-sm-12">
+        <label>Expiry date <i class="fa fa-calendar"></i></label>
+        <input ng-model="bundleLine.expiryDate" class="form-control" type="date" name="expiryDate" required/>
+    </div>
+    <br/>
+    <div class="col-sm-12">
+        <label>Verify Quantity : {{selectedProductUOMName[bundleLine.productProfile]}}</label>
+        <counter bind="bundleLine.quantity"></counter>
+        <div ng-show="bundleLine.quantity === undefined">0 {{selectedProductBaseUOM[bundleLine.productProfile]}}s</div>
+         <div ng-show="bundleLine.quantity !== undefined">{{selectedProductUOMVal[bundleLine.productProfile] * bundleLine.quantity }} {{selectedProductBaseUOM[bundleLine.productProfile]}}s</div>
+    </div>
+    <br/>
+    <div ng-show="goodTogo(bundlineForm,'batchNo')">Please enter valid batch number!</div>
