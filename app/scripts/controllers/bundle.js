@@ -312,9 +312,9 @@ angular.module('lmisChromeApp')
                     syncService.syncUpRecord(bundleService.BUNDLE_DB, bundle)
                         .finally(function () {
                             if ($stateParams === logIncoming) {
-                                var success_msg = 'Incoming bundle logged successfully.'
+                                var success_msg = 'Incoming Delivery logged successfully.'
                             } else {
-                                var success_msg = 'Outgoing bundle logged successfully.'
+                                var success_msg = 'Outgoing Delivery logged successfully.'
                             }
                             alertFactory.success(success_msg);
                             $state.go('home.index.home.mainActivity');
