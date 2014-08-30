@@ -28,8 +28,6 @@
         <label>Verify Quantity : {{selectedProductUOMName[bundleLine.id]}}</label>
         <counter bind="bundleLine.count" onchange="updateUnitQty(selectedProductUOMVal[bundleLine.id],  bundleLine.count, bundleLine)"></counter>
 
-        <!--<div ng-show="bundleLine.count === undefined">0 {{selectedProductBaseUOM[bundleLine.id]}}s</div>-->
-
          <ng-pluralize
                  count="bundleLine.quantity"
                  when ="{
