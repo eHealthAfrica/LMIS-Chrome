@@ -102,17 +102,17 @@ angular.module('lmisChromeApp')
 
         $scope.getUnitQty = function(bundleLine){
 
-             $scope.productProfiles.map(function(product){
+            $scope.productProfiles.map(function(product){
 
-                if(product.uuid === bundleLine.productProfile){
+                if (product.uuid === bundleLine.productProfile) {
 
-                    $scope.selectedProductBaseUOM[bundleLine.id] = product.product.base_uom.name;
-                    $scope.selectedProductUOMName[bundleLine.id] = product.presentation.uom.name;
-                    $scope.selectedProductUOMVal[bundleLine.id]  = product.presentation.value;
+                  $scope.selectedProductBaseUOM[bundleLine.id] = product.product.base_uom.name;
+                  $scope.selectedProductUOMName[bundleLine.id] = product.presentation.uom.name;
+                  $scope.selectedProductUOMVal[bundleLine.id] = product.presentation.value;
 
-                    //updateConfigProductProfile(product);
+                  //updateConfigProductProfile(product);
                 }
-            })
+             })
         }
         function updateConfigProductProfile(product){
             var cond = true;
@@ -126,7 +126,6 @@ angular.module('lmisChromeApp')
             }
         }
         $scope.updateUnitQty = function(uom, count, bundleLine){
-          console.log(bundleLine)
             bundleLine.quantity = uom * count;
         }
         $scope.getWards = function (lga) {
@@ -302,9 +301,12 @@ angular.module('lmisChromeApp')
         $scope.finalSave = function () {
             var bundle = angular.copy($scope.bundle);
             $scope.isSaving = true;
+            bundle.receivingFacilityName = bundle.receivingFacility.name;
+            bundle.sendingFacilityName = bundle.sendingFacility.name;
+
             bundle.receivingFacility = bundle.receivingFacility.uuid;
             bundle.sendingFacility = bundle.sendingFacility.uuid;
-           // console.log(bundle);
+           console.log(bundle);
             bundleService.save(bundle)
                 .then(function () {
                     syncService.syncUpRecord(bundleService.BUNDLE_DB, bundle)
