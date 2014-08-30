@@ -25,11 +25,20 @@
                 <td class="text-center"> {{ $index + 1 }}</td>
                 <td class="text-center" ng-bind="line.batchNo"></td>
                 <td class="text-center" ng-bind="line.productProfile.name"></td>
-                <td class="text-center" ng-bind="line.quantity"></td>
+                <td class="text-center" >
+                    <ng-pluralize
+                        count="line.quantity"
+                        when ="{
+                                '0' :'',
+                                '1' :' 1 {{line.productProfile.presentation.uom.name}}',
+                                'other':'{{line.quantity}} {{line.productProfile.presentation.uom.name}}s'
+                               }">
+                    </ng-pluralize></td>
                 <td class="text-center">{{ line.expiryDate | date:'MMM, yyyy' }}</td>
             </tr>
             </tbody>
         </table>
+
     </div>
 
     <div class="btn-group btn-group-justified" ng-if="previewForm === true">
