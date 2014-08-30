@@ -701,7 +701,10 @@
   "sentTo" :{
       "message" : "Sent To"
   },
-  "previewSendingFacilityLabel" :{
-      "message" : "Sent To"
+  "selectSender": {
+    "message": "Select sending facility"
+  },
+  "selectReceiver": {
+    "message": "Select receiving facility"
   }
 }

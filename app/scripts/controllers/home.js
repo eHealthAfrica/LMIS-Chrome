@@ -89,9 +89,13 @@ angular.module('lmisChromeApp')
             resolve: {
               stockOutList: function(stockOutBroadcastFactory) {
                 return stockOutBroadcastFactory.getAll();
+              },
+              mostRecentCount: function(stockCountFactory){
+                return stockCountFactory.getLatestCompleteStockCount();
               }
             },
-            controller: function($q, $log, $scope, $window, i18n, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
+            controller: function($q, $log, mostRecentCount, productProfileFactory, $scope, $window, i18n, storageService, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
+
               var keys = [
                 {
                   key: 'stockBelowReorder',
@@ -138,7 +142,23 @@ angular.module('lmisChromeApp')
                     var productType = productTypes[i];
                     promises[productType.uuid] = collateProductTypeInfo(productType, facility);
                   }
-                  return $q.all(promises);
+                  return $q.all(promises)
+                    .then(function(res) {
+                      return inventoryRulesFactory.getStockBalance(facility.uuid, mostRecentCount.modified)
+                        .then(function(pTypesLedgerBal) {
+                          var ledgerBal = 0;
+                          for (var ptUuid in res) {
+                            if (!isNaN(pTypesLedgerBal[ptUuid])) {
+                              ledgerBal = pTypesLedgerBal[ptUuid];
+                              res[ptUuid].stockLevel += ledgerBal;
+                            }
+                          }
+                          return res;
+                        })
+                        .catch(function() {
+                          return res;
+                        })
+                    });
                 }
 
                 var currentFacility = appConfig.facility;
