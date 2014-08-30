@@ -7,12 +7,12 @@
 
     <div class="col-sm-12">
         <label i18n="batchNo"></label>
-        <input class="form-control" type="text" name="batchNo" ng-model="bundleLine.batchNo"/>
+        <input class="form-control" type="text" name="batchNo" ng-model="bundleLine.batchNo" required />
     </div>
     <br/>
     <div class="col-sm-12">
         <label>Product profile</label>
-        <select class="form-control" ga-click="product_profile" ng-model="bundleLine.productProfile" ng-change="getUnitQty(bundleLine)">
+        <select class="form-control" ga-click="product_profile" ng-model="bundleLine.productProfile" ng-change="getUnitQty(bundleLine)" ng-required="">
             <option value="">- Select product profile -</option>
             <option ng-repeat="pp in productProfiles" value="{{ pp.uuid }}">{{ pp.name }}</option>
         </select>
@@ -26,7 +26,7 @@
     <br/>
     <div class="col-sm-12">
         <label>Verify Quantity : {{selectedProductUOMName[bundleLine.id]}}</label>
-        <counter bind="bundleLine.count" onchange="updateUnitQty(selectedProductUOMVal[bundleLine.id],  bundleLine.count, bundleLine)"></counter>
+        <counter bind="bundleLine.count" onchange="updateUnitQty(selectedProductUOMVal[bundleLine.id],  bundleLine.count, bundleLine)" required></counter>
 
          <ng-pluralize
                  count="bundleLine.quantity"

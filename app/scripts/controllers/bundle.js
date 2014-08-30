@@ -178,6 +178,7 @@ angular.module('lmisChromeApp')
                 $scope.previewFacilityLabel = i18n('previewSendingFacilityLabel');
                 $scope.LGALabel = "Select Sending LGA";
                 $scope.WardLabel = "Select Sending Ward";
+                $scope.facilityLabel = "Select Sending Facility"
 
             } else if ($stateParams.type === logOutgoing) {
                 $scope.logBundleTitle = [i18n('OutgoingDelivery'), '-', today].join(' ');
@@ -185,6 +186,7 @@ angular.module('lmisChromeApp')
                 $scope.previewFacilityLabel = i18n('previewReceivingFacilityLabel');
                 $scope.LGALabel = "Select Receiving LGA";
                 $scope.WardLabel = "Select Receiving Ward";
+                $scope.facilityLabel = "Select Receiving Facility"
 
             } else {
                 $scope.logFormTitle = i18n('unknownBundleType');
@@ -276,9 +278,10 @@ angular.module('lmisChromeApp')
             if (selectedFacility === '') {
                 return;
             }
+
             if ($stateParams.type === logIncoming) {
-                $scope.bundle.sendingFacility = JSON.parse(selectedFacility);
-                $scope.bundle.receivingFacility = appConfig.facility;
+              $scope.bundle.sendingFacility = JSON.parse(selectedFacility);
+              $scope.bundle.receivingFacility = appConfig.facility;
             } else if ($stateParams.type === logOutgoing) {
                 $scope.bundle.receivingFacility = JSON.parse(selectedFacility);
                 $scope.bundle.sendingFacility = appConfig.facility;
@@ -289,7 +292,7 @@ angular.module('lmisChromeApp')
 
         $scope.disableSave = function () {
 
-            //angular.forEach($scope.bundle.bundleLines)
+
 
             return $scope.bundle.bundleLines.length === 0 || $scope.placeholder.selectedFacility === '';
         };
@@ -301,21 +304,23 @@ angular.module('lmisChromeApp')
         $scope.finalSave = function () {
             var bundle = angular.copy($scope.bundle);
             $scope.isSaving = true;
-            bundle.receivingFacilityName = bundle.receivingFacility.name;
-            bundle.sendingFacilityName = bundle.sendingFacility.name;
 
-            bundle.receivingFacility = bundle.receivingFacility.uuid;
-            bundle.sendingFacility = bundle.sendingFacility.uuid;
-           console.log(bundle);
+            if ($stateParams.type === logIncoming) {
+                var success_msg = 'Incoming Delivery logged successfully.'
+                bundle.FacilityName = bundle.sendingFacility.name;
+
+            } else {
+
+                var success_msg = 'Outgoing Delivery logged successfully.'
+                bundle.FacilityName = bundle.receivingFacility.name;
+            }
+             bundle.receivingFacility = bundle.receivingFacility.uuid;
+             bundle.sendingFacility = bundle.sendingFacility.uuid;
             bundleService.save(bundle)
                 .then(function () {
                     syncService.syncUpRecord(bundleService.BUNDLE_DB, bundle)
                         .finally(function () {
-                            if ($stateParams === logIncoming) {
-                                var success_msg = 'Incoming Delivery logged successfully.'
-                            } else {
-                                var success_msg = 'Outgoing Delivery logged successfully.'
-                            }
+
                             alertFactory.success(success_msg);
                             $state.go('home.index.home.mainActivity');
                             $scope.isSaving = false;
@@ -327,9 +332,7 @@ angular.module('lmisChromeApp')
                     $scope.isSaving = false;
                 });
         };
-        $scope.spit = function(d){
-            console.log(d)
-        }
+
 
     });
 
