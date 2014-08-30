@@ -687,10 +687,10 @@
     "message": "Select Nearby LGAs"
   },
   "incomingDelivery": {
-    "message": "Log Incoming"
+    "message": "Incoming Delivery"
   },
   "outGoingDelivery": {
-    "message": "Log Outgoing"
+    "message": "Outgoing Delivery"
   },
   "addStockItem" : {
       "message" : "Add Stock Item"

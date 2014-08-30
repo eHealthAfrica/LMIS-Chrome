@@ -176,15 +176,15 @@ angular.module('lmisChromeApp')
                 $scope.logBundleTitle = [i18n('IncomingDelivery'), '-', today].join(' ');
                 $scope.selectFacility = i18n('selectSender');
                 $scope.previewFacilityLabel = i18n('previewSendingFacilityLabel');
-                $scope.LGALabel = "Select sending LGA";
-                $scope.WardLabel = "Select sending ward";
+                $scope.LGALabel = "Select Sending LGA";
+                $scope.WardLabel = "Select Sending Ward";
 
             } else if ($stateParams.type === logOutgoing) {
                 $scope.logBundleTitle = [i18n('OutgoingDelivery'), '-', today].join(' ');
                 $scope.selectFacility = i18n('selectReceiver');
                 $scope.previewFacilityLabel = i18n('previewReceivingFacilityLabel');
-                $scope.LGALabel = "Select receiving lga";
-                $scope.WardLabel = "Select receiving ward";
+                $scope.LGALabel = "Select Receiving LGA";
+                $scope.WardLabel = "Select Receiving Ward";
 
             } else {
                 $scope.logFormTitle = i18n('unknownBundleType');
