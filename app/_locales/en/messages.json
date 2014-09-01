@@ -724,5 +724,8 @@
   },
   "selectSendingWard": {
     "message": "Select Sending Ward"
+  },
+  "lgaUpdateFailed": {
+    "message": "LGA update failed, internet connection needed to update LGA list."
   }
 }
