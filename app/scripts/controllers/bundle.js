@@ -176,7 +176,7 @@ angular.module('lmisChromeApp')
       } else if ($stateParams.type === logOutgoing) {
         $scope.logBundleTitle = [i18n('OutgoingDelivery'), '-', today].join(' ');
         $scope.selectFacility = i18n('selectReceiver');
-        $scope.previewFacilityLabel = i18n('sentTo');
+        $scope.previewFacilityLabel = i18n('sendTo');
         $scope.LGALabel = i18n('selectReceivingLga');
         $scope.WardLabel = i18n('selectReceivingWard');
       } else {
