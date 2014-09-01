@@ -192,6 +192,10 @@ angular.module('lmisChromeApp')
   .controller('EditAppConfigCtrl', function($scope, fixtureLoaderService, locationService, $rootScope, appConfigService, growl, $log, i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory, $filter) {
 
     $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords;
+    var oldLgas = [];
+    if (utility.has(appConfig.facility, 'selectedLgas')) {
+      oldLgas = angular.copy(appConfig.facility.selectedLgas);
+    }
     $scope.stockCountIntervals = appConfigService.stockCountIntervals;
     $scope.weekDays = appConfigService.weekDays;
     $scope.ccuProfilesCategories = Object.keys(ccuProfilesGroupedByCategory);
@@ -271,34 +275,68 @@ angular.module('lmisChromeApp')
       $scope.preSelectLgaCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedLgas, '_id');
     };
 
+    var isSameLgas = function(old, recent) {
+      if (old.length !== recent.length) {
+        return false;
+      }
+      var hasOddElem = true;
+      recent.forEach(function(rLga) {
+        var similar = old.filter(function(oLga) {
+          return rLga._id === oLga._id;
+        });
+        if (similar.length === 0) {
+          hasOddElem = false;
+        }
+      });
+      return hasOddElem;
+    };
+
+    var saveAppConfig = function() {
+      appConfigService.setup($scope.appConfig)
+        .then(function(result) {
+          if (typeof result !== 'undefined') {
+            $scope.appConfig = result;
+            alertFactory.success(i18n('appConfigSuccessMsg'));
+            $state.go('home.index.home.mainActivity');
+          } else {
+            growl.error(i18n('appConfigFailedMsg'));
+          }
+        })
+        .catch(function(reason) {
+          if (utility.has(reason, 'type') && reason.type === 'SAVED_NOT_SYNCED') {
+            alertFactory.success(i18n('appConfigSuccessMsg'));
+            $state.go('home.index.home.mainActivity');
+            console.info('not synced');
+          } else {
+            growl.error(i18n('appConfigFailedMsg'));
+            console.error(reason);
+          }
+        })
+        .finally(function() {
+          $scope.isSaving = false;
+        });
+    };
+
     $scope.save = function() {
       $scope.isSaving = true;
-      var nearbyLgas = $scope.appConfig.facility.selectedLgas
-        .map(function(lga) {
-          if (lga._id) {
-            return lga._id;
-          }
-        });
-      fixtureLoaderService.setupWardsAndFacilitesByLgas(nearbyLgas)
-        .finally(function() {
-          appConfigService.setup($scope.appConfig)
-            .then(function(result) {
-              if (typeof result !== 'undefined') {
-                $scope.appConfig = result;
-                alertFactory.success(i18n('appConfigSuccessMsg'));
-                $state.go('home.index.home.mainActivity');
-              } else {
-                growl.error(i18n('appConfigFailedMsg'));
-              }
-            })
-            .catch(function(reason) {
-              growl.error(i18n('appConfigFailedMsg'));
-              $log.error(reason);
-            })
-            .finally(function() {
-              $scope.isSaving = false;
-            });
-        });
+      if (isSameLgas(oldLgas, $scope.appConfig.facility.selectedLgas)) {
+        saveAppConfig();
+      } else {
+        var nearbyLgas = $scope.appConfig.facility.selectedLgas
+          .map(function(lga) {
+            if (lga._id) {
+              return lga._id;
+            }
+          });
+        fixtureLoaderService.setupWardsAndFacilitesByLgas(nearbyLgas)
+          .then(function(res) {
+            saveAppConfig();
+          })
+          .catch(function(err) {
+            growl.error(i18n('lgaUpdateFailed'));
+            $scope.isSaving = false;
+          });
+      }
     };
 
   });
