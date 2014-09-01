@@ -18,7 +18,7 @@
             ga-click="select_facility"
             ng-model="placeholder.selectedFacility"
             ng-change="setFacility()" ng-required="true">
-        <option value="" ng-bind="facilityLabel"></option>
+        <option value="" ng-bind="selectFacility"></option>
         <option ng-repeat="facility in facilities"
                 value="{{ facility }}"
                 ng-selected="isSelectedFacility(facility)">

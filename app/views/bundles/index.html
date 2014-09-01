@@ -25,7 +25,7 @@
                     <tbody>
                     <tr ng-repeat="bundle in bundles"  ng-click="showBundle(bundle)">
                         <td class="text-center">{{ $index + 1 }}</td>
-                        <td class="text-center" >{{bundle.FacilityName}}</td>
+                        <td class="text-center" >{{ bundle.facilityName }}</td>
                         <td class="text-center">{{ bundle.receivedOn |  date:'MMM dd, yyyy' }}</td>
                         <td class="text-center">
                             <i class="fa " ng-class="{'fa-check-circle text-success': bundle.synced, 'fa-times-circle text-danger': !bundle.synced}"></i>

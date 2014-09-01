@@ -5,43 +5,47 @@
     </span>
 </div>
 
-    <div class="col-sm-12">
-        <label i18n="batchNo"></label>
-          <input class="form-control"
-               type="text"
-               name="batchNo"
-               ng-model="bundleLine.batchNo"
-               typeahead="bNo for bNo in batchNos | filter:$viewValue | limitTo:10"
-               ng-blur="updateBatchInfo(bundleLine)"
-               ng-required="true"/>
-    </div>
-    <br/>
-    <div class="col-sm-12">
-        <label>Product profile</label>
-        <select class="form-control" ga-click="product_profile" ng-model="bundleLine.productProfile" ng-change="getUnitQty(bundleLine)" ng-required="">
-            <option value="">- Select product profile -</option>
-            <option ng-repeat="pp in productProfiles" value="{{ pp.uuid }}">{{ pp.name }}</option>
-        </select>
+<div class="col-sm-12">
+    <label i18n="batchNo"></label>
+    <input class="form-control"
+           type="text"
+           name="batchNo"
+           ng-model="bundleLine.batchNo"
+           typeahead="bNo for bNo in batchNos | filter:$viewValue | limitTo:10"
+           ng-blur="updateBatchInfo(bundleLine)"
+           ng-required="true"/>
+</div>
+<br/>
+<div class="col-sm-12">
+    <label>Product profile</label>
+    <select class="form-control" ga-click="product_profile" ng-model="bundleLine.productProfile"
+            ng-change="getUnitQty(bundleLine)" ng-required="true">
+        <option value="">- Select product profile -</option>
+        <option ng-repeat="pp in productProfiles" value="{{ pp.uuid }}">{{ pp.name }}</option>
+    </select>
 
-    </div>
-    <br/>
-    <div class="col-sm-12">
-        <label>Expiry date <i class="fa fa-calendar"></i></label>
-        <input ng-model="bundleLine.expiryDate" class="form-control" type="date" name="expiryDate" required/>
-    </div>
-    <br/>
-    <div class="col-sm-12">
-        <label>Verify Quantity : {{selectedProductUOMName[bundleLine.id]}}</label>
-        <counter bind="bundleLine.count" onchange="updateUnitQty(selectedProductUOMVal[bundleLine.id],  bundleLine.count, bundleLine)" required></counter>
+</div>
+<br/>
+<div class="col-sm-12">
+    <label>Expiry date <i class="fa fa-calendar"></i></label>
+    <input ng-model="bundleLine.expiryDate" class="form-control" type="date" name="expiryDate" required/>
+</div>
+<br/>
+<div class="col-sm-12">
+    <label>Verify Quantity : {{selectedProductUOMName[bundleLine.id]}}</label>
+    <counter bind="bundleLine.count"
+             onchange="updateUnitQty(selectedProductUOMVal[bundleLine.id],  bundleLine.count, bundleLine)"
+             required></counter>
 
-         <ng-pluralize
+         <span class="text-center"><ng-pluralize
                  count="bundleLine.quantity"
-                 when ="{
-                        0 :'',
-                        '1' :' 1 {{selectedProductBaseUOM[bundleLine.id]}}',
+                 when="{
+                        '0' : '{{bundleLine.quantity}} {{selectedProductBaseUOM[bundleLine.id]}}s',
+                        '1' :'{{bundleLine.quantity}} {{selectedProductBaseUOM[bundleLine.id]}}',
                         'other':'{{bundleLine.quantity}} {{selectedProductBaseUOM[bundleLine.id]}}s'
                         }">
-        </ng-pluralize>
-    </div>
-    <br/>
-    <div ng-show="goodTogo(bundlineForm,'batchNo')">Please enter valid batch number!</div>
+         </ng-pluralize>
+             </span>
+</div>
+<br/>
+<div ng-show="goodTogo(bundlineForm,'batchNo')">Please enter valid batch number!</div>
