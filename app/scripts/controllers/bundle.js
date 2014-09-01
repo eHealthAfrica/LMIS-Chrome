@@ -76,12 +76,7 @@ angular.module('lmisChromeApp')
         var ppUuid = bundle.bundleLines[i].productProfile;
         bundle.bundleLines[i].productProfile = productProfileFactory.get(ppUuid);
       }
-      $scope.previewBundle = bundle;
-      if ($stateParams.type === logIncoming) {
-        $scope.previewBundle.facility = bundle.sendingFacility;
-      } else if ($stateParams.type === logOutgoing) {
-        $scope.previewBundle.facility = bundle.receivingFacility;
-      }
+      $scope.previewBundle = angular.copy(bundle);
       $scope.preview = true;
     };
 
@@ -247,9 +242,9 @@ angular.module('lmisChromeApp')
       $scope.previewForm = true;
       $scope.previewBundle = angular.copy($scope.bundle);
       if ($stateParams.type === logIncoming) {
-        $scope.previewBundle.facility = $scope.bundle.sendingFacility;
+        $scope.previewBundle.facilityName = $scope.bundle.sendingFacility.name;
       } else if ($stateParams.type === logOutgoing) {
-        $scope.previewBundle.facility = $scope.bundle.receivingFacility;
+        $scope.previewBundle.facilityName = $scope.bundle.receivingFacility.name;
       }
       updateBundleLines($scope.previewBundle);
     };
@@ -281,19 +276,20 @@ angular.module('lmisChromeApp')
     $scope.finalSave = function() {
       var bundle = angular.copy($scope.bundle);
       $scope.isSaving = true;
+      var successMsg = '';
+      if ($stateParams.type === logIncoming) {
+        successMsg = i18n('incomingDeliverySuccessMessage');
+        bundle.facilityName = bundle.sendingFacility.name;
+      } else {
+        successMsg = i18n('outgoingDeliverySuccessMessage');
+        bundle.facilityName = bundle.receivingFacility.name;
+      }
       bundle.receivingFacility = bundle.receivingFacility.uuid;
       bundle.sendingFacility = bundle.sendingFacility.uuid;
-
       bundleService.save(bundle)
         .then(function() {
           syncService.syncUpRecord(bundleService.BUNDLE_DB, bundle)
             .finally(function() {
-              var successMsg = '';
-              if ($stateParams.type === logIncoming) {
-                successMsg = i18n('incomingDeliverySuccessMessage');
-              } else {
-                successMsg = i18n('outgoingDeliverySuccessMessage');
-              }
               alertFactory.success(successMsg);
               $state.go('home.index.home.mainActivity');
               $scope.isSaving = false;
