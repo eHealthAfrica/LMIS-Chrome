@@ -93,36 +93,23 @@ angular.module('lmisChromeApp')
   .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory) {
 
     $scope.batchNos = Object.keys(batchStore);
-    
-        $scope.getUnitQty = function(bundleLine){
 
-            $scope.productProfiles.map(function(product){
-
-                if (product.uuid === bundleLine.productProfile) {
-
-                  $scope.selectedProductBaseUOM[bundleLine.id] = product.product.base_uom.name;
-                  $scope.selectedProductUOMName[bundleLine.id] = product.presentation.uom.name;
-                  $scope.selectedProductUOMVal[bundleLine.id] = product.presentation.value;
-
-                  //updateConfigProductProfile(product);
-                }
-             })
+    $scope.updateBatchInfo = function(bundleLine) {
+      var batch;
+      if (bundleLine.batchNo) {
+        batch = batchStore[bundleLine.batchNo];
+        if (angular.isObject(batch)) {
+          bundleLine.productProfile = batch.profile;
+          bundleLine.expiryDate = batch.expiryDate;
+          $scope.getUnitQty(bundleLine);
         }
-        function updateConfigProductProfile(product){
-            var cond = true;
-              appConfig.facility.selectedProductProfiles.map(function(item){
-                if(item.uuid === product.uuid){
-                  cond = false;
-                }
-              })
-            if(cond){
-              appConfig.facility.selectedProductProfiles.push(product);
-            }
-        }
-        $scope.updateUnitQty = function(uom, count, bundleLine){
-            bundleLine.quantity = uom * count;
-        }
-        $scope.getWards = function (lga) {
+      }
+    };
+
+    $scope.updateUnitQty = function(uom, count, bundleLine) {
+      bundleLine.quantity = uom * count;
+      console.info(bundleLine.quantity);
+    };
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
@@ -138,12 +125,12 @@ angular.module('lmisChromeApp')
     $scope.calcedQty = {};
     $scope.selectedProductUOMVal = {};
 
-    $scope.getUnitQty = function(selectedUUID, qty) {
+    $scope.getUnitQty = function(bundleLine) {
       $scope.productProfiles.map(function(product) {
-        if (product.uuid === selectedUUID) {
-          $scope.selectedProductBaseUOM[product.uuid] = product.product.base_uom.name;
-          $scope.selectedProductUOMName[product.uuid] = product.presentation.uom.name;
-          $scope.selectedProductUOMVal[product.uuid] = product.presentation.value;
+        if (product.uuid === bundleLine.productProfile) {
+          $scope.selectedProductBaseUOM[bundleLine.id] = product.product.base_uom.name;
+          $scope.selectedProductUOMName[bundleLine.id] = product.presentation.uom.name;
+          $scope.selectedProductUOMVal[bundleLine.id] = product.presentation.value;
         }
       });
     };
@@ -155,27 +142,10 @@ angular.module('lmisChromeApp')
         });
     };
 
-        function setUIText(type) {
-            //_id ===
-            var today = $filter('date')(new Date(), 'dd MMM, yyyy')
-            if ($stateParams.type === logIncoming) {
-                $scope.logBundleTitle = [i18n('IncomingDelivery'), '-', today].join(' ');
-                $scope.selectFacility = i18n('selectSender');
-                $scope.previewFacilityLabel = i18n('previewSendingFacilityLabel');
-                $scope.LGALabel = "Select Sending LGA";
-                $scope.WardLabel = "Select Sending Ward";
-                $scope.facilityLabel = "Select Sending Facility"
     var getLGAs = function() {
       $scope.lgas = appConfig.facility.selectedLgas;
     };
 
-            } else if ($stateParams.type === logOutgoing) {
-                $scope.logBundleTitle = [i18n('OutgoingDelivery'), '-', today].join(' ');
-                $scope.selectFacility = i18n('selectReceiver');
-                $scope.previewFacilityLabel = i18n('previewReceivingFacilityLabel');
-                $scope.LGALabel = "Select Receiving LGA";
-                $scope.WardLabel = "Select Receiving Ward";
-                $scope.facilityLabel = "Select Receiving Facility"
     getLGAs();
 
     $scope.getFacilities = function(ward) {
@@ -206,15 +176,14 @@ angular.module('lmisChromeApp')
         $scope.logBundleTitle = [i18n('IncomingDelivery'), '-', today].join(' ');
         $scope.selectFacility = i18n('selectSender');
         $scope.previewFacilityLabel = i18n('receivedFrom');
-        $scope.LGALabel = "Select sending LGA";
-        $scope.WardLabel = "Select sending ward";
+        $scope.LGALabel = i18n('selectSendingLga');
+        $scope.WardLabel = i18n('selectSendingWard');
       } else if ($stateParams.type === logOutgoing) {
         $scope.logBundleTitle = [i18n('OutgoingDelivery'), '-', today].join(' ');
         $scope.selectFacility = i18n('selectReceiver');
         $scope.previewFacilityLabel = i18n('sentTo');
-        $scope.LGALabel = "Select receiving lga";
-        $scope.WardLabelpurebreed
-          = "Select receiving ward";
+        $scope.LGALabel = i18n('selectReceivingLga');
+        $scope.WardLabel = i18n('selectReceivingWard');
       } else {
         $scope.logFormTitle = i18n('unknownBundleType');
       }
@@ -305,20 +274,25 @@ angular.module('lmisChromeApp')
       return $scope.bundle.bundleLines.length === 0 || $scope.placeholder.selectedFacility === '';
     };
 
-            //angular.forEach($scope.bundle.bundleLines)
+    $scope.showForm = function() {
+      $scope.previewForm = false;
+    };
 
-            return $scope.bundle.bundleLines.length === 0 || $scope.placeholder.selectedFacility === '';
-        };
+    $scope.finalSave = function() {
+      var bundle = angular.copy($scope.bundle);
+      $scope.isSaving = true;
+      bundle.receivingFacility = bundle.receivingFacility.uuid;
+      bundle.sendingFacility = bundle.sendingFacility.uuid;
 
       bundleService.save(bundle)
         .then(function() {
           syncService.syncUpRecord(bundleService.BUNDLE_DB, bundle)
             .finally(function() {
               var successMsg = '';
-              if ($stateParams === logIncoming) {
-                successMsg = 'Incoming bundle logged successfully.'
+              if ($stateParams.type === logIncoming) {
+                successMsg = i18n('incomingDeliverySuccessMessage');
               } else {
-                successMsg = 'Outgoing bundle logged successfully.'
+                successMsg = i18n('outgoingDeliverySuccessMessage');
               }
               alertFactory.success(successMsg);
               $state.go('home.index.home.mainActivity');
@@ -332,38 +306,6 @@ angular.module('lmisChromeApp')
           $scope.isSaving = false;
         });
     };
-
-        $scope.finalSave = function () {
-            var bundle = angular.copy($scope.bundle);
-            $scope.isSaving = true;
-
-            if ($stateParams.type === logIncoming) {
-                var success_msg = 'Incoming Delivery logged successfully.'
-                bundle.FacilityName = bundle.sendingFacility.name;
-
-            } else {
-
-                var success_msg = 'Outgoing Delivery logged successfully.'
-                bundle.FacilityName = bundle.receivingFacility.name;
-            }
-             bundle.receivingFacility = bundle.receivingFacility.uuid;
-             bundle.sendingFacility = bundle.sendingFacility.uuid;
-            bundleService.save(bundle)
-                .then(function () {
-                    syncService.syncUpRecord(bundleService.BUNDLE_DB, bundle)
-                        .finally(function () {
-
-                            alertFactory.success(success_msg);
-                            $state.go('home.index.home.mainActivity');
-                            $scope.isSaving = false;
-                        });
-                })
-                .catch(function (error) {
-                    console.error(error);
-                    growl.error('Save incoming bundle failed, contact support.');
-                    $scope.isSaving = false;
-                });
-        };
 
     var updateBatchInfo = function(bundleLines) {
       var batches = batchService.extractBatch(bundleLines);
