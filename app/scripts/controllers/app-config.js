@@ -118,9 +118,9 @@ angular.module('lmisChromeApp')
           $scope.appConfig.facility.selectedLgas = result.selectedLgas || [];
           $scope.appConfig.contactPerson.name = $scope.appConfig.facility.contact.name;
           $scope.appConfig.contactPerson.phoneNo = $scope.appConfig.facility.contact.oldphone;
-          $scope.appConfig.facility.selectedCcuProfiles = $scope.appConfig.facility.selectedCcuProfiles || [];
+          $scope.appConfig.selectedCcuProfiles = $scope.appConfig.selectedCcuProfiles || [];
 
-          $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.facility.selectedCcuProfiles, 'dhis2_modelid');
+          $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
           $scope.preSelectProductProfileCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedProductProfiles, 'uuid');
 
           $scope.moveTo(nextStep);
@@ -145,9 +145,9 @@ angular.module('lmisChromeApp')
     };
 
     $scope.onCcuSelection = function(ccuProfile) {
-      $scope.appConfig.facility.selectedCcuProfiles =
-        utility.addObjectToCollection(ccuProfile, $scope.appConfig.facility.selectedCcuProfiles, 'dhis2_modelid');
-      $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.facility.selectedCcuProfiles, 'dhis2_modelid');
+      $scope.appConfig.selectedCcuProfiles =
+        utility.addObjectToCollection(ccuProfile, $scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
+      $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
     };
 
     $scope.onProductProfileSelection = function(productProfile) {
@@ -235,10 +235,10 @@ angular.module('lmisChromeApp')
       $scope.appConfig.contactPerson = appConfig.contactPerson;
       $scope.appConfig.facility = appConfig.facility;
       $scope.appConfig.facility.selectedProductProfiles = appConfig.facility.selectedProductProfiles || [];
-      $scope.appConfig.facility.selectedCcuProfiles = appConfig.facility.selectedCcuProfiles || [];
+      $scope.appConfig.selectedCcuProfiles = appConfig.selectedCcuProfiles || [];
       $scope.appConfig.facility.selectedLgas = appConfig.facility.selectedLgas || [];
       $scope.preSelectLgaCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedLgas, '_id');
-      $scope.preSelectCcuProfiles = utility.castArrayToObject(appConfig.facility.selectedCcuProfiles, 'dhis2_modelid');
+      $scope.preSelectCcuProfiles = utility.castArrayToObject(appConfig.selectedCcuProfiles, 'dhis2_modelid');
       $scope.preSelectProductProfileCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedProductProfiles, 'uuid');
     }
 
@@ -254,9 +254,9 @@ angular.module('lmisChromeApp')
       });
 
     $scope.onCcuSelection = function(ccuProfile) {
-      $scope.appConfig.facility.selectedCcuProfiles =
-        utility.addObjectToCollection(ccuProfile, $scope.appConfig.facility.selectedCcuProfiles, 'dhis2_modelid');
-      $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.facility.selectedCcuProfiles, 'dhis2_modelid');
+      $scope.appConfig.selectedCcuProfiles =
+        utility.addObjectToCollection(ccuProfile, $scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
+      $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
     };
 
     $scope.onProductProfileSelection = function(productProfile) {
