@@ -63,11 +63,15 @@ angular.module('lmisChromeApp')
       $state.go('logBundle', { type: $stateParams.type });
     };
 
-    $scope.bundles = bundles.filter(function(e) {
-      //TODO: move to service getByType()
-      return e.type === $stateParams.type;
-    });
-    $scope.bundles = utility.castArrayToObject($scope.bundles, '_id');
+    $scope.bundles = bundles
+      .filter(function(e) {
+        //TODO: move to service getByType()
+        return e.type === $stateParams.type;
+      })
+      .sort(function(a, b) {
+        //desc order
+        return -(new Date(a.created) - new Date(b.created));
+      });
     $scope.previewBundle = {};
     $scope.preview = false;
 
