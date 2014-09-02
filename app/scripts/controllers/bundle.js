@@ -143,7 +143,6 @@ angular.module('lmisChromeApp')
 
     var getLGAs = function() {
       $scope.lgas = appConfig.facility.selectedLgas;
-      console.log(appConfig)
     };
 
     getLGAs();
@@ -295,7 +294,6 @@ angular.module('lmisChromeApp')
          appConfig.facility.selectedProductProfiles.filter(function(product){
 
           if(product.uuid ===bundleLine.productProfile){
-            console.log("sync");
             i = 0;
           }
         });
