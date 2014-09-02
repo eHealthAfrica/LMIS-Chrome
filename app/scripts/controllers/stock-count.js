@@ -75,8 +75,9 @@ angular.module('lmisChromeApp')
         growl.error(i18n('showStockCountFailed'));
         return;
       }
+      var isEditable = $scope.isEditable(stockCount);
       if (mostRecentStockCount.uuid === stockCount.uuid) {
-        $state.go('stockCountForm', { detailView: true, uuid: stockCount.uuid, editOff: false, showHistory: true });
+        $state.go('stockCountForm', { detailView: true, uuid: stockCount.uuid, editOff: !isEditable, showHistory: true });
       } else {
         $state.go('stockCountForm', { detailView: true, uuid: stockCount.uuid, editOff: true });
       }
