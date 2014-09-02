@@ -5,7 +5,7 @@
 
     <div class="col-sm-12">
         <label ng-bind="previewFacilityLabel"></label>
-        <span class="new-line" ng-bind="previewBundle.facility.name"></span>
+        <span class="new-line">{{ previewBundle.facilityName }}</span>
     </div>
     <br/>
 
@@ -25,15 +25,16 @@
                 <td class="text-center"> {{ $index + 1 }}</td>
                 <td class="text-center" ng-bind="line.batchNo"></td>
                 <td class="text-center" ng-bind="line.productProfile.name"></td>
-                <td class="text-center" >
+                <td class="text-center">
                     <ng-pluralize
-                        count="line.quantity"
-                        when ="{
+                            count="line.quantity"
+                            when="{
                                 '0' :'',
-                                '1' :' 1 {{line.productProfile.presentation.uom.name}}',
-                                'other':'{{line.quantity}} {{line.productProfile.presentation.uom.name}}s'
+                                '1' :' 1 {{ line.productProfile.presentation.uom.name }}',
+                                'other':'{{ (line.quantity/ line.productProfile.presentation.value) }} {{line.productProfile.presentation.uom.name}}s'
                                }">
-                    </ng-pluralize></td>
+                    </ng-pluralize>
+                </td>
                 <td class="text-center">{{ line.expiryDate | date:'MMM, yyyy' }}</td>
             </tr>
             </tbody>
