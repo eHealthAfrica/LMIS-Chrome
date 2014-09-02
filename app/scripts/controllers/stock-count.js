@@ -51,7 +51,7 @@ angular.module('lmisChromeApp')
   .controller('StockCountHomeCtrl', function($scope, stockCountFactory, growl, i18n, utility, stockCounts, appConfig, $state, mostRecentStockCount, isStockCountDue) {
 
     var sortByCreatedDateDesc = function(scA, scB) {
-      return new Date(scA.created) < new Date(scB.created);
+      return -(new Date(scA.created) - new Date(scB.created));
     };
     var scInterval = appConfig.facility.stockCountInterval;
     var reminderDay = appConfig.facility.reminderDay;
