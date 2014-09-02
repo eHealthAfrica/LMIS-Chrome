@@ -35,7 +35,7 @@ angular.module('lmisChromeApp')
         data: {
           label: 'Stock Count Form'
         },
-        url: '/stockCountForm?newStockCount&facility&reportMonth&reportYear&reportDay&uuid&productKey&detailView&editOff',
+        url: '/stockCountForm?newStockCount&facility&reportMonth&reportYear&reportDay&uuid&productKey&detailView&editOff&showHistory',
         templateUrl: 'views/stock-count/stock-count-form.html',
         controller: 'StockCountFormCtrl',
         resolve: {
@@ -76,7 +76,7 @@ angular.module('lmisChromeApp')
         return;
       }
       if (mostRecentStockCount.uuid === stockCount.uuid) {
-        $state.go('stockCountForm', { detailView: true, uuid: stockCount.uuid, editOff: false });
+        $state.go('stockCountForm', { detailView: true, uuid: stockCount.uuid, editOff: false, showHistory: true });
       } else {
         $state.go('stockCountForm', { detailView: true, uuid: stockCount.uuid, editOff: true });
       }
@@ -115,6 +115,8 @@ angular.module('lmisChromeApp')
     $scope.editOn = false;
     $scope.editOff = ($stateParams.editOff === 'true');
     $scope.countValue = {};
+    $scope.showHistory = ($stateParams.showHistory === 'true');
+    console.log($stateParams.showHistory);
     $scope.stockCount = {};
     $scope.stockCount.unopened = {};
     $scope.facilityProducts = utility.castArrayToObject($scope.selectedProductProfiles, 'uuid');
