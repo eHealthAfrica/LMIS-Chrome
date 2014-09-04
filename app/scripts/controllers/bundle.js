@@ -28,6 +28,9 @@ angular.module('lmisChromeApp')
               .catch(function() {
                 return {};
               });
+          },
+          bundles: function(bundleService) {
+            return bundleService.getAll();
           }
         }
       });
@@ -89,9 +92,28 @@ angular.module('lmisChromeApp')
     };
 
   })
-  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService) {
+  .controller('LogBundleCtrl', function($scope, bundles, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory, appConfigService) {
 
     $scope.batchNos = Object.keys(batchStore);
+    $scope.showAddNew = false;
+    var logIncoming = bundleService.INCOMING;
+    var logOutgoing = bundleService.OUTGOING;
+    $scope.lgas = [];
+    $scope.wards = [];
+    $scope.selectedLGA = '';
+    $scope.selectedWard = '';
+    $scope.wards = [];
+    $scope.facilities = [];
+    $scope.recentFacilities = [];
+    $scope.isSaving = false;
+    $scope.selectedProductBaseUOM = {};
+    $scope.selectedProductUOMName = {};
+    $scope.calcedQty = {};
+    $scope.selectedProductUOMVal = {};
+
+    $scope.hideFavFacilities = function() {
+      $scope.showAddNew = true;
+    };
 
     $scope.updateBatchInfo = function(bundleLine) {
       var batch;
@@ -109,20 +131,6 @@ angular.module('lmisChromeApp')
       bundleLine.quantity = uom * count;
 
     };
-
-    var logIncoming = bundleService.INCOMING;
-    var logOutgoing = bundleService.OUTGOING;
-    $scope.lgas = [];
-    $scope.wards = [];
-    $scope.selectedLGA = '';
-    $scope.selectedWard = '';
-    $scope.wards = [];
-    $scope.facilities = [];
-    $scope.isSaving = false;
-    $scope.selectedProductBaseUOM = {};
-    $scope.selectedProductUOMName = {};
-    $scope.calcedQty = {};
-    $scope.selectedProductUOMVal = {};
 
     $scope.getUnitQty = function(bundleLine) {
       $scope.productProfiles.map(function(product) {
@@ -189,7 +197,16 @@ angular.module('lmisChromeApp')
     }
 
     setUIText($stateParams.type);
-
+    bundleService.getRecentFacilityIds($stateParams.type)
+      .then(function(res) {
+        facilityFactory.getFacilities(res)
+          .then(function(facilities) {
+            $scope.recentFacilities = facilities;
+          });
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
     $scope.productProfiles = productProfileFactory.getAll();
     $scope.batches = [];
     var id = 0;
@@ -255,7 +272,7 @@ angular.module('lmisChromeApp')
 
     $scope.setFacility = function() {
       var selectedFacility = $scope.placeholder.selectedFacility;
-      if (selectedFacility === '') {
+      if (selectedFacility === '' || angular.isUndefined(selectedFacility)) {
         return;
       }
       if ($stateParams.type === logIncoming) {
@@ -288,25 +305,25 @@ angular.module('lmisChromeApp')
         successMsg = i18n('outgoingDeliverySuccessMessage');
         bundle.facilityName = bundle.receivingFacility.name;
       }
-       var newProductProfiles =[];
-       bundle.bundleLines.forEach(function(bundleLine){
-         var i = 1;
-         appConfig.facility.selectedProductProfiles.filter(function(product){
+      var newProductProfiles = [];
+      bundle.bundleLines.forEach(function(bundleLine) {
+        var i = 1;
+        appConfig.facility.selectedProductProfiles.filter(function(product) {
 
-          if(product.uuid ===bundleLine.productProfile){
+          if (product.uuid === bundleLine.productProfile) {
             i = 0;
           }
         });
-        if(i === 1){
+        if (i === 1) {
           newProductProfiles.push(bundleLine.productProfile);
         }
 
       });
-      if(newProductProfiles.length > 0){
-        $scope.productProfiles.map(function(product){
-            if(newProductProfiles.indexOf(product.uuid) !== -1){
-              appConfig.facility.selectedProductProfiles.push(product);
-            }
+      if (newProductProfiles.length > 0) {
+        $scope.productProfiles.map(function(product) {
+          if (newProductProfiles.indexOf(product.uuid) !== -1) {
+            appConfig.facility.selectedProductProfiles.push(product);
+          }
         });
         appConfigService.save(appConfig);
       }
