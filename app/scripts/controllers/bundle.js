@@ -32,7 +32,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('LogBundleHomeCtrl', function($scope, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n) {
+  .controller('LogBundleHomeCtrl', function($scope, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n,expiredProductAlertService) {
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
@@ -87,9 +87,10 @@ angular.module('lmisChromeApp')
     $scope.hidePreview = function() {
       $scope.preview = false;
     };
+    $scope.expiredProductAlert = expiredProductAlertService.compareDates;
 
   })
-  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService) {
+  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService, expiredProductAlertService) {
 
     $scope.batchNos = Object.keys(batchStore);
 
@@ -354,6 +355,7 @@ angular.module('lmisChromeApp')
       var err = [];
       console.log($scope.bundle);
     }
+    $scope.expiredProductAlert = expiredProductAlertService.compareDates;
 
   });
 

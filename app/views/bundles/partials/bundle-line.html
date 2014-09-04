@@ -26,9 +26,13 @@
 
 </div>
 <br/>
-<div class="col-sm-12" ng-class="{'has-error' : bundleLineForm.expiryDate$index.$error.required }">
+<div class="col-sm-12" ng-class="">
     <label>Expiry date <i class="fa fa-calendar"></i></label></label><span class="error text-danger" ng-show="bundleLineForm.expiryDate$index.$error.required">*</span><br>
     <input ng-model="bundleLine.expiryDate" class="form-control" type="date" name="expiryDate$index" required />
+    <em><small><span  class="text-danger small" ng-show="expiredProductAlert(bundleLineForm.expiryDate$index.$modelValue)">
+        <i class="fa fa-exclamation-circle"></i>
+        This product is expired
+    </span></small></em>
 </div>
 <br/>
 <div class="col-sm-12">
