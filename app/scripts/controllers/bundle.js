@@ -89,7 +89,7 @@ angular.module('lmisChromeApp')
     };
 
   })
-  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory) {
+  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService) {
 
     $scope.batchNos = Object.keys(batchStore);
 
@@ -107,7 +107,7 @@ angular.module('lmisChromeApp')
 
     $scope.updateUnitQty = function(uom, count, bundleLine) {
       bundleLine.quantity = uom * count;
-      console.info(bundleLine.quantity);
+
     };
 
     var logIncoming = bundleService.INCOMING;
@@ -288,6 +288,29 @@ angular.module('lmisChromeApp')
         successMsg = i18n('outgoingDeliverySuccessMessage');
         bundle.facilityName = bundle.receivingFacility.name;
       }
+       var newProductProfiles =[];
+       bundle.bundleLines.forEach(function(bundleLine){
+         var i = 1;
+         appConfig.facility.selectedProductProfiles.filter(function(product){
+
+          if(product.uuid ===bundleLine.productProfile){
+            i = 0;
+          }
+        });
+        if(i === 1){
+          newProductProfiles.push(bundleLine.productProfile);
+        }
+
+      });
+      if(newProductProfiles.length > 0){
+        $scope.productProfiles.map(function(product){
+            if(newProductProfiles.indexOf(product.uuid) !== -1){
+              appConfig.facility.selectedProductProfiles.push(product);
+            }
+        });
+        appConfigService.save(appConfig);
+      }
+
       bundle.receivingFacility = bundle.receivingFacility.uuid;
       bundle.sendingFacility = bundle.sendingFacility.uuid;
       bundleService.save(bundle)
