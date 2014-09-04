@@ -727,5 +727,8 @@
   },
   "lgaUpdateFailed": {
     "message": "LGA update failed, internet connection needed to update LGA list."
+  },
+  "addNewFacility": {
+    "message": "Add New Facility"
   }
 }

@@ -1,0 +1,20 @@
+<div class="col-sm-12">
+    <select class="form-control"
+            ga-click="select_facility"
+            ng-model="placeholder.selectedFacility"
+            ng-change="setFacility()" ng-required="true">
+        <option value="" ng-bind="selectFacility"></option>
+        <option ng-repeat="facility in recentFacilities"
+                value="{{ facility }}"
+                ng-selected="isSelectedFacility(facility)">
+            {{ facility.name }}
+        </option>
+    </select>
+    <br/>
+    <button class="btn btn-lg btn-success btn-block"
+            ng-click="hideFavFacilities()">
+        <i class="fa fa-plus"></i>
+        <span i18n="addNewFacility"></span>
+    </button>
+    <br/>
+</div>

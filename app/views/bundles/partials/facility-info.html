@@ -1,28 +1,3 @@
-<div class="col-sm-12">
-    <select class="form-control" ga-click="select_sender_lga" ng-model="selectedLGA" ng-change="getWards(selectedLGA)" ng-required="true">
-        <option value="" ng-bind="LGALabel"></option>
-        <option value="{{lga._id}}" ng-repeat="lga in lgas">{{lga.name}}</option>
-
-    </select>
-</div>
-<br/>
-<div class="col-sm-12">
-    <select class="form-control" ga-click="select_sender_Ward" ng-model="selectedWard" ng-change="getFacilities(selectedWard)" ng-required="true">
-        <option value="" ng-bind="WardLabel">Select  Ward</option>
-        <option value="{{ward}}" ng-repeat=" ward in wards ">{{ward.name}}</option>
-    </select>
-</div>
-<br/>
-<div class="col-sm-12">
-    <select class="form-control"
-            ga-click="select_facility"
-            ng-model="placeholder.selectedFacility"
-            ng-change="setFacility()" ng-required="true">
-        <option value="" ng-bind="selectFacility"></option>
-        <option ng-repeat="facility in facilities"
-                value="{{ facility }}"
-                ng-selected="isSelectedFacility(facility)">
-            {{ facility.name }}
-        </option>
-    </select>
-</div>
+<div ng-include="'views/bundles/partials/facility/select-recent-facility.html'" ng-if="showAddNew !== true"></div>
+<div ng-include="'views/bundles/partials/facility/add-new-facility.html'" ng-if="showAddNew === true"></div><div class="col-sm-12">
+    
