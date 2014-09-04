@@ -276,6 +276,9 @@ angular.module('lmisChromeApp')
     $scope.showForm = function() {
       $scope.previewForm = false;
     };
+    $scope.validateForm = function(){
+
+    }
 
     $scope.finalSave = function() {
       var bundle = angular.copy($scope.bundle);
@@ -347,6 +350,11 @@ angular.module('lmisChromeApp')
           console.error(err);
         });
     }
+    function validateBundle(bundleLine){
+      var err = [];
+      console.log($scope.bundle);
+    }
 
   });
+
 
