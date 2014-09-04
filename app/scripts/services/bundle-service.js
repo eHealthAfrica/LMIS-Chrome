@@ -3,8 +3,6 @@
 angular.module('lmisChromeApp')
   .service('bundleService', function(storageService, syncService, utility) {
 
-
-
     this.INCOMING = '0';
     this.OUTGOING = '1';
     this.BUNDLE_DB = storageService.BUNDLE;
@@ -81,6 +79,34 @@ angular.module('lmisChromeApp')
         }
       }
       return totalSummary;
+    };
+
+    this.getRecentFacilityIds = function(type) {
+      var incoming = this.INCOMING;
+      var outgoing = this.OUTGOING;
+      return this.getAll()
+        .then(function(bundles) {
+          var recentFacilities = [];
+          bundles
+            .filter(function(b) {
+              return b.type === type;
+            })
+            .sort(function(a, b) {
+              return (new Date(b.created) - new Date(a.created));
+            })
+            .forEach(function(bundle) {
+              var facilityId;
+              if (bundle.type === incoming) {
+                facilityId = bundle.sendingFacility;
+              } else if (bundle.type === outgoing) {
+                facilityId = bundle.receivingFacility;
+              }
+              if(recentFacilities.indexOf(facilityId) === -1){
+                recentFacilities.push(facilityId);
+              }
+            });
+          return recentFacilities;
+        });
     };
 
   });
