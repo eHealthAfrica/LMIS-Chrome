@@ -131,13 +131,15 @@ angular.module('lmisChromeApp')
     $scope.selectedProductUOMName = {};
     $scope.calcedQty = {};
     $scope.selectedProductUOMVal = {};
+    $scope.selectedProductName = [];
 
     $scope.getUnitQty = function(bundleLine) {
       $scope.productProfiles.map(function(product) {
         if (product.uuid === bundleLine.productProfile) {
+          $scope.selectedProductName[bundleLine.id]    = product.name;
           $scope.selectedProductBaseUOM[bundleLine.id] = product.product.base_uom.name;
           $scope.selectedProductUOMName[bundleLine.id] = product.presentation.uom.name;
-          $scope.selectedProductUOMVal[bundleLine.id] = product.presentation.value;
+          $scope.selectedProductUOMVal[bundleLine.id]  = product.presentation.value;
         }
       });
     };
