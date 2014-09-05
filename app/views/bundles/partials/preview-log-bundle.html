@@ -22,7 +22,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="line in previewBundle.bundleLines" ng-class="{'warning' : expiredProductAlert(line.expiryDate,previewBundle.receivedOn)}">
+                <tr ng-repeat="line in previewBundle.bundleLines">
                     <td>{{$index + 1}}</td>
                     <td class="text-center" >{{line.batchNo}}</td>
                     <td class="text-center" ng-bind="line.productProfile.name"></td>
@@ -38,7 +38,7 @@
                     </td>
                     <td class="text-center">
                         {{ line.expiryDate | date:'MMM, yy' }}
-                        <span ng-show="expiredProductAlert(line.expiryDate,previewBundle.receivedOn)" class="">
+                        <span ng-show="expiredProductAlert(line.expiryDate,previewBundle.receivedOn)" class="text-danger">
                            <small> <i class="fa fa-question-circle" tooltip="Expired Product"></i></small>
                         </span>
                     </td>
