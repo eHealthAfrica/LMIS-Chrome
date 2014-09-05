@@ -104,6 +104,16 @@ angular.module('lmisChromeApp')
       }
       return groupedList;
     };
+    var expiryDates = function(productDate){
+        console.log(new Date(arguments[1]) +'--'+ productDate);
+        //if second argument is supplied, use to compare, else use new Date()
+        var compareDate = (Object.prototype.toString.call(arguments[1]) === '[object Date]') ? new Date(arguments[1]) : new Date();
+
+        if(new Date(productDate) < compareDate){
+          return true;
+        }
+        return false;
+      }
 
     return {
       get: getByUuid,
@@ -111,6 +121,7 @@ angular.module('lmisChromeApp')
       getByProductType: getByProductType,
       getBatch: getProductProfileBatch,
       getAllGroupedByCategory: getAllGroupedByProductCategory,
-      getBatchGroupedByCategory: getBatchGroupedByProductCategory
+      getBatchGroupedByCategory: getBatchGroupedByProductCategory,
+      compareDates : expiryDates
     };
   });
