@@ -35,13 +35,14 @@
     </span></small></em>
 </div>
 <br/>
-<div class="col-sm-12">
+<div class="col-sm-12" align="center">
+    <p><span class="fa fa-2x">{{selectedProductName[bundleLine.id]}}</span></p>
     <label>Verify Quantity : {{selectedProductUOMName[bundleLine.id]}}</label>
     <counter bind="bundleLine.count"
              onchange="updateUnitQty(selectedProductUOMVal[bundleLine.id],  bundleLine.count, bundleLine)"
              required name="counter$index"></counter>
 
-         <span class="text-center"><ng-pluralize
+         <span class="fa fa-1.5x text-center"><ng-pluralize
                  count="bundleLine.quantity"
                  when="{
                         '0' : '{{bundleLine.quantity}} {{selectedProductBaseUOM[bundleLine.id]}}s',
