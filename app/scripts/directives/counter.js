@@ -6,7 +6,8 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
     templateUrl: 'views/templates/counter.html',
     scope: {
       count: '=bind',
-      change: '=onchange'
+      change: '=onchange',
+      name: '=name'
     },
     link: function (scope, element) {
 
@@ -18,7 +19,6 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
       function isInvalid(value){
         return (isNaN(value) || value === '' || value < 1);
       }
-
       scope.incrementTouch = function (count) {
         notificationService.vibrate(DURATION_MILLI_SECONDS);
         return isInvalid(count) ? 1 : (parseInt(count) + 1);

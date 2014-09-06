@@ -35,7 +35,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('LogBundleHomeCtrl', function($scope, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n) {
+  .controller('LogBundleHomeCtrl', function($scope, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n,expiredProductAlertService) {
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
@@ -90,26 +90,12 @@ angular.module('lmisChromeApp')
     $scope.hidePreview = function() {
       $scope.preview = false;
     };
+    $scope.expiredProductAlert = expiredProductAlertService.compareDates;
 
   })
-  .controller('LogBundleCtrl', function($scope, bundles, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory, appConfigService) {
+  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService, expiredProductAlertService) {
 
     $scope.batchNos = Object.keys(batchStore);
-    $scope.showAddNew = false;
-    var logIncoming = bundleService.INCOMING;
-    var logOutgoing = bundleService.OUTGOING;
-    $scope.lgas = [];
-    $scope.wards = [];
-    $scope.selectedLGA = '';
-    $scope.selectedWard = '';
-    $scope.wards = [];
-    $scope.facilities = [];
-    $scope.recentFacilities = [];
-    $scope.isSaving = false;
-    $scope.selectedProductBaseUOM = {};
-    $scope.selectedProductUOMName = {};
-    $scope.calcedQty = {};
-    $scope.selectedProductUOMVal = {};
 
     $scope.hideFavFacilities = function() {
       $scope.showAddNew = true;
@@ -131,6 +117,20 @@ angular.module('lmisChromeApp')
       bundleLine.quantity = uom * count;
 
     };
+
+    var logIncoming = bundleService.INCOMING;
+    var logOutgoing = bundleService.OUTGOING;
+    $scope.lgas = [];
+    $scope.wards = [];
+    $scope.selectedLGA = '';
+    $scope.selectedWard = '';
+    $scope.wards = [];
+    $scope.facilities = [];
+    $scope.isSaving = false;
+    $scope.selectedProductBaseUOM = {};
+    $scope.selectedProductUOMName = {};
+    $scope.calcedQty = {};
+    $scope.selectedProductUOMVal = {};
 
     $scope.getUnitQty = function(bundleLine) {
       $scope.productProfiles.map(function(product) {
@@ -364,6 +364,11 @@ angular.module('lmisChromeApp')
           console.error(err);
         });
     }
+    function validateBundle(bundleLine){
+      var err = [];
+      console.log($scope.bundle);
+    }
+    $scope.expiredProductAlert = expiredProductAlertService.compareDates;
 
   });
 
