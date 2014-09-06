@@ -15,17 +15,23 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Batch No.</th>
                     <th>Product</th>
-                    <th>Qty</th>
+                    <th>Batch No.</th>
                     <th>Expiry Date</th>
+                    <th>Qty</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="line in previewBundle.bundleLines">
                     <td>{{$index + 1}}</td>
-                    <td class="text-center" >{{line.batchNo}}</td>
                     <td class="text-center" ng-bind="line.productProfile.name"></td>
+                    <td class="text-center" >{{line.batchNo}}</td>
+                    <td class="text-center">
+                        {{ line.expiryDate | date:'MMM, yy' }}
+                        <span ng-show="expiredProductAlert(line.expiryDate,previewBundle.receivedOn)" class="text-danger">
+                           <small> <i class="fa fa-question-circle" tooltip="Expired Product"></i></small>
+                        </span>
+                    </td>
                     <td class="text-center">
                         <ng-pluralize
                                 count="line.quantity"
@@ -35,12 +41,6 @@
                                     'other':'{{ (line.quantity/ line.productProfile.presentation.value) }} {{line.productProfile.presentation.uom.name}}s'
                                    }">
                         </ng-pluralize>
-                    </td>
-                    <td class="text-center">
-                        {{ line.expiryDate | date:'MMM, yy' }}
-                        <span ng-show="expiredProductAlert(line.expiryDate,previewBundle.receivedOn)" class="text-danger">
-                           <small> <i class="fa fa-question-circle" tooltip="Expired Product"></i></small>
-                        </span>
                     </td>
                 </tr>
                 </tbody>
