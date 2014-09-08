@@ -4,7 +4,15 @@
         <i ng-click="removeLine(bundleLine)" class="pull-center text-muted fa fa-times"></i>
     </span>
 </div>
-
+<div class="col-sm-12">
+    <label>Product profile</label></label><span class="error text-danger" ng-show="bundleLineForm.pp$index.$error.required">*</span><br>
+    <select class="form-control" ga-click="product_profile" ng-model="bundleLine.productProfile"
+            ng-change="getUnitQty(bundleLine)" ng-required="true" name="pp$index">
+        <option value="">- Select product profile -</option>
+        <option ng-repeat="pp in productProfiles" value="{{ pp.uuid }}">{{ pp.name }}</option>
+    </select>
+</div>
+<br/>
 <div class="col-sm-12">
     <label i18n="batchNo"></label><span class="error text-danger" ng-show="bundleLineForm.batchNo$index.$error.required">*</span>
     <input class="form-control"
@@ -14,16 +22,6 @@
            typeahead="bNo for bNo in batchNos | filter:$viewValue | limitTo:10"
            ng-blur="updateBatchInfo(bundleLine)"
            ng-required="true"/>
-</div>
-<br/>
-<div class="col-sm-12">
-    <label>Product profile</label></label><span class="error text-danger" ng-show="bundleLineForm.pp$index.$error.required">*</span><br>
-    <select class="form-control" ga-click="product_profile" ng-model="bundleLine.productProfile"
-            ng-change="getUnitQty(bundleLine)" ng-required="true" name="pp$index">
-        <option value="">- Select product profile -</option>
-        <option ng-repeat="pp in productProfiles" value="{{ pp.uuid }}">{{ pp.name }}</option>
-    </select>
-
 </div>
 <br/>
 <div class="col-sm-12" ng-class="">
