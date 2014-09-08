@@ -35,7 +35,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('LogBundleHomeCtrl', function($scope, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n) {
+  .controller('LogBundleHomeCtrl', function($scope, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n,productCategoryFactory) {
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
@@ -91,16 +91,14 @@ angular.module('lmisChromeApp')
       $scope.previewBundle = angular.copy(bundle);
       $scope.preview = true;
     };
-    $scope.getCategoryColor = function(categoryName) {
-      return categoryName.split(' ').join('-').toLowerCase();
-    };
+    $scope.getCategoryColor = productCategoryFactory.getCategoryColor;
     $scope.hidePreview = function() {
       $scope.preview = false;
     };
     $scope.expiredProductAlert = productProfileFactory.compareDates;
 
   })
-  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService) {
+  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService,productCategoryFactory) {
 
     $scope.batchNos = Object.keys(batchStore);
 
@@ -234,12 +232,16 @@ angular.module('lmisChromeApp')
     });
 
     $scope.addNewLine = function() {
+
+      var lastLine = $scope.bundle.bundleLines[$scope.bundle.bundleLines.length -1];
+      console.log(lastLine);
       $scope.bundle.bundleLines.push({
         id: id++,
         batchNo: '',
         productProfile: ''
       });
     };
+
     $scope.removeLine = function(bundleLine) {
       $scope.bundle.bundleLines = $scope.bundle.bundleLines.filter(function(line) {
         return line.id !== bundleLine.id;
@@ -376,9 +378,14 @@ angular.module('lmisChromeApp')
     }
     function validateBundle(bundleLine){
       var err = [];
+      $scope.bundle.bundleLines.filter(function(bundleLine){
+        if(bundleLine.productProfile === ''){
+          
+        }
+      })
 
     }
-    $scope.expiredProductAlert = productProfileFactory.compareDates;
+    $scope.getCategoryColor = productCategoryFactory.getCategoryColor;
 
   });
 
