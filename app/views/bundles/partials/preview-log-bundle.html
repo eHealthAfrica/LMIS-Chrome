@@ -8,7 +8,7 @@
             <span>: {{ previewBundle.facilityName }}</span>
         </div>
         <br/>
-
+        <p><small><em><span class="text-danger">* indicates expired products</span></em></small></p>
         <div class="col-sm-12">
 
             <table class="table table-bordered table-condensed">
@@ -22,14 +22,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="line in previewBundle.bundleLines">
+                <tr ng-repeat="line in previewBundle.bundleLines" ng-class="getCategoryColor(line.productProfile.category.name)">
                     <td>{{$index + 1}}</td>
                     <td class="text-center" ng-bind="line.productProfile.name"></td>
                     <td class="text-center" >{{line.batchNo}}</td>
                     <td class="text-center">
                         {{ line.expiryDate | date:'MMM, yy' }}
                         <span ng-show="expiredProductAlert(line.expiryDate,previewBundle.receivedOn)" class="text-danger">
-                           <small> <i class="fa fa-question-circle" tooltip="Expired Product"></i></small>
+                           * <!--<small> <i class="fa fa-question-circle" tooltip="Expired Product"></i>--></small>
                         </span>
                     </td>
                     <td class="text-center">

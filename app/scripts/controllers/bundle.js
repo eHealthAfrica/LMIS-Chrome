@@ -38,7 +38,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('LogBundleHomeCtrl', function($scope, appConfig, locationService, facilityFactory, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n, expiredProductAlertService) {
+  .controller('LogBundleHomeCtrl', function($scope, appConfig, locationService, facilityFactory, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n) {
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
@@ -144,15 +144,16 @@ angular.module('lmisChromeApp')
       $scope.previewBundle = angular.copy(bundle);
       $scope.preview = true;
     };
-
+    $scope.getCategoryColor = function(categoryName) {
+      return categoryName.split(' ').join('-').toLowerCase();
+    };
     $scope.hidePreview = function() {
       $scope.preview = false;
     };
-
-    $scope.expiredProductAlert = expiredProductAlertService.compareDates;
+    $scope.expiredProductAlert = productProfileFactory.compareDates;
 
   })
-  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory, appConfigService, expiredProductAlertService) {
+  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService) {
 
     var setFacility = function() {
       facilityFactory.get($stateParams.selectedFacility)
@@ -379,10 +380,8 @@ angular.module('lmisChromeApp')
 
     function validateBundle(bundleLine) {
       var err = [];
-      console.log($scope.bundle);
     }
-
-    $scope.expiredProductAlert = expiredProductAlertService.compareDates;
+    $scope.expiredProductAlert = productProfileFactory.compareDates;
 
   });
 
