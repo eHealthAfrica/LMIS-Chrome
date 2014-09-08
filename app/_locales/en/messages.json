@@ -730,5 +730,11 @@
   },
   "addNewFacility": {
     "message": "Add New Facility"
+  },
+  "selectFacilityError": {
+    "message": "Please, select facility"
+  },
+  "selectedFacilityNotFound":{
+    "message": "Selected facility does not exist."
   }
 }

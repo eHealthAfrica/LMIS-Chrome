@@ -1,20 +1,17 @@
 <div class="col-sm-12">
-    <select class="form-control"
+    <select ng-class="{ 'form-control': true, 'has-error': selectFacilityError}"
             ga-click="select_facility"
             ng-model="placeholder.selectedFacility"
             ng-change="setFacility()" ng-required="true">
         <option value="" ng-bind="selectFacility"></option>
         <option ng-repeat="facility in recentFacilities"
-                value="{{ facility }}"
-                ng-selected="isSelectedFacility(facility)">
+                value="{{ facility.uuid }}"
+                ng-selected="placeholder.selectedFacility === facility.uuid">
             {{ facility.name }}
         </option>
+        <option value="-1" i18n="addNewFacility"></option>
     </select>
-    <br/>
-    <button class="btn btn-lg btn-success btn-block"
-            ng-click="hideFavFacilities()">
-        <i class="fa fa-plus"></i>
-        <span i18n="addNewFacility"></span>
-    </button>
+    <span  ng-show="selectFacilityError == true"
+           class="help-block custom-error" i18n="selectFacilityError"></span>
     <br/>
 </div>
