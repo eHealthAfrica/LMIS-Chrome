@@ -6,7 +6,7 @@
                 <h4 class="panel-title" ng-bind="logBundleTitle"></h4>
             </div>
             <div class="panel-body">
-                <div class="row" ng-include="'views/bundles/partials/facility-info.html'"></div>
+                <label>{{ previewFacilityLabel }} : {{ selectedFacility.name }}</label>
             </div>
 
                 <div class="panel panel-default" ng-repeat="bundleLine in bundle.bundleLines"

@@ -10,7 +10,7 @@
 <div class="col-sm-12">
     <select class="form-control" ga-click="select_sender_Ward" ng-model="selectedWard"
             ng-change="getFacilities(selectedWard)" ng-required="true">
-        <option value="" ng-bind="WardLabel">Select Ward</option>
+        <option value="" ng-bind="WardLabel"></option>
         <option value="{{ward}}" ng-repeat=" ward in wards ">{{ward.name}}</option>
     </select>
 </div>
@@ -22,9 +22,12 @@
             ng-change="setFacility()" ng-required="true">
         <option value="" ng-bind="selectFacility"></option>
         <option ng-repeat="facility in facilities"
-                value="{{ facility }}"
-                ng-selected="isSelectedFacility(facility)">
+                value="{{ facility.uuid }}"
+                 ng-selected="placeholder.selectedFacility === facility.uuid">
             {{ facility.name }}
         </option>
     </select>
+    <span  ng-show="selectFacilityError == true"
+           class="help-block custom-error" i18n="selectFacilityError"></span>
 </div>
+<br/>
