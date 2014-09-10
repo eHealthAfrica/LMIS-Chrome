@@ -8,6 +8,14 @@
         <option value="">- Select product profile -</option>
         <option ng-repeat="pp in productProfiles" value="{{ pp.uuid }}">{{ pp.name }}</option>
     </select>
+    <span class="text-danger" ng-show="err[bundleLine.id].pp && bundleLineForm.pp$index.$error.required">
+        <small>
+            <em>
+                <i class="fa fa-exclamation-circle"></i>
+                please enter a valid product
+            </em>
+        </small>
+    </span>
 </div>
 <br/>
 <div class="col-sm-12">
@@ -19,6 +27,14 @@
            typeahead="bNo for bNo in batchNos | filter:$viewValue | limitTo:10"
            ng-blur="updateBatchInfo(bundleLine)"
            ng-required="true"/>
+    <span class="text-danger" ng-show="err[bundleLine.id].batchNo && bundleLineForm.batchNo$index.$error.required">
+        <small>
+            <em>
+                <i class="fa fa-exclamation-circle"></i>
+                please enter a valid batchNo
+            </em>
+        </small>
+    </span>
 </div>
 <br/>
 <div class="col-sm-12" ng-class="">
@@ -28,6 +44,14 @@
         <i class="fa fa-exclamation-circle"></i>
         This product is expired
     </span></small></em>
+    <span class="text-danger" ng-show="err[bundleLine.id].expiry && bundleLineForm.expiryDate$index.$error.required">
+        <small>
+            <em>
+                <i class="fa fa-exclamation-circle"></i>
+                please enter a valid expiry date
+            </em>
+        </small>
+    </span>
 </div>
 <br/>
 <div class="col-sm-12" align="center">
@@ -46,6 +70,15 @@
                         }">
          </ng-pluralize>
              </span>
+
+    <span class="text-danger" ng-show="err[bundleLine.id].quantity">
+        <small>
+            <em>
+                <i class="fa fa-exclamation-circle"></i>
+                please enter a valid quantity
+            </em>
+        </small>
+    </span>
 </div>
 <br/>
 <div ng-show="goodTogo(bundlineForm,'batchNo')">Please enter valid batch number!</div>

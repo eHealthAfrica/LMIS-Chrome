@@ -38,7 +38,7 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('LogBundleHomeCtrl', function($scope, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n,productCategoryFactory) {
+  .controller('LogBundleHomeCtrl', function($scope, appConfig, facilityFactory, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n,productCategoryFactory) {
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
@@ -157,6 +157,7 @@ angular.module('lmisChromeApp')
   })
   .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService,productCategoryFactory) {
 
+    $scope.err = {};
     $scope.batchNos = Object.keys(batchStore);
 
     $scope.hideFavFacilities = function() {
@@ -177,6 +178,11 @@ angular.module('lmisChromeApp')
 
     $scope.updateUnitQty = function(uom, count, bundleLine) {
       bundleLine.quantity = uom * count;
+      if(!isNaN(bundleLine.quantity)){
+        if($scope.err[bundleLine.id].quantity){
+          $scope.err[bundleLine.id].quantity = false;
+        }
+      }
     };
 
     var logIncoming = bundleService.INCOMING;
@@ -281,19 +287,27 @@ angular.module('lmisChromeApp')
       receivingFacility: {},
       bundleLines: []
     };
-    $scope.bundle.bundleLines.push({
-      id: id++,
-      batchNo: '',
-      productProfile: ''
-    });
 
     $scope.addNewLine = function() {
-      $scope.bundle.bundleLines.push({
-        id: id++,
-        batchNo: '',
-        productProfile: ''
-      });
+      if(validateBundle()) {
+        newLine();
+      }
     };
+    function newLine(){
+      var bundleLineId = id ++;
+      $scope.bundle.bundleLines.push({
+          id: bundleLineId,
+          batchNo: '',
+          productProfile: ''
+        });
+      $scope.err[bundleLineId] = {
+        pp : false,
+        batchNo : false,
+        expiry : false,
+        quantity : false
+      }
+    }
+    newLine();
     $scope.removeLine = function(bundleLine) {
       $scope.bundle.bundleLines = $scope.bundle.bundleLines.filter(function(line) {
         return line.id !== bundleLine.id;
@@ -428,13 +442,29 @@ angular.module('lmisChromeApp')
         });
     }
     function validateBundle(bundleLine){
-      var err = [];
+
+      var indicator = 0;
+
       $scope.bundle.bundleLines.filter(function(bundleLine){
+
         if(bundleLine.productProfile === ''){
-          
+          indicator = 1;
+          $scope.err[bundleLine.id].pp = true;
+        }
+        if(bundleLine.batchNo === ''){
+          indicator = 1;
+          $scope.err[bundleLine.id].batchNo = true;
+        }
+        if(bundleLine.expiry === '' || (typeof bundleLine.expiry === "undefined")){
+          indicator = 1;
+          $scope.err[bundleLine.id].expiry = true;
+        }
+        if(bundleLine.quantity === '' || (isNaN(bundleLine.quantity))){
+          indicator = 1;
+          $scope.err[bundleLine.id].quantity = true;
         }
       })
-
+      return (indicator === 0);
     }
     $scope.getCategoryColor = productCategoryFactory.getCategoryColor;
 
