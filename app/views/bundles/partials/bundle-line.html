@@ -1,14 +1,8 @@
 <div class="panel-heading clearfix">
     <h4 class="panel-title pull-left">Product {{ $index + 1 }}</h4>
-    <div class="pull-right">
-        <a class="btn btn-info btn-sm"><i class="fa fa-plus"></i> add product</a>
-        <a class="btn btn-warning btn-sm" ng-show="$index > 0">
-            <i ng-click="removeLine(bundleLine)" class="fa fa-times"></i>
-        </a>
-    </div>
 </div>
 <div class="col-sm-12">
-    <label>Product profile</label></label><span class="error text-danger" ng-show="bundleLineForm.pp$index.$error.required">*</span><br>
+    <label>Product profile</label></label>
     <select class="form-control" ga-click="product_profile" ng-model="bundleLine.productProfile"
             ng-change="getUnitQty(bundleLine)" ng-required="true" name="pp$index">
         <option value="">- Select product profile -</option>
@@ -17,7 +11,7 @@
 </div>
 <br/>
 <div class="col-sm-12">
-    <label i18n="batchNo"></label><span class="error text-danger" ng-show="bundleLineForm.batchNo$index.$error.required">*</span>
+    <label i18n="batchNo"></label>
     <input class="form-control"
            type="text"
            name="batchNo$index"
@@ -28,7 +22,7 @@
 </div>
 <br/>
 <div class="col-sm-12" ng-class="">
-    <label>Expiry date <i class="fa fa-calendar"></i></label></label><span class="error text-danger" ng-show="bundleLineForm.expiryDate$index.$error.required">*</span><br>
+    <label>Expiry date <i class="fa fa-calendar"></i></label></label>
     <input ng-model="bundleLine.expiryDate" class="form-control" type="date" name="expiryDate$index" required />
     <em><small><span  class="text-danger small" ng-show="expiredProductAlert(bundleLineForm.expiryDate$index.$modelValue)">
         <i class="fa fa-exclamation-circle"></i>
