@@ -1,5 +1,8 @@
 <div class="panel-heading clearfix">
     <h4 class="panel-title pull-left">Product {{ $index + 1 }}</h4>
+    <span class="removeIcon pull-right" ng-show="$index > 0">
+       <i ng-click="removeLine(bundleLine)" class="pull-center text-muted fa fa-times"></i>
+   </span>
 </div>
 <div class="col-sm-12">
     <label>Product profile</label></label>

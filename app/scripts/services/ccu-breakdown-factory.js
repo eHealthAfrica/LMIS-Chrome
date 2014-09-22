@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('ccuBreakdownFactory', function ($q, storageService, syncService, $window, notificationService) {
+    .factory('ccuBreakdownFactory', function ($q, storageService, syncService, $window, notificationService,$http) {
 
       var saveCcuBreakdownReport = function (ccuBreakdown) {
         var deferred = $q.defer();
-        storageService.save(storageService.CCU_BREAKDOWN, ccuBreakdown)
+        storageService.save(storageService.CCU_BREAKDOWN2, ccuBreakdown)
             .then(function (result) {
               if (typeof result !== 'undefined') {
                 ccuBreakdown.uuid = result;
@@ -32,7 +32,7 @@ angular.module('lmisChromeApp')
 
       var broadcastCcuBreakdown = function (ccuBreakdown) {
         var deferred = $q.defer();
-        syncService.syncUpRecord(storageService.CCU_BREAKDOWN, ccuBreakdown)
+        syncService.syncUpRecord(storageService.CCU_BREAKDOWN2, ccuBreakdown)
             .then(function (syncResult) {
               deferred.resolve(syncResult);
             }).catch(function () {
@@ -66,11 +66,20 @@ angular.module('lmisChromeApp')
             });
         return deferred.promise;
       };
-
+      var getAll = function(){
+          var deferred = $q.defer();
+          //TODO: these should storage and sync services 
+          $http.get('http://dev.lomis.ehealth.org.ng:5984/ccu_breakdown2/_all_docs/?include_docs=true')
+            .then(function(r){
+                deferred.resolve(r.data.rows);
+            })
+          return deferred.promise;
+      }
       return {
         save: saveCcuBreakdownReport,
         broadcast: broadcastCcuBreakdown,
-        saveAndSendReport: saveAndSendCcuBreakdownReport
+        saveAndSendReport: saveAndSendCcuBreakdownReport,
+        getAll: getAll
       };
 
     });

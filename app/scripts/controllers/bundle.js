@@ -38,25 +38,25 @@ angular.module('lmisChromeApp')
         }
       });
   })
-  .controller('LogBundleHomeCtrl', function($scope, appConfig, facilityFactory, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n,productCategoryFactory) {
+  .controller('LogBundleHomeCtrl', function($scope, appConfig, locationService, facilityFactory, $stateParams, bundleService, bundles, $state, utility, productProfileFactory, growl, i18n,productCategoryFactory) {
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
+
+    $scope.lgas = appConfig.facility.selectedLgas;
+    $scope.wards = [];
+    $scope.selectedLGA = '';
+    $scope.selectedWard = '';
+    $scope.selectFacilityError = false;
+    $scope.facilities = [];
+    $scope.placeholder = { selectedFacility: '' };
+    $scope.stateColdStore = {'uuid': '3e1275f1599f695322aaecdafe0c933a', 'name': 'Kano State Cold Store'};
 
     if ($stateParams.type !== logIncoming && $stateParams.type !== logOutgoing) {
       $state.go('home.index.home.mainActivity');
       growl.error(i18n('specifyBundleType'));
       return;
     }
-
-    $scope.lgas = appConfig.facility.selectedLgas;
-    $scope.wards = [];
-    $scope.selectedLGA = '';
-    $scope.selectedWard = '';
-    $scope.wards = [];
-    $scope.selectFacilityError = false;
-    $scope.facilities = [];
-    $scope.placeholder = { selectedFacility: '' };
 
     function setUITexts(type) {
       if ($stateParams.type === logIncoming) {
@@ -77,7 +77,6 @@ angular.module('lmisChromeApp')
         $scope.logFormTitle = i18n('unknownBundleType');
       }
     }
-
     setUITexts($stateParams.type);
 
     bundleService.getRecentFacilityIds($stateParams.type)
@@ -157,6 +156,15 @@ angular.module('lmisChromeApp')
   })
   .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService,productCategoryFactory) {
 
+    var logIncoming = bundleService.INCOMING;
+    var logOutgoing = bundleService.OUTGOING;
+
+    $scope.isSaving = false;
+    $scope.selectedProductBaseUOM = {};
+    $scope.selectedProductUOMName = {};
+    $scope.calcedQty = {};
+    $scope.selectedProductUOMVal = {};
+    $scope.selectedProductName = [];
     $scope.err = {};
     $scope.batchNos = Object.keys(batchStore);
 
@@ -185,20 +193,27 @@ angular.module('lmisChromeApp')
       }
     };
 
-    var logIncoming = bundleService.INCOMING;
-    var logOutgoing = bundleService.OUTGOING;
-    $scope.lgas = [];
-    $scope.wards = [];
-    $scope.selectedLGA = '';
-    $scope.selectedWard = '';
-    $scope.wards = [];
-    $scope.facilities = [];
-    $scope.isSaving = false;
-    $scope.selectedProductBaseUOM = {};
-    $scope.selectedProductUOMName = {};
-    $scope.calcedQty = {};
-    $scope.selectedProductUOMVal = {};
-    $scope.selectedProductName = [];
+    var setFacility = function() {
+      facilityFactory.get($stateParams.selectedFacility)
+        .then(function(facility) {
+          $scope.selectedFacility = facility;
+          if ($stateParams.type === logIncoming) {
+            $scope.bundle.sendingFacility = facility;
+            $scope.bundle.receivingFacility = appConfig.facility;
+          } else if ($stateParams.type === logOutgoing) {
+            $scope.bundle.receivingFacility = facility;
+            $scope.bundle.sendingFacility = appConfig.facility;
+          } else {
+            growl.error(i18n('unknownBundleType'));
+          }
+        })
+        .catch(function(err){
+          console.error(err);
+          $state.go('logBundleHome', { type: $stateParams.type });
+          growl.error(i18n('selectedFacilityNotFound'));
+        });
+    };
+    setFacility();
 
     $scope.getUnitQty = function(bundleLine) {
       $scope.productProfiles.map(function(product) {
@@ -266,6 +281,7 @@ angular.module('lmisChromeApp')
     }
 
     setUIText($stateParams.type);
+
     bundleService.getRecentFacilityIds($stateParams.type)
       .then(function(res) {
         facilityFactory.getFacilities(res)
@@ -304,7 +320,13 @@ angular.module('lmisChromeApp')
         pp : false,
         batchNo : false,
         expiry : false,
-        quantity : false
+        quantity : false,
+        reset : function(){
+          this.pp = false;
+          this.batchNo = false;
+          this.expiry  = false;
+          this.quantity = false;
+        }
       }
     }
     newLine();
@@ -446,7 +468,7 @@ angular.module('lmisChromeApp')
       var indicator = 0;
 
       $scope.bundle.bundleLines.filter(function(bundleLine){
-
+        $scope.err[bundleLine.id].reset();
         if(bundleLine.productProfile === ''){
           indicator = 1;
           $scope.err[bundleLine.id].pp = true;
@@ -455,7 +477,7 @@ angular.module('lmisChromeApp')
           indicator = 1;
           $scope.err[bundleLine.id].batchNo = true;
         }
-        if(bundleLine.expiry === '' || (typeof bundleLine.expiry === "undefined")){
+        if(typeof bundleLine.expiryDate === "undefined"){
           indicator = 1;
           $scope.err[bundleLine.id].expiry = true;
         }
@@ -467,6 +489,6 @@ angular.module('lmisChromeApp')
       return (indicator === 0);
     }
     $scope.getCategoryColor = productCategoryFactory.getCategoryColor;
-
+    $scope.expiredProductAlert = productProfileFactory.compareDates;
   });
 
