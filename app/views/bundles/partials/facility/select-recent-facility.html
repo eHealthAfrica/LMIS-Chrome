@@ -4,6 +4,7 @@
             ng-model="placeholder.selectedFacility"
             ng-change="setFacility()" ng-required="true">
         <option value="" ng-bind="selectFacility"></option>
+        <option value="{{stateColdStore.uuid}}">{{stateColdStore.name}}</option>
         <option ng-repeat="facility in recentFacilities"
                 value="{{ facility.uuid }}"
                 ng-selected="placeholder.selectedFacility === facility.uuid">

@@ -16,6 +16,7 @@ angular.module('lmisChromeApp')
       var appConfig = 'app_config';
       var surveyResponse = 'survey_response';
       var ccuBreakdown = 'ccu_breakdown';
+      var ccuBreakdown2 = 'ccu_breakdown2';
       var pendingSyncs = 'pending_syncs';
       var locations = 'locations';
        //analytics
@@ -238,6 +239,7 @@ angular.module('lmisChromeApp')
       discardCount,
       appConfig,
       ccuBreakdown,
+      ccuBreakdown2,
       pendingSyncs
     ].concat(FIXTURE_NAMES);
 
@@ -278,6 +280,7 @@ angular.module('lmisChromeApp')
         insertBatch: insertBatch,
         APP_CONFIG: appConfig,
         CCU_BREAKDOWN: ccuBreakdown,
+        CCU_BREAKDOWN2: ccuBreakdown2,
         DISCARD_COUNT: discardCount,
         PENDING_SYNCS: pendingSyncs,
         STOCK_COUNT: stockCount,

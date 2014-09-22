@@ -736,5 +736,11 @@
   },
   "selectedFacilityNotFound":{
     "message": "Selected facility does not exist."
+  },
+  "specifyBundleType":{
+    "message": "Please specify if its receiving or sending"
+  },
+  "CcuBreakdown": {
+    "message": "Cold Chain Unit Breakdown"
   }
 }

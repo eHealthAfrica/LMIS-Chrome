@@ -54,6 +54,9 @@ angular.module('lmisChromeApp')
                   return -(new Date(a.created).getTime() - new Date(b.created).getTime());
                 });
               var mostRecent = stockCounts[0];
+              if (Object.keys(mostRecent.unopened).length === 0 ) {
+                console.info('culprit');
+              }
               if (typeof mostRecent !== 'undefined') {
                 count = Object.keys(mostRecent.unopened)
                   .filter(function(ppid) {
@@ -61,10 +64,15 @@ angular.module('lmisChromeApp')
                   })
                   .map(function(ppid) {
                     return mostRecent.unopened[ppid];
-                  })
-                  .reduce(function(total, current) {
+                  });
+                if(count.length !== 0){
+                  count =  count.reduce(function(total, current) {
                     return total + current;
                   });
+                } else {
+                  count = 0;
+                }
+
               }
             }
           }

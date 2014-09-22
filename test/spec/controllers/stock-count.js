@@ -60,7 +60,8 @@ describe('Controller: StockCountFormCtrl', function() {
       appConfig: appConfig,
       productType: _productType_,
       productWithCategories: productWithCategoryMock,
-      mostRecentStockCount: {}
+      mostRecentStockCount: {},
+
     });
     mostRecentStockCount = angular.copy(stockCount, mostRecentStockCount);
   }));
