@@ -245,7 +245,7 @@ angular.module('lmisChromeApp')
       $scope.preSelectCcuProfiles = utility.castArrayToObject(appConfig.selectedCcuProfiles, 'dhis2_modelid');
       $scope.preSelectProductProfileCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedProductProfiles, 'uuid');
     }
-
+   
     //pre-load edit app facility profile config form with existing config.
     preLoadConfigForm(appConfig);
     //TODO: load state id dynamically.

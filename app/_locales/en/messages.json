@@ -425,7 +425,7 @@
   "appConfig": {
     "message": "App Config"
   },
-  "stockOutBroadcast": {
+  "stockOutBroadcast":  {
     "message": "Stock-out Alert"
   },
   "quantityNeeded": {
@@ -520,7 +520,7 @@
     "message": "Enter Quantity in $Quantity$s",
     "placeholders": {
       "Quantity": {
-        "content": "$1"
+       "content": "$1"
       }
     }
   },
@@ -616,7 +616,7 @@
     "message": "CCU breakdown report sent successfully!"
   },
   "ccuBreakdownReportFailedMsg": {
-    "message": "CCU breakdown report failed, please contact support"
+    "message":  "CCU breakdown report failed, please contact support"
   },
   "stockCountHistory": {
     "message": "Stock Count History"
@@ -695,20 +695,20 @@
   "outGoingDelivery": {
     "message": "Outgoing Delivery"
   },
-  "addStockItem": {
-    "message": "Add Stock Item"
+  "addStockItem" : {
+      "message" : "Add Stock Item"
   },
-  "receivedFrom": {
-    "message": "Received From"
+  "receivedFrom" :{
+      "message" : "Received From"
   },
-  "sentTo": {
-    "message": "Sent To"
+  "sentTo" :{
+      "message" : "Sent To"
   },
   "sendTo": {
     "message": "Send To"
   },
   "selectSender": {
-    "message": "Select Sending Facility"
+    "message": "Select sending facility"
   },
   "selectReceiver": {
     "message": "Select Receiving Facility"
@@ -736,5 +736,11 @@
   },
   "selectedFacilityNotFound":{
     "message": "Selected facility does not exist."
+  },
+  "specifyBundleType":{
+    "message": "Please specify if its receiving or sending"
+  },
+  "CcuBreakdown": {
+    "message": "Cold Chain Unit Breakdown"
   }
 }
