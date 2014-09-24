@@ -223,12 +223,18 @@
                 <div class="row" ng-show="!editOff">
                   <div class="col-xs-12">
                     <div class="btn-separator">
-                      <div class="btn-group btn-group-justified">
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
-                            <i class="fa fa-chevron-circle-left"></i> Back
-                          </button>
-                        </div>
+                        <div class="btn-group btn-group-justified">
+                            <div class="btn-group">
+                                <a ng-show="showHistory"
+                                   type="button"
+                                   class="btn btn-lg btn-default"
+                                   ui-sref="stockCountHome">
+                                    <i class="fa fa-chevron-circle-left"></i> Back
+                                </a>
+                                <button ng-show="!showHistory" type="button" class="btn btn-lg btn-default" ng-click="preview=!preview">
+                                    <i class="fa fa-chevron-circle-left"></i> Back
+                                </button>
+                            </div>
                         <div class="btn-group">
                           <button ng-click="finalSave()" class="btn btn-success btn-lg" ng-disabled="isSaving">
                             <span i18n="confirm" ng-show="!isSaving"></span>

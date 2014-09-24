@@ -16,6 +16,7 @@ angular.module('lmisChromeApp')
       var appConfig = 'app_config';
       var surveyResponse = 'survey_response';
       var ccuBreakdown = 'ccu_breakdown';
+      var ccuBreakdown2 = 'ccu_breakdown2';
       var pendingSyncs = 'pending_syncs';
       var locations = 'locations';
        //analytics
@@ -48,7 +49,6 @@ angular.module('lmisChromeApp')
       var getData = function(key) {
         return pouchStorageService.allDocs(key);
       };
-
       /**
        * This function removes a given record with the given uuid from the given
        * tableName and returns True if it was done successfully else rejects
@@ -143,6 +143,7 @@ angular.module('lmisChromeApp')
        * @returns {*}
        */
       var saveData = function(table, data) {
+
         if ((typeof data === 'object') && (data !== null)) {
           if (Object.keys(data).indexOf('uuid') !== -1 && data.uuid.length > 0) {
             return updateData(table, data);
@@ -154,6 +155,7 @@ angular.module('lmisChromeApp')
           deferred.reject(data + ' is null or non-object data.');
           return deferred.promise;
         }
+
       };
 
       var getFromTableByKey = function(table, key) {
@@ -238,6 +240,7 @@ angular.module('lmisChromeApp')
       discardCount,
       appConfig,
       ccuBreakdown,
+      ccuBreakdown2,
       pendingSyncs
     ].concat(FIXTURE_NAMES);
 
@@ -278,6 +281,7 @@ angular.module('lmisChromeApp')
         insertBatch: insertBatch,
         APP_CONFIG: appConfig,
         CCU_BREAKDOWN: ccuBreakdown,
+        CCU_BREAKDOWN2: ccuBreakdown2,
         DISCARD_COUNT: discardCount,
         PENDING_SYNCS: pendingSyncs,
         STOCK_COUNT: stockCount,

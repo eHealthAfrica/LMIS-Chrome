@@ -2,71 +2,78 @@
     <div class="panel-heading">
         <h4 class="panel-title" ng-bind="logBundleTitle"></h4>
     </div>
+    <div class="panel-body">
+        <div class="col-sm-12">
+            <label ng-bind="previewFacilityLabel"></label>
+            <span>: {{ previewBundle.facilityName }}</span>
+        </div>
+        <br/>
+        <p><small><em><span class="text-danger">* indicates expired products</span></em></small></p>
+        <div class="col-sm-12">
 
-    <div class="col-sm-12">
-        <label ng-bind="previewFacilityLabel"></label>
-        <span class="new-line" ng-bind="previewBundle.facility.name"></span>
-    </div>
-    <br/>
+            <table class="table table-bordered table-condensed">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Batch No.</th>
+                    <th>Expiry Date</th>
+                    <th>Qty</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="line in previewBundle.bundleLines" ng-class="getCategoryColor(line.productProfile.category.name)">
+                    <td>{{$index + 1}}</td>
+                    <td class="text-center" ng-bind="line.productProfile.name"></td>
+                    <td class="text-center" >{{line.batchNo}}</td>
+                    <td class="text-center">
+                        {{ line.expiryDate | date:'MMM, yy' }}
+                        <span ng-show="expiredProductAlert(line.expiryDate,previewBundle.receivedOn)" class="text-danger">
+                           * <!--<small> <i class="fa fa-question-circle" tooltip="Expired Product"></i></small>-->
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <ng-pluralize
+                                count="line.quantity"
+                                when="{
+                                    '0' :'',
+                                    '1' :' 1 {{ line.productProfile.presentation.uom.name }}',
+                                    'other':'{{ (line.quantity/ line.productProfile.presentation.value) }} {{line.productProfile.presentation.uom.name}}s'
+                                   }">
+                        </ng-pluralize>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-    <div class="col-sm-12">
-        <table class="table table-bordered table-condensed">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Batch</th>
-                <th>Product Profile</th>
-                <th>Quantity</th>
-                <th>Expiry Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="line in previewBundle.bundleLines">
-                <td class="text-center"> {{ $index + 1 }}</td>
-                <td class="text-center" ng-bind="line.batchNo"></td>
-                <td class="text-center" ng-bind="line.productProfile.name"></td>
-                <td class="text-center" >
-                    <ng-pluralize
-                        count="line.quantity"
-                        when ="{
-                                '0' :'',
-                                '1' :' 1 {{line.productProfile.presentation.uom.name}}',
-                                'other':'{{line.quantity}} {{line.productProfile.presentation.uom.name}}s'
-                               }">
-                    </ng-pluralize></td>
-                <td class="text-center">{{ line.expiryDate | date:'MMM, yyyy' }}</td>
-            </tr>
-            </tbody>
-        </table>
+        </div>
 
-    </div>
+        <div class="btn-group btn-group-justified" ng-if="previewForm === true">
+            <div class="btn-group">
+                <button type="button" class="btn btn-lg btn-default" ng-click="showForm()">
+                    <i class="fa fa-chevron-circle-left"></i>
+                    <span i18n="back"></span>
+                </button>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-success btn-lg" ng-click="finalSave()" ng-disabled="isSaving">
+                    <span i18n="confirm" ng-show="!isSaving"></span>
+                    <span ng-show="isSaving">Saving</span>
+                    <span><i class="fa " ng-class="{'fa-save':!isSaving, 'fa-spinner fa-spin': isSaving}"></i></span>
+                </button>
+            </div>
+        </div>
 
-    <div class="btn-group btn-group-justified" ng-if="previewForm === true">
-        <div class="btn-group">
-            <button type="button" class="btn btn-lg btn-default" ng-click="showForm()">
+        <div class="col-sm-12" ng-if="preview === true">
+            <button type="button"
+                    class="btn btn-lg btn-default btn-block"
+                    ng-click="hidePreview()">
                 <i class="fa fa-chevron-circle-left"></i>
                 <span i18n="back"></span>
             </button>
-        </div>
-        <div class="btn-group">
-            <button class="btn btn-success btn-lg" ng-click="finalSave()" ng-disabled="isSaving">
-                <span i18n="confirm" ng-show="!isSaving"></span>
-                <span ng-show="isSaving">Saving</span>
-                <span><i class="fa " ng-class="{'fa-save':!isSaving, 'fa-spinner fa-spin': isSaving}"></i></span>
-            </button>
+            <br/>
         </div>
     </div>
-
-    <div class="col-sm-12" ng-if="preview === true">
-        <button type="button"
-                class="btn btn-lg btn-default btn-block"
-                ng-click="hidePreview()">
-            <i class="fa fa-chevron-circle-left"></i>
-            <span i18n="back"></span>
-        </button>
-        <br/>
-    </div>
-
 </div>
 
 

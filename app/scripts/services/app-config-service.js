@@ -48,7 +48,12 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
   this.setup = function(appConfig) {
     return saveAppConfig(appConfig)
       .then(function(appCfg) {
-        return syncService.syncUpRecord(storageService.APP_CONFIG, appCfg);
+        return syncService.syncUpRecord(storageService.APP_CONFIG, appCfg)
+          .catch(function(err){
+            console.error(err);
+            //TODO: resolve properly.
+            return { type: 'SAVED_NOT_SYNCED', error: err, appConfig: appConfig };
+          });
       });
   };
 
