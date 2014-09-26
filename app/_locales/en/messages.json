@@ -739,5 +739,8 @@
   },
   "specifyBundleType":{
     "message": "Please specify if its receiving or sending"
+  },
+  "selectZones":{
+    "message": "Select Zones"
   }
 }

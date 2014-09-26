@@ -279,6 +279,7 @@ angular.module('lmisChromeApp')
         where: getFromTableByLambda,
         find: getFromTableByKey,
         insertBatch: insertBatch,
+        LOCATIONS: locations,
         APP_CONFIG: appConfig,
         CCU_BREAKDOWN: ccuBreakdown,
         CCU_BREAKDOWN2: ccuBreakdown2,

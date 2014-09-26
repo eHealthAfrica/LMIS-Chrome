@@ -152,6 +152,11 @@ angular.module('lmisChromeApp')
       $scope.preview = false;
     };
     $scope.expiredProductAlert = productProfileFactory.compareDates;
+    $scope.VVMStatus = [
+      'Stage 1',
+      'Stage 2',
+      'Stage 3'
+    ]
 
   })
   .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService,productCategoryFactory) {
@@ -167,7 +172,11 @@ angular.module('lmisChromeApp')
     $scope.selectedProductName = [];
     $scope.err = {};
     $scope.batchNos = Object.keys(batchStore);
-
+    $scope.VVMStatus = [
+      'Stage 1',
+      'Stage 2',
+      'Stage 3'
+    ]
     $scope.hideFavFacilities = function() {
       $scope.showAddNew = true;
     };
@@ -214,16 +223,20 @@ angular.module('lmisChromeApp')
         });
     };
     setFacility();
-
+    $scope.selectedProduct = [];
     $scope.getUnitQty = function(bundleLine) {
+
       $scope.productProfiles.map(function(product) {
         if (product.uuid === bundleLine.productProfile) {
+          $scope.selectedProduct[bundleLine.id] = product;
           $scope.selectedProductName[bundleLine.id]    = product.name;
           $scope.selectedProductBaseUOM[bundleLine.id] = product.product.base_uom.name;
           $scope.selectedProductUOMName[bundleLine.id] = product.presentation.uom.name;
           $scope.selectedProductUOMVal[bundleLine.id]  = product.presentation.value;
         }
+
       });
+
     };
 
     $scope.getWards = function(lga) {
@@ -314,7 +327,8 @@ angular.module('lmisChromeApp')
       $scope.bundle.bundleLines.push({
           id: bundleLineId,
           batchNo: '',
-          productProfile: ''
+          productProfile: '',
+          VVMStatus: ''
         });
       $scope.err[bundleLineId] = {
         pp : false,
@@ -326,7 +340,8 @@ angular.module('lmisChromeApp')
           this.batchNo = false;
           this.expiry  = false;
           this.quantity = false;
-        }
+        },
+        vvmstatus : false
       }
     }
     newLine();
@@ -484,6 +499,10 @@ angular.module('lmisChromeApp')
         if(bundleLine.quantity === '' || (isNaN(bundleLine.quantity))){
           indicator = 1;
           $scope.err[bundleLine.id].quantity = true;
+        }
+        if(bundleLine.VVMStatus === ''){
+          indicator = 1;
+          $scope.err[bundleLine.id].vvmstatus = true;
         }
       })
       return (indicator === 0);
