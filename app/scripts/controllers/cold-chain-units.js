@@ -30,6 +30,22 @@ angular.module('lmisChromeApp')
       "No Power Supply",
       "Others"
     ];
+    $scope.faultSortDate = 'asc';
+    $scope.toggleFaultSortDate = function(){
+      console.log($scope.faultSortDate);
+      if($scope.faultSortDate ==='desc') {
+
+        $scope.previewCcuProfile.ccuStatus.sort(function (a, b) {
+          return (a.created > b.created);
+        });
+        $scope.faultSortDate = 'asc';
+      }else{
+        $scope.previewCcuProfile.ccuStatus.sort(function (a, b) {
+          return (b.created > a.created);
+        });
+        $scope.faultSortDate = 'desc';
+      }
+    }
     $scope.breakdowns = breakdowns;
     var c;
     $scope.ccuBreakdown = {

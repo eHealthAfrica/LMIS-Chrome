@@ -742,5 +742,8 @@
   },
   "CcuBreakdown": {
     "message": "Cold Chain Unit Breakdown"
+  },
+  "selectZones":{
+    "message": "Select Zones"
   }
 }

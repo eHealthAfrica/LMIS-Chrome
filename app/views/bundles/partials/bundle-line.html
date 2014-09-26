@@ -57,6 +57,22 @@
     </span>
 </div>
 <br/>
+<div class="col-sm-12" ng-if="((getCategoryColor(selectedProduct[bundleLine.id].category.name)) ==='cold-store-vaccines')">
+    <label>VVM Status <i class="fa fa-sort-amount-desc"></i></label></label>
+    <select id="VVMStatus$index" name="VVMStatus$index" class="form-control" ng-required="true" ng-model="bundleLine.VVMStatus">
+        <option></option>
+        <option ng-repeat="status in VVMStatus" value="{{$index}}">{{status}}</option>
+    </select>
+    <span class="text-danger" ng-show="err[bundleLine.id].vvmstatus && bundleLineForm.VVMStatus$index.$error.required">
+        <small>
+            <em>
+                <i class="fa fa-exclamation-circle"></i>
+                please enter a valid VVM Status
+            </em>
+        </small>
+    </span>
+</div>
+<br/>
 <div class="col-sm-12" align="center">
     <p><span class="fa fa-2x">{{selectedProductName[bundleLine.id]}}</span></p>
     <label>Verify Quantity : {{selectedProductUOMName[bundleLine.id]}}</label>

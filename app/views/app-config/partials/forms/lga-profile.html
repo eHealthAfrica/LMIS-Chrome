@@ -1,5 +1,27 @@
 <div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title" i18n="selectZones"></h4>
+    </div>
+    <div class="panel-body"></div>
+      <div class="list-group" ng-repeat="zone in zones">
+        <div class="no-padding"
+             ng-class="{'highlight-selected-item': preSelectZoneCheckBox[zone._id], 'list-group-item': true }">
+          <label class="new-line padded-label pointer">
+            <input type="checkbox" ng-model="zoneCheckBoxes[zone._id]"
+                   ng-disabled="!developerMode"
+                   ng-true-value="{{ zone }}"
+                   ng-false-value="{{ {'_id': zone._id, deSelected: true} }}"
+                   ng-change="onZoneSelection(zoneCheckBoxes[zone._id])"
+                   ng-checked="preSelectZoneCheckBox[zone._id]"/>
+            {{ zone.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+</div>
 
+<div class="col-md-12">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title" i18n="selectNearbyLgas"></h4>

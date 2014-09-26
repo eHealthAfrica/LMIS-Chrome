@@ -6,12 +6,12 @@
             </div>
             <br/>
 
-            <div class="btn-group btn-group-md btn-group-justified">
-                <a class="btn btn-warning" ng-click="toggleInView(2)" >
-                    <i class="fa fa-bell" ></i> Report Breakdown
+            <div class="btn-group btn-group-lg btn-group-justified">
+                <a class="btn btn-warning " ng-click="toggleInView(2)" >
+                    <i class="fa fa-bell" ></i> Report
                 </a>
                 <a class="btn btn-info" ng-click="toggleInView(1)">
-                    <i class="fa fa-list"></i> Breakdown History
+                    <i class="fa fa-list"></i> History
                 </a>
             </div>
             <br/><br/>
@@ -39,11 +39,13 @@
             </div>
             <div class="" ng-show="inView === 3">
                 <p><b>Name</b>: {{ previewCcuProfile.ccuProfile.Manufacturer }} {{previewCcuProfile.ccuProfile.name}}</p>
-                <table class="table">
+                <table class="table table-bordered">
                     <thead>
                         <th>#</th>
                         <th>Fault</th>
-                        <th>Date Reported</th>
+                        <th class="active" ng-click="toggleFaultSortDate()">
+                            Date  <i ng-class="{'fa fa-caret-down':faultDateSort === 'asc', 'fa fa-caret-up':faultDateSort === 'desc'}"></i>
+                        </th>
                         <th>Status</th>
                     </thead>
                     <tr ng-repeat="row in previewCcuProfile.ccuStatus">
