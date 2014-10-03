@@ -8,6 +8,7 @@ angular.module('lmisChromeApp')
     };
 
     var getAllFacilities = function() {
+
       return storageService.all(storageService.FACILITY);
     };
 
@@ -23,12 +24,21 @@ angular.module('lmisChromeApp')
           });
         });
     };
-
+    var find = function(filter){
+      return getAllFacilities()
+        .then(function(r){
+          return filter(r);
+        })
+        .catch(function(err){
+          console.log(err);
+        })
+    }
     return {
       getAll: getAllFacilities,
       get: getByUUID,
       saveBatch: saveBatch,
-      getFacilities: getFacilities
+      getFacilities: getFacilities,
+      find: find
     };
 
   });

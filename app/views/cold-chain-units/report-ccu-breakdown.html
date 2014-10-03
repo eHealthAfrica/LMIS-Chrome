@@ -21,37 +21,44 @@
                     <h4 class="panel-title">Breakdown History</h4>
                 </div>
                 <div class="panel-body">
-                    <table class="table">
-                        <thead>
-                          <th>#</th>
-                          <th>Name</th>
-                          <th>Date Reported</th>
-                        </thead>
-                        <tbody>
-                           <tr ng-repeat="item in breakdowns" ng-click="showCcuHistory(item);toggleInView(3)">
-                             <td>{{$index + 1}}</td>
-                             <td>{{ item.ccuProfile.Manufacturer }} - {{ item.ccuProfile.ModelName }}</td>
-                             <td>{{item.created | date:'dd/MM/yyyy HH:mm:ss '}}</td>
-                           </tr>
-                        </tbody>
-                    </table>
-                </div>
+                    <div class="text-muted" ng-if="breakdowns.length < 1">
+                        <em><i class="fa fa-chain-broken"></i> No breakdown reports</em>
+                    </div>
+
+                    <div ng-if="breakdowns.length > 0">
+                        <table class="table">
+                            <thead>
+                              <th>#</th>
+                              <th>Name</th>
+                              <th>Date Reported</th>
+                            </thead>
+                            <tbody>
+                               <tr ng-repeat="item in breakdowns" ng-click="showCcuHistory(item);toggleInView(3)">
+                                 <td>{{$index + 1}}</td>
+                                 <td>{{ item.ccuProfile.Manufacturer }} - {{ item.ccuProfile.ModelName }}</td>
+                                 <td>{{item.created | date:'MMM d, yyyy'}}</td>
+                               </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                 </div>
             </div>
-            <div class="" ng-show="inView === 3">
+            <div class="col-sm-12" ng-show="inView === 3">
                 <p><b>Name</b>: {{ previewCcuProfile.ccuProfile.Manufacturer }} {{previewCcuProfile.ccuProfile.name}}</p>
                 <table class="table table-bordered">
                     <thead>
                         <th>#</th>
                         <th>Fault</th>
                         <th class="active" ng-click="toggleFaultSortDate()">
-                            Date  <i ng-class="{'fa fa-caret-down':faultDateSort === 'asc', 'fa fa-caret-up':faultDateSort === 'desc'}"></i>
+                            Date  <i  class="fa" ng-class="{'fa-caret-down': (faultSortDate === 'desc'), 'fa-caret-up': (faultSortDate === 'asc')}"></i>
                         </th>
                         <th>Status</th>
                     </thead>
                     <tr ng-repeat="row in previewCcuProfile.ccuStatus">
                         <td>{{$index + 1}}</td>
                         <td>{{faults[row.fault]}}</td>
-                        <td>{{row.created | date:'dd/MM/yy HH:mm:ss '}}</td>
+                        <td>{{row.created | date:'MMM d, yyyy'}}</td>
                         <td>
                            <span ng-show="row.status === 1">
                                <button class="btn btn-success btn-xs disabled" >

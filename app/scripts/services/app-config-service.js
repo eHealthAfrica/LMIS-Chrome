@@ -72,7 +72,20 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
     }
     return appConfig;
   };
-
+  this.getSelectedFacility = function(key){
+    var mapFunction = 'function(doc) {'+
+        'if(doc.lgaUUID === "'+ key +'"){'+
+        ' emit(null, doc);'+
+        '}}';
+    $http.post(config.api.url + '/facilities/_temp_view?include_docs=false',{
+      'map': mapFunction
+    })
+    .then(function(result){
+      result.data.rows.forEach(function(row){
+        storageService.save(storageService.FACILITY, row.value);
+      });
+    })
+  };
   this.getAppFacilityProfileByEmail = function(email) {
     var deferred = $q.defer();
     var REMOTE_URI = config.api.url + '/facilities/_design/config/_view/template?key="' + email + '"';

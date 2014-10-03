@@ -49,7 +49,11 @@ angular.module('lmisChromeApp')
         return keyValue;
       };
       var getCategoryColor = function(categoryName) {
-        return categoryName.split(' ').join('-').toLowerCase();
+        if(typeof categoryName !== 'undefined') {
+          return categoryName.split(' ').join('-').toLowerCase();
+        }else{
+          //console.error('invalid product name entered');
+        }
       };
 
       return {

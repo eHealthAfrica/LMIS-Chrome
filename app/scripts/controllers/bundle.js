@@ -83,7 +83,11 @@ angular.module('lmisChromeApp')
       .then(function(res) {
         facilityFactory.getFacilities(res)
           .then(function(facilities) {
+
             $scope.recentFacilities = facilities;
+          })
+          .catch(function(err){
+            console.error(err);
           });
       })
       .catch(function(err) {
@@ -96,15 +100,24 @@ angular.module('lmisChromeApp')
           $scope.wards = wards;
         });
     };
-
     $scope.getFacilities = function(ward) {
       ward = JSON.parse(ward);
-      facilityFactory.getFacilities(ward.facilities)
-        .then(function(facilities) {
-          $scope.facilities = facilities;
+      facilityFactory.find(function(result){
+        result.forEach(function(row){
+          if(row.wardUUID === ward.uuid){
+            $scope.facilities.push(row);
+          }
         });
+      });
     };
-
+    $scope.ccoFacilities = [];
+    facilityFactory.find(function(result){
+      result.forEach(function(row){
+        if(row.doc_type ==='cco'){
+          $scope.ccoFacilities.push(row);
+        }
+      });
+    });
     $scope.setFacility = function() {
       if ($scope.placeholder.selectedFacility === '-1') {
         $scope.showAddNew = true;
@@ -172,11 +185,12 @@ angular.module('lmisChromeApp')
     $scope.selectedProductName = [];
     $scope.err = {};
     $scope.batchNos = Object.keys(batchStore);
-    $scope.VVMStatus = [
-      'Stage 1',
-      'Stage 2',
-      'Stage 3'
-    ]
+
+    $scope.selectVVMOption = function(bundleLine,option){
+      $scope.toggleIsopen = false;
+      bundleLine.VVMStatus = option;
+    };
+
     $scope.hideFavFacilities = function() {
       $scope.showAddNew = true;
     };
@@ -300,6 +314,7 @@ angular.module('lmisChromeApp')
       .catch(function(err) {
         console.error(err);
       });
+
     $scope.productProfiles = productProfileFactory.getAll();
     $scope.batches = [];
     var id = 0;

@@ -696,7 +696,7 @@
     "message": "Outgoing Delivery"
   },
   "addStockItem": {
-    "message": "Add Stock Item"
+    "message": "Add Another Stock Item"
   },
   "receivedFrom": {
     "message": "Received From"
