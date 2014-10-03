@@ -261,3 +261,20 @@ tr.disabled, tr.disabled span.text-info{
 .no-padding{
     padding: 0px;
 }
+.vvm-icon-dropdown img{
+    max-width :25px;
+}
+.vvm-icon-group-sm img{
+    max-width :25px;
+}
+.vvm-icon-sm{
+    max-width :25px;
+}
+.vvm-icon-dropdown a:hover{
+    background:none !important;
+}
+.vvm-icon-dropdown li:hover{
+    background:none !important;
+    border-left: 4px solid #6eca97 !important;
+    border-right: 4px solid #6eca97 !important;
+}

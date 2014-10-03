@@ -32,7 +32,7 @@ angular.module('lmisChromeApp')
     ];
     $scope.faultSortDate = 'asc';
     $scope.toggleFaultSortDate = function(){
-      console.log($scope.faultSortDate);
+
       if($scope.faultSortDate ==='desc') {
 
         $scope.previewCcuProfile.ccuStatus.sort(function (a, b) {

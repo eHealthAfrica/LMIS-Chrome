@@ -27,23 +27,31 @@ angular.module('lmisChromeApp')
             .sort(sort);
         });
     };
-    /*$http.get('http://dev.lomis.ehealth.org.ng:5984/locations/_all_docs/?include_docs=true')
-      .then(function(result){
-        result.data.rows.forEach(function(row){
-           storageService.save(storageService.LOCATIONS, row.doc);
-        })
-      });*/
+    //TODO : get the proper pouch way of excuting the next function
+
    // storageService.remove('locations');
+
     this.getZones = function(stateId){
-      return storageService.all(storageService.LOCATIONS)
+        var res = [];
+       return $http.get('http://dev.lomis.ehealth.org.ng:5984/locations/_design/zones/_view/by_id')
+                .then(function(result){
+                  result.data.rows.forEach(function(row){
+                      res.push(row.value)
+                     //storageService.save(storageService.LOCATIONS, row.value);
+                  });
+                  return res;
+                });
+
+      /*return storageService.all(storageService.LOCATIONS)
         .then(function(locs) {
+
           return locs
             .filter(function(l) {
-
+              console.log(l);
               return l.doc_type === 'zone' && l.parent === stateId;
             })
             .sort(sort);
-        });
+        });*/
     };
     this.saveBatch = function(locations) {
       return storageService.setDatabase(storageService.LOCATIONS, locations);
