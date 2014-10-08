@@ -63,13 +63,13 @@
       <a href class="dropdown-toggle form-control clearfix">
           <span ng-if="bundleLine.VVMStatus" class="pull-left">
               <span ng-if="bundleLine.VVMStatus.value === '3'">No VVM Status</span>
-              <span ng-if="bundleLine.VVMStatus.value !== '3'"><img src="images/{{bundleLine.VVMStatus.imageSrc}}" class="vvm-icon-sm" /></span>
+              <span ng-if="bundleLine.VVMStatus.value !== '3'"><img src="images/vvm-icons/{{bundleLine.VVMStatus.imageSrc}}" class="vvm-icon-sm" /></span>
           </span>
           <span class="pull-right"><i class="caret"></i></span>
       </a>
       <ul class="dropdown-menu vvm-icon-dropdown">
         <li>
-            <a href ng-click="selectVVMOption(bundleLine, {value:'1.1', imageSrc:'vvm-icons/1.jpg'})" class="dropdown-toggle">
+            <a href ng-click="selectVVMOption(bundleLine, {value:'1.1', imageSrc:'1.jpg'})" class="dropdown-toggle">
                 <img src="images/vvm-icons/1.jpg"/>
             </a>
         </li>
