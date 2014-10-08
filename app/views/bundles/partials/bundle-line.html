@@ -28,6 +28,7 @@
            name="batchNo$index"
            ng-model="bundleLine.batchNo"
            typeahead="bNo for bNo in batchNos | filter:$viewValue | limitTo:10"
+           typeahead-on-select="updateBatchInfo(bundleLine)"
            ng-blur="updateBatchInfo(bundleLine)"
            ng-required="true"/>
     <span class="text-danger" ng-show="err[bundleLine.id].batchNo && bundleLineForm.batchNo$index.$error.required">
