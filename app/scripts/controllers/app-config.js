@@ -176,8 +176,10 @@ angular.module('lmisChromeApp')
       $scope.preSelectLgaCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedLgas, '_id');
     };
     $scope.onZoneSelection = function(zone){
+      console.log($scope.appConfig.facility);
       $scope.appConfig.facility.selectedZones = utility.addObjectToCollection(zone, $scope.appConfig.facility.selectedZones, '_id');
       $scope.preSelectZoneCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedZones, '_id');
+
     }
     $scope.save = function() {
       $scope.isSaving = true;
@@ -189,6 +191,7 @@ angular.module('lmisChromeApp')
         });
       fixtureLoaderService.setupWardsAndFacilitesByLgas(nearbyLgas)
         .finally(function() {
+
           appConfigService.setup($scope.appConfig)
             .then(function(result) {
               if (typeof result !== 'undefined') {
@@ -210,6 +213,7 @@ angular.module('lmisChromeApp')
 
     $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords;
     var oldLgas = [];
+    //console.log(appConfig);
     if (utility.has(appConfig.facility, 'selectedLgas')) {
       oldLgas = angular.copy(appConfig.facility.selectedLgas);
     }
@@ -269,7 +273,6 @@ angular.module('lmisChromeApp')
         $scope.lastUpdated = i18n('lastUpdated', 'N/A');
       }
     };
-
     function preLoadConfigForm(appConfig) {
       if (appConfig === undefined) {
         return;
@@ -278,11 +281,13 @@ angular.module('lmisChromeApp')
 
       $scope.appConfig.contactPerson = appConfig.contactPerson;
       $scope.appConfig.facility = appConfig.facility;
-      $scope.appConfig.facility.selectedZones = [];
       $scope.appConfig.facility.selectedProductProfiles = appConfig.facility.selectedProductProfiles || [];
       $scope.appConfig.selectedCcuProfiles = appConfig.selectedCcuProfiles || [];
       $scope.appConfig.facility.selectedLgas = appConfig.facility.selectedLgas || [];
+      $scope.appConfig.facility.selectedZones = appConfig.facility.selectedZones || [];
       $scope.preSelectLgaCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedLgas, '_id');
+      $scope.preSelectZoneCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedZones, '_id');
+
       $scope.preSelectCcuProfiles = utility.castArrayToObject(appConfig.selectedCcuProfiles, 'dhis2_modelid');
       $scope.preSelectProductProfileCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedProductProfiles, 'uuid');
     }
