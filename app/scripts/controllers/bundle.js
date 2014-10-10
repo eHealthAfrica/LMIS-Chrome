@@ -83,7 +83,6 @@ angular.module('lmisChromeApp')
       .then(function(res) {
         facilityFactory.getFacilities(res)
           .then(function(facilities) {
-
             $scope.recentFacilities = facilities;
           })
           .catch(function(err){
@@ -95,6 +94,7 @@ angular.module('lmisChromeApp')
       });
 
     $scope.getWards = function(lga) {
+      $scope.facilities= [];
       locationService.getWards(lga)
         .then(function(wards) {
           $scope.wards = wards;
@@ -102,6 +102,7 @@ angular.module('lmisChromeApp')
     };
     $scope.getFacilities = function(ward) {
       ward = JSON.parse(ward);
+      $scope.facilities= [];
       facilityFactory.find(function(result){
         result.forEach(function(row){
           if(row.wardUUID === ward.uuid){
