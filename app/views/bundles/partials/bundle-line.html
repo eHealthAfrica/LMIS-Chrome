@@ -58,7 +58,8 @@
     </span>
 </div>
 <br/>
-<div class="col-sm-12" ng-if="((getCategoryColor(selectedProduct[bundleLine.id].category.name)) ==='cold-store-vaccines')">
+<div class="col-sm-12"
+     ng-if="productIsVaccine(selectedProduct[bundleLine.id],bundleLine)">
     <label>VVM Status <i class="fa fa-sort-amount-desc"></i></label></label>
     <span class="dropdown">
       <a href class="dropdown-toggle form-control clearfix">

@@ -25,7 +25,7 @@
                 <td>{{$index + 1}}</td>
                 <td class="text-center" ng-bind="line.productProfile.name"></td>
                 <td class="text-center" >{{line.batchNo}}</td>
-                 <td class="text-center" ><img src="images/vvm-icons/{{line.VVMStatus.imageSrc}}" class="vvm-icon-sm"/></td>
+                 <td class="text-center" ><img ng-if="line.VVMStatus !== ''" src="images/vvm-icons/{{line.VVMStatus.imageSrc}}" class="vvm-icon-sm"/></td>
                 <td class="text-center">
                     {{ line.expiryDate | date:'MMM, yy' }}
                     <span ng-show="expiredProductAlert(line.expiryDate,previewBundle.receivedOn)" class="text-danger">

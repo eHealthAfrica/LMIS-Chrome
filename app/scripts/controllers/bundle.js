@@ -517,13 +517,24 @@ angular.module('lmisChromeApp')
           $scope.err[bundleLine.id].quantity = true;
         }
         if(bundleLine.VVMStatus === ''){
-          indicator = 1;
-          $scope.err[bundleLine.id].vvmstatus = true;
+          if($scope.selectedProduct[bundleLine.id].category.name === 'cold-store-vaccines') {
+            indicator = 1;
+            $scope.err[bundleLine.id].vvmstatus = true;
+          }
         }
       })
       return (indicator === 0);
     }
     $scope.getCategoryColor = productCategoryFactory.getCategoryColor;
     $scope.expiredProductAlert = productProfileFactory.compareDates;
+    $scope.productIsVaccine = function(product,bundleLine){
+      if(!angular.isUndefined(product)) {
+        if ((productCategoryFactory.getCategoryColor(product.category.name)) === 'cold-store-vaccines') {
+          return true;
+        }
+      }
+      bundleLine.VVMStatus ='';
+      return false;
+    }
   });
 
