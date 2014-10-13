@@ -1,0 +1,23 @@
+<div class="col-sm-12">
+    <select ng-class="{ 'form-control': true, 'has-error': selectFacilityError}"
+            ga-click="select_facility"
+            ng-model="placeholder.selectedFacility"
+            ng-change="setFacility()" ng-required="true">
+        <option value="" ng-bind="selectFacility"></option>
+       <!-- <option value="{{stateColdStore.uuid}}">{{stateColdStore.name}}</option> -->
+        <option ng-repeat="facility in ccoFacilities"
+                value="{{ facility.uuid }}"
+                ng-selected="placeholder.selectedFacility === facility.uuid">
+            {{ facility.name }}
+        </option>
+        <option ng-repeat="facility in recentFacilities"
+                value="{{ facility.uuid }}"
+                ng-selected="placeholder.selectedFacility === facility.uuid">
+            {{ facility.name }}
+        </option>
+        <option value="-1" i18n="addNewFacility"></option>
+    </select>
+    <span  ng-show="selectFacilityError == true"
+           class="help-block custom-error" i18n="selectFacilityError"></span>
+    <br/>
+</div>
