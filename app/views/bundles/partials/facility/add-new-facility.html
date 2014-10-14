@@ -7,8 +7,12 @@
 </div>
 <br/>
 <div class="col-sm-12">
-    <select class="form-control" ga-click="select_sender_Ward" ng-model="selectedWard"
-            ng-change="getFacilities(selectedWard)" ng-required="true">
+    <select class="form-control"
+            ga-click="select_sender_Ward"
+            ng-model="selectedWard"
+            ng-change="getFacilities(selectedWard)"
+            ng-required="true"
+            ng-disabled="wards.length=== 0">
         <option value="" ng-bind="WardLabel"></option>
         <option value="{{ward}}" ng-repeat=" ward in wards ">{{ward.name}}</option>
     </select>
@@ -18,7 +22,8 @@
     <select class="form-control"
             ga-click="select_facility"
             ng-model="placeholder.selectedFacility"
-            ng-change="setFacility()" ng-required="true">
+            ng-change="setFacility()" ng-required="true"
+            ng-disabled="facilities.length=== 0">
         <option value="" ng-bind="selectFacility"></option>
         <option ng-repeat="facility in facilities"
                 value="{{ facility.uuid }}"

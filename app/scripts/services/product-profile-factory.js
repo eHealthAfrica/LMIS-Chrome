@@ -107,7 +107,7 @@ angular.module('lmisChromeApp')
     var expiryDates = function(productDate){
 
         //if second argument is supplied, use to compare, else use new Date()
-        var compareDate = (Object.prototype.toString.call(arguments[1]) === '[object Date]') ? new Date(arguments[1]) : new Date();
+        var compareDate = (Object.prototype.toString.call(arguments[1]) === '[object Date]') ? new Date(arguments[1]) : (new Date() - 86400000);//minus 24hrs
 
         if(new Date(productDate) < compareDate){
           return true;
