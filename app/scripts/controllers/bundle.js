@@ -77,6 +77,7 @@ angular.module('lmisChromeApp')
         $scope.logFormTitle = i18n('unknownBundleType');
       }
     }
+
     setUITexts($stateParams.type);
 
     bundleService.getRecentFacilityIds($stateParams.type)
@@ -157,7 +158,7 @@ angular.module('lmisChromeApp')
       bundle.bundleLines
         .sort(function(a,b) {
          return (a.productProfile.category.name > b.productProfile.category.name);
-        })
+        });
       $scope.previewBundle = angular.copy(bundle);
       $scope.preview = true;
     };
@@ -170,8 +171,7 @@ angular.module('lmisChromeApp')
       'Stage 1',
       'Stage 2',
       'Stage 3'
-    ]
-
+    ];
   })
   .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService,productCategoryFactory) {
 
@@ -284,9 +284,7 @@ angular.module('lmisChromeApp')
       growl.error(i18n('specifyBundleType'));
       return;
     }
-    $scope.placeholder = {
-      selectedFacility: ''
-    };
+    $scope.placeholder = { selectedFacility: '' };
     $scope.previewFacilityLabel = '';
 
     function setUIText(type) {
@@ -365,18 +363,6 @@ angular.module('lmisChromeApp')
       $scope.bundle.bundleLines = $scope.bundle.bundleLines.filter(function(line) {
         return line.id !== bundleLine.id;
       });
-    };
-
-    $scope.isSelectedFacility = function(fac) {
-      //TODO: refactor
-      var sendingFacObj = $scope.bundle.sendingFacility;
-      if (angular.isDefined(sendingFacObj) && angular.isDefined(fac)) {
-        if (angular.isString(sendingFacObj) && sendingFacObj.length > 0) {
-          sendingFacObj = JSON.parse(sendingFacObj);
-        }
-        return sendingFacObj.uuid === fac.uuid;
-      }
-      return false;
     };
 
     var updateBundleLines = function(bundle) {
