@@ -41,14 +41,14 @@ module.exports = function(grunt) {
           livereload: '<%= connect.options.livereload %>'
         },
         files: [
-          '<%= yeoman.app %>/*.html',
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.app %>/views/**/*.html',
+          '<%= yeoman.app %>/**/*.html',
           '<%= yeoman.app %>/manifest.json',
           '<%= yeoman.app %>/_locales/{,*/}*.json',
-          '<%= yeoman.app %>/scripts/{,*/}*.js',
-          '<%= yeoman.app %>/scripts/fixtures/*.json'
+          '<%= yeoman.app %>/scripts/fixtures/*.json',
+          '<%= yeoman.app %>/**/*.js',
+          '!<%= yeoman.app %>/bower_components/**'
         ]
       },
       fixtures: {
@@ -98,7 +98,8 @@ module.exports = function(grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/**/*.js'
+        '<%= yeoman.app %>/**/*.js',
+        '!<%= yeoman.app %>/bower_components/**'
       ],
       test: {
         options: {
@@ -175,8 +176,8 @@ module.exports = function(grunt) {
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
       html: [
-        '<%= yeoman.dist %>/*.html',
-        '<%= yeoman.dist %>/views/**/*.html'
+        '<%= yeoman.dist %>/**/*.html',
+        '!<%= yeoman.app %>/bower_components/**'
       ],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
@@ -216,7 +217,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
-          src: ['*.html', 'views/**/*.html'],
+          src: ['**/*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -260,13 +261,13 @@ module.exports = function(grunt) {
             src: [
               '*.{ico,png,txt}',
               '.htaccess',
-              '*.html',
-              'views/**/*.html',
+              '**/*.html',
               'images/{,*/}*.{webp}',
               '_locales/{,*/}*.json',
               'media/*',
               'scripts/fixtures/*.json',
-              'manifest.mobile.json'
+              'manifest.mobile.json',
+              '!bower_components/**'
             ]
           },
           {
@@ -297,7 +298,8 @@ module.exports = function(grunt) {
             cwd: '<%= yeoman.app %>/',
             dest: '<%= yeoman.dist %>',
             src: [
-              'scripts/{,*/}*.js',
+              '**/*.js',
+              '!bower_components/**',
               'styles/{,*/}*.css',
               'images/{,*/}*',
               'bower_components/font-awesome/fonts/*'

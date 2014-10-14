@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp', [
+    'lomis.root',
     'ui.bootstrap',
     'ui.router',
     'tv.breadcrumbs',
