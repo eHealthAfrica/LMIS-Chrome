@@ -4,7 +4,7 @@ angular.module('lmisChromeApp').service('notificationService', function($modal, 
 
   var noSmsSupportMsg = 'SMS support not available!';
   this.NO_SMS_SUPPORT = noSmsSupportMsg;
-  this.alertRecipient = '08176671738';//FIXME: pull this from local or remote db later, dont hardcode.
+  this.alertRecipient = '+2348079457279'; //'08176671738';//FIXME: pull this from local or remote db later, dont hardcode.
 
   this.vibrate = function(duration) {
     if (navigator.notification) {
@@ -117,9 +117,9 @@ angular.module('lmisChromeApp').service('notificationService', function($modal, 
     var success = function() {
       deferred.resolve(true);
     };
-    var failure = function() {
+    var failure = function(error) {
+      var error = error || 'pha!';
       $window.sms.send(phoneNo, ('sms-failed: ' + error).substr(0, 140), intent);
-      console.log(error);
       deferred.reject(error);
     };
     $window.sms.send(phoneNo, content, intent, success, failure);
@@ -132,17 +132,22 @@ angular.module('lmisChromeApp').service('notificationService', function($modal, 
    * @returns {promise|Function|promise|promise|promise|*}
    */
   this.sendSms = function(phoneNo, msg, type) {
+
     var deferred = $q.defer();
     var promises = [];
     var intent = '';//leave empty for sending sms using default intent(SMSManager)
+
     if (utility.has($window, 'sms')) {
+
       msg.db = type;
       var content = encode(msg);
       for (var i in content) {
+
         promises.push(_send(phoneNo, content[i], intent));
       }
       $q.all(promises)
         .then(function(res) {
+          console.log("coming!")
           deferred.resolve(res);
         })
         .catch(function(err) {
