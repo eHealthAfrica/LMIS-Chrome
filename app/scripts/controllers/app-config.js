@@ -85,7 +85,9 @@ angular.module('lmisChromeApp')
     $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
     $scope.ccuProfileCheckBoxes = [];
     $scope.lgaCheckBoxes = [];
+    $scope.zoneCheckBoxes = [];
     $scope.preSelectLgaCheckBox = {};
+    $scope.preSelectZoneCheckBox = {};
     $scope.preSelectCcuProfiles = {};
     $scope.developerMode = true;
     $scope.lgaList = [];
@@ -103,6 +105,15 @@ angular.module('lmisChromeApp')
       $scope.currentStep = step;
     };
 
+   $scope.zones = [];
+    locationService.getZones("f87ed3e017cf4f8db26836fd910e4cc8")
+      .then(function(res) {
+        $scope.zones = res;
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
+
     $scope.loadAppFacilityProfile = function(nextStep, isEmailValid) {
       $scope.isSubmitted = true;
       $scope.disableBtn = isEmailValid;
@@ -116,6 +127,7 @@ angular.module('lmisChromeApp')
           $scope.appConfig.facility.reminderDay = result.reminderDay;
           $scope.appConfig.facility.stockCountInterval = result.stockCountInterval;
           $scope.appConfig.facility.selectedLgas = result.selectedLgas || [];
+          $scope.appConfig.facility.selectedZones = result.selectedZones || [];
           $scope.appConfig.contactPerson.name = $scope.appConfig.facility.contact.name;
           $scope.appConfig.contactPerson.phoneNo = $scope.appConfig.facility.contact.oldphone;
           $scope.appConfig.selectedCcuProfiles = $scope.appConfig.selectedCcuProfiles || [];
@@ -135,13 +147,13 @@ angular.module('lmisChromeApp')
 
     $scope.appConfig = {
       uuid: deviceEmail,
-      facility: {},
+      facility: { },
       contactPerson: {
         name: '',
         phoneNo: ''
       },
       selectedCcuProfiles: [],
-      dateActivated: undefined
+      dateActivated: undefined,
     };
 
     $scope.onCcuSelection = function(ccuProfile) {
@@ -156,12 +168,19 @@ angular.module('lmisChromeApp')
       $scope.preSelectProductProfileCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedProductProfiles, 'uuid');
     };
 
-    $scope.onLgaSelection = function(lga) {
+    $scope.onLgaSelection = function(lga){
+
+      appConfigService.getSelectedFacility((JSON.parse(lga)).uuid);
       $scope.appConfig.facility.selectedLgas =
         utility.addObjectToCollection(lga, $scope.appConfig.facility.selectedLgas, '_id');
       $scope.preSelectLgaCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedLgas, '_id');
     };
+    $scope.onZoneSelection = function(zone){
+      console.log($scope.appConfig.facility);
+      $scope.appConfig.facility.selectedZones = utility.addObjectToCollection(zone, $scope.appConfig.facility.selectedZones, '_id');
+      $scope.preSelectZoneCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedZones, '_id');
 
+    }
     $scope.save = function() {
       $scope.isSaving = true;
       var nearbyLgas = $scope.appConfig.facility.selectedLgas
@@ -172,6 +191,7 @@ angular.module('lmisChromeApp')
         });
       fixtureLoaderService.setupWardsAndFacilitesByLgas(nearbyLgas)
         .finally(function() {
+
           appConfigService.setup($scope.appConfig)
             .then(function(result) {
               if (typeof result !== 'undefined') {
@@ -209,6 +229,29 @@ angular.module('lmisChromeApp')
     $scope.isSubmitted = false;
     //used to hold config form data
     $scope.appConfig = appConfig;
+    $scope.appConfig.selectedLgas = [];
+    $scope.appConfig.selectedZones = [];
+    $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords;
+    $scope.isSubmitted = false;
+    $scope.preSelectProductProfileCheckBox = {};
+    $scope.stockCountIntervals = appConfigService.stockCountIntervals;
+    $scope.weekDays = appConfigService.weekDays;
+    $scope.ccuProfilesCategories = Object.keys(ccuProfilesGroupedByCategory);
+    $scope.ccuProfilesGroupedByCategory = ccuProfilesGroupedByCategory;
+    $scope.productProfileCategories = Object.keys(productProfilesGroupedByCategory);
+    $scope.productProfilesGroupedByCategory = productProfilesGroupedByCategory;
+    $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
+    $scope.ccuProfileCheckBoxes = [];
+    $scope.lgaCheckBoxes = [];
+    $scope.zoneCheckBoxes = [];
+    $scope.preSelectLgaCheckBox = {};
+    $scope.preSelectZoneCheckBox = {};
+    $scope.preSelectCcuProfiles = {};
+    $scope.developerMode = false;
+    $rootScope.developerMode = false;
+    $scope.lgaList = [];
+
+
     var noOfAttempts = 0;
 
     $scope.enterDeveloperMode = function() {
@@ -229,7 +272,6 @@ angular.module('lmisChromeApp')
         $scope.lastUpdated = i18n('lastUpdated', 'N/A');
       }
     };
-
     function preLoadConfigForm(appConfig) {
       if (appConfig === undefined) {
         return;
@@ -241,17 +283,28 @@ angular.module('lmisChromeApp')
       $scope.appConfig.facility.selectedProductProfiles = appConfig.facility.selectedProductProfiles || [];
       $scope.appConfig.selectedCcuProfiles = appConfig.selectedCcuProfiles || [];
       $scope.appConfig.facility.selectedLgas = appConfig.facility.selectedLgas || [];
+      $scope.appConfig.facility.selectedZones = appConfig.facility.selectedZones || [];
       $scope.preSelectLgaCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedLgas, '_id');
+      $scope.preSelectZoneCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedZones, '_id');
+
       $scope.preSelectCcuProfiles = utility.castArrayToObject(appConfig.selectedCcuProfiles, 'dhis2_modelid');
       $scope.preSelectProductProfileCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedProductProfiles, 'uuid');
     }
-
+   
     //pre-load edit app facility profile config form with existing config.
     preLoadConfigForm(appConfig);
     //TODO: load state id dynamically.
     locationService.getLgas("f87ed3e017cf4f8db26836fd910e4cc8")
       .then(function(res) {
         $scope.lgaList = res;
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
+    $scope.zones = [];
+    locationService.getZones("f87ed3e017cf4f8db26836fd910e4cc8")
+      .then(function(res) {
+        $scope.zones = res;
       })
       .catch(function(err) {
         console.error(err);
@@ -270,10 +323,16 @@ angular.module('lmisChromeApp')
     };
 
     $scope.onLgaSelection = function(lga) {
+      appConfigService.getSelectedFacility((JSON.parse(lga).uuid));
       $scope.appConfig.facility.selectedLgas =
         utility.addObjectToCollection(lga, $scope.appConfig.facility.selectedLgas, '_id');
       $scope.preSelectLgaCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedLgas, '_id');
     };
+    $scope.onZoneSelection = function(zone){
+      $scope.appConfig.facility.selectedZones =
+        utility.addObjectToCollection(zone, $scope.appConfig.facility.selectedZones, '_id');
+      $scope.preSelectZoneCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedZones, '_id');
+    }
 
     var isSameLgas = function(old, recent) {
       if (old.length !== recent.length) {

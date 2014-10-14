@@ -48,11 +48,19 @@ angular.module('lmisChromeApp')
         }
         return keyValue;
       };
+      var getCategoryColor = function(categoryName) {
+        if(typeof categoryName !== 'undefined') {
+          return categoryName.split(' ').join('-').toLowerCase();
+        }else{
+          //console.error('invalid product name entered');
+        }
+      };
 
       return {
         getAll: getProductCategories,
         get: getByUuid,
-        getKeyValuePairs: getAllKeyValuePairs
+        getKeyValuePairs: getAllKeyValuePairs,
+        getCategoryColor : getCategoryColor
       };
 
     });

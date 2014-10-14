@@ -41,6 +41,7 @@ angular.module('lmisChromeApp').factory('stockOutBroadcastFactory', function (st
                 deferred.resolve(result);
               })
               .catch(function (reason) {
+                console.log(reason);
                 deferred.reject(reason);
               });
         });
