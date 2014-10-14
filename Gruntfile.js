@@ -156,7 +156,8 @@ module.exports = function(grunt) {
             '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
             '<%= yeoman.dist %>/styles/fonts/*',
             '!<%= yeoman.dist %>/scripts/main*.js',
-            '!<%= yeoman.dist %>/images/icon{,-*}.png'
+            '!<%= yeoman.dist %>/images/icon{,-*}.png',
+            '!<%= yeoman.dist %>/images/vvm-icons/*'
           ]
         }
       }
