@@ -9,45 +9,42 @@
         </div>
         <br/>
         <p><small><em><span class="text-danger">* indicates expired products</span></em></small></p>
-        <div class="col-sm-12">
-
-            <table class="table table-bordered table-condensed">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Product</th>
-                    <th>Batch No.</th>
-                    <th>Expiry Date</th>
-                    <th>Qty</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="line in previewBundle.bundleLines" ng-class="getCategoryColor(line.productProfile.category.name)">
-                    <td>{{$index + 1}}</td>
-                    <td class="text-center" ng-bind="line.productProfile.name"></td>
-                    <td class="text-center" >{{line.batchNo}}</td>
-                    <td class="text-center">
-                        {{ line.expiryDate | date:'MMM, yy' }}
-                        <span ng-show="expiredProductAlert(line.expiryDate,previewBundle.receivedOn)" class="text-danger">
-                           * <!--<small> <i class="fa fa-question-circle" tooltip="Expired Product"></i></small>-->
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <ng-pluralize
-                                count="line.quantity"
-                                when="{
-                                    '0' :'',
-                                    '1' :' 1 {{ line.productProfile.presentation.uom.name }}',
-                                    'other':'{{ (line.quantity/ line.productProfile.presentation.value) }} {{line.productProfile.presentation.uom.name}}s'
-                                   }">
-                        </ng-pluralize>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-        </div>
-
+        <table class="table table-bordered table-condensed" style="font-size: 12px">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Batch No.</th>
+                <th>VVM Status</th>
+                <th>Expiry Date</th>
+                <th>Qty</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="line in previewBundle.bundleLines" ng-class="getCategoryColor(line.productProfile.category.name)">
+                <td>{{$index + 1}}</td>
+                <td class="text-center" ng-bind="line.productProfile.name"></td>
+                <td class="text-center" >{{line.batchNo}}</td>
+                 <td class="text-center" ><img ng-if="line.VVMStatus !== ''" src="images/vvm-icons/{{line.VVMStatus.imageSrc}}" class="vvm-icon-sm"/></td>
+                <td class="text-center">
+                    {{ line.expiryDate | date:'MMM, yy' }}
+                    <span ng-show="expiredProductAlert(line.expiryDate,previewBundle.receivedOn)" class="text-danger">
+                       * <!--<small> <i class="fa fa-question-circle" tooltip="Expired Product"></i></small>-->
+                    </span>
+                </td>
+                <td class="text-center">
+                    <ng-pluralize
+                            count="line.quantity"
+                            when="{
+                                '0' :'',
+                                '1' :' 1 {{ line.productProfile.presentation.uom.name }}',
+                                'other':'{{ (line.quantity/ line.productProfile.presentation.value) }} {{line.productProfile.presentation.uom.name}}s'
+                               }">
+                    </ng-pluralize>
+                </td>
+            </tr>
+            </tbody>
+        </table>
         <div class="btn-group btn-group-justified" ng-if="previewForm === true">
             <div class="btn-group">
                 <button type="button" class="btn btn-lg btn-default" ng-click="showForm()">
@@ -64,7 +61,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12" ng-if="preview === true">
+        <div class="" ng-if="preview === true">
             <button type="button"
                     class="btn btn-lg btn-default btn-block"
                     ng-click="hidePreview()">

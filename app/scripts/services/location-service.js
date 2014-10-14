@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('locationService', function(storageService) {
+  .service('locationService', function(storageService, $http) {
     this.KANO_UUID = 'f87ed3e017cf4f8db26836fd910e4cc8';
 
     this.getLgas = function(stateId) {
@@ -27,7 +27,32 @@ angular.module('lmisChromeApp')
             .sort(sort);
         });
     };
+    //TODO : get the proper pouch way of excuting the next function
 
+   // storageService.remove('locations');
+
+    this.getZones = function(stateId){
+        var res = [];
+       return $http.get('http://dev.lomis.ehealth.org.ng:5984/locations/_design/zones/_view/by_id')
+                .then(function(result){
+                  result.data.rows.forEach(function(row){
+                      res.push(row.value)
+                     //storageService.save(storageService.LOCATIONS, row.value);
+                  });
+                  return res;
+                });
+
+      /*return storageService.all(storageService.LOCATIONS)
+        .then(function(locs) {
+
+          return locs
+            .filter(function(l) {
+              console.log(l);
+              return l.doc_type === 'zone' && l.parent === stateId;
+            })
+            .sort(sort);
+        });*/
+    };
     this.saveBatch = function(locations) {
       return storageService.setDatabase(storageService.LOCATIONS, locations);
     };
