@@ -173,7 +173,7 @@ angular.module('lmisChromeApp')
       'Stage 3'
     ];
   })
-  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService,productCategoryFactory) {
+  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService,productCategoryFactory, VVM_OPTIONS) {
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
@@ -187,6 +187,7 @@ angular.module('lmisChromeApp')
     $scope.err = {};
     $scope.batchNos = Object.keys(batchStore);
 
+    $scope.vvmOptions = VVM_OPTIONS;
     $scope.selectVVMOption = function(bundleLine,option){
       $scope.toggleIsopen = false;
       bundleLine.VVMStatus = option;
