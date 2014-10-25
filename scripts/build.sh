@@ -3,6 +3,7 @@ set -e
 
 pwd="${PWD##}"
 app="lomis"
+cca="./node_modules/.bin/cca"
 build="$pwd/build"
 
 have() { command -v "$1" >/dev/null; }
@@ -15,7 +16,6 @@ info "Performing $type build"
 [[ "$TRAVIS_TAG" ]] && grunt build:release || grunt build
 
 info "Building Mobile Chrome App"
-have "cca" || npm install -g cca@0.1.1
 have "android" || error "Android SDK required"
 
 [[ -d "$build/$app" ]] && rm -rf "$build/$app"
