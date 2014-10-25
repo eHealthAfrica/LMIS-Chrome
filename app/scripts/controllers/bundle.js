@@ -77,49 +77,50 @@ angular.module('lmisChromeApp')
         $scope.logFormTitle = i18n('unknownBundleType');
       }
     }
+
     setUITexts($stateParams.type);
 
     bundleService.getRecentFacilityIds($stateParams.type)
-      .then(function(res) {
+      .then(function (res) {
         facilityFactory.getFacilities(res)
-          .then(function(facilities) {
+          .then(function (facilities) {
             $scope.recentFacilities = facilities;
           })
-          .catch(function(err){
+          .catch(function (err) {
             console.error(err);
           });
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.error(err);
       });
 
-    $scope.getWards = function(lga) {
-      $scope.facilities= [];
+    $scope.getWards = function (lga) {
+      $scope.facilities = [];
       locationService.getWards(lga)
-        .then(function(wards) {
+        .then(function (wards) {
           $scope.wards = wards;
         });
     };
-    $scope.getFacilities = function(ward) {
+    $scope.getFacilities = function (ward) {
       ward = JSON.parse(ward);
-      $scope.facilities= [];
-      facilityFactory.find(function(result){
-        result.forEach(function(row){
-          if(row.wardUUID === ward.uuid){
+      $scope.facilities = [];
+      facilityFactory.find(function (result) {
+        result.forEach(function (row) {
+          if (row.wardUUID === ward.uuid) {
             $scope.facilities.push(row);
           }
         });
       });
     };
     $scope.ccoFacilities = [];
-    facilityFactory.find(function(result){
-      result.forEach(function(row){
-        if(row.doc_type ==='cco'){
+    facilityFactory.find(function (result) {
+      result.forEach(function (row) {
+        if (row.doc_type === 'cco') {
           $scope.ccoFacilities.push(row);
         }
       });
     });
-    $scope.setFacility = function() {
+    $scope.setFacility = function () {
       if ($scope.placeholder.selectedFacility === '-1') {
         $scope.showAddNew = true;
         $scope.selectFacilityError = false;
@@ -129,7 +130,7 @@ angular.module('lmisChromeApp')
       }
     };
 
-    $scope.showLogBundleForm = function() {
+    $scope.showLogBundleForm = function () {
       if ($scope.placeholder.selectedFacility === '-1' || $scope.placeholder.selectedFacility === '') {
         $scope.selectFacilityError = true;
         return;
@@ -138,39 +139,45 @@ angular.module('lmisChromeApp')
     };
 
     $scope.bundles = bundles
-      .filter(function(e) {
+      .filter(function (e) {
         //TODO: move to service getByType()
         return e.type === $stateParams.type;
       })
-      .sort(function(a, b) {
+      .sort(function (a, b) {
         //desc order
         return -(new Date(a.created) - new Date(b.created));
       });
     $scope.previewBundle = {};
     $scope.preview = false;
 
-    $scope.showBundle = function(bundle) {
+    $scope.showBundle = function (bundle) {
       for (var i in bundle.bundleLines) {
         var ppUuid = bundle.bundleLines[i].productProfile;
         bundle.bundleLines[i].productProfile = productProfileFactory.get(ppUuid);
       }
       bundle.bundleLines
-        .sort(function(a,b) {
-         return (a.productProfile.category.name > b.productProfile.category.name);
+        .sort(function (a, b) {
+          return (a.productProfile.category.name > b.productProfile.category.name);
         })
       $scope.previewBundle = angular.copy(bundle);
       $scope.preview = true;
     };
     $scope.getCategoryColor = productCategoryFactory.getCategoryColor;
-    $scope.hidePreview = function() {
+    $scope.hidePreview = function () {
       $scope.preview = false;
     };
     $scope.expiredProductAlert = productProfileFactory.compareDates;
-    $scope.VVMStatus = [
-      'Stage 1',
-      'Stage 2',
-      'Stage 3'
-    ]
+    $scope.VVMStatus = {
+      freshLevel1: '1.1',
+      freshLevel2: '1.2',
+      freshLevel3: '1.3',
+      freshLevel4: '1.4',
+      freshLevel5: '1.5',
+      expired1: '2.1',
+      expired2: '2.2',
+      expired3: '2.3',
+      NoVVM : '3'
+    }
 
   })
   .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService,productCategoryFactory) {

@@ -51,6 +51,7 @@ angular.module('lmisChromeApp')
     };
 
     var chart = function(keys, values) {
+      console.log(keys)
       var chart = [];
       for (var i = 0, len = keys.length; i < len; i++) {
         chart.push(series(keys[i], values));
