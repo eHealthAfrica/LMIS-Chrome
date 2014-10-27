@@ -213,6 +213,7 @@ angular.module('lmisChromeApp')
 
     $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords;
     var oldLgas = [];
+    //console.log(appConfig);
     if (utility.has(appConfig.facility, 'selectedLgas')) {
       oldLgas = angular.copy(appConfig.facility.selectedLgas);
     }
