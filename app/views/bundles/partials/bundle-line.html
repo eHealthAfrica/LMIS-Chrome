@@ -70,19 +70,12 @@
           <span class="pull-right"><i class="caret"></i></span>
       </a>
       <ul class="dropdown-menu vvm-icon-dropdown">
-        <li>
-            <a href ng-click="selectVVMOption(bundleLine, {value:VVMStatus.freshLevel1, imageSrc:'1.jpg'})" class="dropdown-toggle">
-                <img ng-src="images/vvm-icons/1.jpg"/>
-            </a>
+       <li ng-repeat="vvm in vvmOptions">
+          <a href ng-click="selectVVMOption(bundleLine, {value: vvm.value, imageSrc: vvm.imageSrc})" class="dropdown-toggle">
+            <span ng-if="vvm.value === '3'" ng-bind="vvm.imageSrc"></span>
+            <img ng-if="vvm.value !== '3'" ng-src="images/vvm-icons/{{vvm.imageSrc}}" />
+          </a>
         </li>
-        <li><a href class="dropdown-toggle" ng-click="selectVVMOption(bundleLine, {value:VVMStatus.freshLevel2, imageSrc:'2.jpg'})"><img ng-src="images/vvm-icons/2.jpg"/></a></li>
-        <li><a href class="dropdown-toggle" ng-click="selectVVMOption(bundleLine, {value:VVMStatus.freshLevel3, imageSrc:'3.jpg'})"><img ng-src="images/vvm-icons/3.jpg"/></a></li>
-        <li><a href class="dropdown-toggle" ng-click="selectVVMOption(bundleLine, {value:VVMStatus.freshLevel4, imageSrc:'4.jpg'})"><img ng-src="images/vvm-icons/4.jpg"/></a></li>
-        <li><a href class="dropdown-toggle" ng-click="selectVVMOption(bundleLine, {value:VVMStatus.freshLevel5, imageSrc:'5.jpg'})"><img ng-src="images/vvm-icons/5.jpg"/></a></li>
-        <li><a href class="dropdown-toggle" ng-click="selectVVMOption(bundleLine, {value:VVMStatus.expired1, imageSrc:'6.jpg'})"><img ng-src="images/vvm-icons/6.jpg"/></a></li>
-        <li><a href class="dropdown-toggle" ng-click="selectVVMOption(bundleLine, {value:VVMStatus.expired2, imageSrc:'7.jpg'})"><img ng-src="images/vvm-icons/7.jpg"/></a></li>
-        <li><a href class="dropdown-toggle" ng-click="selectVVMOption(bundleLine, {value:VVMStatus.expired3, imageSrc:'8.jpg'})"><img ng-src="images/vvm-icons/8.jpg"/></a></li>
-        <li><a href class="dropdown-toggle" ng-click="selectVVMOption(bundleLine, {value:VVMStatus.NoVVM, imageSrc:'No VVM'})">No VVM Status</a></li>
       </ul>
     </span>
     <input type="hidden" ng-model="bundleLine.VVMStatus.value" required  name="vvmstatus$index"/>

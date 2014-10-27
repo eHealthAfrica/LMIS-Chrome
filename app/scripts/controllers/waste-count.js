@@ -69,6 +69,9 @@ angular.module('lmisChromeApp')
   .controller('wasteCountFormCtrl', function($scope, wasteCountFactory, $state, growl, $stateParams, appConfig,
                                               i18n, syncService, alertFactory){
 
+    $scope.wasteCountModel = {};
+    $scope.wasteCountModel.reason = {};
+
     var getCountDate = function(){
       return ($stateParams.countDate === null) ? new Date() : new Date($stateParams.countDate);
     };
@@ -85,9 +88,9 @@ angular.module('lmisChromeApp')
     };
 
     var initReason = function (){
-      if(angular.isUndefined($scope.wasteCount.reason[$scope.productKey])){
-        $scope.wasteCount.reason[$scope.productKey] = {};
-      }
+      $scope.wasteCountModel.discarded = {};
+      $scope.wasteCountModel.reason = {};
+      $scope.wasteCountModel.reason[$scope.productKey] = {};
     };
 
     initWasteCount();
@@ -102,20 +105,26 @@ angular.module('lmisChromeApp')
     $scope.change = function(){
       if(angular.isDefined($scope.reasonQuantity)){
         initReason();
-        $scope.wasteCount.discarded[$scope.productKey] = $scope.reasonQuantity;
-        $scope.wasteCount.reason[$scope.productKey][$scope.selectedReason]= $scope.reasonQuantity;
+        $scope.wasteCountModel.discarded[$scope.productKey] = $scope.reasonQuantity;
+        $scope.wasteCountModel.reason[$scope.productKey][$scope.selectedReason]= $scope.reasonQuantity;
       }
     };
 
     $scope.loadSelected = function(){
       initReason();
-      $scope.reasonQuantity = $scope.wasteCount.reason[$scope.productKey][$scope.selectedReason];
+      $scope.reasonQuantity = $scope.wasteCountModel.reason[$scope.productKey][$scope.selectedReason];
       var uom = $scope.productKey !== ''?$scope.facilityProducts[$scope.productKey].presentation.uom.symbol : '';
       $scope.enterQuantityLabel = i18n('enterQuantity', uom);
     };
 
     $scope.save = function(type){
       $scope.isSaving = true;
+      $scope.wasteCount.discarded[$scope.productKey] = $scope.wasteCountModel.discarded[$scope.productKey];
+      if (angular.isUndefined($scope.wasteCount.reason[$scope.productKey])) {
+        $scope.wasteCount.reason[$scope.productKey] = {};
+      }
+      $scope.wasteCount.reason[$scope.productKey][$scope.selectedReason] =
+        $scope.wasteCountModel.reason[$scope.productKey][$scope.selectedReason];
       $scope.wasteCount.countDate =  getCountDate();
       $scope.wasteCount.isComplete = 1;
       wasteCountFactory.add($scope.wasteCount)

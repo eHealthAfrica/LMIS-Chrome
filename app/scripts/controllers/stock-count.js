@@ -132,16 +132,23 @@ angular.module('lmisChromeApp')
       $scope.maxStep = 0;
     }
 
-    var updateUIModel = function() {
-      $scope.productProfileUom = $scope.facilityProducts[$scope.productKey];
-    };
+    function getPreviewButtonState() {
+      var editState = ($scope.editOn && $scope.step !== $scope.maxStep && $scope.stockCount.isComplete);
+      var unopenedTotal = (Object.keys($scope.stockCount.unopened)).length -1;
+      return (unopenedTotal === $scope.maxStep && $scope.step !== $scope.maxStep) || editState;
+    }
 
-    var updateCountValue = function() {
+    function updateUIModel() {
+      $scope.productProfileUom = $scope.facilityProducts[$scope.productKey];
+      $scope.setPreviewButton = getPreviewButtonState();
+    }
+
+    function updateCountValue() {
       if (angular.isDefined($scope.stockCount.unopened[$scope.productKey])) {
         var value = $scope.facilityProducts[$scope.productKey].presentation.value;
         $scope.countValue[$scope.productKey] = ($scope.stockCount.unopened[$scope.productKey] / value);
       }
-    };
+    }
 
     $scope.convertToPresentationUom = function() {
       if (angular.isDefined($scope.countValue[$scope.productKey])) {
@@ -168,6 +175,7 @@ angular.module('lmisChromeApp')
           if (angular.isUndefined($scope.stockCount.lastPosition)) {
             $scope.stockCount.lastPosition = 0;
           }
+          updateUIModel();
           updateCountValue();
         }
       });
