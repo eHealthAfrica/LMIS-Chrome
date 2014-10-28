@@ -10,6 +10,8 @@ have() { command -v "$1" >/dev/null; }
 info() { echo "$0: $1"; }
 error() { info "$1"; exit 1; }
 
+[[ "$TRAVIS" ]] || error "this script assumes its running within Travis"
+
 [[ "$TAVIS_TAG" ]] && type="release" || type="snapshot"
 info "Performing $type build"
 
