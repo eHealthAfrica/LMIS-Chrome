@@ -79,16 +79,16 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
         'if(doc.lgaUUID === "' + key + '"){' +
         ' emit(null, doc);' +
         '}}';
-      $http.post(config.api.url + '/facilities/_temp_view?include_docs=false', {
+     return  $http.post(config.api.url + '/facilities/_temp_view?include_docs=false', {
         'map': mapFunction
       })
         .then(function (result) {
-          result.data.rows.forEach(function (row) {
+          return result.data.rows.forEach(function (row) {
             storageService.save(storageService.FACILITY, row.value);
           });
         })
     }else{
-       storageService.where(storageService.FACILITY, function(row){
+       return storageService.where(storageService.FACILITY, function(row){
          var lgaObj = JSON.parse(e.target.getAttribute('ng-true-value'));
          if(row.lgaUUID === lgaObj.uuid){
            storageService.removeRecord(storageService.FACILITY, row.uuid);
