@@ -10,3 +10,4 @@ coverage
 app/scripts/config.js
 build
 nbproject/private/
+.android
