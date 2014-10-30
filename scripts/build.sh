@@ -3,11 +3,14 @@ set -e
 
 pwd="${PWD##}"
 app="lomis"
+cca="./node_modules/.bin/cca"
 build="$pwd/build"
 
 have() { command -v "$1" >/dev/null; }
 info() { echo "$0: $1"; }
 error() { info "$1"; exit 1; }
+
+[[ "$TRAVIS" ]] || error "this script assumes its running within Travis"
 
 [[ "$TAVIS_TAG" ]] && type="release" || type="snapshot"
 info "Performing $type build"
@@ -15,7 +18,6 @@ info "Performing $type build"
 [[ "$TRAVIS_TAG" ]] && grunt build:release || grunt build
 
 info "Building Mobile Chrome App"
-have "cca" || npm install -g cca@0.1.1
 have "android" || error "Android SDK required"
 
 [[ -d "$build/$app" ]] && rm -rf "$build/$app"
