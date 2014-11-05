@@ -72,19 +72,29 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
     }
     return appConfig;
   };
-  this.getSelectedFacility = function(key){
-    var mapFunction = 'function(doc) {'+
-        'if(doc.lgaUUID === "'+ key +'"){'+
-        ' emit(null, doc);'+
+  this.getSelectedFacility = function(key, e){
+
+    if(e.target.checked) {
+      var mapFunction = 'function(doc) {' +
+        'if(doc.lgaUUID === "' + key + '"){' +
+        ' emit(null, doc);' +
         '}}';
-    $http.post(config.api.url + '/facilities/_temp_view?include_docs=false',{
-      'map': mapFunction
-    })
-    .then(function(result){
-      result.data.rows.forEach(function(row){
-        storageService.save(storageService.FACILITY, row.value);
-      });
-    })
+     return  $http.post(config.api.url + '/facilities/_temp_view?include_docs=false', {
+        'map': mapFunction
+      })
+        .then(function (result) {
+          return result.data.rows.forEach(function (row) {
+            storageService.save(storageService.FACILITY, row.value);
+          });
+        })
+    }else{
+       return storageService.where(storageService.FACILITY, function(row){
+         var lgaObj = JSON.parse(e.target.getAttribute('ng-true-value'));
+         if(row.lgaUUID === lgaObj.uuid){
+           storageService.removeRecord(storageService.FACILITY, row.uuid);
+         }
+       })
+    }
   };
   this.getAppFacilityProfileByEmail = function(email) {
     var deferred = $q.defer();

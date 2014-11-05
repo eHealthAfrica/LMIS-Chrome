@@ -72,8 +72,8 @@
       <ul class="dropdown-menu vvm-icon-dropdown">
        <li ng-repeat="vvm in vvmOptions">
           <a href ng-click="selectVVMOption(bundleLine, {value: vvm.value, imageSrc: vvm.imageSrc})" class="dropdown-toggle">
-            <span ng-if="vvm.value === '3'" ng-bind="vvm.imageSrc"></span>
-            <img ng-if="vvm.value !== '3'" ng-src="images/vvm-icons/{{vvm.imageSrc}}" />
+            <span ng-if="vvm.value === VVMStatus.NoVVM" ng-bind="vvm.imageSrc"></span>
+            <img ng-if="vvm.value !== VVMStatus.NoVVM" ng-src="images/vvm-icons/{{vvm.imageSrc}}" />
           </a>
         </li>
       </ul>
