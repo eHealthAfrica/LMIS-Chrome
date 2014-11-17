@@ -38,7 +38,11 @@ angular.module('lmisChromeApp')
       }
       return countDate
     };
+    function generateSMSMsg(count){
+        return {
 
+        }
+    }
     var addRecord={
       /**
        * Add/Update Stock count
@@ -48,10 +52,26 @@ angular.module('lmisChromeApp')
        * @public
        */
       stock: function(stockCount) {
+
         if (stockCount.countDate instanceof Date) {
           stockCount.countDate = stockCount.countDate.toJSON();
         }
-        return storageService.save(storageService.STOCK_COUNT, stockCount);
+
+        return storageService.save(storageService.STOCK_COUNT, stockCount)
+          .then(function(response){
+              syncService.syncUp(storageService.STOCK_COUNT, stockCount);
+          })
+          .catch(function(){
+             var deffered = $q.defer();
+             var smsMsg = generateSMSMsg(stockCount);
+            notificationService.sendSms(notificationService.alertRecipient, msg, 'stock_count')
+            .then(function (smsResult) {
+                    deferred.resolve(smsResult);
+                  })
+                  .catch(function (reason) {
+                    deferred.reject(reason);
+                  });
+          });
       }
     };
 
