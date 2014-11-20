@@ -431,6 +431,7 @@ angular.module('lmisChromeApp')
       var bundle = angular.copy($scope.bundle);
       $scope.isSaving = true;
       var successMsg = '';
+      console.log(bundle);
       if ($stateParams.type === logIncoming) {
         successMsg = i18n('incomingDeliverySuccessMessage');
         bundle.facilityName = bundle.sendingFacility.name;

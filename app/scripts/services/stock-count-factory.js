@@ -58,20 +58,7 @@ angular.module('lmisChromeApp')
         }
 
         return storageService.save(storageService.STOCK_COUNT, stockCount)
-          .then(function(response){
-              syncService.syncUp(storageService.STOCK_COUNT, stockCount);
-          })
-          .catch(function(){
-             var deffered = $q.defer();
-             var smsMsg = generateSMSMsg(stockCount);
-            notificationService.sendSms(notificationService.alertRecipient, msg, 'stock_count')
-            .then(function (smsResult) {
-                    deferred.resolve(smsResult);
-                  })
-                  .catch(function (reason) {
-                    deferred.reject(reason);
-                  });
-          });
+
       }
     };
 

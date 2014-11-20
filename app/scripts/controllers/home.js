@@ -223,7 +223,6 @@ angular.module('lmisChromeApp')
                     };
 
                     $scope.productTypesChart = dashboardfactory.chart(keys, values);
-                    console.log($scope.productTypesChart);
                   })
                   .catch(function(err) {
                     console.log('getProductTypeCounts Error: ' + err);
