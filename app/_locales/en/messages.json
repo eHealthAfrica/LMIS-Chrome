@@ -479,7 +479,18 @@
     "message": "items"
   },
   "stockOutWarningMsg": {
-    "message": " $productQuantity$ $itemName$ low on stock, press to send alert",
+    "message": " $productQuantity$ $itemName$ out of stock, press to send alert",
+    "placeholders": {
+      "productQuantity": {
+        "content": "$1"
+      },
+      "itemName": {
+        "content": "$2"
+      }
+    }
+  },
+  "lowStockWarningMsg": {
+    "message": " $productQuantity$ $itemName$ low on stock, alerts will be sent for top-ups",
     "placeholders": {
       "productQuantity": {
         "content": "$1"

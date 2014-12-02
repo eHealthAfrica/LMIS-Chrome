@@ -180,7 +180,7 @@ angular.module('lmisChromeApp')
     }
 
   })
-  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService,productCategoryFactory, VVM_OPTIONS) {
+  .controller('LogBundleCtrl', function($scope, batchStore, utility, batchService, appConfig, i18n, productProfileFactory, bundleService, growl, $state, alertFactory, syncService, $stateParams, $filter, locationService, facilityFactory,appConfigService,productCategoryFactory, VVM_OPTIONS, notificationService, storageService) {
 
     var logIncoming = bundleService.INCOMING;
     var logOutgoing = bundleService.OUTGOING;
@@ -431,7 +431,6 @@ angular.module('lmisChromeApp')
       var bundle = angular.copy($scope.bundle);
       $scope.isSaving = true;
       var successMsg = '';
-      console.log(bundle);
       if ($stateParams.type === logIncoming) {
         successMsg = i18n('incomingDeliverySuccessMessage');
         bundle.facilityName = bundle.sendingFacility.name;
@@ -464,9 +463,45 @@ angular.module('lmisChromeApp')
 
       bundle.receivingFacility = bundle.receivingFacility.uuid;
       bundle.sendingFacility = bundle.sendingFacility.uuid;
+      function buildSMS(bundle){
+         var smsBundle = {
+          info : {
+            db: storageService.BUNDLE,
+            uuid: bundle.uuid,
+            modified: bundle.modified,
+            sf: bundle.sendingFacility,
+            rf: bundle.receivingFacility,
+            type: bundle.type
+          },
+          lines: []
+        }
+        return smsBundle;
+      }
+
       bundleService.save(bundle)
         .then(function() {
+
           syncService.syncUpRecord(bundleService.BUNDLE_DB, bundle)
+            .catch(function(){
+              var smsBundle = buildSMS(bundle);
+              notificationService.sendSms(notificationService.alertRecipient, smsBundle.info, storageService.BUNDLE);
+              bundle.bundleLines.forEach(function(line){
+                var keys = Object.keys(line);
+                keys.forEach(function(key){
+                  var smsobj= {
+                        id: line.id,
+                        bno: line.batchNo,
+                        uuid: bundle.uuid
+                      }
+                    if(key === "VVMStatus"){
+                      smsobj.vvm = 'v:'+line[key].value +",img:"+line[key].imageSrc;
+                    }else{
+                      smsobj[key] = line[key];
+                    }
+                    notificationService.sendSms(notificationService.alertRecipient, smsobj, storageService.BUNDLE )
+                });
+              })
+            })
             .finally(function() {
               alertFactory.success(successMsg);
               $state.go('home.index.home.mainActivity');
