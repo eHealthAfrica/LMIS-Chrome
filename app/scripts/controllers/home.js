@@ -94,7 +94,7 @@ angular.module('lmisChromeApp')
                 return stockCountFactory.getLatestCompleteStockCount();
               }
             },
-            controller: function($q, $log, mostRecentCount, productProfileFactory, $scope, $window, i18n, storageService, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory) {
+            controller: function($q, $log, mostRecentCount, productProfileFactory, $scope, $window, i18n, storageService, dashboardfactory, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService, cacheService, stockOutList, utility, $rootScope, isStockCountReminderDue, stockCountFactory, syncService) {
 
               var keys = [
                 {
@@ -121,6 +121,7 @@ angular.module('lmisChromeApp')
                   var bufferStockPromise = inventoryRulesFactory.bufferStock(facility, productType.uuid);
                   var stockLevel = 'stockLevel';
                   var bufferStock = 'bufferStock';
+
                   var promises = {
                     stockLevel: stockLevelPromise,
                     bufferStock: bufferStockPromise
@@ -167,7 +168,7 @@ angular.module('lmisChromeApp')
                     return getProductTypesInfo(res, currentFacility);
                   });
               };
-
+              var lowStock =[];
               $scope.showChart = !isStockCountReminderDue;
               if ($scope.showChart) {
                 getProductTypeCounts($q, $log, inventoryRulesFactory, productTypeFactory, appConfig, appConfigService)
@@ -201,7 +202,10 @@ angular.module('lmisChromeApp')
                       if (product.stockLevel <= 0 && filtered.length === 0) {
                         stockOutWarning.push(uuid);
                       }
-
+                      inventoryRulesFactory.reorderPoint(product);
+                      if(product.stockLevel <= product.min){
+                        lowStock.push(product.name);
+                      }
                       values.push({
                         label: utility.ellipsize(product.name, 7),
                         stockAboveReorder: inventoryRulesFactory.stockAboveReorder(
@@ -212,10 +216,30 @@ angular.module('lmisChromeApp')
                         )
                       });
                     }
-
+                    if(lowStock.length > 0){
+                      $scope.lowStock = lowStock;
+                      var lowStockItems = lowStock.length > 1 ? i18n('items') : i18n('item');
+                      $scope.lowStockShortMsg = i18n('lowStockWarningMsg', [lowStock.length.toString(), lowStockItems]);
+                      var lssm = lowStock.join(",");
+                      $scope.lowStockLongMsg = i18n('lowStockWarningMsg', [lssm]);
+                      var syncData = {
+                        body: $scope.lowStockLongMsg,
+                        state: 'warning',
+                        uuid: utility.uuidGenerator()
+                      }
+                      syncData.facility = {
+                          name: appConfig.facility.name,
+                          uuid: appConfig.facility.uuid,
+                          ward: appConfig.facility.wardUUID,
+                          lga: appConfig.facility.lgaUUID,
+                          zone: appConfig.facility.zoneUUID
+                        }
+                      syncService.syncUpRecord('notifications', syncData);
+                    }
                     $scope.stockOutWarning = stockOutWarning;
                     var items = stockOutWarning.length > 1 ? i18n('items') : i18n('item');
                     $scope.stockOutWarningMsg = i18n('stockOutWarningMsg', [stockOutWarning.length.toString(), items]);
+
                     $scope.roundLegend = function() {
                       return function(d) {
                         return $window.d3.round(d);
@@ -223,7 +247,6 @@ angular.module('lmisChromeApp')
                     };
 
                     $scope.productTypesChart = dashboardfactory.chart(keys, values);
-                    console.log($scope.productTypesChart);
                   })
                   .catch(function(err) {
                     console.log('getProductTypeCounts Error: ' + err);

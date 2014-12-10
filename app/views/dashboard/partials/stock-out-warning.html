@@ -1,8 +1,17 @@
 <div ng-show="stockOutWarning.length">
   <a ui-sref="multiStockOutBroadcast({productList: stockOutWarning.join(',')})" ga-click="stock_out">
     <div class="col-md-12 alert alert-danger">
-      <img src="images/dashboard-icons/stock-out-warning.png" >
+      <!--<img src="images/dashboard-icons/stock-out-warning.png" >-->
+        <i class="fa fa-exclamation-circle"></i>
       <strong><span>{{ stockOutWarningMsg }}</span></strong>
+    </div>
+  </a>
+</div>
+<div ng-show="lowStock.length > 0">
+  <a popover="{{lowStockLongMsg}}" popover-trigger="mouseenter">
+    <div class="alert alert-warning">
+        <i class="fa fa-bell"></i>
+        <span>{{lowStockShortMsg}}</span>
     </div>
   </a>
 </div>

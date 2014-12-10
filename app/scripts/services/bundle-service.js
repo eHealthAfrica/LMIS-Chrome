@@ -7,11 +7,9 @@ angular.module('lmisChromeApp')
     this.OUTGOING = '1';
     this.BUNDLE_DB = storageService.BUNDLE;
 
-    /*storageService.get(storageService.facilities)
-      .then(function(r){
-        console.log(r);
-      });*/
+
     this.get = function(uuid) {
+
       return storageService.find(storageService.BUNDLE, uuid);
     };
 
@@ -23,6 +21,7 @@ angular.module('lmisChromeApp')
     };
 
     this.save = function(bundle) {
+
       return storageService.save(storageService.BUNDLE, bundle);
     };
 

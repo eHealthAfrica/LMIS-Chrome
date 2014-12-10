@@ -63,7 +63,8 @@ angular.module('lmisChromeApp')
     $scope.formVal = {
           fault:'',
           status: 0,
-          created: new Date().getTime()
+          created: new Date().getTime(),
+          modified: new Date()
          }
 
     $scope.switchActiveCCE = function(){
@@ -126,6 +127,7 @@ angular.module('lmisChromeApp')
     }
     $scope.toggleCCEStatus = function(breakdown){
       breakdown.status = 1;
+      breakdown.modified = new Date();
       ccuBreakdownFactory.save($scope.previewCcuProfile)
         .then(function(savedData){
           ccuBreakdownFactory.broadcast(savedData)

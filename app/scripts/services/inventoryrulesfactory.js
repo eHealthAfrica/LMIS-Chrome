@@ -406,7 +406,11 @@ angular.module('lmisChromeApp')
      * @return {Object} the facility's inventory
      */
     var reorderPoint = function(inventory) {
-      inventory.min = inventory.buffer + 10;
+     if(inventory.buffer) {
+       inventory.min = inventory.buffer + 10;
+     }else if(inventory.bufferStock){
+        inventory.min = inventory.bufferStock + 10;
+     }
       return inventory;
     };
 

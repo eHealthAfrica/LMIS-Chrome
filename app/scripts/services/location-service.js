@@ -37,21 +37,10 @@ angular.module('lmisChromeApp')
                 .then(function(result){
                   result.data.rows.forEach(function(row){
                       res.push(row.value)
-                     //storageService.save(storageService.LOCATIONS, row.value);
                   });
                   return res;
                 });
 
-      /*return storageService.all(storageService.LOCATIONS)
-        .then(function(locs) {
-
-          return locs
-            .filter(function(l) {
-              console.log(l);
-              return l.doc_type === 'zone' && l.parent === stateId;
-            })
-            .sort(sort);
-        });*/
     };
     this.saveBatch = function(locations) {
       return storageService.setDatabase(storageService.LOCATIONS, locations);

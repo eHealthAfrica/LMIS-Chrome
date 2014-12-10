@@ -38,7 +38,11 @@ angular.module('lmisChromeApp')
       }
       return countDate
     };
+    function generateSMSMsg(count){
+        return {
 
+        }
+    }
     var addRecord={
       /**
        * Add/Update Stock count
@@ -48,10 +52,13 @@ angular.module('lmisChromeApp')
        * @public
        */
       stock: function(stockCount) {
+
         if (stockCount.countDate instanceof Date) {
           stockCount.countDate = stockCount.countDate.toJSON();
         }
-        return storageService.save(storageService.STOCK_COUNT, stockCount);
+
+        return storageService.save(storageService.STOCK_COUNT, stockCount)
+
       }
     };
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .config(function($stateProvider) {
+  .config(function ($stateProvider) {
     $stateProvider
       .state('stockCountHome', {
         parent: 'root.index',
@@ -11,20 +11,20 @@ angular.module('lmisChromeApp')
         },
         templateUrl: 'views/stock-count/index.html',
         resolve: {
-          appConfig: function(appConfigService) {
+          appConfig: function (appConfigService) {
             return appConfigService.getCurrentAppConfig();
           },
-          stockCounts: function(stockCountFactory) {
+          stockCounts: function (stockCountFactory) {
             return stockCountFactory.getAll();
           },
-          isStockCountDue: function(stockCountFactory, appConfig, $q) {
+          isStockCountDue: function (stockCountFactory, appConfig, $q) {
             if (angular.isObject(appConfig)) {
               return stockCountFactory.isStockCountDue(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
             } else {
               $q.when(false);
             }
           },
-          mostRecentStockCount: function(stockCountFactory) {
+          mostRecentStockCount: function (stockCountFactory) {
             return stockCountFactory.getMostRecentStockCount();
           }
         },
@@ -39,18 +39,18 @@ angular.module('lmisChromeApp')
         templateUrl: 'views/stock-count/stock-count-form.html',
         controller: 'StockCountFormCtrl',
         resolve: {
-          appConfig: function(appConfigService) {
+          appConfig: function (appConfigService) {
             return appConfigService.getCurrentAppConfig();
           },
-          mostRecentStockCount: function(stockCountFactory) {
+          mostRecentStockCount: function (stockCountFactory) {
             return stockCountFactory.getMostRecentStockCount();
           }
         }
       });
   })
-  .controller('StockCountHomeCtrl', function($scope, stockCountFactory, growl, i18n, utility, stockCounts, appConfig, $state, mostRecentStockCount, isStockCountDue) {
+  .controller('StockCountHomeCtrl', function ($scope, stockCountFactory, growl, i18n, utility, stockCounts, appConfig, $state, mostRecentStockCount, isStockCountDue) {
 
-    var sortByCreatedDateDesc = function(scA, scB) {
+    var sortByCreatedDateDesc = function (scA, scB) {
       return -(new Date(scA.created) - new Date(scB.created));
     };
     var scInterval = appConfig.facility.stockCountInterval;
@@ -58,11 +58,11 @@ angular.module('lmisChromeApp')
 
     $scope.sortedStockCount = stockCounts.sort(sortByCreatedDateDesc);
 
-    $scope.isEditable = function(stockCount) {
+    $scope.isEditable = function (stockCount) {
       return stockCountFactory.isEditable(stockCount, mostRecentStockCount, scInterval, reminderDay);
     };
 
-    $scope.disableAddButton = function() {
+    $scope.disableAddButton = function () {
       if (isStockCountDue) {
         return stockCountFactory.isEditable(mostRecentStockCount, mostRecentStockCount, scInterval, reminderDay);
       } else {
@@ -70,7 +70,7 @@ angular.module('lmisChromeApp')
       }
     };
 
-    $scope.showStockCount = function(stockCount) {
+    $scope.showStockCount = function (stockCount) {
       if (!utility.has(stockCount, 'uuid') || !utility.has(stockCount, 'countDate')) {
         growl.error(i18n('showStockCountFailed'));
         return;
@@ -83,14 +83,14 @@ angular.module('lmisChromeApp')
       }
     };
   })
-  .controller('StockCountFormCtrl', function($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory, $stateParams, appConfig, appConfigService, cacheService, syncService, utility, $rootScope, i18n, mostRecentStockCount, geolocationFactory) {
+  .controller('StockCountFormCtrl', function ($scope, stockCountFactory, reminderFactory, $state, growl, alertFactory, $stateParams, appConfig, appConfigService, cacheService, syncService, utility, $rootScope, i18n, mostRecentStockCount, geolocationFactory, notificationService, $q, storageService) {
 
     var scInterval = appConfig.facility.stockCountInterval;
     var reminderDay = appConfig.facility.reminderDay;
     var isMostRecentEditable = stockCountFactory.isEditable(mostRecentStockCount, mostRecentStockCount, scInterval, reminderDay);
 
     //TODO: refactor entire stock count controller to simpler more readable controller
-    $scope.getCategoryColor = function(categoryName) {
+    $scope.getCategoryColor = function (categoryName) {
       if ($scope.preview) {
         return;
       }
@@ -117,13 +117,11 @@ angular.module('lmisChromeApp')
     $scope.editOff = ($stateParams.editOff === 'true');
     $scope.countValue = {};
     $scope.showHistory = ($stateParams.showHistory === 'true');
-    console.log($stateParams.showHistory);
     $scope.stockCount = {};
     $scope.stockCount.unopened = {};
     $scope.facilityProducts = utility.castArrayToObject($scope.selectedProductProfiles, 'uuid');
     $scope.facilityProductsKeys = Object.keys($scope.facilityProducts); //facility products uuid list
     $scope.productKey = $scope.facilityProductsKeys[$scope.step];
-
 
     //set maximum steps
     if ($scope.facilityProductsKeys.length > 0) {
@@ -134,7 +132,7 @@ angular.module('lmisChromeApp')
 
     function getPreviewButtonState() {
       var editState = ($scope.editOn && $scope.step !== $scope.maxStep && $scope.stockCount.isComplete);
-      var unopenedTotal = (Object.keys($scope.stockCount.unopened)).length -1;
+      var unopenedTotal = (Object.keys($scope.stockCount.unopened)).length - 1;
       return (unopenedTotal === $scope.maxStep && $scope.step !== $scope.maxStep) || editState;
     }
 
@@ -150,7 +148,7 @@ angular.module('lmisChromeApp')
       }
     }
 
-    $scope.convertToPresentationUom = function() {
+    $scope.convertToPresentationUom = function () {
       if (angular.isDefined($scope.countValue[$scope.productKey])) {
         var value = $scope.facilityProducts[$scope.productKey].presentation.value;
         $scope.stockCount.unopened[$scope.productKey] = $scope.countValue[$scope.productKey] * value;
@@ -167,7 +165,7 @@ angular.module('lmisChromeApp')
 
     //TODO: call pickStockCOunt here.
     stockCountFactory.getByUuid($scope.uuid)
-      .then(function(stockCount) {
+      .then(function (stockCount) {
         if ($scope.isNew !== true && stockCount !== null) {
           $scope.stockCount = stockCount;
           $scope.dateInfo = $scope.stockCount.created;
@@ -180,7 +178,8 @@ angular.module('lmisChromeApp')
         }
       });
 
-    var syncStockCount = function(stockCountUUID) {
+    var syncStockCount = function (stockCountUUID) {
+
       var db = stockCountFactory.STOCK_COUNT_DB;
       var msg = i18n('stockCountSuccessMsg');
       $scope.stockCount.uuid = stockCountUUID;
@@ -196,35 +195,42 @@ angular.module('lmisChromeApp')
        *
        * 2. redirect has to wait for app to finish syncing - success/fail
        */
+
       return syncService.syncUpRecord(db, $scope.stockCount)
-        .catch(function(reason) {
+        .catch(function (reason) {
           console.error(reason);
+          var smsMsg = genSMS($scope.stockCount);
+          notificationService.sendSms(notificationService.alertRecipient, smsMsg.scInfo, storageService.STOCK_COUNT);
+          smsMsg.products.forEach(function(pp){
+            notificationService.sendSms(notificationService.alertRecipient, pp, storageService.STOCK_COUNT);
+          });
+          return $q.reject(reason);
         })
-        .finally(function() {
+        .finally(function () {
           $scope.isSaving = false;
           alertFactory.success(msg);
           $state.go('home.index.home.mainActivity');
         });
     };
 
-    $scope.save = function() {
+    $scope.save = function () {
       $scope.stockCount.facility = $scope.facilityObject.uuid;
       $scope.stockCount.countDate = $scope.stockCountDate;
 
       stockCountFactory.save.stock($scope.stockCount)
-        .then(function(stockCountUUID) {
+        .then(function (stockCountUUID) {
           if ($scope.redirect) {
-            return syncStockCount(stockCountUUID);
+            return syncStockCount(stockCountUUID)
           }
         })
-        .catch(function(reason) {
+        .catch(function (reason) {
           var msg = i18n('stockCountSavingFailed');
           growl.error(msg);
           console.error(reason);
         });
     };
 
-    $scope.edit = function(key) {
+    $scope.edit = function (key) {
       if ($scope.editOff === false) {
         $scope.step = $scope.facilityProductsKeys.indexOf(key);
         $scope.productKey = key;
@@ -234,8 +240,26 @@ angular.module('lmisChromeApp')
         updateCountValue();
       }
     };
+    function genSMS(stockCount) {
+      var newObj = {
+        scInfo: {
+          cd: stockCount.countDate,
+          facility: stockCount.facility,
+          uuid: stockCount.uuid,
+          created: stockCount.created,
+          ppLen: Object.keys(stockCount.unopened).length
+        },
+        products: []
+      };
+      Object.keys(stockCount.unopened)
+        .forEach(function (r) {
+          var p = { ppId: r, qty: stockCount.unopened[r], uuid: stockCount.uuid };
+          newObj.products.push(p);
+        });
+      return newObj;
+    }
 
-    $scope.finalSave = function() {
+    $scope.finalSave = function () {
       $scope.isSaving = true;
       if (utility.has($scope, 'stockCount')) {
         $scope.stockCount.lastPosition = 0;
@@ -246,12 +270,12 @@ angular.module('lmisChromeApp')
           $scope.stockCount.geoPosition = geolocationFactory.NO_GEO_POS;
         }
         geolocationFactory.getCurrentPosition()
-          .then(function(curPos) {
+          .then(function (curPos) {
             $scope.stockCount.geoPosition = geolocationFactory.getMiniGeoPosition(curPos);
             $scope.redirect = true;
             $scope.save();
           })
-          .catch(function() {
+          .catch(function () {
             $scope.redirect = true;
             $scope.save();
           });
@@ -262,7 +286,7 @@ angular.module('lmisChromeApp')
 
     };
 
-    $scope.changeState = function(direction) {
+    $scope.changeState = function (direction) {
 
       $scope.currentEntry = $scope.countValue[$scope.facilityProductsKeys[$scope.step]];
       if (stockCountFactory.validate.invalid($scope.currentEntry) && direction !== 0) {

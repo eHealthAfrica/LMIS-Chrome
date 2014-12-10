@@ -170,7 +170,7 @@ angular.module('lmisChromeApp')
 
     $scope.onLgaSelection = function(lga){
 
-      appConfigService.getSelectedFacility((JSON.parse(lga)).uuid);
+      appConfigService.getSelectedFacility((JSON.parse(lga).uuid), event);
       $scope.appConfig.facility.selectedLgas =
         utility.addObjectToCollection(lga, $scope.appConfig.facility.selectedLgas, '_id');
       $scope.preSelectLgaCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedLgas, '_id');

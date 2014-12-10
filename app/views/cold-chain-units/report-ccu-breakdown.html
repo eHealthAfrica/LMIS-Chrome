@@ -51,14 +51,14 @@
                         <th>#</th>
                         <th>Fault</th>
                         <th class="active" ng-click="toggleFaultSortDate()">
-                            Date  <i  class="fa" ng-class="{'fa-caret-down': (faultSortDate === 'desc'), 'fa-caret-up': (faultSortDate === 'asc')}"></i>
+                            Last Updated  <i  class="fa" ng-class="{'fa-caret-down': (faultSortDate === 'desc'), 'fa-caret-up': (faultSortDate === 'asc')}"></i>
                         </th>
                         <th>Status</th>
                     </thead>
                     <tr ng-repeat="row in previewCcuProfile.ccuStatus">
                         <td>{{$index + 1}}</td>
                         <td>{{faults[row.fault]}}</td>
-                        <td>{{row.created | date:'MMM d, yyyy'}}</td>
+                        <td>{{row.modified | date:'MMM d, yyyy'}}</td>
                         <td>
                            <span ng-show="row.status === 1">
                                <button class="btn btn-success btn-xs disabled" >

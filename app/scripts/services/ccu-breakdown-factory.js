@@ -5,7 +5,7 @@ angular.module('lmisChromeApp')
 
       var saveCcuBreakdownReport = function (ccuBreakdown) {
         var deferred = $q.defer();
-        storageService.save(storageService.CCU_BREAKDOWN2, ccuBreakdown)
+        storageService.save(storageService.CCU_BREAKDOWN, ccuBreakdown)
             .then(function (result) {
               if (typeof result !== 'undefined') {
                 ccuBreakdown.uuid = result;
@@ -32,7 +32,7 @@ angular.module('lmisChromeApp')
 
       var broadcastCcuBreakdown = function (ccuBreakdown) {
         var deferred = $q.defer();
-        syncService.syncUpRecord(storageService.CCU_BREAKDOWN2, ccuBreakdown)
+        syncService.syncUpRecord(storageService.CCU_BREAKDOWN, ccuBreakdown)
             .then(function (syncResult) {
               deferred.resolve(syncResult);
             }).catch(function () {
@@ -67,7 +67,7 @@ angular.module('lmisChromeApp')
         return deferred.promise;
       };
       var getAll = function(){
-          return storageService.all(storageService.CCU_BREAKDOWN2)
+          return storageService.all(storageService.CCU_BREAKDOWN)
       }
       return {
         save: saveCcuBreakdownReport,
