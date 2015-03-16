@@ -291,7 +291,24 @@ angular.module('lmisChromeApp')
       $scope.preSelectCcuProfiles = utility.castArrayToObject(appConfig.selectedCcuProfiles, 'dhis2_modelid');
       $scope.preSelectProductProfileCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedProductProfiles, 'uuid');
     }
-   
+
+    function resetRowState() {
+      $scope.selectedCCEItem = {};
+    }
+
+    $scope.toggleRow = function(cceModelID) {
+      if ($scope.selectedCCEItem.hasOwnProperty(cceModelID)) {
+        var currentState = $scope.selectedCCEItem[cceModelID];
+        resetRowState();
+        $scope.selectedCCEItem[cceModelID] = !currentState;
+      }
+      else {
+        resetRowState();
+        $scope.selectedCCEItem[cceModelID] = true;
+      }
+    };
+
+    resetRowState();
     //pre-load edit app facility profile config form with existing config.
     preLoadConfigForm(appConfig);
     //TODO: load state id dynamically.
