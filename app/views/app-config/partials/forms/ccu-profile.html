@@ -14,20 +14,35 @@
             <h4 class="panel-title">{{ spaceOutUpperCaseWords(ccuCategory) }}</h4>
           </div>
         </div>
-        <div class="no-padding" ng-repeat="ccuProfile in ccuProfilesGroupedByCategory[ccuCategory] | filter:search" ng-class="{
+        <div ng-repeat="ccuProfile in ccuProfilesGroupedByCategory[ccuCategory] | filter:search" ng-switch on="selectedCCEItem[ccuProfile.dhis2_modelid]">
+          <div class="no-padding" ng-class="{
           'highlight-selected-item': preSelectCcuProfiles[ccuProfile.dhis2_modelid], 'list-group-item': true }">
-          <label class="new-line pointer padded-label">
-            <input type="checkbox" ng-model="ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]"
-                   ng-disabled="!developerMode"
-                   ng-true-value="{{ ccuProfile }}"
-                   ng-false-value="{{ {'dhis2_modelid': ccuProfile.dhis2_modelid, deSelected: true} }}"
-                   ng-change="onCcuSelection(ccuProfileCheckBoxes[ccuProfile.dhis2_modelid])"
-                   ng-checked="preSelectCcuProfiles[ccuProfile.dhis2_modelid]"/>
-            {{ ccuProfile.Manufacturer }} - {{ ccuProfile.ModelName }}
-          </label>
+            <label class="new-line pointer padded-label"
+                   ng-click="toggleRow(ccuProfile.dhis2_modelid)">
+              <input type="checkbox" ng-model="ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]"
+                     ng-disabled="!developerMode"
+                     ng-true-value="{{ ccuProfile }}"
+                     ng-false-value="{{ {'dhis2_modelid': ccuProfile.dhis2_modelid, deSelected: true} }}"
+                     ng-change="onCcuSelection(ccuProfileCheckBoxes[ccuProfile.dhis2_modelid])"
+                     ng-checked="preSelectCcuProfiles[ccuProfile.dhis2_modelid]"/>
+              {{ ccuProfile.Manufacturer }} - {{ ccuProfile.ModelName }}
+            </label>
+          </div>
+
+          <div class="list-group-item" ng-switch-when="true">
+            <div class="row">
+              <div class="col-xs-8">
+                <input type="text" class="form-control input-sm">
+              </div>
+              <div class="col-xs-4">
+                <button type="button" class="btn btn-success btn-xs"> Add</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 
 </div>
