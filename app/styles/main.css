@@ -243,7 +243,7 @@ tr.disabled, tr.disabled span.text-info{
 .cold-store-vaccines{
   border-color: #157085;
 }
-.dry-store-safety-boxes>.panel-heading, .dry-store-syringes>.panel-heading, tr.dry-store-syringes, tr dry-store-syringes {
+.dry-store-safety-boxes>.panel-heading, .dry-store-syringes>.panel-heading, tr.dry-store-syringes, tr .dry-store-syringes {
   background-color: #8B4A09;
   color: #FFFFFF;
 }
@@ -277,4 +277,13 @@ tr.disabled, tr.disabled span.text-info{
     background:none !important;
     border-left: 4px solid #6eca97 !important;
     border-right: 4px solid #6eca97 !important;
+}
+
+.serial-list{
+  position: relative;
+  display: block;
+  padding: 5px 15px;
+  margin-bottom: -1px;
+  background-color: #f1f1f1;
+  border: 2px solid #dddddd;
 }
