@@ -251,6 +251,7 @@ angular.module('lmisChromeApp')
     $scope.developerMode = false;
     $rootScope.developerMode = false;
     $scope.lgaList = [];
+    $scope.serialNumber = {};
 
 
     var noOfAttempts = 0;
@@ -263,6 +264,26 @@ angular.module('lmisChromeApp')
         $scope.developerMode = true;
         noOfAttempts = 0;
       }
+    };
+
+    $scope.addSerialNumber = function() {
+      var ccuItemID = Object.keys($scope.selectedCCEItem)[0];
+      var ccuProfile = $scope.preSelectCcuProfiles[ccuItemID];
+      var originalProfile = angular.copy(ccuProfile);
+      if (ccuProfile.serialNumbers) {
+        if (ccuProfile.serialNumbers.indexOf($scope.serialNumber) === -1) {
+          ccuProfile.serialNumbers.push($scope.serialNumber[ccuItemID]);
+        }
+      } else {
+        ccuProfile.serialNumbers = [$scope.serialNumber[ccuItemID]];
+      }
+      $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
+
+      $scope.serialNumber[ccuItemID] = '';
+    };
+
+    $scope.removeSerial = function(ccuProfile, index) {
+      ccuProfile.serialNumbers.splice(index, 1);
     };
 
     var setAppConfigLastUpdatedViewInfo = function(appConfig) {
@@ -296,17 +317,31 @@ angular.module('lmisChromeApp')
       $scope.selectedCCEItem = {};
     }
 
-    $scope.toggleRow = function(cceModelID) {
-      if ($scope.selectedCCEItem.hasOwnProperty(cceModelID)) {
-        var currentState = $scope.selectedCCEItem[cceModelID];
-        resetRowState();
-        $scope.selectedCCEItem[cceModelID] = !currentState;
+    function toggleRow(ccuProfile) {
+      var hasKey = $scope.selectedCCEItem.hasOwnProperty(ccuProfile.dhis2_modelid);
+
+      if (Object.prototype.toString.call(ccuProfile) === '[object String]') {
+        ccuProfile = JSON.parse(ccuProfile);
       }
-      else {
+
+      if (!hasKey) {
         resetRowState();
-        $scope.selectedCCEItem[cceModelID] = true;
+        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = true;
+      } else if (hasKey) {
+        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = $scope.selectedCCEItem[ccuProfile.dhis2_modelid] === true;
       }
-    };
+
+      if ($scope.ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]) {
+        var selectedCCU = JSON.parse($scope.ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]);
+        if (selectedCCU.deSelected) {
+          resetRowState();
+        }
+      }
+
+      console.log($scope.selectedCCEItem[ccuProfile.dhis2_modelid]);
+    }
+
+    $scope.toggleRow = toggleRow;
 
     resetRowState();
     //pre-load edit app facility profile config form with existing config.
@@ -351,7 +386,7 @@ angular.module('lmisChromeApp')
       $scope.appConfig.facility.selectedZones =
         utility.addObjectToCollection(zone, $scope.appConfig.facility.selectedZones, '_id');
       $scope.preSelectZoneCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedZones, '_id');
-    }
+    };
 
     var isSameLgas = function(old, recent) {
       if (old.length !== recent.length) {
