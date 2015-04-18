@@ -269,11 +269,14 @@ angular.module('lmisChromeApp')
     $scope.addSerialNumber = function() {
       var ccuItemID = Object.keys($scope.selectedCCEItem)[0];
       var ccuProfile = $scope.preSelectCcuProfiles[ccuItemID];
-      var originalProfile = angular.copy(ccuProfile);
+
+      if ($scope.serialNumber[ccuItemID] === '' || $scope.serialNumber[ccuItemID] === undefined ||
+        ccuProfile.serialNumbers.indexOf($scope.serialNumber[ccuItemID]) !== -1) {
+        return;
+      }
+
       if (ccuProfile.serialNumbers) {
-        if (ccuProfile.serialNumbers.indexOf($scope.serialNumber) === -1) {
-          ccuProfile.serialNumbers.push($scope.serialNumber[ccuItemID]);
-        }
+        ccuProfile.serialNumbers.push($scope.serialNumber[ccuItemID]);
       } else {
         ccuProfile.serialNumbers = [$scope.serialNumber[ccuItemID]];
       }
@@ -285,6 +288,35 @@ angular.module('lmisChromeApp')
     $scope.removeSerial = function(ccuProfile, index) {
       ccuProfile.serialNumbers.splice(index, 1);
     };
+
+    function resetRowState() {
+      $scope.selectedCCEItem = {};
+    }
+
+    function toggleRow(ccuProfile) {
+
+      if (Object.prototype.toString.call(ccuProfile) === '[object String]') {
+        ccuProfile = JSON.parse(ccuProfile);
+      }
+
+      if ((Object.keys($scope.selectedCCEItem)).length === 0) {
+        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = true;
+      } else if ($scope.selectedCCEItem.hasOwnProperty(ccuProfile.dhis2_modelid)) {
+        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = !$scope.selectedCCEItem[ccuProfile.dhis2_modelid];
+      } else {
+        resetRowState();
+        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = true;
+      }
+
+      if ($scope.ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]) {
+        var selectedCCU = JSON.parse($scope.ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]);
+        if (selectedCCU.deSelected) {
+          resetRowState();
+        }
+      }
+    }
+
+    $scope.toggleRow = toggleRow;
 
     var setAppConfigLastUpdatedViewInfo = function(appConfig) {
       if (utility.has(appConfig, 'lastUpdated')) {
@@ -312,36 +344,6 @@ angular.module('lmisChromeApp')
       $scope.preSelectCcuProfiles = utility.castArrayToObject(appConfig.selectedCcuProfiles, 'dhis2_modelid');
       $scope.preSelectProductProfileCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedProductProfiles, 'uuid');
     }
-
-    function resetRowState() {
-      $scope.selectedCCEItem = {};
-    }
-
-    function toggleRow(ccuProfile) {
-      var hasKey = $scope.selectedCCEItem.hasOwnProperty(ccuProfile.dhis2_modelid);
-
-      if (Object.prototype.toString.call(ccuProfile) === '[object String]') {
-        ccuProfile = JSON.parse(ccuProfile);
-      }
-
-      if (!hasKey) {
-        resetRowState();
-        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = true;
-      } else if (hasKey) {
-        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = $scope.selectedCCEItem[ccuProfile.dhis2_modelid] === true;
-      }
-
-      if ($scope.ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]) {
-        var selectedCCU = JSON.parse($scope.ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]);
-        if (selectedCCU.deSelected) {
-          resetRowState();
-        }
-      }
-
-      console.log($scope.selectedCCEItem[ccuProfile.dhis2_modelid]);
-    }
-
-    $scope.toggleRow = toggleRow;
 
     resetRowState();
     //pre-load edit app facility profile config form with existing config.
@@ -404,13 +406,17 @@ angular.module('lmisChromeApp')
       return hasOddElem;
     };
 
-    var saveAppConfig = function() {
+    var saveAppConfig = function(forSerial) {
       appConfigService.setup($scope.appConfig)
         .then(function(result) {
           if (typeof result !== 'undefined') {
             $scope.appConfig = result;
             alertFactory.success(i18n('appConfigSuccessMsg'));
-            $state.go('home.index.home.mainActivity');
+
+            if (!forSerial) {
+              $state.go('home.index.home.mainActivity');
+            }
+
           } else {
             growl.error(i18n('appConfigFailedMsg'));
           }
@@ -430,10 +436,10 @@ angular.module('lmisChromeApp')
         });
     };
 
-    $scope.save = function() {
+    $scope.save = function(forSerial) {
       $scope.isSaving = true;
       if (isSameLgas(oldLgas, $scope.appConfig.facility.selectedLgas)) {
-        saveAppConfig();
+        saveAppConfig(forSerial);
       } else {
         var nearbyLgas = $scope.appConfig.facility.selectedLgas
           .map(function(lga) {
