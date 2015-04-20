@@ -19,7 +19,7 @@
           'highlight-selected-item': preSelectCcuProfiles[ccuProfile.dhis2_modelid], 'list-group-item': true }">
             <div class="row">
               <div class="col-xs-10">
-                <label class="new-line pointer padded-label clearfix" ng-click="toggleRow(ccuProfile)">
+                <label class="new-line pointer padded-label clearfix">
                   <input type="checkbox" ng-model="ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]"
                          ng-disabled="!developerMode"
                          ng-true-value="{{ ccuProfile }}"
@@ -31,7 +31,7 @@
               </div>
 
               <div class="col-xs-2">
-                <div style="margin-top: 3px; margin-right: 3px;">
+                <div class="serial-btn">
                   <span class="btn btn-default btn-block"
                         ng-click="toggleRow(ccuProfile)">Serial</span>
                 </div>
@@ -42,7 +42,7 @@
 
           <div ng-switch-when="true">
             <div class="list-group-item" ng-if="preSelectCcuProfiles[ccuProfile.dhis2_modelid]">
-              <div class="clearfix padded-label">
+              <div class="clearfix pb10">
                 <span ng-click="selectedCCEItem[ccuProfile.dhis2_modelid]=false" class="btn btn-danger btn-xs pull-right">
                   <span class="fa fa-times"></span>
                 </span>
@@ -78,7 +78,7 @@
           </div>
 
           <div ng-switch-when="true">
-            <div class="list-group-item" ng-if="selectedCCEItem[ccuProfile.dhis2_modelid]">
+            <div class="list-group-item" ng-if="selectedCCEItem[ccuProfile.dhis2_modelid] && preSelectCcuProfiles[ccuProfile.dhis2_modelid]">
               <div class="row">
                 <div class="col-sm-12 clearfix">
                   <button type="button" ga-click="save" id="save" name="save" class="btn btn-success btn-sm pull-right"
