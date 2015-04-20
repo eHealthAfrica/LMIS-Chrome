@@ -408,10 +408,10 @@ angular.module('lmisChromeApp')
       appConfigService.setup($scope.appConfig)
         .then(function(result) {
           if (typeof result !== 'undefined') {
-            $scope.appConfig = result;
             alertFactory.success(i18n('appConfigSuccessMsg'));
 
             if (!forSerial) {
+              $scope.appConfig = result;
               $state.go('home.index.home.mainActivity');
             }
 
