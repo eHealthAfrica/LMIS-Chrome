@@ -148,7 +148,7 @@ accordion .panel-heading:hover {
 }
 .counter-btn {
    font-size: 25.5pt;
-   padding: 0.1em, 0.2em;
+   padding: 0.1em 0.2em;
    height: 2.2em;
 }
 .counter-input{
@@ -278,7 +278,6 @@ tr.disabled, tr.disabled span.text-info{
     border-left: 4px solid #6eca97 !important;
     border-right: 4px solid #6eca97 !important;
 }
-
 .serial-list{
   position: relative;
   display: block;
@@ -286,4 +285,11 @@ tr.disabled, tr.disabled span.text-info{
   margin-bottom: -1px;
   background-color: #f1f1f1;
   border: 2px solid #dddddd;
+}
+.serial-btn{
+  margin-top: 3px;
+  margin-right: 3px;
+}
+.pb10{
+  padding-bottom: 10px;
 }
