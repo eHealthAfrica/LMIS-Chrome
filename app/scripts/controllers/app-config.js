@@ -269,17 +269,14 @@ angular.module('lmisChromeApp')
     $scope.addSerialNumber = function() {
       var ccuItemID = Object.keys($scope.selectedCCEItem)[0];
       var ccuProfile = $scope.preSelectCcuProfiles[ccuItemID];
+      ccuProfile.serialNumbers = ccuProfile.serialNumbers || [];
 
-      if ($scope.serialNumber[ccuItemID] === '' || $scope.serialNumber[ccuItemID] === undefined ||
+      if ($scope.serialNumber[ccuItemID] === '' || angular.isUndefined($scope.serialNumber[ccuItemID]) ||
         ccuProfile.serialNumbers.indexOf($scope.serialNumber[ccuItemID]) !== -1) {
         return;
       }
 
-      if (ccuProfile.serialNumbers) {
-        ccuProfile.serialNumbers.push($scope.serialNumber[ccuItemID]);
-      } else {
-        ccuProfile.serialNumbers = [$scope.serialNumber[ccuItemID]];
-      }
+      ccuProfile.serialNumbers.push($scope.serialNumber[ccuItemID]);
       $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
 
       $scope.serialNumber[ccuItemID] = '';
@@ -295,11 +292,11 @@ angular.module('lmisChromeApp')
 
     function toggleRow(ccuProfile) {
 
-      if (Object.prototype.toString.call(ccuProfile) === '[object String]') {
+      if (!angular.isObject(ccuProfile)) {
         ccuProfile = JSON.parse(ccuProfile);
       }
 
-      if ((Object.keys($scope.selectedCCEItem)).length === 0) {
+      if (!utility.isEmptyObject($scope.selectedCCEItem)) {
         $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = true;
       } else if ($scope.selectedCCEItem.hasOwnProperty(ccuProfile.dhis2_modelid)) {
         $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = !$scope.selectedCCEItem[ccuProfile.dhis2_modelid];
@@ -366,6 +363,7 @@ angular.module('lmisChromeApp')
       });
 
     $scope.onCcuSelection = function(ccuProfile) {
+      toggleRow(ccuProfile);
       $scope.appConfig.selectedCcuProfiles =
         utility.addObjectToCollection(ccuProfile, $scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
       $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
