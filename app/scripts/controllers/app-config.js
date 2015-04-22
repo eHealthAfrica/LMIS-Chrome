@@ -296,7 +296,7 @@ angular.module('lmisChromeApp')
         ccuProfile = JSON.parse(ccuProfile);
       }
 
-      if (!utility.isEmptyObject($scope.selectedCCEItem)) {
+      if (utility.isEmptyObject($scope.selectedCCEItem)) {
         $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = true;
       } else if ($scope.selectedCCEItem.hasOwnProperty(ccuProfile.dhis2_modelid)) {
         $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = !$scope.selectedCCEItem[ccuProfile.dhis2_modelid];
