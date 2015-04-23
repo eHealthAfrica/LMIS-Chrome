@@ -748,5 +748,21 @@
   },
   "utilization": {
     "message": "Utilization"
+  },
+  "balance": {
+    "message": "Balance"
+  },
+  "received": {
+    "message": "Received"
+  },
+  "endingBalance": {
+    "message": "Ending Balance"
+  },
+  "used": {
+    "message": "Used"
+  },
+  "returned": {
+    "message": "Returned"
   }
+
 }
