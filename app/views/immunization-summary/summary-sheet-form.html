@@ -15,12 +15,16 @@
           <option>Outreach</option>
           <option>Mobile</option>
         </select>
+        <div class="text-italic text-danger" ng-if="viewControl.validationError.sessionType.length">
+          <i class="fa fa-exclamation-triangle"></i> {{ viewControl.validationError.sessionType }}
+        </div>
       </div>
+
     </div>
 
     <div class="row">
       <div class="col-xs-12">
-        <button class="btn btn-default btn-block" type="button" ng-click="viewControl.sessionFormOpen = false">
+        <button class="btn btn-default btn-block" type="button" ng-click="selectSessionType()">
           <span i18n="continue"></span>
         </button>
       </div>
@@ -29,6 +33,7 @@
 
   <div class="panel-body" ng-if="!viewControl.sessionFormOpen">
     <div ng-if="!viewControl.preview">
+      <button class="btn btn-default" type="button" ng-click="selectSessionType()">Edit Session Type</button>
       <div class="mb10 text-center">
         <h1>
           {{ summarySetting.products[viewControl.step].name }}
@@ -74,34 +79,18 @@
         </div>
       </div>
 
+      <div class="row" ng-if="(summaryRecord.isComplete || viewControl.endOfList) && viewControl.step < viewControl.max ">
+        <div class="col-xs-12">
+          <div class="mb10">
+            <button class="btn btn-warning btn-block" ng-click="togglePreview()">Preview</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div ng-if="viewControl.preview">
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th>Product</th>
-          <th>Age Range/Pregnant</th>
-          <th>Qty</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="product in summarySetting.products" ng-click="edit($index)">
-          <td>{{ product.name }}</td>
-          <td ng-if="product.ageRange">
-            {{ product.ageRange.from }}
-            {{ product.ageRange.fromPeriod }} -
-            {{ product.ageRange.to }}
-            {{ product.ageRange.toPeriod }}
-          </td>
-          <td ng-if="!product.ageRange">
-            {{ viewControl.pregnancyStatus[product.pregnant] }}
-          </td>
-
-          <td>{{ summaryRecord.products[product.uuid] }}</td>
-        </tr>
-        </tbody>
-      </table>
+      <div ng-include="'views/immunization-summary/partials/preview.html'"></div>
 
       <button class="btn btn-success btn-block" ng-click="save()">
         <span class="fa fa-save"></span>
