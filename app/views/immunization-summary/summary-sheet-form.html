@@ -1,0 +1,113 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div></div>
+  </div>
+
+  <div class="panel-body" ng-if="viewControl.sessionFormOpen">
+    <div class="row pb10">
+      <div class="col-xs-4">
+        <label>Session Type</label>
+      </div>
+
+      <div class="col-xs-8">
+        <select class="form-control" ng-model="summaryRecord.sessionType">
+          <option>Fixed</option>
+          <option>Outreach</option>
+          <option>Mobile</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <button class="btn btn-default btn-block" type="button" ng-click="viewControl.sessionFormOpen = false">
+          <span i18n="continue"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body" ng-if="!viewControl.sessionFormOpen">
+    <div ng-if="!viewControl.preview">
+      <div class="mb10 text-center">
+        <h1>
+          {{ summarySetting.products[viewControl.step].name }}
+        </h1>
+        <h4 ng-if="summarySetting.products[viewControl.step].ageRange">
+          {{ summarySetting.products[viewControl.step].ageRange.from }}
+          {{ summarySetting.products[viewControl.step].ageRange.fromPeriod }} -
+          {{ summarySetting.products[viewControl.step].ageRange.to }}
+          {{ summarySetting.products[viewControl.step].ageRange.toPeriod }}
+        </h4>
+        <h4 ng-if="!summarySetting.products[viewControl.step].ageRange">
+          {{ viewControl.pregnancyStatus[summarySetting.products[viewControl.step].pregnant] }}
+        </h4>
+
+      </div>
+
+      <div class="row pb10 mt10">
+        <div class="col-xs-4">
+          <label>Quantity</label>
+        </div>
+        <div class="col-xs-8">
+          <input class="form-control"
+                 type="number"
+                 ng-model="summaryRecord.products[summarySetting.products[viewControl.step].uuid]">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="mb10">
+            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default" ng-click="changeStep('prev')">Previous</button>
+              </div>
+              <div class="btn-group pl5" role="group" ng-if="viewControl.step !== viewControl.max">
+                <button type="button" class="btn btn-default" ng-click="changeStep('next')">Next</button>
+              </div>
+              <div class="btn-group pl5" role="group" ng-if="viewControl.step === viewControl.max">
+                <button type="button" class="btn btn-warning" ng-click="togglePreview()">Preview</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div ng-if="viewControl.preview">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Product</th>
+          <th>Age Range/Pregnant</th>
+          <th>Qty</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="product in summarySetting.products" ng-click="edit($index)">
+          <td>{{ product.name }}</td>
+          <td ng-if="product.ageRange">
+            {{ product.ageRange.from }}
+            {{ product.ageRange.fromPeriod }} -
+            {{ product.ageRange.to }}
+            {{ product.ageRange.toPeriod }}
+          </td>
+          <td ng-if="!product.ageRange">
+            {{ viewControl.pregnancyStatus[product.pregnant] }}
+          </td>
+
+          <td>{{ summaryRecord.products[product.uuid] }}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <button class="btn btn-success btn-block" ng-click="save()">
+        <span class="fa fa-save"></span>
+        <span i18n="save"></span>
+      </button>
+    </div>
+
+  </div>
+</div>

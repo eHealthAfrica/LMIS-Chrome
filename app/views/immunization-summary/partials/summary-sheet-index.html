@@ -1,0 +1,18 @@
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Session Type</th>
+      <th>Done</th>
+      <th>Synced</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="summary in summaryRecord" ng-click="summaryDetail($index)">
+      <td>{{ summary.date | date: 'dd MMM yyyy' }}</td>
+      <td>{{ summary.sessionType }}</td>
+      <td>{{ summary.isComplete }}</td>
+      <td>{{ summary.synced }}</td>
+    </tr>
+  </tbody>
+</table>
