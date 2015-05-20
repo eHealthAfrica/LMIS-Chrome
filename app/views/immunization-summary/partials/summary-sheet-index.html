@@ -8,11 +8,15 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="summary in summaryRecord" ng-click="summaryDetail($index)">
+    <tr ng-repeat="summary in summaryRecords" ng-click="summaryDetail($index)">
       <td>{{ summary.date | date: 'dd MMM yyyy' }}</td>
       <td>{{ summary.sessionType }}</td>
-      <td>{{ summary.isComplete }}</td>
-      <td>{{ summary.synced }}</td>
+      <td class="text-center">
+        <i class="fa" ng-class="{'fa-times-circle text-danger': !summary.isComplete, 'fa-check-circle text-success': summary.isComplete}"></i>
+      </td>
+      <td class="text-center">
+        <i class="fa" ng-class="{'fa-times-circle text-danger': !summary.synced, 'fa-check-circle text-success': summary.synced}"></i>
+      </td>
     </tr>
   </tbody>
 </table>
