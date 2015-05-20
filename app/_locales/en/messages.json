@@ -590,16 +590,16 @@
     "message": "Select facility cold chain units"
   },
   "reportCcuBreakdown": {
-    "message": "Report CCE breakdown"
+    "message": "Report CCU breakdown"
   },
   "ccuBreakdown": {
-    "message": "CCE Breakdown"
+    "message": "CCU Breakdown"
   },
   "selectFacultyCcu": {
-    "message": "Select faulty CCE"
+    "message": "Select faulty CCU"
   },
   "selectCcu": {
-    "message": "Select CCE"
+    "message": "Select CCU"
   },
   "confirmCcuBreakdownReportHeader": {
     "message": "Confirm '$ccuIdentifier$' breakdown report",
@@ -613,10 +613,10 @@
     "message": "are you sure?"
   },
   "ccuBreakdownReportSuccessMsg": {
-    "message": "CCE breakdown report sent successfully!"
+    "message": "CCU breakdown report sent successfully!"
   },
   "ccuBreakdownReportFailedMsg": {
-    "message": "CCE breakdown report failed, please contact support"
+    "message": "CCU breakdown report failed, please contact support"
   },
   "stockCountHistory": {
     "message": "Stock Count History"
@@ -739,6 +739,9 @@
   },
   "specifyBundleType":{
     "message": "Please specify if its receiving or sending"
+  },
+  "CcuBreakdown": {
+    "message": "Cold Chain Unit Breakdown"
   },
   "selectZones":{
     "message": "Select Zones"

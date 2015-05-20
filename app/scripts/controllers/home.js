@@ -223,6 +223,7 @@ angular.module('lmisChromeApp')
                     };
 
                     $scope.productTypesChart = dashboardfactory.chart(keys, values);
+                    console.log($scope.productTypesChart);
                   })
                   .catch(function(err) {
                     console.log('getProductTypeCounts Error: ' + err);
@@ -274,6 +275,7 @@ angular.module('lmisChromeApp')
             templateUrl: 'views/home/dashboard/chart.html',
             controller: function($scope, $log, dashboardfactory, keys, aggregatedInventory) {
               $scope.inventoryChart = dashboardfactory.chart(keys, aggregatedInventory);
+
             }
           },
           'table': {

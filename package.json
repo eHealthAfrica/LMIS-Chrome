@@ -1,9 +1,10 @@
 {
   "name": "lmis-chrome",
-  "version": "0.11.3",
+  "version": "0.11.4",
   "private": true,
   "dependencies": {},
   "devDependencies": {
+    "cca": "0.4.3",
     "change-case": "^2.1.1",
     "eslint-no-exclusive-tests": "^0.1.0",
     "grunt": "^0.4.5",

@@ -76,7 +76,7 @@ angular.module('lmisChromeApp').service('notificationService', function($modal, 
         } else {
           deferred.reject('Cancel confirm dialog');
         }
-      }, title, buttonLabels[0] + ',' + buttonLabels[1]);
+      }, title, buttonLabels);
     } else {
       deferred.resolve('mobile dialog is not available');
     }
@@ -131,6 +131,12 @@ angular.module('lmisChromeApp').service('notificationService', function($modal, 
    * @param msg{String} - message body
    * @returns {promise|Function|promise|promise|promise|*}
    */
+  /**
+   * Resolves true if message was sent but does not mean sms has been delivered to recipient.
+   * @param phoneNo{String} - recipient phone number
+   * @param msg{String} - message body
+   * @returns {promise|Function|promise|promise|promise|*}
+   */
   this.sendSms = function(phoneNo, msg, type) {
 
     var deferred = $q.defer();
@@ -138,25 +144,17 @@ angular.module('lmisChromeApp').service('notificationService', function($modal, 
     var intent = '';//leave empty for sending sms using default intent(SMSManager)
 
     if (utility.has($window, 'sms')) {
-
       msg.db = type;
       var content = encode(msg);
       for (var i in content) {
-
         promises.push(_send(phoneNo, content[i], intent));
       }
-      $q.all(promises)
-        .then(function(res) {
-          console.log("coming!")
-          deferred.resolve(res);
-        })
-        .catch(function(err) {
-          deferred.reject(err);
-        });
+      deferred.resolve(true);
     } else {
       deferred.reject(noSmsSupportMsg);
     }
     return deferred.promise;
   };
+
 
 });
