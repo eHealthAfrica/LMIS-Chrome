@@ -278,12 +278,19 @@ tr.disabled, tr.disabled span.text-info{
     border-left: 4px solid #6eca97 !important;
     border-right: 4px solid #6eca97 !important;
 }
-.mb10 {
+.mb10{
   margin-bottom: 10px;
+}
+.mt10{
+  margin-top: 10px;
 }
 .mr5{
   margin-right: 5px;
 }
+.ml5{
+  margin-left: 5px;
+}
+
 .pr5{
   padding-right: 5px;
 }
