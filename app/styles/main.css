@@ -236,14 +236,14 @@ tr.disabled, tr.disabled span.text-info{
 .bold-text{
   font-weight: bold;
 }
-.cold-store-vaccines>.panel-heading, tr.cold-store-vaccines, tr cold-store-vaccines{
+.cold-store-vaccines>.panel-heading, tr.cold-store-vaccines, tr .cold-store-vaccines{
   background-color: #157085;
   color: #FFFFFF;
 }
 .cold-store-vaccines{
   border-color: #157085;
 }
-.dry-store-safety-boxes>.panel-heading, .dry-store-syringes>.panel-heading, tr.dry-store-syringes, tr dry-store-syringes {
+.dry-store-safety-boxes>.panel-heading, .dry-store-syringes>.panel-heading, tr.dry-store-syringes, tr .dry-store-syringes {
   background-color: #8B4A09;
   color: #FFFFFF;
 }
@@ -306,4 +306,7 @@ tr.disabled, tr.disabled span.text-info{
 .row-9 {
   margin-right: -9px;
   margin-left: -9px;
+}
+.text-italic{
+  font-style: italic;
 }
