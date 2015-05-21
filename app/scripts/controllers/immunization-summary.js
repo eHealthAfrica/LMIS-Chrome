@@ -20,13 +20,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       resolve: {
         appConfig: function(appConfigService) {
           return appConfigService.getCurrentAppConfig();
+        },
+        currentSummary: function(immunizationSummaryService) {
+          return immunizationSummaryService.getCurrentSummarySessionTypes();
         }
       }
     });
   })
   .controller('SummarySheetCtrl', function($scope, appConfig, utility, $stateParams, $state, immunizationSummaryService,
                                            growl, notificationService, i18n) {
-    $scope.summaryRecord = [];
+    $scope.summaryRecords = [];
     $scope.summarySetting = {
       facility: appConfig.facility.uuid,
       products: []
@@ -49,7 +52,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
     immunizationSummaryService.all()
       .then(function(response) {
-        $scope.summaryRecord = response;
+        $scope.summaryRecords = response;
       })
       .catch(function(reason) {
         console.log(reason);
@@ -100,8 +103,27 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     }
 
     $scope.summaryDetail = function(index) {
-      $scope.viewControl.selectedRecord = $scope.summaryRecord[index];
+      $scope.summaryRecord = $scope.summaryRecords[index];
       $scope.viewControl.previewMode = true;
+    };
+
+    $scope.edit = function(index) {
+      var confirmationTitle = 'Edit Summary Record';
+      var confirmationQuestion = i18n('dialogConfirmationQuestion');
+      var buttonLabels = [i18n('yes'), i18n('no')];
+
+      notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
+        .then(function(isConfirmed) {
+          if (isConfirmed === true) {
+            $state.go('summary-sheet-form', {
+              id: $scope.summaryRecord.uuid,
+              index: index
+            });
+          }
+        })
+        .catch(function(reason) {
+          console.info(reason);
+        });
     };
 
     $scope.add = function() {
@@ -118,8 +140,6 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     };
 
     $scope.removeProduct = function(index) {
-
-
       var confirmationTitle = 'Remove Product';
       var confirmationQuestion = i18n('dialogConfirmationQuestion');
       var buttonLabels = [i18n('yes'), i18n('no')];
@@ -158,10 +178,11 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
   })
   .controller('SummarySheetFormCtrl', function($scope, appConfig, utility, $stateParams, $state, immunizationSummaryService,
-                                               i18n, notificationService) {
+                                               i18n, notificationService, currentSummary) {
     var id = $stateParams.id, index = $stateParams.index;
 
     $scope.summaryRecord = {
+      facility: appConfig.facility.uuid,
       date: new Date().toJSON(),
       products: {}
     };
@@ -175,7 +196,8 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       step: index || 0,
       preview: false,
       sessionFormOpen: true,
-      pregnancyStatus: {'Yes': 'Pregnant', 'No': 'Not Pregnant'}
+      pregnancyStatus: {'Yes': 'Pregnant', 'No': 'Not Pregnant'},
+      validationError: {}
     };
 
     if (id) {
@@ -183,11 +205,18 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       immunizationSummaryService.get(id)
         .then(function(response) {
           $scope.summaryRecord = response;
-          console.log(response);
+          if (!$scope.summaryRecord.facility) {
+            $scope.summaryRecord.facility = appConfig.facility.uuid;
+          }
           if (!$scope.summaryRecord.date) {
             $scope.summaryRecord.date = new Date().toJSON();
           }
+          currentSummary = updateSessionTypeList($scope.summaryRecord.sessionType, currentSummary);
+          $scope.viewControl.sessionFormOpen = false;
         })
+        .catch(function(reason) {
+          console.log(reason);
+        });
     }
 
     immunizationSummaryService.getSetting()
@@ -221,6 +250,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     };
 
     $scope.save = function() {
+      $scope.summaryRecord.isComplete = true;
       immunizationSummaryService.save($scope.summaryRecord)
         .then(function() {
           $state.go('summary-sheet');
@@ -230,12 +260,20 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         });
     };
 
-    function updateUI() {
-      var key = $scope.summarySetting.products[$scope.viewControl.step].uuid;
-      if (!$scope.summaryRecord.products[key]) {
-        $scope.summaryRecord.products[key] = 0;
+    $scope.selectSessionType = function() {
+      if (angular.isUndefined($scope.summaryRecord.sessionType) || $scope.summaryRecord.sessionType === '') {
+        $scope.viewControl.validationError.sessionType = 'Please a session to proceed';
+      } else if (currentSummary.indexOf($scope.summaryRecord.sessionType) !== -1) {
+        $scope.viewControl.validationError.sessionType = 'Summary with session type \''+$scope.summaryRecord.sessionType+'\' already exist';
+      } else {
+        $scope.viewControl.sessionFormOpen = !$scope.viewControl.sessionFormOpen;
+        delete $scope.viewControl.validationError['sessionType'];
       }
 
+    };
+
+
+    function updateUI() {
       if ($scope.viewControl.preview) {
         $scope.viewControl.endOfList = true;
       }
@@ -246,6 +284,15 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       if (angular.isUndefined(scope.summaryRecord.products[id])) {
         scope.summaryRecord.products[id] = 0;
       }
+    }
+
+    function updateSessionTypeList(sessionType, currentSummary) {
+      var position = currentSummary.indexOf(sessionType);
+      if (currentSummary.length > 0 && position !== -1) {
+        currentSummary.splice(position, 1);
+      }
+      console.log(currentSummary);
+      return currentSummary;
     }
 
   });
