@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').service('immunizationSummaryService', function($q, storageService, syncService, $http) {
+angular.module('lmisChromeApp').service('immunizationSummaryService', function($q, storageService, syncService, $http, utility) {
   var DB = storageService.IMMUNIZATION_SUMMARY;
   var SETTINGS_DB = storageService.IMMUNIZATION_SUMMARY_SETTINGS;
   var PRODUCTS_DB = storageService.IMMUNIZATION_PRODUCTS;
@@ -85,5 +85,28 @@ angular.module('lmisChromeApp').service('immunizationSummaryService', function($
   }
 
   this.productList = getProductList;
+
+  this.getCurrentSummarySessionTypes = function() {
+    var deferred = $q.defer();
+    storageService.all(DB)
+      .then(function(response) {
+        var sessionTypeList = [];
+        var today = utility.getFullDate(new Date());
+        var filtered = response.filter(function(row) {
+          return utility.getFullDate(row.date) === today;
+        });
+        if (filtered.length > 0) {
+          sessionTypeList = filtered.map(function(row) {
+            return row.sessionType;
+          });
+        }
+        deferred.resolve(sessionTypeList);
+      })
+      .catch(function(reason) {
+        deferred.reject(reason);
+      });
+
+    return deferred.promise;
+  };
 
 });
