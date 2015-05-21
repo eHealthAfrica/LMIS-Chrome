@@ -14,14 +14,14 @@
           <span i18n="add"></span>
         </a>
 
-        <button class="btn btn-default pull-right ml5"
+        <!-- <button class="btn btn-default pull-right ml5"
            type="button" ng-click="toggleView('settings')">
           <i class="fa fa-cogs"></i>
           <span i18n="setting"></span>
-        </button>
+        </button> -->
 
         <a class="btn btn-default pull-right ml5"
-           ui-sref="summary-sheet-form({id: viewControl.selectedRecord.uuid})"
+           ui-sref="summary-sheet-form({id: summaryRecord.uuid})"
            ng-show="viewControl.previewMode">
           <i class="fa fa-edit"></i>
           <span i18n="edit"></span>
