@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-    .factory('ccuBreakdownFactory', function ($q, storageService, syncService, $window, notificationService,$http) {
+    .factory('ccuBreakdownFactory', function ($q, storageService, syncService, $window, notificationService,$http, kcContactService) {
 
       var saveCcuBreakdownReport = function (ccuBreakdown) {
         var deferred = $q.defer();
@@ -34,18 +34,24 @@ angular.module('lmisChromeApp')
         var deferred = $q.defer();
         syncService.syncUpRecord(storageService.CCU_BREAKDOWN2, ccuBreakdown)
             .then(function (syncResult) {
+              sendSms();
               deferred.resolve(syncResult);
             }).catch(function () {
               //online syncing failed, send offline sms alert.
-              var msg = generateSmsMsg(ccuBreakdown);
-              notificationService.sendSms(notificationService.alertRecipient, msg, 'ccu_breakdown')
-                  .then(function (smsResult) {
-                    deferred.resolve(smsResult);
-                  })
-                  .catch(function (reason) {
-                    deferred.reject(reason);
-                  });
+              sendSms();
             });
+        function sendSms (){
+          var msg = generateSmsMsg(ccuBreakdown);
+          //TODO: the position should be dynamic incase other officers need to receive the alert too.
+          var reciepient = kcContactService.get(ccuBreakdown.facility.name, 'Cold Chain Officer');
+          notificationService.sendSms(notificationService.countryCode + reciepient.phone, msg, 'ccu_breakdown')
+            .then(function (smsResult) {
+              deferred.resolve(smsResult);
+            })
+            .catch(function (reason) {
+              deferred.reject(reason);
+            });
+        }
         return deferred.promise;
       };
 
