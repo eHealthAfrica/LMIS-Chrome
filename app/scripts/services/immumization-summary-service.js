@@ -109,4 +109,40 @@ angular.module('lmisChromeApp').service('immunizationSummaryService', function($
     return deferred.promise;
   };
 
+  this.groupedProducts = function() {
+    var deferred = $q.defer();
+    getProductList()
+      .then(function(response) {
+        var grouped = {};
+        var groupList = [];
+        var names = [];
+        response.forEach(function(row) {
+          var listOrder = row.name.split(' ')[1] ? parseInt(row.name.split(' ')[1]) : 0;
+          if ((Object.keys(grouped)).indexOf(row.productType) !== -1) {
+            if (names.indexOf(row.name) === -1) {
+              names.push(row.name);
+              grouped[row.productType].push(row);
+            }
+          } else {
+            names.push(row.name);
+            grouped[row.productType] = [row];
+          }
+        });
+        (Object.keys(grouped)).forEach(function(key) {
+          var row = {
+            name: key.toUpperCase(),
+            list: grouped[key]
+          };
+          groupList.push(row);
+        });
+
+        deferred.resolve(groupList);
+      })
+      .catch(function(reason) {
+        deferred.reject(reason);
+      });
+
+    return deferred.promise;
+  };
+
 });
