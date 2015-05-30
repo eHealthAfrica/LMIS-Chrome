@@ -1,0 +1,27 @@
+<div class="mb10 text-center">
+  <h1>
+    {{ summarySetting.products[viewControl.step].name }}
+  </h1>
+
+  <h4 ng-if="!viewControl.selectedProduct.length">
+      <span ng-if="summarySetting.products[viewControl.step].ageRange">
+        {{ summarySetting.products[viewControl.step].ageRange.from }}
+        {{ summarySetting.products[viewControl.step].ageRange.fromPeriod }} -
+        {{ summarySetting.products[viewControl.step].ageRange.to }}
+        {{ summarySetting.products[viewControl.step].ageRange.toPeriod }}
+      </span>
+      <span ng-if="!summarySetting.products[viewControl.step].ageRange">
+        {{ viewControl.pregnancyStatus[summarySetting.products[viewControl.step].pregnant] }}
+      </span>
+  </h4>
+  <div ng-if="viewControl.selectedProduct.length" ng-include="'views/immunization-summary/partials/age-range-selection-radio.html'"></div>
+</div>
+
+<div class="row pb10 mt10" ng-if="!viewControl.selectedProduct.length || viewControl.selectedRadio">
+  <div class="col-xs-12">
+    <label>Quantity</label>
+  </div>
+  <div class="col-xs-12">
+    <counter bind="summaryRecord.products[summarySetting.products[viewControl.step].uuid]"></counter>
+  </div>
+</div>
