@@ -63,7 +63,6 @@ footer {
 .red-icon{
     background-color: #FFFFFF;
     color: #C00;
-    color: red;
 }
 .marker-indicator-space{
   margin-right: 2em;
@@ -290,7 +289,9 @@ tr.disabled, tr.disabled span.text-info{
 .ml5{
   margin-left: 5px;
 }
-
+.pl2{
+  padding-left: 2px;
+}
 .pr5{
   padding-right: 5px;
 }
@@ -299,6 +300,9 @@ tr.disabled, tr.disabled span.text-info{
 }
 .pb10{
   padding-bottom: 10px;
+}
+.pt5{
+  padding-top: 5px;
 }
 .bb{
   border-bottom: 1px solid #dddddd;
