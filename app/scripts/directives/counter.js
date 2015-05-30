@@ -22,7 +22,7 @@ angular.module('lmisChromeApp').directive('counter', function (notificationServi
       scope.incrementTouch = function (count) {
         notificationService.vibrate(DURATION_MILLI_SECONDS);
         return isInvalid(count) ? 1 : (parseInt(count) + 1);
-      }
+      };
 
       scope.decrementTouch = function (count) {
         notificationService.vibrate(DURATION_MILLI_SECONDS);
