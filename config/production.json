@@ -1,6 +1,9 @@
 {
   "api": {
-    "url": "http://lomis.ehealth.org.ng:5984"
+    "protocol": "http",
+    "user": false,
+    "port": "5984",
+    "url": "lomis.ehealth.org.ng"
   },
   "analytics": {
     "service": "LoMIS",
