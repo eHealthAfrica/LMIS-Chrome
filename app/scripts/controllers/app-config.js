@@ -16,6 +16,15 @@ angular.module('lmisChromeApp')
           label: 'Welcome'
         }
       })
+      .state('appConfig.auth', {
+        url: '/app-config-auth',
+        parent: 'root.index',
+        templateUrl: '/views/app-config/wizard/partials/email-setup.html',
+        controller: 'appConfigAuth',
+        resolve: {
+
+        }
+      })
       .state('appConfig.wizard', {
         url: '/app-config-wizard',
         parent: 'root.index',
@@ -31,13 +40,14 @@ angular.module('lmisChromeApp')
                 deferred.resolve('');
               });
             return deferred.promise;
-          },
+          }
+          /*
           ccuProfilesGroupedByCategory: function(ccuProfileFactory, $q) {
             return $q.when(ccuProfileFactory.getAllGroupedByCategory());
           },
           productProfilesGroupedByCategory: function(productProfileFactory, $q) {
             return $q.when(productProfileFactory.getAllGroupedByCategory());
-          }
+          }*/
         },
         controller: 'AppConfigWizard',
         data: {
@@ -66,22 +76,15 @@ angular.module('lmisChromeApp')
       });
 
   })
-  .controller('AppConfigWizard', function($scope, locationService, fixtureLoaderService, appConfigService, growl, $state, alertFactory, i18n, deviceEmail, $log, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility) {
-    $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords;
-    $scope.isSubmitted = false;
-    $scope.preSelectProductProfileCheckBox = {};
-    $scope.stockCountIntervals = appConfigService.stockCountIntervals;
-    $scope.weekDays = appConfigService.weekDays;
+  .controller('AppConfigWizard', function($scope, locationService, fixtureLoaderService, appConfigService, growl, $state, alertFactory, i18n,  $log,  utility, deviceEmail) {
+
     $scope.STEP_ONE = 1;
     $scope.STEP_TWO = 2;
     $scope.STEP_THREE = 3;
     $scope.STEP_FOUR = 4;
     $scope.STEP_FIVE = 5;
     $scope.STEP_SIX = 6;
-    $scope.ccuProfilesCategories = Object.keys(ccuProfilesGroupedByCategory);
-    $scope.ccuProfilesGroupedByCategory = ccuProfilesGroupedByCategory;
-    $scope.productProfileCategories = Object.keys(productProfilesGroupedByCategory);
-    $scope.productProfilesGroupedByCategory = productProfilesGroupedByCategory;
+    $scope.weekDays = appConfigService.weekDays;
     $scope.productProfileCheckBoxes = [];//used to productProfile models for checkbox
     $scope.ccuProfileCheckBoxes = [];
     $scope.lgaCheckBoxes = [];
@@ -91,30 +94,30 @@ angular.module('lmisChromeApp')
     $scope.preSelectCcuProfiles = {};
     $scope.developerMode = true;
     $scope.lgaList = [];
-    //TODO: load state id dynamically.
-    locationService.getLgas("f87ed3e017cf4f8db26836fd910e4cc8")
-      .then(function(res) {
-        $scope.lgaList = res;
-      })
-      .catch(function(err) {
-        console.error(err);
-      });
+    $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords;
+    $scope.isSubmitted = false;
+    $scope.preSelectProductProfileCheckBox = {};
+    $scope.stockCountIntervals = appConfigService.stockCountIntervals;
 
     $scope.currentStep = $scope.STEP_ONE; //set initial step
+
+    $scope.appConfig = {
+      uuid: deviceEmail,
+      pwd: '',
+      facility: { },
+      contactPerson: {
+        name: '',
+        phoneNo: ''
+      },
+      selectedCcuProfiles: [],
+      dateActivated: undefined
+    };
+
     $scope.moveTo = function(step) {
       $scope.currentStep = step;
     };
 
-   $scope.zones = [];
-    locationService.getZones("f87ed3e017cf4f8db26836fd910e4cc8")
-      .then(function(res) {
-        $scope.zones = res;
-      })
-      .catch(function(err) {
-        console.error(err);
-      });
-
-    $scope.loadAppFacilityProfile = function(nextStep, isEmailValid) {
+    $scope.loadAppFacilityProfile = function(nextStep, isEmailValid, isPwdValid) {
       $scope.isSubmitted = true;
       $scope.disableBtn = isEmailValid;
       appConfigService.getAppFacilityProfileByEmail($scope.appConfig.uuid)
@@ -144,18 +147,46 @@ angular.module('lmisChromeApp')
           $scope.profileNotFound = true;
         });
     };
+    /*
 
-    $scope.appConfig = {
-      uuid: deviceEmail,
-      facility: { },
-      contactPerson: {
-        name: '',
-        phoneNo: ''
-      },
-      selectedCcuProfiles: [],
-      dateActivated: undefined,
-    };
+    $scope.ccuProfilesCategories = Object.keys(ccuProfilesGroupedByCategory);
+    $scope.ccuProfilesGroupedByCategory = ccuProfilesGroupedByCategory;
+    $scope.productProfileCategories = Object.keys(productProfilesGroupedByCategory);
+    $scope.productProfilesGroupedByCategory = productProfilesGroupedByCategory;
 
+    //TODO: load state id dynamically.
+    locationService.getLgas("f87ed3e017cf4f8db26836fd910e4cc8")
+      .then(function(res) {
+        $scope.lgaList = res;
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
+
+    $scope.currentStep = $scope.STEP_ONE; //set initial step
+
+
+   $scope.zones = [];
+    locationService.getZones("f87ed3e017cf4f8db26836fd910e4cc8")
+      .then(function(res) {
+        $scope.zones = res;
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
+
+
+
+
+    _run  = function(){
+
+    }
+    loadCcuProfile = function(){
+
+    }
+    loadProductProfile = function(){
+
+    }
     $scope.onCcuSelection = function(ccuProfile) {
       $scope.appConfig.selectedCcuProfiles =
         utility.addObjectToCollection(ccuProfile, $scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
@@ -207,7 +238,7 @@ angular.module('lmisChromeApp')
               $scope.isSaving = false;
             });
         });
-    };
+    };*/
   })
   .controller('EditAppConfigCtrl', function($scope, fixtureLoaderService, locationService, $rootScope, appConfigService, growl, $log, i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory, $filter) {
 
@@ -399,5 +430,19 @@ angular.module('lmisChromeApp')
           });
       }
     };
+
+  })
+  .controller('appConfigAuth', function($scope, appConfigService, deviceEmail){
+    $scope.appConfig = {
+      uuid: deviceEmail,
+      facility: { },
+      contactPerson: {
+        name: '',
+        phoneNo: ''
+      },
+      selectedCcuProfiles: [],
+      dateActivated: undefined
+    };
+
 
   });

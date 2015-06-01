@@ -144,7 +144,7 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
     getAppConfigFromStorage()
       .then(function(result){
         //console.log(result);
-      })
+      });
 
     if (angular.isObject(appConfig)) {
       return $q.when(appConfig);

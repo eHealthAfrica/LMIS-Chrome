@@ -1,6 +1,6 @@
 {
   "api": {
-    "url": "http://dev.lomis.ehealth.org.ng:5984"
+    "url": "http://lomis-admin:Fijk21os@dev.lomis.ehealth.org.ng:5984"
   },
   "analytics": {
     "service": "LoMIS",

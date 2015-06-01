@@ -39,7 +39,7 @@ angular.module('lmisChromeApp')
     };
 
     this.getRemoteDB = function(dbName){
-      var REMOTE_URI = [config.api.url, '/', dbName].join('');
+      var REMOTE_URI = [config.user, '@', config.api.url, '/', dbName].join('');
       return pouchdb.create(REMOTE_URI);
     };
 
