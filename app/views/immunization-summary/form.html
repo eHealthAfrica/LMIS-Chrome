@@ -1,0 +1,55 @@
+<div class="panel panel-default">
+  <div class="panel-heading clearfix">
+    <div class="col-xs-2 pointer no-padding" ng-click="navBack()">
+      <span class="fa fa-chevron-left fa-2x">
+
+      </span>
+    </div>
+    <div class="col-xs-10 pt5">
+      <h3 class="panel-title">
+        {{ viewControl.pages[viewControl.page].title }}
+      </h3>
+    </div>
+  </div>
+
+  <div class="panel-body">
+
+    <div class="mb10">
+      <button ng-if="showButton('editSession')" class="btn btn-default" type="button" ng-click="selectSessionType()">Edit Session Type</button>
+    </div>
+
+    <div ng-include="'views/immunization-summary/partials/session-selection.html'" ng-if="currentPage('sessionSelection')"></div>
+    <div ng-if="currentPage('groupSelection')" ng-include="'views/immunization-summary/partials/group-selection.html'"></div>
+    <div ng-if="currentPage('ageRangeSelection')" ng-include="'views/immunization-summary/partials/age-range-selection.html'"></div>
+    <div ng-if="currentPage('recordEntry')" ng-include="'views/immunization-summary/partials/record-entry.html'"></div>
+    <div ng-if="currentPage('preview')" ng-include="'views/immunization-summary/partials/preview.html'"></div>
+
+    <div ng-if="showButton('prevNext')" ng-include="'views/immunization-summary/partials/prev-next.html'"></div>
+
+    <div class="mb10" ng-if="showButton('proceed')">
+      <button class="btn btn-success btn-block" ng-click="backToGroup()" >
+        Back to Group
+      </button>
+    </div>
+
+    <div class="row" ng-if="showButton('preview')">
+      <div class="col-xs-12">
+        <div class="mb10">
+          <button class="btn btn-warning btn-block" ng-click="previewPage()">Preview</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-success btn-block" ng-click="confirmEntry()" ng-if="showButton('confirm')">
+      <span class="fa fa-save"></span>
+      <span i18n="confirm"></span>
+    </button>
+
+    <button class="btn btn-success btn-block" ng-click="save()" ng-if="showButton('save')">
+      <span class="fa fa-save"></span>
+      <span i18n="save"></span>
+    </button>
+
+  </div>
+
+</div>

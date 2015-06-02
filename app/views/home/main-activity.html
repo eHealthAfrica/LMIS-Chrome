@@ -47,27 +47,34 @@
             </a>
         </div>
 
+      <div class="col-md-3 col-xs-6 btn">
+        <a ga-click="summarySheet" ui-sref="summary-sheet">
+          <img src="images/dashboard-icons/summary-sheet.png" class="img-rounded">
+          <span i18n="summarySheet" class="main-activity-link"></span>
+        </a>
+      </div>
+
     </accordion-group>
 
     <accordion-group>
-        <accordion-heading>
-            <span><i class="fa fa-tasks"></i></span>
-            <span i18n="more"></span>
-        </accordion-heading>
+      <accordion-heading>
+          <span><i class="fa fa-tasks"></i></span>
+          <span i18n="more"></span>
+      </accordion-heading>
 
-        <div class="col-md-3 col-xs-6 btn">
-            <a ga-click="app_config" ui-sref="appConfig.edit">
-                <img src="images/dashboard-icons/app-config.png" class="img-rounded">
-                <span i18n="appConfig" class="main-activity-link"></span>
-            </a>
-        </div>
+      <div class="col-md-3 col-xs-6 btn">
+          <a ga-click="app_config" ui-sref="appConfig.edit">
+              <img src="images/dashboard-icons/app-config.png" class="img-rounded">
+              <span i18n="appConfig" class="main-activity-link"></span>
+          </a>
+      </div>
 
-        <div class="col-md-3 col-xs-6 btn" ng-disabled="!developerMode">
-            <a ui-sref="clearStorage">
-                <i class="fa fa-trash-o fa-4x btn-danger"></i>
-                <span i18n="clearStorage" class="main-activity-link"></span>
-            </a>
-        </div>
+      <div class="col-md-3 col-xs-6 btn" ng-disabled="!developerMode">
+          <a ui-sref="clearStorage">
+              <i class="fa fa-trash-o fa-4x btn-danger"></i>
+              <span i18n="clearStorage" class="main-activity-link"></span>
+          </a>
+      </div>
 
     </accordion-group>
 

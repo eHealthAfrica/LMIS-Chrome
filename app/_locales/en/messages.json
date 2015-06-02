@@ -745,5 +745,29 @@
   },
   "selectZones":{
     "message": "Select Zones"
+  },
+  "utilization": {
+    "message": "Utilization"
+  },
+  "balance": {
+    "message": "Balance"
+  },
+  "received": {
+    "message": "Received"
+  },
+  "endingBalance": {
+    "message": "Ending Balance"
+  },
+  "used": {
+    "message": "Used"
+  },
+  "returned": {
+    "message": "Returned"
+  },
+  "summarySheet": {
+    "message": "Summary Sheet"
+  },
+  "setting": {
+    "message": "Setting"
   }
 }

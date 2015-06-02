@@ -24,6 +24,8 @@ angular.module('lmisChromeApp')
       var clicks = 'clicks';
       var exceptions = 'exceptions';
       var analyticsLostRecords = 'analytics_lost_records';
+      var immunizationSummary = 'immunization_summary';
+      var immunizationSummarySettings = 'immunization_summary_setting';
 
       var FIXTURE_NAMES = utility.values(collections);
 
@@ -241,7 +243,9 @@ angular.module('lmisChromeApp')
       appConfig,
       ccuBreakdown,
       ccuBreakdown2,
-      pendingSyncs
+      pendingSyncs,
+      immunizationSummary,
+      immunizationSummarySettings
     ].concat(FIXTURE_NAMES);
 
     var compactDatabases = function() {
@@ -287,6 +291,8 @@ angular.module('lmisChromeApp')
         PENDING_SYNCS: pendingSyncs,
         STOCK_COUNT: stockCount,
         SURVEY_RESPONSE: surveyResponse,
+        IMMUNIZATION_SUMMARY: immunizationSummary,
+        IMMUNIZATION_SUMMARY_SETTINGS: immunizationSummarySettings,
         PAGE_VIEWS: pageviews,
         CLICKS: clicks,
         EXCEPTIONS: exceptions,

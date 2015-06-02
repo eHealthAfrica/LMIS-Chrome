@@ -63,7 +63,6 @@ footer {
 .red-icon{
     background-color: #FFFFFF;
     color: #C00;
-    color: red;
 }
 .marker-indicator-space{
   margin-right: 2em;
@@ -148,7 +147,7 @@ accordion .panel-heading:hover {
 }
 .counter-btn {
    font-size: 25.5pt;
-   padding: 0.1em, 0.2em;
+   padding: 0.1em 0.2em;
    height: 2.2em;
 }
 .counter-input{
@@ -236,14 +235,14 @@ tr.disabled, tr.disabled span.text-info{
 .bold-text{
   font-weight: bold;
 }
-.cold-store-vaccines>.panel-heading, tr.cold-store-vaccines, tr cold-store-vaccines{
+.cold-store-vaccines>.panel-heading, tr.cold-store-vaccines, tr .cold-store-vaccines{
   background-color: #157085;
   color: #FFFFFF;
 }
 .cold-store-vaccines{
   border-color: #157085;
 }
-.dry-store-safety-boxes>.panel-heading, .dry-store-syringes>.panel-heading, tr.dry-store-syringes, tr dry-store-syringes {
+.dry-store-safety-boxes>.panel-heading, .dry-store-syringes>.panel-heading, tr.dry-store-syringes, tr .dry-store-syringes {
   background-color: #8B4A09;
   color: #FFFFFF;
 }
@@ -277,4 +276,41 @@ tr.disabled, tr.disabled span.text-info{
     background:none !important;
     border-left: 4px solid #6eca97 !important;
     border-right: 4px solid #6eca97 !important;
+}
+.mb10{
+  margin-bottom: 10px;
+}
+.mt10{
+  margin-top: 10px;
+}
+.mr5{
+  margin-right: 5px;
+}
+.ml5{
+  margin-left: 5px;
+}
+.pl2{
+  padding-left: 2px;
+}
+.pr5{
+  padding-right: 5px;
+}
+.pl5{
+  padding-left: 5px;
+}
+.pb10{
+  padding-bottom: 10px;
+}
+.pt5{
+  padding-top: 5px;
+}
+.bb{
+  border-bottom: 1px solid #dddddd;
+}
+.row-9 {
+  margin-right: -9px;
+  margin-left: -9px;
+}
+.text-italic{
+  font-style: italic;
 }

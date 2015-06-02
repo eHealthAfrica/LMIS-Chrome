@@ -1,0 +1,15 @@
+<div class="row">
+  <h1 class="text-center">{{ viewControl.selectedProduct[0].name }}</h1>
+  <div ng-repeat="selectedProduct in viewControl.selectedProduct" class="col-xs-12 mb10">
+    <button class="btn btn-default btn-block" ng-click="showForm(selectedProduct)">
+      <span ng-if="selectedProduct.ageRange">
+        {{ selectedProduct.ageRange.from  }} {{ selectedProduct.ageRange.fromPeriod  }} -
+        {{ selectedProduct.ageRange.to  }} {{ selectedProduct.ageRange.toPeriod  }}
+      </span>
+      <span ng-if="!selectedProduct.ageRange">
+        {{ viewControl.pregnancyStatus[selectedProduct.pregnant] }}
+      </span>
+    </button>
+
+  </div>
+</div>

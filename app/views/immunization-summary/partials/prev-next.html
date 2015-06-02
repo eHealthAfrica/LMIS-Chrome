@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="mb10">
+      <div class="btn-group btn-group-justified" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-default" ng-click="changeStep('prev')">Previous</button>
+        </div>
+        <div class="btn-group pl5" role="group" ng-if="viewControl.step !== viewControl.max">
+          <button type="button" class="btn btn-default" ng-click="changeStep('next')">Next</button>
+        </div>
+        <div class="btn-group pl5" role="group" ng-if="viewControl.step === viewControl.max">
+          <button type="button" class="btn btn-warning" ng-click="previewPage()">Preview</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
