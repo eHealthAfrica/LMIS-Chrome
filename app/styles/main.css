@@ -147,7 +147,7 @@ accordion .panel-heading:hover {
 }
 .counter-btn {
    font-size: 25.5pt;
-   padding: 0.1em, 0.2em;
+   padding: 0.1em 0.2em;
    height: 2.2em;
 }
 .counter-input{
@@ -277,8 +277,6 @@ tr.disabled, tr.disabled span.text-info{
     border-left: 4px solid #6eca97 !important;
     border-right: 4px solid #6eca97 !important;
 }
-<<<<<<< HEAD
-=======
 .mb10{
   margin-bottom: 10px;
 }
@@ -313,10 +311,6 @@ tr.disabled, tr.disabled span.text-info{
   margin-right: -9px;
   margin-left: -9px;
 }
-<<<<<<< HEAD
->>>>>>> 9a3679a... added reusable margin classes
-=======
 .text-italic{
   font-style: italic;
 }
->>>>>>> b8a2cb7... added function to list current session type

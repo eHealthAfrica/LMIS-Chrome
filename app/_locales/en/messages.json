@@ -745,8 +745,6 @@
   },
   "selectZones":{
     "message": "Select Zones"
-<<<<<<< HEAD
-=======
   },
   "utilization": {
     "message": "Utilization"
@@ -771,6 +769,5 @@
   },
   "setting": {
     "message": "Setting"
->>>>>>> a12217b... updated translation words
   }
 }
