@@ -737,13 +737,38 @@
   "selectedFacilityNotFound":{
     "message": "Selected facility does not exist."
   },
-  "specifyBundleType":{
+  "specifyBundleType": {
     "message": "Please specify if its receiving or sending"
   },
   "CcuBreakdown": {
     "message": "Cold Chain Unit Breakdown"
   },
-  "selectZones":{
+  "selectZones": {
     "message": "Select Zones"
+  },
+  "utilization": {
+    "message": "Utilization"
+  },
+  "balance": {
+    "message": "Balance"
+  },
+  "received": {
+    "message": "Received"
+  },
+  "endingBalance": {
+    "message": "Ending Balance"
+  },
+  "used": {
+    "message": "Used"
+  },
+  "returned": {
+    "message": "Returned"
+  },
+  "summarySheet": {
+    "message": "Summary Sheet"
+  },
+  "setting": {
+    "message": "Setting"
   }
+
 }

@@ -1,0 +1,32 @@
+<table class="table table-bordered">
+  <tbody>
+  <tr>
+    <td>Wizard entry form</td>
+    <td>
+      <input type="checkbox" ng-model="summarySetting.formConfig.wizard">
+    </td>
+  </tr>
+
+  <tr>
+    <td>Group Vaccines in form</td>
+    <td>
+      <input type="checkbox" ng-model="summarySetting.formConfig.grouped" >
+    </td>
+  </tr>
+
+  <tr>
+    <td>Single list toggle page</td>
+    <td style="width: 100px">
+      <input type="checkbox" ng-model="summarySetting.formConfig.togglePage">
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="row clearfix">
+  <div class="col-xs-12">
+    <button type="button" class="btn btn-success btn-block" ng-click="save()">
+      <span i18n="save"></span> <i class="fa fa-save"></i>
+    </button>
+  </div>
+</div>

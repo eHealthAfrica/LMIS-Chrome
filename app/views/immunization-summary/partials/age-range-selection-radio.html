@@ -1,0 +1,16 @@
+<div class="row">
+  <div ng-repeat="selectedProduct in viewControl.selectedProduct" class="col-xs-12 mb10">
+     <span ng-if="selectedProduct.ageRange">
+        {{ selectedProduct.ageRange.from  }} {{ selectedProduct.ageRange.fromPeriod  }} -
+        {{ selectedProduct.ageRange.to  }} {{ selectedProduct.ageRange.toPeriod  }}
+      </span>
+      <span ng-if="!selectedProduct.ageRange">
+        {{ viewControl.pregnancyStatus[selectedProduct.pregnant] }}
+      </span>
+    <input type="radio"
+           name="{{ selectedProduct.name + selectedProduct.index }}"
+           value="{{ selectedProduct.name + selectedProduct.index }}"
+           ng-model="viewControl.selectedRadio"
+           ng-click="showForm(selectedProduct)">
+  </div>
+</div>

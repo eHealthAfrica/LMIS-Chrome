@@ -1,0 +1,27 @@
+<div class="row pb10">
+
+  <div class="col-xs-12 col-sm-4">
+    <label>Session Type</label>
+  </div>
+
+  <div class="col-xs-12 col-sm-8">
+    <select class="form-control" ng-model="summaryRecord.sessionType">
+      <option value=""></option>
+      <option value="Fixed">Fixed</option>
+      <option value="Outreach">Outreach</option>
+      <option value="Mobile">Mobile</option>
+    </select>
+    <div class="text-italic text-danger" ng-if="viewControl.validationError.sessionType.length">
+      <i class="fa fa-exclamation-triangle"></i> {{ viewControl.validationError.sessionType }}
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <button class="btn btn-default btn-block" type="button" ng-click="selectSessionType()">
+      <span i18n="continue"></span>
+    </button>
+  </div>
+</div>

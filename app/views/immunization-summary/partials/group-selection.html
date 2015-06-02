@@ -1,0 +1,19 @@
+
+  <table class="table table-bordered">
+    <tbody>
+    <tr ng-repeat="group in viewControl.groupProduct">
+      <td>{{ group.name }}</td>
+      <td>
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+          <div class="btn-group" ng-class="{'pl2': $index !== 0}" role="group" ng-repeat="list in group.list" >
+            <button type="button"
+                    class="btn btn-default"
+                    ng-click="selectStage(group.name, list.stage)">
+              {{ list.stage }}
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>

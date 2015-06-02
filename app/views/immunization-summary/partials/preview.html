@@ -1,0 +1,27 @@
+<table class="table table-striped">
+  <!--
+  <thead>
+  <tr>
+    <th>Product</th>
+    <th>Age Range/Pregnant</th>
+    <th>Qty</th>
+  </tr>
+  </thead>
+  -->
+  <tbody>
+  <tr ng-repeat="product in summarySetting.products" ng-click="edit($index)">
+    <td>{{ product.name }}</td>
+    <td ng-if="product.ageRange">
+      {{ product.ageRange.from }}
+      {{ product.ageRange.fromPeriod }} -
+      {{ product.ageRange.to }}
+      {{ product.ageRange.toPeriod }}
+    </td>
+    <td ng-if="!product.ageRange">
+      {{ viewControl.pregnancyStatus[product.pregnant] }}
+    </td>
+
+    <td>{{ summaryRecord.products[product.uuid] }}</td>
+  </tr>
+  </tbody>
+</table>
