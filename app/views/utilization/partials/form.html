@@ -1,0 +1,100 @@
+<div class="row">
+  <div class="col-xs-12">
+
+
+    <div class="pb10 text-center">
+      <h1>{{ facilityProducts[facilityProductsUUIDs[viewControl.step]].name }}</h1>
+    </div>
+
+    <div class="mb10">
+      <div class="row">
+        <div class="col-xs-4">
+          <label class="form-label" i18n="balance"></label>
+        </div>
+        <div class="col-xs-8">
+          <input class="form-control"
+                 type="number"
+                 ng-model="utilization.products[facilityProductsUUIDs[viewControl.step]].balance">
+        </div>
+      </div>
+    </div>
+
+    <div class="mb10">
+      <div class="row">
+        <div class="col-xs-4">
+          <label class="form-label" i18n="received"></label>
+        </div>
+        <div class="col-xs-8">
+          <input class="form-control"
+                 type="number"
+                 ng-model="utilization.products[facilityProductsUUIDs[viewControl.step]].received">
+        </div>
+      </div>
+    </div>
+
+    <div class="mb10">
+      <div class="row">
+        <div class="col-xs-4">
+          <label class="form-label" i18n="used"></label>
+        </div>
+        <div class="col-xs-8">
+          <input class="form-control"
+                 type="number"
+                 ng-model="utilization.products[facilityProductsUUIDs[viewControl.step]].used">
+        </div>
+      </div>
+    </div>
+
+    <div class="mb10">
+      <div class="row">
+        <div class="col-xs-4">
+          <label class="form-label" i18n="endingBalance"></label>
+        </div>
+        <div class="col-xs-8">
+          <input class="form-control"
+                 type="number"
+                 ng-model="utilization.products[facilityProductsUUIDs[viewControl.step]].endingBalance">
+        </div>
+      </div>
+    </div>
+
+    <div class="mb10">
+      <div class="row">
+        <div class="col-xs-4">
+          <label class="form-label" i18n="returned"></label>
+        </div>
+        <div class="col-xs-8">
+          <input class="form-control"
+                 type="number"
+                 ng-model="utilization.products[facilityProductsUUIDs[viewControl.step]].returned">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="mb10">
+          <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default" ng-click="changeStep('prev')">Previous</button>
+            </div>
+            <div class="btn-group pl5" role="group" ng-if="viewControl.step !== viewControl.max">
+              <button type="button" class="btn btn-default" ng-click="changeStep('next')">Next</button>
+            </div>
+            <div class="btn-group pl5" role="group" ng-if="step === max">
+              <button type="button" class="btn btn-warning" ng-click="viewControl.page = 'preview'">Preview</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" ng-if="(utilization.isComplete || viewControl.endOfList) && viewControl.step < viewControl.max ">
+      <div class="col-xs-12">
+        <div class="mb10">
+          <button class="btn btn-warning btn-block" ng-click="viewControl.page = 'preview'">Preview</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

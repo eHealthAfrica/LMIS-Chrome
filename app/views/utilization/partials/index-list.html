@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-sm-12">
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th i18n="date"></th>
+        <th i18n="done"></th>
+        <th i18n="synced"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="record in utilizationList" ng-click="showDetail($index)">
+        <td>{{ $index + 1 }}</td>
+        <td>
+          {{ record.date | date: 'dd MMMM, yyyy' }}
+        </td>
+        <td class="text-center">
+          <i class="fa "
+             ng-class="{'fa-check-circle text-success': record.isComplete, 'fa-times-circle text-danger': !record.isComplete}"></i>
+        </td>
+        <td class="text-center">
+          <i class="fa " ng-class="{'fa-check-circle text-success': record.synced, 'fa-times-circle text-danger': !record.synced}"></i>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

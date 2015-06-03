@@ -1,158 +1,21 @@
 <div class="panel panel-default">
 
   <div class="panel-heading">
-    <h3 class="panel-title">
-      Stock Utilization - {{ dateInfo  | date:'dd MMMM, yyyy' }}
-      <div class="small-font"></div>
-    </h3>
+    <div class="col-xs-2"></div>
   </div>
 
   <div class="panel-body">
 
     <form>
-      <div class="row" ng-show="!preview">
-        <div class="col-xs-12">
+      <div ng-if="currentPage('form')" ng-include="'views/utilization/partials/form.html'"></div>
+      <div ng-if="currentPage('preview')" ng-include="'views/utilization/partials/preview.html'"></div>
 
-
-          <div class="pb10 text-center">
-            <h1>{{ facilityProducts[facilityProductsUUIDs[step]].name }}</h1>
-          </div>
-
-          <div class="mb10">
-            <div class="row">
-              <div class="col-xs-4">
-                <label class="form-label" i18n="balance"></label>
-              </div>
-              <div class="col-xs-8">
-                <input class="form-control"
-                       type="number"
-                       ng-model="utilization.products[facilityProductsUUIDs[step]].balance">
-              </div>
-            </div>
-          </div>
-
-          <div class="mb10">
-            <div class="row">
-              <div class="col-xs-4">
-                <label class="form-label" i18n="received"></label>
-              </div>
-              <div class="col-xs-8">
-                <input class="form-control"
-                       type="number"
-                       ng-model="utilization.products[facilityProductsUUIDs[step]].received">
-              </div>
-            </div>
-          </div>
-
-          <div class="mb10">
-            <div class="row">
-              <div class="col-xs-4">
-                <label class="form-label" i18n="used"></label>
-              </div>
-              <div class="col-xs-8">
-                <input class="form-control"
-                       type="number"
-                       ng-model="utilization.products[facilityProductsUUIDs[step]].used">
-              </div>
-            </div>
-          </div>
-
-          <div class="mb10">
-            <div class="row">
-              <div class="col-xs-4">
-                <label class="form-label" i18n="endingBalance"></label>
-              </div>
-              <div class="col-xs-8">
-                <input class="form-control"
-                       type="number"
-                       ng-model="utilization.products[facilityProductsUUIDs[step]].endingBalance">
-              </div>
-            </div>
-          </div>
-
-          <div class="mb10">
-            <div class="row">
-              <div class="col-xs-4">
-                <label class="form-label" i18n="returned"></label>
-              </div>
-              <div class="col-xs-8">
-                <input class="form-control"
-                       type="number"
-                       ng-model="utilization.products[facilityProductsUUIDs[step]].returned">
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="mb10">
-                <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                  <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default" ng-click="changeStep('prev')">Previous</button>
-                  </div>
-                  <div class="btn-group pl5" role="group" ng-if="step !== max">
-                    <button type="button" class="btn btn-default" ng-click="changeStep('next')">Next</button>
-                  </div>
-                  <div class="btn-group pl5" role="group" ng-if="step === max">
-                    <button type="button" class="btn btn-warning" ng-click="togglePreview()">Preview</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row" ng-if="(utilization.isComplete || endOfList) && step < max ">
-            <div class="col-xs-12">
-              <div class="mb10">
-                <button class="btn btn-warning btn-block" ng-click="togglePreview()">Preview</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row" ng-show="preview">
+      <div class="row" ng-if="showButton('save')">
         <div class="col-xs-12">
           <div class="mb10">
-            <table class="table table-striped table-bordered">
-              <tbody>
-              <tr ng-repeat="productUUID in facilityProductsUUIDs" ng-click="editProduct($index)">
-                <td>{{ facilityProducts[productUUID].name }}</td>
-                <td>
-                  <div class="row bb row-9">
-                    <div class="col-xs-8" i18n="balance"></div>
-                    <div class="col-xs-4">{{ utilization.products[productUUID].balance }}</div>
-                  </div>
-                  <div class="row bb row-9">
-                    <div class="col-xs-8" i18n="received"></div>
-                    <div class="col-xs-4">{{ utilization.products[productUUID].received }}</div>
-                  </div>
-                  <div class="row bb row-9">
-                    <div class="col-xs-8" i18n="used"></div>
-                    <div class="col-xs-4">{{ utilization.products[productUUID].used }}</div>
-                  </div>
-                  <div class="row bb row-9">
-                    <div class="col-xs-8" i18n="endingBalance"></div>
-                    <div class="col-xs-4">{{ utilization.products[productUUID].endingBalance }}</div>
-                  </div>
-                  <div class="row row-9">
-                    <div class="col-xs-8" i18n="returned"></div>
-                    <div class="col-xs-4">{{ utilization.products[productUUID].returned }}</div>
-                  </div>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="mb10">
-                <div class="btn-group btn-group-justified" role="group">
-                  <div class="btn-group pl5" role="group">
-                    <button type="button" class="btn btn-success" ng-click="save()">Save <i class="fa fa-save"></i></button>
-                  </div>
-                </div>
+            <div class="btn-group btn-group-justified" role="group">
+              <div class="btn-group pl5" role="group">
+                <button type="button" class="btn btn-success" ng-click="save()">Save <i class="fa fa-save"></i></button>
               </div>
             </div>
           </div>

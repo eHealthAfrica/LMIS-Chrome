@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="mb10">
+      <table class="table table-striped table-bordered">
+        <tbody>
+        <tr ng-repeat="productUUID in facilityProductsUUIDs" ng-click="editProduct($index)">
+          <td>{{ facilityProducts[productUUID].name }}</td>
+          <td>
+            <div class="row bb row-9">
+              <div class="col-xs-8" i18n="balance"></div>
+              <div class="col-xs-4">{{ utilization.products[productUUID].balance }}</div>
+            </div>
+            <div class="row bb row-9">
+              <div class="col-xs-8" i18n="received"></div>
+              <div class="col-xs-4">{{ utilization.products[productUUID].received }}</div>
+            </div>
+            <div class="row bb row-9">
+              <div class="col-xs-8" i18n="used"></div>
+              <div class="col-xs-4">{{ utilization.products[productUUID].used }}</div>
+            </div>
+            <div class="row bb row-9">
+              <div class="col-xs-8" i18n="endingBalance"></div>
+              <div class="col-xs-4">{{ utilization.products[productUUID].endingBalance }}</div>
+            </div>
+            <div class="row row-9">
+              <div class="col-xs-8" i18n="returned"></div>
+              <div class="col-xs-4">{{ utilization.products[productUUID].returned }}</div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
