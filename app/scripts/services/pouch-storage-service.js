@@ -38,9 +38,10 @@ angular.module('lmisChromeApp')
       return db.bulkDocs(docs);
     };
 
-    this.getRemoteDB = function(dbName){
-      var REMOTE_URI = [config.user, '@', config.api.url, '/', dbName].join('');
-      return pouchdb.create(REMOTE_URI);
+    this.getRemoteDB = function(dbName, user){
+      var REMOTE_URI = [config.api.protocol, '://', user, '@', config.api.url, ':', config.api.port, '/', dbName].join('');
+      return REMOTE_URI;
+      //return pouchdb.create(REMOTE_URI);
     };
 
     this.compact = function(db){

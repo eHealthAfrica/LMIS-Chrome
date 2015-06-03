@@ -76,8 +76,7 @@ angular.module('lmisChromeApp')
       });
 
   })
-  .controller('AppConfigWizard', function($scope, locationService, fixtureLoaderService, appConfigService, growl, $state, alertFactory, i18n,  $log,  utility, deviceEmail) {
-
+  .controller('AppConfigWizard', function($scope, storageService, facilityFactory, locationService, fixtureLoaderService, appConfigService, growl, $state, alertFactory, i18n,  $log,  utility, deviceEmail, backgroundSyncService) {
     $scope.STEP_ONE = 1;
     $scope.STEP_TWO = 2;
     $scope.STEP_THREE = 3;
@@ -118,10 +117,13 @@ angular.module('lmisChromeApp')
     };
 
     $scope.loadAppFacilityProfile = function(nextStep, isEmailValid, isPwdValid) {
+
       $scope.isSubmitted = true;
       $scope.disableBtn = isEmailValid;
-      appConfigService.getAppFacilityProfileByEmail($scope.appConfig.uuid)
+      appConfigService.getAppFacilityProfileByEmail($scope.appConfig.uuid, $scope.appConfig.pwd)
         .then(function(result) {
+          loadAppConfig();
+
           $scope.disableBtn = false;
           $scope.isSubmitted = false;
           $scope.profileNotFound = false;
@@ -147,6 +149,54 @@ angular.module('lmisChromeApp')
           $scope.profileNotFound = true;
         });
     };
+    function navigateToHome() {
+      $state.go('home.index.home.mainActivity');
+      backgroundSyncService.startBackgroundSync()
+        .finally(function() {
+          console.log('updateAppConfigAndStartBackgroundSync triggered on start up has been completed!');
+        });
+
+      analyticsSyncService.syncOfflineAnalytics()
+        .finally(function() {
+          console.log('offline reports send to ga server.');
+        });
+    }
+    function loadAppConfig() {
+      //TODO: figure out a better way of knowing if the app has been configured or not.
+      $state.go('loadingFixture');
+      storageService.all(storageService.APP_CONFIG)
+        .then(function(res) {
+          if (res.length > 0) {
+            fixtureLoaderService.loadLocalDatabasesIntoMemory(fixtureLoaderService.REMOTE_FIXTURES)
+              .then(function() {
+                $rootScope.$emit('MEMORY_STORAGE_LOADED');
+                navigateToHome();
+              })
+              .catch(function(reason) {
+                console.error(reason);
+                growl.error('loading storage into memory failed, contact support.', {ttl: -1});
+              });
+          } else {
+            var loadRemoteFixture = function() {
+              return fixtureLoaderService.setupLocalAndMemoryStore(fixtureLoaderService.REMOTE_FIXTURES)
+                .catch(function(reason) {
+                  console.error(reason);
+                  growl.error('Local databases and memory storage setup failed, contact support.', {ttl: -1});
+                });
+            };
+            storageService.clear()
+              .then(loadRemoteFixture)
+              .catch(function(error) {
+                growl.error('Fresh install setup failed, please contact support.', {ttl: -1});
+                console.error(error);
+              });
+          }
+        })
+        .catch(function(error) {
+          growl.error('loading of App. Config. failed, please contact support.', {ttl: -1});
+          console.error(error);
+        });
+    }
     /*
 
     $scope.ccuProfilesCategories = Object.keys(ccuProfilesGroupedByCategory);
@@ -186,7 +236,7 @@ angular.module('lmisChromeApp')
     }
     loadProductProfile = function(){
 
-    }
+    }*/
     $scope.onCcuSelection = function(ccuProfile) {
       $scope.appConfig.selectedCcuProfiles =
         utility.addObjectToCollection(ccuProfile, $scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
@@ -238,7 +288,7 @@ angular.module('lmisChromeApp')
               $scope.isSaving = false;
             });
         });
-    };*/
+    };
   })
   .controller('EditAppConfigCtrl', function($scope, fixtureLoaderService, locationService, $rootScope, appConfigService, growl, $log, i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory, $filter) {
 
