@@ -258,4 +258,26 @@ angular.module('lmisChromeApp')
       });
       return picked;
     };
+
+    /**
+     *
+     * @param date
+     * @returns {boolean}
+     */
+
+    this.isDate = function(date) {
+      return new Date(date) !== 'Invalid Date';
+    };
+
+    /**
+     *
+     * @param object
+     * @returns {boolean}
+     */
+
+    this.isEmptyObject = function(object) {
+      object = angular.isObject(object) ? object : {};
+      return (Object.keys(object)).length === 0 ;
+    };
+
   });
