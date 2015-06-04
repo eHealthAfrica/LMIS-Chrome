@@ -16,15 +16,6 @@ angular.module('lmisChromeApp')
           label: 'Welcome'
         }
       })
-      .state('appConfig.auth', {
-        url: '/app-config-auth',
-        parent: 'root.index',
-        templateUrl: '/views/app-config/wizard/partials/email-setup.html',
-        controller: 'appConfigAuth',
-        resolve: {
-
-        }
-      })
       .state('appConfig.wizard', {
         url: '/app-config-wizard',
         parent: 'root.index',
