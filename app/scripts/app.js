@@ -9,7 +9,8 @@ angular.module('lmisChromeApp', [
     'nvd3ChartDirectives',
     'angular-growl',
     'ngAnimate',
-    'db'
+    'db',
+    'LocalForageModule'
   ])
   .run(function(storageService, facilityFactory, locationService, $rootScope, $state, $window, appConfigService, backgroundSyncService, fixtureLoaderService, growl, utility, pouchMigrationService, $log, i18n, analyticsSyncService) {
     appConfigService.getCurrentAppConfig()

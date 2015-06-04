@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('fixtureLoaderService', function($q, $http, locationService, facilityFactory, $rootScope, memoryStorageService, config, storageService, utility, pouchdb, syncService) {
+  .service('fixtureLoaderService', function($q, $http, locationService, facilityFactory, $rootScope, memoryStorageService, config, storageService, utility, pouchdb, syncService, pouchStorageService) {
 
     var PATH = 'scripts/fixtures/';
     var REMOTE_URI = config.api.url;
@@ -23,29 +23,32 @@ angular.module('lmisChromeApp')
      * @returns {*}
      */
     var loadDatabaseFromRemote = function(dbName) {
-      var dbUrl = [REMOTE_URI, '/', dbName].join('');
-      var db = pouchdb.create(dbUrl);
-      var map = function(doc) {
-        if (doc) {
-          /* globals emit: false */
-          // PouchDB injects this, see:
-          // http://pouchdb.com/api.html#query_database
-          emit(doc);
-        }
-      };
-      return db.info()
-        .then(function() {
-          return db.query({map: map}, {reduce: false})
-            .then(function(res) {
-              var data = res.rows;
-              var dbRecords = [];
-              for (var i in data) {
-                var record = data[i].key;
-                dbRecords.push(record);
-              }
-              return utility.castArrayToObject(dbRecords, 'uuid');
+      //var dbUrl = [REMOTE_URI, '/', dbName].join('');
+      return pouchStorageService.getRemoteDB(dbName)
+        .then(function(db){
+          var map = function(doc) {
+            if (doc) {
+              /* globals emit: false */
+              // PouchDB injects this, see:
+              // http://pouchdb.com/api.html#query_database
+              emit(doc);
+            }
+          };
+          return db.info()
+            .then(function() {
+              return db.query({map: map}, {reduce: false})
+                .then(function(res) {
+                  var data = res.rows;
+                  var dbRecords = [];
+                  for (var i in data) {
+                    var record = data[i].key;
+                    dbRecords.push(record);
+                  }
+                  return utility.castArrayToObject(dbRecords, 'uuid');
+                });
             });
         });
+
     };
 
     /**
@@ -196,6 +199,7 @@ angular.module('lmisChromeApp')
       return $q.all(promises)
         .then(function(res) {
           var result = res[databases];
+
           result[storageService.LOCATIONS] = res[lgas];
           return saveDatabasesToLocalStorage(result)
             .then(function(res) {

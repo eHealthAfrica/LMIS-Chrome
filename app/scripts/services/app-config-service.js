@@ -101,7 +101,7 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
     var deferred = $q.defer();
     var user = email +':'+ pwd;
     var REMOTE_URI;
-    REMOTE_URI = pouchStorageService.getRemoteDB('/facilities/_design/config/_view/template?key="' + email + '"', user); //config.api.url + '/facilities/_design/config/_view/template?key="' + email + '"';
+    REMOTE_URI = config.api.url + '/facilities/_design/config/_view/template?key="' + email + '"';
     REMOTE_URI = encodeURI(REMOTE_URI);
     $http.get(REMOTE_URI)
       .then(function(res) {
@@ -110,8 +110,7 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
         if (rows.length > 0) {
 
           var facilityProfile = rows[0].value;//pick the first facility profile.
-           growl.error(JSON.stringify(facilityProfile.selectedProductProfiles));
-          //facilityProfile.selectedProductProfiles = productProfileFactory.getBatch(facilityProfile.selectedProductProfiles);
+          facilityProfile.selectedProductProfiles = productProfileFactory.getBatch(facilityProfile.selectedProductProfiles);
           deferred.resolve(facilityProfile);
         } else {
 

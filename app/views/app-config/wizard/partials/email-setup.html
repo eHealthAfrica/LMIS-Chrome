@@ -13,7 +13,7 @@
 </div>
 <div class="col-sm-15">
   <form name="editAppConfigForm"
-        ng-submit="editAppConfigForm.$valid && loadAppFacilityProfile(STEP_TWO, (editAppConfigForm.email).$valid, (editAppConfigForm.pwd).$valid)"
+        ng-submit="editAppConfigForm.$valid && authenticate((editAppConfigForm.email).$valid, (editAppConfigForm.pwd).$valid)"
         novalidate>
 
     <div class="col-md-6">
