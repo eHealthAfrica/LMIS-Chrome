@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisChromeApp').service('appConfigService', function($q, storageService, pouchdb, config, syncService, productProfileFactory, facilityFactory, utility, cacheService, $filter, reminderFactory, growl, i18n, $http, memoryStorageService) {
+angular.module('lmisChromeApp').service('appConfigService', function($q, storageService, pouchdb, config, syncService, productProfileFactory, facilityFactory, utility, cacheService, $filter, reminderFactory, growl, i18n, $http, memoryStorageService, pouchStorageService) {
 
   this.APP_CONFIG = storageService.APP_CONFIG;
   this.stockCountIntervals = [
@@ -96,23 +96,30 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
        })
     }
   };
-  this.getAppFacilityProfileByEmail = function(email) {
+  this.getAppFacilityProfileByEmail = function(email, pwd) {
+
     var deferred = $q.defer();
-    var REMOTE_URI = config.api.url + '/facilities/_design/config/_view/template?key="' + email + '"';
+    var user = email +':'+ pwd;
+    var REMOTE_URI;
+    REMOTE_URI = config.api.url + '/facilities/_design/config/_view/template?key="' + email + '"';
     REMOTE_URI = encodeURI(REMOTE_URI);
     $http.get(REMOTE_URI)
       .then(function(res) {
+
         var rows = res.data.rows;
         if (rows.length > 0) {
+
           var facilityProfile = rows[0].value;//pick the first facility profile.
           facilityProfile.selectedProductProfiles = productProfileFactory.getBatch(facilityProfile.selectedProductProfiles);
           deferred.resolve(facilityProfile);
         } else {
+
           deferred.reject('profile for given email does not exist.');
         }
 
       })
       .catch(function(reason) {
+
         deferred.reject(reason);
       });
     return deferred.promise;
@@ -144,7 +151,7 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
     getAppConfigFromStorage()
       .then(function(result){
         //console.log(result);
-      })
+      });
 
     if (angular.isObject(appConfig)) {
       return $q.when(appConfig);
@@ -193,4 +200,5 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
         return facilityStockListProductTypes;
       });
   };
+
 });
