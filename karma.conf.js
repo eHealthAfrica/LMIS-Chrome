@@ -28,6 +28,7 @@ module.exports = function(config) {
     exclude: [
       'app/scripts/main.js',
       'app/scripts/chromereload.js',
+      'test/spec/services/background-sync-service-spec.js',
       'test/spec/services/ccu-breakdown-factory.js'
     ],
 
