@@ -20,14 +20,15 @@ module.exports = function(config) {
     files: bowerJS.concat([
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
-      'test/spec/{controllers,directives}/*.js',
+      'test/spec/{controllers,directives,services}/*.js',
       'app/views/templates/*.html'
     ]),
 
     // list of files / patterns to exclude
     exclude: [
       'app/scripts/main.js',
-      'app/scripts/chromereload.js'
+      'app/scripts/chromereload.js',
+      'test/spec/services/ccu-breakdown-factory.js'
     ],
 
     // web server port
