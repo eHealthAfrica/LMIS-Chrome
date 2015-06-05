@@ -115,7 +115,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           parent: 'index'
         }
       },
-      page: 'form'
+      page: 'form',
+      validationError: {},
+      balanceEdited: {},
+      editedFigure: {}
     };
 
     $scope.currentPage = function(page) {
@@ -175,7 +178,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.changeStep = function(type) {
 
       $scope.utilization.products[$scope.facilityProductsUUIDs[$scope.viewControl.step]] =
-        validate($scope.utilization.products[$scope.facilityProductsUUIDs[$scope.viewControl.step]]);
+        utilizationService.validateEntry($scope.utilization.products[$scope.facilityProductsUUIDs[$scope.viewControl.step]]);
 
       if (type === 'next' && $scope.viewControl.step < max) {
         $scope.viewControl.step ++;
@@ -191,6 +194,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         $scope.utilization.date = new Date().toJSON();
       }
       $scope.utilization.isComplete = true;
+      $scope.utilization.balanceEdited = $scope.viewControl.balanceEdited;
       utilizationService.save($scope.utilization)
         .then(function() {
           $state.go('utilization');
@@ -202,7 +206,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
     $scope.showPreview = function() {
       $scope.utilization.products[$scope.facilityProductsUUIDs[$scope.viewControl.step]] =
-        validate($scope.utilization.products[$scope.facilityProductsUUIDs[$scope.viewControl.step]]);
+        utilizationService.validateEntry($scope.utilization.products[$scope.facilityProductsUUIDs[$scope.viewControl.step]]);
       $scope.viewControl.page = 'preview';
       updateUI();
     };
@@ -213,72 +217,67 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       updateUI();
     };
 
-    function updateUI() {
-      if (!$scope.utilization.products[$scope.facilityProductsUUIDs[$scope.viewControl.step]]) {
-        $scope.utilization.products[$scope.facilityProductsUUIDs[$scope.viewControl.step]] = {};
+    $scope.updateRecords = function(button) {
+
+      var step = $scope.viewControl.step;
+      var uuid = $scope.facilityProductsUUIDs[step];
+
+      if (validationSetup[button]) {
+        validationSetup[button]();
       }
+
+      if (['balance', 'used', 'received'].indexOf(button) !== -1) {
+        if (!$scope.viewControl.validationError[button]) {
+          $scope.utilization.products[uuid].endingBalance = utilizationService.getEndingBalance($scope.utilization.products[uuid]);
+        }
+      }
+    };
+
+    $scope.confirmBalance = function() {
+      var step = $scope.viewControl.step;
+      var uuid = $scope.facilityProductsUUIDs[step];
+      $scope.viewControl.balanceEdited[uuid] = $scope.utilization.products[uuid].balance;
+      $scope.utilization.products[uuid].balance = $scope.viewControl.editedFigure[uuid];
+      $scope.viewControl.balanceEdited[uuid] =
+      delete $scope.viewControl.validationError['balance'];
+      delete $scope.viewControl.editedFigure[uuid];
+    };
+
+    function updateUI() {
+      var step = $scope.viewControl.step;
+      var uuid = $scope.facilityProductsUUIDs[step];
+
+      if (!$scope.utilization.products[uuid]) {
+        $scope.utilization.products[uuid] = {};
+      }
+
+      var previousBalance = utilizationService.getPreviousBalance(uuid, utilizationList);
+      var currentBalance = $scope.utilization.products[uuid].balance;
+
+      $scope.utilization.products[uuid].balance = currentBalance || previousBalance;
 
       if ($scope.viewControl.page === 'preview') {
         $scope.viewControl.endOfList = true;
       }
     }
 
-    function validate(productObject) {
-      ['balance', 'received', 'used', 'endingBalance', 'returned']
-        .forEach(function(key) {
-          if (productObject[key] === undefined) {
-            productObject[key] = 0;
-          }
-        });
+    var validationSetup = {
+      balance: function() {
+        var step = $scope.viewControl.step;
+        var uuid = $scope.facilityProductsUUIDs[step];
+        var currentFigure = $scope.utilization.products[uuid].balance;
+        var calculatedFigure =   utilizationService.getPreviousBalance(uuid, utilizationList);
 
-      return productObject;
-    }
-
-    function getPreviousBalance() {
-      var previousBalance = 0;
-      var currentRecordUUID = $scope.facilityProductsUUIDs[$scope.viewControl.step];
-      var currentRecord = $scope.utilization.products[currentRecordUUID] || {};
-      var previousRecord = previousRecord(utilizationList);
-
-
-      return 0;
-    }
-
-    function previousRecord(utilizationList) {
-      var filtered = [];
-      var selectedRecord = {};
-      var previousDate = getRecordPreviousDate();
-      if (utilizationList.length) {
-        for (var i=0; i<=utilizationList.length; i++) {
-          if (utility.getFullDate(utilizationList[i].date) === utility.getFullDate(previousDate)) {
-            filtered.push(utilizationList[i]);
-          }
+        if (!$scope.viewControl.editedFigure[uuid] && !$scope.viewControl.balanceEdited[uuid] && calculatedFigure !== currentFigure) {
+          $scope.viewControl.editedFigure[uuid] = currentFigure;
+          $scope.utilization.products[uuid].balance = calculatedFigure;
+          $scope.viewControl.validationError.balance = 'Please confirm change';
+        } else {
+          delete $scope.viewControl.validationError['balance'];
         }
       }
+    };
 
-      if (filtered.length) {
-        selectedRecord = filtered[0];
-      }
 
-      return selectedRecord;
-    }
-
-    function getPreviousDate(date, subtract) {
-      var currentDate = utility.isDate(date) ? new Date(date) : new Date();
-      var previousDate = new Date(currentDate);
-      subtract = subtract || 1;
-      return new Date(previousDate.setDate(currentDate.getDate() - subtract));
-    }
-
-    function getRecordPreviousDate() {
-      var weekends = [0, 6];
-      var previousDate = getPreviousDate();
-
-      if (weekends.indexOf(previousDate.getDate()) !== -1) {
-        var subtract = previousDate.getDate() === 0 ? 2 : 1;
-        return getPreviousDate(previousDate, subtract);
-      }
-      return previousDate;
-    }
 
   });
