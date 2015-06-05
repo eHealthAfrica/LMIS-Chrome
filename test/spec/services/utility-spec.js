@@ -219,4 +219,21 @@ describe('Service: utility', function () {
     });
   });
 
+  describe('isDate', function() {
+    it('should validate string or object as valid date type', function() {
+      var validDate = ['2015-01-25', new Date(), 1433251339012];
+      var invalidDate = [null, 'eHA', undefined, {}, []];
+
+      expect(utility.isDate(validDate[0])).toBeTruthy();
+      expect(utility.isDate(validDate[1])).toBeTruthy();
+      expect(utility.isDate(validDate[2])).toBeTruthy();
+      expect(utility.isDate(invalidDate[0])).toBeFalsy();
+      expect(utility.isDate(invalidDate[1])).toBeFalsy();
+      expect(utility.isDate(invalidDate[2])).toBeFalsy();
+      expect(utility.isDate(invalidDate[3])).toBeFalsy();
+      expect(utility.isDate(invalidDate[4])).toBeFalsy();
+
+    });
+  });
+
 });
