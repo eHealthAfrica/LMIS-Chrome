@@ -8,6 +8,9 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       resolve: {
         appConfig: function(appConfigService) {
           return appConfigService.getCurrentAppConfig();
+        },
+        utilizationList: function (utilizationService) {
+          return utilizationService.all();
         }
       }
     })
@@ -26,7 +29,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       }
     });
   })
-  .controller('UtilizationCtrl', function($scope, utilizationService, appConfig, utility, $state) {
+  .controller('UtilizationCtrl', function($scope, utilizationService, appConfig, utility, $state, utilizationList) {
     $scope.viewControl = {
       pages: {
         index: {
@@ -41,18 +44,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       reportExistToday: false
     };
     $scope.utilization = {};
-    $scope.utilizationList = [];
-
-    utilizationService.all()
-      .then(function(record) {
-        $scope.utilizationList = record;
-      })
-      .catch(function(reason) {
-
-      });
+    $scope.utilizationList = utilizationList;
 
     $scope.showDetail = function(index) {
-      $scope.utilization = $scope.utilizationList[index];
+      $scope.utilization = utilizationList[index];
       $scope.viewControl.page = 'preview';
     };
 
@@ -99,7 +94,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     $scope.facilityProductsUUIDs = Object.keys($scope.facilityProducts);
 
   })
-  .controller('UtilizationFormCtrl', function($scope, utilizationService, appConfig, utility, $stateParams, $state, utilizationList) {
+  .controller('UtilizationFormCtrl', function($scope, utilizationService, appConfig, utility, $stateParams, $state, utilizationList, growl) {
 
     var id = $stateParams.uuid || null;
     $scope.viewControl = {
@@ -171,11 +166,16 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           }
         })
         .catch(function(reason) {
+          growl.error('Error Loading selected record ');
           console.log(reason);
         });
     }
 
     $scope.changeStep = function(type) {
+      if (!utility.isEmptyObject($scope.viewControl.validationError[stateVar().step])) {
+        growl.error('Kindly fix errors before proceeding');
+        return;
+      }
 
       $scope.utilization.products[$scope.facilityProductsUUIDs[$scope.viewControl.step]] =
         utilizationService.validateEntry($scope.utilization.products[$scope.facilityProductsUUIDs[$scope.viewControl.step]]);
@@ -190,6 +190,10 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
     };
 
     $scope.save = function() {
+      if (!noPendingErrors()) {
+        growl.error('Kindly fix errors before proceeding');
+        return;
+      }
       if (!$scope.utilization.date) {
         $scope.utilization.date = new Date().toJSON();
       }
@@ -200,6 +204,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
           $state.go('utilization');
         })
         .catch(function(reason) {
+          growl.error('Error saving record ');
           console.log(reason);
         });
     };
@@ -226,35 +231,33 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         validationSetup[button]();
       }
 
-      if (['balance', 'used', 'received'].indexOf(button) !== -1) {
-        if (!$scope.viewControl.validationError[button]) {
-          $scope.utilization.products[uuid].endingBalance = utilizationService.getEndingBalance($scope.utilization.products[uuid]);
-        }
+      if (!$scope.viewControl.validationError[stateVar().step][button]) {
+        $scope.utilization.products[uuid].endingBalance = utilizationService.getEndingBalance($scope.utilization.products[uuid]);
       }
     };
 
-    $scope.confirmBalance = function() {
-      var step = $scope.viewControl.step;
-      var uuid = $scope.facilityProductsUUIDs[step];
-      $scope.viewControl.balanceEdited[uuid] = $scope.utilization.products[uuid].balance;
-      $scope.utilization.products[uuid].balance = $scope.viewControl.editedFigure[uuid];
-      $scope.viewControl.balanceEdited[uuid] =
-      delete $scope.viewControl.validationError['balance'];
+    $scope.confirmBalance = function(action) {
+      var uuid = $scope.facilityProductsUUIDs[$scope.viewControl.step];
+      if (action === 'confirm') {
+        $scope.viewControl.balanceEdited[uuid] = $scope.utilization.products[uuid].balance;
+        $scope.utilization.products[uuid].balance = $scope.viewControl.editedFigure[uuid];
+      }
+
+      delete $scope.viewControl.validationError[stateVar().step]['balance'];
       delete $scope.viewControl.editedFigure[uuid];
     };
 
     function updateUI() {
-      var step = $scope.viewControl.step;
-      var uuid = $scope.facilityProductsUUIDs[step];
 
-      if (!$scope.utilization.products[uuid]) {
-        $scope.utilization.products[uuid] = {};
-      }
+      var uuid = stateVar().uuid;
+      $scope.viewControl.validationError[stateVar().step] = $scope.viewControl.validationError[stateVar().step] || {};
+      $scope.utilization.products[uuid] = $scope.utilization.products[uuid] || {};
 
       var previousBalance = utilizationService.getPreviousBalance(uuid, utilizationList);
-      var currentBalance = $scope.utilization.products[uuid].balance;
+      var currentBalance = stateVar().record.balance;
 
       $scope.utilization.products[uuid].balance = currentBalance || previousBalance;
+      $scope.utilization.products[uuid].endingBalance = utilizationService.getEndingBalance($scope.utilization.products[uuid]);
 
       if ($scope.viewControl.page === 'preview') {
         $scope.viewControl.endOfList = true;
@@ -263,21 +266,75 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
     var validationSetup = {
       balance: function() {
-        var step = $scope.viewControl.step;
-        var uuid = $scope.facilityProductsUUIDs[step];
-        var currentFigure = $scope.utilization.products[uuid].balance;
+        var uuid = stateVar().uuid;
+        var currentFigure = stateVar().record.balance;
         var calculatedFigure =   utilizationService.getPreviousBalance(uuid, utilizationList);
-
         if (!$scope.viewControl.editedFigure[uuid] && !$scope.viewControl.balanceEdited[uuid] && calculatedFigure !== currentFigure) {
           $scope.viewControl.editedFigure[uuid] = currentFigure;
           $scope.utilization.products[uuid].balance = calculatedFigure;
-          $scope.viewControl.validationError.balance = 'Please confirm change';
+
+          $scope.viewControl.validationError[stateVar().step].balance = 'Please confirm change';
         } else {
-          delete $scope.viewControl.validationError['balance'];
+          delete $scope.viewControl.validationError[stateVar().step]['balance'];
+        }
+      },
+      received: function() {
+        validateInteger('received');
+      },
+      returned: function() {
+        validateInteger('returned');
+        if (!isValidEndingBalance()) {
+          $scope.utilization.products[stateVar().uuid].returned = 0;
+        }
+      },
+      used: function() {
+        validateInteger('used');
+        if (!isValidEndingBalance()) {
+          $scope.utilization.products[stateVar().uuid].used = 0;
         }
       }
     };
 
+    function stateVar() {
+      var step = $scope.viewControl.step;
+      var uuid = $scope.facilityProductsUUIDs[step];
+      return {
+        step: step,
+        uuid: uuid,
+        record: $scope.utilization.products[uuid]
+      }
+    }
 
+    function isValidEndingBalance() {
+      var endingBalance = utilizationService.getEndingBalance(stateVar().record);
+      var state = true;
+      if (endingBalance < 0) {
+        state = false;
+        growl.error('Kindly check entry, ending balance can\'t be negative' );
+      }
+      return state;
+    }
+
+    function validateInteger(action) {
+      var value = stateVar().record[action] || 0;
+      if (value < 0) {
+        $scope.viewControl.validationError[stateVar().step][action] = 'Invalid entry, kindly fix entry';
+      } else {
+        delete $scope.viewControl.validationError[stateVar().step][action];
+      }
+    }
+
+    function noPendingErrors() {
+      var failed = 0;
+
+      (Object.keys($scope.viewControl.validationError))
+        .forEach(function(key) {
+          if (!utility.isEmptyObject($scope.viewControl.validationError[key])) {
+            failed ++;
+          }
+        });
+
+      return failed === 0;
+    }
 
   });
