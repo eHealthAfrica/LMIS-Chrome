@@ -281,6 +281,9 @@ tr.disabled, tr.disabled span.text-info{
 .mb10 {
   margin-bottom: 10px;
 }
+.mt10{
+  margin-top: 10px;
+}
 .mr5{
   margin-right: 5px;
 }
