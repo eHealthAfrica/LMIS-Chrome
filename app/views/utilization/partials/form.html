@@ -13,8 +13,12 @@
         </div>
         <div class="col-xs-8">
           <input class="form-control"
+                 ng-blur="updateRecords('balance')"
                  type="number"
                  ng-model="utilization.products[facilityProductsUUIDs[viewControl.step]].balance">
+          <div ng-if="viewControl.validationError.balance.length" class="text-center text-danger">
+            {{ viewControl.validationError.balance }} <button type="button" class="btn btn-success mt10" ng-click="confirmBalance()">Confirm</button>
+          </div>
         </div>
       </div>
     </div>
@@ -27,6 +31,7 @@
         <div class="col-xs-8">
           <input class="form-control"
                  type="number"
+                 ng-blur="updateRecords('received')"
                  ng-model="utilization.products[facilityProductsUUIDs[viewControl.step]].received">
         </div>
       </div>
@@ -40,6 +45,7 @@
         <div class="col-xs-8">
           <input class="form-control"
                  type="number"
+                 ng-blur="updateRecords('used')"
                  ng-model="utilization.products[facilityProductsUUIDs[viewControl.step]].used">
         </div>
       </div>
@@ -81,7 +87,7 @@
             <div class="btn-group pl5" role="group" ng-if="viewControl.step !== viewControl.max">
               <button type="button" class="btn btn-default" ng-click="changeStep('next')">Next</button>
             </div>
-            <div class="btn-group pl5" role="group" ng-if="step === max">
+            <div class="btn-group pl5" role="group" ng-if="viewControl.step === viewControl.max">
               <button type="button" class="btn btn-warning" ng-click="viewControl.page = 'preview'">Preview</button>
             </div>
           </div>
