@@ -45,7 +45,8 @@ angular.module('lmisChromeApp').service('utilizationService', function($q, stora
     currentRecord.balance = currentRecord.balance || 0;
     currentRecord.used = currentRecord.used || 0;
     currentRecord.received = currentRecord.received || 0;
-    return (currentRecord.balance + currentRecord.received) - currentRecord.used;
+    currentRecord.returned = currentRecord.returned || 0;
+    return (currentRecord.balance + currentRecord.received) - (currentRecord.used + currentRecord.returned);
   };
 
   this.validateEntry = function(productObject) {
@@ -60,42 +61,13 @@ angular.module('lmisChromeApp').service('utilizationService', function($q, stora
   };
 
   function previousRecord(utilizationList) {
-    var filtered = [];
     var selectedRecord = {};
-    var previousDate = getRecordPreviousDate();
     if (utilizationList.length) {
-      for (var i=0; i<utilizationList.length; i++) {
-
-        if (utility.getFullDate(utilizationList[i].date) === utility.getFullDate(previousDate)) {
-          filtered.push(utilizationList[i]);
-        }
-      }
+      selectedRecord = utilizationList.sort(function(a, b) {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      })[0];
     }
-
-    if (filtered.length) {
-      selectedRecord = filtered[0];
-    }
-
     return selectedRecord;
   }
-
-  function getPreviousDate(date, subtract) {
-    var currentDate = utility.isDate(date) ? new Date(date) : new Date();
-    var previousDate = new Date(currentDate);
-    subtract = subtract || 1;
-    return new Date(previousDate.setDate(currentDate.getDate() - subtract));
-  }
-
-  function getRecordPreviousDate() {
-    var weekends = [0, 6];
-    var previousDate = getPreviousDate();
-
-    if (weekends.indexOf(previousDate.getDate()) !== -1) {
-      var subtract = previousDate.getDate() === 0 ? 2 : 1;
-      return getPreviousDate(previousDate, subtract);
-    }
-    return previousDate;
-  }
-
 
 });
