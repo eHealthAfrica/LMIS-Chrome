@@ -236,4 +236,11 @@ describe('Service: utility', function () {
     });
   });
 
+  describe('isEmptyObject', function() {
+    it('should return true if an object is empty and false if not', function() {
+      expect(utility.isEmptyObject({})).toBeTruthy();
+      expect(utility.isEmptyObject({key: 'data'})).toBeFalsy();
+    });
+  });
+
 });
