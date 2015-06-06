@@ -6,11 +6,18 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       templateUrl: 'views/utilization/index.html',
       controller: 'UtilizationCtrl',
       resolve: {
-        appConfig: function(appConfigService) {
-          return appConfigService.getCurrentAppConfig();
+        appConfig: function(appConfigService, growl) {
+
+          return appConfigService.getCurrentAppConfig()
+            .catch(function() {
+              growl.error('Problem loading app configuration');
+            });
         },
-        utilizationList: function (utilizationService) {
-          return utilizationService.all();
+        utilizationList: function (utilizationService, growl) {
+          return utilizationService.all()
+            .catch(function() {
+              growl.error('Problem loading utilization list');
+            });
         }
       }
     })
@@ -20,11 +27,18 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
       templateUrl: 'views/utilization/form.html',
       controller: 'UtilizationFormCtrl',
       resolve: {
-        appConfig: function(appConfigService) {
-          return appConfigService.getCurrentAppConfig();
+        appConfig: function(appConfigService, growl) {
+
+          return appConfigService.getCurrentAppConfig()
+            .catch(function() {
+              growl.error('Problem loading app configuration');
+            });
         },
-        utilizationList: function (utilizationService) {
-          return utilizationService.all();
+        utilizationList: function (utilizationService, growl) {
+          return utilizationService.all()
+            .catch(function() {
+              growl.error('Problem loading utilization list');
+            });
         }
       }
     });
