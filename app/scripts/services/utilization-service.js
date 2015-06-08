@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('lmisChromeApp').service('utilizationService', function($q, storageService, syncService, utility) {
+angular.module('lmisChromeApp').service('utilizationService', function($q, storageService, syncService, utility, utilizationFormFields) {
   var DB = storageService.UTILIZATION;
 
   this.save = function(record) {
-    if (record.countDate instanceof Date) {
-      record.countDate = record.date.toJSON();
+    if (record.date instanceof Date) {
+      record.date = record.date.toJSON();
     }
     return storageService.save(DB, record);
   };
@@ -50,7 +50,7 @@ angular.module('lmisChromeApp').service('utilizationService', function($q, stora
   };
 
   this.validateEntry = function(productObject) {
-    ['balance', 'received', 'used', 'endingBalance', 'returned']
+    utilizationFormFields
       .forEach(function(key) {
         if (productObject[key] === undefined) {
           productObject[key] = 0;
