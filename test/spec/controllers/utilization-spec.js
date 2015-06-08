@@ -40,7 +40,7 @@ describe('Controller:', function() {
     });
   }));
 
-  describe('utilizationCtrl', function() {
+  describe('UtilizationCtrl', function() {
 
     beforeEach(inject(function(_$controller_, _utilizationService_, utilizationList, $state, appConfigMock, i18n) {
       $controller = _$controller_;
@@ -54,7 +54,6 @@ describe('Controller:', function() {
         $state: state,
         appConfig: appConfig
       });
-
     }));
 
     describe('showButton', function() {
@@ -86,15 +85,60 @@ describe('Controller:', function() {
             parent: 'index'
           }
         };
-        //scope.viewControl.page = 'preview';
+        scope.viewControl.page = 'preview';
         scope.navBack();
         expect(scope.viewControl.page).toEqual('index');
+        scope.navBack();
+        expect(scope.viewControl.page).toEqual('home');
       });
     });
 
 
   });
 
+  describe('UtilizationFormCtrl', function() {
+    beforeEach(inject(function(_$controller_, _utilizationService_, utilizationList, $state, appConfigMock, i18n) {
+      $controller = _$controller_;
+      scope = {};
+      _i18n = i18n;
+      state = $state;
+      _utilizationList = utilizationList;
+      appConfig = appConfigMock;
+      ctrl = $controller('UtilizationFormCtrl', {
+        $scope: scope,
+        $state: state,
+        appConfig: appConfig
+      });
+    }));
+
+    describe('changeStep', function() {
+      it('should increment step by one if "next" is passed to function', function() {
+        expect(scope.viewControl.step).toEqual(0);
+        scope.changeStep('next');
+        expect(scope.viewControl.step).toEqual(1);
+      });
+
+      it('should decrease step by one if "prev" is passed to function', function() {
+        scope.viewControl.max = 10;
+        scope.changeStep('next');
+        scope.changeStep('next');
+        expect(scope.viewControl.step).toEqual(2);
+        scope.changeStep('prev');
+        expect(scope.viewControl.step).toEqual(1);
+      });
+
+      it('should not increment if error exists', function() {
+        scope.viewControl.validationError = {0: 'kjj'};
+        scope.changeStep('next');
+        scope.changeStep('next');
+        scope.changeStep('next');
+        expect(scope.viewControl.step).toEqual(0);
+      });
+    });
+
+
+
+  });
 
 
 });
