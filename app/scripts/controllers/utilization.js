@@ -100,7 +100,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
         parent = currentPage.parent || parent;
       }
 
-      $scope.viewControl.page = page;
+      $scope.viewControl.page = parent;
     };
 
     $scope.selectedProductProfiles = appConfig.facility.selectedProductProfiles;
@@ -232,7 +232,7 @@ angular.module('lmisChromeApp').config(function ($stateProvider) {
 
     $scope.editProduct = function(index) {
       $scope.viewControl.step = index;
-      $scope.preview = false;
+      $scope.viewControl.page = 'form';
       updateUI();
     };
 
