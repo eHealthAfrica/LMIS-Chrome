@@ -19,7 +19,6 @@ angular.module('lmisChromeApp', [
         if (angular.isObject(cfg) && !angular.isArray(cfg)) {
           $state.go('home.index.home.mainActivity');
         } else {
-          
           $state.go('appConfigWelcome');
         }
       })
