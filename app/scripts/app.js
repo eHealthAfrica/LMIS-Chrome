@@ -13,6 +13,10 @@ angular.module('lmisChromeApp', [
     'LocalForageModule'
   ])
   .run(function(storageService, facilityFactory, locationService, $rootScope, $state, $window, appConfigService, backgroundSyncService, fixtureLoaderService, growl, utility, pouchMigrationService, $log, i18n, analyticsSyncService) {
+    storageService.clear()
+      .catch(function(err){
+        console.log(err);
+      });
     appConfigService.getCurrentAppConfig()
       .then(function(cfg) {
         if (angular.isObject(cfg) && !angular.isArray(cfg)) {

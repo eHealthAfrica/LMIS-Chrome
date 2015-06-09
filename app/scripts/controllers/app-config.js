@@ -107,6 +107,8 @@ angular.module('lmisChromeApp')
         .then(loadAppConfig)
         .then(ccuProfilesGroupedByCategory)
         .then(productProfilesGroupedByCategory)
+        .then(loadLgas)
+        .then(loadZones)
         .catch(function(err){
           console.log(err);
         });
@@ -217,25 +219,29 @@ angular.module('lmisChromeApp')
 
 
     //TODO: load state id dynamically.
-    locationService.getLgas("f87ed3e017cf4f8db26836fd910e4cc8")
+    function loadLgas (){
+      return locationService.getLgas("f87ed3e017cf4f8db26836fd910e4cc8")
       .then(function(res) {
-        $scope.lgaList = res;
+        return $scope.lgaList = res;
       })
       .catch(function(err) {
-        console.error(err);
+        return console.error(err);
       });
+    }
+
 
     $scope.currentStep = $scope.STEP_ONE; //set initial step
 
-
-   $scope.zones = [];
-    locationService.getZones("f87ed3e017cf4f8db26836fd910e4cc8")
+   function loadZones(){
+     $scope.zones = [];
+     return locationService.getZones("f87ed3e017cf4f8db26836fd910e4cc8")
       .then(function(res) {
-        $scope.zones = res;
+        return $scope.zones = res;
       })
       .catch(function(err) {
-        console.error(err);
+        return console.error(err);
       });
+   }
 
 
     $scope.onCcuSelection = function(ccuProfile) {
@@ -252,7 +258,7 @@ angular.module('lmisChromeApp')
 
     $scope.onLgaSelection = function(lga){
 
-      appConfigService.getSelectedFacility((JSON.parse(lga)).uuid);
+      appConfigService.getSelectedFacility((JSON.parse(lga)).uuid, event);
       $scope.appConfig.facility.selectedLgas =
         utility.addObjectToCollection(lga, $scope.appConfig.facility.selectedLgas, '_id');
       $scope.preSelectLgaCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedLgas, '_id');
