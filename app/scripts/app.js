@@ -14,6 +14,12 @@ angular.module('lmisChromeApp', [
   ])
   .run(function(storageService, facilityFactory, locationService, $rootScope, $state, $window, appConfigService, backgroundSyncService, fixtureLoaderService, growl, utility, pouchMigrationService, $log, i18n, analyticsSyncService) {
 
+    // TODO: see item:680
+    if (!utility.has($window, 'PouchDB')) {
+      // Short-circuit as PouchDB has not been sourced. Likely running in test
+      // environment.
+      return;
+    }
     appConfigService.getCurrentAppConfig()
       .then(function(cfg) {
         if (angular.isObject(cfg) && !angular.isArray(cfg)) {
@@ -26,6 +32,7 @@ angular.module('lmisChromeApp', [
         growl.error('loading of App. Config. failed, please contact support.');
         console.error(reason);
       });
+
   })
   .config(function($compileProvider) {
     // to bypass Chrome app CSP for images.
