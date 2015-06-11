@@ -60,7 +60,7 @@ angular.module('lmisChromeApp')
       });
 
   })
-  .controller('AppConfigWizard', function($scope, storageService, facilityFactory, locationService, fixtureLoaderService, appConfigService, growl, $state, alertFactory, i18n,  $log,  utility, deviceEmail, backgroundSyncService, $localForage, ccuProfileFactory, productProfileFactory, $q) {
+  .controller('AppConfigWizard', function($scope, storageService, facilityFactory, locationService, fixtureLoaderService, appConfigService, growl, $state, alertFactory, i18n,  $log,  utility, deviceEmail, backgroundSyncService, ccuProfileFactory, productProfileFactory, $q) {
     $scope.STEP_ONE = 1;
     $scope.STEP_TWO = 2;
     $scope.STEP_THREE = 3;
@@ -103,7 +103,11 @@ angular.module('lmisChromeApp')
       $scope.loadingloadingFixtures = true;
       $scope.isSubmitted = true;
       $scope.disableBtn = isEmailValid;
-      $localForage.setItem('lomisUser', JSON.stringify({"email": $scope.appConfig.uuid, "password": $scope.appConfig.pwd}))
+      storageService.save('lomisUser', {
+        "email": $scope.appConfig.uuid,
+        "password": $scope.appConfig.pwd,
+        "uuid": $scope.appConfig.uuid
+      })
         .then(loadAppConfig)
         .then(ccuProfilesGroupedByCategory)
         .then(productProfilesGroupedByCategory)

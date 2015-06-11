@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('lmisChromeApp')
-  .service('pouchStorageService', function(pouchdb, utility, config, $localForage) {
+  .service('pouchStorageService', function(pouchdb, utility, config) {
     this.put = function(db, data) {
+
       db = pouchdb.create(db);
       return db.put(data, data.uuid);
     };
@@ -39,9 +40,11 @@ angular.module('lmisChromeApp')
     };
 
     this.getRemoteDB = function(dbName){
-      return $localForage.getItem('lomisUser')
-        .then(function(userString){
-         var user = JSON.parse(userString);
+
+      return this.allDocs('lomisUser')
+        .then(function(res){
+         var user = res[0];
+          console.log(user);
          var options = {
            auth: {}
          };
@@ -53,6 +56,7 @@ angular.module('lmisChromeApp')
         })
         .catch(function(err){
           console.log(err);
+          return err;
         });
     };
 

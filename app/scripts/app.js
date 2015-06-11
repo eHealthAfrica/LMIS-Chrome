@@ -9,10 +9,9 @@ angular.module('lmisChromeApp', [
 	'nvd3ChartDirectives',
 	'angular-growl',
 	'ngAnimate',
-	'db',
-	'LocalForageModule'
+	'db'
 ])
-		.run(function (storageService, facilityFactory, locationService, $localForage, $rootScope, $state, $window, appConfigService, backgroundSyncService, fixtureLoaderService, growl, utility, pouchMigrationService, $log, i18n, analyticsSyncService) {
+		.run(function (storageService, facilityFactory, locationService, $rootScope, $state, $window, appConfigService, backgroundSyncService, fixtureLoaderService, growl, utility, pouchMigrationService, $log, i18n, analyticsSyncService) {
 
 			// TODO: see item:680
 			if (!utility.has($window, 'PouchDB')) {

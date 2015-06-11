@@ -96,10 +96,11 @@ angular.module('lmisChromeApp').service('appConfigService', function($q, storage
   this.getAppFacilityProfileByEmail = function(email, pwd) {
 
     var deferred = $q.defer();
-    var user = email +':'+ pwd;
+    var user = btoa(email +':'+ pwd);
     var REMOTE_URI;
     REMOTE_URI = config.api.url + '/facilities/_design/config/_view/template?key="' + email + '"';
     REMOTE_URI = encodeURI(REMOTE_URI);
+    $http.defaults.headers.common['Authorization'] = 'Basic ' + user;
     $http.get(REMOTE_URI)
       .then(function(res) {
 
