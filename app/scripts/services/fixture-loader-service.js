@@ -26,13 +26,15 @@ angular.module('lmisChromeApp')
       //var dbUrl = [REMOTE_URI, '/', dbName].join('');
       return pouchStorageService.getRemoteDB(dbName)
         .then(function(db){
-          return db.allDocs()
+          return db.allDocs({include_docs:true})
             .then(function(res){
               var data = res.rows;
               var dbRecords = [];
               for (var i in data) {
-                var record = data[i].key;
-                dbRecords.push(record);
+                var record = data[i].doc;
+                if(record.uuid){
+                  dbRecords.push(record);
+                }
               }
               return utility.castArrayToObject(dbRecords, 'uuid');
             });
@@ -188,7 +190,6 @@ angular.module('lmisChromeApp')
       return $q.all(promises)
         .then(function(res) {
           var result = res[databases];
-
           result[storageService.LOCATIONS] = res[lgas];
           return saveDatabasesToLocalStorage(result)
             .then(function(res) {
@@ -257,72 +258,80 @@ angular.module('lmisChromeApp')
     };
 
     var getLgasByState = function(stateId) {
-      var db = pouchdb.create(config.api.url + '/' + storageService.LOCATIONS);
-      var lgaView = 'lga/by_id';
-      var options = {
-        include_docs: true
-      };
-      return db.get(stateId)
-        .then(function(state) {
-          options.keys = state.lgas;
-          return db.query(lgaView, options)
-            .then(function(res) {
-              return res.rows
-                .map(function(row) {
-                  var lga = row.value;
-                  if (utility.has(lga, '_id')) {
-                    return lga;
-                  }
+      return pouchStorageService.getRemoteDB(storageService.LOCATIONS)
+        .then(function(db){
+          var lgaView = 'lga/by_id';
+          var options = {
+            include_docs: true
+          };
+          return db.get(stateId)
+            .then(function(state) {
+              options.keys = state.lgas;
+              return db.query(lgaView, options)
+                .then(function(res) {
+                  return res.rows
+                    .map(function(row) {
+                      var lga = row.value;
+                      if (utility.has(lga, '_id')) {
+                        return lga;
+                      }
+                    });
                 });
             });
         });
+
     };
 
     this.getLgas = getLgasByState;
 
     this.getWardsByLgas = function(lgas) {
-      var db = pouchdb.create(config.api.url + '/' + storageService.LOCATIONS);
-      var lgaView = 'lga/by_id';
-      var wardView = 'ward/by_id'
-      var options = {
-        include_docs: true,
-        keys: lgas
-      };
-      var wardIds = [];
-      return db.query(lgaView, options)
-        .then(function(res) {
-          res.rows.forEach(function(row) {
-            var lga = row.value;
-            if (utility.has(lga, 'wards') && angular.isArray(lga.wards)) {
-              wardIds = wardIds.concat(lga.wards);
-            }
-          });
-          options.keys = wardIds;
-          return db.query(wardView, options)
+      return pouchStorageService.getRemoteDB(storageService.LOCATIONS)
+        .then(function(db){
+          var lgaView = 'lga/by_id';
+          var wardView = 'ward/by_id';
+          var options = {
+            include_docs: true,
+            keys: lgas
+          };
+          var wardIds = [];
+          return db.query(lgaView, options)
             .then(function(res) {
-              return res.rows
-                .map(function(row) {
-                  var ward = row.value;
-                  if (utility.has(ward, '_id')) {
-                    return ward;
-                  }
+              res.rows.forEach(function(row) {
+                var lga = row.value;
+                if (utility.has(lga, 'wards') && angular.isArray(lga.wards)) {
+                  wardIds = wardIds.concat(lga.wards);
+                }
+              });
+              options.keys = wardIds;
+              return db.query(wardView, options)
+                .then(function(res) {
+                  return res.rows
+                    .map(function(row) {
+                      var ward = row.value;
+                      if (utility.has(ward, '_id')) {
+                        return ward;
+                      }
+                    });
                 });
             });
         });
+
     };
 
     var getFacilities = function(facilityIds) {
       var view = 'facilities/by_id';
-      var db = pouchdb.create(config.api.url + '/facilities');
       var options = {
         include_docs: true,
         keys: facilityIds
       };
-      return db.query(view, options)
-        .then(function(res) {
-          return res.rows
-            .map(function(row) {
-              return row.value;
+      return pouchStorageService.getRemoteDB('facilities')
+        .then(function(db){
+          return db.query(view, options)
+            .then(function(res) {
+              return res.rows
+                .map(function(row) {
+                  return row.value;
+                });
             });
         });
     };

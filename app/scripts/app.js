@@ -19,7 +19,6 @@ angular.module('lmisChromeApp', [
 				// environment.
 				return;
 			}
-
 			function navigateToHome() {
 				$state.go('home.index.home.mainActivity');
 				backgroundSyncService.startBackgroundSync()

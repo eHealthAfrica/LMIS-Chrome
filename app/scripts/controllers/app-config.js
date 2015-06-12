@@ -106,7 +106,6 @@ angular.module('lmisChromeApp')
       storageService.save('lomisUser', {
         "email": $scope.appConfig.uuid,
         "password": $scope.appConfig.pwd,
-        "uuid": $scope.appConfig.uuid
       })
         .then(loadAppConfig)
         .then(ccuProfilesGroupedByCategory)

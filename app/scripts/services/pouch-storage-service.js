@@ -43,15 +43,14 @@ angular.module('lmisChromeApp')
 
       return this.allDocs('lomisUser')
         .then(function(res){
+
          var user = res[0];
-          console.log(user);
          var options = {
            auth: {}
          };
           var REMOTE_URI = config.api.url + '/' + dbName;
           options.auth.username = user.email;
           options.auth.password = user.password;
-
           return pouchdb.create(REMOTE_URI, options);
         })
         .catch(function(err){
