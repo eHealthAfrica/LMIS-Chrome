@@ -32,15 +32,20 @@ angular.module('lmisChromeApp')
         throw new Error('database name is not a string.');
       }
       doc.dateSynced = new Date().toJSON();//update sync date
-      var db = pouchStorageService.getRemoteDB(dbName);
-      return db.get(doc.uuid)
-        .then(function(response) {
-          doc._id = response._id;
-          doc._rev = response._rev;
-          return db.put(doc, response._id, response._rev);
-        }).catch(function() {
-          return db.put(doc, doc.uuid);
+      return pouchStorageService.getRemoteDB(dbName)
+        .then(function(res){
+          var db = res;
+          return db.get(doc.uuid)
+          .then(function(response) {
+            doc._id = response._id;
+            doc._rev = response._rev;
+            return db.put(doc, response._id, response._rev);
+          }).catch(function() {
+            return db.put(doc, doc.uuid);
+          });
         });
+
+
     };
 
     /**

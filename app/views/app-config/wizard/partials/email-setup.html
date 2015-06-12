@@ -13,7 +13,7 @@
 </div>
 <div class="col-sm-15">
   <form name="editAppConfigForm"
-        ng-submit="editAppConfigForm.$valid && loadAppFacilityProfile(STEP_TWO, (editAppConfigForm.email).$valid)"
+        ng-submit="editAppConfigForm.$valid && authenticate((editAppConfigForm.email).$valid, (editAppConfigForm.pwd).$valid)"
         novalidate>
 
     <div class="col-md-6">
@@ -23,6 +23,16 @@
                id="email" required/>
             <span class="alert-danger form-control" i18n="contactPersonEmailErrorMsg"
                   ng-show="(editAppConfigForm.email).$invalid && isSubmitted">
+            </span>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" ng-class="{ 'has-error': (editAppConfigForm.email).$invalid && isSubmitted }">
+        <label for="email" i18n="password"></label>
+        <input type="password" class="form-control" ng-model="appConfig.pwd" name="pwd"
+               id="pwd" required/>
+            <span class="alert-danger form-control" i18n="emptyPwdFieldMsg"
+                  ng-show="(editAppConfigForm.pwd).$invalid && isSubmitted">
             </span>
       </div>
     </div>
