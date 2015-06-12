@@ -1,0 +1,28 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h1 class="panel-title" i18n="stockCountHistory"></h1>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12 clearfix mb10">
+        <a class="btn btn-default pull-right"
+           ng-if="showButton('add')"
+           ui-sref="utilization-entry">
+          <i class="fa fa-plus"></i>
+          <span i18n="add"></span>
+        </a>
+        <a class="btn btn-default pull-right"
+           ng-if="showButton('edit')"
+           ui-sref="utilization-entry({uuid: utilization.uuid})">
+          <i class="fa fa-edit"></i>
+          <span i18n="edit"></span>
+        </a>
+      </div>
+    </div>
+
+    <div ng-if="currentPage('index')" ng-include="'views/utilization/partials/index-list.html'"></div>
+    <div ng-if="currentPage('preview')" ng-include="'views/utilization/partials/preview.html'"></div>
+
+
+  </div>
+</div>
