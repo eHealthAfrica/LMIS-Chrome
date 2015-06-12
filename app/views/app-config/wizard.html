@@ -5,18 +5,20 @@
     </div>
   </div>
 </div>
-<div ng-show="currentStep === STEP_ONE"
-     ng-include="'views/app-config/wizard/partials/email-setup.html'"></div>
-<div ng-show="currentStep === STEP_TWO"
-     ng-include="'views/app-config/wizard/partials/facility-info.html'"></div>
-<div ng-show="currentStep === STEP_THREE"
-     ng-include="'views/app-config/wizard/partials/facility-contact-person.html'"></div>
-<div ng-show="currentStep === STEP_FOUR"
-     ng-include="'views/app-config/wizard/partials/facility-product-profile.html'"></div>
-<div ng-show="currentStep === STEP_FIVE"
-     ng-include="'views/app-config/wizard/partials/facility-cce-profile-setup.html'"></div>
-<div ng-show="currentStep === STEP_SIX"
-     ng-include="'views/app-config/wizard/partials/nearby-lga-setup.html'"></div>
-<!--<div ng-show="currentStep === STEP_SIX"
-     ng-include="'views/app-config/wizard/partials/nearby-lga-setup.html'"></div>-->
+<div ng-show="loadingFixtures" ng-include="'views/index/loading-fixture-screen.html'"></div>
+<div ng-show="!loadingFixtures">
+  <div ng-show="currentStep === STEP_ONE"
+       ng-include="'views/app-config/wizard/partials/email-setup.html'"></div>
+  <div ng-show="currentStep === STEP_TWO"
+       ng-include="'views/app-config/wizard/partials/facility-info.html'"></div>
+  <div ng-show="currentStep === STEP_THREE"
+       ng-include="'views/app-config/wizard/partials/facility-contact-person.html'"></div>
+  <div ng-show="currentStep === STEP_FOUR"
+       ng-include="'views/app-config/wizard/partials/facility-product-profile.html'"></div>
+  <div ng-show="currentStep === STEP_FIVE"
+       ng-include="'views/app-config/wizard/partials/facility-cce-profile-setup.html'"></div>
+  <div ng-show="currentStep === STEP_SIX"
+       ng-include="'views/app-config/wizard/partials/nearby-lga-setup.html'"></div>
+</div>
+
 

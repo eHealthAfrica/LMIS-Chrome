@@ -365,6 +365,9 @@
   "email": {
     "message": "E-mail"
   },
+  "password": {
+    "message": "Password"
+  },
   "selectFacilityProductProfiles": {
     "message": "Select facility stock list"
   },
@@ -418,6 +421,9 @@
   },
   "contactPersonEmailErrorMsg": {
     "message": "Please enter valid email address"
+  },
+  "emptyPwdFieldMsg": {
+    "message": "Please enter a password"
   },
   "syncLater": {
     "message": "Please try resyncing later. If problem persists contact support."

@@ -3,6 +3,7 @@
 angular.module('lmisChromeApp')
   .service('pouchStorageService', function(pouchdb, utility, config) {
     this.put = function(db, data) {
+
       db = pouchdb.create(db);
       return db.put(data, data.uuid);
     };
@@ -39,8 +40,23 @@ angular.module('lmisChromeApp')
     };
 
     this.getRemoteDB = function(dbName){
-      var REMOTE_URI = [config.api.url, '/', dbName].join('');
-      return pouchdb.create(REMOTE_URI);
+
+      return this.allDocs('lomisUser')
+        .then(function(res){
+
+         var user = res[0];
+         var options = {
+           auth: {}
+         };
+          var REMOTE_URI = config.api.url + '/' + dbName;
+          options.auth.username = user.email;
+          options.auth.password = user.password;
+          return pouchdb.create(REMOTE_URI, options);
+        })
+        .catch(function(err){
+          console.log(err);
+          return err;
+        });
     };
 
     this.compact = function(db){
