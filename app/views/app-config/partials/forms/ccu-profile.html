@@ -82,22 +82,25 @@
             </div>
           </div>
 
-          <div ng-switch-when="true" ng-if="!firstConfig">
-            <div class="list-group-item" ng-if="selectedCCEItem[ccuProfile.dhis2_modelid] && preSelectCcuProfiles[ccuProfile.dhis2_modelid]">
-              <div class="row">
-                <div class="col-sm-12 clearfix">
-                  <button type="button" ga-click="save" id="save" name="save" class="btn btn-success btn-sm pull-right"
-                          ng-click="save(true)"
-                          ng-disabled="isSaving">
-                    <span ng-show="!isSaving" i18n="save"></span>
-                    <span ng-show="!isSaving"><i class="fa fa-floppy-o"></i></span>
-                    <span ng-show="isSaving" i18n="saving"></span>
-                    <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
-                  </button>
+          <div ng-if="!firstConfig">
+            <div ng-switch-when="true">
+              <div class="list-group-item" ng-if="selectedCCEItem[ccuProfile.dhis2_modelid] && preSelectCcuProfiles[ccuProfile.dhis2_modelid]">
+                <div class="row">
+                  <div class="col-sm-12 clearfix">
+                    <button type="button" ga-click="save" id="save" name="save" class="btn btn-success btn-sm pull-right"
+                            ng-click="save(true)"
+                            ng-disabled="isSaving">
+                      <span ng-show="!isSaving" i18n="save"></span>
+                      <span ng-show="!isSaving"><i class="fa fa-floppy-o"></i></span>
+                      <span ng-show="isSaving" i18n="saving"></span>
+                      <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
 
         </div>
       </div>
