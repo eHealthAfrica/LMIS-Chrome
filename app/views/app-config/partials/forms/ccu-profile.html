@@ -14,20 +14,98 @@
             <h4 class="panel-title">{{ spaceOutUpperCaseWords(ccuCategory) }}</h4>
           </div>
         </div>
-        <div class="no-padding" ng-repeat="ccuProfile in ccuProfilesGroupedByCategory[ccuCategory] | filter:search" ng-class="{
+        <div ng-repeat="ccuProfile in ccuProfilesGroupedByCategory[ccuCategory] | filter:search" ng-switch on="selectedCCEItem[ccuProfile.dhis2_modelid]">
+          <div class="no-padding" ng-class="{
           'highlight-selected-item': preSelectCcuProfiles[ccuProfile.dhis2_modelid], 'list-group-item': true }">
-          <label class="new-line pointer padded-label">
-            <input type="checkbox" ng-model="ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]"
-                   ng-disabled="!developerMode"
-                   ng-true-value="{{ ccuProfile }}"
-                   ng-false-value="{{ {'dhis2_modelid': ccuProfile.dhis2_modelid, deSelected: true} }}"
-                   ng-change="onCcuSelection(ccuProfileCheckBoxes[ccuProfile.dhis2_modelid])"
-                   ng-checked="preSelectCcuProfiles[ccuProfile.dhis2_modelid]"/>
-            {{ ccuProfile.Manufacturer }} - {{ ccuProfile.ModelName }}
-          </label>
+            <div class="row">
+              <div class="col-xs-10">
+                <label class="new-line pointer padded-label clearfix">
+                  <input type="checkbox" ng-model="ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]"
+                         ng-disabled="!developerMode"
+                         ng-true-value="{{ ccuProfile }}"
+                         ng-false-value="{{ {'dhis2_modelid': ccuProfile.dhis2_modelid, deSelected: true} }}"
+                         ng-change="onCcuSelection(ccuProfileCheckBoxes[ccuProfile.dhis2_modelid])"
+                         ng-checked="preSelectCcuProfiles[ccuProfile.dhis2_modelid]"/>
+                  {{ ccuProfile.Manufacturer }} - {{ ccuProfile.ModelName }}
+                </label>
+              </div>
+
+              <div class="col-xs-2">
+                <div class="serial-btn">
+                  <span class="btn btn-default btn-block"
+                        ng-click="toggleRow(ccuProfile)"><span class="fa fa-caret-down fa-lg"></span></span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div ng-switch-when="true">
+            <div class="list-group-item" ng-if="preSelectCcuProfiles[ccuProfile.dhis2_modelid]">
+              <div class="clearfix pb10">
+                <span ng-click="selectedCCEItem[ccuProfile.dhis2_modelid]=false" class="btn btn-danger btn-xs pull-right">
+                  <span class="fa fa-times"></span>
+                </span>
+              </div>
+              <div class="row">
+                <div class="col-xs-10">
+                  <input type="text" class="form-control"
+                         ng-change="errorMsg[ccuProfile.dhis2_modelid] = ''"
+                         ng-model="serialNumber[ccuProfile.dhis2_modelid]"
+                    >
+                  <div ng-bind="errorMsg[ccuProfile.dhis2_modelid]"
+                       ng-if="errorMsg[ccuProfile.dhis2_modelid].length" class="text-danger"></div>
+                </div>
+                <div class="col-xs-2 clearfix">
+                  <button type="button"
+                          class="btn btn-success pull-right"
+                          ng-click="addSerialNumber()"> Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div ng-if="preSelectCcuProfiles[ccuProfile.dhis2_modelid].serialNumbers.length">
+            <div class="serial-list" ng-repeat="serial in preSelectCcuProfiles[ccuProfile.dhis2_modelid].serialNumbers">
+              <div class="row">
+                <div class="col-xs-8">
+                  {{ serial }}
+                </div>
+                <div class="col-xs-4 clearfix">
+                  <button type="button"
+                          ng-if="selectedCCEItem[ccuProfile.dhis2_modelid]"
+                          ng-click="removeSerial(preSelectCcuProfiles[ccuProfile.dhis2_modelid], $index)"
+                          class="btn btn-danger btn-sm pull-right"> <i class="fa fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div ng-if="!firstConfig">
+            <div ng-switch-when="true">
+              <div class="list-group-item" ng-if="selectedCCEItem[ccuProfile.dhis2_modelid] && preSelectCcuProfiles[ccuProfile.dhis2_modelid]">
+                <div class="row">
+                  <div class="col-sm-12 clearfix">
+                    <button type="button" ga-click="save" id="save" name="save" class="btn btn-success btn-sm pull-right"
+                            ng-click="save(true)"
+                            ng-disabled="isSaving">
+                      <span ng-show="!isSaving" i18n="save"></span>
+                      <span ng-show="!isSaving"><i class="fa fa-floppy-o"></i></span>
+                      <span ng-show="isSaving" i18n="saving"></span>
+                      <span ng-show="isSaving"><i class="fa fa-spinner fa-spin"></i></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
       </div>
     </div>
+
   </div>
 
 </div>

@@ -81,6 +81,18 @@ angular.module('lmisChromeApp')
     $scope.isSubmitted = false;
     $scope.preSelectProductProfileCheckBox = {};
     $scope.stockCountIntervals = appConfigService.stockCountIntervals;
+    $scope.serialNumber = {};
+    $scope.errorMsg = {};
+    $scope.firstConfig = true;
+
+    //TODO: load state id dynamically.
+    locationService.getLgas("f87ed3e017cf4f8db26836fd910e4cc8")
+      .then(function(res) {
+        $scope.lgaList = res;
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
 
     $scope.currentStep = $scope.STEP_ONE; //set initial step
 
@@ -211,14 +223,14 @@ angular.module('lmisChromeApp')
           $scope.ccuProfilesCategories = Object.keys(result);
           $scope.ccuProfilesGroupedByCategory = result;
         });
-    };
+    }
     function productProfilesGroupedByCategory () {
       $q.when(productProfileFactory.getAllGroupedByCategory())
         .then(function(result){
           $scope.productProfileCategories = Object.keys(result);
           $scope.productProfilesGroupedByCategory = result;
         });
-    };
+    }
 
 
     //TODO: load state id dynamically.
@@ -248,6 +260,7 @@ angular.module('lmisChromeApp')
 
 
     $scope.onCcuSelection = function(ccuProfile) {
+      toggleRow(ccuProfile);
       $scope.appConfig.selectedCcuProfiles =
         utility.addObjectToCollection(ccuProfile, $scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
       $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
@@ -271,7 +284,7 @@ angular.module('lmisChromeApp')
       $scope.appConfig.facility.selectedZones = utility.addObjectToCollection(zone, $scope.appConfig.facility.selectedZones, '_id');
       $scope.preSelectZoneCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedZones, '_id');
 
-    }
+    };
     $scope.save = function() {
       $scope.isSaving = true;
       var nearbyLgas = $scope.appConfig.facility.selectedLgas
@@ -299,8 +312,83 @@ angular.module('lmisChromeApp')
             });
         });
     };
+
+    $scope.addSerialNumber = function() {
+      var ccuItemID = Object.keys($scope.selectedCCEItem)[0];
+      var ccuProfile = $scope.preSelectCcuProfiles[ccuItemID];
+      ccuProfile.serialNumbers = ccuProfile.serialNumbers || [];
+      $scope.errorMsg[ccuItemID] = '';
+
+      if (ccuProfile.serialNumbers.indexOf($scope.serialNumber[ccuItemID]) !== -1) {
+        $scope.errorMsg[ccuItemID] = 'Duplicate entry! serial already exist';
+        return;
+      }
+
+      if ($scope.serialNumber[ccuItemID] === '' || angular.isUndefined($scope.serialNumber[ccuItemID]) ||
+        ccuProfile.serialNumbers.indexOf($scope.serialNumber[ccuItemID]) !== -1) {
+        growl.error('enter a value to add');
+        return;
+      }
+
+      ccuProfile.serialNumbers.push($scope.serialNumber[ccuItemID]);
+      $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
+
+      $scope.serialNumber[ccuItemID] = '';
+    };
+
+    $scope.removeSerial = function(ccuProfile, index) {
+      $scope.errorMsg[ccuProfile.dhis2_modelid] = '';
+      var confirmationTitle = 'Remove Serial Number';
+      var confirmationQuestion = i18n('dialogConfirmationQuestion');
+      var buttonLabels = [i18n('yes'), i18n('no')];
+
+      notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
+        .then(function(isConfirmed) {
+          if (isConfirmed === true) {
+            ccuProfile.serialNumbers.splice(index, 1);
+          }
+        })
+        .catch(function(reason) {
+
+        });
+    };
+
+    function resetRowState() {
+      $scope.selectedCCEItem = {};
+    }
+
+    function toggleRow(ccuProfile) {
+      $scope.errorMsg[ccuProfile.dhis2_modelid] = '';
+      if (!angular.isObject(ccuProfile)) {
+        ccuProfile = JSON.parse(ccuProfile);
+      }
+
+      if (!$scope.preSelectCcuProfiles[ccuProfile.dhis2_modelid]) {
+        growl.error('Equipment need to be selected to add serial number');
+      }
+
+      if (utility.isEmptyObject($scope.selectedCCEItem)) {
+        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = true;
+      } else if ($scope.selectedCCEItem.hasOwnProperty(ccuProfile.dhis2_modelid)) {
+        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = !$scope.selectedCCEItem[ccuProfile.dhis2_modelid];
+      } else {
+        resetRowState();
+        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = true;
+      }
+
+      if ($scope.ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]) {
+        var selectedCCU = JSON.parse($scope.ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]);
+        if (selectedCCU.deSelected) {
+          resetRowState();
+        }
+      }
+    }
+
+    $scope.toggleRow = toggleRow;
+    resetRowState();
+
   })
-  .controller('EditAppConfigCtrl', function($scope, fixtureLoaderService, locationService, $rootScope, appConfigService, growl, $log, i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory, $filter) {
+  .controller('EditAppConfigCtrl', function($scope, fixtureLoaderService, locationService, $rootScope, appConfigService, growl, $log, i18n, $state, appConfig, ccuProfilesGroupedByCategory, productProfilesGroupedByCategory, utility, alertFactory, $filter, notificationService) {
 
     $scope.spaceOutUpperCaseWords = utility.spaceOutUpperCaseWords;
     var oldLgas = [];
@@ -342,6 +430,8 @@ angular.module('lmisChromeApp')
     $scope.developerMode = false;
     $rootScope.developerMode = false;
     $scope.lgaList = [];
+    $scope.serialNumber = {};
+    $scope.errorMsg = {};
 
 
     var noOfAttempts = 0;
@@ -355,6 +445,81 @@ angular.module('lmisChromeApp')
         noOfAttempts = 0;
       }
     };
+
+    $scope.addSerialNumber = function() {
+      var ccuItemID = Object.keys($scope.selectedCCEItem)[0];
+      var ccuProfile = $scope.preSelectCcuProfiles[ccuItemID];
+      ccuProfile.serialNumbers = ccuProfile.serialNumbers || [];
+      $scope.errorMsg[ccuItemID] = '';
+
+      if (ccuProfile.serialNumbers.indexOf($scope.serialNumber[ccuItemID]) !== -1) {
+        $scope.errorMsg[ccuItemID] = 'Duplicate entry! serial already exist';
+        return;
+      }
+
+      if ($scope.serialNumber[ccuItemID] === '' || angular.isUndefined($scope.serialNumber[ccuItemID]) ||
+        ccuProfile.serialNumbers.indexOf($scope.serialNumber[ccuItemID]) !== -1) {
+        growl.error('enter a value to add');
+        return;
+      }
+
+      ccuProfile.serialNumbers.push($scope.serialNumber[ccuItemID]);
+      $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
+
+      $scope.serialNumber[ccuItemID] = '';
+    };
+
+    $scope.removeSerial = function(ccuProfile, index) {
+      $scope.errorMsg[ccuProfile.dhis2_modelid] = '';
+      var confirmationTitle = 'Remove Serial Number';
+      var confirmationQuestion = i18n('dialogConfirmationQuestion');
+      var buttonLabels = [i18n('yes'), i18n('no')];
+
+      notificationService.getConfirmDialog(confirmationTitle, confirmationQuestion, buttonLabels)
+        .then(function(isConfirmed) {
+          if (isConfirmed === true) {
+            ccuProfile.serialNumbers.splice(index, 1);
+          }
+        })
+        .catch(function(reason) {
+
+        });
+    };
+
+    function resetRowState() {
+      $scope.selectedCCEItem = {};
+    }
+
+    function toggleRow(ccuProfile) {
+
+      if (!$scope.preSelectCcuProfiles[ccuProfile.dhis2_modelid]) {
+        growl.error('Equipment need to be selected to add serial number');
+      }
+
+      $scope.errorMsg[ccuProfile.dhis2_modelid] = '';
+      if (!angular.isObject(ccuProfile)) {
+        ccuProfile = JSON.parse(ccuProfile);
+      }
+
+      if (utility.isEmptyObject($scope.selectedCCEItem)) {
+        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = true;
+      } else if ($scope.selectedCCEItem.hasOwnProperty(ccuProfile.dhis2_modelid)) {
+        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = !$scope.selectedCCEItem[ccuProfile.dhis2_modelid];
+      } else {
+        resetRowState();
+        $scope.selectedCCEItem[ccuProfile.dhis2_modelid] = true;
+      }
+
+      if ($scope.ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]) {
+        var selectedCCU = JSON.parse($scope.ccuProfileCheckBoxes[ccuProfile.dhis2_modelid]);
+        if (selectedCCU.deSelected) {
+          resetRowState();
+        }
+      }
+    }
+
+    $scope.toggleRow = toggleRow;
+    resetRowState();
 
     var setAppConfigLastUpdatedViewInfo = function(appConfig) {
       if (utility.has(appConfig, 'lastUpdated')) {
@@ -382,7 +547,6 @@ angular.module('lmisChromeApp')
       $scope.preSelectCcuProfiles = utility.castArrayToObject(appConfig.selectedCcuProfiles, 'dhis2_modelid');
       $scope.preSelectProductProfileCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedProductProfiles, 'uuid');
     }
-   
     //pre-load edit app facility profile config form with existing config.
     preLoadConfigForm(appConfig);
     //TODO: load state id dynamically.
@@ -403,6 +567,7 @@ angular.module('lmisChromeApp')
       });
 
     $scope.onCcuSelection = function(ccuProfile) {
+      toggleRow(ccuProfile);
       $scope.appConfig.selectedCcuProfiles =
         utility.addObjectToCollection(ccuProfile, $scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
       $scope.preSelectCcuProfiles = utility.castArrayToObject($scope.appConfig.selectedCcuProfiles, 'dhis2_modelid');
@@ -425,7 +590,7 @@ angular.module('lmisChromeApp')
       $scope.appConfig.facility.selectedZones =
         utility.addObjectToCollection(zone, $scope.appConfig.facility.selectedZones, '_id');
       $scope.preSelectZoneCheckBox = utility.castArrayToObject($scope.appConfig.facility.selectedZones, '_id');
-    }
+    };
 
     var isSameLgas = function(old, recent) {
       if (old.length !== recent.length) {
@@ -443,13 +608,19 @@ angular.module('lmisChromeApp')
       return hasOddElem;
     };
 
-    var saveAppConfig = function() {
+    var saveAppConfig = function(forSerial) {
       appConfigService.setup($scope.appConfig)
         .then(function(result) {
           if (typeof result !== 'undefined') {
-            $scope.appConfig = result;
-            alertFactory.success(i18n('appConfigSuccessMsg'));
-            $state.go('home.index.home.mainActivity');
+            if (forSerial) {
+              growl.success(i18n('appConfigSuccessMsg'));
+            }
+            if (!forSerial) {
+              $scope.appConfig = result;
+              alertFactory.success(i18n('appConfigSuccessMsg'));
+              $state.go('home.index.home.mainActivity');
+            }
+
           } else {
             growl.error(i18n('appConfigFailedMsg'));
           }
@@ -469,10 +640,10 @@ angular.module('lmisChromeApp')
         });
     };
 
-    $scope.save = function() {
+    $scope.save = function(forSerial) {
       $scope.isSaving = true;
       if (isSameLgas(oldLgas, $scope.appConfig.facility.selectedLgas)) {
-        saveAppConfig();
+        saveAppConfig(forSerial);
       } else {
         var nearbyLgas = $scope.appConfig.facility.selectedLgas
           .map(function(lga) {
