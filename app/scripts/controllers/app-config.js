@@ -326,6 +326,7 @@ angular.module('lmisChromeApp')
 
       if ($scope.serialNumber[ccuItemID] === '' || angular.isUndefined($scope.serialNumber[ccuItemID]) ||
         ccuProfile.serialNumbers.indexOf($scope.serialNumber[ccuItemID]) !== -1) {
+        growl.error('enter a value to add');
         return;
       }
 
@@ -360,6 +361,10 @@ angular.module('lmisChromeApp')
       $scope.errorMsg[ccuProfile.dhis2_modelid] = '';
       if (!angular.isObject(ccuProfile)) {
         ccuProfile = JSON.parse(ccuProfile);
+      }
+
+      if (!$scope.preSelectCcuProfiles[ccuProfile.dhis2_modelid]) {
+        growl.error('Equipment need to be selected to add serial number');
       }
 
       if (utility.isEmptyObject($scope.selectedCCEItem)) {
@@ -454,6 +459,7 @@ angular.module('lmisChromeApp')
 
       if ($scope.serialNumber[ccuItemID] === '' || angular.isUndefined($scope.serialNumber[ccuItemID]) ||
         ccuProfile.serialNumbers.indexOf($scope.serialNumber[ccuItemID]) !== -1) {
+        growl.error('enter a value to add');
         return;
       }
 
@@ -485,6 +491,11 @@ angular.module('lmisChromeApp')
     }
 
     function toggleRow(ccuProfile) {
+
+      if (!$scope.preSelectCcuProfiles[ccuProfile.dhis2_modelid]) {
+        growl.error('Equipment need to be selected to add serial number');
+      }
+
       $scope.errorMsg[ccuProfile.dhis2_modelid] = '';
       if (!angular.isObject(ccuProfile)) {
         ccuProfile = JSON.parse(ccuProfile);
