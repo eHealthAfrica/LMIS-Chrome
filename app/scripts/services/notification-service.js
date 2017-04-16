@@ -5,6 +5,7 @@ angular.module('lmisChromeApp').service('notificationService', function($modal, 
   var noSmsSupportMsg = 'SMS support not available!';
   this.NO_SMS_SUPPORT = noSmsSupportMsg;
   this.alertRecipient = '08176671738';//FIXME: pull this from local or remote db later, dont hardcode.
+  this.countryCode = '+234';
 
   this.vibrate = function(duration) {
     if (navigator.notification) {
